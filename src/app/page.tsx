@@ -12,7 +12,7 @@ export default function Home() {
 
             {/* ── Left Column ── */}
             <div className={styles.leftCol}>
-              <span className={styles.locationBadge}>iTelematics® | iTelematics Software Private Limited</span>
+              <span className={styles.locationBadge}>iTelematics® Software Private Limited</span>
 
               <h1 className={styles.headline}>
                 Engineering the{" "}<br />

@@ -87,12 +87,35 @@ export default function Navbar() {
         <button 
           className={styles.mobileToggle}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle menu"
         >
-          ☰
+          {mobileMenuOpen ? "✕" : "☰"}
         </button>
       </div>
       
-      {/* Mobile Menu Content to be expanded */}
+      {/* Mobile Menu Content */}
+      <div className={`${styles.mobileMenu} ${mobileMenuOpen ? styles.mobileMenuOpen : ''}`}>
+        <div className={styles.mobileMenuInner}>
+          <Link href="/" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Home</Link>
+          <Link href="/about" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>About Us</Link>
+          
+          <div className={styles.mobileSectionTitle}>Concepts</div>
+          <Link href="/av-concepts" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>AV Concepts</Link>
+          <Link href="/technical-concepts" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Technical Concepts</Link>
+
+          <div className={styles.mobileSectionTitle}>Engineering</div>
+          <Link href="/simulations" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Simulations</Link>
+          <Link href="/developer-portal" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Developer Portal</Link>
+
+          <div className={styles.mobileSectionTitle}>Resources</div>
+          <Link href="/challenges" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Challenges</Link>
+          <Link href="/contact" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Contact</Link>
+
+          <div style={{ height: "24px" }}></div>
+          <Link href="/corporate-training" className="btn btn-secondary" style={{ width: '100%', marginBottom: '16px', textAlign: 'center' }} onClick={() => setMobileMenuOpen(false)}>Corporate Training</Link>
+          <Link href="/consulting" className="btn btn-primary" style={{ width: '100%', textAlign: 'center' }} onClick={() => setMobileMenuOpen(false)}>Consulting</Link>
+        </div>
+      </div>
     </nav>
   );
 }

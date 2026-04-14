@@ -46,7 +46,10 @@
   border: 1px solid rgba(255, 255, 255, 0.15);
   background: rgba(6, 40, 28, 0.6);
   border-radius: 999px;
-  width: max-content;
+  max-width: 100%;
+  text-align: center;
+  line-height: 1.4;
+  white-space: normal;
 }
 
 /* ─── Animations ─── */

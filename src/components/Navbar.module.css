@@ -122,6 +122,50 @@
   cursor: pointer;
 }
 
+.mobileMenu {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 80px);
+  background: var(--bg-deep);
+  z-index: 990;
+  overflow-y: auto;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  border-top: 1px solid var(--glass-border);
+}
+
+.mobileMenuOpen {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.mobileMenuInner {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobileLink {
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  font-weight: 500;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.mobileSectionTitle {
+  color: var(--accent-primary);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 24px 0 8px;
+}
+
 @media (max-width: 1024px) {
   .navLinks, .actions {
     display: none;
