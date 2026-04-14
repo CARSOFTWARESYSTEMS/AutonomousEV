@@ -1,0 +1,92 @@
+.catalogGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 32px;
+  margin-top: 40px;
+}
+
+.simCard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.simHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.simTitle {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badgeFree {
+  background: rgba(76, 169, 48, 0.15);
+  color: var(--accent-primary);
+  border: 1px solid rgba(76, 169, 48, 0.3);
+}
+
+.badgeEnterprise {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.simDescription {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.featureList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 16px 0;
+  font-size: 0.9rem;
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+}
+
+.featureItem::before {
+  content: "•";
+  color: var(--accent-primary);
+}
+
+.pricingNote {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--text-muted);
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--glass-border);
+}
+
+.docsLink {
+  color: var(--accent-primary);
+  font-size: 0.9rem;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.2s;
+}
+
+.docsLink:hover {
+  text-decoration-color: var(--accent-primary);
+}
