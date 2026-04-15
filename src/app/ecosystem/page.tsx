@@ -15,7 +15,7 @@ export default function EcosystemLanding() {
         </p>
       </header>
 
-      <div className="grid" style={{ gridTemplateColumns: "1fr 1fr", gap: "32px", marginBottom: "64px" }}>
+      <div className="grid-2" style={{ marginBottom: "64px" }}>
         <div className="glass-panel" style={{ borderTop: "4px solid var(--color-accent)" }}>
           <h2 style={{ fontSize: "1.5rem", marginBottom: "16px", color: "var(--color-text-primary)" }}>Singapore</h2>
           <p style={{ color: "var(--color-text-secondary)", marginBottom: "24px", lineHeight: 1.6 }}>

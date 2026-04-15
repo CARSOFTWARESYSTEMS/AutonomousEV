@@ -117,7 +117,7 @@ export default function TopicPage({
 
         <section style={{ textAlign: "center", marginTop: "40px", padding: "40px 0" }}>
           <h2 style={{ fontSize: "2rem", marginBottom: "24px" }}>Advance your engineering capability</h2>
-          <div style={{ display: "flex", gap: "16px", justifyContent: "center" }}>
+          <div className="flex-responsive" style={{ gap: "16px", justifyContent: "center" }}>
             <Link href="/corporate-training" className="btn btn-primary">Request Training</Link>
             <Link href="/consulting" className="btn btn-secondary">Consulting Services</Link>
           </div>

@@ -17,7 +17,7 @@ export default function CorporateTrainingPage() {
 
       <section style={{ marginBottom: "64px" }}>
         <h2 style={{ fontSize: "2rem", marginBottom: "32px", textAlign: "center" }}>Our Delivery Tracks</h2>
-        <div className="grid" style={{ gridTemplateColumns: "1fr 1fr", gap: "32px" }}>
+        <div className="grid-2">
           
           <div className="glass-panel">
             <h3 style={{ fontSize: "1.5rem", marginBottom: "16px", color: "var(--color-accent)" }}>Executive Workshop Track</h3>

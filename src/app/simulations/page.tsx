@@ -27,7 +27,7 @@ export default function SimulationsPage() {
       {/* Engineering Depth */}
       <section style={{ marginBottom: "64px" }}>
         <h2 style={{ fontSize: "2rem", marginBottom: "32px" }}>The Simulation Lifecycle</h2>
-        <div className="grid" style={{ gridTemplateColumns: "1fr 1fr", gap: "32px" }}>
+        <div className="grid-2">
           <div>
             <h3 style={{ color: "var(--color-accent)", marginBottom: "12px" }}>Beginner: Environment Modeling</h3>
             <p style={{ color: "var(--color-text-secondary)" }}>Understanding 3D game engines (Unreal/Unity). Designing maps, editing HD map definitions (OpenDRIVE), and deploying passive traffic actors.</p>

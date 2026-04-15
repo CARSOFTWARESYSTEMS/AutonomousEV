@@ -15,7 +15,7 @@ export default function ConsultingPage() {
         </p>
       </header>
 
-      <div className="grid" style={{ gridTemplateColumns: "1fr", gap: "24px", maxWidth: "900px", margin: "0 auto 64px" }}>
+      <div className="grid" style={{ gap: "24px", maxWidth: "900px", margin: "0 auto 64px" }}>
         <div className="glass-panel" style={{ borderLeft: "4px solid var(--color-accent)" }}>
           <h2 style={{ fontSize: "1.5rem", marginBottom: "12px", color: "var(--color-text-primary)" }}>Architecture Reviews</h2>
           <p style={{ color: "var(--color-text-secondary)", lineHeight: 1.6 }}>System-level validation focusing on real-time constraints, sensor redundancy, and fail-operational design. We analyze your proposed hardware-software integration before expensive commitments.</p>

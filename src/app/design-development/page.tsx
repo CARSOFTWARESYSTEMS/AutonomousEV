@@ -24,7 +24,7 @@ export default function DesignDevelopmentLanding() {
         </div>
       </section>
 
-      <div className="grid" style={{ gridTemplateColumns: "1fr 1fr", gap: "32px" }}>
+      <div className="grid-2">
         <div className="glass-panel">
           <h2 style={{ fontSize: "1.5rem", marginBottom: "16px", color: "var(--color-accent)" }}>Autonomous Passenger Taxi</h2>
           <p style={{ color: "var(--color-text-secondary)", marginBottom: "24px", lineHeight: 1.6 }}>
