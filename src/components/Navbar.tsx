@@ -99,16 +99,31 @@ export default function Navbar() {
           <Link href="/" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Home</Link>
           <Link href="/about" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>About Us</Link>
           
-          <div className={styles.mobileSectionTitle}>Concepts</div>
+          <div className={styles.mobileSectionTitle}>Foundations</div>
           <Link href="/av-concepts" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>AV Concepts</Link>
           <Link href="/technical-concepts" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Technical Concepts</Link>
+          <Link href="/non-technical-concepts" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Non-Technical Concepts</Link>
 
           <div className={styles.mobileSectionTitle}>Engineering</div>
-          <Link href="/simulations" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Simulations</Link>
+          <Link href="/driverless-car-technologies" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Driverless Car Tech</Link>
+          <Link href="/intelligent-transportation-systems" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Intelligent Transportation</Link>
+          <Link href="/rtos" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>RTOS for AV</Link>
+          <Link href="/machine-learning" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Machine Learning & AI</Link>
+          <Link href="/simulations" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Hands-On Simulations</Link>
           <Link href="/developer-portal" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Developer Portal</Link>
 
-          <div className={styles.mobileSectionTitle}>Resources</div>
+          <div className={styles.mobileSectionTitle}>AV Ecosystem</div>
+          <Link href="/design-development/passenger-taxi" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Passenger Taxi</Link>
+          <Link href="/design-development/airport-cargo" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Airport Cargo EV</Link>
+          <Link href="/ecosystem/india" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>India Ecosystem</Link>
+          <Link href="/ecosystem/europe" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Europe Ecosystem</Link>
+          <Link href="/ecosystem/singapore" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Singapore Ecosystem</Link>
+          <Link href="/ecosystem/usa" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>USA Ecosystem</Link>
+
+          <div className={styles.mobileSectionTitle}>Insights & Risks</div>
           <Link href="/challenges" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Challenges</Link>
+          <Link href="/cybersecurity" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Cybersecurity</Link>
+          <Link href="/battery-diagnostics" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>EV Battery Diagnostics</Link>
           <Link href="/contact" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Contact</Link>
 
           <div style={{ height: "24px" }}></div>

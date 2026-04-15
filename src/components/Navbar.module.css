@@ -145,25 +145,33 @@
 }
 
 .mobileMenuInner {
-  padding: 24px;
+  padding: 24px 24px 80px; /* Extra bottom padding for scroll room */
   display: flex;
   flex-direction: column;
 }
 
 .mobileLink {
   color: var(--text-primary);
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 500;
-  padding: 12px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding: 14px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  transition: background 0.2s ease;
+  border-radius: var(--radius-sm);
+}
+
+.mobileLink:active {
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .mobileSectionTitle {
   color: var(--accent-primary);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  margin: 24px 0 8px;
+  letter-spacing: 1.5px;
+  margin: 32px 12px 12px;
+  font-weight: 700;
+  opacity: 0.8;
 }
 
 @media (max-width: 1024px) {
