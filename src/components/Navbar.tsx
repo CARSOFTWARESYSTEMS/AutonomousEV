@@ -39,6 +39,7 @@ export default function Navbar() {
                 <Link href="/intelligent-transportation-systems" className={styles.dropdownLink}>Intelligent Transportation</Link>
                 <Link href="/rtos" className={styles.dropdownLink}>RTOS for AV</Link>
                 <Link href="/machine-learning" className={styles.dropdownLink}>Machine Learning & AI</Link>
+                <Link href="/si-ems" className={styles.dropdownLink}>SI-EMS Research</Link>
               </div>
               <div className={styles.dropdownColumn}>
                 <div className={styles.dropdownTitle}>Applied & Tools</div>
@@ -111,6 +112,7 @@ export default function Navbar() {
           <Link href="/machine-learning" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Machine Learning & AI</Link>
           <Link href="/simulations" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Hands-On Simulations</Link>
           <Link href="/developer-portal" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Developer Portal</Link>
+          <Link href="/si-ems" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>SI-EMS Research</Link>
 
           <div className={styles.mobileSectionTitle}>AV Ecosystem</div>
           <Link href="/design-development/passenger-taxi" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Passenger Taxi</Link>

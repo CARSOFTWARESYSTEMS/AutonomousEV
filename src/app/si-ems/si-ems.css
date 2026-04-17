@@ -1,0 +1,24 @@
+.toc-link {
+  padding: 4px 0;
+  transition: all 0.2s;
+}
+.toc-link:hover .toc-title {
+  color: var(--color-accent);
+  transform: translateX(4px);
+}
+.toc-title {
+  transition: transform 0.2s;
+}
+.check-list li {
+   margin-bottom: 12px;
+   color: var(--color-text-secondary);
+   font-size: 0.95rem;
+   list-style: none;
+}
+.in-progress { color: #facc15 !important; }
+.todo { color: var(--color-text-muted) !important; }
+
+@media (min-width: 1024px) {
+  .sidebar-desktop { display: block !important; }
+  .desktop-only { display: block !important; }
+}
