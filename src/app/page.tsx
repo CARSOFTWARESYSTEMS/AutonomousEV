@@ -12,7 +12,7 @@ export default function Home() {
 
             {/* ── Left Column ── */}
             <div className={styles.leftCol}>
-              <a href="https://iTelematics.com" target="_blank" rel="noopener noreferrer" className={styles.locationBadge} style={{ textDecoration: 'none', display: 'inline-block' }}>iTelematics® Software Private Limited</a>
+              <a href="https://iTelematics.com" target="_blank" rel="noopener noreferrer" className={styles.locationBadge} style={{ textDecoration: 'none' }}>iTelematics® Software Private Limited</a>
 
               <h1 className={styles.headline}>
                 Engineering the{" "}<br />
