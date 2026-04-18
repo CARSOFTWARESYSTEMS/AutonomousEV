@@ -120,7 +120,7 @@ export default function SIEMSContent() {
         </div>
       )}
 
-      <div style={{ display: "flex", gap: "64px", alignItems: "flex-start" }}>
+      <div style={{ display: "flex", gap: "64px", alignItems: "flex-start", maxWidth: "100%" }}>
         
         {/* Fixed Sidebar (Desktop) */}
         {!isMobile && (
@@ -175,8 +175,8 @@ export default function SIEMSContent() {
           </div>
         )}
 
-        <div style={{ flex: 1 }}>
-          <header style={{ marginBottom: "64px" }}>
+        <div style={{ flex: 1, minWidth: 0, maxWidth: "100%" }}>
+          <header style={{ marginBottom: "64px", wordWrap: "break-word" }}>
             <div className="pill" style={{ marginBottom: "16px", color: "var(--accent-primary)" }}>ishavasyam.org™</div>
             <h1 style={{ fontSize: isMobile ? "2.2rem" : "3.5rem", marginBottom: "20px", lineHeight: "1.1" }}>
               AI-Driven Super-Intelligent Energy Management Systems for Autonomous EVs
@@ -247,7 +247,7 @@ export default function SIEMSContent() {
               <span style={{ fontSize: "0.8rem", fontWeight: "800", color: "var(--accent-primary)", letterSpacing: "1.5px", textTransform: "uppercase", display: "block", marginBottom: "8px" }}>Index</span>
               <h2 style={{ fontSize: isMobile ? "1.5rem" : "2.2rem", marginBottom: "0", lineHeight: "1.2" }}>Detailed Chapters</h2>
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "32px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "32px", maxWidth: "100%" }}>
               {syllabusData.map((part) => (
                 <div key={`index-${part.id}`}>
                   <h3 style={{ fontSize: "1rem", color: "var(--accent-primary)", marginBottom: "12px", lineHeight: "1.3" }}>
