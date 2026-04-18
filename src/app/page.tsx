@@ -12,7 +12,7 @@ export default function Home() {
 
             {/* ── Left Column ── */}
             <div className={styles.leftCol}>
-              <span className={styles.locationBadge}>iTelematics® Software Private Limited</span>
+              <a href="https://iTelematics.com" target="_blank" rel="noopener noreferrer" className={styles.locationBadge} style={{ textDecoration: 'none', display: 'inline-block' }}>iTelematics® Software Private Limited</a>
 
               <h1 className={styles.headline}>
                 Engineering the{" "}<br />
@@ -39,25 +39,38 @@ export default function Home() {
                 <p className={styles.cardText}>
                   ROS2/Autoware integration, deterministic scheduling, and sensor-fusion pipelines for production AV stacks.
                 </p>
-              </div>
-
-              <div className={`${styles.floatingCard} ${styles.card2}`}>
-                <p className={styles.cardTitle}>EV Battery Diagnostics</p>
-                <p className={styles.cardText}>
-                  Thermal risk, predictive maintenance, and SOH analytics for non-stop autonomous duty cycles.
-                </p>
-                <div className={styles.chipContainer}>
-                  {["SOH", "BMS", "Thermal", "Predictive AI"].map(c => (
+                <div className={styles.chipContainer} style={{ marginTop: '12px' }}>
+                  {["ROS2", "Autoware", "Sensor Fusion"].map(c => (
                     <span key={c} className="pill">{c}</span>
                   ))}
                 </div>
               </div>
+
+              <Link href="/si-ems" className={`${styles.floatingCard} ${styles.card2}`} style={{ textDecoration: 'none', display: 'block' }}>
+                <p className={styles.cardTitle} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  Super-Intelligent AI EMS
+                  <span style={{ fontSize: '0.8rem', color: 'var(--accent-primary)' }}>Research ›</span>
+                </p>
+                <p className={styles.cardText}>
+                  AI-Driven Super-Intelligent Energy Management Systems for Autonomous EVs. Architectural Design & Proof-of-Concept for Level-4 Robotaxi Platforms.
+                </p>
+                <div className={styles.chipContainer} style={{ marginTop: '12px' }}>
+                  {["BMS", "Cybersecurity", "Robotaxi"].map(c => (
+                    <span key={c} className="pill">{c}</span>
+                  ))}
+                </div>
+              </Link>
 
               <div className={`${styles.floatingCard} ${styles.card3}`}>
                 <p className={styles.cardTitle}>AV Ecosystem</p>
                 <p className={styles.cardText}>
                   CETRAN scenario testing, LTA guidelines, and Smart Nation deployment insights.
                 </p>
+                <div className={styles.chipContainer} style={{ marginTop: '12px' }}>
+                  {["India", "Europe", "Singapore", "USA"].map(c => (
+                    <span key={c} className="pill">{c}</span>
+                  ))}
+                </div>
               </div>
             </div>
 

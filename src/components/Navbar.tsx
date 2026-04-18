@@ -56,6 +56,7 @@ export default function Navbar() {
                 <div className={styles.dropdownTitle}>Design & Development</div>
                 <Link href="/design-development/passenger-taxi" className={styles.dropdownLink}>Autonomous Passenger Taxi</Link>
                 <Link href="/design-development/airport-cargo" className={styles.dropdownLink}>Autonomous Airport Cargo EV</Link>
+                <Link href="/si-ems" className={styles.dropdownLink}>Super-Intelligent AI EMS</Link>
               </div>
               <div className={styles.dropdownColumn}>
                 <div className={styles.dropdownTitle}>AV Ecosystem</div>
@@ -117,6 +118,7 @@ export default function Navbar() {
           <div className={styles.mobileSectionTitle}>AV Ecosystem</div>
           <Link href="/design-development/passenger-taxi" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Passenger Taxi</Link>
           <Link href="/design-development/airport-cargo" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Airport Cargo EV</Link>
+          <Link href="/si-ems" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Super-Intelligent AI EMS</Link>
           <Link href="/ecosystem/india" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>India Ecosystem</Link>
           <Link href="/ecosystem/europe" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Europe Ecosystem</Link>
           <Link href="/ecosystem/singapore" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Singapore Ecosystem</Link>

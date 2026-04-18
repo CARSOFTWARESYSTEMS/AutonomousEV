@@ -37,6 +37,7 @@
 
 .locationBadge {
   display: inline-flex;
+  align-self: flex-start;
   align-items: center;
   color: var(--accent-primary);
   font-size: 0.9rem;
@@ -134,13 +135,21 @@
   box-shadow: 0 15px 40px rgba(0, 245, 160, 0.1);
 }
 
+@keyframes highlightPulse {
+  0% { box-shadow: 0 0 10px rgba(57, 201, 49, 0); border-color: rgba(255, 255, 255, 0.15); }
+  50% { box-shadow: 0 0 25px rgba(57, 201, 49, 0.4); border-color: rgba(57, 201, 49, 0.6); }
+  100% { box-shadow: 0 0 10px rgba(57, 201, 49, 0); border-color: rgba(255, 255, 255, 0.15); }
+}
+
 .card1 {
   animation-delay: 0.6s;
 }
 
 .card2 {
   background: rgba(6, 40, 28, 0.75);
-  animation-delay: 0.8s;
+  animation: 
+    slideInRight 0.8s ease-out 0.8s forwards,
+    highlightPulse 3s ease-in-out 1.6s infinite;
 }
 
 .card3 {

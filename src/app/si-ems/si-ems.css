@@ -1,24 +1,287 @@
 .toc-link {
-  padding: 4px 0;
+  padding: 0;
   transition: all 0.2s;
+  text-decoration: none;
+  border-radius: 6px;
+}
+.toc-link:hover {
+  background: rgba(255, 255, 255, 0.04);
 }
 .toc-link:hover .toc-title {
-  color: var(--color-accent);
-  transform: translateX(4px);
+  color: var(--accent-primary) !important;
 }
 .toc-title {
-  transition: transform 0.2s;
+  transition: color 0.2s;
 }
+
+/* ─── Global Overflow Fix ───────────────────────────────────────── */
+/* Prevent any content from breaking the viewport horizontally */
+.si-ems-page {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* ─── Syllabus Typography ────────────────────────────────────────── */
+.syllabus-paragraph {
+  line-height: 1.7;
+  margin-bottom: 24px;
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  max-width: 100%;
+  word-break: break-word;
+}
+
+.syllabus-subheading {
+  color: var(--accent-primary);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 32px 0 16px;
+  letter-spacing: 0.5px;
+}
+
+/* ─── Lists ──────────────────────────────────────────────────────── */
+.syllabus-list {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 24px;
+}
+
+.syllabus-list li {
+  position: relative;
+  padding-left: 24px;
+  margin-bottom: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+.syllabus-list li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--accent-primary);
+  font-weight: bold;
+}
+
+/* ─── Code Blocks ────────────────────────────────────────────────── */
+.syllabus-code-wrapper {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 24px 0;
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.syllabus-code {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.85rem;
+  color: #e2e8f0;
+  line-height: 1.5;
+  white-space: pre;
+  display: block;
+}
+
+/* ─── Architecture Diagram Panels ───────────────────────────────── */
+.syllabus-diagram-panel {
+  background: rgba(76, 169, 48, 0.04);
+  border: 1px solid rgba(76, 169, 48, 0.25);
+  border-radius: 12px;
+  padding: 24px 20px 20px;
+  margin: 28px 0;
+  overflow-x: auto;
+  max-width: 100%;
+  position: relative;
+}
+
+.syllabus-diagram-label {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--accent-primary);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(76, 169, 48, 0.15);
+}
+
+.syllabus-diagram-code {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.8rem;
+  color: #c3e6cb;
+  line-height: 1.8;
+  white-space: pre;
+  overflow-x: auto;
+  display: block;
+  max-width: 100%;
+}
+
+/* ─── Formulas ───────────────────────────────────────────────────── */
+.syllabus-formula {
+  background: rgba(76, 169, 48, 0.05);
+  border-left: 4px solid var(--accent-primary);
+  padding: 20px;
+  margin: 24px 0;
+  font-family: 'Courier New', monospace;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* ─── Blockquotes ────────────────────────────────────────────────── */
+.syllabus-quote {
+  border-left: 4px solid var(--accent-primary);
+  padding: 20px 24px;
+  margin: 32px 0;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 0 12px 12px 0;
+  font-style: italic;
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+/* ─── Tables ─────────────────────────────────────────────────────── */
+.syllabus-table-wrapper {
+  margin: 32px 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  -webkit-overflow-scrolling: touch;
+}
+
+.syllabus-table {
+  min-width: 600px;  /* ensures horizontal scroll on small screens */
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.02);
+  font-size: 0.9rem;
+}
+
+.syllabus-table th,
+.syllabus-table td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--glass-border);
+  white-space: normal;
+  word-break: break-word;
+}
+
+.syllabus-table th {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--accent-primary);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.syllabus-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* ─── Glossary ──────────────────────────────────────────────────── */
+.syllabus-glossary {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  margin: 24px 0;
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.syllabus-glossary-entry {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  align-items: baseline;
+}
+
+.syllabus-glossary-entry:last-child {
+  border-bottom: none;
+}
+
+.syllabus-glossary-entry dt {
+  padding: 12px 16px;
+  color: var(--accent-primary);
+  font-weight: 700;
+  font-size: 0.85rem;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  background: rgba(76, 169, 48, 0.05);
+  border-right: 1px solid rgba(76, 169, 48, 0.15);
+}
+
+.syllabus-glossary-entry dd {
+  padding: 12px 16px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .syllabus-glossary-entry {
+    grid-template-columns: 1fr;
+  }
+  .syllabus-glossary-entry dt {
+    border-right: none;
+    border-bottom: 1px solid rgba(76, 169, 48, 0.15);
+    padding-bottom: 8px;
+  }
+  .syllabus-glossary-entry dd {
+    padding-top: 8px;
+  }
+}
+
+/* ─── Mobile Toggles ─────────────────────────────────────────────── */
+.syllabus-section-collapsed {
+  margin: 16px 0;
+  text-align: center;
+}
+
+.btn-more, .btn-less {
+  background: rgba(76, 169, 48, 0.1);
+  border: 1px solid var(--accent-primary);
+  color: var(--accent-primary);
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+  max-width: 300px;
+}
+
+.btn-more:hover, .btn-less:hover {
+  background: var(--accent-primary);
+  color: white;
+}
+
+/* ─── Misc ───────────────────────────────────────────────────────── */
 .check-list li {
-   margin-bottom: 12px;
-   color: var(--color-text-secondary);
-   font-size: 0.95rem;
-   list-style: none;
+  margin-bottom: 12px;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  list-style: none;
 }
+
 .in-progress { color: #facc15 !important; }
-.todo { color: var(--color-text-muted) !important; }
+.todo { color: var(--text-muted) !important; }
 
 @media (min-width: 1024px) {
   .sidebar-desktop { display: block !important; }
   .desktop-only { display: block !important; }
+}
+
+@media (max-width: 1023px) {
+  .sidebar-desktop { display: none !important; }
 }

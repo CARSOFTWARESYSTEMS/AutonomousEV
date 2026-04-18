@@ -101,7 +101,7 @@ This is not a survey paper. Every concept introduced is tied to a specific archi
 
 ---
 
-# PART 0 — CONCEPTUAL FOUNDATIONS (FIRST PRINCIPLES)
+# PART 0 — CONCEPTUAL FOUNDATIONS
 
 ---
 
@@ -650,24 +650,24 @@ SECONDARY STAKEHOLDERS
 
 ### 4.2 Functional Requirements (FR) Summary
 
-**FR-1 (Energy):** The SI-EMS shall reduce Wh/km by ≥10% vs. rule-based baseline on WLTC cycle.
-**FR-2 (Battery Life):** The SI-EMS shall reduce equivalent full cycle degradation by ≥15% vs. conventional charging policy.
-**FR-3 (Safety):** The SI-EMS shall never violate ISO 26262 safety invariants (zero violations by design).
-**FR-4 (Latency):** The SI-EMS control loop shall complete in ≤20ms p99 on production-representative edge silicon.
-**FR-5 (Comfort):** The SI-EMS shall maintain cabin temperature within ±2°C of setpoint ≥95% of occupied time.
-**FR-6 (Explainability):** The SI-EMS shall generate a human-readable explanation for any flagged energy decision within 100ms.
-**FR-7 (Fleet Coordination):** The SI-EMS shall support V2G participation and fleet-coordinated charging without operator manual intervention.
-**FR-8 (OTA Updates):** The SI-EMS shall support signed OTA model updates with A/B partition and rollback capability.
-**FR-9 (Privacy):** Raw in-cabin sensor data shall never leave the vehicle; only aggregated feature vectors are transmitted to fleet cloud.
-**FR-10 (Anomaly Detection):** The SI-EMS shall detect ≥95% of seeded battery anomalies (internal short, connector corrosion, busbar fatigue) with ≤2% false positive rate.
+- **FR-1 (Energy):** The SI-EMS shall reduce Wh/km by ≥10% vs. rule-based baseline on WLTC cycle.
+- **FR-2 (Battery Life):** The SI-EMS shall reduce equivalent full cycle degradation by ≥15% vs. conventional charging policy.
+- **FR-3 (Safety):** The SI-EMS shall never violate ISO 26262 safety invariants (zero violations by design).
+- **FR-4 (Latency):** The SI-EMS control loop shall complete in ≤20ms p99 on production-representative edge silicon.
+- **FR-5 (Comfort):** The SI-EMS shall maintain cabin temperature within ±2°C of setpoint ≥95% of occupied time.
+- **FR-6 (Explainability):** The SI-EMS shall generate a human-readable explanation for any flagged energy decision within 100ms.
+- **FR-7 (Fleet Coordination):** The SI-EMS shall support V2G participation and fleet-coordinated charging without operator manual intervention.
+- **FR-8 (OTA Updates):** The SI-EMS shall support signed OTA model updates with A/B partition and rollback capability.
+- **FR-9 (Privacy):** Raw in-cabin sensor data shall never leave the vehicle; only aggregated feature vectors are transmitted to fleet cloud.
+- **FR-10 (Anomaly Detection):** The SI-EMS shall detect ≥95% of seeded battery anomalies (internal short, connector corrosion, busbar fatigue) with ≤2% false positive rate.
 
 ### 4.3 Non-Functional Requirements (NFR) Summary
 
-**NFR-1 (Availability):** SI-EMS availability ≥99.99% (< 53 minutes downtime/year).
-**NFR-2 (Portability):** The core SI-EMS software shall be deployable on ≥2 different automotive SoC platforms.
-**NFR-3 (Modularity):** Each subsystem module (DRL, MPC, PINN, XAI) shall be independently replaceable without re-certifying the entire stack.
-**NFR-4 (Observability):** All SI-EMS state variables and decisions shall be logged with timestamps for post-incident audit.
-**NFR-5 (Security):** All external interfaces (V2X, OTA, V2G) shall implement mutual authentication and encrypted communication.
+- **NFR-1 (Availability):** SI-EMS availability ≥99.99% (< 53 minutes downtime/year).
+- **NFR-2 (Portability):** The core SI-EMS software shall be deployable on ≥2 different automotive SoC platforms.
+- **NFR-3 (Modularity):** Each subsystem module (DRL, MPC, PINN, XAI) shall be independently replaceable without re-certifying the entire stack.
+- **NFR-4 (Observability):** All SI-EMS state variables and decisions shall be logged with timestamps for post-incident audit.
+- **NFR-5 (Security):** All external interfaces (V2X, OTA, V2G) shall implement mutual authentication and encrypted communication.
 
 ---
 
