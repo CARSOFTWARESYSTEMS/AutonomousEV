@@ -214,6 +214,21 @@ export default function SIEMSContent() {
              </div>
           </section>
 
+          {/* Conceptual Architecture Blueprint */}
+          <div style={{ width: "100%", display: "flex", justifyContent: "center", marginBottom: "64px" }}>
+            <img 
+               src="/ev-engineer-car.png" 
+               alt="Autonomous EV Platform Conceptual Blueprint" 
+               style={{ 
+                 width: "100%", 
+                 height: "auto", 
+                 borderRadius: "16px", 
+                 border: "1px solid var(--glass-border)", 
+                 boxShadow: "0px 16px 40px rgba(0, 245, 160, 0.05)" 
+               }} 
+            />
+          </div>
+
           {/* Research Content */}
           <div style={{ display: "flex", flexDirection: "column", gap: "100px" }}>
             {syllabusData.map((part) => (
