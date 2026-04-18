@@ -15,7 +15,7 @@ const SyllabusSection: React.FC<SyllabusSectionProps> = ({ section, isMobile }) 
       case 'paragraph':
         return <p className="syllabus-paragraph">{renderMarkdown(section.content)}</p>;
       case 'subheading':
-        return <h4 className="syllabus-subheading">{section.content}</h4>;
+        return <h4 className="syllabus-subheading">{renderMarkdown(section.content)}</h4>;
       case 'list':
         return (
           <ul className="syllabus-list">
@@ -45,13 +45,13 @@ const SyllabusSection: React.FC<SyllabusSectionProps> = ({ section, isMobile }) 
           <dl className="syllabus-glossary">
             {section.content.map((entry: string, idx: number) => {
               const dashIdx = entry.indexOf(' — ');
-              if (dashIdx === -1) return <div key={idx} className="syllabus-glossary-entry"><dd>{entry}</dd></div>;
-              const term = entry.slice(0, dashIdx).replace(/\*\*/g, '');
+              if (dashIdx === -1) return <div key={idx} className="syllabus-glossary-entry"><dd>{renderMarkdown(entry)}</dd></div>;
+              const term = entry.slice(0, dashIdx);
               const def = entry.slice(dashIdx + 3);
               return (
                 <div key={idx} className="syllabus-glossary-entry">
-                  <dt>{term}</dt>
-                  <dd>{def}</dd>
+                  <dt>{renderMarkdown(term)}</dt>
+                  <dd>{renderMarkdown(def)}</dd>
                 </div>
               );
             })}
@@ -66,7 +66,7 @@ const SyllabusSection: React.FC<SyllabusSectionProps> = ({ section, isMobile }) 
       case 'quote':
         return (
           <blockquote className="syllabus-quote">
-            {section.content}
+            {renderMarkdown(section.content)}
           </blockquote>
         );
       case 'diagram':
@@ -79,7 +79,7 @@ const SyllabusSection: React.FC<SyllabusSectionProps> = ({ section, isMobile }) 
               <thead>
                 <tr>
                   {section.content.headers.map((h: string, idx: number) => (
-                    <th key={idx}>{h}</th>
+                    <th key={idx}>{renderMarkdown(h)}</th>
                   ))}
                 </tr>
               </thead>
