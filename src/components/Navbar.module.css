@@ -97,6 +97,22 @@
   margin-bottom: 8px;
 }
 
+.dropdownDivider {
+  height: 1px;
+  background: var(--glass-border);
+  margin: 4px 0;
+}
+
+.dropdownSubTitle {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent-primary);
+  margin-top: 4px;
+  margin-bottom: 8px;
+  opacity: 0.7;
+}
+
 .dropdownLink {
   color: var(--text-secondary);
   font-size: 0.9rem;

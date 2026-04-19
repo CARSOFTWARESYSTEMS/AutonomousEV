@@ -81,6 +81,11 @@ export default function Navbar() {
                 <div className={styles.dropdownTitle}>Design &amp; Development</div>
                 <Link href="/internships/battery-fire-prevention" className={styles.dropdownLink}>AI-Powered EV Battery Fire Prevention System</Link>
                 <Link href="/internships/battery-aadhaar" className={styles.dropdownLink}>Battery Pack Aadhaar System</Link>
+                <div className={styles.dropdownDivider} />
+                <div className={styles.dropdownSubTitle}>Miscellaneous</div>
+                <a href="https://itelematics.com/ev-engineer" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>Projects @ iTelematics®</a>
+                <a href="https://www.evsociety.org/projects" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>Webinars @ EV Society™</a>
+                <a href="https://labs.ev.engineer/" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>Ongoing vs Completed</a>
               </div>
             </div>
           </div>
@@ -139,6 +144,11 @@ export default function Navbar() {
           <div className={styles.mobileSectionTitle}>Internships — Design &amp; Development</div>
           <Link href="/internships/battery-fire-prevention" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>AI-Powered EV Battery Fire Prevention System</Link>
           <Link href="/internships/battery-aadhaar" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Battery Pack Aadhaar System</Link>
+
+          <div className={styles.mobileSectionTitle}>Internships — Miscellaneous</div>
+          <a href="https://itelematics.com/ev-engineer" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Projects @ iTelematics®</a>
+          <a href="https://www.evsociety.org/projects" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Webinars @ EV Society™</a>
+          <a href="https://labs.ev.engineer/" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Ongoing vs Completed</a>
 
           <Link href="/contact" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Contact</Link>
 
