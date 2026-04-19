@@ -21,18 +21,24 @@ function ProjectCard({ title, desc, link }: { title: string, desc?: string, link
     <div className="glass-panel" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <h3 style={{ fontSize: '1.2rem', marginBottom: '8px', color: 'var(--text-primary)', fontWeight: 500 }}>
         {title}
-        {isExternal && <span style={{ marginLeft: '6px', fontSize: '0.9rem', color: 'var(--text-tertiary)' }}>↗</span>}
       </h3>
-      {desc && <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>{desc}</p>}
+      {desc && <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', flexGrow: 1, marginBottom: '16px' }}>{desc}</p>}
+      
+      <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', color: 'var(--accent-primary)', fontSize: '0.9rem', fontWeight: 600 }}>
+        {isExternal ? 'Visit Website' : 'Explore Program'} 
+        <span style={{ marginLeft: '6px', fontSize: '1.1rem', transition: 'transform 0.2s ease' }} className="cta-arrow">
+          {isExternal ? '↗' : '→'}
+        </span>
+      </div>
     </div>
   );
 
   return isExternal ? (
-    <a href={link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+    <a href={link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }} className="project-card-link">
       {cardContent}
     </a>
   ) : (
-    <Link href={link} style={{ textDecoration: 'none' }}>
+    <Link href={link} style={{ textDecoration: 'none' }} className="project-card-link">
       {cardContent}
     </Link>
   );
