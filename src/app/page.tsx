@@ -48,9 +48,9 @@ export default function Home() {
               </div>
 
               <Link href="/si-ems" className={`${styles.floatingCard} ${styles.card2}`} style={{ textDecoration: 'none', display: 'block' }}>
-                <p className={styles.cardTitle} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <p className={styles.cardTitle} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
                   Super-Intelligent AI EMS
-                  <span style={{ fontSize: '0.8rem', color: 'var(--accent-primary)' }}>Research ›</span>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--accent-primary)', flexShrink: 0 }}>Research ›</span>
                 </p>
                 <p className={styles.cardText}>
                   AI-Driven Super-Intelligent Energy Management Systems for Autonomous EVs. Architectural Design & Proof-of-Concept for Level-4 Robotaxi Platforms.
