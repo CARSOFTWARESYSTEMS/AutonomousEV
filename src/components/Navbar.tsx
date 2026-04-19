@@ -38,11 +38,11 @@ export default function Navbar() {
                 <Link href="/driverless-car-technologies" className={styles.dropdownLink}>Driverless Car Tech</Link>
                 <Link href="/intelligent-transportation-systems" className={styles.dropdownLink}>Intelligent Transportation</Link>
                 <Link href="/rtos" className={styles.dropdownLink}>RTOS for AV</Link>
-                <Link href="/machine-learning" className={styles.dropdownLink}>Machine Learning & AI</Link>
+                <Link href="/machine-learning" className={styles.dropdownLink}>Machine Learning &amp; AI</Link>
                 <Link href="/si-ems" className={styles.dropdownLink}>SI-EMS Research</Link>
               </div>
               <div className={styles.dropdownColumn}>
-                <div className={styles.dropdownTitle}>Applied & Tools</div>
+                <div className={styles.dropdownTitle}>Applied &amp; Tools</div>
                 <Link href="/simulations" className={styles.dropdownLink}>Hands-On Simulations</Link>
                 <Link href="/developer-portal" className={styles.dropdownLink}>Developer Portal</Link>
               </div>
@@ -50,14 +50,8 @@ export default function Navbar() {
           </div>
 
           <div className={styles.navItem}>
-            AV Ecosystem
+            EV Ecosystem
             <div className={styles.dropdown}>
-              <div className={styles.dropdownColumn}>
-                <div className={styles.dropdownTitle}>Design & Development</div>
-                <Link href="/design-development/passenger-taxi" className={styles.dropdownLink}>Autonomous Passenger Taxi</Link>
-                <Link href="/design-development/airport-cargo" className={styles.dropdownLink}>Autonomous Airport Cargo EV</Link>
-                <Link href="/si-ems" className={styles.dropdownLink}>Super-Intelligent AI EMS</Link>
-              </div>
               <div className={styles.dropdownColumn}>
                 <div className={styles.dropdownTitle}>AV Ecosystem</div>
                 <Link href="/ecosystem/india" className={styles.dropdownLink}>India</Link>
@@ -65,17 +59,28 @@ export default function Navbar() {
                 <Link href="/ecosystem/singapore" className={styles.dropdownLink}>Singapore</Link>
                 <Link href="/ecosystem/usa" className={styles.dropdownLink}>USA</Link>
               </div>
+              <div className={styles.dropdownColumn}>
+                <div className={styles.dropdownTitle}>Risks &amp; Maintenance</div>
+                <Link href="/challenges" className={styles.dropdownLink}>Challenges</Link>
+                <Link href="/cybersecurity" className={styles.dropdownLink}>Cybersecurity</Link>
+                <Link href="/battery-diagnostics" className={styles.dropdownLink}>EV Battery Diagnostics</Link>
+              </div>
             </div>
           </div>
 
           <div className={styles.navItem}>
-            Insights
+            Internships
             <div className={styles.dropdown}>
               <div className={styles.dropdownColumn}>
-                <div className={styles.dropdownTitle}>Risks & Maintenance</div>
-                <Link href="/challenges" className={styles.dropdownLink}>Challenges</Link>
-                <Link href="/cybersecurity" className={styles.dropdownLink}>Cybersecurity</Link>
-                <Link href="/battery-diagnostics" className={styles.dropdownLink}>EV Battery Diagnostics</Link>
+                <div className={styles.dropdownTitle}>Research &amp; PoC</div>
+                <Link href="/si-ems" className={styles.dropdownLink}>Super-Intelligent AI EMS</Link>
+                <Link href="/design-development/passenger-taxi" className={styles.dropdownLink}>Autonomous Passenger Taxi</Link>
+                <Link href="/design-development/airport-cargo" className={styles.dropdownLink}>Autonomous Airport Cargo EV</Link>
+              </div>
+              <div className={styles.dropdownColumn}>
+                <div className={styles.dropdownTitle}>Design &amp; Development</div>
+                <Link href="/internships/battery-fire-prevention" className={styles.dropdownLink}>AI-Powered EV Battery Fire Prevention System</Link>
+                <Link href="/internships/battery-aadhaar" className={styles.dropdownLink}>Battery Pack Aadhaar System</Link>
               </div>
             </div>
           </div>
@@ -110,24 +115,31 @@ export default function Navbar() {
           <Link href="/driverless-car-technologies" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Driverless Car Tech</Link>
           <Link href="/intelligent-transportation-systems" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Intelligent Transportation</Link>
           <Link href="/rtos" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>RTOS for AV</Link>
-          <Link href="/machine-learning" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Machine Learning & AI</Link>
+          <Link href="/machine-learning" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Machine Learning &amp; AI</Link>
           <Link href="/simulations" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Hands-On Simulations</Link>
           <Link href="/developer-portal" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Developer Portal</Link>
           <Link href="/si-ems" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>SI-EMS Research</Link>
 
-          <div className={styles.mobileSectionTitle}>AV Ecosystem</div>
-          <Link href="/design-development/passenger-taxi" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Passenger Taxi</Link>
-          <Link href="/design-development/airport-cargo" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Airport Cargo EV</Link>
-          <Link href="/si-ems" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Super-Intelligent AI EMS</Link>
+          <div className={styles.mobileSectionTitle}>EV Ecosystem</div>
           <Link href="/ecosystem/india" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>India Ecosystem</Link>
           <Link href="/ecosystem/europe" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Europe Ecosystem</Link>
           <Link href="/ecosystem/singapore" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Singapore Ecosystem</Link>
           <Link href="/ecosystem/usa" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>USA Ecosystem</Link>
 
-          <div className={styles.mobileSectionTitle}>Insights & Risks</div>
+          <div className={styles.mobileSectionTitle}>Risks &amp; Maintenance</div>
           <Link href="/challenges" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Challenges</Link>
           <Link href="/cybersecurity" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Cybersecurity</Link>
           <Link href="/battery-diagnostics" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>EV Battery Diagnostics</Link>
+
+          <div className={styles.mobileSectionTitle}>Internships — Research &amp; PoC</div>
+          <Link href="/si-ems" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Super-Intelligent AI EMS</Link>
+          <Link href="/design-development/passenger-taxi" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Autonomous Passenger Taxi</Link>
+          <Link href="/design-development/airport-cargo" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Autonomous Airport Cargo EV</Link>
+
+          <div className={styles.mobileSectionTitle}>Internships — Design &amp; Development</div>
+          <Link href="/internships/battery-fire-prevention" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>AI-Powered EV Battery Fire Prevention System</Link>
+          <Link href="/internships/battery-aadhaar" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Battery Pack Aadhaar System</Link>
+
           <Link href="/contact" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Contact</Link>
 
           <div style={{ height: "24px" }}></div>

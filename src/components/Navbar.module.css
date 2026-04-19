@@ -64,7 +64,7 @@
   border-radius: var(--radius-lg);
   padding: 24px;
   width: max-content;
-  max-width: 800px;
+  max-width: 960px;
   box-shadow: var(--glass-shadow);
   opacity: 0;
   visibility: hidden;
@@ -85,7 +85,8 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  min-width: 200px;
+  min-width: 180px;
+  max-width: 240px;
 }
 
 .dropdownTitle {
@@ -98,8 +99,10 @@
 
 .dropdownLink {
   color: var(--text-secondary);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   transition: color 0.2s ease;
+  white-space: normal;
+  line-height: 1.4;
 }
 
 .dropdownLink:hover {
