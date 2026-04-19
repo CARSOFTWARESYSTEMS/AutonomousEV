@@ -90,6 +90,8 @@ export default function Navbar() {
                 <div className={styles.dropdownDivider} />
                 <div className={styles.dropdownSubTitle}>Miscellaneous</div>
                 <Link href="/internships" className={styles.dropdownLink}>Internship projects</Link>
+                <a href="https://vtu.internyet.in/" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>VTU Internyet</a>
+                <a href="https://internship.aicte-india.org/" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>AICTE Internships</a>
                 <a href="https://itelematics.com/ev-engineer" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>Projects @ iTelematics®</a>
                 <a href="https://www.thasmaiinfotech.com/#programs" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>Projects @ Thasmai Infotech</a>
                 <a href="https://www.evsociety.org/projects" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>Webinars @ EV Society™</a>
@@ -161,6 +163,8 @@ export default function Navbar() {
 
           <div className={styles.mobileSectionTitle}>Internships — Miscellaneous</div>
           <Link href="/internships" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Internship projects</Link>
+          <a href="https://vtu.internyet.in/" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>VTU Internyet</a>
+          <a href="https://internship.aicte-india.org/" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>AICTE Internships</a>
           <a href="https://itelematics.com/ev-engineer" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Projects @ iTelematics®</a>
           <a href="https://www.thasmaiinfotech.com/#programs" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Projects @ Thasmai Infotech</a>
           <a href="https://www.evsociety.org/projects" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Webinars @ EV Society™</a>

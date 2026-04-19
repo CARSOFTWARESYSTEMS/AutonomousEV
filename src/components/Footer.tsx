@@ -28,6 +28,7 @@ export default function Footer() {
           <Link href="/simulations" className={styles.link}>AV Simulations</Link>
           <Link href="/developer-portal" className={styles.link}>Developer Portal</Link>
           <Link href="/challenges" className={styles.link}>Challenges</Link>
+          <a href="https://itelematics.com/public/iTelematics-FrequentlyAskedQuestions.pdf" target="_blank" rel="noopener noreferrer" className={styles.link}>FAQ (Internship)</a>
         </div>
 
         <div className={styles.column}>
@@ -41,9 +42,11 @@ export default function Footer() {
         </div>
       </div>
       
-      <div className={`container ${styles.bottom}`}>
-        <div>&copy; {new Date().getFullYear()} iTelematics&reg;. All rights reserved.</div>
-        <div>Designed for Engineering Excellence</div>
+      <div className="container">
+        <div className={styles.bottom}>
+          <div>&copy; {new Date().getFullYear()} iTelematics&reg;. All rights reserved.</div>
+          <div>Designed for Engineering Excellence</div>
+        </div>
       </div>
     </footer>
   );

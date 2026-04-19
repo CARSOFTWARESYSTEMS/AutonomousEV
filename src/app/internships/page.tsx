@@ -1,5 +1,18 @@
 import Link from "next/link";
 import { ReactNode } from "react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: 'AV & EV Internships | EV.ENGINEER™',
+  description: 'Practical, engineering-focused internships in EV battery health, autonomous vehicle systems, safety systems, passenger taxis, and RTOS architecture. Kickstart your career in autonomous eMobility.',
+  keywords: [
+    'EV Internships', 'AV Internships', 'Autonomous Vehicles Internship', 
+    'Electric Vehicle Research', 'Battery Diagnostics Internship', 
+    'Robotaxi Internships', 'Super-Intelligent AI EMS', 
+    'EV Engineering Internships', 'EV Repair Workshop Internships',
+    'AICTE Internships', 'VTU Internships in EV'
+  ]
+};
 
 // Helper component for identical styling of internal and external links
 function ProjectCard({ title, desc, link }: { title: string, desc?: string, link: string }) {
@@ -100,6 +113,14 @@ export default function InternshipsPage() {
 
           <Section title="Miscellaneous">
             <ProjectCard 
+              title="VTU Internyet" 
+              link="https://vtu.internyet.in/" 
+            />
+            <ProjectCard 
+              title="AICTE Internships" 
+              link="https://internship.aicte-india.org/" 
+            />
+            <ProjectCard 
               title="Projects @ iTelematics®" 
               link="https://itelematics.com/ev-engineer" 
             />
@@ -116,6 +137,13 @@ export default function InternshipsPage() {
               link="https://labs.ev.engineer/" 
             />
           </Section>
+
+          <div style={{ marginTop: '80px', textAlign: 'center', paddingBottom: '40px' }}>
+            <h2 style={{ fontSize: '1.8rem', fontWeight: 600, marginBottom: '24px' }}>Ready to Take the Next Step?</h2>
+            <a href="https://itelematics.com/contact" target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ padding: '0.8rem 2.5rem', fontSize: '1.1rem' }}>
+              Contact Us
+            </a>
+          </div>
 
         </div>
       </section>
