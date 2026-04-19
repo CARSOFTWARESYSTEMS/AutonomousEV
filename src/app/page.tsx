@@ -29,6 +29,7 @@ export default function Home() {
               <div className={styles.actions}>
                 <Link href="/corporate-training" className="btn btn-primary">Training</Link>
                 <Link href="/consulting" className="btn btn-secondary">Consulting</Link>
+                <Link href="/internships" className="btn btn-primary">Internships</Link>
               </div>
             </div>
 
@@ -261,6 +262,7 @@ export default function Home() {
           <div className={styles.heroCtas}>
             <Link href="/corporate-training" className="btn btn-primary">Start Training</Link>
             <Link href="/consulting" className="btn btn-secondary">Engage Consulting</Link>
+            <Link href="/internships" className="btn btn-primary">View Internships</Link>
           </div>
         </div>
       </section>

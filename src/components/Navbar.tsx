@@ -72,10 +72,16 @@ export default function Navbar() {
             Internships
             <div className={styles.dropdown}>
               <div className={styles.dropdownColumn}>
-                <div className={styles.dropdownTitle}>Research &amp; PoC</div>
+                <div className={styles.dropdownTitle}>Research</div>
                 <Link href="/si-ems" className={styles.dropdownLink}>Super-Intelligent AI EMS</Link>
+                <a href="https://battery.ev.engineer/" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>EV Battery Health &amp; Diagnostics</a>
+                <div className={styles.dropdownDivider} />
+                <div className={styles.dropdownSubTitle}>Proof of Concept</div>
                 <Link href="/design-development/passenger-taxi" className={styles.dropdownLink}>Autonomous Passenger Taxi</Link>
                 <Link href="/design-development/airport-cargo" className={styles.dropdownLink}>Autonomous Airport Cargo EV</Link>
+                <div className={styles.dropdownDivider} />
+                <div className={styles.dropdownSubTitle}>EV Repair workshop</div>
+                <a href="https://repair.ev.engineer/" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>EV Repair Workshop</a>
               </div>
               <div className={styles.dropdownColumn}>
                 <div className={styles.dropdownTitle}>Design &amp; Development</div>
@@ -83,7 +89,9 @@ export default function Navbar() {
                 <Link href="/internships/battery-aadhaar" className={styles.dropdownLink}>Battery Pack Aadhaar System</Link>
                 <div className={styles.dropdownDivider} />
                 <div className={styles.dropdownSubTitle}>Miscellaneous</div>
+                <Link href="/internships" className={styles.dropdownLink}>Internship projects</Link>
                 <a href="https://itelematics.com/ev-engineer" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>Projects @ iTelematics®</a>
+                <a href="https://www.thasmaiinfotech.com/#programs" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>Projects @ Thasmai Infotech</a>
                 <a href="https://www.evsociety.org/projects" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>Webinars @ EV Society™</a>
                 <a href="https://labs.ev.engineer/" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>Ongoing vs Completed</a>
               </div>
@@ -136,17 +144,25 @@ export default function Navbar() {
           <Link href="/cybersecurity" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Cybersecurity</Link>
           <Link href="/battery-diagnostics" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>EV Battery Diagnostics</Link>
 
-          <div className={styles.mobileSectionTitle}>Internships — Research &amp; PoC</div>
+          <div className={styles.mobileSectionTitle}>Internships — Research</div>
           <Link href="/si-ems" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Super-Intelligent AI EMS</Link>
+          <a href="https://battery.ev.engineer/" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>EV Battery Health &amp; Diagnostics</a>
+
+          <div className={styles.mobileSectionTitle}>Internships — Proof of Concept</div>
           <Link href="/design-development/passenger-taxi" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Autonomous Passenger Taxi</Link>
           <Link href="/design-development/airport-cargo" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Autonomous Airport Cargo EV</Link>
+
+          <div className={styles.mobileSectionTitle}>Internships — EV Repair workshop</div>
+          <a href="https://repair.ev.engineer/" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>EV Repair Workshop</a>
 
           <div className={styles.mobileSectionTitle}>Internships — Design &amp; Development</div>
           <Link href="/internships/battery-fire-prevention" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>AI-Powered EV Battery Fire Prevention System</Link>
           <Link href="/internships/battery-aadhaar" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Battery Pack Aadhaar System</Link>
 
           <div className={styles.mobileSectionTitle}>Internships — Miscellaneous</div>
+          <Link href="/internships" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Internship projects</Link>
           <a href="https://itelematics.com/ev-engineer" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Projects @ iTelematics®</a>
+          <a href="https://www.thasmaiinfotech.com/#programs" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Projects @ Thasmai Infotech</a>
           <a href="https://www.evsociety.org/projects" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Webinars @ EV Society™</a>
           <a href="https://labs.ev.engineer/" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Ongoing vs Completed</a>
 
