@@ -7,43 +7,43 @@ import styles from "./page.module.css";
    ─────────────────────────────────────────────────── */
 
 const costData = [
-  { cat: "2W E-Bicycle",   avgPrice: "₹35,000",      evOnly: "₹25,000",       battery: "₹10,000",      pct: "29%", stdW: 1, extW: 1, totalW: 2 },
-  { cat: "2W Scooter/Bike",avgPrice: "₹1,25,000",    evOnly: "₹70,000",       battery: "₹55,000",      pct: "44%", stdW: 3, extW: 5, totalW: 8 },
-  { cat: "3W Auto/Cargo",  avgPrice: "₹2,85,000",    evOnly: "₹1,70,000",     battery: "₹1,15,000",    pct: "40%", stdW: 3, extW: 2, totalW: 5 },
-  { cat: "4W Passenger",   avgPrice: "₹15,00,000",   evOnly: "₹9,75,000",     battery: "₹5,25,000",    pct: "35%", stdW: 3, extW: 5, totalW: 8 },
-  { cat: "EV Buses",       avgPrice: "₹1,85,00,000", evOnly: "₹1,15,00,000",  battery: "₹70,00,000",   pct: "38%", stdW: 5, extW: 5, totalW: 10 },
-  { cat: "EV Trucks",      avgPrice: "₹45,00,000",   evOnly: "₹28,00,000",    battery: "₹17,00,000",   pct: "38%", stdW: 5, extW: 3, totalW: 8 },
+  { cat: "2W E-Bicycle", avgPrice: "₹35,000", evOnly: "₹25,000", battery: "₹10,000", pct: "29%", stdW: 1, extW: 1, totalW: 2 },
+  { cat: "2W Scooter/Bike", avgPrice: "₹1,25,000", evOnly: "₹70,000", battery: "₹55,000", pct: "44%", stdW: 3, extW: 5, totalW: 8 },
+  { cat: "3W Auto/Cargo", avgPrice: "₹2,85,000", evOnly: "₹1,70,000", battery: "₹1,15,000", pct: "40%", stdW: 3, extW: 2, totalW: 5 },
+  { cat: "4W Passenger", avgPrice: "₹15,00,000", evOnly: "₹9,75,000", battery: "₹5,25,000", pct: "35%", stdW: 3, extW: 5, totalW: 8 },
+  { cat: "EV Buses", avgPrice: "₹1,85,00,000", evOnly: "₹1,15,00,000", battery: "₹70,00,000", pct: "38%", stdW: 5, extW: 5, totalW: 10 },
+  { cat: "EV Trucks", avgPrice: "₹45,00,000", evOnly: "₹28,00,000", battery: "₹17,00,000", pct: "38%", stdW: 5, extW: 3, totalW: 8 },
 ];
 
 const warrantyData = [
-  { cat: "2W E-Bicycle", warranty: "2 yrs",  origPrice: "₹35,000",      resale: "₹8,000",       replaceCost: "₹7,000",      battResale: "₹3,500" },
-  { cat: "2W Scooter",   warranty: "8 yrs",  origPrice: "₹1,25,000",    resale: "₹32,000",      replaceCost: "₹42,000",     battResale: "₹20,000" },
-  { cat: "3W Auto",      warranty: "5 yrs",  origPrice: "₹2,85,000",    resale: "₹85,000",      replaceCost: "₹1,00,000",   battResale: "₹45,000" },
-  { cat: "4W Passenger", warranty: "8 yrs",  origPrice: "₹15,00,000",   resale: "₹4,25,000",    replaceCost: "₹5,25,000",   battResale: "₹2,00,000" },
-  { cat: "EV Buses",     warranty: "10 yrs", origPrice: "₹1,85,00,000", resale: "₹40,00,000",   replaceCost: "₹60,00,000",  battResale: "₹20,00,000" },
-  { cat: "EV Trucks",    warranty: "8 yrs",  origPrice: "₹45,00,000",   resale: "₹12,50,000",   replaceCost: "₹15,00,000",  battResale: "₹6,00,000" },
+  { cat: "2W E-Bicycle", warranty: "2 yrs", origPrice: "₹35,000", resale: "₹8,000", replaceCost: "₹7,000", battResale: "₹3,500" },
+  { cat: "2W Scooter", warranty: "8 yrs", origPrice: "₹1,25,000", resale: "₹32,000", replaceCost: "₹42,000", battResale: "₹20,000" },
+  { cat: "3W Auto", warranty: "5 yrs", origPrice: "₹2,85,000", resale: "₹85,000", replaceCost: "₹1,00,000", battResale: "₹45,000" },
+  { cat: "4W Passenger", warranty: "8 yrs", origPrice: "₹15,00,000", resale: "₹4,25,000", replaceCost: "₹5,25,000", battResale: "₹2,00,000" },
+  { cat: "EV Buses", warranty: "10 yrs", origPrice: "₹1,85,00,000", resale: "₹40,00,000", replaceCost: "₹60,00,000", battResale: "₹20,00,000" },
+  { cat: "EV Trucks", warranty: "8 yrs", origPrice: "₹45,00,000", resale: "₹12,50,000", replaceCost: "₹15,00,000", battResale: "₹6,00,000" },
 ];
 
 const secondaryLifeData = [
-  { cat: "2W E-Bicycle", cells: 100,   purchaseCost: "₹4,000",     initDiag: "₹1,000",  cellTest: "₹2,000",    packVal: "₹2,000",     totalTest: "₹5,000",    abcd: "50/25/15/10",         prices: "80/50/20/5",    totalValue: "₹6,500",      profit: "-₹2,500", isNeg: true },
-  { cat: "2W Scooter",  cells: 800,   purchaseCost: "₹23,000",    initDiag: "₹2,000",  cellTest: "₹5,000",    packVal: "₹3,000",     totalTest: "₹10,000",   abcd: "400/200/120/80",      prices: "100/60/25/5",   totalValue: "₹42,000",     profit: "₹9,000",  isNeg: false },
-  { cat: "3W Auto",     cells: 1500,  purchaseCost: "₹50,000",    initDiag: "₹3,000",  cellTest: "₹10,000",   packVal: "₹7,000",     totalTest: "₹20,000",   abcd: "750/375/225/150",     prices: "110/70/30/5",   totalValue: "₹95,000",     profit: "₹25,000", isNeg: false },
-  { cat: "4W Passenger", cells: 4000,  purchaseCost: "₹2,20,000",  initDiag: "₹5,000",  cellTest: "₹25,000",   packVal: "₹30,000",    totalTest: "₹60,000",   abcd: "2000/1000/600/400",   prices: "120/80/35/5",   totalValue: "₹4,80,000",   profit: "₹2,00,000", isNeg: false, isCore: true },
-  { cat: "EV Buses",    cells: 15000, purchaseCost: "₹21,50,000", initDiag: "₹10,000", cellTest: "₹80,000",   packVal: "₹1,10,000",  totalTest: "₹2,00,000", abcd: "7500/3750/2250/1500", prices: "130/90/40/5",   totalValue: "₹55,00,000",  profit: "₹31,50,000", isNeg: false },
-  { cat: "EV Trucks",   cells: 8000,  purchaseCost: "₹6,50,000",  initDiag: "₹8,000",  cellTest: "₹40,000",   packVal: "₹50,000",    totalTest: "₹98,000",   abcd: "4000/2000/1200/800",  prices: "120/80/35/5",   totalValue: "₹14,00,000",  profit: "₹6,52,000", isNeg: false },
+  { cat: "2W E-Bicycle", cells: 100, purchaseCost: "₹4,000", initDiag: "₹1,000", cellTest: "₹2,000", packVal: "₹2,000", totalTest: "₹5,000", abcd: "50/25/15/10", prices: "80/50/20/5", totalValue: "₹6,500", profit: "-₹2,500", isNeg: true },
+  { cat: "2W Scooter", cells: 800, purchaseCost: "₹23,000", initDiag: "₹2,000", cellTest: "₹5,000", packVal: "₹3,000", totalTest: "₹10,000", abcd: "400/200/120/80", prices: "100/60/25/5", totalValue: "₹42,000", profit: "₹9,000", isNeg: false },
+  { cat: "3W Auto", cells: 1500, purchaseCost: "₹50,000", initDiag: "₹3,000", cellTest: "₹10,000", packVal: "₹7,000", totalTest: "₹20,000", abcd: "750/375/225/150", prices: "110/70/30/5", totalValue: "₹95,000", profit: "₹25,000", isNeg: false },
+  { cat: "4W Passenger", cells: 4000, purchaseCost: "₹2,20,000", initDiag: "₹5,000", cellTest: "₹25,000", packVal: "₹30,000", totalTest: "₹60,000", abcd: "2000/1000/600/400", prices: "120/80/35/5", totalValue: "₹4,80,000", profit: "₹2,00,000", isNeg: false, isCore: true },
+  { cat: "EV Buses", cells: 15000, purchaseCost: "₹21,50,000", initDiag: "₹10,000", cellTest: "₹80,000", packVal: "₹1,10,000", totalTest: "₹2,00,000", abcd: "7500/3750/2250/1500", prices: "130/90/40/5", totalValue: "₹55,00,000", profit: "₹31,50,000", isNeg: false },
+  { cat: "EV Trucks", cells: 8000, purchaseCost: "₹6,50,000", initDiag: "₹8,000", cellTest: "₹40,000", packVal: "₹50,000", totalTest: "₹98,000", abcd: "4000/2000/1200/800", prices: "120/80/35/5", totalValue: "₹14,00,000", profit: "₹6,52,000", isNeg: false },
 ];
 
 const evCalcData = [
   { grade: "A", cells: "2,00,000", packs: "1000", revenue: "₹3 Cr" },
-  { grade: "B", cells: "1,00,000", packs: "666",  revenue: "₹1.2 Cr" },
-  { grade: "C", cells: "60,000",   packs: "600",  revenue: "₹0.48 Cr" },
-  { grade: "D", cells: "40,000",   packs: "Scrap", revenue: "₹0.02 Cr" },
+  { grade: "B", cells: "1,00,000", packs: "666", revenue: "₹1.2 Cr" },
+  { grade: "C", cells: "60,000", packs: "600", revenue: "₹0.48 Cr" },
+  { grade: "D", cells: "40,000", packs: "Scrap", revenue: "₹0.02 Cr" },
 ];
 
 const scalingData = [
-  { evs: "100",    revenue: "₹4.7 Cr",  cost: "₹3.59 Cr",  profit: "₹1.11 Cr" },
-  { evs: "1,000",  revenue: "₹47 Cr",   cost: "₹35.9 Cr",  profit: "₹11.1 Cr" },
-  { evs: "10,000", revenue: "₹470 Cr",  cost: "₹359 Cr",   profit: "₹111 Cr" },
+  { evs: "100", revenue: "₹4.7 Cr", cost: "₹3.59 Cr", profit: "₹1.11 Cr" },
+  { evs: "1,000", revenue: "₹47 Cr", cost: "₹35.9 Cr", profit: "₹11.1 Cr" },
+  { evs: "10,000", revenue: "₹470 Cr", cost: "₹359 Cr", profit: "₹111 Cr" },
 ];
 
 /* Battery % for stacked bars */
@@ -162,7 +162,7 @@ export default function BatteryCircularContent() {
                 35–45%
               </div>
               <p style={{ fontSize: "1.1rem", color: "var(--text-secondary)", lineHeight: 1.7, marginBottom: "1.5rem" }}>
-                of total EV cost is attributed to the battery pack — making it the single most expensive component 
+                of total EV cost is attributed to the battery pack — making it the single most expensive component
                 and the key driver for secondary-life economics.
               </p>
               <div style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>
@@ -212,8 +212,8 @@ export default function BatteryCircularContent() {
           <div className={styles.insightCard}>
             <span className={styles.insightIcon}>⚠️</span>
             <div className={styles.insightText}>
-              <strong>Critical Finding:</strong> In most segments, the cost of battery replacement exceeds 
-              the vehicle&apos;s post-warranty resale value — creating a strong economic case for secondary-life 
+              <strong>Critical Finding:</strong> In most segments, the cost of battery replacement exceeds
+              the vehicle&apos;s post-warranty resale value — creating a strong economic case for secondary-life
               battery repurposing instead of disposal.
             </div>
           </div>
@@ -251,7 +251,7 @@ export default function BatteryCircularContent() {
                   <tr key={i} className={r.isCore ? styles.highlightRow : undefined}>
                     <td style={{ fontWeight: 600, color: "var(--text-muted)" }}>
                       {r.isCore && "⭐ "}{r.cat}
-                      {r.isCore && <span className={styles.coreBadge}>CORE BUSINESS SEGMENT</span>}
+                      {r.isCore && <span className={styles.coreBadge}>⭐</span>}
                     </td>
                     <td style={{ color: "var(--text-muted)" }}>{r.cells.toLocaleString("en-IN")}</td>
                     <td style={{ color: "var(--text-muted)" }}>{r.purchaseCost}</td>
@@ -318,13 +318,12 @@ export default function BatteryCircularContent() {
                       <span className={styles.profitBarLabel}>{label}</span>
                       <div className={styles.profitBarTrack}>
                         <div
-                          className={`${styles.profitBarFill} ${
-                            label === "4W Car" ? styles.profitBarHighlight :
+                          className={`${styles.profitBarFill} ${label === "4W Car" ? styles.profitBarHighlight :
                             isNeg ? styles.profitBarNegative : styles.profitBarNormal
-                          }`}
+                            }`}
                           style={{ width: `${width}%` }}
                         >
-                          {label === "4W Car" && "⭐ Core"}
+                          {label === "4W Car" && "⭐"}
                         </div>
                       </div>
                     </div>
