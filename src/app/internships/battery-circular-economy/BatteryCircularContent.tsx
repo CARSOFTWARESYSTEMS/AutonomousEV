@@ -405,7 +405,7 @@ export default function BatteryCircularContent() {
                 <tr>
                   <th>Grade</th>
                   <th>Cells</th>
-                  <th>Packs</th>
+                  <th>Re-Packs</th>
                   <th>Revenue</th>
                 </tr>
               </thead>
