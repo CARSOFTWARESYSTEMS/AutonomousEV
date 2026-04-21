@@ -115,6 +115,11 @@ export default function InternshipsPage() {
               desc="Specialized focus on EV diagnostics, repair mechanisms, and maintenance workflows." 
               link="https://repair.ev.engineer/" 
             />
+            <ProjectCard 
+              title="Battery Circular Economy" 
+              desc="End-to-end financial model for EV battery secondary life — cost breakdown, cell grading, repacking economics, and Business Model Canvas." 
+              link="/internships/battery-circular-economy" 
+            />
           </Section>
 
           <Section title="Miscellaneous">

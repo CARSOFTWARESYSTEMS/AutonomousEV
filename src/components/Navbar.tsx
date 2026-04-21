@@ -82,6 +82,7 @@ export default function Navbar() {
                 <div className={styles.dropdownDivider} />
                 <div className={styles.dropdownSubTitle}>EV Repair workshop</div>
                 <a href="https://repair.ev.engineer/" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>EV Repair Workshop</a>
+                <Link href="/internships/battery-circular-economy" className={styles.dropdownLink}>Battery Circular Economy</Link>
               </div>
               <div className={styles.dropdownColumn}>
                 <div className={styles.dropdownTitle}>Design &amp; Development</div>
@@ -156,6 +157,7 @@ export default function Navbar() {
 
           <div className={styles.mobileSectionTitle}>Internships — EV Repair workshop</div>
           <a href="https://repair.ev.engineer/" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>EV Repair Workshop</a>
+          <Link href="/internships/battery-circular-economy" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Battery Circular Economy</Link>
 
           <div className={styles.mobileSectionTitle}>Internships — Design &amp; Development</div>
           <Link href="/internships/battery-fire-prevention" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>AI-Powered EV Battery Fire Prevention System</Link>
