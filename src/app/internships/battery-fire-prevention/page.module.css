@@ -438,6 +438,181 @@
   flex-wrap: wrap;
 }
 
+/* Platform Statement — bold system positioning block */
+.platformStatement {
+  text-align: center;
+  padding: 4rem 0;
+}
+
+.platformStatement h2 {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
+}
+
+.platformQuote {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #38bdf8;
+  max-width: 850px;
+  margin: 0 auto 2rem;
+  line-height: 1.6;
+  border-left: 4px solid #38bdf8;
+  padding-left: 1.5rem;
+  text-align: left;
+}
+
+.platformPillars {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.pillarItem {
+  background: rgba(56, 189, 248, 0.06);
+  border: 1px solid rgba(56, 189, 248, 0.15);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  text-align: center;
+}
+
+.pillarItem span {
+  display: block;
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.pillarItem strong {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.35rem;
+}
+
+.pillarItem p {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Callout Block — important statements */
+.calloutBlock {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.08), rgba(11, 25, 44, 0.6));
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-left: 4px solid #38bdf8;
+  padding: 1.5rem 2rem;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-primary);
+}
+
+.calloutBlock strong {
+  color: #38bdf8;
+}
+
+/* Diagnostic Meta — purpose/outputs/decision blocks inside cards */
+.diagnosticMeta {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.diagnosticMeta dt {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #38bdf8;
+  margin-bottom: 0.25rem;
+  margin-top: 0.75rem;
+}
+
+.diagnosticMeta dt:first-child {
+  margin-top: 0;
+}
+
+.diagnosticMeta dd {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Phase Card — roadmap phases with maturity indicator */
+.phaseCard {
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.phaseCard:hover {
+  transform: translateY(-3px);
+  border-color: #38bdf8;
+}
+
+.phaseNumber {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #38bdf8;
+  margin-bottom: 0.5rem;
+}
+
+.phaseMaturity {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.maturityBar {
+  flex: 1;
+  height: 4px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.maturityFill {
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #38bdf8, #4ade80);
+}
+
+.maturityLabel {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* Threshold Badge — for grading thresholds */
+.thresholdBadge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.06);
+  color: var(--text-secondary);
+  margin-right: 0.35rem;
+}
+
 @media (max-width: 1024px) {
 
   .grid2,
@@ -454,6 +629,10 @@
     width: 100%;
     border-right: none;
     border-bottom: 1px solid var(--glass-border);
+  }
+
+  .platformPillars {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -473,5 +652,22 @@
     padding: 8px 10px;
     font-size: 0.8rem;
     line-height: 1.5;
+  }
+  .platformStatement h2 {
+    font-size: 1.6rem;
+  }
+  .platformQuote {
+    font-size: 1.05rem;
+  }
+  .platformPillars {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+  .pillarItem {
+    padding: 1rem;
+  }
+  .calloutBlock {
+    padding: 1rem 1.25rem;
+    font-size: 0.88rem;
   }
 }

@@ -70,20 +70,41 @@ export default function BatteryDiagnosticsContent() {
         </div>
       </section>
 
-      {/* 2. SYSTEM IDENTITY */}
-      <section className={styles.pageSectionAlt} style={{ padding: '4rem 0' }}>
-        <div className="container" style={{ textAlign: 'center' }}>
-          <h2 className={styles.sectionTitle} style={{ fontSize: '1.8rem', color: '#eab308' }}>
-            System Identity
-          </h2>
-          <p className={styles.sectionSubtitle} style={{ fontSize: '1.3rem', fontWeight: 600, color: '#fff', maxWidth: '800px', margin: '1.5rem auto' }}>
-            “This is a full-stack battery diagnostics and repurposing platform — not just a fire prevention system.”
-          </p>
-          <p className={styles.cardDesc} style={{ maxWidth: '750px', margin: '0 auto 2.5rem' }}>
-            A comprehensive ecosystem encompassing deep diagnostics, deterministic grading, encrypted digital identity, cell-level repack mapping, and rigorous thermal redesign.
-          </p>
-
-          <div className={styles.flowChart} style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.1)' }}>
+      
+      {/* 2. SYSTEM IDENTITY — PLATFORM POSITIONING */}
+      <section className={styles.pageSectionAlt}>
+        <div className="container">
+          <div className={styles.platformStatement}>
+            <span className={styles.sectionNumber}>Platform Identity</span>
+            <h2>EV Battery Intelligence Platform</h2>
+            <div className={styles.platformQuote}>
+              This is not just a battery fire prevention system.<br />
+              This is a full-stack battery diagnostics, grading, identity, and repurposing platform designed for second-life EV battery ecosystems.
+            </div>
+            <div className={styles.platformPillars}>
+              <div className={styles.pillarItem}>
+                <span>🔬</span>
+                <strong>Multi-Level Diagnostics</strong>
+                <p>Pack, module, and cell-level health assessment</p>
+              </div>
+              <div className={styles.pillarItem}>
+                <span>🔄</span>
+                <strong>Repurposing Pipeline</strong>
+                <p>Intake to certified second-life deployment</p>
+              </div>
+              <div className={styles.pillarItem}>
+                <span>🌡️</span>
+                <strong>Thermal Redesign</strong>
+                <p>Mandatory BTMS reconfiguration for safety</p>
+              </div>
+              <div className={styles.pillarItem}>
+                <span>🔒</span>
+                <strong>Traceability System</strong>
+                <p>Encrypted identity &amp; Aadhaar readiness</p>
+              </div>
+            </div>
+          </div>
+          <div className={styles.flowChart} style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', marginTop: '1rem' }}>
             <div className={styles.flowNode} style={{ borderColor: '#38bdf8' }}>Original Pack</div><span className={styles.flowArrow}>→</span>
             <div className={styles.flowNode} style={{ borderColor: '#38bdf8' }}>Module Set</div><span className={styles.flowArrow}>→</span>
             <div className={styles.flowNode} style={{ borderColor: '#38bdf8' }}>Cell Set</div><span className={styles.flowArrow}>→</span>
@@ -96,9 +117,13 @@ export default function BatteryDiagnosticsContent() {
       <section className={styles.pageSection}>
         <div className="container">
           <div className={styles.executiveCard}>
-            <p>
-              The transition to electric mobility in India has created an urgent need for sustainable end-of-life battery solutions. However, safe repurposing of 2W, 3W, and 4W batteries into stationary storage requires significantly more rigor than simple voltage checks. True circular economy demands multi-level diagnostics at pack, module, and cell resolution to identify hidden degradation, thermal anomalies, and underlying BMS faults. By merging rigorous hardware engineering with an encrypted digital identity and explicit thermal redesign frameworks, we transform used EV liability assets into highly traceable, certified, and safe energy platforms—optimised specifically for solar PV-based rural EV charging stations.
-            </p>
+            <ul className={styles.list} style={{ fontSize: '1rem', lineHeight: '1.9' }}>
+              <li>India’s EV transition has created an urgent need for sustainable end-of-life battery solutions.</li>
+              <li>Safe repurposing of 2W, 3W, and 4W batteries into stationary storage requires significantly more rigor than simple voltage checks.</li>
+              <li>True circular economy demands multi-level diagnostics at pack, module, and cell resolution to identify hidden degradation, thermal anomalies, and BMS faults.</li>
+              <li>By merging rigorous hardware engineering with an encrypted digital identity and thermal redesign frameworks, we transform used EV batteries into highly traceable, certified, and safe energy platforms.</li>
+              <li><strong>Primary target:</strong> Solar PV-based rural EV charging stations.</li>
+            </ul>
           </div>
         </div>
       </section>
@@ -209,42 +234,66 @@ export default function BatteryDiagnosticsContent() {
             <span className={styles.sectionNumber}>Resolution</span>
             <h2 className={styles.sectionTitle}>Multi-Level Diagnostic Architecture</h2>
             <p className={styles.sectionSubtitle}>
-              The depth of disassembly mapping is strategically driven by measured viability; deeper disassembly increases recovery processing costs exponentially.
+              Depth of disassembly is strategically driven by measured viability. Deeper disassembly increases recovery processing costs exponentially.
             </p>
           </div>
           <div className={styles.grid3}>
             <div className={styles.card}>
               <h3 className={styles.cardTitle}>A. Pack-Level Diagnostics</h3>
-              <p className={styles.cardDesc}>Non-destructive baseline qualification.</p>
+              <p className={styles.cardDesc}>Non-destructive baseline qualification of the entire battery pack.</p>
               <ul className={styles.list}>
-                <li>Visual housing inspection & OCV read.</li>
-                <li>High-voltage insulation resistance testing.</li>
-                <li>BMS CAN communication & fault log extraction.</li>
-                <li>Pack-level low-current thermal mapping.</li>
-                <li>Connector & contactor health evaluation.</li>
+                <li>Visual housing inspection &amp; OCV read</li>
+                <li>High-voltage insulation resistance testing</li>
+                <li>BMS CAN communication &amp; fault log extraction</li>
+                <li>Pack-level low-current thermal mapping</li>
+                <li>Connector &amp; contactor health evaluation</li>
               </ul>
+              <dl className={styles.diagnosticMeta}>
+                <dt>Purpose</dt>
+                <dd>Determine if the pack can be directly reused or must be disassembled for deeper testing.</dd>
+                <dt>Key Outputs</dt>
+                <dd>Pack SOH estimate, insulation score, thermal map, BMS fault summary.</dd>
+                <dt>Decision Logic</dt>
+                <dd>SOH &gt; 80% + no faults → Direct Reuse. SOH 60–80% → Module Testing. SOH &lt; 60% or critical faults → Full Disassembly.</dd>
+              </dl>
             </div>
             <div className={styles.card}>
               <h3 className={styles.cardTitle}>B. Module-Level Diagnostics</h3>
               <p className={styles.cardDesc}>Intermediate integrity evaluation for viable subsystems.</p>
               <ul className={styles.list}>
-                <li>Module capacity testing & voltage profiling.</li>
-                <li>Symmetrical DC Internal Resistance (DCIR).</li>
-                <li>Inter-cell voltage imbalance tracking.</li>
-                <li>Calculated self-discharge tendency.</li>
-                <li>Thermal rise mapping under defined loads.</li>
+                <li>Module capacity testing &amp; voltage profiling</li>
+                <li>Symmetrical DC Internal Resistance (DCIR)</li>
+                <li>Inter-cell voltage imbalance tracking</li>
+                <li>Calculated self-discharge tendency</li>
+                <li>Thermal rise mapping under defined loads</li>
               </ul>
+              <dl className={styles.diagnosticMeta}>
+                <dt>Purpose</dt>
+                <dd>Evaluate if the module can be repurposed as an intact block or requires cell-level extraction.</dd>
+                <dt>Key Outputs</dt>
+                <dd>Module capacity, DCIR matrix, imbalance ratio, thermal rise factor.</dd>
+                <dt>Decision Logic</dt>
+                <dd>Imbalance &lt; 20mV + DCIR within 15% spread → Module Reuse. Imbalance &gt; 50mV or DCIR drift &gt; 25% → Cell Extraction.</dd>
+              </dl>
             </div>
             <div className={styles.card}>
               <h3 className={styles.cardTitle}>C. Cell-Level Diagnostics</h3>
-              <p className={styles.cardDesc}>Granular characterization for final asset matching.</p>
+              <p className={styles.cardDesc}>Granular characterization for final asset matching and grading.</p>
               <ul className={styles.list}>
-                <li>High-precision capacity & efficiency cycles.</li>
-                <li>Impedance checks (1kHz ACIR + DCIR).</li>
-                <li>Dynamic pulse response curves.</li>
-                <li>Safety risk & micro-short indices.</li>
-                <li>Optimal clustering & matching suitability maps.</li>
+                <li>High-precision capacity &amp; efficiency cycles</li>
+                <li>Impedance checks (1kHz ACIR + DCIR)</li>
+                <li>Dynamic pulse response curves</li>
+                <li>Safety risk &amp; micro-short indices</li>
+                <li>Optimal clustering &amp; matching suitability maps</li>
               </ul>
+              <dl className={styles.diagnosticMeta}>
+                <dt>Purpose</dt>
+                <dd>Classify each cell for its optimal second-life application via deterministic grading.</dd>
+                <dt>Key Outputs</dt>
+                <dd>Measured capacity, ACIR/DCIR values, self-discharge rate, safety risk score, grade assignment.</dd>
+                <dt>Decision Logic</dt>
+                <dd>Multi-parameter grade assignment: capacity retention, IR thresholds, thermal rise, and self-discharge rate drive Grade A/B/C/D binning.</dd>
+              </dl>
             </div>
           </div>
         </div>
@@ -256,6 +305,9 @@ export default function BatteryDiagnosticsContent() {
           <div className={styles.sectionHeader}>
             <span className={styles.sectionNumber}>Hardware</span>
             <h2 className={styles.sectionTitle}>Hardware Architecture for Battery Intelligence</h2>
+          </div>
+          <div className={styles.calloutBlock}>
+            <strong>This is a physical + digital system, not just AI/software.</strong> The platform requires dedicated test benches, safety-rated fixtures, precision DAQ instruments, and edge controllers — all integrated with real-time software analytics and cloud registry. Hardware and software are co-designed as a single unified system.
           </div>
           <div className={styles.grid3}>
             <div className={styles.card}>
@@ -329,6 +381,9 @@ export default function BatteryDiagnosticsContent() {
           <div className={styles.sectionHeader}>
             <span className={styles.sectionNumber}>Stack</span>
             <h2 className={styles.sectionTitle}>Software Stack: From Bench Control to Intelligence</h2>
+            <p className={styles.sectionSubtitle}>
+              Real-time monitoring · Offline lab mode · Cloud integration · API-first design
+            </p>
           </div>
 
           <div className={styles.stackLayer}>
@@ -420,7 +475,11 @@ export default function BatteryDiagnosticsContent() {
             <h2 className={styles.sectionTitle}>Health Scoring, Risk Index, & Grading</h2>
           </div>
 
-          <div className={styles.grid2} style={{ marginBottom: "2rem" }}>
+          <div className={styles.calloutBlock} style={{ marginBottom: '2rem' }}>
+            <strong>Grading is multi-parameter based — not a single metric.</strong> Each cell/module is evaluated across capacity retention, internal resistance, thermal stability, self-discharge rate, and BMS integrity. No single parameter can override the composite grade.
+          </div>
+
+          <div className={styles.grid2} style={{ marginBottom: '2rem' }}>
             <div className={styles.card}>
               <h3 className={styles.cardTitle}>Diagnostic Vectors</h3>
               <ul className={styles.list}>
@@ -433,7 +492,7 @@ export default function BatteryDiagnosticsContent() {
             </div>
             <div className={styles.card}>
               <h3 className={styles.cardTitle}>Decision Matrix</h3>
-              <p className={styles.cardDesc} style={{ marginTop: "0.5rem" }}>
+              <p className={styles.cardDesc} style={{ marginTop: '0.5rem' }}>
                 Grading unifies all electrical performance curves, observed thermal behaviors, latent safety indicators, and peer-cluster statistics into a deterministic qualification tier.
               </p>
             </div>
@@ -444,33 +503,38 @@ export default function BatteryDiagnosticsContent() {
               <thead>
                 <tr>
                   <th>Grade</th>
-                  <th>Observed Status</th>
-                  <th>Risk Profile</th>
+                  <th>Capacity</th>
+                  <th>IR Threshold</th>
+                  <th>Thermal Risk</th>
                   <th>Secondary Target</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td className={styles.gradeA}>Grade A</td>
-                  <td>Premium SOH, superb impedance, low divergence.</td>
+                  <td><span className={styles.thresholdBadge}>&gt; 80% SOH</span></td>
+                  <td><span className={styles.thresholdBadge}>&lt; 1.2× nominal</span></td>
                   <td>Negligible</td>
                   <td>Reuse in new packs / Solar Storage</td>
                 </tr>
                 <tr>
                   <td className={styles.gradeB}>Grade B</td>
-                  <td>Standard SOH, moderate capacity bleed.</td>
+                  <td><span className={styles.thresholdBadge}>65–80% SOH</span></td>
+                  <td><span className={styles.thresholdBadge}>1.2–1.5× nominal</span></td>
                   <td>Low / Trackable</td>
                   <td>Stationary use / Rural Reserve</td>
                 </tr>
                 <tr>
                   <td className={styles.gradeC}>Grade C</td>
-                  <td>Sub-standard capacity or heightened impedance.</td>
+                  <td><span className={styles.thresholdBadge}>50–65% SOH</span></td>
+                  <td><span className={styles.thresholdBadge}>1.5–2.0× nominal</span></td>
                   <td>Elevated</td>
                   <td>Low load use / Isolated Auxiliary</td>
                 </tr>
                 <tr>
                   <td className={styles.gradeD}>Grade D</td>
-                  <td>Under-voltage faults, micro-shorts, leaks.</td>
+                  <td><span className={styles.thresholdBadge}>&lt; 50% SOH</span></td>
+                  <td><span className={styles.thresholdBadge}>&gt; 2.0× nominal</span></td>
                   <td>Critical</td>
                   <td>Immediate Scrap & Material Recycle</td>
                 </tr>
@@ -489,22 +553,27 @@ export default function BatteryDiagnosticsContent() {
           </div>
           <div className={styles.grid2}>
             <div>
-              <p style={{ color: "var(--text-secondary)", lineHeight: 1.7 }}>
-                Every discrete pack, module, and cell is issued a tamper-aware digital identity via a physical sticker. The sticker QR code deliberately exposes minimal plaintext metadata while embedding an encrypted cryptographic core. When scanned by an authorised client, this token accesses the deep backend to reveal full diagnostic lineage and grading, acting as the foundational mechanism for the anticipated Battery Pack Aadhaar scheme.
+              <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7 }}>
+                Every discrete pack, module, and cell is issued a tamper-aware digital identity via a physical sticker. The QR code exposes minimal plaintext metadata while embedding an encrypted cryptographic core. When scanned by an authorised client, this token accesses the deep backend to reveal full diagnostic lineage and grading.
               </p>
               <ul className={styles.list}>
                 <li>Unique Asset ID & Component Genealogy</li>
                 <li>Encrypted Payload / Auth Checksum</li>
                 <li>Chain of Custody Timestamping</li>
+                <li>Audit trail for every test, grade change, and transfer</li>
+                <li>Full genealogy: which original pack each cell came from</li>
               </ul>
+              <div className={styles.calloutBlock} style={{ marginTop: '1.5rem' }}>
+                <strong>Battery Pack Aadhaar Foundation:</strong> This encrypted identity system becomes the foundational layer for India’s anticipated Battery Pack Aadhaar scheme — providing immutable lifecycle records from first use through second-life deployment.
+              </div>
             </div>
-            <div className={styles.flowChart} style={{ margin: 0, padding: "1.5rem" }}>
-              <div className={styles.flowNode} style={{ padding: "0.5rem 1rem" }}>Cell / Module</div><span className={styles.flowArrow}>→</span>
-              <div className={styles.flowNode} style={{ padding: "0.5rem 1rem" }}>Generate ID</div><span className={styles.flowArrow}>→</span>
-              <div className={styles.flowNode} style={{ padding: "0.5rem 1rem" }}>Print Sticker</div><span className={styles.flowArrow}>→</span>
-              <div className={styles.flowNode} style={{ padding: "0.5rem 1rem" }}>Field Scan</div><span className={styles.flowArrow}>→</span>
-              <div className={styles.flowNode} style={{ padding: "0.5rem 1rem" }}>Cloud Auth</div><span className={styles.flowArrow}>→</span>
-              <div className={styles.flowNode} style={{ padding: "0.5rem 1rem" }}>View History</div>
+            <div className={styles.flowChart} style={{ margin: 0, padding: '1.5rem' }}>
+              <div className={styles.flowNode} style={{ padding: '0.5rem 1rem' }}>Cell / Module</div><span className={styles.flowArrow}>→</span>
+              <div className={styles.flowNode} style={{ padding: '0.5rem 1rem' }}>Generate ID</div><span className={styles.flowArrow}>→</span>
+              <div className={styles.flowNode} style={{ padding: '0.5rem 1rem' }}>Print Sticker</div><span className={styles.flowArrow}>→</span>
+              <div className={styles.flowNode} style={{ padding: '0.5rem 1rem' }}>Field Scan</div><span className={styles.flowArrow}>→</span>
+              <div className={styles.flowNode} style={{ padding: '0.5rem 1rem' }}>Cloud Auth</div><span className={styles.flowArrow}>→</span>
+              <div className={styles.flowNode} style={{ padding: '0.5rem 1rem' }}>View History</div>
             </div>
           </div>
         </div>
@@ -552,33 +621,50 @@ export default function BatteryDiagnosticsContent() {
             <h2 className={styles.sectionTitle}>Thermal Reconfiguration & BTMS Upgrade</h2>
           </div>
 
-          <div className={styles.executiveCard} style={{ marginBottom: "3rem", padding: "1.5rem", fontSize: "1rem" }}>
-            Repurposing entails strict thermal redesign. A cell cluster running inside an Indian rural solar charging environment will face vastly different ambient loads, static duty cycles, and passive ventilation bounds compared to its original high-speed vehicle chassis. We reconstruct the heat profile explicitly for the secondary application.
+          <div className={styles.calloutBlock} style={{ marginBottom: '2rem' }}>
+            <strong>Thermal redesign is mandatory before any second-life reuse.</strong> A cell cluster running inside an Indian rural solar charging environment faces vastly different ambient loads, static duty cycles, and passive ventilation bounds compared to its original high-speed vehicle chassis. We reconstruct the heat profile explicitly for the secondary application.
           </div>
 
-          <div className={styles.flowChart} style={{ marginBottom: "3rem", padding: "1.5rem" }}>
-            <div className={styles.flowNode} style={{ padding: "0.5rem 1rem" }}>Cell Matching</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{ padding: "0.5rem 1rem" }}>New Pack Topology</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{ padding: "0.5rem 1rem" }}>Thermal Design Concept</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{ padding: "0.5rem 1rem" }}>Electro-Thermal Simulation</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{ padding: "0.5rem 1rem" }}>Cost vs Performance Trade-off</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{ padding: "0.5rem 1rem" }}>Prototype Build</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{ padding: "0.5rem 1rem" }}>Thermal Validation</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{ padding: "0.5rem 1rem" }}>Final Pack Design</div>
+          <div className={styles.flowChart} style={{ marginBottom: '3rem', padding: '1.5rem' }}>
+            <div className={styles.flowNode} style={{ padding: '0.5rem 1rem' }}>Cell Matching</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ padding: '0.5rem 1rem' }}>Pack Design</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ padding: '0.5rem 1rem' }}>Thermal Simulation</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ padding: '0.5rem 1rem' }}>Validation</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ padding: '0.5rem 1rem' }}>Final Pack</div>
           </div>
 
           <div className={styles.grid3}>
             <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Cooling Re-evaluation</h3>
-              <p className={styles.cardDesc}>Transitioning from expensive cold-plate/liquid to mathematically validated forced or directed passive air corridors.</p>
+              <h3 className={styles.cardTitle}>Air & Passive Cooling</h3>
+              <p className={styles.cardDesc}>Transitioning from expensive cold-plate/liquid to mathematically validated forced or directed passive air corridors optimised for stationary indoor/outdoor enclosures.</p>
             </div>
             <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Geometric Barriers</h3>
-              <p className={styles.cardDesc}>Establishing larger inter-cell spatial tolerances and non-flammable barriers to physically halt runaway propagation.</p>
+              <h3 className={styles.cardTitle}>Thermal Barriers & Cell Spacing</h3>
+              <p className={styles.cardDesc}>Establishing larger inter-cell spatial tolerances and non-flammable barriers to physically halt runaway propagation. Includes ceramic spacers and mica insulation sheets.</p>
             </div>
             <div className={styles.card}>
               <h3 className={styles.cardTitle}>Electro-Thermal Simulation</h3>
-              <p className={styles.cardDesc}>Pre-emptive simulation of the matching algorithm's proposed pack topology against peak daily solar loads.</p>
+              <p className={styles.cardDesc}>Pre-emptive simulation of the proposed pack topology against peak daily solar loads, including worst-case ambient temperatures in Indian rural environments (45°C+).</p>
+            </div>
+          </div>
+
+          <div className={styles.grid2} style={{ marginTop: '2rem' }}>
+            <div className={styles.card}>
+              <h3 className={styles.cardTitle}>Heat Dissipation Strategy</h3>
+              <ul className={styles.list}>
+                <li>Convective path analysis for enclosure design</li>
+                <li>Heat sink sizing for continuous C/5 discharge profiles</li>
+                <li>Thermal pad material selection (silicone vs. graphite)</li>
+              </ul>
+            </div>
+            <div className={styles.card}>
+              <h3 className={styles.cardTitle}>Rural Environment Considerations</h3>
+              <ul className={styles.list}>
+                <li>Dust ingress protection (IP54+ enclosures)</li>
+                <li>High ambient temperature de-rating curves</li>
+                <li>Monsoon humidity and condensation management</li>
+                <li>Passive ventilation for zero-maintenance operation</li>
+              </ul>
             </div>
           </div>
         </div>
@@ -625,28 +711,79 @@ export default function BatteryDiagnosticsContent() {
         <div className="container">
           <div className={styles.sectionHeader}>
             <span className={styles.sectionNumber}>Project Execution</span>
-            <h2 className={styles.sectionTitle}>MVP to Deployment Timeline</h2>
+            <h2 className={styles.sectionTitle}>MVP to Deployment Roadmap</h2>
+            <p className={styles.sectionSubtitle}>Five structured phases from lab prototype to national-scale battery traceability</p>
           </div>
-          <div className={styles.grid4} style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
-            <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Phase 1: Diagnostics Only</h3>
-              <p className={styles.cardDesc}>Selecting target chemistry families, mapping the core grading logic, and deploying base level manual lab SOPs and UI layouts.</p>
+          <div className={styles.grid4} style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
+            <div className={styles.phaseCard}>
+              <div className={styles.phaseNumber}>Phase 1</div>
+              <h3 className={styles.cardTitle}>Diagnostics Platform</h3>
+              <ul className={styles.list}>
+                <li>Target chemistry selection (2W/3W/4W)</li>
+                <li>Core grading logic implementation</li>
+                <li>Manual lab SOPs &amp; basic UI</li>
+              </ul>
+              <p className={styles.cardDesc} style={{ marginTop: '0.75rem', fontWeight: 600, color: '#4ade80' }}>Output: Working diagnostic bench + software</p>
+              <div className={styles.phaseMaturity}>
+                <div className={styles.maturityBar}><div className={styles.maturityFill} style={{ width: '100%' }}></div></div>
+                <span className={styles.maturityLabel}>Foundation</span>
+              </div>
             </div>
-            <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Phase 2: Grading + Identity</h3>
-              <p className={styles.cardDesc}>Rolling out encrypted QR stickers, integrating the operator dashboard, and finalizing basic deterministic grading.</p>
+            <div className={styles.phaseCard}>
+              <div className={styles.phaseNumber}>Phase 2</div>
+              <h3 className={styles.cardTitle}>Grading + Identity</h3>
+              <ul className={styles.list}>
+                <li>Encrypted QR sticker rollout</li>
+                <li>Operator dashboard integration</li>
+                <li>Deterministic grading engine</li>
+              </ul>
+              <p className={styles.cardDesc} style={{ marginTop: '0.75rem', fontWeight: 600, color: '#4ade80' }}>Output: Certified graded cells with digital IDs</p>
+              <div className={styles.phaseMaturity}>
+                <div className={styles.maturityBar}><div className={styles.maturityFill} style={{ width: '75%' }}></div></div>
+                <span className={styles.maturityLabel}>Core Product</span>
+              </div>
             </div>
-            <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Phase 3: Repack System</h3>
-              <p className={styles.cardDesc}>Automated matching cluster engine implementation, switching to autonomous cell array cycling, and genealogy tracking.</p>
+            <div className={styles.phaseCard}>
+              <div className={styles.phaseNumber}>Phase 3</div>
+              <h3 className={styles.cardTitle}>Repack System</h3>
+              <ul className={styles.list}>
+                <li>Automated cell matching engine</li>
+                <li>Autonomous array cycling</li>
+                <li>Genealogy tracking pipeline</li>
+              </ul>
+              <p className={styles.cardDesc} style={{ marginTop: '0.75rem', fontWeight: 600, color: '#facc15' }}>Output: Matched cell clusters for repack</p>
+              <div className={styles.phaseMaturity}>
+                <div className={styles.maturityBar}><div className={styles.maturityFill} style={{ width: '50%' }}></div></div>
+                <span className={styles.maturityLabel}>Scale-Ready</span>
+              </div>
             </div>
-            <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Phase 4: Thermal Optimization</h3>
-              <p className={styles.cardDesc}>Constructing physical prototype repurposed packs containing custom BTMS profiles, simulating aero-thermal loads.</p>
+            <div className={styles.phaseCard}>
+              <div className={styles.phaseNumber}>Phase 4</div>
+              <h3 className={styles.cardTitle}>Thermal Optimization</h3>
+              <ul className={styles.list}>
+                <li>Physical prototype repurposed packs</li>
+                <li>Custom BTMS profile simulation</li>
+                <li>Aero-thermal load validation</li>
+              </ul>
+              <p className={styles.cardDesc} style={{ marginTop: '0.75rem', fontWeight: 600, color: '#facc15' }}>Output: Validated second-life pack design</p>
+              <div className={styles.phaseMaturity}>
+                <div className={styles.maturityBar}><div className={styles.maturityFill} style={{ width: '35%' }}></div></div>
+                <span className={styles.maturityLabel}>Engineering</span>
+              </div>
             </div>
-            <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Phase 5: Aadhaar Integration</h3>
-              <p className={styles.cardDesc}>Battery Pack Aadhaar mapping, lifecycle registry APIs, remote service center analytics, and secure cloud syncing.</p>
+            <div className={styles.phaseCard}>
+              <div className={styles.phaseNumber}>Phase 5</div>
+              <h3 className={styles.cardTitle}>Aadhaar Integration</h3>
+              <ul className={styles.list}>
+                <li>Battery Pack Aadhaar registry APIs</li>
+                <li>Lifecycle cloud syncing</li>
+                <li>Remote service center analytics</li>
+              </ul>
+              <p className={styles.cardDesc} style={{ marginTop: '0.75rem', fontWeight: 600, color: '#38bdf8' }}>Output: National-scale battery traceability</p>
+              <div className={styles.phaseMaturity}>
+                <div className={styles.maturityBar}><div className={styles.maturityFill} style={{ width: '20%' }}></div></div>
+                <span className={styles.maturityLabel}>Future-Ready</span>
+              </div>
             </div>
           </div>
         </div>
