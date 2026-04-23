@@ -54,6 +54,10 @@ export default function BatteryDiagnosticsContent() {
             It is a <strong>full-stack engineering platform</strong> for battery diagnostics, grading, digital identity, second-life repurposing, and thermal reconfiguration — designed to be built and deployed in the real world.
           </p>
 
+          <p className={styles.heroPlatformScope}>
+            This platform provides end-to-end battery lifecycle intelligence including diagnostics, grading, identity, repurposing, and thermal reconfiguration.
+          </p>
+
           <div className={styles.heroPillars}>
             <div className={styles.heroPillarChip}><span>🔬</span> Multi-Level Diagnostics</div>
             <div className={styles.heroPillarChip}><span>🔄</span> Full Lifecycle System</div>
@@ -149,6 +153,50 @@ export default function BatteryDiagnosticsContent() {
             <div className={styles.card}>
               <h3 className={styles.cardTitle}>Cell Gate</h3>
               <p className={styles.cardDesc}>Final grading filters every cell; only those meeting Grade A/B thresholds proceed to the matching and repack design phase.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ 2.5 SYSTEM ARCHITECTURE OVERVIEW ═══ */}
+      <section className={styles.pageSection} id="system-boundaries">
+        <div className="container">
+          <div className={styles.sectionHeader}>
+            <span className={styles.sectionNumber}>System Boundaries</span>
+            <h2 className={styles.sectionTitle}>System Architecture Overview</h2>
+            <p className={styles.sectionSubtitle}>Clear boundary definition across hardware, software, and cloud layers to ensure development alignment.</p>
+          </div>
+
+          <div className={styles.grid3}>
+            <div className={styles.card}>
+              <div className={styles.boundaryIcon}>⚙️</div>
+              <h3 className={styles.cardTitle}>Hardware Layer</h3>
+              <ul className={styles.boundaryList}>
+                <li><strong>Sensors:</strong> Voltage, current, temperature probes (±0.1% accuracy)</li>
+                <li><strong>Test Benches:</strong> Pack tester (800V), module bench (60V/100A), cell cycler (5V/10A)</li>
+                <li><strong>Safety Systems:</strong> E-stop, isolation monitors, fire suppression, HV disconnect</li>
+                <li><strong>Edge Controllers:</strong> MCU/PLC for real-time data acquisition</li>
+              </ul>
+            </div>
+            <div className={styles.card}>
+              <div className={styles.boundaryIcon}>💻</div>
+              <h3 className={styles.cardTitle}>Software Layer</h3>
+              <ul className={styles.boundaryList}>
+                <li><strong>Data Acquisition:</strong> Real-time polling from hardware controllers &amp; BMS</li>
+                <li><strong>Analytics Engine:</strong> SOH/SOC estimation, anomaly detection, health scoring</li>
+                <li><strong>Grading Logic:</strong> Deterministic A/B/C/D classification based on measured data</li>
+                <li><strong>Test Sequencing:</strong> Automated charge/discharge profiles &amp; safety interlocks</li>
+              </ul>
+            </div>
+            <div className={styles.card}>
+              <div className={styles.boundaryIcon}>☁️</div>
+              <h3 className={styles.cardTitle}>Cloud Layer</h3>
+              <ul className={styles.boundaryList}>
+                <li><strong>Storage:</strong> Test results, lifecycle records, pack/cell history</li>
+                <li><strong>Traceability:</strong> Encrypted digital twin linked to physical QR/NFC identity</li>
+                <li><strong>Identity Registry:</strong> Battery Pack Aadhaar — national-scale cell identity system</li>
+                <li><strong>Dashboard:</strong> Fleet analytics, predictive health modeling, operator alerts</li>
+              </ul>
             </div>
           </div>
         </div>
@@ -377,11 +425,18 @@ export default function BatteryDiagnosticsContent() {
             </div>
           </div>
 
+          <div className={styles.thermalPrinciples}>
+            <h4 className={styles.thermalPrinciplesTitle}>Core Thermal Design Principles</h4>
+            <ul className={styles.boundaryList}>
+              <li><strong>Airflow / Cooling:</strong> Active forced-air corridors with dual-mode operation (fan-assisted during charge, passive during standby)</li>
+              <li><strong>Cell Spacing:</strong> Optimized inter-cell pitch with mica/ceramic propagation barriers to limit thermal runaway chain reaction</li>
+              <li><strong>Heat Dissipation:</strong> Structural aluminium heat sinks and thermally conductive gap fillers for peak thermal events</li>
+              <li><strong>Safety Margin:</strong> Designed for 45 °C+ ambient (Indian conditions) — no dependence on external HVAC; passive safety sustains operation in non-climate-controlled environments</li>
+            </ul>
+          </div>
+
           <div className={styles.calloutBlock} style={{ marginTop: '1.5rem' }}>
             <strong>Propagation Prevention:</strong> Thermal management is critical to prevent heat propagation across cells in repacked configurations. Mica barriers, directional airflow, and optimized cell spacing form a multi-layer thermal defence.
-          </div>
-          <div className={styles.calloutBlock} style={{ marginTop: '0.75rem' }}>
-            <strong>Rural Deployment Constraint:</strong> Designed for high-ambient Indian conditions (45 °C+). No dependence on external HVAC. Passive thermal safety must sustain operation in non-climate-controlled rural storage environments.
           </div>
 
           <div className={styles.flowChart} style={{ marginTop: '2rem', background: 'transparent' }}>
