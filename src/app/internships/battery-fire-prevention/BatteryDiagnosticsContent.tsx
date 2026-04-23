@@ -13,32 +13,33 @@ export default function BatteryDiagnosticsContent() {
         <div className={styles.heroGlow}></div>
         <div className={styles.heroInner}>
           <div className={styles.heroPill}>
-            <span>Engineering Platform</span>
+            <span>Flagship Platform</span>
           </div>
           <h1 className={styles.heroTitle}>
-            Battery Diagnostics, Grading & Thermal Reconfiguration Platform
+            EV Battery Intelligence Platform
           </h1>
           <span className={styles.heroHighlight} style={{ display: 'block' }}>
-            <span className={styles.fireGradientText}>AI-Powered EV Battery Fire Prevention System</span>
-            <span style={{ display: 'block', marginTop: '0.4rem' }}>Second-Life EV Battery Intelligence System</span>
+            Diagnostics, Grading, Identity, and Thermal Reconfiguration for Second-Life EV Battery Systems
           </span>
           <p className={styles.heroDesc}>
-            Secure Battery Diagnostics, Grading, Traceability, & Thermal Reconfiguration for Circular EV Energy Systems. Enabling pack, module, and cell-level health assessment for safe rural energy storage applications.
+            This is not just a battery fire prevention solution. This is a full-stack EV battery diagnostics and repurposing platform designed to assess, classify, and safely reconfigure used EV battery packs for second-life applications.
           </p>
           <div className={styles.heroCtas}>
-            <Link href="#architecture" className="btn btn-primary">
-              Explore Architecture
+            <Link href="#workflow" className="btn btn-primary">
+              View System Workflow
             </Link>
-            <Link href="#workflow" className="btn btn-secondary">
-              View Workflow
+            <Link href="#architecture" className="btn btn-secondary">
+              Explore Architecture
             </Link>
           </div>
 
+          {/* SYSTEM HIERARCHY VISUAL (Step 10) */}
           <div className={styles.flowChart} style={{ marginTop: '3rem', background: 'transparent', border: 'none', padding: 0 }}>
-            <div className={styles.flowNode} style={{ borderColor: 'var(--accent-primary)', color: 'var(--accent-primary)' }}>Pack Intake</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{ borderColor: 'var(--accent-primary)', color: 'var(--accent-primary)' }}>Module Separation</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{ borderColor: 'var(--accent-primary)', color: 'var(--accent-primary)' }}>Cell Grading</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{ borderColor: 'var(--accent-primary)', color: 'var(--accent-primary)' }}>Thermal Repack</div>
+            <div className={styles.flowNode} style={{ borderColor: 'var(--accent-primary)', color: 'var(--accent-primary)' }}>Pack</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ borderColor: 'var(--accent-primary)', color: 'var(--accent-primary)' }}>Modules</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ borderColor: 'var(--accent-primary)', color: 'var(--accent-primary)' }}>Cells</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ borderColor: '#4ade80', color: '#4ade80' }}>Graded Cells</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ borderColor: '#4ade80', color: '#4ade80' }}>Reconfigured Pack</div>
           </div>
         </div>
       </section>
@@ -51,7 +52,7 @@ export default function BatteryDiagnosticsContent() {
               <div>
                 <p style={{ fontSize: "0.75rem", color: "#4ca930", fontWeight: "700", textTransform: "uppercase", marginBottom: "4px" }}>EV.ENGINEER™</p>
                 <h2 style={{ fontSize: "1.8rem", marginBottom: "8px", color: "#fff", fontWeight: "600" }}>Sudarshana Karkala</h2>
-                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginBottom: "12px" }}>Principal Architect | Thasmai Infotech Private Limited</p>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginBottom: "12px" }}>Co-Founder, Principal Architect | Thasmai Infotech Private Limited</p>
                 <div className={styles.availabilityHighlight}>
                   Available for strategic architectural consulting and advanced automotive R&D partnerships.
                 </div>
@@ -180,197 +181,156 @@ export default function BatteryDiagnosticsContent() {
         </div>
       </section>
 
-      {/* 5. END-TO-END SYSTEM WORKFLOW */}
+      {/* 5. END-TO-END SYSTEM WORKFLOW (CENTERPIECE) */}
       <section className={styles.pageSectionAlt} id="workflow">
         <div className="container">
-          <div className={styles.sectionHeader}>
-            <span className={styles.sectionNumber}>Process</span>
-            <h2 className={styles.sectionTitle}>End-to-End System Workflow</h2>
+          <div className={styles.sectionHeader} style={{ textAlign: 'center', marginBottom: '4rem' }}>
+            <span className={styles.sectionNumber}>Core Backbone</span>
+            <h2 className={styles.sectionTitle}>End-to-End Platform Workflow</h2>
+            <p className={styles.sectionSubtitle}>A dominant visual flow from battery reception to second-life deployment</p>
           </div>
 
-          <div className={styles.flowChart}>
-            <div className={styles.flowNode}>Battery Reception</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode}>Asset Registration & Quarantine</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode}>Pack-Level Diagnostics</div><span className={styles.flowArrow}>→</span>
-            <div className={`${styles.flowNode} ${styles.gate}`}>Gate 1: Pack Decision</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode}>Controlled Disassembly</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode}>Module Diagnostics</div><span className={styles.flowArrow}>→</span>
-            <div className={`${styles.flowNode} ${styles.gate}`}>Gate 2: Module Decision</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode}>Cell Extraction</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode}>Cell Diagnostics</div><span className={styles.flowArrow}>→</span>
-            <div className={`${styles.flowNode} ${styles.gate}`}>Gate 3: Cell Grading</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode}>ID Stickering & Binning</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode}>Cell Matching Engine</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode}>New Pack & Thermal Design</div><span className={styles.flowArrow}>→</span>
-            <div className={`${styles.flowNode} ${styles.gate}`}>Gate 4: Repack Validation</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode}>Second-Life Deployment & Tracking</div>
+          <div className={styles.flowChart} style={{ flexWrap: 'wrap', justifyContent: 'center', gap: '1rem', marginBottom: '4rem' }}>
+            <div className={styles.flowNode}>Battery Intake</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode}>Registration</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode}>Safety Check</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode}>Pack Diagnostics</div><span className={styles.flowArrow}>→</span>
+            <div className={`${styles.flowNode} ${styles.gate}`}>Decision Gate 1</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode}>Module Testing</div><span className={styles.flowArrow}>→</span>
+            <div className={`${styles.flowNode} ${styles.gate}`}>Decision Gate 2</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode}>Cell Testing</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode}>Grading</div><span className={styles.flowArrow}>→</span>
+            <div className={`${styles.flowNode} ${styles.gate}`}>Decision Gate 3</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode}>Identity Assignment</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode}>Cell Matching</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode}>Repack Design</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode}>Thermal Design</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode}>Validation</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ borderColor: '#4ade80' }}>Deployment</div>
           </div>
 
-          <div className={styles.grid4} style={{ marginTop: '2rem' }}>
+          <div className={styles.grid3}>
             <div className={styles.card}>
-              <h3 className={styles.cardTitle} style={{ color: '#eab308' }}>Gate 1: Pack Decision</h3>
-              <p className={styles.cardDesc}>Direct reuse candidate vs. Disassembly required vs. Immediate Scrap based on full-pack insulation and thermal scan.</p>
+              <div className={styles.phaseNumber}>Gate 1</div>
+              <h3 className={styles.cardTitle}>Pack Decision</h3>
+              <p className={styles.cardDesc}>Evaluate for direct reuse, modular disassembly, or immediate scrap based on insulation and initial thermal scan.</p>
             </div>
             <div className={styles.card}>
-              <h3 className={styles.cardTitle} style={{ color: '#eab308' }}>Gate 2: Module Decision</h3>
-              <p className={styles.cardDesc}>Can the module be repurposed as an intact block, or does severe imbalance dictate full cell-level extraction?</p>
+              <div className={styles.phaseNumber}>Gate 2</div>
+              <h3 className={styles.cardTitle}>Module Decision</h3>
+              <p className={styles.cardDesc}>Determine if sub-assemblies are viable as intact blocks or if full cell-level extraction is required due to imbalance.</p>
             </div>
             <div className={styles.card}>
-              <h3 className={styles.cardTitle} style={{ color: '#eab308' }}>Gate 3: Cell Decision</h3>
-              <p className={styles.cardDesc}>Binning cells into Grades A/B/C/D based on precision capacity, internal resistance, and self-discharge criteria.</p>
-            </div>
-            <div className={styles.card}>
-              <h3 className={styles.cardTitle} style={{ color: '#eab308' }}>Gate 4: Repack Qualification</h3>
-              <p className={styles.cardDesc}>Final end-of-line verification of the newly assembled pack, confirming BMS communication and thermal safety.</p>
+              <div className={styles.phaseNumber}>Gate 3</div>
+              <h3 className={styles.cardTitle}>Grading Decision</h3>
+              <p className={styles.cardDesc}>Final classification of every cell into specific usage tiers (Grade A/B/C/D) using multi-parameter scoring.</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 6. MULTI-LEVEL DIAGNOSTIC ARCHITECTURE */}
+      {/* 6. MULTI-LEVEL DIAGNOSTIC ARCHITECTURE (Step 3) */}
       <section className={styles.pageSection}>
         <div className="container">
           <div className={styles.sectionHeader}>
             <span className={styles.sectionNumber}>Resolution</span>
             <h2 className={styles.sectionTitle}>Multi-Level Diagnostic Architecture</h2>
             <p className={styles.sectionSubtitle}>
-              Depth of disassembly is strategically driven by measured viability. Deeper disassembly increases recovery processing costs exponentially.
+              Granular analysis from complete pack down to individual cell nodes.
             </p>
           </div>
           <div className={styles.grid3}>
             <div className={styles.card}>
               <h3 className={styles.cardTitle}>A. Pack-Level Diagnostics</h3>
-              <p className={styles.cardDesc}>Non-destructive baseline qualification of the entire battery pack.</p>
-              <ul className={styles.list}>
-                <li>Visual housing inspection &amp; OCV read</li>
-                <li>High-voltage insulation resistance testing</li>
-                <li>BMS CAN communication &amp; fault log extraction</li>
-                <li>Pack-level low-current thermal mapping</li>
-                <li>Connector &amp; contactor health evaluation</li>
-              </ul>
+              <p className={styles.cardDesc}>Non-destructive baseline qualification.</p>
               <dl className={styles.diagnosticMeta}>
                 <dt>Purpose</dt>
-                <dd>Determine if the pack can be directly reused or must be disassembled for deeper testing.</dd>
-                <dt>Key Outputs</dt>
-                <dd>Pack SOH estimate, insulation score, thermal map, BMS fault summary.</dd>
+                <dd>Baseline health qualification and safety screening.</dd>
+                <dt>Tests Performed</dt>
+                <dd>BMS CAN communication, insulation resistance, thermal scanning, fault log extraction.</dd>
+                <dt>Outputs</dt>
+                <dd>Pack-level SOH, insulation score, isolation integrity.</dd>
                 <dt>Decision Logic</dt>
-                <dd>SOH &gt; 80% + no faults → Direct Reuse. SOH 60–80% → Module Testing. SOH &lt; 60% or critical faults → Full Disassembly.</dd>
+                <dd>SOH &gt; 80% with no faults → Direct Reuse; Else → Module Disassembly.</dd>
               </dl>
             </div>
             <div className={styles.card}>
               <h3 className={styles.cardTitle}>B. Module-Level Diagnostics</h3>
               <p className={styles.cardDesc}>Intermediate integrity evaluation for viable subsystems.</p>
-              <ul className={styles.list}>
-                <li>Module capacity testing &amp; voltage profiling</li>
-                <li>Symmetrical DC Internal Resistance (DCIR)</li>
-                <li>Inter-cell voltage imbalance tracking</li>
-                <li>Calculated self-discharge tendency</li>
-                <li>Thermal rise mapping under defined loads</li>
-              </ul>
               <dl className={styles.diagnosticMeta}>
                 <dt>Purpose</dt>
-                <dd>Evaluate if the module can be repurposed as an intact block or requires cell-level extraction.</dd>
-                <dt>Key Outputs</dt>
-                <dd>Module capacity, DCIR matrix, imbalance ratio, thermal rise factor.</dd>
+                <dd>Verify subsystem integrity and load performance.</dd>
+                <dt>Tests Performed</dt>
+                <dd>Capacity profiling, DCIR matching, inter-cell imbalance, thermal rise factor.</dd>
+                <dt>Outputs</dt>
+                <dd>Module-level capacity matrix, impedance spread, imbalance ratio.</dd>
                 <dt>Decision Logic</dt>
-                <dd>Imbalance &lt; 20mV + DCIR within 15% spread → Module Reuse. Imbalance &gt; 50mV or DCIR drift &gt; 25% → Cell Extraction.</dd>
+                <dd>Imbalance &lt; 2% → Module Reuse; Else → Cell-Level Extraction.</dd>
               </dl>
             </div>
             <div className={styles.card}>
               <h3 className={styles.cardTitle}>C. Cell-Level Diagnostics</h3>
-              <p className={styles.cardDesc}>Granular characterization for final asset matching and grading.</p>
-              <ul className={styles.list}>
-                <li>High-precision capacity &amp; efficiency cycles</li>
-                <li>Impedance checks (1kHz ACIR + DCIR)</li>
-                <li>Dynamic pulse response curves</li>
-                <li>Safety risk &amp; micro-short indices</li>
-                <li>Optimal clustering &amp; matching suitability maps</li>
-              </ul>
+              <p className={styles.cardDesc}>Granular characterization for final asset matching.</p>
               <dl className={styles.diagnosticMeta}>
                 <dt>Purpose</dt>
-                <dd>Classify each cell for its optimal second-life application via deterministic grading.</dd>
-                <dt>Key Outputs</dt>
-                <dd>Measured capacity, ACIR/DCIR values, self-discharge rate, safety risk score, grade assignment.</dd>
+                <dd>Final deterministic grading for application matching.</dd>
+                <dt>Tests Performed</dt>
+                <dd>1kHz ACIR, high-precision capacity cycles, self-discharge rate, safety risk index.</dd>
+                <dt>Outputs</dt>
+                <dd>Measured capacity, IR curve, self-discharge slope, safety score.</dd>
                 <dt>Decision Logic</dt>
-                <dd>Multi-parameter grade assignment: capacity retention, IR thresholds, thermal rise, and self-discharge rate drive Grade A/B/C/D binning.</dd>
+                <dd>Grade assignment (A/B/C) based on composite health and safety index.</dd>
               </dl>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 7. HARDWARE PLATFORM DESIGN */}
+      {/* 7. HARDWARE PLATFORM (Step 4) */}
       <section className={styles.pageSectionAlt}>
         <div className="container">
           <div className={styles.sectionHeader}>
             <span className={styles.sectionNumber}>Hardware</span>
-            <h2 className={styles.sectionTitle}>Hardware Architecture for Battery Intelligence</h2>
+            <h2 className={styles.sectionTitle}>Battery Diagnostic Hardware Platform</h2>
           </div>
           <div className={styles.calloutBlock}>
-            <strong>This is a physical + digital system, not just AI/software.</strong> The platform requires dedicated test benches, safety-rated fixtures, precision DAQ instruments, and edge controllers — all integrated with real-time software analytics and cloud registry. Hardware and software are co-designed as a single unified system.
+            <strong>This is a physical + digital system, not just AI software.</strong> The platform integrates high-precision cyclers and test benches directly with the software stack to ensure deterministic grading and safety.
           </div>
           <div className={styles.grid3}>
             <div className={styles.card}>
-              <h3 className={styles.cardTitle}>7.1 Intake & Safety</h3>
+              <h3 className={styles.cardTitle}>7.1 Pack & Module Bench</h3>
               <ul className={styles.list}>
-                <li><strong>Role:</strong> Secure quarantine & registration</li>
-                <li><strong>Components:</strong> QR/NFC scanners, thermal cameras</li>
-                <li><strong>Safety:</strong> E-stop mesh, insulated tools, PPE checklist</li>
-                <li><strong>Data:</strong> Registration push to PostgreSQL DB</li>
+                <li>Pack Test Bench (HV Isolation)</li>
+                <li>Module Test Bench (Precision Load)</li>
+                <li>Thermal Camera Array (Safety)</li>
+                <li>E-Stop & Automated Isolation Mesh</li>
               </ul>
             </div>
             <div className={styles.card}>
-              <h3 className={styles.cardTitle}>7.2 Pack Diagnostic Bench</h3>
+              <h3 className={styles.cardTitle}>7.2 Cell Diagnostic Rack</h3>
               <ul className={styles.list}>
-                <li><strong>Role:</strong> Non-destructive pack testing</li>
-                <li><strong>Components:</strong> Programmable loads, insulation monitor</li>
-                <li><strong>Safety:</strong> Hardware safety shutdown loop</li>
-                <li><strong>Data:</strong> CAN/UART BMS comms to edge controller</li>
+                <li>Multi-Channel Cell Cyclers (5V/10A)</li>
+                <li>ACIR 1kHz Spectrometers</li>
+                <li>Environmental Chamber Integration</li>
+                <li>Temperature Probe Grid (Per Fixture)</li>
               </ul>
             </div>
             <div className={styles.card}>
-              <h3 className={styles.cardTitle}>7.3 Module Validation</h3>
+              <h3 className={styles.cardTitle}>7.3 Sensors & Labeling</h3>
               <ul className={styles.list}>
-                <li><strong>Role:</strong> Sub-assembly integrity checks</li>
-                <li><strong>Components:</strong> Medium-power cycler, precision DAQ</li>
-                <li><strong>Safety:</strong> Medium-voltage isolation fixtures</li>
-                <li><strong>Data:</strong> Imbalance matrices & thermal logs</li>
-              </ul>
-            </div>
-            <div className={styles.card}>
-              <h3 className={styles.cardTitle}>7.4 Cell Diagnostic Rack</h3>
-              <ul className={styles.list}>
-                <li><strong>Role:</strong> Granular cell-level profiling</li>
-                <li><strong>Components:</strong> Multi-channel 5V cycler banks</li>
-                <li><strong>Safety:</strong> Temperature probe per fixture</li>
-                <li><strong>Data:</strong> V/I curves, ACIR/DCIR to Matching Engine</li>
-              </ul>
-            </div>
-            <div className={styles.card}>
-              <h3 className={styles.cardTitle}>7.5 Identity & Stickering</h3>
-              <ul className={styles.list}>
-                <li><strong>Role:</strong> Secure asset tagging</li>
-                <li><strong>Components:</strong> QR printer, NFC writer</li>
-                <li><strong>Safety:</strong> Tamper-evident backing material</li>
-                <li><strong>Data:</strong> Encrypted token payload from backend</li>
-              </ul>
-            </div>
-            <div className={styles.card}>
-              <h3 className={styles.cardTitle}>7.6 Repack & Assembly</h3>
-              <ul className={styles.list}>
-                <li><strong>Role:</strong> Final secondary pack construction</li>
-                <li><strong>Components:</strong> Cell sorting bins, welding setups</li>
-                <li><strong>Safety:</strong> Thermal pad & barrier QA tools</li>
-                <li><strong>Data:</strong> End-of-line cert push to Database</li>
+                <li>HV Voltage & Current Sensors (Hall Effect)</li>
+                <li>Precise Contactless Temperature Mapping</li>
+                <li>QR / NFC Label Printer (Hardware ID)</li>
+                <li>Tamper-Evident Asset Tags</li>
               </ul>
             </div>
           </div>
 
           <div className={styles.flowChart} style={{ marginTop: "3rem", padding: "1.5rem" }}>
-            <div className={styles.flowNode} style={{ padding: "0.5rem 1.5rem", borderColor: '#94a3b8' }}>Hardware Bench</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ padding: "0.5rem 1.5rem", borderColor: '#94a3b8' }}>Hardware</div><span className={styles.flowArrow}>→</span>
             <div className={styles.flowNode} style={{ padding: "0.5rem 1.5rem", borderColor: '#38bdf8' }}>Edge Controller</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{ padding: "0.5rem 1.5rem", borderColor: '#eab308' }}>Software Analytics</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{ padding: "0.5rem 1.5rem", borderColor: '#4ade80' }}>Cloud Registry</div>
+            <div className={styles.flowNode} style={{ padding: "0.5rem 1.5rem", borderColor: '#eab308' }}>Software Stack</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ padding: "0.5rem 1.5rem", borderColor: '#4ade80' }}>Cloud Intelligence</div>
           </div>
         </div>
       </section>
@@ -387,83 +347,54 @@ export default function BatteryDiagnosticsContent() {
           </div>
 
           <div className={styles.stackLayer}>
-            <div className={styles.layerNum}>Layer 7</div>
+            <div className={styles.layerNum}>L7</div>
             <div className={styles.layerContent}>
-              <h3 className={styles.layerTitle}>Future Ecosystem Integration</h3>
-              <div className={styles.layerTags}>
-                <span className={styles.layerTag}>Battery Pack Aadhaar</span>
-                <span className={styles.layerTag}>API-first Connectivity</span>
-                <span className={styles.layerTag}>Remote Lab Support</span>
-              </div>
+              <h3 className={styles.layerTitle}>Dashboard & Reporting Layer</h3>
+              <p className={styles.cardDesc}>Visual certification, health reports, and fleet-wide diagnostic analytics.</p>
             </div>
           </div>
           <div className={styles.stackLayer}>
-            <div className={styles.layerNum}>Layer 6</div>
+            <div className={styles.layerNum}>L6</div>
             <div className={styles.layerContent}>
-              <h3 className={styles.layerTitle}>Reporting & Operator Dashboard</h3>
-              <div className={styles.layerTags}>
-                <span className={styles.layerTag}>React/Next.js Interface</span>
-                <span className={styles.layerTag}>Quality Audits</span>
-                <span className={styles.layerTag}>Historical Risk Rendering</span>
-              </div>
+              <h3 className={styles.layerTitle}>Identity & Traceability Layer</h3>
+              <p className={styles.cardDesc}>Encrypted token generation and Battery Pack Aadhaar registry syncing.</p>
             </div>
           </div>
           <div className={styles.stackLayer}>
-            <div className={styles.layerNum}>Layer 5</div>
+            <div className={styles.layerNum}>L5</div>
             <div className={styles.layerContent}>
-              <h3 className={styles.layerTitle}>Digital Identity & Traceability</h3>
-              <div className={styles.layerTags}>
-                <span className={styles.layerTag}>Token Generation</span>
-                <span className={styles.layerTag}>Genealogy DB (PostgreSQL)</span>
-                <span className={styles.layerTag}>Encrypted Audit Logs</span>
-              </div>
+              <h3 className={styles.layerTitle}>Grading Engine</h3>
+              <p className={styles.cardDesc}>Deterministic classification logic based on multi-parameter health scores.</p>
             </div>
           </div>
           <div className={styles.stackLayer}>
-            <div className={styles.layerNum}>Layer 4</div>
+            <div className={styles.layerNum}>L4</div>
             <div className={styles.layerContent}>
-              <h3 className={styles.layerTitle}>Grading & Matching Engine</h3>
-              <div className={styles.layerTags}>
-                <span className={styles.layerTag}>Repack Clustering Algorithm</span>
-                <span className={styles.layerTag}>Thermal Compatibility Rules</span>
-                <span className={styles.layerTag}>Target Application Scorer</span>
-              </div>
+              <h3 className={styles.layerTitle}>Analytics Engine (SOH, SOC, IR)</h3>
+              <p className={styles.cardDesc}>Processing raw data into actionable health, capacity, and resistance indices.</p>
             </div>
           </div>
           <div className={styles.stackLayer}>
-            <div className={styles.layerNum}>Layer 3</div>
+            <div className={styles.layerNum}>L3</div>
             <div className={styles.layerContent}>
-              <h3 className={styles.layerTitle}>Analytics & Health Engine</h3>
-              <div className={styles.layerTags}>
-                <span className={styles.layerTag}>SOH & SOE Models</span>
-                <span className={styles.layerTag}>Self-Discharge Slopes</span>
-                <span className={styles.layerTag}>Degradation Pattern Detection</span>
-              </div>
+              <h3 className={styles.layerTitle}>Data Acquisition Layer</h3>
+              <p className={styles.cardDesc}>High-frequency logging of V/I/T curves and BMS status packets.</p>
             </div>
           </div>
           <div className={styles.stackLayer}>
-            <div className={styles.layerNum}>Layer 2</div>
+            <div className={styles.layerNum}>L2</div>
             <div className={styles.layerContent}>
               <h3 className={styles.layerTitle}>Test Execution Engine</h3>
-              <div className={styles.layerTags}>
-                <span className={styles.layerTag}>Test Recipe Sequencing</span>
-                <span className={styles.layerTag}>Pass/Fail Rules DB</span>
-                <span className={styles.layerTag}>Automation Core</span>
-              </div>
+              <p className={styles.cardDesc}>Automated sequencing of charge/discharge recipes and safety checks.</p>
             </div>
           </div>
           <div className={styles.stackLayer}>
-            <div className={styles.layerNum}>Layer 1</div>
+            <div className={styles.layerNum}>L1</div>
             <div className={styles.layerContent}>
               <h3 className={styles.layerTitle}>Device Interface Layer</h3>
-              <div className={styles.layerTags}>
-                <span className={styles.layerTag}>Instrument TCP/IP Layer</span>
-                <span className={styles.layerTag}>BMS CAN Translator</span>
-                <span className={styles.layerTag}>Python edge polling</span>
-              </div>
+              <p className={styles.cardDesc}>TCP/IP instrument control, CAN bus translation, and edge-polling firmware.</p>
             </div>
           </div>
-
         </div>
       </section>
 
@@ -544,36 +475,35 @@ export default function BatteryDiagnosticsContent() {
         </div>
       </section>
 
-      {/* 10. ENCRYPTED IDENTITY */}
+      {/* 10. ENCRYPTED IDENTITY & TRACEABILITY (Step 7) */}
       <section className={styles.pageSection}>
         <div className="container">
           <div className={styles.sectionHeader}>
             <span className={styles.sectionNumber}>Traceability</span>
-            <h2 className={styles.sectionTitle}>Encrypted Digital Identity & Label Strategy</h2>
+            <h2 className={styles.sectionTitle}>Encrypted Battery Identity & Traceability System</h2>
           </div>
           <div className={styles.grid2}>
             <div>
               <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-                Every discrete pack, module, and cell is issued a tamper-aware digital identity via a physical sticker. The QR code exposes minimal plaintext metadata while embedding an encrypted cryptographic core. When scanned by an authorised client, this token accesses the deep backend to reveal full diagnostic lineage and grading.
+                Every discrete pack, module, and cell is issued a tamper-aware digital identity via a physical sticker. The QR code exposes minimal plaintext metadata while embedding an encrypted cryptographic core.
               </p>
-              <ul className={styles.list}>
-                <li>Unique Asset ID & Component Genealogy</li>
-                <li>Encrypted Payload / Auth Checksum</li>
-                <li>Chain of Custody Timestamping</li>
-                <li>Audit trail for every test, grade change, and transfer</li>
-                <li>Full genealogy: which original pack each cell came from</li>
-              </ul>
               <div className={styles.calloutBlock} style={{ marginTop: '1.5rem' }}>
-                <strong>Battery Pack Aadhaar Foundation:</strong> This encrypted identity system becomes the foundational layer for India’s anticipated Battery Pack Aadhaar scheme — providing immutable lifecycle records from first use through second-life deployment.
+                <strong>This forms the foundation for Battery Pack Aadhaar.</strong> The system provides an immutable audit trail and genealogy tracking for every lithium node in the second-life ecosystem.
               </div>
+              <ul className={styles.list}>
+                <li>Unique ID for each Pack / Module / Cell</li>
+                <li>QR-based Encrypted Token Strategy</li>
+                <li>Secure Backend Database Mapping</li>
+                <li>Full Genealogy & Audit Trail Tracking</li>
+              </ul>
             </div>
             <div className={styles.flowChart} style={{ margin: 0, padding: '1.5rem' }}>
-              <div className={styles.flowNode} style={{ padding: '0.5rem 1rem' }}>Cell / Module</div><span className={styles.flowArrow}>→</span>
+              <div className={styles.flowNode} style={{ padding: '0.5rem 1rem' }}>Cell</div><span className={styles.flowArrow}>→</span>
               <div className={styles.flowNode} style={{ padding: '0.5rem 1rem' }}>Generate ID</div><span className={styles.flowArrow}>→</span>
-              <div className={styles.flowNode} style={{ padding: '0.5rem 1rem' }}>Print Sticker</div><span className={styles.flowArrow}>→</span>
-              <div className={styles.flowNode} style={{ padding: '0.5rem 1rem' }}>Field Scan</div><span className={styles.flowArrow}>→</span>
-              <div className={styles.flowNode} style={{ padding: '0.5rem 1rem' }}>Cloud Auth</div><span className={styles.flowArrow}>→</span>
-              <div className={styles.flowNode} style={{ padding: '0.5rem 1rem' }}>View History</div>
+              <div className={styles.flowNode} style={{ padding: '0.5rem 1rem' }}>Sticker</div><span className={styles.flowArrow}>→</span>
+              <div className={styles.flowNode} style={{ padding: '0.5rem 1rem' }}>Scan</div><span className={styles.flowArrow}>→</span>
+              <div className={styles.flowNode} style={{ padding: '0.5rem 1rem' }}>Cloud</div><span className={styles.flowArrow}>→</span>
+              <div className={styles.flowNode} style={{ padding: '0.5rem 1rem' }}>History</div>
             </div>
           </div>
         </div>
@@ -613,177 +543,131 @@ export default function BatteryDiagnosticsContent() {
         </div>
       </section>
 
-      {/* 12. THERMAL RECONFIGURATION */}
+      {/* 12. THERMAL RECONFIGURATION (Step 8) */}
       <section className={styles.pageSection}>
         <div className="container">
           <div className={styles.sectionHeader}>
             <span className={styles.sectionNumber}>Engineering Safety</span>
-            <h2 className={styles.sectionTitle}>Thermal Reconfiguration & BTMS Upgrade</h2>
+            <h2 className={styles.sectionTitle}>Thermal Reconfiguration for Second-Life Battery Packs</h2>
           </div>
 
           <div className={styles.calloutBlock} style={{ marginBottom: '2rem' }}>
-            <strong>Thermal redesign is mandatory before any second-life reuse.</strong> A cell cluster running inside an Indian rural solar charging environment faces vastly different ambient loads, static duty cycles, and passive ventilation bounds compared to its original high-speed vehicle chassis. We reconstruct the heat profile explicitly for the secondary application.
+            <strong>Thermal redesign is mandatory before reuse.</strong> Second-life packs face different duty cycles and ambient conditions than their original chassis. We reconstruct the heat profile explicitly for the secondary application.
           </div>
 
           <div className={styles.flowChart} style={{ marginBottom: '3rem', padding: '1.5rem' }}>
-            <div className={styles.flowNode} style={{ padding: '0.5rem 1rem' }}>Cell Matching</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{ padding: '0.5rem 1rem' }}>Pack Design</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{ padding: '0.5rem 1rem' }}>Thermal Simulation</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{ padding: '0.5rem 1rem' }}>Validation</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{ padding: '0.5rem 1rem' }}>Final Pack</div>
+            <div className={styles.flowNode}>Cell Matching</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode}>Pack Design</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode}>Thermal Simulation</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode}>Validation</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ borderColor: '#4ade80' }}>Final Pack</div>
           </div>
 
           <div className={styles.grid3}>
             <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Air & Passive Cooling</h3>
-              <p className={styles.cardDesc}>Transitioning from expensive cold-plate/liquid to mathematically validated forced or directed passive air corridors optimised for stationary indoor/outdoor enclosures.</p>
-            </div>
-            <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Thermal Barriers & Cell Spacing</h3>
-              <p className={styles.cardDesc}>Establishing larger inter-cell spatial tolerances and non-flammable barriers to physically halt runaway propagation. Includes ceramic spacers and mica insulation sheets.</p>
-            </div>
-            <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Electro-Thermal Simulation</h3>
-              <p className={styles.cardDesc}>Pre-emptive simulation of the proposed pack topology against peak daily solar loads, including worst-case ambient temperatures in Indian rural environments (45°C+).</p>
-            </div>
-          </div>
-
-          <div className={styles.grid2} style={{ marginTop: '2rem' }}>
-            <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Heat Dissipation Strategy</h3>
-              <ul className={styles.list}>
-                <li>Convective path analysis for enclosure design</li>
-                <li>Heat sink sizing for continuous C/5 discharge profiles</li>
-                <li>Thermal pad material selection (silicone vs. graphite)</li>
+              <h3 className={styles.cardTitle}>Cooling Strategies</h3>
+              <p className={styles.cardDesc}>Validated forced air or directed passive cooling corridors optimized for rural environments.</p>
+              <ul className={styles.list} style={{ fontSize: '0.8rem', marginTop: '0.5rem' }}>
+                <li>Forced Air Induction</li>
+                <li>Directed Passive Cooling</li>
+                <li>Heat Dissipation Modeling</li>
               </ul>
             </div>
             <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Rural Environment Considerations</h3>
-              <ul className={styles.list}>
-                <li>Dust ingress protection (IP54+ enclosures)</li>
-                <li>High ambient temperature de-rating curves</li>
-                <li>Monsoon humidity and condensation management</li>
-                <li>Passive ventilation for zero-maintenance operation</li>
+              <h3 className={styles.cardTitle}>Propagation Barriers</h3>
+              <p className={styles.cardDesc}>Physical separation to halt thermal runaway using advanced materials.</p>
+              <ul className={styles.list} style={{ fontSize: '0.8rem', marginTop: '0.5rem' }}>
+                <li>Ceramic Cell Spacers</li>
+                <li>Non-Flammable Mica Barriers</li>
+                <li>Optimized Inter-Cell Pitch</li>
+              </ul>
+            </div>
+            <div className={styles.card}>
+              <h3 className={styles.cardTitle}>Rural Constraints</h3>
+              <p className={styles.cardDesc}>Engineering for high ambient temperatures and dust-heavy environments.</p>
+              <ul className={styles.list} style={{ fontSize: '0.8rem', marginTop: '0.5rem' }}>
+                <li>High Ambient Ops (45°C+)</li>
+                <li>Dust Ingress Protection (IP54)</li>
+                <li>Maintenance-Free Thermal Mesh</li>
               </ul>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 13. AI / ANALYTICS ROADMAP */}
-      <section className={styles.pageSectionAlt}>
-        <div className="container">
-          <div className={styles.sectionHeader}>
-            <span className={styles.sectionNumber}>Roadmap</span>
-            <h2 className={styles.sectionTitle}>Evolution of Platform Intelligence</h2>
-          </div>
-          <div className={styles.grid3}>
-            <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Stage 1: Deterministic Engine</h3>
-              <ul className={styles.list}>
-                <li>Rule-based static threshold checks</li>
-                <li>Boolean deterministic grading</li>
-                <li>Immediate lab SOP deployment</li>
-              </ul>
-            </div>
-            <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Stage 2: Pattern Analytics</h3>
-              <ul className={styles.list}>
-                <li>Historical degradation clustering</li>
-                <li>Automated matching suggestions</li>
-                <li>Hidden anomaly correlation</li>
-              </ul>
-            </div>
-            <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Stage 3: Predictive ML Platform</h3>
-              <ul className={styles.list}>
-                <li>Remaining Useful Life (RUL) estimation</li>
-                <li>Thermal event forecasting</li>
-                <li>Deep predictive SOH classification</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 14. ROADMAP */}
+      {/* 13. PRODUCT ROADMAP: MVP → SCALE (Step 9) */}
       <section className={styles.pageSection}>
         <div className="container">
           <div className={styles.sectionHeader}>
             <span className={styles.sectionNumber}>Project Execution</span>
-            <h2 className={styles.sectionTitle}>MVP to Deployment Roadmap</h2>
-            <p className={styles.sectionSubtitle}>Five structured phases from lab prototype to national-scale battery traceability</p>
+            <h2 className={styles.sectionTitle}>Product Roadmap: MVP to Scalable Platform</h2>
+            <p className={styles.sectionSubtitle}>Five structured phases from lab prototype to national-scale battery traceability.</p>
           </div>
           <div className={styles.grid4} style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
             <div className={styles.phaseCard}>
               <div className={styles.phaseNumber}>Phase 1</div>
               <h3 className={styles.cardTitle}>Diagnostics Platform</h3>
-              <ul className={styles.list}>
-                <li>Target chemistry selection (2W/3W/4W)</li>
-                <li>Core grading logic implementation</li>
-                <li>Manual lab SOPs &amp; basic UI</li>
+              <ul className={styles.list} style={{ fontSize: '0.8rem' }}>
+                <li>Lab SOP Deployment</li>
+                <li>Core Grading Logic</li>
+                <li>Manual Intake UI</li>
               </ul>
-              <p className={styles.cardDesc} style={{ marginTop: '0.75rem', fontWeight: 600, color: '#4ade80' }}>Output: Working diagnostic bench + software</p>
+              <p className={styles.cardDesc} style={{ marginTop: '0.75rem', fontWeight: 600, color: '#4ade80' }}>Output: Working Lab Bench</p>
               <div className={styles.phaseMaturity}>
                 <div className={styles.maturityBar}><div className={styles.maturityFill} style={{ width: '100%' }}></div></div>
-                <span className={styles.maturityLabel}>Foundation</span>
+                <span className={styles.maturityLabel}>Maturity: MVP</span>
               </div>
             </div>
             <div className={styles.phaseCard}>
               <div className={styles.phaseNumber}>Phase 2</div>
               <h3 className={styles.cardTitle}>Grading + Identity</h3>
-              <ul className={styles.list}>
-                <li>Encrypted QR sticker rollout</li>
-                <li>Operator dashboard integration</li>
-                <li>Deterministic grading engine</li>
+              <ul className={styles.list} style={{ fontSize: '0.8rem' }}>
+                <li>Encrypted QR Tokens</li>
+                <li>Deterministic Scorer</li>
+                <li>Operator Dashboard</li>
               </ul>
-              <p className={styles.cardDesc} style={{ marginTop: '0.75rem', fontWeight: 600, color: '#4ade80' }}>Output: Certified graded cells with digital IDs</p>
+              <p className={styles.cardDesc} style={{ marginTop: '0.75rem', fontWeight: 600, color: '#4ade80' }}>Output: Graded Asset Registry</p>
               <div className={styles.phaseMaturity}>
-                <div className={styles.maturityBar}><div className={styles.maturityFill} style={{ width: '75%' }}></div></div>
-                <span className={styles.maturityLabel}>Core Product</span>
+                <div className={styles.maturityBar}><div className={styles.maturityFill} style={{ width: '80%' }}></div></div>
+                <span className={styles.maturityLabel}>Maturity: Beta</span>
               </div>
             </div>
             <div className={styles.phaseCard}>
               <div className={styles.phaseNumber}>Phase 3</div>
               <h3 className={styles.cardTitle}>Repack System</h3>
-              <ul className={styles.list}>
-                <li>Automated cell matching engine</li>
-                <li>Autonomous array cycling</li>
-                <li>Genealogy tracking pipeline</li>
+              <ul className={styles.list} style={{ fontSize: '0.8rem' }}>
+                <li>Cell Matching Engine</li>
+                <li>Autonomous Cycler Logic</li>
+                <li>Genealogy Mapping</li>
               </ul>
-              <p className={styles.cardDesc} style={{ marginTop: '0.75rem', fontWeight: 600, color: '#facc15' }}>Output: Matched cell clusters for repack</p>
+              <p className={styles.cardDesc} style={{ marginTop: '0.75rem', fontWeight: 600, color: '#facc15' }}>Output: Optimized Pack Cluster</p>
               <div className={styles.phaseMaturity}>
                 <div className={styles.maturityBar}><div className={styles.maturityFill} style={{ width: '50%' }}></div></div>
-                <span className={styles.maturityLabel}>Scale-Ready</span>
+                <span className={styles.maturityLabel}>Maturity: Dev</span>
               </div>
             </div>
             <div className={styles.phaseCard}>
               <div className={styles.phaseNumber}>Phase 4</div>
               <h3 className={styles.cardTitle}>Thermal Optimization</h3>
-              <ul className={styles.list}>
-                <li>Physical prototype repurposed packs</li>
-                <li>Custom BTMS profile simulation</li>
-                <li>Aero-thermal load validation</li>
+              <ul className={styles.list} style={{ fontSize: '0.8rem' }}>
+                <li>Custom BTMS Profiles</li>
+                <li>Rural Load Simulation</li>
+                <li>Aero-Thermal Validation</li>
               </ul>
-              <p className={styles.cardDesc} style={{ marginTop: '0.75rem', fontWeight: 600, color: '#facc15' }}>Output: Validated second-life pack design</p>
+              <p className={styles.cardDesc} style={{ marginTop: '0.75rem', fontWeight: 600, color: '#facc15' }}>Output: Second-Life Blueprint</p>
               <div className={styles.phaseMaturity}>
-                <div className={styles.maturityBar}><div className={styles.maturityFill} style={{ width: '35%' }}></div></div>
-                <span className={styles.maturityLabel}>Engineering</span>
+                <div className={styles.maturityBar}><div className={styles.maturityFill} style={{ width: '30%' }}></div></div>
+                <span className={styles.maturityLabel}>Maturity: R&D</span>
               </div>
             </div>
-            <div className={styles.phaseCard}>
-              <div className={styles.phaseNumber}>Phase 5</div>
-              <h3 className={styles.cardTitle}>Aadhaar Integration</h3>
-              <ul className={styles.list}>
-                <li>Battery Pack Aadhaar registry APIs</li>
-                <li>Lifecycle cloud syncing</li>
-                <li>Remote service center analytics</li>
-              </ul>
-              <p className={styles.cardDesc} style={{ marginTop: '0.75rem', fontWeight: 600, color: '#38bdf8' }}>Output: National-scale battery traceability</p>
-              <div className={styles.phaseMaturity}>
-                <div className={styles.maturityBar}><div className={styles.maturityFill} style={{ width: '20%' }}></div></div>
-                <span className={styles.maturityLabel}>Future-Ready</span>
-              </div>
+          </div>
+          <div className={styles.phaseCard} style={{ marginTop: '2rem', borderLeft: '4px solid #38bdf8' }}>
+            <div className={styles.phaseNumber}>Phase 5</div>
+            <h3 className={styles.cardTitle}>Battery Pack Aadhaar Integration</h3>
+            <p className={styles.cardDesc}>Scaling to national lifecycle registry via secure APIs and ecosystem-wide traceability.</p>
+            <div className={styles.phaseMaturity}>
+              <div className={styles.maturityBar}><div className={styles.maturityFill} style={{ width: '10%', background: '#38bdf8' }}></div></div>
+              <span className={styles.maturityLabel}>Maturity: Vision</span>
             </div>
           </div>
         </div>

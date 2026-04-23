@@ -191,7 +191,7 @@ export default function SIEMSContent() {
                 <div>
                    <p style={{ fontSize: "0.75rem", color: "var(--accent-primary)", fontWeight: "700", textTransform: "uppercase", marginBottom: "4px" }}>EV.ENGINEER™</p>
                    <h2 style={{ fontSize: "1.8rem", marginBottom: "8px" }}>Sudarshana Karkala</h2>
-                   <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginBottom: "12px" }}>Principal Architect | Thasmai Infotech Private Limited</p>
+                   <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginBottom: "12px" }}>Co-Founder, Principal Architect | Thasmai Infotech Private Limited</p>
                    <div className="availabilityHighlight">
                      Available for strategic architectural consulting and advanced automotive R&D partnerships.
                    </div>
