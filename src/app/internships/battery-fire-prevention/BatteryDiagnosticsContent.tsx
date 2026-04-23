@@ -30,7 +30,7 @@ export default function BatteryDiagnosticsContent() {
       </section>
 
       {/* 1.5 ARCHITECT CARD */}
-      <section className={styles.pageSection} style={{ padding: '0 0 4rem 0' }}>
+      <section className={styles.pageSection} style={{ padding: '0 0 1.5rem 0' }}>
         <div className="container">
           <div className={styles.architectCard}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "20px" }}>
