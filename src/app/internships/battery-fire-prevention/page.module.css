@@ -704,6 +704,10 @@
   .heroPillars { gap: 0.75rem; }
   .heroPillarChip { font-size: 0.75rem; padding: 0.4rem 0.75rem; }
 
+  .heroPlatformScope { font-size: 0.85rem; padding: 0.5rem 1rem; }
+  .thermalPrinciples { padding: 1.25rem 1.25rem; }
+  .boundaryList li { font-size: 0.8rem; }
+
   .hierarchyDiagram { flex-direction: column; padding: 1.5rem; }
   .hierarchyArrow { transform: rotate(90deg); }
 }
