@@ -86,7 +86,7 @@ export default function Navbar() {
               </div>
               <div className={styles.dropdownColumn}>
                 <div className={styles.dropdownTitle}>Design &amp; Development</div>
-                <Link href="/internships/battery-fire-prevention" className={styles.dropdownLink}>AI-Powered EV Battery Fire Prevention System</Link>
+                <Link href="/internships/battery-fire-prevention" className={styles.dropdownLink}>EV Battery Intelligence Platform</Link>
                 <Link href="/internships/battery-aadhaar" className={styles.dropdownLink}>Battery Pack Aadhaar System</Link>
                 <div className={styles.dropdownDivider} />
                 <div className={styles.dropdownSubTitle}>Miscellaneous</div>
@@ -160,7 +160,7 @@ export default function Navbar() {
           <Link href="/internships/battery-circular-economy" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Battery Circular Economy</Link>
 
           <div className={styles.mobileSectionTitle}>Internships — Design &amp; Development</div>
-          <Link href="/internships/battery-fire-prevention" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>AI-Powered EV Battery Fire Prevention System</Link>
+          <Link href="/internships/battery-fire-prevention" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>EV Battery Intelligence Platform</Link>
           <Link href="/internships/battery-aadhaar" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Battery Pack Aadhaar System</Link>
 
           <div className={styles.mobileSectionTitle}>Internships — Miscellaneous</div>

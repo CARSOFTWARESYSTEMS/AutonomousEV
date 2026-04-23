@@ -98,7 +98,7 @@ export default function InternshipsPage() {
           
           <Section title="Design & Development">
             <ProjectCard 
-              title="AI-Powered EV Battery Fire Prevention System" 
+              title="EV Battery Intelligence Platform" 
               desc="Risk analysis and advanced thermal runaway prevention implementations." 
               link="/internships/battery-fire-prevention" 
             />
