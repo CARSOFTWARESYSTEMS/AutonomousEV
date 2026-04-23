@@ -46,21 +46,21 @@ export default function BatteryDiagnosticsContent() {
       {/* 1.5 ARCHITECT CARD */}
       <section className={styles.pageSection} style={{ padding: '2rem 0 0 0' }}>
         <div className="container">
-          <div className={styles.executiveCard} style={{ borderLeft: "4px solid var(--accent-primary)", padding: "1.5rem 2.5rem" }}>
+          <div className={styles.architectCard}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "20px" }}>
               <div>
-                <p style={{ fontSize: "0.75rem", color: "var(--accent-primary)", fontWeight: "700", textTransform: "uppercase", marginBottom: "4px" }}>EV.ENGINEER™</p>
+                <p style={{ fontSize: "0.75rem", color: "#4ca930", fontWeight: "700", textTransform: "uppercase", marginBottom: "4px" }}>EV.ENGINEER™</p>
                 <h2 style={{ fontSize: "1.8rem", marginBottom: "8px", color: "#fff", fontWeight: "600" }}>Sudarshana Karkala</h2>
                 <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginBottom: "12px" }}>Principal Architect | Thasmai Infotech Private Limited</p>
-                <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginBottom: "8px" }}>
+                <div className={styles.availabilityHighlight}>
                   Available for strategic architectural consulting and advanced automotive R&D partnerships.
-                </p>
-                <div style={{ display: "flex", alignItems: "center", gap: "12px", fontSize: "0.85rem", flexWrap: "wrap" }}>
-                  <a href="tel:+919845561518" style={{ color: "var(--accent-primary)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px" }}>
+                </div>
+                <div className={styles.contactLinks}>
+                  <a href="tel:+919845561518" style={{ color: "#4ca930", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px" }}>
                     <span>📞</span> +91 9845561518
                   </a>
-                  <span style={{ color: "rgba(255,255,255,0.2)" }}>|</span>
-                  <a href="https://www.linkedin.com/in/sudarshanakarkala/" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-primary)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px" }}>
+                  <span className={styles.contactSeparator} style={{ color: "rgba(255,255,255,0.2)" }}>|</span>
+                  <a href="https://www.linkedin.com/in/sudarshanakarkala/" target="_blank" rel="noopener noreferrer" style={{ color: "#4ca930", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px" }}>
                     <span>🔗</span> LinkedIn Profile
                   </a>
                 </div>
