@@ -189,7 +189,7 @@ export default function SIEMSContent() {
           <section className="glass-panel" style={{ marginBottom: "64px", borderLeft: "4px solid var(--accent-primary)" }}>
              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "20px" }}>
                 <div>
-                   <p style={{ fontSize: "0.75rem", color: "var(--accent-primary)", fontWeight: "700", textTransform: "uppercase", marginBottom: "4px" }}>Lead Architect & Author</p>
+                   <p style={{ fontSize: "0.75rem", color: "var(--accent-primary)", fontWeight: "700", textTransform: "uppercase", marginBottom: "4px" }}>EV.ENGINEER™</p>
                    <h2 style={{ fontSize: "1.8rem", marginBottom: "8px" }}>Sudarshana Karkala</h2>
                    <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginBottom: "12px" }}>Principal Architect | Thasmai Infotech Private Limited</p>
                    <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginBottom: "8px" }}>

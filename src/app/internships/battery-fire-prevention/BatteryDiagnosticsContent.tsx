@@ -43,7 +43,56 @@ export default function BatteryDiagnosticsContent() {
         </div>
       </section>
 
-      {/* 2. EXECUTIVE OVERVIEW */}
+      {/* 1.5 ARCHITECT CARD */}
+      <section className={styles.pageSection} style={{ padding: '2rem 0 0 0' }}>
+        <div className="container">
+          <div className={styles.executiveCard} style={{ borderLeft: "4px solid var(--accent-primary)", padding: "1.5rem 2.5rem" }}>
+             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "20px" }}>
+                <div>
+                   <p style={{ fontSize: "0.75rem", color: "var(--accent-primary)", fontWeight: "700", textTransform: "uppercase", marginBottom: "4px" }}>EV.ENGINEER™</p>
+                   <h2 style={{ fontSize: "1.8rem", marginBottom: "8px", color: "#fff", fontWeight: "600" }}>Sudarshana Karkala</h2>
+                   <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginBottom: "12px" }}>Principal Architect | Thasmai Infotech Private Limited</p>
+                   <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginBottom: "8px" }}>
+                     Available for strategic architectural consulting and advanced automotive R&D partnerships.
+                   </p>
+                   <div style={{ display: "flex", alignItems: "center", gap: "12px", fontSize: "0.85rem", flexWrap: "wrap" }}>
+                     <a href="tel:+919845561518" style={{ color: "var(--accent-primary)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px" }}>
+                       <span>📞</span> +91 9845561518
+                     </a>
+                     <span style={{ color: "rgba(255,255,255,0.2)" }}>|</span>
+                     <a href="https://www.linkedin.com/in/sudarshanakarkala/" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-primary)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px" }}>
+                       <span>🔗</span> LinkedIn Profile
+                     </a>
+                   </div>
+                </div>
+             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 2. SYSTEM IDENTITY */}
+      <section className={styles.pageSectionAlt} style={{ padding: '4rem 0' }}>
+        <div className="container" style={{ textAlign: 'center' }}>
+          <h2 className={styles.sectionTitle} style={{ fontSize: '1.8rem', color: '#eab308' }}>
+            System Identity
+          </h2>
+          <p className={styles.sectionSubtitle} style={{ fontSize: '1.3rem', fontWeight: 600, color: '#fff', maxWidth: '800px', margin: '1.5rem auto' }}>
+            “This is a full-stack battery diagnostics and repurposing platform — not just a fire prevention system.”
+          </p>
+          <p className={styles.cardDesc} style={{ maxWidth: '750px', margin: '0 auto 2.5rem' }}>
+            A comprehensive ecosystem encompassing deep diagnostics, deterministic grading, encrypted digital identity, cell-level repack mapping, and rigorous thermal redesign.
+          </p>
+
+          <div className={styles.flowChart} style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <div className={styles.flowNode} style={{borderColor: '#38bdf8'}}>Original Pack</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{borderColor: '#38bdf8'}}>Module Set</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{borderColor: '#38bdf8'}}>Cell Set</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{borderColor: '#4ade80'}}>New Reconfigured Pack</div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. EXECUTIVE OVERVIEW */}
       <section className={styles.pageSection}>
         <div className="container">
           <div className={styles.executiveCard}>
@@ -264,6 +313,13 @@ export default function BatteryDiagnosticsContent() {
               </ul>
             </div>
           </div>
+
+          <div className={styles.flowChart} style={{ marginTop: "3rem", padding: "1.5rem" }}>
+            <div className={styles.flowNode} style={{padding: "0.5rem 1.5rem", borderColor: '#94a3b8'}}>Hardware Bench</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{padding: "0.5rem 1.5rem", borderColor: '#38bdf8'}}>Edge Controller</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{padding: "0.5rem 1.5rem", borderColor: '#eab308'}}>Software Analytics</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{padding: "0.5rem 1.5rem", borderColor: '#4ade80'}}>Cloud Registry</div>
+          </div>
         </div>
       </section>
 
@@ -443,10 +499,12 @@ export default function BatteryDiagnosticsContent() {
               </ul>
             </div>
             <div className={styles.flowChart} style={{ margin: 0, padding: "1.5rem" }}>
-              <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>Physical Asset</div><span className={styles.flowArrow}>→</span>
-              <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>ID Generation</div><span className={styles.flowArrow}>→</span>
-              <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>Token Storage</div><span className={styles.flowArrow}>→</span>
-              <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>Label Printing</div>
+              <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>Cell / Module</div><span className={styles.flowArrow}>→</span>
+              <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>Generate ID</div><span className={styles.flowArrow}>→</span>
+              <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>Print Sticker</div><span className={styles.flowArrow}>→</span>
+              <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>Field Scan</div><span className={styles.flowArrow}>→</span>
+              <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>Cloud Auth</div><span className={styles.flowArrow}>→</span>
+              <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>View History</div>
             </div>
           </div>
         </div>
