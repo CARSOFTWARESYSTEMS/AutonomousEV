@@ -123,6 +123,25 @@ export default function BatteryDiagnosticsContent() {
             <div className={`${styles.flowNode} ${styles.gate}`}>Gate 4: Repack Validation</div><span className={styles.flowArrow}>→</span>
             <div className={styles.flowNode}>Second-Life Deployment & Tracking</div>
           </div>
+          
+          <div className={styles.grid4} style={{ marginTop: '2rem' }}>
+            <div className={styles.card}>
+              <h3 className={styles.cardTitle} style={{color: '#eab308'}}>Gate 1: Pack Decision</h3>
+              <p className={styles.cardDesc}>Direct reuse candidate vs. Disassembly required vs. Immediate Scrap based on full-pack insulation and thermal scan.</p>
+            </div>
+            <div className={styles.card}>
+              <h3 className={styles.cardTitle} style={{color: '#eab308'}}>Gate 2: Module Decision</h3>
+              <p className={styles.cardDesc}>Can the module be repurposed as an intact block, or does severe imbalance dictate full cell-level extraction?</p>
+            </div>
+            <div className={styles.card}>
+              <h3 className={styles.cardTitle} style={{color: '#eab308'}}>Gate 3: Cell Decision</h3>
+              <p className={styles.cardDesc}>Binning cells into Grades A/B/C/D based on precision capacity, internal resistance, and self-discharge criteria.</p>
+            </div>
+            <div className={styles.card}>
+              <h3 className={styles.cardTitle} style={{color: '#eab308'}}>Gate 4: Repack Qualification</h3>
+              <p className={styles.cardDesc}>Final end-of-line verification of the newly assembled pack, confirming BMS communication and thermal safety.</p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -185,51 +204,55 @@ export default function BatteryDiagnosticsContent() {
              <div className={styles.card}>
               <h3 className={styles.cardTitle}>7.1 Intake & Safety</h3>
               <ul className={styles.list}>
-                <li>Barcode, QR, and NFC asset registration.</li>
-                <li>Insulated tools and strict PPE isolation UI.</li>
-                <li>Automated interlock & E-stop mesh.</li>
-                <li>Ambient thermal camera environment overwatch.</li>
+                <li><strong>Role:</strong> Secure quarantine & registration</li>
+                <li><strong>Components:</strong> QR/NFC scanners, thermal cameras</li>
+                <li><strong>Safety:</strong> E-stop mesh, insulated tools, PPE checklist</li>
+                <li><strong>Data:</strong> Registration push to PostgreSQL DB</li>
               </ul>
             </div>
             <div className={styles.card}>
               <h3 className={styles.cardTitle}>7.2 Pack Diagnostic Bench</h3>
               <ul className={styles.list}>
-                <li>Programmable high-side load & source profiles.</li>
-                <li>Interrogator for BMS (CAN/UART/RS485).</li>
-                <li>Pack-scale insulation degradation monitor.</li>
-                <li>Hard-wired hardware safety shutdown loop.</li>
+                <li><strong>Role:</strong> Non-destructive pack testing</li>
+                <li><strong>Components:</strong> Programmable loads, insulation monitor</li>
+                <li><strong>Safety:</strong> Hardware safety shutdown loop</li>
+                <li><strong>Data:</strong> CAN/UART BMS comms to edge controller</li>
               </ul>
             </div>
             <div className={styles.card}>
               <h3 className={styles.cardTitle}>7.3 Module Validation</h3>
               <ul className={styles.list}>
-                <li>Precision multi-channel voltage logging.</li>
-                <li>Medium-power module cycler node.</li>
-                <li>Local array thermal observation tools.</li>
+                <li><strong>Role:</strong> Sub-assembly integrity checks</li>
+                <li><strong>Components:</strong> Medium-power cycler, precision DAQ</li>
+                <li><strong>Safety:</strong> Medium-voltage isolation fixtures</li>
+                <li><strong>Data:</strong> Imbalance matrices & thermal logs</li>
               </ul>
             </div>
             <div className={styles.card}>
               <h3 className={styles.cardTitle}>7.4 Cell Diagnostic Rack</h3>
               <ul className={styles.list}>
-                <li>Dense multi-channel 5V cycler banks.</li>
-                <li>High-resolution V/I sensing per fixture channel.</li>
-                <li>Automated tray locking and routing arrays.</li>
+                <li><strong>Role:</strong> Granular cell-level profiling</li>
+                <li><strong>Components:</strong> Multi-channel 5V cycler banks</li>
+                <li><strong>Safety:</strong> Temperature probe per fixture</li>
+                <li><strong>Data:</strong> V/I curves, ACIR/DCIR to Matching Engine</li>
               </ul>
             </div>
             <div className={styles.card}>
               <h3 className={styles.cardTitle}>7.5 Identity & Stickering</h3>
               <ul className={styles.list}>
-                <li>High-durability QR code/NFC thermal printer.</li>
-                <li>Tamper-evident custom sticker backing.</li>
-                <li>Secure terminal payload processing.</li>
+                <li><strong>Role:</strong> Secure asset tagging</li>
+                <li><strong>Components:</strong> QR printer, NFC writer</li>
+                <li><strong>Safety:</strong> Tamper-evident backing material</li>
+                <li><strong>Data:</strong> Encrypted token payload from backend</li>
               </ul>
             </div>
             <div className={styles.card}>
-              <h3 className={styles.cardTitle}>7.6 Repack Validation</h3>
+              <h3 className={styles.cardTitle}>7.6 Repack & Assembly</h3>
               <ul className={styles.list}>
-                <li>Cell sorting bins mapped by grading software.</li>
-                <li>New busbar forming and welding setups.</li>
-                <li>Thermal pad and cooling channel QA platforms.</li>
+                <li><strong>Role:</strong> Final secondary pack construction</li>
+                <li><strong>Components:</strong> Cell sorting bins, welding setups</li>
+                <li><strong>Safety:</strong> Thermal pad & barrier QA tools</li>
+                <li><strong>Data:</strong> End-of-line cert push to Database</li>
               </ul>
             </div>
           </div>
@@ -467,6 +490,17 @@ export default function BatteryDiagnosticsContent() {
             Repurposing entails strict thermal redesign. A cell cluster running inside an Indian rural solar charging environment will face vastly different ambient loads, static duty cycles, and passive ventilation bounds compared to its original high-speed vehicle chassis. We reconstruct the heat profile explicitly for the secondary application.
           </div>
 
+          <div className={styles.flowChart} style={{ marginBottom: "3rem", padding: "1.5rem" }}>
+            <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>Cell Matching</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>New Pack Topology</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>Thermal Design Concept</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>Electro-Thermal Simulation</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>Cost vs Performance Trade-off</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>Prototype Build</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>Thermal Validation</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>Final Pack Design</div>
+          </div>
+
           <div className={styles.grid3}>
             <div className={styles.card}>
               <h3 className={styles.cardTitle}>Cooling Re-evaluation</h3>
@@ -527,7 +561,7 @@ export default function BatteryDiagnosticsContent() {
             <span className={styles.sectionNumber}>Project Execution</span>
             <h2 className={styles.sectionTitle}>MVP to Deployment Timeline</h2>
           </div>
-          <div className={styles.grid4}>
+          <div className={styles.grid4} style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
             <div className={styles.card}>
               <h3 className={styles.cardTitle}>Phase 1: Foundation</h3>
               <p className={styles.cardDesc}>Selecting target chemistry families, mapping the core grading logic, defining database schemas, and outlining the initial UI layout.</p>
@@ -537,12 +571,16 @@ export default function BatteryDiagnosticsContent() {
               <p className={styles.cardDesc}>Spinning up rudimentary edge interfaces, building the V1 diagnostic operator dashboard, and running manual trial bench assets.</p>
             </div>
             <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Phase 3: Automation</h3>
+              <h3 className={styles.cardTitle}>Phase 3: Traceability</h3>
               <p className={styles.cardDesc}>Switching to autonomous cell array cycling, rolling out encrypted QR stickers, and finalizing the repack cluster mapping engine.</p>
             </div>
             <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Phase 4: Field Validation</h3>
+              <h3 className={styles.cardTitle}>Phase 4: Thermal Validation</h3>
               <p className={styles.cardDesc}>Constructing physical prototype repurposed packs containing custom BTMS profiles, then testing them within live rural PV deployments.</p>
+            </div>
+            <div className={styles.card}>
+              <h3 className={styles.cardTitle}>Phase 5: Ecosystem</h3>
+              <p className={styles.cardDesc}>Battery Pack Aadhaar integration, lifecycle registry APIs, remote service center analytics, and secure cloud syncing.</p>
             </div>
           </div>
         </div>
