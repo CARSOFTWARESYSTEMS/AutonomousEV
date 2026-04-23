@@ -16,10 +16,10 @@ export default function BatteryDiagnosticsContent() {
             <span>Engineering Platform</span>
           </div>
           <h1 className={styles.heroTitle}>
-            AI-Powered EV Battery Fire Prevention System
+            Battery Diagnostics, Grading & Thermal Reconfiguration Platform
           </h1>
           <span className={styles.heroHighlight} style={{ display: 'block' }}>
-            Second-Life EV Battery Intelligence Platform
+            AI-Powered EV Battery Fire Prevention System & Second-Life EV Battery Intelligence System
           </span>
           <p className={styles.heroDesc}>
             Secure Battery Diagnostics, Grading, Traceability, & Thermal Reconfiguration for Circular EV Energy Systems. Enabling pack, module, and cell-level health assessment for safe rural energy storage applications.
@@ -31,6 +31,13 @@ export default function BatteryDiagnosticsContent() {
             <Link href="#workflow" className="btn btn-secondary">
               View Workflow
             </Link>
+          </div>
+          
+          <div className={styles.flowChart} style={{ marginTop: '3rem', background: 'transparent', border: 'none', padding: 0 }}>
+            <div className={styles.flowNode} style={{borderColor: 'var(--accent-primary)', color: 'var(--accent-primary)'}}>Pack Intake</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{borderColor: 'var(--accent-primary)', color: 'var(--accent-primary)'}}>Module Separation</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{borderColor: 'var(--accent-primary)', color: 'var(--accent-primary)'}}>Cell Grading</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{borderColor: 'var(--accent-primary)', color: 'var(--accent-primary)'}}>Thermal Repack</div>
           </div>
         </div>
       </section>
@@ -390,25 +397,25 @@ export default function BatteryDiagnosticsContent() {
                   <td className={styles.gradeA}>Grade A</td>
                   <td>Premium SOH, superb impedance, low divergence.</td>
                   <td>Negligible</td>
-                  <td>Primary Solar / Peak Demand Reserve</td>
+                  <td>Reuse in new packs / Solar Storage</td>
                 </tr>
                 <tr>
                   <td className={styles.gradeB}>Grade B</td>
                   <td>Standard SOH, moderate capacity bleed.</td>
                   <td>Low / Trackable</td>
-                  <td>Base-load Station / Rural Reserve</td>
+                  <td>Stationary use / Rural Reserve</td>
                 </tr>
                 <tr>
                   <td className={styles.gradeC}>Grade C</td>
                   <td>Sub-standard capacity or heightened impedance.</td>
                   <td>Elevated</td>
-                  <td>Isolated Auxiliary Sub-systems only</td>
+                  <td>Low load use / Isolated Auxiliary</td>
                 </tr>
                 <tr>
                   <td className={styles.gradeD}>Grade D</td>
                   <td>Under-voltage faults, micro-shorts, leaks.</td>
                   <td>Critical</td>
-                  <td>Immediate De-energisation & Material Recycle</td>
+                  <td>Immediate Scrap & Material Recycle</td>
                 </tr>
               </tbody>
             </table>
@@ -563,24 +570,24 @@ export default function BatteryDiagnosticsContent() {
           </div>
           <div className={styles.grid4} style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
             <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Phase 1: Foundation</h3>
-              <p className={styles.cardDesc}>Selecting target chemistry families, mapping the core grading logic, defining database schemas, and outlining the initial UI layout.</p>
+              <h3 className={styles.cardTitle}>Phase 1: Diagnostics Only</h3>
+              <p className={styles.cardDesc}>Selecting target chemistry families, mapping the core grading logic, and deploying base level manual lab SOPs and UI layouts.</p>
             </div>
             <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Phase 2: Pilot Workbench</h3>
-              <p className={styles.cardDesc}>Spinning up rudimentary edge interfaces, building the V1 diagnostic operator dashboard, and running manual trial bench assets.</p>
+              <h3 className={styles.cardTitle}>Phase 2: Grading + Identity</h3>
+              <p className={styles.cardDesc}>Rolling out encrypted QR stickers, integrating the operator dashboard, and finalizing basic deterministic grading.</p>
             </div>
             <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Phase 3: Traceability</h3>
-              <p className={styles.cardDesc}>Switching to autonomous cell array cycling, rolling out encrypted QR stickers, and finalizing the repack cluster mapping engine.</p>
+              <h3 className={styles.cardTitle}>Phase 3: Repack System</h3>
+              <p className={styles.cardDesc}>Automated matching cluster engine implementation, switching to autonomous cell array cycling, and genealogy tracking.</p>
             </div>
             <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Phase 4: Thermal Validation</h3>
-              <p className={styles.cardDesc}>Constructing physical prototype repurposed packs containing custom BTMS profiles, then testing them within live rural PV deployments.</p>
+              <h3 className={styles.cardTitle}>Phase 4: Thermal Optimization</h3>
+              <p className={styles.cardDesc}>Constructing physical prototype repurposed packs containing custom BTMS profiles, simulating aero-thermal loads.</p>
             </div>
             <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Phase 5: Ecosystem</h3>
-              <p className={styles.cardDesc}>Battery Pack Aadhaar integration, lifecycle registry APIs, remote service center analytics, and secure cloud syncing.</p>
+              <h3 className={styles.cardTitle}>Phase 5: Aadhaar Integration</h3>
+              <p className={styles.cardDesc}>Battery Pack Aadhaar mapping, lifecycle registry APIs, remote service center analytics, and secure cloud syncing.</p>
             </div>
           </div>
         </div>

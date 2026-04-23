@@ -673,14 +673,14 @@
 
 .canvasCell {
   padding: 1.5rem;
-  background: var(--glass-bg);
+  background: rgba(6, 40, 28, 0.85);
   backdrop-filter: blur(12px);
   transition: background 0.3s ease;
   min-height: 180px;
 }
 
 .canvasCell:hover {
-  background: rgba(76, 169, 48, 0.06);
+  background: rgba(14, 61, 41, 0.95);
 }
 
 /* BMC layout:
