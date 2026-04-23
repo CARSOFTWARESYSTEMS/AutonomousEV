@@ -248,14 +248,14 @@
   gap: 1rem;
   padding: 2rem;
   border: 1px solid var(--glass-border);
-  background: rgba(0,0,0,0.2);
+  background: rgba(0, 0, 0, 0.2);
   border-radius: var(--radius-lg);
   margin-bottom: 3rem;
 }
 
 .flowNode {
   background: var(--glass-bg);
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 1rem 1.5rem;
   border-radius: var(--radius-md);
   font-size: 0.85rem;
@@ -328,7 +328,8 @@
   border-collapse: collapse;
 }
 
-.gradeTable th, .gradeTable td {
+.gradeTable th,
+.gradeTable td {
   padding: 1rem;
   text-align: left;
   border-bottom: 1px solid var(--glass-border);
@@ -341,10 +342,25 @@
   letter-spacing: 0.05em;
 }
 
-.gradeA { color: #4ade80; font-weight: bold; }
-.gradeB { color: #facc15; font-weight: bold; }
-.gradeC { color: #fb923c; font-weight: bold; }
-.gradeD { color: #f87171; font-weight: bold; }
+.gradeA {
+  color: #4ade80;
+  font-weight: bold;
+}
+
+.gradeB {
+  color: #facc15;
+  font-weight: bold;
+}
+
+.gradeC {
+  color: #fb923c;
+  font-weight: bold;
+}
+
+.gradeD {
+  color: #f87171;
+  font-weight: bold;
+}
 
 /* Json Box */
 .jsonBox {
@@ -360,8 +376,15 @@
 
 /* Animations */
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .fadeIn {
@@ -375,25 +398,41 @@
   padding: 8px 14px;
   margin-bottom: 16px;
   border-radius: 6px;
-  background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.08));
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.08));
   border-left: 3px solid rgba(76, 169, 48, 1);
   color: #fff;
   animation: availabilityPulseGlow 3s infinite ease-in-out;
 }
 
 @keyframes availabilityPulseGlow {
-  0% { box-shadow: 0 0 0 rgba(0,0,0,0); border-left-color: rgba(76, 169, 48, 0.3); }
-  50% { box-shadow: 0 0 12px rgba(76, 169, 48, 0.6); border-left-color: rgba(76, 169, 48, 1); }
-  100% { box-shadow: 0 0 0 rgba(0,0,0,0); border-left-color: rgba(76, 169, 48, 0.3); }
+  0% {
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    border-left-color: rgba(76, 169, 48, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 12px rgba(76, 169, 48, 0.6);
+    border-left-color: rgba(76, 169, 48, 1);
+  }
+
+  100% {
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    border-left-color: rgba(76, 169, 48, 0.3);
+  }
 }
 
 @media (max-width: 1024px) {
-  .grid2, .grid3, .grid4 {
+
+  .grid2,
+  .grid3,
+  .grid4 {
     grid-template-columns: 1fr;
   }
+
   .stackLayer {
     flex-direction: column;
   }
+
   .layerNum {
     width: 100%;
     border-right: none;

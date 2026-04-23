@@ -33,12 +33,12 @@ export default function BatteryDiagnosticsContent() {
               View Workflow
             </Link>
           </div>
-          
+
           <div className={styles.flowChart} style={{ marginTop: '3rem', background: 'transparent', border: 'none', padding: 0 }}>
-            <div className={styles.flowNode} style={{borderColor: 'var(--accent-primary)', color: 'var(--accent-primary)'}}>Pack Intake</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{borderColor: 'var(--accent-primary)', color: 'var(--accent-primary)'}}>Module Separation</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{borderColor: 'var(--accent-primary)', color: 'var(--accent-primary)'}}>Cell Grading</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{borderColor: 'var(--accent-primary)', color: 'var(--accent-primary)'}}>Thermal Repack</div>
+            <div className={styles.flowNode} style={{ borderColor: 'var(--accent-primary)', color: 'var(--accent-primary)' }}>Pack Intake</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ borderColor: 'var(--accent-primary)', color: 'var(--accent-primary)' }}>Module Separation</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ borderColor: 'var(--accent-primary)', color: 'var(--accent-primary)' }}>Cell Grading</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ borderColor: 'var(--accent-primary)', color: 'var(--accent-primary)' }}>Thermal Repack</div>
           </div>
         </div>
       </section>
@@ -47,25 +47,25 @@ export default function BatteryDiagnosticsContent() {
       <section className={styles.pageSection} style={{ padding: '2rem 0 0 0' }}>
         <div className="container">
           <div className={styles.executiveCard} style={{ borderLeft: "4px solid var(--accent-primary)", padding: "1.5rem 2.5rem" }}>
-             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "20px" }}>
-                <div>
-                   <p style={{ fontSize: "0.75rem", color: "var(--accent-primary)", fontWeight: "700", textTransform: "uppercase", marginBottom: "4px" }}>EV.ENGINEER™</p>
-                   <h2 style={{ fontSize: "1.8rem", marginBottom: "8px", color: "#fff", fontWeight: "600" }}>Sudarshana Karkala</h2>
-                   <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginBottom: "12px" }}>Principal Architect | Thasmai Infotech Private Limited</p>
-                   <div className={styles.availabilityHighlight}>
-                     Available for strategic architectural consulting and advanced automotive R&D partnerships.
-                   </div>
-                   <div style={{ display: "flex", alignItems: "center", gap: "12px", fontSize: "0.85rem", flexWrap: "wrap" }}>
-                     <a href="tel:+919845561518" style={{ color: "var(--accent-primary)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px" }}>
-                       <span>📞</span> +91 9845561518
-                     </a>
-                     <span style={{ color: "rgba(255,255,255,0.2)" }}>|</span>
-                     <a href="https://www.linkedin.com/in/sudarshanakarkala/" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-primary)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px" }}>
-                       <span>🔗</span> LinkedIn Profile
-                     </a>
-                   </div>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "20px" }}>
+              <div>
+                <p style={{ fontSize: "0.75rem", color: "var(--accent-primary)", fontWeight: "700", textTransform: "uppercase", marginBottom: "4px" }}>EV.ENGINEER™</p>
+                <h2 style={{ fontSize: "1.8rem", marginBottom: "8px", color: "#fff", fontWeight: "600" }}>Sudarshana Karkala</h2>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginBottom: "12px" }}>Principal Architect | Thasmai Infotech Private Limited</p>
+                <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginBottom: "8px" }}>
+                  Available for strategic architectural consulting and advanced automotive R&D partnerships.
+                </p>
+                <div style={{ display: "flex", alignItems: "center", gap: "12px", fontSize: "0.85rem", flexWrap: "wrap" }}>
+                  <a href="tel:+919845561518" style={{ color: "var(--accent-primary)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px" }}>
+                    <span>📞</span> +91 9845561518
+                  </a>
+                  <span style={{ color: "rgba(255,255,255,0.2)" }}>|</span>
+                  <a href="https://www.linkedin.com/in/sudarshanakarkala/" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-primary)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px" }}>
+                    <span>🔗</span> LinkedIn Profile
+                  </a>
                 </div>
-             </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -84,10 +84,10 @@ export default function BatteryDiagnosticsContent() {
           </p>
 
           <div className={styles.flowChart} style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.1)' }}>
-            <div className={styles.flowNode} style={{borderColor: '#38bdf8'}}>Original Pack</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{borderColor: '#38bdf8'}}>Module Set</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{borderColor: '#38bdf8'}}>Cell Set</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{borderColor: '#4ade80'}}>New Reconfigured Pack</div>
+            <div className={styles.flowNode} style={{ borderColor: '#38bdf8' }}>Original Pack</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ borderColor: '#38bdf8' }}>Module Set</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ borderColor: '#38bdf8' }}>Cell Set</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ borderColor: '#4ade80' }}>New Reconfigured Pack</div>
           </div>
         </div>
       </section>
@@ -162,7 +162,7 @@ export default function BatteryDiagnosticsContent() {
             <span className={styles.sectionNumber}>Process</span>
             <h2 className={styles.sectionTitle}>End-to-End System Workflow</h2>
           </div>
-          
+
           <div className={styles.flowChart}>
             <div className={styles.flowNode}>Battery Reception</div><span className={styles.flowArrow}>→</span>
             <div className={styles.flowNode}>Asset Registration & Quarantine</div><span className={styles.flowArrow}>→</span>
@@ -180,22 +180,22 @@ export default function BatteryDiagnosticsContent() {
             <div className={`${styles.flowNode} ${styles.gate}`}>Gate 4: Repack Validation</div><span className={styles.flowArrow}>→</span>
             <div className={styles.flowNode}>Second-Life Deployment & Tracking</div>
           </div>
-          
+
           <div className={styles.grid4} style={{ marginTop: '2rem' }}>
             <div className={styles.card}>
-              <h3 className={styles.cardTitle} style={{color: '#eab308'}}>Gate 1: Pack Decision</h3>
+              <h3 className={styles.cardTitle} style={{ color: '#eab308' }}>Gate 1: Pack Decision</h3>
               <p className={styles.cardDesc}>Direct reuse candidate vs. Disassembly required vs. Immediate Scrap based on full-pack insulation and thermal scan.</p>
             </div>
             <div className={styles.card}>
-              <h3 className={styles.cardTitle} style={{color: '#eab308'}}>Gate 2: Module Decision</h3>
+              <h3 className={styles.cardTitle} style={{ color: '#eab308' }}>Gate 2: Module Decision</h3>
               <p className={styles.cardDesc}>Can the module be repurposed as an intact block, or does severe imbalance dictate full cell-level extraction?</p>
             </div>
             <div className={styles.card}>
-              <h3 className={styles.cardTitle} style={{color: '#eab308'}}>Gate 3: Cell Decision</h3>
+              <h3 className={styles.cardTitle} style={{ color: '#eab308' }}>Gate 3: Cell Decision</h3>
               <p className={styles.cardDesc}>Binning cells into Grades A/B/C/D based on precision capacity, internal resistance, and self-discharge criteria.</p>
             </div>
             <div className={styles.card}>
-              <h3 className={styles.cardTitle} style={{color: '#eab308'}}>Gate 4: Repack Qualification</h3>
+              <h3 className={styles.cardTitle} style={{ color: '#eab308' }}>Gate 4: Repack Qualification</h3>
               <p className={styles.cardDesc}>Final end-of-line verification of the newly assembled pack, confirming BMS communication and thermal safety.</p>
             </div>
           </div>
@@ -258,7 +258,7 @@ export default function BatteryDiagnosticsContent() {
             <h2 className={styles.sectionTitle}>Hardware Architecture for Battery Intelligence</h2>
           </div>
           <div className={styles.grid3}>
-             <div className={styles.card}>
+            <div className={styles.card}>
               <h3 className={styles.cardTitle}>7.1 Intake & Safety</h3>
               <ul className={styles.list}>
                 <li><strong>Role:</strong> Secure quarantine & registration</li>
@@ -315,10 +315,10 @@ export default function BatteryDiagnosticsContent() {
           </div>
 
           <div className={styles.flowChart} style={{ marginTop: "3rem", padding: "1.5rem" }}>
-            <div className={styles.flowNode} style={{padding: "0.5rem 1.5rem", borderColor: '#94a3b8'}}>Hardware Bench</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{padding: "0.5rem 1.5rem", borderColor: '#38bdf8'}}>Edge Controller</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{padding: "0.5rem 1.5rem", borderColor: '#eab308'}}>Software Analytics</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{padding: "0.5rem 1.5rem", borderColor: '#4ade80'}}>Cloud Registry</div>
+            <div className={styles.flowNode} style={{ padding: "0.5rem 1.5rem", borderColor: '#94a3b8' }}>Hardware Bench</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ padding: "0.5rem 1.5rem", borderColor: '#38bdf8' }}>Edge Controller</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ padding: "0.5rem 1.5rem", borderColor: '#eab308' }}>Software Analytics</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ padding: "0.5rem 1.5rem", borderColor: '#4ade80' }}>Cloud Registry</div>
           </div>
         </div>
       </section>
@@ -330,7 +330,7 @@ export default function BatteryDiagnosticsContent() {
             <span className={styles.sectionNumber}>Stack</span>
             <h2 className={styles.sectionTitle}>Software Stack: From Bench Control to Intelligence</h2>
           </div>
-          
+
           <div className={styles.stackLayer}>
             <div className={styles.layerNum}>Layer 7</div>
             <div className={styles.layerContent}>
@@ -419,7 +419,7 @@ export default function BatteryDiagnosticsContent() {
             <span className={styles.sectionNumber}>Qualification</span>
             <h2 className={styles.sectionTitle}>Health Scoring, Risk Index, & Grading</h2>
           </div>
-          
+
           <div className={styles.grid2} style={{ marginBottom: "2rem" }}>
             <div className={styles.card}>
               <h3 className={styles.cardTitle}>Diagnostic Vectors</h3>
@@ -433,7 +433,7 @@ export default function BatteryDiagnosticsContent() {
             </div>
             <div className={styles.card}>
               <h3 className={styles.cardTitle}>Decision Matrix</h3>
-              <p className={styles.cardDesc} style={{marginTop: "0.5rem"}}>
+              <p className={styles.cardDesc} style={{ marginTop: "0.5rem" }}>
                 Grading unifies all electrical performance curves, observed thermal behaviors, latent safety indicators, and peer-cluster statistics into a deterministic qualification tier.
               </p>
             </div>
@@ -489,7 +489,7 @@ export default function BatteryDiagnosticsContent() {
           </div>
           <div className={styles.grid2}>
             <div>
-              <p style={{color: "var(--text-secondary)", lineHeight: 1.7}}>
+              <p style={{ color: "var(--text-secondary)", lineHeight: 1.7 }}>
                 Every discrete pack, module, and cell is issued a tamper-aware digital identity via a physical sticker. The sticker QR code deliberately exposes minimal plaintext metadata while embedding an encrypted cryptographic core. When scanned by an authorised client, this token accesses the deep backend to reveal full diagnostic lineage and grading, acting as the foundational mechanism for the anticipated Battery Pack Aadhaar scheme.
               </p>
               <ul className={styles.list}>
@@ -499,12 +499,12 @@ export default function BatteryDiagnosticsContent() {
               </ul>
             </div>
             <div className={styles.flowChart} style={{ margin: 0, padding: "1.5rem" }}>
-              <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>Cell / Module</div><span className={styles.flowArrow}>→</span>
-              <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>Generate ID</div><span className={styles.flowArrow}>→</span>
-              <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>Print Sticker</div><span className={styles.flowArrow}>→</span>
-              <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>Field Scan</div><span className={styles.flowArrow}>→</span>
-              <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>Cloud Auth</div><span className={styles.flowArrow}>→</span>
-              <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>View History</div>
+              <div className={styles.flowNode} style={{ padding: "0.5rem 1rem" }}>Cell / Module</div><span className={styles.flowArrow}>→</span>
+              <div className={styles.flowNode} style={{ padding: "0.5rem 1rem" }}>Generate ID</div><span className={styles.flowArrow}>→</span>
+              <div className={styles.flowNode} style={{ padding: "0.5rem 1rem" }}>Print Sticker</div><span className={styles.flowArrow}>→</span>
+              <div className={styles.flowNode} style={{ padding: "0.5rem 1rem" }}>Field Scan</div><span className={styles.flowArrow}>→</span>
+              <div className={styles.flowNode} style={{ padding: "0.5rem 1rem" }}>Cloud Auth</div><span className={styles.flowArrow}>→</span>
+              <div className={styles.flowNode} style={{ padding: "0.5rem 1rem" }}>View History</div>
             </div>
           </div>
         </div>
@@ -551,20 +551,20 @@ export default function BatteryDiagnosticsContent() {
             <span className={styles.sectionNumber}>Engineering Safety</span>
             <h2 className={styles.sectionTitle}>Thermal Reconfiguration & BTMS Upgrade</h2>
           </div>
-          
-          <div className={styles.executiveCard} style={{marginBottom: "3rem", padding: "1.5rem", fontSize: "1rem"}}>
+
+          <div className={styles.executiveCard} style={{ marginBottom: "3rem", padding: "1.5rem", fontSize: "1rem" }}>
             Repurposing entails strict thermal redesign. A cell cluster running inside an Indian rural solar charging environment will face vastly different ambient loads, static duty cycles, and passive ventilation bounds compared to its original high-speed vehicle chassis. We reconstruct the heat profile explicitly for the secondary application.
           </div>
 
           <div className={styles.flowChart} style={{ marginBottom: "3rem", padding: "1.5rem" }}>
-            <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>Cell Matching</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>New Pack Topology</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>Thermal Design Concept</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>Electro-Thermal Simulation</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>Cost vs Performance Trade-off</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>Prototype Build</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>Thermal Validation</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{padding: "0.5rem 1rem"}}>Final Pack Design</div>
+            <div className={styles.flowNode} style={{ padding: "0.5rem 1rem" }}>Cell Matching</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ padding: "0.5rem 1rem" }}>New Pack Topology</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ padding: "0.5rem 1rem" }}>Thermal Design Concept</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ padding: "0.5rem 1rem" }}>Electro-Thermal Simulation</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ padding: "0.5rem 1rem" }}>Cost vs Performance Trade-off</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ padding: "0.5rem 1rem" }}>Prototype Build</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ padding: "0.5rem 1rem" }}>Thermal Validation</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ padding: "0.5rem 1rem" }}>Final Pack Design</div>
           </div>
 
           <div className={styles.grid3}>
@@ -660,7 +660,7 @@ export default function BatteryDiagnosticsContent() {
             <h2 className={styles.sectionTitle}>Core Target Deployments</h2>
           </div>
           <div className={styles.grid4}>
-             <div className={styles.card}>
+            <div className={styles.card}>
               <div className={styles.cardIcon}>🔋</div>
               <h3 className={styles.cardTitle}>Rural PV Energy Stops</h3>
               <p className={styles.cardDesc}>Supplying cost-effective, thermally secure buffers for rural grid-independent EV chargers.</p>
@@ -683,26 +683,26 @@ export default function BatteryDiagnosticsContent() {
           </div>
         </div>
       </section>
-      
+
       {/* 16. WHAT WE BUILD FIRST & 17. DELIVERABLES */}
       <section className={styles.pageSection}>
         <div className="container">
           <div className={styles.grid2}>
             <div>
-              <h2 className={styles.sectionTitle} style={{fontSize: "1.8rem"}}>The Pilot Implementation</h2>
-              <p style={{color: "var(--text-secondary)", marginBottom: "1.5rem"}}>
+              <h2 className={styles.sectionTitle} style={{ fontSize: "1.8rem" }}>The Pilot Implementation</h2>
+              <p style={{ color: "var(--text-secondary)", marginBottom: "1.5rem" }}>
                 Our initial software and bench builds intentionally limit scope to selected high-volume 2W/3W/4W lithium chemistries. The priority lies in producing a strictly deterministic health score, deploying the encrypted sticker regime, and proving out the operator UI workflow. <strong>This core layer will permanently anchor all future Battery Pack Aadhaar tracking expansions.</strong>
               </p>
             </div>
             <div className={styles.card}>
-               <h3 className={styles.cardTitle}>Direct Engineering Deliverables</h3>
-               <ul className={styles.list}>
-                 <li>Automated instrument & bench edge-firmware layers.</li>
-                 <li>The Python / FastAPI backend test engine.</li>
-                 <li>Encrypted label generator and data schema.</li>
-                 <li>A fully mocked engineering visual dashboard.</li>
-                 <li>The thermal configuration methodology output paper.</li>
-               </ul>
+              <h3 className={styles.cardTitle}>Direct Engineering Deliverables</h3>
+              <ul className={styles.list}>
+                <li>Automated instrument & bench edge-firmware layers.</li>
+                <li>The Python / FastAPI backend test engine.</li>
+                <li>Encrypted label generator and data schema.</li>
+                <li>A fully mocked engineering visual dashboard.</li>
+                <li>The thermal configuration methodology output paper.</li>
+              </ul>
             </div>
           </div>
         </div>
