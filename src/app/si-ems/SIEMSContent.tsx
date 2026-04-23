@@ -192,9 +192,9 @@ export default function SIEMSContent() {
                    <p style={{ fontSize: "0.75rem", color: "var(--accent-primary)", fontWeight: "700", textTransform: "uppercase", marginBottom: "4px" }}>EV.ENGINEER™</p>
                    <h2 style={{ fontSize: "1.8rem", marginBottom: "8px" }}>Sudarshana Karkala</h2>
                    <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginBottom: "12px" }}>Principal Architect | Thasmai Infotech Private Limited</p>
-                   <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginBottom: "8px" }}>
+                   <div className="availabilityHighlight">
                      Available for strategic architectural consulting and advanced automotive R&D partnerships.
-                   </p>
+                   </div>
                    <div style={{ display: "flex", alignItems: "center", gap: "12px", fontSize: "0.85rem", flexWrap: "wrap" }}>
                      <a href="tel:+919845561518" style={{ color: "var(--accent-primary)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px" }}>
                        <span>📞</span> +91 9845561518
