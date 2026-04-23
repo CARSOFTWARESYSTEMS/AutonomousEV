@@ -55,7 +55,7 @@ export default function BatteryDiagnosticsContent() {
           </p>
 
           <p className={styles.heroPlatformScope}>
-            This platform provides end-to-end battery lifecycle intelligence including diagnostics, grading, identity, repurposing, and thermal reconfiguration.
+            This platform provides end-to-end battery lifecycle intelligence including diagnostics, grading, identity, repurposing, and thermal reconfiguration for second-life EV battery systems.
           </p>
 
           <div className={styles.heroPillars}>
@@ -162,9 +162,9 @@ export default function BatteryDiagnosticsContent() {
       <section className={styles.pageSection} id="system-boundaries">
         <div className="container">
           <div className={styles.sectionHeader}>
-            <span className={styles.sectionNumber}>System Boundaries</span>
+            <span className={styles.sectionNumber}>System Overview</span>
             <h2 className={styles.sectionTitle}>System Architecture Overview</h2>
-            <p className={styles.sectionSubtitle}>Clear boundary definition across hardware, software, and cloud layers to ensure development alignment.</p>
+            <p className={styles.sectionSubtitle}>Clear boundary definition across hardware, software, and platform layers to ensure development alignment.</p>
           </div>
 
           <div className={styles.grid3}>
@@ -189,12 +189,12 @@ export default function BatteryDiagnosticsContent() {
               </ul>
             </div>
             <div className={styles.card}>
-              <div className={styles.boundaryIcon}>☁️</div>
-              <h3 className={styles.cardTitle}>Cloud Layer</h3>
+              <div className={styles.boundaryIcon}>🌐</div>
+              <h3 className={styles.cardTitle}>Platform Layer</h3>
               <ul className={styles.boundaryList}>
-                <li><strong>Storage:</strong> Test results, lifecycle records, pack/cell history</li>
-                <li><strong>Traceability:</strong> Encrypted digital twin linked to physical QR/NFC identity</li>
-                <li><strong>Identity Registry:</strong> Battery Pack Aadhaar — national-scale cell identity system</li>
+                <li><strong>Identity:</strong> Encrypted digital twin with QR/NFC physical labels per cell and pack</li>
+                <li><strong>Traceability:</strong> Full genealogy from OEM origin → disassembly → repack → deployment</li>
+                <li><strong>Lifecycle Tracking:</strong> Every test, grade, owner transfer, and event logged immutably</li>
                 <li><strong>Dashboard:</strong> Fleet analytics, predictive health modeling, operator alerts</li>
               </ul>
             </div>
