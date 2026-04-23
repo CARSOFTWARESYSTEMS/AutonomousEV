@@ -49,11 +49,6 @@ export default function BatteryDiagnosticsContent() {
 
           <h1 className={styles.heroTitle}>EV Battery Intelligence Platform</h1>
 
-          <p className={styles.heroDesc}>
-            This is not just a battery fire prevention system.<br />
-            It is a <strong>full-stack engineering platform</strong> for battery diagnostics, grading, digital identity, second-life repurposing, and thermal reconfiguration — designed to be built and deployed in the real world.
-          </p>
-
           <p className={styles.heroPlatformScope}>
             This platform provides end-to-end battery lifecycle intelligence including diagnostics, grading, identity, repurposing, and thermal reconfiguration for second-life EV battery systems.
           </p>
