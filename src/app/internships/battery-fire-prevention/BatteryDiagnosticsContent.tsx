@@ -54,6 +54,10 @@ export default function BatteryDiagnosticsContent() {
             It is a <strong>full-stack engineering platform</strong> for battery diagnostics, grading, digital identity, second-life repurposing, and thermal reconfiguration — designed to be built and deployed in the real world.
           </p>
 
+          <div className={styles.calloutBlock} style={{ maxWidth: '800px', margin: '0 auto 2rem', textAlign: 'center', borderLeft: 'none', borderTop: '2px solid var(--accent-primary)', borderRadius: 'var(--radius-md)', opacity: 0, animation: 'fadeInUp 0.8s ease-out 0.5s forwards' }}>
+            This platform provides end-to-end battery lifecycle intelligence — including diagnostics, grading, identity, repurposing, and thermal reconfiguration.
+          </div>
+
           <div className={styles.heroPillars}>
             <div className={styles.heroPillarChip}><span>🔬</span> Multi-Level Diagnostics</div>
             <div className={styles.heroPillarChip}><span>🔄</span> Full Lifecycle System</div>
@@ -112,16 +116,16 @@ export default function BatteryDiagnosticsContent() {
 
             <WLabel>Pack-Level Diagnostics</WLabel>
             <WStep dot={styles.dotPack} title="Pack-Level Diagnostics" desc="BMS communication, OCV/CCV measurement, insulation resistance, fault-code extraction, and pack-level capacity estimation." />
-            <WGate dot={styles.dotGate} title="Decision Gate 1 — Reuse / Disassemble / Scrap" desc="If pack health > 80% SOH: direct reuse. If degraded but viable: disassemble to modules. If unsafe: route to material recovery." />
+            <WGate dot={styles.dotGate} title="Decision Gate 1 — Reuse / Disassemble / Scrap" desc="✓ SOH > 80%: direct reuse → Second-life pack.  ⚠ Degraded but viable: disassemble → Module testing.  ✕ Unsafe / failed isolation: exit → Material recovery & scrap." />
 
             <WLabel>Module-Level Testing</WLabel>
             <WStep dot={styles.dotModule} title="Module-Level Testing" desc="Capacity measurement, inter-cell voltage imbalance, DC internal resistance, and thermal behaviour under load." />
-            <WGate dot={styles.dotGate} title="Decision Gate 2 — Repair / Proceed to Cells" desc="Modules with minor imbalance are repaired. Severely degraded modules are disassembled to individual cells." />
+            <WGate dot={styles.dotGate} title="Decision Gate 2 — Repair / Proceed to Cells" desc="✓ Minor imbalance: repair module → Re-test.  ⚠ Degraded clusters: disassemble → Cell-level testing.  ✕ Failed modules: exit → Scrap / material recovery." />
 
             <WLabel>Cell-Level Testing & Grading</WLabel>
             <WStep dot={styles.dotCell} title="Cell-Level Testing" desc="Precision cycling: measured capacity, AC internal resistance at 1 kHz, self-discharge rate over 72 h, thermal rise under 1C load." />
             <WStep dot={styles.dotCell} title="Cell Grading" desc="Deterministic scoring (Grade A/B/C/D) based on capacity, IR, thermal stability, and safety risk. No subjective assessment." />
-            <WGate dot={styles.dotGate} title="Decision Gate 3 — Use / Reject" desc="Grade A & B cells proceed to matching. Grade C for limited use. Grade D routed to recycling." />
+            <WGate dot={styles.dotGate} title="Decision Gate 3 — Use / Reject" desc="✓ Grade A & B: proceed → Cell matching & binning.  ⚠ Grade C: limited use → Low-load applications only.  ✕ Grade D: exit → Recycling pipeline." />
 
             <WLabel>Identity & Design</WLabel>
             <WStep dot="" title="Digital Identity Assignment" desc="QR-based encrypted ID generated, printed as tamper-evident label, and linked to cloud digital twin with full test history." />
