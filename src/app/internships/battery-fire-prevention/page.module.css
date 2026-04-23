@@ -67,6 +67,15 @@
   animation: fadeInUp 0.8s ease-out 0.35s forwards;
 }
 
+.fireGradientText {
+  background: linear-gradient(to right, #4ade80, #facc15, #f97316, #ef4444, #7f1d1d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  display: block;
+}
+
 .heroDesc {
   font-size: 1.15rem;
   color: var(--text-secondary);

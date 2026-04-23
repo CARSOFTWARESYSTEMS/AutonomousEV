@@ -19,7 +19,8 @@ export default function BatteryDiagnosticsContent() {
             Battery Diagnostics, Grading & Thermal Reconfiguration Platform
           </h1>
           <span className={styles.heroHighlight} style={{ display: 'block' }}>
-            AI-Powered EV Battery Fire Prevention System & Second-Life EV Battery Intelligence System
+            <span className={styles.fireGradientText}>AI-Powered EV Battery Fire Prevention System</span>
+            <span style={{ display: 'block', marginTop: '0.4rem' }}>Second-Life EV Battery Intelligence System</span>
           </span>
           <p className={styles.heroDesc}>
             Secure Battery Diagnostics, Grading, Traceability, & Thermal Reconfiguration for Circular EV Energy Systems. Enabling pack, module, and cell-level health assessment for safe rural energy storage applications.
