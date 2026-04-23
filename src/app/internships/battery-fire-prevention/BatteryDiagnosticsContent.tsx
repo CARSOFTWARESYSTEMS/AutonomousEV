@@ -55,44 +55,73 @@ export default function BatteryDiagnosticsContent() {
         </div>
       </section>
 
-      {/* 2. MAIN WORKFLOW: THE CENTERPIECE (Step 2) */}
+      {/* 2. MAIN WORKFLOW: END-TO-END ENGINEERING LIFECYCLE (Step 2) */}
       <section className={styles.pageSectionAlt} id="workflow">
         <div className="container">
           <div className={styles.sectionHeader}>
             <span className={styles.sectionNumber}>Core Backbone</span>
-            <h2 className={styles.sectionTitle}>The Circular Battery Intelligence Flow</h2>
-            <p className={styles.sectionSubtitle}>From intake to deployment: An integrated engineering pipeline for battery health and traceability.</p>
-          </div>
-          
-          <div className={styles.flowChart} style={{ flexWrap: 'wrap', justifyContent: 'center', gap: '0.75rem', marginBottom: '3rem' }}>
-            <div className={styles.flowNode}>Battery Intake</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode}>Registration</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode}>Pack Diagnostics</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{ background: 'rgba(234, 179, 8, 0.1)', borderColor: '#eab308', color: '#fef08a' }}>Decision Gate</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode}>Module Testing</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode}>Cell Testing</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode}>Grading</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode}>Identity Assignment</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode}>Cell Matching</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode}>Repack Design</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode}>Thermal Design</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode}>Validation</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode} style={{ borderColor: '#4ade80', color: '#4ade80' }}>Deployment</div>
+            <h2 className={styles.sectionTitle}>End-to-End Battery Intelligence Workflow</h2>
+            <p className={styles.sectionSubtitle}>A complete engineering pipeline from intake and diagnostics to grading, repack, and deployment.</p>
           </div>
 
-          <div className={styles.grid3}>
+          <div className={styles.flowChart} style={{ flexWrap: 'wrap', justifyContent: 'center', gap: '0.75rem', marginBottom: '4rem' }}>
+            {/* INTAKE PHASE */}
+            <div className={styles.flowNode}><span className={styles.levelLabel}>Intake</span>Battery Intake</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode}><span className={styles.levelLabel}>Intake</span>Registration & Identification</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode}><span className={styles.levelLabel}>Intake</span>Safety Inspection</div><span className={styles.flowArrow}>→</span>
+
+            {/* PACK PHASE */}
+            <div className={`${styles.flowNode} ${styles.packNode}`}><span className={styles.levelLabel}>Pack Level</span>Pack-Level Diagnostics</div><span className={styles.flowArrow}>→</span>
+            <div className={`${styles.flowNode} ${styles.gate}`} style={{ borderColor: '#38bdf8' }}>
+              <span className={styles.levelLabel}>Gate 1</span>
+              Decision: Reuse / Disassemble / Scrap
+            </div><span className={styles.flowArrow}>→</span>
+
+            {/* TESTING PHASE */}
+            <div className={`${styles.flowNode} ${styles.moduleNode}`}><span className={styles.levelLabel}>Module Level</span>Module-Level Testing</div><span className={styles.flowArrow}>→</span>
+            <div className={`${styles.flowNode} ${styles.gate}`} style={{ borderColor: '#facc15' }}>
+              <span className={styles.levelLabel}>Gate 2</span>
+              Decision: Repair / Proceed to Cells
+            </div><span className={styles.flowArrow}>→</span>
+            
+            <div className={`${styles.flowNode} ${styles.cellNode}`}><span className={styles.levelLabel}>Cell Level</span>Cell-Level Testing</div><span className={styles.flowArrow}>→</span>
+            <div className={`${styles.flowNode} ${styles.cellNode}`}><span className={styles.levelLabel}>Cell Level</span>Cell Grading</div><span className={styles.flowArrow}>→</span>
+            <div className={`${styles.flowNode} ${styles.gate}`} style={{ borderColor: '#4ade80' }}>
+              <span className={styles.levelLabel}>Gate 3</span>
+              Decision: Use / Reject
+            </div><span className={styles.flowArrow}>→</span>
+
+            {/* IDENTITY & DESIGN */}
+            <div className={styles.flowNode}><span className={styles.levelLabel}>Digital ID</span>Identity Assignment (QR / Encrypted)</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode}><span className={styles.levelLabel}>Design</span>Cell Matching & Binning</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode}><span className={styles.levelLabel}>Design</span>Repack Design</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode}><span className={styles.levelLabel}>Design</span>Thermal Reconfiguration</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode}><span className={styles.levelLabel}>Final</span>Validation Testing</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ borderColor: '#4ade80', color: '#4ade80' }}>
+              <span className={styles.levelLabel}>Deployment</span>
+              Second-Life Use
+            </div>
+          </div>
+
+          <div className={styles.grid3} style={{ marginBottom: '3rem' }}>
             <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Intake & Decision</h3>
-              <p className={styles.cardDesc}>Initial visual audit and insulation checks drive the first triage: direct reuse, modular recovery, or material recycling.</p>
+              <h3 className={styles.cardTitle}>Pack Gate</h3>
+              <p className={styles.cardDesc}>Post-diagnostics triage determines if the pack can be reused directly, requires disassembly for modular salvage, or must be scrapped for materials.</p>
             </div>
             <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Multi-Stage Testing</h3>
-              <p className={styles.cardDesc}>Cascaded testing from pack-level BMS faults to cell-level 1kHz ACIR measurements for granular health mapping.</p>
+              <h3 className={styles.cardTitle}>Module Gate</h3>
+              <p className={styles.cardDesc}>Evaluation of module health determines if specific sub-modules require repair or if the system can proceed to granular cell extraction.</p>
             </div>
             <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Identity & Build</h3>
-              <p className={styles.cardDesc}>Every cell is assigned a digital twin before being matched into new clusters with optimized thermal corridors.</p>
+              <h3 className={styles.cardTitle}>Cell Gate</h3>
+              <p className={styles.cardDesc}>Final grading filters every cell node; only those meeting Grade A/B thresholds proceed to the matching and repack design phase.</p>
             </div>
+          </div>
+
+          <div className={styles.calloutBlock} style={{ textAlign: 'center', maxWidth: '900px', margin: '0 auto' }}>
+            <p style={{ opacity: 0.9, fontSize: '1rem' }}>
+              This workflow represents the complete lifecycle of second-life EV battery processing, from intake and diagnostics to grading, identity assignment, repack design, thermal validation, and safe deployment.
+            </p>
           </div>
         </div>
       </section>
