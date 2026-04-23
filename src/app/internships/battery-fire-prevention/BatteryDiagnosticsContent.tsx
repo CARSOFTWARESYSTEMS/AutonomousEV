@@ -19,7 +19,8 @@ export default function BatteryDiagnosticsContent() {
             EV Battery Intelligence Platform
           </h1>
           <p className={styles.heroDesc}>
-            This is not just a fire prevention system. It is a full-stack platform for battery diagnostics, grading, identity, and second-life repurposing.
+            This is not just a battery fire prevention system.<br />
+            It is a full-stack platform for battery diagnostics, grading, identity, repurposing, and thermal reconfiguration.
           </p>
           <div className={styles.heroCtas}>
             <Link href="#workflow" className="btn btn-primary">View System Workflow</Link>
@@ -231,6 +232,9 @@ export default function BatteryDiagnosticsContent() {
               </tbody>
             </table>
           </div>
+          <div className={styles.calloutBlock} style={{ marginTop: '1.5rem' }}>
+            <strong>Grading Methodology:</strong> Every cell is scored deterministically using measured capacity, internal resistance (ACIR/DCIR), and thermal rise factor under load. No subjective assessment — only data-driven classification.
+          </div>
         </div>
       </section>
 
@@ -262,23 +266,36 @@ export default function BatteryDiagnosticsContent() {
         </div>
       </section>
 
-      {/* 8. THERMAL DESIGN (Step 8) */}
+      {/* 8. THERMAL RECONFIGURATION (Step 8) */}
       <section className={styles.pageSectionAlt}>
         <div className="container">
           <div className={styles.sectionHeader}>
-            <span className={styles.sectionNumber}>Safety</span>
-            <h2 className={styles.sectionTitle}>Thermal Redesign & BTMS</h2>
+            <span className={styles.sectionNumber}>Safety Engineering</span>
+            <h2 className={styles.sectionTitle}>Thermal Reconfiguration & BTMS</h2>
+            <p className={styles.sectionSubtitle}>Redesigned thermal management for repacked cells in second-life applications.</p>
           </div>
-          <div className={styles.grid4}>
-            <div className={styles.card}><h3 className={styles.cardTitle}>Cooling Strategies</h3><p className={styles.cardDesc}>Active & passive liquid/air cooling integration.</p></div>
-            <div className={styles.card}><h3 className={styles.cardTitle}>Airflow Logic</h3><p className={styles.cardDesc}>Directed corridors for uniform module temperature.</p></div>
-            <div className={styles.card}><h3 className={styles.cardTitle}>Cell Spacing</h3><p className={styles.cardDesc}>Propagation barriers (mica/ceramic) and pitch optimization.</p></div>
-            <div className={styles.card}><h3 className={styles.cardTitle}>Heat Dissipation</h3><p className={styles.cardDesc}>Structural sinks and thermally conductive fillers.</p></div>
+          <div className={styles.grid3}>
+            <div className={styles.card}>
+              <h3 className={styles.cardTitle}>Cooling Strategy</h3>
+              <p className={styles.cardDesc}>Active forced-air corridors and passive heat sinks integrated into the pack housing for continuous thermal regulation.</p>
+            </div>
+            <div className={styles.card}>
+              <h3 className={styles.cardTitle}>Airflow & Spacing</h3>
+              <p className={styles.cardDesc}>Directed airflow channels between cell clusters. Mica/ceramic propagation barriers with optimized inter-cell pitch spacing.</p>
+            </div>
+            <div className={styles.card}>
+              <h3 className={styles.cardTitle}>Heat Dissipation</h3>
+              <p className={styles.cardDesc}>Structural aluminium sinks and thermally conductive fillers to manage peak charge/discharge thermal events.</p>
+            </div>
+          </div>
+          <div className={styles.calloutBlock} style={{ marginTop: '1.5rem' }}>
+            <strong>Rural Deployment:</strong> Designed for high-ambient Indian conditions (45°C+). No dependence on external HVAC. Passive thermal safety must sustain operation in non-climate-controlled rural storage environments.
           </div>
           <div className={styles.flowChart} style={{ marginTop: '2rem', background: 'transparent' }}>
             <div className={styles.flowNode}>Cell Matching</div><span className={styles.flowArrow}>→</span>
             <div className={styles.flowNode}>Pack Design</div><span className={styles.flowArrow}>→</span>
-            <div className={styles.flowNode}>Thermal Validation</div>
+            <div className={styles.flowNode}>Thermal Validation</div><span className={styles.flowArrow}>→</span>
+            <div className={styles.flowNode} style={{ borderColor: '#4ade80' }}>Final Pack</div>
           </div>
         </div>
       </section>
