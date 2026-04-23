@@ -9,7 +9,7 @@
   align-items: center;
   overflow: hidden;
   padding-top: calc(80px + 3rem);
-  padding-bottom: 4rem;
+  padding-bottom: 2.5rem;
 }
 
 .heroGlow {
@@ -61,7 +61,7 @@
   font-weight: 800;
   line-height: 1.08;
   color: #fff;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
   letter-spacing: -0.03em;
   opacity: 0;
   animation: fadeInUp 0.8s ease-out 0.2s forwards;
@@ -81,7 +81,7 @@
   font-size: 1.1rem;
   color: var(--text-secondary);
   max-width: 800px;
-  margin: 0 auto 1.5rem;
+  margin: 0 auto 1.25rem;
   line-height: 1.75;
   opacity: 0;
   animation: fadeInUp 0.8s ease-out 0.45s forwards;
@@ -90,9 +90,9 @@
 .heroPillars {
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 1.25rem;
   flex-wrap: wrap;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
   opacity: 0;
   animation: fadeInUp 0.8s ease-out 0.55s forwards;
 }

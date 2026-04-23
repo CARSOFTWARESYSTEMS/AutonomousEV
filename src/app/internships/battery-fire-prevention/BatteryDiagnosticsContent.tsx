@@ -54,10 +54,6 @@ export default function BatteryDiagnosticsContent() {
             It is a <strong>full-stack engineering platform</strong> for battery diagnostics, grading, digital identity, second-life repurposing, and thermal reconfiguration — designed to be built and deployed in the real world.
           </p>
 
-          <div className={styles.calloutBlock} style={{ maxWidth: '800px', margin: '0 auto 2rem', textAlign: 'center', borderLeft: 'none', borderTop: '2px solid var(--accent-primary)', borderRadius: 'var(--radius-md)', opacity: 0, animation: 'fadeInUp 0.8s ease-out 0.5s forwards' }}>
-            This platform provides end-to-end battery lifecycle intelligence — including diagnostics, grading, identity, repurposing, and thermal reconfiguration — for second-life EV battery systems.
-          </div>
-
           <div className={styles.heroPillars}>
             <div className={styles.heroPillarChip}><span>🔬</span> Multi-Level Diagnostics</div>
             <div className={styles.heroPillarChip}><span>🔄</span> Full Lifecycle System</div>
