@@ -55,7 +55,7 @@ export default function BatteryDiagnosticsContent() {
           </p>
 
           <div className={styles.calloutBlock} style={{ maxWidth: '800px', margin: '0 auto 2rem', textAlign: 'center', borderLeft: 'none', borderTop: '2px solid var(--accent-primary)', borderRadius: 'var(--radius-md)', opacity: 0, animation: 'fadeInUp 0.8s ease-out 0.5s forwards' }}>
-            This platform provides end-to-end battery lifecycle intelligence — including diagnostics, grading, identity, repurposing, and thermal reconfiguration.
+            This platform provides end-to-end battery lifecycle intelligence — including diagnostics, grading, identity, repurposing, and thermal reconfiguration — for second-life EV battery systems.
           </div>
 
           <div className={styles.heroPillars}>
@@ -116,7 +116,7 @@ export default function BatteryDiagnosticsContent() {
 
             <WLabel>Pack-Level Diagnostics</WLabel>
             <WStep dot={styles.dotPack} title="Pack-Level Diagnostics" desc="BMS communication, OCV/CCV measurement, insulation resistance, fault-code extraction, and pack-level capacity estimation." />
-            <WGate dot={styles.dotGate} title="Decision Gate 1 — Reuse / Disassemble / Scrap" desc="✓ SOH > 80%: direct reuse → Second-life pack.  ⚠ Degraded but viable: disassemble → Module testing.  ✕ Unsafe / failed isolation: exit → Material recovery & scrap." />
+            <WGate dot={styles.dotGate} title="Decision Gate 1 — Reuse / Disassemble / Scrap" desc="✓ SOH > 80%: direct reuse → Validation → Deployment (shortcut path).  ⚠ Degraded but viable: disassemble → Module testing.  ✕ Unsafe / failed isolation: exit → Material recovery & scrap." />
 
             <WLabel>Module-Level Testing</WLabel>
             <WStep dot={styles.dotModule} title="Module-Level Testing" desc="Capacity measurement, inter-cell voltage imbalance, DC internal resistance, and thermal behaviour under load." />
@@ -249,6 +249,10 @@ export default function BatteryDiagnosticsContent() {
               </div>
             </div>
           </div>
+
+          <div className={styles.calloutBlock} style={{ marginTop: '1.5rem' }}>
+            <strong>Why Hardware Matters:</strong> Real EV battery systems depend on continuous sensing and protection through integrated hardware and BMS communication. Software alone cannot guarantee safety — physical isolation monitoring, emergency disconnect, and thermal sensing are non-negotiable.
+          </div>
         </div>
       </section>
 
@@ -342,7 +346,8 @@ export default function BatteryDiagnosticsContent() {
                 <div className={styles.flowNode} style={{ fontSize: '0.8rem' }}>ID Gen</div><span className={styles.flowArrow}>→</span>
                 <div className={styles.flowNode} style={{ fontSize: '0.8rem' }}>Sticker</div><span className={styles.flowArrow}>→</span>
                 <div className={styles.flowNode} style={{ fontSize: '0.8rem' }}>Scan</div><span className={styles.flowArrow}>→</span>
-                <div className={styles.flowNode} style={{ fontSize: '0.8rem', borderColor: 'var(--accent-primary)' }}>Cloud Twin</div>
+                <div className={styles.flowNode} style={{ fontSize: '0.8rem' }}>Cloud Twin</div><span className={styles.flowArrow}>→</span>
+                <div className={styles.flowNode} style={{ fontSize: '0.8rem', borderColor: 'var(--accent-primary)' }}>History</div>
               </div>
               <div className={styles.calloutBlock} style={{ marginTop: '1rem', marginBottom: 0 }}>
                 <strong>Battery Pack Aadhaar:</strong> A national-scale identity registry enabling full lifecycle traceability for every EV battery cell in India.
@@ -377,6 +382,9 @@ export default function BatteryDiagnosticsContent() {
           </div>
 
           <div className={styles.calloutBlock} style={{ marginTop: '1.5rem' }}>
+            <strong>Propagation Prevention:</strong> Thermal management is critical to prevent heat propagation across cells in repacked configurations. Mica barriers, directional airflow, and optimized cell spacing form a multi-layer thermal defence.
+          </div>
+          <div className={styles.calloutBlock} style={{ marginTop: '0.75rem' }}>
             <strong>Rural Deployment Constraint:</strong> Designed for high-ambient Indian conditions (45 °C+). No dependence on external HVAC. Passive thermal safety must sustain operation in non-climate-controlled rural storage environments.
           </div>
 
