@@ -35,17 +35,20 @@ export default function FounderContent() {
         <div className={styles.glassCard}>
           <h2 className={styles.sectionTitle}>About the Founder</h2>
           <p className={styles.description}>
-            <strong>Sudarshana Karkala</strong> is a seasoned software architect and technology leader with over two decades of experience in mobile, cloud, and energy systems engineering.
+            <strong>Sudarshana Karkala</strong> is a software architect and technology leader with over two decades of experience in mobile, security, cloud, and energy systems engineering.
           </p>
           <p className={styles.description}>
-            He is the founder of <strong>EV.ENGINEER™</strong>, a platform dedicated to building world-class engineers and developing next-generation solutions for electric vehicles and intelligent energy systems.
+            He is the founder of <strong>EV.ENGINEER™</strong>, a platform focused on solving critical challenges in electric mobility through intelligent, scalable, and engineering-driven solutions.
+          </p>
+          <p className={styles.description}>
+            His work is centered on building next-generation systems that improve safety, reliability, and performance of EV batteries and energy infrastructure.
           </p>
           
           <h3 className={styles.sectionTitle} style={{ marginTop: '2rem' }}>Core Focus Areas</h3>
           <ul className={styles.focusList}>
+            <li>Battery lifecycle intelligence and diagnostics</li>
             <li>AI-powered EV battery safety systems</li>
             <li>Autonomous energy management (SI-EMS)</li>
-            <li>Battery lifecycle intelligence and diagnostics</li>
             <li>EV ecosystem platforms for India and global markets</li>
           </ul>
         </div>
@@ -55,7 +58,12 @@ export default function FounderContent() {
       <section className={styles.missionSection}>
         <h2 className={styles.sectionTitle}>Mission</h2>
         <p className={styles.missionText}>
-          "To eliminate EV battery failures and build safe, intelligent, and scalable energy systems for the future."
+          "To solve EV battery safety and energy system challenges through intelligent, scalable, and engineering-driven solutions."
+        </p>
+
+        <h2 className={styles.sectionTitle} style={{ marginTop: '2rem' }}>Vision</h2>
+        <p className={styles.missionText}>
+          "To eliminate EV battery failures and define the future of safe, intelligent, and autonomous energy systems."
         </p>
         
         <div className={styles.connectSection}>
