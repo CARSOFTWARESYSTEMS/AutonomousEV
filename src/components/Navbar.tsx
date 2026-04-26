@@ -16,7 +16,15 @@ export default function Navbar() {
 
         <div className={styles.navLinks}>
           <Link href="/" className={styles.navItem}>Home</Link>
-          <Link href="/about" className={styles.navItem}>About</Link>
+          <div className={styles.navItem}>
+            About
+            <div className={styles.dropdown}>
+              <div className={styles.dropdownColumn}>
+                <Link href="/about" className={styles.dropdownLink}>About Us</Link>
+                <Link href="/about/sudarshana-karkala" className={styles.dropdownLink}>Sudarshana Karkala</Link>
+              </div>
+            </div>
+          </div>
 
           <div className={styles.navItem}>
             Concepts
@@ -121,7 +129,9 @@ export default function Navbar() {
       <div className={`${styles.mobileMenu} ${mobileMenuOpen ? styles.mobileMenuOpen : ''}`}>
         <div className={styles.mobileMenuInner}>
           <Link href="/" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Home</Link>
+          <div className={styles.mobileSectionTitle}>About</div>
           <Link href="/about" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>About Us</Link>
+          <Link href="/about/sudarshana-karkala" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Sudarshana Karkala</Link>
 
           <div className={styles.mobileSectionTitle}>Foundations</div>
           <Link href="/av-concepts" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>AV Concepts</Link>

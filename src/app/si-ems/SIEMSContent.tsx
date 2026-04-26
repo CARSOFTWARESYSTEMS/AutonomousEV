@@ -283,6 +283,14 @@ export default function SIEMSContent() {
             </div>
           </section>
 
+          {/* Author & Lead Architect */}
+          <section className="glass-panel" style={{ marginTop: "100px", padding: "3rem", textAlign: "center", borderTop: "2px solid var(--accent-primary)" }}>
+            <h2 style={{ fontSize: "1.2rem", color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "1rem" }}>Author &amp; Lead Architect</h2>
+            <p style={{ fontSize: "2rem", fontWeight: "800", color: "#fff", marginBottom: "0.25rem" }}>Sudarshana Karkala</p>
+            <p style={{ fontSize: "1rem", color: "var(--accent-primary)", fontWeight: "600", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "1.5rem" }}>EV.ENGINEER™</p>
+            <Link href="/about/sudarshana-karkala" className="btn btn-secondary">View Profile</Link>
+          </section>
+
           <section style={{ textAlign: "center", marginTop: "120px", padding: "80px 0", borderTop: "1px solid var(--glass-border)" }}>
             <h2 style={{ fontSize: "2.8rem", marginBottom: "24px" }}>Partner with us</h2>
             <p style={{ color: "var(--text-secondary)", marginBottom: "16px", maxWidth: "700px", margin: "0 auto", fontSize: "1.2rem" }}>

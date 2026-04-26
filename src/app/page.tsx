@@ -252,7 +252,29 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 9. CTA */}
+      {/* 9. FOUNDER PROFILE */}
+      <section className="section bg-surface">
+        <div className="container">
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Meet the Architect Behind EV.<span className={styles.accentText}>ENGINEER™</span></h2>
+          </div>
+          <div style={{ display: 'flex', gap: '3rem', alignItems: 'center', background: 'var(--glass-bg)', padding: '3rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--glass-border)', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <div style={{ flexShrink: 0, width: '180px', height: '180px', borderRadius: '50%', overflow: 'hidden', border: '4px solid rgba(255,255,255,0.05)', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}>
+              <img src="/SudarshanaKarkala.jpg" alt="Sudarshana Karkala" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            </div>
+            <div style={{ flex: '1 1 300px', textAlign: 'center' }} className="founder-text-container">
+              <h3 style={{ fontSize: '2rem', fontWeight: '800', color: '#fff', marginBottom: '0.25rem' }}>Sudarshana Karkala</h3>
+              <p style={{ fontSize: '1rem', color: 'var(--accent-primary)', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1.2rem' }}>EV.ENGINEER™</p>
+              <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', lineHeight: '1.6', marginBottom: '2rem', maxWidth: '500px', margin: '0 auto 2rem' }}>
+                Founder of EV.ENGINEER™, building intelligent energy systems and AI-driven solutions for electric vehicles.
+              </p>
+              <Link href="/about/sudarshana-karkala" className="btn btn-secondary">View Profile</Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 10. CTA */}
       <section className="section" style={{ padding: "120px 0", textAlign: "center" }}>
         <div className="container">
           <h2 className={styles.sectionTitle}>Ready to Engineer the Future?</h2>
