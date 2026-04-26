@@ -14,7 +14,7 @@ export default function AboutPage() {
       <div style={{ textAlign: "center", marginBottom: "64px" }}>
         <h1 style={{ fontSize: "2.5rem", marginBottom: "16px", fontWeight: "800", color: "#fff" }}>EV.ENGINEER™</h1>
         <p style={{ fontSize: "1.2rem", color: "var(--accent-primary)", fontWeight: "400", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "64px" }}>
-          Building <strong>World-Class Engineers</strong> to Solve <strong>Energy</strong> and <strong>EV Battery</strong> Challenges
+          Building <strong className={styles.glowingText}>World-Class Engineers</strong> to Solve <strong className={styles.glowingText}>Energy</strong> and <strong className={styles.glowingText}>EV Battery</strong> Challenges
         </p>
       </div>
 
@@ -23,13 +23,13 @@ export default function AboutPage() {
         <div style={{ flex: "1 1 400px", background: "var(--glass-bg)", padding: "3rem", borderRadius: "var(--radius-lg)", border: "1px solid var(--glass-border)" }}>
           <h2 style={{ fontSize: "1.8rem", marginBottom: "16px", color: "var(--accent-primary)", fontWeight: "800" }}>Our Mission</h2>
           <p style={{ fontSize: "1.1rem", lineHeight: "1.6", color: "var(--text-secondary)", fontStyle: "italic" }}>
-            "To build world-class engineers and develop intelligent energy systems that ensure safety, reliability, and sustainability in electric mobility."
+            "To solve EV battery safety and energy system challenges through intelligent, scalable, and engineering-driven solutions."
           </p>
         </div>
         <div style={{ flex: "1 1 400px", background: "var(--glass-bg)", padding: "3rem", borderRadius: "var(--radius-lg)", border: "1px solid var(--glass-border)" }}>
           <h2 style={{ fontSize: "1.8rem", marginBottom: "16px", color: "var(--accent-primary)", fontWeight: "800" }}>Our Vision</h2>
           <p style={{ fontSize: "1.1rem", lineHeight: "1.6", color: "var(--text-secondary)", fontStyle: "italic" }}>
-            "To eliminate EV battery failures and enable a future powered by safe, intelligent, and autonomous energy systems."
+            "To eliminate EV battery failures and define the future of safe, intelligent, and autonomous energy systems."
           </p>
         </div>
       </div>
@@ -96,16 +96,7 @@ export default function AboutPage() {
         </p>
       </div>
 
-      {/* Founder Section */}
-      <div className="glass-panel" style={{ padding: "3rem", textAlign: "center", borderTop: "2px solid var(--accent-primary)", maxWidth: "800px", margin: "0 auto 80px" }}>
-        <h2 style={{ fontSize: "1.2rem", color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "1rem" }}>Founder</h2>
-        <p style={{ fontSize: "2rem", fontWeight: "800", color: "#fff", marginBottom: "0.25rem" }}>Sudarshana Karkala</p>
-        <p style={{ fontSize: "1rem", color: "var(--accent-primary)", fontWeight: "600", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "1.5rem" }}>EV.ENGINEER™</p>
-        <div style={{ display: "flex", gap: "16px", justifyContent: "center" }}>
-          <Link href="/about/sudarshana-karkala" className="btn btn-primary">View Profile</Link>
-          <a href="https://www.linkedin.com/in/sudarshanakarkala/" target="_blank" rel="noopener noreferrer" className="btn btn-secondary">LinkedIn</a>
-        </div>
-      </div>
+
 
       {/* CTA */}
       <div style={{ textAlign: "center", padding: "4rem 2rem", background: "var(--glass-bg)", borderRadius: "var(--radius-lg)", border: "1px solid var(--glass-border)" }}>
