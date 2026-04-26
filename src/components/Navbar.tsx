@@ -91,6 +91,7 @@ export default function Navbar() {
                 <div className={styles.dropdownDivider} />
                 <div className={styles.dropdownSubTitle}>Miscellaneous</div>
                 <Link href="/internships" className={styles.dropdownLink}>Internship projects</Link>
+                <Link href="/internships/miscellaneous/startup" className={styles.dropdownLink}>EV Startup</Link>
                 <a href="https://vtu.internyet.in/" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>VTU Internyet</a>
                 <a href="https://internship.aicte-india.org/" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>AICTE Internships</a>
                 <a href="https://itelematics.com/ev-engineer" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>Projects @ iTelematics®</a>
@@ -165,6 +166,7 @@ export default function Navbar() {
 
           <div className={styles.mobileSectionTitle}>Internships — Miscellaneous</div>
           <Link href="/internships" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Internship projects</Link>
+          <Link href="/internships/miscellaneous/startup" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>EV Startup</Link>
           <a href="https://vtu.internyet.in/" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>VTU Internyet</a>
           <a href="https://internship.aicte-india.org/" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>AICTE Internships</a>
           <a href="https://itelematics.com/ev-engineer" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Projects @ iTelematics®</a>

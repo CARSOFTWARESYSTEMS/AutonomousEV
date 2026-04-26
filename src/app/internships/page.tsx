@@ -124,6 +124,10 @@ export default function InternshipsPage() {
 
           <Section title="Miscellaneous">
             <ProjectCard 
+              title="EV Startup - Building Organisational Structure" 
+              link="/internships/miscellaneous/startup" 
+            />
+            <ProjectCard 
               title="VTU Internyet" 
               link="https://vtu.internyet.in/" 
             />
