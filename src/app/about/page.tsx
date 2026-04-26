@@ -1,59 +1,133 @@
-export const metadata = {
+import Link from "next/link";
+import styles from "./about.module.css";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
   title: "About | EV.ENGINEER™",
-  description: "Learn about iTelematics® and EV.ENGINEER™, building engineering-grade telematics and EV intelligence platforms for fleets, OEMs, and battery-centric mobility systems.",
+  description: "EV.ENGINEER™ is a next-generation engineering platform focused on building intelligent, safe, and scalable energy systems for the future of electric mobility.",
 };
 
 export default function AboutPage() {
   return (
     <div className="container" style={{ paddingTop: "120px", paddingBottom: "80px" }}>
+      {/* Header Section */}
       <div style={{ textAlign: "center", marginBottom: "64px" }}>
-        <h1 style={{ fontSize: "3rem", marginBottom: "16px" }}>About Us</h1>
-        <p style={{ fontSize: "1.2rem", color: "var(--color-text-secondary)", maxWidth: "800px", margin: "0 auto" }}>
-          iTelematics® builds engineering-grade telematics and EV intelligence platforms for fleets, OEMs, and battery-centric mobility systems.
+        <h1 style={{ fontSize: "3.5rem", marginBottom: "16px", fontWeight: "800", color: "#fff" }}>EV.ENGINEER™</h1>
+        <p style={{ fontSize: "1.2rem", color: "var(--accent-primary)", fontWeight: "600", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "32px" }}>
+          Building World-Class Engineers to Solve Energy and Electric Vehicle Challenges
         </p>
+        <div style={{ maxWidth: "800px", margin: "0 auto", textAlign: "left", background: "var(--glass-bg)", padding: "2.5rem", borderRadius: "var(--radius-lg)", border: "1px solid var(--glass-border)" }}>
+          <p style={{ fontSize: "1.1rem", lineHeight: "1.8", color: "var(--text-secondary)", marginBottom: "1.5rem" }}>
+            <strong>EV.ENGINEER™</strong> is a next-generation engineering platform focused on building intelligent, safe, and scalable energy systems for the future of electric mobility.
+          </p>
+          <p style={{ fontSize: "1.1rem", lineHeight: "1.8", color: "var(--text-secondary)" }}>
+            It brings together engineering, research, and real-world problem solving to develop solutions that address critical challenges in EV battery safety, energy management, and sustainable mobility.
+          </p>
+        </div>
       </div>
 
-      <div className="grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "32px", marginBottom: "80px" }}>
-        <div className="glass-panel">
-          <h2 style={{ fontSize: "1.5rem", marginBottom: "16px", color: "var(--color-accent)" }}>What we build</h2>
-          <ul style={{ display: "flex", flexDirection: "column", gap: "12px", color: "var(--color-text-secondary)" }}>
-            <li>• Telematics engineering for EV fleets</li>
-            <li>• Battery analytics + diagnostic workflows</li>
-            <li>• Secure-by-design connected systems</li>
-            <li>• AI-driven EV battery diagnostics & predictive maintenance</li>
+      {/* Grid Sections */}
+      <div className="grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "32px", marginBottom: "64px" }}>
+        <div className="glass-panel" style={{ padding: "2.5rem" }}>
+          <h2 style={{ fontSize: "1.5rem", marginBottom: "20px", color: "var(--accent-primary)", fontWeight: "700" }}>What we build</h2>
+          <ul style={{ display: "flex", flexDirection: "column", gap: "12px", color: "var(--text-secondary)", listStyle: "none", padding: 0 }}>
+            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> AI-powered EV battery safety systems</li>
+            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Intelligent energy management platforms (SI-EMS)</li>
+            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Battery lifecycle intelligence &amp; diagnostics</li>
+            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> EV ecosystem platforms for real-world deployment</li>
+            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Simulation-driven engineering and validation systems</li>
           </ul>
         </div>
         
-        <div className="glass-panel">
-          <h2 style={{ fontSize: "1.5rem", marginBottom: "16px", color: "var(--color-accent)" }}>Where we operate</h2>
-          <ul style={{ display: "flex", flexDirection: "column", gap: "12px", color: "var(--color-text-secondary)" }}>
-            <li>• Bangalore, India (HQ)</li>
-            <li>• Remote delivery for global customers</li>
-            <li>• On-site deployment support in Singapore & globally</li>
+        <div className="glass-panel" style={{ padding: "2.5rem" }}>
+          <h2 style={{ fontSize: "1.5rem", marginBottom: "20px", color: "var(--accent-primary)", fontWeight: "700" }}>Our Focus</h2>
+          <ul style={{ display: "flex", flexDirection: "column", gap: "12px", color: "var(--text-secondary)", listStyle: "none", padding: 0 }}>
+            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Electric Vehicle Engineering</li>
+            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Battery Technology &amp; Safety</li>
+            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> AI/ML for Energy Systems</li>
+            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Autonomous Energy Management</li>
+            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Software Defined Vehicles (SDV)</li>
           </ul>
         </div>
 
-        <div className="glass-panel">
-          <h2 style={{ fontSize: "1.5rem", marginBottom: "16px", color: "var(--color-accent)" }}>How we work</h2>
-          <ul style={{ display: "flex", flexDirection: "column", gap: "12px", color: "var(--color-text-secondary)" }}>
-            <li>• Architecture-first delivery</li>
-            <li>• Production-grade engineering</li>
-            <li>• Security + reliability focus</li>
-            <li>• Engineering-first delivery approach</li>
+        <div className="glass-panel" style={{ padding: "2.5rem" }}>
+          <h2 style={{ fontSize: "1.5rem", marginBottom: "20px", color: "var(--accent-primary)", fontWeight: "700" }}>How we work</h2>
+          <ul style={{ display: "flex", flexDirection: "column", gap: "12px", color: "var(--text-secondary)", listStyle: "none", padding: 0 }}>
+            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Engineering-first approach</li>
+            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Problem-driven innovation</li>
+            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Simulation + real-world validation</li>
+            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Safety-first system design</li>
+            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Scalable and production-ready architectures</li>
           </ul>
         </div>
       </div>
 
-      <div style={{ textAlign: "center" }}>
-        <h2 style={{ fontSize: "2rem", marginBottom: "32px" }}>Core Capabilities</h2>
-        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "16px" }}>
-          {["Cloud Native", "Edge AI", "BMS Protocols", "Cybersecurity", "Full Stack", "Data Science", "Mobile & iOS Engineering", "Simulation Integration"].map((skill) => (
-            <span key={skill} style={{ padding: "8px 24px", border: "1px solid var(--color-glass-border)", borderRadius: "var(--radius-pill)", color: "var(--color-text-secondary)", background: "var(--color-glass)" }}>
+      {/* Mission & Vision */}
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "32px", marginBottom: "80px" }}>
+        <div style={{ flex: "1 1 400px", background: "var(--glass-bg)", padding: "3rem", borderRadius: "var(--radius-lg)", border: "1px solid var(--glass-border)" }}>
+          <h2 style={{ fontSize: "1.8rem", marginBottom: "16px", color: "var(--accent-primary)", fontWeight: "800" }}>Our Mission</h2>
+          <p style={{ fontSize: "1.1rem", lineHeight: "1.6", color: "var(--text-secondary)", fontStyle: "italic" }}>
+            "To build world-class engineers and develop intelligent energy systems that ensure safety, reliability, and sustainability in electric mobility."
+          </p>
+        </div>
+        <div style={{ flex: "1 1 400px", background: "var(--glass-bg)", padding: "3rem", borderRadius: "var(--radius-lg)", border: "1px solid var(--glass-border)" }}>
+          <h2 style={{ fontSize: "1.8rem", marginBottom: "16px", color: "var(--accent-primary)", fontWeight: "800" }}>Our Vision</h2>
+          <p style={{ fontSize: "1.1rem", lineHeight: "1.6", color: "var(--text-secondary)", fontStyle: "italic" }}>
+            "To eliminate EV battery failures and enable a future powered by safe, intelligent, and autonomous energy systems."
+          </p>
+        </div>
+      </div>
+
+      {/* Core Capabilities */}
+      <div style={{ textAlign: "center", marginBottom: "80px" }}>
+        <h2 style={{ fontSize: "2rem", marginBottom: "32px", fontWeight: "700" }}>Core Capabilities</h2>
+        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "16px", maxWidth: "800px", margin: "0 auto" }}>
+          {["EV Systems Engineering", "Battery Diagnostics & Analytics", "AI & Machine Learning", "Embedded Systems & BMS", "Cloud & Edge AI", "Simulation & Digital Twin", "Cybersecurity for EV"].map((skill) => (
+            <span key={skill} style={{ padding: "10px 24px", border: "1px solid var(--accent-primary)", borderRadius: "var(--radius-pill)", color: "#fff", background: "rgba(76, 169, 48, 0.1)", fontSize: "0.95rem", fontWeight: "600", letterSpacing: "0.02em" }}>
               {skill}
             </span>
           ))}
         </div>
       </div>
+
+      {/* Platform Approach */}
+      <div style={{ textAlign: "center", marginBottom: "80px", maxWidth: "800px", margin: "0 auto 80px" }}>
+        <h2 style={{ fontSize: "2rem", marginBottom: "24px", fontWeight: "700", color: "var(--accent-primary)" }}>Platform Approach</h2>
+        <p style={{ fontSize: "1.1rem", lineHeight: "1.8", color: "var(--text-secondary)", marginBottom: "24px" }}>
+          <strong>EV.ENGINEER™</strong> operates as a platform that integrates:
+        </p>
+        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "16px", marginBottom: "32px" }}>
+          {["Research", "Engineering", "Training", "Real-world deployment"].map((item) => (
+            <span key={item} style={{ padding: "12px 24px", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "var(--radius-md)", color: "var(--text-primary)", fontWeight: "600" }}>
+              {item}
+            </span>
+          ))}
+        </div>
+        <p style={{ fontSize: "1.1rem", lineHeight: "1.8", color: "var(--text-secondary)" }}>
+          This enables continuous innovation while building a strong ecosystem of engineers and solutions.
+        </p>
+      </div>
+
+      {/* Founder Section */}
+      <div className="glass-panel" style={{ padding: "3rem", textAlign: "center", borderTop: "2px solid var(--accent-primary)", maxWidth: "800px", margin: "0 auto 80px" }}>
+        <h2 style={{ fontSize: "1.2rem", color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "1rem" }}>Founder</h2>
+        <p style={{ fontSize: "2rem", fontWeight: "800", color: "#fff", marginBottom: "0.25rem" }}>Sudarshana Karkala</p>
+        <p style={{ fontSize: "1rem", color: "var(--accent-primary)", fontWeight: "600", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "1.5rem" }}>EV.ENGINEER™</p>
+        <div style={{ display: "flex", gap: "16px", justifyContent: "center" }}>
+          <Link href="/about/sudarshana-karkala" className="btn btn-primary">View Profile</Link>
+          <a href="https://www.linkedin.com/in/sudarshanakarkala/" target="_blank" rel="noopener noreferrer" className="btn btn-secondary">LinkedIn</a>
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div style={{ textAlign: "center", padding: "4rem 2rem", background: "var(--glass-bg)", borderRadius: "var(--radius-lg)", border: "1px solid var(--glass-border)" }}>
+        <h2 style={{ fontSize: "2.5rem", marginBottom: "16px", fontWeight: "800" }}>Ready to Shape the Future?</h2>
+        <p style={{ fontSize: "1.2rem", color: "var(--text-secondary)", marginBottom: "32px", maxWidth: "600px", margin: "0 auto 32px" }}>
+          Join <strong>EV.ENGINEER™</strong> to build, learn, and contribute to the future of electric mobility.
+        </p>
+        <Link href="/contact" className="btn btn-primary" style={{ padding: "1rem 2.5rem", fontSize: "1.1rem" }}>Connect With Us</Link>
+      </div>
+
     </div>
   );
 }
