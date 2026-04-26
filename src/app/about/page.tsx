@@ -12,54 +12,10 @@ export default function AboutPage() {
     <div className="container" style={{ paddingTop: "120px", paddingBottom: "80px" }}>
       {/* Header Section */}
       <div style={{ textAlign: "center", marginBottom: "64px" }}>
-        <h1 style={{ fontSize: "3.5rem", marginBottom: "16px", fontWeight: "800", color: "#fff" }}>EV.ENGINEER™</h1>
-        <p style={{ fontSize: "1.2rem", color: "var(--accent-primary)", fontWeight: "600", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "32px" }}>
-          Building World-Class Engineers to Solve Energy and Electric Vehicle Challenges
+        <h1 style={{ fontSize: "2.5rem", marginBottom: "16px", fontWeight: "800", color: "#fff" }}>EV.ENGINEER™</h1>
+        <p style={{ fontSize: "1.2rem", color: "var(--accent-primary)", fontWeight: "400", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "64px" }}>
+          Building <strong>World-Class Engineers</strong> to Solve <strong>Energy</strong> and <strong>EV Battery</strong> Challenges
         </p>
-        <div style={{ maxWidth: "800px", margin: "0 auto", textAlign: "left", background: "var(--glass-bg)", padding: "2.5rem", borderRadius: "var(--radius-lg)", border: "1px solid var(--glass-border)" }}>
-          <p style={{ fontSize: "1.1rem", lineHeight: "1.8", color: "var(--text-secondary)", marginBottom: "1.5rem" }}>
-            <strong>EV.ENGINEER™</strong> is a next-generation engineering platform focused on building intelligent, safe, and scalable energy systems for the future of electric mobility.
-          </p>
-          <p style={{ fontSize: "1.1rem", lineHeight: "1.8", color: "var(--text-secondary)" }}>
-            It brings together engineering, research, and real-world problem solving to develop solutions that address critical challenges in EV battery safety, energy management, and sustainable mobility.
-          </p>
-        </div>
-      </div>
-
-      {/* Grid Sections */}
-      <div className="grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "32px", marginBottom: "64px" }}>
-        <div className="glass-panel" style={{ padding: "2.5rem" }}>
-          <h2 style={{ fontSize: "1.5rem", marginBottom: "20px", color: "var(--accent-primary)", fontWeight: "700" }}>What we build</h2>
-          <ul style={{ display: "flex", flexDirection: "column", gap: "12px", color: "var(--text-secondary)", listStyle: "none", padding: 0 }}>
-            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> AI-powered EV battery safety systems</li>
-            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Intelligent energy management platforms (SI-EMS)</li>
-            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Battery lifecycle intelligence &amp; diagnostics</li>
-            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> EV ecosystem platforms for real-world deployment</li>
-            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Simulation-driven engineering and validation systems</li>
-          </ul>
-        </div>
-        
-        <div className="glass-panel" style={{ padding: "2.5rem" }}>
-          <h2 style={{ fontSize: "1.5rem", marginBottom: "20px", color: "var(--accent-primary)", fontWeight: "700" }}>Our Focus</h2>
-          <ul style={{ display: "flex", flexDirection: "column", gap: "12px", color: "var(--text-secondary)", listStyle: "none", padding: 0 }}>
-            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Electric Vehicle Engineering</li>
-            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Battery Technology &amp; Safety</li>
-            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> AI/ML for Energy Systems</li>
-            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Autonomous Energy Management</li>
-            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Software Defined Vehicles (SDV)</li>
-          </ul>
-        </div>
-
-        <div className="glass-panel" style={{ padding: "2.5rem" }}>
-          <h2 style={{ fontSize: "1.5rem", marginBottom: "20px", color: "var(--accent-primary)", fontWeight: "700" }}>How we work</h2>
-          <ul style={{ display: "flex", flexDirection: "column", gap: "12px", color: "var(--text-secondary)", listStyle: "none", padding: 0 }}>
-            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Engineering-first approach</li>
-            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Problem-driven innovation</li>
-            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Simulation + real-world validation</li>
-            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Safety-first system design</li>
-            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Scalable and production-ready architectures</li>
-          </ul>
-        </div>
       </div>
 
       {/* Mission & Vision */}
@@ -77,6 +33,38 @@ export default function AboutPage() {
           </p>
         </div>
       </div>
+
+      {/* Grid Sections */}
+      <div className="grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "32px", marginBottom: "64px" }}>
+        <div className="glass-panel" style={{ padding: "2.5rem" }}>
+          <h2 style={{ fontSize: "1.5rem", marginBottom: "20px", color: "var(--accent-primary)", fontWeight: "700" }}>What we build</h2>
+          <ul style={{ display: "flex", flexDirection: "column", gap: "12px", color: "var(--text-secondary)", listStyle: "none", padding: 0 }}>
+            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> EV Battery Intelligence Platform</li>
+          </ul>
+        </div>
+        
+        <div className="glass-panel" style={{ padding: "2.5rem" }}>
+          <h2 style={{ fontSize: "1.5rem", marginBottom: "20px", color: "var(--accent-primary)", fontWeight: "700" }}>Our Focus</h2>
+          <ul style={{ display: "flex", flexDirection: "column", gap: "12px", color: "var(--text-secondary)", listStyle: "none", padding: 0 }}>
+            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> EV Battery Technology</li>
+            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> EV Battery Safety &amp; Security</li>
+            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> AI/ML for Energy Systems</li>
+          </ul>
+        </div>
+
+        <div className="glass-panel" style={{ padding: "2.5rem" }}>
+          <h2 style={{ fontSize: "1.5rem", marginBottom: "20px", color: "var(--accent-primary)", fontWeight: "700" }}>How we work</h2>
+          <ul style={{ display: "flex", flexDirection: "column", gap: "12px", color: "var(--text-secondary)", listStyle: "none", padding: 0 }}>
+            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Engineering-first approach</li>
+            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Problem-driven innovation</li>
+            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Simulation + real-world validation</li>
+            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Safety-first system design</li>
+            <li style={{ paddingLeft: "1.5rem", position: "relative" }}><span style={{ position: "absolute", left: 0, color: "var(--accent-primary)" }}>→</span> Scalable and production-ready architectures</li>
+          </ul>
+        </div>
+      </div>
+
+
 
       {/* Core Capabilities */}
       <div style={{ textAlign: "center", marginBottom: "80px" }}>
