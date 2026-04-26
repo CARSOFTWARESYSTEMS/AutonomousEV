@@ -6,9 +6,9 @@ export const metadata: Metadata = {
   title: 'AV & EV Internships | EV.ENGINEER™',
   description: 'Practical, engineering-focused internships in EV battery health, autonomous vehicle systems, safety systems, passenger taxis, and RTOS architecture. Kickstart your career in autonomous eMobility.',
   keywords: [
-    'EV Internships', 'AV Internships', 'Autonomous Vehicles Internship', 
-    'Electric Vehicle Research', 'Battery Diagnostics Internship', 
-    'Robotaxi Internships', 'Super-Intelligent AI EMS', 
+    'EV Internships', 'AV Internships', 'Autonomous Vehicles Internship',
+    'Electric Vehicle Research', 'Battery Diagnostics Internship',
+    'Robotaxi Internships', 'Super-Intelligent AI EMS',
     'EV Engineering Internships', 'EV Repair Workshop Internships',
     'AICTE Internships', 'VTU Internships in EV'
   ]
@@ -23,9 +23,9 @@ function ProjectCard({ title, desc, link }: { title: string, desc?: string, link
         {title}
       </h3>
       {desc && <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', flexGrow: 1, marginBottom: '16px' }}>{desc}</p>}
-      
+
       <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', color: 'var(--accent-primary)', fontSize: '0.9rem', fontWeight: 600 }}>
-        {isExternal ? 'Visit Website' : 'Explore Program'} 
+        {isExternal ? 'Visit Website' : 'Explore Program'}
         <span style={{ marginLeft: '6px', fontSize: '1.1rem', transition: 'transform 0.2s ease' }} className="cta-arrow">
           {isExternal ? '↗' : '→'}
         </span>
@@ -71,85 +71,85 @@ export default function InternshipsPage() {
           </p>
 
           <Section title="Research">
-            <ProjectCard 
-              title="Super-Intelligent AI EMS" 
-              desc="AI-Driven Energy Management Systems for Autonomous EVs." 
-              link="/si-ems" 
+            <ProjectCard
+              title="Super-Intelligent AI EMS"
+              desc="AI-Driven Energy Management Systems for Autonomous EVs."
+              link="/si-ems"
             />
-            <ProjectCard 
-              title="EV Battery Health & Diagnostics" 
-              desc="Advanced diagnostics and intelligence for battery lifecycles." 
-              link="https://battery.ev.engineer/" 
+            <ProjectCard
+              title="EV Battery Health & Diagnostics"
+              desc="Advanced diagnostics and intelligence for battery lifecycles."
+              link="https://battery.ev.engineer/"
             />
           </Section>
 
           <Section title="Proof of Concept">
-            <ProjectCard 
-              title="Autonomous Passenger Taxi" 
-              desc="End-to-end design lifecycle for urban ride services." 
-              link="/design-development/passenger-taxi" 
+            <ProjectCard
+              title="Autonomous Passenger Taxi"
+              desc="End-to-end design lifecycle for urban ride services."
+              link="/design-development/passenger-taxi"
             />
-            <ProjectCard 
-              title="Autonomous Airport Cargo EV" 
-              desc="Duty-cycle analysis and integrations for closed-loop environments." 
-              link="/design-development/airport-cargo" 
-            />
-          </Section>
-          
-          <Section title="Design & Development">
-            <ProjectCard 
-              title="EV Battery Intelligence Platform" 
-              desc="Risk analysis and advanced thermal runaway prevention implementations." 
-              link="/internships/battery-fire-prevention" 
-            />
-            <ProjectCard 
-              title="Battery Pack Aadhaar System" 
-              desc="Unified identity protocols for battery life tracking and health." 
-              link="/internships/battery-aadhaar" 
+            <ProjectCard
+              title="Autonomous Airport Cargo EV"
+              desc="Duty-cycle analysis and integrations for closed-loop environments."
+              link="/design-development/airport-cargo"
             />
           </Section>
 
-          <Section title="EV Repair Workshop">
-            <ProjectCard 
-              title="EV Repair Workshop" 
-              desc="Specialized focus on EV diagnostics, repair mechanisms, and maintenance workflows." 
-              link="https://repair.ev.engineer/" 
+          <Section title="Design & Development">
+            <ProjectCard
+              title="EV Battery Intelligence Platform"
+              desc="Risk analysis and advanced thermal runaway prevention implementations."
+              link="/internships/battery-fire-prevention"
             />
-            <ProjectCard 
-              title="Battery Circular Economy" 
-              desc="End-to-end financial model for EV battery secondary life — cost breakdown, cell grading, repacking economics, and Business Model Canvas." 
-              link="/internships/battery-circular-economy" 
+            <ProjectCard
+              title="Battery Pack Aadhaar System"
+              desc="Unified identity protocols for battery life tracking and health."
+              link="/internships/battery-aadhaar"
+            />
+          </Section>
+
+          <Section title="EV Workshop">
+            <ProjectCard
+              title="EV Repair Workshop"
+              desc="Specialized focus on EV diagnostics, repair mechanisms, and maintenance workflows."
+              link="https://repair.ev.engineer/"
+            />
+            <ProjectCard
+              title="BMC - Battery Circular Economy"
+              desc="End-to-end financial model for EV battery secondary life — cost breakdown, cell grading, repacking economics, and Business Model Canvas."
+              link="/internships/battery-circular-economy"
             />
           </Section>
 
           <Section title="Miscellaneous">
-            <ProjectCard 
-              title="EV Startup - Building Organisational Structure" 
-              link="/internships/miscellaneous/startup" 
+            <ProjectCard
+              title="EV Startup"
+              link="/internships/miscellaneous/startup"
             />
-            <ProjectCard 
-              title="VTU Internyet" 
-              link="https://vtu.internyet.in/" 
+            <ProjectCard
+              title="VTU Internyet"
+              link="https://vtu.internyet.in/"
             />
-            <ProjectCard 
-              title="AICTE Internships" 
-              link="https://internship.aicte-india.org/" 
+            <ProjectCard
+              title="AICTE Internships"
+              link="https://internship.aicte-india.org/"
             />
-            <ProjectCard 
-              title="Projects @ iTelematics®" 
-              link="https://itelematics.com/ev-engineer" 
+            <ProjectCard
+              title="Projects @ iTelematics®"
+              link="https://itelematics.com/ev-engineer"
             />
-            <ProjectCard 
-              title="Projects @ Thasmai Infotech" 
-              link="https://www.thasmaiinfotech.com/#programs" 
+            <ProjectCard
+              title="Projects @ Thasmai Infotech"
+              link="https://www.thasmaiinfotech.com/#programs"
             />
-            <ProjectCard 
-              title="Webinars @ EV Society™" 
-              link="https://www.evsociety.org/projects" 
+            <ProjectCard
+              title="Webinars @ EV Society™"
+              link="https://www.evsociety.org/projects"
             />
-            <ProjectCard 
-              title="Ongoing vs Completed" 
-              link="https://labs.ev.engineer/" 
+            <ProjectCard
+              title="Ongoing vs Completed"
+              link="https://labs.ev.engineer/"
             />
           </Section>
 

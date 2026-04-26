@@ -14,12 +14,12 @@ const SectionHeader = ({ number, title, subtitle }: { number: string; title: str
 
 type Item = string | { label: string; subItems: (string | { label: string; subItems: string[] })[] };
 
-const ActivityCard = ({ title, goal, prerequisite, items, tips }: { 
-  title: string; 
-  goal?: string; 
-  prerequisite?: string; 
-  items: Item[]; 
-  tips?: string[] 
+const ActivityCard = ({ title, goal, prerequisite, items, tips }: {
+  title: string;
+  goal?: string;
+  prerequisite?: string;
+  items: Item[];
+  tips?: string[]
 }) => {
   const renderItem = (item: Item, idx: number) => {
     if (typeof item === 'string') {
@@ -82,14 +82,14 @@ export default function StartupContent() {
       {/* SECTION 1 */}
       <section className={styles.pageSection}>
         <div className="container">
-          <SectionHeader 
-            number="Fundamental Framework" 
-            title="7 Fundamental Activities" 
-            subtitle="The bedrock of a stable and successful EV business" 
+          <SectionHeader
+            number="Fundamental Framework"
+            title="7 Fundamental Activities"
+            subtitle="The bedrock of a stable and successful EV business"
           />
-          
+
           <div className={styles.grid2}>
-            <ActivityCard 
+            <ActivityCard
               title="1. Marketing"
               goal="Lead Generation"
               prerequisite="Understand the product, features or service which we are marketing"
@@ -102,12 +102,12 @@ export default function StartupContent() {
                 "Generate Leads (Enquiry)"
               ]}
               tips={[
-                "Use Social Media for Marketing -> Education vs Entertainment vs Story Telling",
-                "Use WhatsApp, Instagram, Facebook, LinkedIn, Youtube for Marketing"
+                "Social Media -> Education vs Entertainment vs Story Telling",
+                "WhatsApp, Instagram, Facebook, LinkedIn, YouTube"
               ]}
             />
 
-            <ActivityCard 
+            <ActivityCard
               title="2. Sales"
               goal="Revenue Generation"
               prerequisite="Understand the product, features or service which we are selling"
@@ -122,7 +122,7 @@ export default function StartupContent() {
               tips={["Understand customers needs, dreams and challenges"]}
             />
 
-            <ActivityCard 
+            <ActivityCard
               title="3. Operations"
               prerequisite="Understand the product, features or service which we are selling"
               items={[
@@ -132,48 +132,48 @@ export default function StartupContent() {
               ]}
             />
 
-            <ActivityCard 
+            <ActivityCard
               title="4. Legal"
               items={[
                 { label: "Contracts", subItems: ["Customer contracts", "Employee contracts", "Vendor contracts"] }
               ]}
             />
 
-            <ActivityCard 
+            <ActivityCard
               title="5. Accounts"
               items={["Accuracy", "Compliance", "Reporting"]}
             />
 
-            <ActivityCard 
+            <ActivityCard
               title="6. Human Resources"
               items={["Recruitment", "People Development", "Happiness", "Retention", "Culture Building"]}
             />
           </div>
 
           <div style={{ marginTop: '2rem' }}>
-            <ActivityCard 
+            <ActivityCard
               title="7. Management"
               items={[
-                { 
-                  label: "Strategy Management", 
+                {
+                  label: "Strategy Management",
                   subItems: [
-                    "Holistic Goals -> Financial & Functional", 
+                    "Holistic Goals -> Financial & Functional",
                     "Business Model -> Profitable & Scalable"
-                  ] 
+                  ]
                 },
-                { 
-                  label: "Functional Management", 
+                {
+                  label: "Functional Management",
                   subItems: [
-                    "STRATEGY -> To achieve results", 
-                    "SYSTEMS -> To track & achieve consistency & quality", 
-                    "Team building", 
-                    "System Building", 
-                    "Revenue Generation", 
+                    "STRATEGY -> To achieve results",
+                    "SYSTEMS -> To track & achieve consistency & quality",
+                    "Team building",
+                    "System Building",
+                    "Revenue Generation",
                     "Review"
-                  ] 
+                  ]
                 },
-                { 
-                  label: "People Management", 
+                {
+                  label: "People Management",
                   subItems: [
                     "Hire based on A.S.K. (Attitude, Skills, Knowledge)",
                     "Develop People via consistent, Respectful, Specific Feedback",
@@ -186,13 +186,13 @@ export default function StartupContent() {
                       ]
                     },
                     "Fire the wrong people (cheating, stealing, & Sexual Harassment)"
-                  ] 
+                  ]
                 }
               ]}
               tips={[
                 "Business Model canvas",
                 "Never hire for job title, instead list the tasks for each activities.",
-                "Hire based on A.S.K.: Assessment (A), Assignments (S), Test paper (K)"
+                "Hire based on A.S.K.: Assessment (A->Attitude), Assignments (S->Skills), Test paper (K->Knowledge)"
               ]}
             />
           </div>
@@ -202,10 +202,10 @@ export default function StartupContent() {
       {/* SECTION 2 */}
       <section className={styles.pageSectionAlt}>
         <div className="container">
-          <SectionHeader 
-            number="Scaling Framework" 
-            title="3 Key Changes" 
-            subtitle="To Build a Business to Grow without Startup Owner" 
+          <SectionHeader
+            number="Scaling Framework"
+            title="3 Key Changes"
+            subtitle="To Build a Business to Grow without Startup Owner"
           />
 
           <div className={styles.grid3}>

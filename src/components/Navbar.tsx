@@ -11,13 +11,13 @@ export default function Navbar() {
     <nav className={styles.navbar}>
       <div className={`container ${styles.inner}`}>
         <Link href="/" className={styles.logo}>
-          EV.<span>ENGINEER™</span> 
+          EV.<span>ENGINEER™</span>
         </Link>
-        
+
         <div className={styles.navLinks}>
           <Link href="/" className={styles.navItem}>Home</Link>
           <Link href="/about" className={styles.navItem}>About</Link>
-          
+
           <div className={styles.navItem}>
             Concepts
             <div className={styles.dropdown}>
@@ -29,7 +29,7 @@ export default function Navbar() {
               </div>
             </div>
           </div>
-          
+
           <div className={styles.navItem}>
             Engineering
             <div className={styles.dropdown}>
@@ -80,7 +80,7 @@ export default function Navbar() {
                 <Link href="/design-development/passenger-taxi" className={styles.dropdownLink}>Autonomous Passenger Taxi</Link>
                 <Link href="/design-development/airport-cargo" className={styles.dropdownLink}>Autonomous Airport Cargo EV</Link>
                 <div className={styles.dropdownDivider} />
-                <div className={styles.dropdownSubTitle}>EV Repair workshop</div>
+                <div className={styles.dropdownSubTitle}>EV Workshop</div>
                 <a href="https://repair.ev.engineer/" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>EV Repair Workshop</a>
                 <Link href="/internships/battery-circular-economy" className={styles.dropdownLink}>Battery Circular Economy</Link>
               </div>
@@ -102,13 +102,13 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-        
+
         <div className={styles.actions}>
           <Link href="/corporate-training" className="btn btn-secondary">Training</Link>
           <Link href="/consulting" className="btn btn-primary">Consulting</Link>
         </div>
 
-        <button 
+        <button
           className={styles.mobileToggle}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle menu"
@@ -116,13 +116,13 @@ export default function Navbar() {
           {mobileMenuOpen ? "✕" : "☰"}
         </button>
       </div>
-      
+
       {/* Mobile Menu Content */}
       <div className={`${styles.mobileMenu} ${mobileMenuOpen ? styles.mobileMenuOpen : ''}`}>
         <div className={styles.mobileMenuInner}>
           <Link href="/" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Home</Link>
           <Link href="/about" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>About Us</Link>
-          
+
           <div className={styles.mobileSectionTitle}>Foundations</div>
           <Link href="/av-concepts" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>AV Concepts</Link>
           <Link href="/technical-concepts" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Technical Concepts</Link>
@@ -156,7 +156,7 @@ export default function Navbar() {
           <Link href="/design-development/passenger-taxi" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Autonomous Passenger Taxi</Link>
           <Link href="/design-development/airport-cargo" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Autonomous Airport Cargo EV</Link>
 
-          <div className={styles.mobileSectionTitle}>Internships — EV Repair workshop</div>
+          <div className={styles.mobileSectionTitle}>Internships — EV workshop</div>
           <a href="https://repair.ev.engineer/" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>EV Repair Workshop</a>
           <Link href="/internships/battery-circular-economy" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Battery Circular Economy</Link>
 
