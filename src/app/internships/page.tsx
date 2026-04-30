@@ -107,6 +107,11 @@ export default function InternshipsPage() {
               desc="Unified identity protocols for battery life tracking and health."
               link="/internships/battery-aadhaar"
             />
+            <ProjectCard
+              title="EV Help Agent"
+              desc="AI Voice Agent that talks to EV users, understands their problems, and answers relevant questions based on real-time queries."
+              link="https://help.ev.engineer/"
+            />
           </Section>
 
           <Section title="EV Workshop">

@@ -96,6 +96,7 @@ export default function Navbar() {
                 <div className={styles.dropdownTitle}>Design &amp; Development</div>
                 <Link href="/internships/battery-fire-prevention" className={styles.dropdownLink}>EV Battery Intelligence Platform</Link>
                 <Link href="/internships/battery-aadhaar" className={styles.dropdownLink}>Battery Pack Aadhaar System</Link>
+                <a href="https://help.ev.engineer/" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>EV Help Agent</a>
                 <div className={styles.dropdownDivider} />
                 <div className={styles.dropdownSubTitle}>Miscellaneous</div>
                 <Link href="/internships" className={styles.dropdownLink}>Internship projects</Link>
@@ -173,6 +174,7 @@ export default function Navbar() {
           <div className={styles.mobileSectionTitle}>Internships — Design &amp; Development</div>
           <Link href="/internships/battery-fire-prevention" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>EV Battery Intelligence Platform</Link>
           <Link href="/internships/battery-aadhaar" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Battery Pack Aadhaar System</Link>
+          <a href="https://help.ev.engineer/" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>EV Help Agent</a>
 
           <div className={styles.mobileSectionTitle}>Internships — Miscellaneous</div>
           <Link href="/internships" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Internship projects</Link>
