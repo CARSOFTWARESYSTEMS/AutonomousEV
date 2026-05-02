@@ -123,6 +123,21 @@
   color: var(--text-primary);
 }
 
+.dropdownCtaLink {
+  color: var(--accent-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: color 0.2s ease, opacity 0.2s ease;
+  white-space: normal;
+  line-height: 1.4;
+  opacity: 0.85;
+}
+
+.dropdownCtaLink:hover {
+  color: var(--text-primary);
+  opacity: 1;
+}
+
 .actions {
   display: flex;
   align-items: center;

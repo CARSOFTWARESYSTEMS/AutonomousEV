@@ -84,7 +84,8 @@
 
 .controlsHeader {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 16px;
   max-width: 100%;
 }
@@ -102,6 +103,53 @@
 }
 
 .globalCollapseBtn:hover {
+  background: rgba(0, 255, 136, 0.1);
+  transform: translateY(-1px);
+}
+
+.contactBtn {
+  background: transparent;
+  color: #25d366;
+  border: 1px solid rgba(37, 211, 102, 0.35);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.contactBtn:hover {
+  background: rgba(37, 211, 102, 0.1);
+  transform: translateY(-1px);
+}
+
+.controlsLeft {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.submitResumeBtn {
+  background: transparent;
+  color: var(--accent-primary, #00ff88);
+  border: 1px solid rgba(0, 255, 136, 0.3);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.submitResumeBtn:hover {
   background: rgba(0, 255, 136, 0.1);
   transform: translateY(-1px);
 }

@@ -83,10 +83,29 @@ export default function EVCareerContent({ groupedCompanies }: EVCareerContentPro
       </div>
 
       <div className={styles.controlsHeader}>
+        <div className={styles.controlsLeft}>
+          <a
+            href="https://wa.me/919108206147?text=Hi%2C%20I%20would%20like%20to%20know%20more%20about%20EV%20career%20opportunities%20listed%20on%20EV.ENGINEER%E2%84%A2.%20Could%20you%20please%20share%20more%20details%3F"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.contactBtn}
+            data-track-event="ev_career_whatsapp_click"
+          >
+            Contact Us
+          </a>
+          <a
+            href="mailto:info@iTelematics.com?subject=Resume%20Submission%20%E2%80%94%20EV%20Career%20Opportunities&body=Hi%20Team%2C%0A%0AI%20came%20across%20EV.ENGINEER%E2%84%A2%20and%20would%20like%20to%20submit%20my%20resume%20for%20EV%2FAutomotive%20career%20opportunities.%0A%0APlease%20find%20my%20resume%20attached.%0A%0AThank%20you!"
+            className={styles.submitResumeBtn}
+            data-track-event="ev_career_submit_resume_click"
+          >
+            Submit Resume
+          </a>
+        </div>
         <button onClick={toggleAll} className={styles.globalCollapseBtn}>
           {allExpanded ? "Collapse All" : "Expand All"}
         </button>
       </div>
+
 
       {/* Desktop View (Single Table) */}
       <div className={styles.tableWrapper}>
