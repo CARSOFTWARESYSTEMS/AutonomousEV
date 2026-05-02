@@ -38,7 +38,7 @@ function AnalyticsTracker() {
         if (trackableElement instanceof HTMLAnchorElement) {
           params.url = trackableElement.href;
         }
-        params.label = trackableElement.innerText?.trim() || trackableElement.getAttribute('aria-label') || '';
+        params.label = (trackableElement as HTMLElement).innerText?.trim() || trackableElement.getAttribute('aria-label') || '';
         
         trackEvent(eventName, params);
         return; // Prevent fallback duplicate events
@@ -49,7 +49,7 @@ function AnalyticsTracker() {
       const button = target.closest('button');
 
       if (link) {
-        const text = link.innerText?.trim() || link.getAttribute('aria-label') || '';
+        const text = (link as HTMLElement).innerText?.trim() || link.getAttribute('aria-label') || '';
         const href = link.getAttribute('href') || '';
         const lowerText = text.toLowerCase();
         const isExternal = href.startsWith('http') && !href.includes(window.location.host);
