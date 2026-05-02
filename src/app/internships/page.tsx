@@ -4,7 +4,7 @@ import PrerequisitesSection from "@/components/PrerequisitesSection";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'AV & EV Jobs & Internships | EV.ENGINEER™',
+  title: 'AV & EV Internships | EV.ENGINEER™',
   description: 'Practical, engineering-focused internships in EV battery health, autonomous vehicle systems, safety systems, passenger taxis, and RTOS architecture. Kickstart your career in autonomous eMobility.',
   keywords: [
     'EV Internships', 'AV Internships', 'Autonomous Vehicles Internship',
@@ -104,7 +104,7 @@ export default function InternshipsPage() {
       <section className="section">
         <div className="container">
           <h1 style={{ fontSize: '2.5rem', fontWeight: 600, marginBottom: '16px' }}>
-            AV, EV & Battery <span style={{ color: 'var(--accent-primary)' }}>Jobs & Internships</span>
+            <span style={{ color: 'var(--accent-primary)' }}>AV, EV & Battery</span> Internships
           </h1>
           <p style={{ fontSize: "1.1rem", color: "var(--accent-primary)", fontWeight: "400", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "48px" }}>
             Building <strong className="glowing-text">World-Class Engineers</strong> to Solve <strong className="glowing-text">Energy</strong> and <strong className="glowing-text">EV Battery</strong> Challenges
