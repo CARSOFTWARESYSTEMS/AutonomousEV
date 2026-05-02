@@ -5,7 +5,7 @@
   display: flex;
   align-items: flex-start;
   overflow: hidden;
-  padding-top: calc(80px + 3rem); /* fixed navbar + breathing room */
+  padding-top: calc(80px + 2rem); /* fixed navbar + medium breathing room */
   padding-bottom: 4rem;
 }
 
@@ -217,6 +217,7 @@
   display: flex;
   gap: 16px;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .sectionHeader {
@@ -306,4 +307,10 @@
     width: 100%;
     max-width: 300px;
   }
+
+  .mobileStack {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
 }
+

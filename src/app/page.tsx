@@ -1,5 +1,7 @@
 import styles from "./page.module.css";
 import Link from "next/link";
+import EVCareersHeroCard from "@/components/EVCareersHeroCard";
+import EVBatteryHeroCard from "@/components/EVBatteryHeroCard";
 
 export default function Home() {
   return (
@@ -27,52 +29,26 @@ export default function Home() {
               </p>
 
               <div className={styles.actions}>
-                <Link href="/corporate-training" className="btn btn-primary" data-track-event="hero_training_click">Training</Link>
-                <Link href="/consulting" className="btn btn-secondary" data-track-event="hero_consulting_click">Consulting</Link>
-                <Link href="/internships" className="btn btn-primary" data-track-event="hero_internships_click">Internships</Link>
+                <Link href="/corporate-training" className="btn btn-secondary" data-track-event="hero_training_click">Training</Link>
+                <Link href="/consulting" className="btn btn-primary" data-track-event="hero_consulting_click">Consulting</Link>
               </div>
             </div>
 
             {/* ── Right Column — Floating Cards ── */}
             <div className={styles.rightCol}>
-              <div className={`${styles.floatingCard} ${styles.card1}`}>
-                <p className={styles.cardTitle}>AV Architecture & RTOS</p>
-                <p className={styles.cardText}>
-                  ROS2/Autoware integration, deterministic scheduling, and sensor-fusion pipelines for production AV stacks.
-                </p>
-                <div className={styles.chipContainer} style={{ marginTop: '12px' }}>
-                  {["ROS2", "Autoware", "Sensor Fusion"].map(c => (
-                    <span key={c} className="pill">{c}</span>
-                  ))}
-                </div>
-              </div>
+              <EVBatteryHeroCard 
+                cardClassName={`${styles.floatingCard} ${styles.card1}`}
+                titleClassName={styles.cardTitle}
+                textClassName={styles.cardText}
+              />
 
-              <Link href="/si-ems" className={`${styles.floatingCard} ${styles.card2}`} style={{ textDecoration: 'none', display: 'block' }} data-track-event="home_card_click" data-track-card="si_ems">
-                <p className={styles.cardTitle} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
-                  Super-Intelligent AI EMS
-                  <span style={{ fontSize: '0.8rem', color: 'var(--accent-primary)', flexShrink: 0 }}>Research ›</span>
-                </p>
-                <p className={styles.cardText}>
-                  AI-Driven Super-Intelligent Energy Management Systems for Autonomous EVs. Architectural Design & Proof-of-Concept for Level-4 Robotaxi Platforms.
-                </p>
-                <div className={styles.chipContainer} style={{ marginTop: '12px' }}>
-                  {["BMS", "Cybersecurity", "Robotaxi"].map(c => (
-                    <span key={c} className="pill">{c}</span>
-                  ))}
-                </div>
-              </Link>
+              <EVCareersHeroCard 
+                cardClassName={`${styles.floatingCard} ${styles.card2}`}
+                titleClassName={styles.cardTitle}
+                textClassName={styles.cardText}
+              />
 
-              <div className={`${styles.floatingCard} ${styles.card3}`}>
-                <p className={styles.cardTitle}>AV Ecosystem</p>
-                <p className={styles.cardText}>
-                  CETRAN scenario testing, LTA guidelines, and Smart Nation deployment insights.
-                </p>
-                <div className={styles.chipContainer} style={{ marginTop: '12px' }}>
-                  {["India", "Europe", "Singapore", "USA"].map(c => (
-                    <span key={c} className="pill">{c}</span>
-                  ))}
-                </div>
-              </div>
+
             </div>
 
           </div>
@@ -282,9 +258,8 @@ export default function Home() {
             Partner with iTelematics® and transform your EV and AV strategies.
           </p>
           <div className={styles.heroCtas}>
-            <Link href="/corporate-training" className="btn btn-primary" data-track-event="bottom_cta_training_click">Start Training</Link>
-            <Link href="/consulting" className="btn btn-secondary" data-track-event="bottom_cta_consulting_click">Engage Consulting</Link>
-            <Link href="/internships" className="btn btn-primary" data-track-event="bottom_cta_internships_click">View Internships</Link>
+            <Link href="/corporate-training" className="btn btn-secondary" data-track-event="bottom_cta_training_click">Start Training</Link>
+            <Link href="/consulting" className="btn btn-primary" data-track-event="bottom_cta_consulting_click">Engage Consulting</Link>
           </div>
         </div>
       </section>

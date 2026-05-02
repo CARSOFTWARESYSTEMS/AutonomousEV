@@ -1,0 +1,101 @@
+.container {
+  margin-bottom: 64px;
+}
+
+.header {
+  margin-bottom: 40px;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: var(--accent-primary, #00ff88);
+  font-weight: 500;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.largeCard {
+  background: rgba(6, 25, 15, 0.4);
+  border: 1px solid rgba(0, 255, 136, 0.15);
+  border-radius: 16px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+.largeCard:hover {
+  border-color: rgba(0, 255, 136, 0.4);
+  box-shadow: 0 8px 32px rgba(0, 255, 136, 0.05);
+}
+
+.cardHeader {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+}
+
+.goalText {
+  font-size: 0.95rem;
+  color: #d0d0d0;
+  margin-bottom: 24px;
+}
+
+.highlight {
+  color: var(--accent-primary, #00ff88);
+  font-weight: 600;
+}
+
+.bulletList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex-grow: 1;
+}
+
+.bulletItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 0.95rem;
+  color: #d0d0d0;
+  line-height: 1.6;
+}
+
+.arrow {
+  color: var(--accent-primary, #00ff88);
+  font-weight: 600;
+}
+
+.tipBlock {
+  margin-top: 32px;
+  background: rgba(0, 255, 136, 0.05);
+  border-left: 3px solid var(--accent-primary, #00ff88);
+  border-radius: 4px;
+  padding: 16px 20px;
+  font-size: 0.9rem;
+  color: #d0d0d0;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}

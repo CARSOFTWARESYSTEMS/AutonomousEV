@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ReactNode } from "react";
+import PrerequisitesSection from "@/components/PrerequisitesSection";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -65,10 +66,64 @@ export default function InternshipsPage() {
           <h1 style={{ fontSize: '2.5rem', fontWeight: 600, marginBottom: '16px' }}>
             AV, EV & Battery <span style={{ color: 'var(--accent-primary)' }}>Internships</span>
           </h1>
-          <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', maxWidth: '800px', marginBottom: '56px', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', marginBottom: '56px', lineHeight: 1.6 }}>
             Gain hands-on experience in EV Battery Diagnostics, Autonomous System integration, and more.
             Explore ongoing initiatives across Research, Proof of Concepts, and structured Design & Development.
           </p>
+
+          <PrerequisitesSection />
+
+          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginBottom: '64px', justifyContent: 'center' }}>
+            <Link 
+              href="/ev-career" 
+              className="btn btn-primary"
+              data-track-event="cta_click"
+              data-track-label="Prepare for EV Career"
+            >
+              Prepare for EV Career
+            </Link>
+            <a 
+              href="https://wa.me/919108206147?text=Hi%2C%20I%20am%20interested%20in%20Resume%20Optimisation" 
+              className="btn btn-secondary"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-track-event="cta_click"
+              data-track-label="Resume Optimisation"
+            >
+              Resume Optimisation
+            </a>
+            <a 
+              href="https://wa.me/919108206147?text=Hi%2C%20I%20am%20interested%20in%20a%20Mock%20Interview" 
+              className="btn btn-secondary"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-track-event="cta_click"
+              data-track-label="Mock Interview"
+            >
+              Mock Interview
+            </a>
+          </div>
+
+          <Section title="Design & Development">
+            <ProjectCard
+              title="EV Battery Intelligence Platform"
+              desc="Risk analysis and advanced thermal runaway prevention implementations."
+              link="/internships/battery-fire-prevention"
+            />
+            <ProjectCard
+              title="Battery Pack Aadhaar System"
+              desc="Unified identity protocols for battery life tracking and health."
+              link="/internships/battery-aadhaar"
+            />
+          </Section>
+
+          <Section title="GenAI & Agentic AI Projects">
+            <ProjectCard
+              title="EV Help Agent"
+              desc="AI Voice Agent that talks to EV users, understands their problems, and answers relevant questions based on real-time queries."
+              link="https://help.ev.engineer/"
+            />
+          </Section>
 
           <Section title="Research">
             <ProjectCard
@@ -93,24 +148,6 @@ export default function InternshipsPage() {
               title="Autonomous Airport Cargo EV"
               desc="Duty-cycle analysis and integrations for closed-loop environments."
               link="/design-development/airport-cargo"
-            />
-          </Section>
-
-          <Section title="Design & Development">
-            <ProjectCard
-              title="EV Battery Intelligence Platform"
-              desc="Risk analysis and advanced thermal runaway prevention implementations."
-              link="/internships/battery-fire-prevention"
-            />
-            <ProjectCard
-              title="Battery Pack Aadhaar System"
-              desc="Unified identity protocols for battery life tracking and health."
-              link="/internships/battery-aadhaar"
-            />
-            <ProjectCard
-              title="EV Help Agent"
-              desc="AI Voice Agent that talks to EV users, understands their problems, and answers relevant questions based on real-time queries."
-              link="https://help.ev.engineer/"
             />
           </Section>
 
