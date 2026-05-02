@@ -16,8 +16,48 @@ export const metadata: Metadata = {
 };
 
 // Helper component for identical styling of internal and external links
-function ProjectCard({ title, desc, link }: { title: string, desc?: string, link: string }) {
+function ProjectCard({ title, desc, link, pricingLink }: { title: string, desc?: string, link: string, pricingLink?: string }) {
   const isExternal = link.startsWith('http');
+
+  // When a pricingLink exists we cannot wrap the whole card in <a> (nested anchors = invalid HTML).
+  // Instead, render the card as a <div> and put both links explicitly in the footer.
+  if (pricingLink) {
+    return (
+      <div className="glass-panel" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+        <h3 style={{ fontSize: '1.2rem', marginBottom: '8px', color: 'var(--text-primary)', fontWeight: 500 }}>
+          {title}
+        </h3>
+        {desc && <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', flexGrow: 1, marginBottom: '16px' }}>{desc}</p>}
+
+        <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+          <a
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ display: 'inline-flex', alignItems: 'center', color: 'var(--accent-primary)', fontSize: '0.9rem', fontWeight: 600, textDecoration: 'none' }}
+            data-track-event="internship_card_click"
+            data-track-title={title}
+          >
+            Visit Website
+            <span style={{ marginLeft: '6px', fontSize: '1.1rem' }}>↗</span>
+          </a>
+          <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>·</span>
+          <a
+            href={pricingLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="pricing-link"
+            data-track-event="internship_pricing_click"
+            data-track-title={title}
+          >
+            Pricing ↗
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  // No pricingLink — whole card is a single clickable anchor (original behaviour)
   const cardContent = (
     <div className="glass-panel" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <h3 style={{ fontSize: '1.2rem', marginBottom: '8px', color: 'var(--text-primary)', fontWeight: 500 }}>
@@ -74,6 +114,16 @@ export default function InternshipsPage() {
           <PrerequisitesSection />
 
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginBottom: '64px', justifyContent: 'center' }}>
+            <a
+              href="https://wa.me/919108206147?text=Hi%2C%20I%20would%20like%20to%20know%20more%20about%20the%20EV%2FAV%20internship%20opportunities%20listed%20on%20EV.ENGINEER%E2%84%A2."
+              className="btn btn-secondary"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-track-event="cta_click"
+              data-track-label="Contact Us"
+            >
+              Contact Us
+            </a>
             <Link 
               href="/ev-career" 
               className="btn btn-primary"
@@ -183,11 +233,13 @@ export default function InternshipsPage() {
             />
             <ProjectCard
               title="Projects @ iTelematics®"
-              link="https://itelematics.com/ev-engineer"
+              link="https://itelematics.com/"
+              pricingLink="https://itelematics.com/public/iTelematics-FrequentlyAskedQuestions.pdf"
             />
             <ProjectCard
               title="Projects @ Thasmai Infotech"
               link="https://www.thasmaiinfotech.com/#programs"
+              pricingLink="https://www.thasmaiinfotech.com/training/Thasmai%20-%20Internship%20and%20Faculty%20Development%20Program%20.pdf"
             />
             <ProjectCard
               title="Webinars @ EV Society™"
@@ -196,6 +248,7 @@ export default function InternshipsPage() {
             <ProjectCard
               title="CAR Software Systems"
               link="https://carsoftwaresystems.com/"
+              pricingLink="https://carsoftwaresystems.com/#pricing"
             />
             <ProjectCard
               title="Ongoing vs Completed"

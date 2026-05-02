@@ -216,6 +216,22 @@ ul, ol {
   color: var(--accent-primary);
 }
 
+/* ─── Pricing Link (used on internships cards) ─── */
+.pricing-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.pricing-link:hover {
+  color: var(--accent-primary);
+}
+
 /* ─── Animations ─── */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
