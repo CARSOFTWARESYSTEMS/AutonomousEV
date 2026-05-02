@@ -3,12 +3,14 @@
     "company": "ATHER ENERGY",
     "categoryLabel": "Electric Vehicle(2W), Energy",
     "careerLink": "https://careers.atherenergy.com/jobs",
-    "developerLink": ""
+    "developerLink": "",
+    "trainingLink": ""
   },
   {
     "company": "OLA ELECTRIC",
     "categoryLabel": "Electric Vehicle(2W), Energy",
     "careerLink": "https://www.olaelectric.com/careers",
-    "developerLink": ""
+    "developerLink": "",
+    "trainingLink": ""
   }
 ]

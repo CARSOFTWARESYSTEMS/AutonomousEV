@@ -127,15 +127,16 @@ export default function EVCareerContent({ groupedCompanies }: EVCareerContentPro
         <table className={styles.table}>
           <thead>
             <tr>
-              <th className={styles.th} style={{ width: "35%" }}>Company</th>
-              <th className={styles.th} style={{ width: "35%" }}>Career Link</th>
-              <th className={styles.th} style={{ width: "30%" }}>Developer</th>
+              <th className={styles.th} style={{ width: "28%" }}>Company</th>
+              <th className={styles.th} style={{ width: "24%" }}>Career Link</th>
+              <th className={styles.th} style={{ width: "24%" }}>Developer</th>
+              <th className={styles.th} style={{ width: "24%" }}>Training</th>
             </tr>
           </thead>
           {Object.entries(groupedCompanies).map(([category, categoryCompanies]) => (
             <tbody key={category}>
               <tr>
-                <td colSpan={3} className={styles.categoryHeaderCell}>
+                <td colSpan={4} className={styles.categoryHeaderCell}>
                   <div
                     onClick={() => toggleSection(category)}
                     style={{ display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" }}
@@ -186,6 +187,24 @@ export default function EVCareerContent({ groupedCompanies }: EVCareerContentPro
                         >
                           Developers ↗
                         </a>
+                    ) : (
+                      <span className={styles.notAvailable}>Not Available</span>
+                    )}
+                  </td>
+                  <td className={styles.td}>
+                    {item.trainingLink ? (
+                      <a
+                        href={item.trainingLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`btn btn-secondary ${styles.tableBtn}`}
+                        data-track-event="training_click"
+                        data-track-company={item.company}
+                        data-track-category={category}
+                        onClick={() => handleAcknowledgment(item.company)}
+                      >
+                        Training ↗
+                      </a>
                     ) : (
                       <span className={styles.notAvailable}>Not Available</span>
                     )}
@@ -244,6 +263,22 @@ export default function EVCareerContent({ groupedCompanies }: EVCareerContentPro
                           onClick={() => handleAcknowledgment(item.company)}
                         >
                           Developers ↗
+                        </a>
+                      ) : (
+                        <span className={styles.notAvailable}>Not Available</span>
+                      )}
+                      {item.trainingLink ? (
+                        <a
+                          href={item.trainingLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`btn btn-secondary ${styles.tableBtn}`}
+                          data-track-event="training_click"
+                          data-track-company={item.company}
+                          data-track-category={category}
+                          onClick={() => handleAcknowledgment(item.company)}
+                        >
+                          Training ↗
                         </a>
                       ) : (
                         <span className={styles.notAvailable}>Not Available</span>

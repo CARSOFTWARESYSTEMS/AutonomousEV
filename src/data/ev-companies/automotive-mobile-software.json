@@ -3,12 +3,14 @@
     "company": "APPLE",
     "categoryLabel": "Automotive / Mobile Software",
     "careerLink": "https://www.apple.com/careers/in/",
-    "developerLink": "https://developer.apple.com/"
+    "developerLink": "https://developer.apple.com/",
+    "trainingLink": "https://developer.apple.com/documentation/carplay/requesting-carplay-entitlements"
   },
   {
     "company": "GOOGLE",
     "categoryLabel": "Automotive / Mobile Software",
     "careerLink": "https://www.google.com/about/careers/",
-    "developerLink": "https://developers.google.com/"
+    "developerLink": "https://developers.google.com/",
+    "trainingLink": "https://developer.android.com/training/cars/platforms/automotive-os"
   }
 ]

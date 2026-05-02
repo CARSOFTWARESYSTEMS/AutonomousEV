@@ -3,6 +3,7 @@
     "company": "WAYMO",
     "categoryLabel": "Autonomous Driving",
     "careerLink": "https://careers.withwaymo.com/",
-    "developerLink": "https://waymo.com/open/data/motion/"
+    "developerLink": "https://waymo.com/open/data/motion/",
+    "trainingLink": "https://waymo.com/research/"
   }
 ]
