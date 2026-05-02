@@ -29,7 +29,7 @@ export default function Home() {
               </p>
 
               <div className={styles.actions}>
-                <Link href="/corporate-training" className="btn btn-secondary" data-track-event="hero_training_click">Training</Link>
+                <Link href="/corporate-training" className="btn btn-secondary" data-track-event="hero_training_click">Corporate Training</Link>
                 <Link href="/consulting" className="btn btn-primary" data-track-event="hero_consulting_click">Consulting</Link>
               </div>
             </div>
@@ -258,7 +258,7 @@ export default function Home() {
             Partner with iTelematics® and transform your EV and AV strategies.
           </p>
           <div className={styles.heroCtas}>
-            <Link href="/corporate-training" className="btn btn-secondary" data-track-event="bottom_cta_training_click">Start Training</Link>
+            <Link href="/corporate-training" className="btn btn-secondary" data-track-event="bottom_cta_training_click">Corporate Training</Link>
             <Link href="/consulting" className="btn btn-primary" data-track-event="bottom_cta_consulting_click">Engage Consulting</Link>
           </div>
         </div>

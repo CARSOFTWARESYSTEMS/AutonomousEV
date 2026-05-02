@@ -251,7 +251,7 @@ export default function EVCareerContent({ groupedCompanies }: EVCareerContentPro
           <p>
             EV.ENGINEER™ is <span className={styles.highlightText}>NOT affiliated</span>, associated, authorized, endorsed by, or in any way officially connected with any of the companies listed on this page, including but not limited to Tesla, BYD, Waymo, Enphase, Exide, Amara Raja, or others. All company names, trademarks, and logos belong to their respective owners.
           </p>
-          <p>EV.ENGINEER™ does NOT:</p>
+          <p className={styles.highlightText} style={{ fontWeight: 700 }}>EV.ENGINEER™ does NOT:</p>
           <ul>
             <li><span className={styles.highlightText}>Guarantee job placement</span></li>
             <li>Assure interview opportunities</li>

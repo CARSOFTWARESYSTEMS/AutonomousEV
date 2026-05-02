@@ -10,14 +10,36 @@ export default function CorporateTrainingPage() {
     <div className="container" style={{ paddingTop: "120px", paddingBottom: "80px" }}>
       <header style={{ textAlign: "center", marginBottom: "64px" }}>
         <h1 style={{ fontSize: "3rem", marginBottom: "16px" }}>Corporate Training</h1>
-        <p style={{ fontSize: "1.2rem", color: "var(--color-text-secondary)", maxWidth: "800px", margin: "0 auto" }}>
+        <p style={{ fontSize: "1.2rem", color: "var(--color-text-secondary)", maxWidth: "800px", margin: "0 auto 32px" }}>
           Upskill your leadership and engineering teams with production-grade curriculum delivered by active architectures.
         </p>
+        <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', justifyContent: 'center' }}>
+          <a
+            href="https://labs.ev.engineer/"
+            className="btn btn-secondary"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-track-event="cta_click"
+            data-track-label="Ongoing vs Completed"
+          >
+            Ongoing vs Completed
+          </a>
+          <a
+            href="https://carsoftwaresystems.com/#testimonial"
+            className="btn btn-secondary"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-track-event="cta_click"
+            data-track-label="More Info & Gallery"
+          >
+            More Info & Gallery
+          </a>
+        </div>
       </header>
 
       <section style={{ marginBottom: "64px" }}>
         <h2 style={{ fontSize: "2rem", marginBottom: "32px", textAlign: "center" }}>Our Delivery Tracks</h2>
-        <div className="grid-2">
+        <div className="grid-2" style={{ marginBottom: '32px' }}>
           
           <div className="glass-panel">
             <h3 style={{ fontSize: "1.5rem", marginBottom: "16px", color: "var(--color-accent)" }}>Executive Workshop Track</h3>
@@ -59,6 +81,29 @@ export default function CorporateTrainingPage() {
             </ul>
           </div>
 
+        </div>
+
+        <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', justifyContent: 'center' }}>
+          <a
+            href="https://labs.ev.engineer/"
+            className="btn btn-secondary"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-track-event="cta_click"
+            data-track-label="Ongoing vs Completed"
+          >
+            Ongoing vs Completed
+          </a>
+          <a
+            href="https://carsoftwaresystems.com/#testimonial"
+            className="btn btn-secondary"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-track-event="cta_click"
+            data-track-label="More Info & Gallery"
+          >
+            More Info & Gallery
+          </a>
         </div>
       </section>
 
