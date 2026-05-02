@@ -1,0 +1,34 @@
+[
+  {
+    "categoryName": "Autonomous Driving",
+    "fileName": "autonomous-driving.json"
+  },
+  {
+    "categoryName": "Electric Vehicle(4W), Energy",
+    "fileName": "electric-vehicle-4w-energy.json"
+  },
+  {
+    "categoryName": "Electric Vehicle(2W), Energy",
+    "fileName": "electric-vehicle-2w-energy.json"
+  },
+  {
+    "categoryName": "Electric Vehicle",
+    "fileName": "electric-vehicle.json"
+  },
+  {
+    "categoryName": "Solar Energy",
+    "fileName": "solar-energy.json"
+  },
+  {
+    "categoryName": "Cell Manufacturing",
+    "fileName": "cell-manufacturing.json"
+  },
+  {
+    "categoryName": "Automotive / Mobile Software",
+    "fileName": "automotive-mobile-software.json"
+  },
+  {
+    "categoryName": "Automotive Security",
+    "fileName": "automotive-security.json"
+  }
+]

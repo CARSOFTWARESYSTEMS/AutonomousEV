@@ -129,6 +129,10 @@ export default function InternshipsPage() {
 
           <Section title="Miscellaneous">
             <ProjectCard
+              title="EV Career"
+              link="/ev-career"
+            />
+            <ProjectCard
               title="EV Startup"
               link="/internships/miscellaneous/startup"
             />

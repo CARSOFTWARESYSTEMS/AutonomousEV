@@ -27,7 +27,7 @@ export default function Navbar() {
           </div>
 
           <div className={styles.navItem}>
-            Concepts
+            Engineering
             <div className={styles.dropdown}>
               <div className={styles.dropdownColumn}>
                 <div className={styles.dropdownTitle}>Foundations</div>
@@ -35,12 +35,6 @@ export default function Navbar() {
                 <Link href="/technical-concepts" className={styles.dropdownLink}>Technical Concepts</Link>
                 <Link href="/non-technical-concepts" className={styles.dropdownLink}>Non-Technical Concepts</Link>
               </div>
-            </div>
-          </div>
-
-          <div className={styles.navItem}>
-            Engineering
-            <div className={styles.dropdown}>
               <div className={styles.dropdownColumn}>
                 <div className={styles.dropdownTitle}>Core Systems</div>
                 <Link href="/driverless-car-technologies" className={styles.dropdownLink}>Driverless Car Tech</Link>
@@ -110,6 +104,8 @@ export default function Navbar() {
               </div>
             </div>
           </div>
+
+          <Link href="/ev-career" className={styles.navItem}>EV Career</Link>
         </div>
 
         <div className={styles.actions}>
@@ -134,12 +130,12 @@ export default function Navbar() {
           <Link href="/about" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>About Us</Link>
           <Link href="/about/sudarshana-karkala" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Sudarshana Karkala</Link>
 
-          <div className={styles.mobileSectionTitle}>Foundations</div>
+          <div className={styles.mobileSectionTitle}>Engineering — Foundations</div>
           <Link href="/av-concepts" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>AV Concepts</Link>
           <Link href="/technical-concepts" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Technical Concepts</Link>
           <Link href="/non-technical-concepts" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Non-Technical Concepts</Link>
 
-          <div className={styles.mobileSectionTitle}>Engineering</div>
+          <div className={styles.mobileSectionTitle}>Engineering — Core & Tools</div>
           <Link href="/driverless-car-technologies" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Driverless Car Tech</Link>
           <Link href="/intelligent-transportation-systems" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Intelligent Transportation</Link>
           <Link href="/rtos" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>RTOS for AV</Link>
@@ -185,6 +181,9 @@ export default function Navbar() {
           <a href="https://www.thasmaiinfotech.com/#programs" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Projects @ Thasmai Infotech</a>
           <a href="https://www.evsociety.org/projects" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Webinars @ EV Society™</a>
           <a href="https://labs.ev.engineer/" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Ongoing vs Completed</a>
+
+          <div className={styles.mobileSectionTitle}>Careers</div>
+          <Link href="/ev-career" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>EV Career</Link>
 
           <Link href="/contact" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Contact</Link>
 
