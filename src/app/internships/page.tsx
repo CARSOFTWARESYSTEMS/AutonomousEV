@@ -106,7 +106,7 @@ export default function InternshipsPage() {
           <h1 style={{ fontSize: '2.5rem', fontWeight: 600, marginBottom: '16px' }}>
             AV, EV & Battery <span style={{ color: 'var(--accent-primary)' }}>Internships</span>
           </h1>
-          <p style={{ fontSize: "1.2rem", color: "var(--accent-primary)", fontWeight: "400", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "48px" }}>
+          <p style={{ fontSize: "1.1rem", color: "var(--accent-primary)", fontWeight: "400", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "48px" }}>
             Building <strong className="glowing-text">World-Class Engineers</strong> to Solve <strong className="glowing-text">Energy</strong> and <strong className="glowing-text">EV Battery</strong> Challenges
           </p>
           <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', marginBottom: '56px', lineHeight: 1.6 }}>
