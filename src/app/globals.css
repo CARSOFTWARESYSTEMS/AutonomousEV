@@ -232,6 +232,25 @@ ul, ol {
   color: var(--accent-primary);
 }
 
+/* ─── Glowing Bold Text (shared tagline style) ─── */
+.glowing-text {
+  color: #fff;
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(62, 207, 107, 0.6), 0 0 16px rgba(62, 207, 107, 0.4);
+  animation: pulseGlow 2s infinite alternate;
+}
+
+@keyframes pulseGlow {
+  0% {
+    text-shadow: 0 0 8px rgba(62, 207, 107, 0.3), 0 0 12px rgba(62, 207, 107, 0.1);
+    color: #f0fdf4;
+  }
+  100% {
+    text-shadow: 0 0 15px rgba(62, 207, 107, 0.9), 0 0 25px rgba(62, 207, 107, 0.6);
+    color: #fff;
+  }
+}
+
 /* ─── Animations ─── */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
