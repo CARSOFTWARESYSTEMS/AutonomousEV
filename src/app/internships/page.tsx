@@ -118,14 +118,14 @@ export default function InternshipsPage() {
 
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginBottom: '64px', justifyContent: 'center' }}>
             <a
-              href="https://wa.me/919108206147?text=Hi%2C%20I%20would%20like%20to%20know%20more%20about%20the%20EV%2FAV%20internship%20opportunities%20listed%20on%20EV.ENGINEER%E2%84%A2."
+              href="https://labs.ev.engineer/"
               className="btn btn-secondary"
               target="_blank"
               rel="noopener noreferrer"
               data-track-event="cta_click"
-              data-track-label="Contact Us"
+              data-track-label="EV Workshop"
             >
-              Contact Us
+              EV Workshop
             </a>
             <Link 
               href="/ev-career" 
@@ -154,6 +154,16 @@ export default function InternshipsPage() {
               data-track-label="Mock Interview"
             >
               Mock Interview
+            </a>
+            <a
+              href="https://carsoftwaresystems.com/#testimonial"
+              className="btn btn-secondary"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-track-event="cta_click"
+              data-track-label="Gallery"
+            >
+              Gallery
             </a>
           </div>
 
