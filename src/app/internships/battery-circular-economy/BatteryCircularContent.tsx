@@ -77,8 +77,8 @@ export default function BatteryCircularContent() {
           </p>
 
           <div className={styles.heroCtas}>
-            <a href="#cost-breakdown" className="btn btn-primary">Explore Model</a>
-            <a href="#bmc" className="btn btn-secondary">Start Workshop</a>
+            <a href="#cost-breakdown" className="btn btn-primary" data-track-event="circular_hero_explore_click">Explore Model</a>
+            <a href="#bmc" className="btn btn-secondary" data-track-event="circular_hero_workshop_click">Start Workshop</a>
           </div>
         </div>
       </section>
@@ -672,7 +672,7 @@ export default function BatteryCircularContent() {
         <div className={styles.finalGlow} />
         <div className="container" style={{ position: "relative", zIndex: 1 }}>
           <h2 className={styles.finalTitle}>From EV Waste to Energy Infrastructure</h2>
-          <a href="https://itelematics.com/contact" target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ padding: "0.9rem 2.5rem", fontSize: "1.1rem", marginTop: "1.5rem" }}>
+          <a href="https://itelematics.com/contact" target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ padding: "0.9rem 2.5rem", fontSize: "1.1rem", marginTop: "1.5rem" }} data-track-event="circular_pilot_contact_click">
             Start Pilot Program
           </a>
         </div>

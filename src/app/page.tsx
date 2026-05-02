@@ -27,9 +27,9 @@ export default function Home() {
               </p>
 
               <div className={styles.actions}>
-                <Link href="/corporate-training" className="btn btn-primary">Training</Link>
-                <Link href="/consulting" className="btn btn-secondary">Consulting</Link>
-                <Link href="/internships" className="btn btn-primary">Internships</Link>
+                <Link href="/corporate-training" className="btn btn-primary" data-track-event="hero_training_click">Training</Link>
+                <Link href="/consulting" className="btn btn-secondary" data-track-event="hero_consulting_click">Consulting</Link>
+                <Link href="/internships" className="btn btn-primary" data-track-event="hero_internships_click">Internships</Link>
               </div>
             </div>
 
@@ -47,7 +47,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <Link href="/si-ems" className={`${styles.floatingCard} ${styles.card2}`} style={{ textDecoration: 'none', display: 'block' }}>
+              <Link href="/si-ems" className={`${styles.floatingCard} ${styles.card2}`} style={{ textDecoration: 'none', display: 'block' }} data-track-event="home_card_click" data-track-card="si_ems">
                 <p className={styles.cardTitle} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
                   Super-Intelligent AI EMS
                   <span style={{ fontSize: '0.8rem', color: 'var(--accent-primary)', flexShrink: 0 }}>Research ›</span>
@@ -145,7 +145,7 @@ export default function Home() {
               <h3 className={styles.cardTitle}>CETRAN & LTA Alignment</h3>
               <p className={styles.cardText}>Understand the rigorous testing scenarios required for public road deployment. We cover the scenario-based testing importance and certification thinking specific to Singapore's regulatory environment.</p>
               <br/>
-              <Link href="/ecosystem/singapore" className="btn btn-secondary">Explore Ecosystem</Link>
+              <Link href="/ecosystem/singapore" className="btn btn-secondary" data-track-event="home_card_btn_click" data-track-card="ecosystem">Explore Ecosystem</Link>
             </div>
             <div className="glass-panel">
               <h3 className={styles.cardTitle}>Pilots & Deployments</h3>
@@ -190,13 +190,13 @@ export default function Home() {
               <h3 className={styles.cardTitle}>Autonomous Passenger Taxi</h3>
               <p className={styles.cardText}>End-to-end design lifecycle for urban ride services. Covering passenger safety, fleet operations, ITS integration, and urban cybersecurity risks.</p>
               <br/>
-              <Link href="/design-development/passenger-taxi" className="btn btn-secondary">View Lifecycle</Link>
+              <Link href="/design-development/passenger-taxi" className="btn btn-secondary" data-track-event="home_card_btn_click" data-track-card="passenger_taxi">View Lifecycle</Link>
             </div>
             <div className="glass-panel" style={{ borderLeft: '4px solid var(--accent-primary)' }}>
               <h3 className={styles.cardTitle}>Autonomous Airport Cargo EV</h3>
               <p className={styles.cardText}>Closed-loop environment architectures. Duty-cycle analysis, geofencing, cargo workflow mapping, and logistics system integrations.</p>
               <br/>
-              <Link href="/design-development/airport-cargo" className="btn btn-secondary">View Lifecycle</Link>
+              <Link href="/design-development/airport-cargo" className="btn btn-secondary" data-track-event="home_card_btn_click" data-track-card="airport_cargo">View Lifecycle</Link>
             </div>
           </div>
         </div>
@@ -213,13 +213,13 @@ export default function Home() {
               <h3 className={styles.cardTitle}>Cybersecurity in AV</h3>
               <p className={styles.cardText}>Protecting attack surfaces: in-vehicle networks, OTA updates, V2X risks, and sensor spoofing. Secure architecture principles for autonomous fleets.</p>
               <br/>
-              <Link href="/cybersecurity" className="btn btn-secondary">Learn More</Link>
+              <Link href="/cybersecurity" className="btn btn-secondary" data-track-event="home_card_btn_click" data-track-card="cybersecurity">Learn More</Link>
             </div>
             <div className="glass-panel">
               <h3 className={styles.cardTitle}>Battery Health & Diagnostics</h3>
               <p className={styles.cardText}>Thermal risk, predictive maintenance, and lifecycle operations specific to non-stop AV duty cycles. Ensuring fleet availability through battery IQ.</p>
               <br/>
-              <Link href="/battery-diagnostics" className="btn btn-secondary">Learn More</Link>
+              <Link href="/battery-diagnostics" className="btn btn-secondary" data-track-event="home_card_btn_click" data-track-card="battery_diagnostics">Learn More</Link>
             </div>
           </div>
         </div>
@@ -268,7 +268,7 @@ export default function Home() {
               <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', lineHeight: '1.6', marginBottom: '2rem', maxWidth: '500px', margin: '0 auto 2rem' }}>
                 Founder of EV.ENGINEER™, building intelligent energy systems and AI-driven solutions for electric vehicles.
               </p>
-              <Link href="/about/sudarshana-karkala" className="btn btn-secondary">View Profile</Link>
+              <Link href="/about/sudarshana-karkala" className="btn btn-secondary" data-track-event="home_founder_click">View Profile</Link>
             </div>
           </div>
         </div>
@@ -282,9 +282,9 @@ export default function Home() {
             Partner with iTelematics® and transform your EV and AV strategies.
           </p>
           <div className={styles.heroCtas}>
-            <Link href="/corporate-training" className="btn btn-primary">Start Training</Link>
-            <Link href="/consulting" className="btn btn-secondary">Engage Consulting</Link>
-            <Link href="/internships" className="btn btn-primary">View Internships</Link>
+            <Link href="/corporate-training" className="btn btn-primary" data-track-event="bottom_cta_training_click">Start Training</Link>
+            <Link href="/consulting" className="btn btn-secondary" data-track-event="bottom_cta_consulting_click">Engage Consulting</Link>
+            <Link href="/internships" className="btn btn-primary" data-track-event="bottom_cta_internships_click">View Internships</Link>
           </div>
         </div>
       </section>

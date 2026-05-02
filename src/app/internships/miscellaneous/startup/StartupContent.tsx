@@ -246,7 +246,7 @@ export default function StartupContent() {
             <a href="mailto:rajivtalreja@quantumleap.co.in" style={{ color: '#fff', fontSize: '1.2rem', textDecoration: 'none', fontWeight: '500' }}>rajivtalreja@quantumleap.co.in</a>
           </div>
           <div className={styles.heroCtas}>
-            <Link href="/internships" className="btn btn-secondary">Back to Internships</Link>
+            <Link href="/internships" className="btn btn-secondary" data-track-event="startup_back_click">Back to Internships</Link>
           </div>
         </div>
       </section>

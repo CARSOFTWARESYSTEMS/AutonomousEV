@@ -34,11 +34,11 @@ function ProjectCard({ title, desc, link }: { title: string, desc?: string, link
   );
 
   return isExternal ? (
-    <a href={link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }} className="project-card-link">
+    <a href={link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }} className="project-card-link" data-track-event="internship_card_click" data-track-title={title}>
       {cardContent}
     </a>
   ) : (
-    <Link href={link} style={{ textDecoration: 'none' }} className="project-card-link">
+    <Link href={link} style={{ textDecoration: 'none' }} className="project-card-link" data-track-event="internship_card_click" data-track-title={title}>
       {cardContent}
     </Link>
   );
@@ -164,7 +164,7 @@ export default function InternshipsPage() {
 
           <div style={{ marginTop: '80px', textAlign: 'center', paddingBottom: '40px' }}>
             <h2 style={{ fontSize: '1.8rem', fontWeight: 600, marginBottom: '24px' }}>Ready to Take the Next Step?</h2>
-            <a href="https://itelematics.com/contact" target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ padding: '0.8rem 2.5rem', fontSize: '1.1rem' }}>
+            <a href="https://itelematics.com/contact" target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ padding: '0.8rem 2.5rem', fontSize: '1.1rem' }} data-track-event="internships_contact_click">
               Contact Us
             </a>
           </div>

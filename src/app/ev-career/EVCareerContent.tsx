@@ -64,34 +64,16 @@ export default function EVCareerContent({ groupedCompanies }: EVCareerContentPro
     };
   }, []);
 
-  const handleCareerClick = (company: string, category: string, url: string) => {
-    trackEvent("career_click", {
-      company,
-      category,
-      url,
-      page_path: "/ev-career"
-    });
+  const handleAcknowledgment = (company: string) => {
     if (hasSeenDisclaimer.current) {
-      trackEvent("disclaimer_acknowledged_click", { company, page: "/ev-career" });
-    }
-  };
-
-  const handleDeveloperClick = (company: string, category: string, url: string) => {
-    trackEvent("developer_click", {
-      company,
-      category,
-      url,
-      page_path: "/ev-career"
-    });
-    if (hasSeenDisclaimer.current) {
-      trackEvent("disclaimer_acknowledged_click", { company, page: "/ev-career" });
+      trackEvent("disclaimer_acknowledged_click", { company, page_path: "/ev-career" });
     }
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.title}>EV.ENGINEER™ - CAREER OPPORTUNITIES</h1>
+        <h1 className={styles.title}>EV CAREER OPPORTUNITIES</h1>
         <p className={styles.subtitle} style={{ fontWeight: 400 }}>
           Building <strong className={styles.glowingText}>World-Class Engineers</strong> to Solve <strong className={styles.glowingText}>Energy</strong> and <strong className={styles.glowingText}>EV Battery</strong> Challenges
         </p>
@@ -145,7 +127,10 @@ export default function EVCareerContent({ groupedCompanies }: EVCareerContentPro
                       target="_blank"
                       rel="noopener noreferrer"
                       className={`${styles.btn} ${styles.btnPrimary}`}
-                      onClick={() => handleCareerClick(item.company, item.categoryLabel, item.careerLink)}
+                      data-track-event="career_click"
+                      data-track-company={item.company}
+                      data-track-category={category}
+                      onClick={() => handleAcknowledgment(item.company)}
                     >
                       Careers ↗
                     </a>
@@ -157,7 +142,10 @@ export default function EVCareerContent({ groupedCompanies }: EVCareerContentPro
                         target="_blank"
                         rel="noopener noreferrer"
                         className={`${styles.btn} ${styles.btnSecondary}`}
-                        onClick={() => handleDeveloperClick(item.company, item.categoryLabel, item.developerLink)}
+                        data-track-event="developer_click"
+                        data-track-company={item.company}
+                        data-track-category={category}
+                        onClick={() => handleAcknowledgment(item.company)}
                       >
                         Developers ↗
                       </a>
@@ -197,7 +185,10 @@ export default function EVCareerContent({ groupedCompanies }: EVCareerContentPro
                         target="_blank"
                         rel="noopener noreferrer"
                         className={`${styles.btn} ${styles.btnPrimary}`}
-                        onClick={() => handleCareerClick(item.company, item.categoryLabel, item.careerLink)}
+                        data-track-event="career_click"
+                        data-track-company={item.company}
+                        data-track-category={category}
+                        onClick={() => handleAcknowledgment(item.company)}
                       >
                         Careers ↗
                       </a>
@@ -207,7 +198,10 @@ export default function EVCareerContent({ groupedCompanies }: EVCareerContentPro
                           target="_blank"
                           rel="noopener noreferrer"
                           className={`${styles.btn} ${styles.btnSecondary}`}
-                          onClick={() => handleDeveloperClick(item.company, item.categoryLabel, item.developerLink)}
+                          data-track-event="developer_click"
+                          data-track-company={item.company}
+                          data-track-category={category}
+                          onClick={() => handleAcknowledgment(item.company)}
                         >
                           Developers ↗
                         </a>

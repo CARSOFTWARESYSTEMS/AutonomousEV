@@ -65,8 +65,8 @@ export default function BatteryDiagnosticsContent() {
           </div>
 
           <div className={styles.heroCtas}>
-            <Link href="#workflow" className="btn btn-primary">View System Workflow</Link>
-            <Link href="#architecture" className="btn btn-secondary">Explore Architecture</Link>
+            <Link href="#workflow" className="btn btn-primary" data-track-event="battery_diag_hero_workflow_click">View System Workflow</Link>
+            <Link href="#architecture" className="btn btn-secondary" data-track-event="battery_diag_hero_architecture_click">Explore Architecture</Link>
           </div>
         </div>
       </section>
@@ -490,8 +490,8 @@ export default function BatteryDiagnosticsContent() {
           A real, buildable infrastructure for second-life battery diagnostics, grading, identity, and safe deployment.
         </p>
         <div className={styles.heroCtas}>
-          <Link href="/contact" className="btn btn-primary">Partner with Us</Link>
-          <Link href="/contact" className="btn btn-secondary">Request System Specs</Link>
+          <Link href="/contact" className="btn btn-primary" data-track-event="battery_diag_bottom_partner_click">Partner with Us</Link>
+          <Link href="/contact" className="btn btn-secondary" data-track-event="battery_diag_bottom_specs_click">Request System Specs</Link>
         </div>
       </section>
 

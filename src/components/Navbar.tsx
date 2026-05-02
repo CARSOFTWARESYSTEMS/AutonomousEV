@@ -109,8 +109,8 @@ export default function Navbar() {
         </div>
 
         <div className={styles.actions}>
-          <Link href="/corporate-training" className="btn btn-secondary">Training</Link>
-          <Link href="/consulting" className="btn btn-primary">Consulting</Link>
+          <Link href="/corporate-training" className="btn btn-secondary" data-track-event="nav_training_click">Training</Link>
+          <Link href="/consulting" className="btn btn-primary" data-track-event="nav_consulting_click">Consulting</Link>
         </div>
 
         <button
@@ -188,8 +188,8 @@ export default function Navbar() {
           <Link href="/contact" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Contact</Link>
 
           <div style={{ height: "24px" }}></div>
-          <Link href="/corporate-training" className="btn btn-secondary" style={{ width: '100%', marginBottom: '16px', textAlign: 'center' }} onClick={() => setMobileMenuOpen(false)}>Corporate Training</Link>
-          <Link href="/consulting" className="btn btn-primary" style={{ width: '100%', textAlign: 'center' }} onClick={() => setMobileMenuOpen(false)}>Consulting</Link>
+          <Link href="/corporate-training" className="btn btn-secondary" style={{ width: '100%', marginBottom: '16px', textAlign: 'center' }} onClick={() => setMobileMenuOpen(false)} data-track-event="nav_training_click">Corporate Training</Link>
+          <Link href="/consulting" className="btn btn-primary" style={{ width: '100%', textAlign: 'center' }} onClick={() => setMobileMenuOpen(false)} data-track-event="nav_consulting_click">Consulting</Link>
         </div>
       </div>
     </nav>

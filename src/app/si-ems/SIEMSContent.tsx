@@ -168,7 +168,7 @@ export default function SIEMSContent() {
                 </ul>
               </nav>
               <div style={{ marginTop: "24px", paddingTop: "24px", borderTop: "1px solid var(--glass-border)" }}>
-                 <Link href="/contact" className="btn btn-primary" style={{ width: "100%", fontSize: "0.9rem", textAlign: "center", display: "block" }}>Collaborate</Link>
+                 <Link href="/contact" className="btn btn-primary" style={{ width: "100%", fontSize: "0.9rem", textAlign: "center", display: "block" }} data-track-event="si_ems_sidebar_collaborate_click">Collaborate</Link>
               </div>
             </div>
             </aside>
@@ -288,7 +288,7 @@ export default function SIEMSContent() {
             <h2 style={{ fontSize: "1.2rem", color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "1rem" }}>Author &amp; Lead Architect</h2>
             <p style={{ fontSize: "2rem", fontWeight: "800", color: "#fff", marginBottom: "0.25rem" }}>Sudarshana Karkala</p>
             <p style={{ fontSize: "1rem", color: "var(--accent-primary)", fontWeight: "600", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "1.5rem" }}>EV.ENGINEER™</p>
-            <Link href="/about/sudarshana-karkala" className="btn btn-secondary">View Profile</Link>
+            <Link href="/about/sudarshana-karkala" className="btn btn-secondary" data-track-event="si_ems_founder_click">View Profile</Link>
           </section>
 
           <section style={{ textAlign: "center", marginTop: "120px", padding: "80px 0", borderTop: "1px solid var(--glass-border)" }}>
@@ -300,8 +300,8 @@ export default function SIEMSContent() {
               For direct research inquiries, please contact: <span style={{ color: "var(--text-primary)", fontWeight: "600" }}>+91 9845561518</span>
             </p>
             <div className="flex-responsive" style={{ gap: "20px", justifyContent: "center" }}>
-              <Link href="/contact" className="btn btn-primary" style={{ padding: "1.2rem 2.5rem" }}>Connect Us</Link>
-              <Link href="/consulting" className="btn btn-secondary" style={{ padding: "1.2rem 2.5rem" }}>R&D Consulting</Link>
+              <Link href="/contact" className="btn btn-primary" style={{ padding: "1.2rem 2.5rem" }} data-track-event="si_ems_bottom_contact_click">Connect Us</Link>
+              <Link href="/consulting" className="btn btn-secondary" style={{ padding: "1.2rem 2.5rem" }} data-track-event="si_ems_bottom_consulting_click">R&D Consulting</Link>
             </div>
           </section>
         </div>
