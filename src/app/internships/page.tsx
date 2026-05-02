@@ -104,7 +104,7 @@ export default function InternshipsPage() {
       <section className="section">
         <div className="container">
           <h1 style={{ fontSize: '2.5rem', fontWeight: 600, marginBottom: '16px' }}>
-            <span style={{ color: 'var(--accent-primary)' }}>AV, EV & Battery</span> Internships
+            <span style={{ color: 'var(--accent-primary)' }}>AV, EV & Battery</span> Internships <span style={{ color: 'var(--accent-primary)' }}>&</span> Workshops
           </h1>
           <p style={{ fontSize: "1.1rem", color: "var(--accent-primary)", fontWeight: "400", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "48px" }}>
             Building <strong className="glowing-text">World-Class Engineers</strong> to Solve <strong className="glowing-text">Energy</strong> and <strong className="glowing-text">EV Battery</strong> Challenges
@@ -127,16 +127,16 @@ export default function InternshipsPage() {
             >
               EV Workshop
             </a>
-            <Link 
-              href="/ev-career" 
+            <Link
+              href="/ev-career"
               className="btn btn-primary"
               data-track-event="cta_click"
               data-track-label="Prepare for EV Career"
             >
               Prepare for EV Career
             </Link>
-            <a 
-              href="https://wa.me/919108206147?text=Hi%2C%20I%20am%20interested%20in%20Resume%20Optimisation" 
+            <a
+              href="https://wa.me/919108206147?text=Hi%2C%20I%20am%20interested%20in%20Resume%20Optimisation"
               className="btn btn-secondary"
               target="_blank"
               rel="noopener noreferrer"
@@ -145,8 +145,8 @@ export default function InternshipsPage() {
             >
               Resume Optimisation
             </a>
-            <a 
-              href="https://wa.me/919108206147?text=Hi%2C%20I%20am%20interested%20in%20a%20Mock%20Interview" 
+            <a
+              href="https://wa.me/919108206147?text=Hi%2C%20I%20am%20interested%20in%20a%20Mock%20Interview"
               className="btn btn-secondary"
               target="_blank"
               rel="noopener noreferrer"

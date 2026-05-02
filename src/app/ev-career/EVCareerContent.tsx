@@ -90,16 +90,16 @@ export default function EVCareerContent({ groupedCompanies }: EVCareerContentPro
             className={styles.trainingBtn}
             data-track-event="ev_career_job_oriented_training_click"
           >
-            Job Oriented Training
+            Job Oriented Training & Workshops
           </Link>
           <a
             href="https://wa.me/919108206147?text=Hi%2C%20I%20am%20interested%20in%20EV%20Certificates%20and%20Job%20Oriented%20Training%20programs%20on%20EV.ENGINEER%E2%84%A2.%20Could%20you%20please%20provide%20more%20information%3F"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.contactBtn}
-            data-track-event="ev_career_whatsapp_certificate_click"
+            data-track-event="ev_career_whatsapp_training_certificate_click"
           >
-            Contact Us for EV Certificates
+            EV Trainings & Certificates
           </a>
           <a
             href="mailto:info@iTelematics.com?subject=Resume%20Submission%20%E2%80%94%20EV%20Career%20Opportunities&body=Hi%20Team%2C%0A%0AI%20came%20across%20EV.ENGINEER%E2%84%A2%20and%20would%20like%20to%20submit%20my%20resume%20for%20EV%2FAutomotive%20career%20opportunities.%0A%0APlease%20find%20my%20resume%20attached.%0A%0AThank%20you!"
@@ -129,12 +129,12 @@ export default function EVCareerContent({ groupedCompanies }: EVCareerContentPro
             <tbody key={category}>
               <tr>
                 <td colSpan={3} className={styles.categoryHeaderCell}>
-                  <div 
+                  <div
                     onClick={() => toggleSection(category)}
                     style={{ display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" }}
                   >
                     <div className={styles.categoryTitleTable}>{category}</div>
-                    <button 
+                    <button
                       className={styles.collapseBtn}
                       aria-label={expandedSections[category] ? "Collapse section" : "Expand section"}
                     >
@@ -191,7 +191,7 @@ export default function EVCareerContent({ groupedCompanies }: EVCareerContentPro
       <div className={styles.mobileCards}>
         {Object.entries(groupedCompanies).map(([category, categoryCompanies]) => (
           <div key={category} className={styles.categorySectionMobile}>
-            <h2 
+            <h2
               className={styles.categoryTitleMobile}
               onClick={() => toggleSection(category)}
               style={{ display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" }}
