@@ -194,6 +194,10 @@ export default function InternshipsPage() {
               link="https://www.evsociety.org/projects"
             />
             <ProjectCard
+              title="CAR Software Systems"
+              link="https://carsoftwaresystems.com/"
+            />
+            <ProjectCard
               title="Ongoing vs Completed"
               link="https://labs.ev.engineer/"
             />
@@ -219,6 +223,16 @@ export default function InternshipsPage() {
                 data-track-event="internships_submit_resume_click"
               >
                 Submit Resume
+              </a>
+              <a
+                href="https://carsoftwaresystems.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-secondary"
+                style={{ padding: '0.8rem 2.5rem', fontSize: '1.1rem' }}
+                data-track-event="internships_training_click"
+              >
+                Training
               </a>
             </div>
           </div>

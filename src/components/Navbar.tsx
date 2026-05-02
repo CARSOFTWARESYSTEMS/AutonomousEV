@@ -70,58 +70,7 @@ export default function Navbar() {
             </div>
           </div>
 
-          <div className={styles.navItem}>
-            Internships
-            <div className={styles.dropdown}>
-              <div className={styles.dropdownColumn}>
-                <div className={styles.dropdownTitle}>Research</div>
-                <Link href="/si-ems" className={styles.dropdownLink}>Super-Intelligent AI EMS</Link>
-                <a href="https://battery.ev.engineer/" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>EV Battery Health &amp; Diagnostics</a>
-                <div className={styles.dropdownDivider} />
-                <div className={styles.dropdownSubTitle}>Proof of Concept</div>
-                <Link href="/design-development/passenger-taxi" className={styles.dropdownLink}>Autonomous Passenger Taxi</Link>
-                <Link href="/design-development/airport-cargo" className={styles.dropdownLink}>Autonomous Airport Cargo EV</Link>
-                <div className={styles.dropdownDivider} />
-                <div className={styles.dropdownSubTitle}>EV Workshop</div>
-                <a href="https://repair.ev.engineer/" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>EV Repair Workshop</a>
-                <Link href="/internships/battery-circular-economy" className={styles.dropdownLink}>Battery Circular Economy</Link>
-                <div className={styles.dropdownDivider} />
-                <div className={styles.dropdownSubTitle}>Contact Us</div>
-                <a
-                  href="https://wa.me/919108206147?text=Hi%2C%20I%20would%20like%20to%20know%20more%20about%20the%20EV%2FAV%20internship%20opportunities%20listed%20on%20EV.ENGINEER%E2%84%A2.%20Could%20you%20please%20share%20more%20details%3F"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.dropdownCtaLink}
-                  data-track-event="nav_internship_whatsapp_click"
-                >
-                  WhatsApp Us
-                </a>
-                <a
-                  href="mailto:info@iTelematics.com?subject=Resume%20Submission%20%E2%80%94%20EV%2FAV%20Internship&body=Hi%20Team%2C%0A%0AI%20came%20across%20EV.ENGINEER%E2%84%A2%20and%20would%20like%20to%20apply%20for%20an%20EV%2FAV%20internship%20opportunity.%0A%0APlease%20find%20my%20resume%20attached.%0A%0AThank%20you!"
-                  className={styles.dropdownCtaLink}
-                  data-track-event="nav_internship_resume_click"
-                >
-                  Submit Resume
-                </a>
-              </div>
-              <div className={styles.dropdownColumn}>
-                <div className={styles.dropdownTitle}>Design &amp; Development</div>
-                <Link href="/internships/battery-fire-prevention" className={styles.dropdownLink}>EV Battery Intelligence Platform</Link>
-                <Link href="/internships/battery-aadhaar" className={styles.dropdownLink}>Battery Pack Aadhaar System</Link>
-                <a href="https://help.ev.engineer/" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>EV Help Agent</a>
-                <div className={styles.dropdownDivider} />
-                <div className={styles.dropdownSubTitle}>Miscellaneous</div>
-                <Link href="/internships" className={styles.dropdownLink}>Internship projects</Link>
-                <Link href="/internships/miscellaneous/startup" className={styles.dropdownLink}>EV Startup</Link>
-                <a href="https://vtu.internyet.in/" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>VTU Internyet</a>
-                <a href="https://internship.aicte-india.org/" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>AICTE Internships</a>
-                <a href="https://itelematics.com/ev-engineer" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>Projects @ iTelematics®</a>
-                <a href="https://www.thasmaiinfotech.com/#programs" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>Projects @ Thasmai Infotech</a>
-                <a href="https://www.evsociety.org/projects" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>Webinars @ EV Society™</a>
-                <a href="https://labs.ev.engineer/" target="_blank" rel="noopener noreferrer" className={styles.dropdownLink}>Ongoing vs Completed</a>
-              </div>
-            </div>
-          </div>
+          <Link href="/internships" className={styles.navItem}>Internships</Link>
 
           <Link href="/ev-career" className={styles.navItem}>EV Career</Link>
         </div>
@@ -173,48 +122,8 @@ export default function Navbar() {
           <Link href="/cybersecurity" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Cybersecurity</Link>
           <Link href="/battery-diagnostics" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>EV Battery Diagnostics</Link>
 
-          <div className={styles.mobileSectionTitle}>Internships — Research</div>
-          <Link href="/si-ems" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Super-Intelligent AI EMS</Link>
-          <a href="https://battery.ev.engineer/" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>EV Battery Health &amp; Diagnostics</a>
-
-          <div className={styles.mobileSectionTitle}>Internships — Proof of Concept</div>
-          <Link href="/design-development/passenger-taxi" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Autonomous Passenger Taxi</Link>
-          <Link href="/design-development/airport-cargo" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Autonomous Airport Cargo EV</Link>
-
-          <div className={styles.mobileSectionTitle}>Contact Us</div>
-          <a
-            href="https://wa.me/919108206147?text=Hi%2C%20I%20would%20like%20to%20know%20more%20about%20the%20EV%2FAV%20internship%20opportunities%20listed%20on%20EV.ENGINEER%E2%84%A2.%20Could%20you%20please%20share%20more%20details%3F"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.mobileLink}
-            onClick={() => setMobileMenuOpen(false)}
-            data-track-event="nav_internship_whatsapp_click"
-          >WhatsApp Us</a>
-          <a
-            href="mailto:info@iTelematics.com?subject=Resume%20Submission%20%E2%80%94%20EV%2FAV%20Internship&body=Hi%20Team%2C%0A%0AI%20came%20across%20EV.ENGINEER%E2%84%A2%20and%20would%20like%20to%20apply%20for%20an%20EV%2FAV%20internship%20opportunity.%0A%0APlease%20find%20my%20resume%20attached.%0A%0AThank%20you!"
-            className={styles.mobileLink}
-            onClick={() => setMobileMenuOpen(false)}
-            data-track-event="nav_internship_resume_click"
-          >Submit Resume</a>
-
-          <div className={styles.mobileSectionTitle}>Internships — EV workshop</div>
-          <a href="https://repair.ev.engineer/" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>EV Repair Workshop</a>
-          <Link href="/internships/battery-circular-economy" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Battery Circular Economy</Link>
-
-          <div className={styles.mobileSectionTitle}>Internships — Design &amp; Development</div>
-          <Link href="/internships/battery-fire-prevention" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>EV Battery Intelligence Platform</Link>
-          <Link href="/internships/battery-aadhaar" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Battery Pack Aadhaar System</Link>
-          <a href="https://help.ev.engineer/" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>EV Help Agent</a>
-
-          <div className={styles.mobileSectionTitle}>Internships — Miscellaneous</div>
-          <Link href="/internships" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Internship projects</Link>
-          <Link href="/internships/miscellaneous/startup" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>EV Startup</Link>
-          <a href="https://vtu.internyet.in/" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>VTU Internyet</a>
-          <a href="https://internship.aicte-india.org/" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>AICTE Internships</a>
-          <a href="https://itelematics.com/ev-engineer" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Projects @ iTelematics®</a>
-          <a href="https://www.thasmaiinfotech.com/#programs" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Projects @ Thasmai Infotech</a>
-          <a href="https://www.evsociety.org/projects" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Webinars @ EV Society™</a>
-          <a href="https://labs.ev.engineer/" target="_blank" rel="noopener noreferrer" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Ongoing vs Completed</a>
+          <div className={styles.mobileSectionTitle}>Internships</div>
+          <Link href="/internships" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Internships</Link>
 
           <div className={styles.mobileSectionTitle}>Careers</div>
           <Link href="/ev-career" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>EV Career</Link>
