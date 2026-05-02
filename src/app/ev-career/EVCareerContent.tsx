@@ -74,9 +74,11 @@ export default function EVCareerContent({ groupedCompanies }: EVCareerContentPro
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.title}>EV Career Opportunities</h1>
-        <p className={styles.subtitle} style={{ fontWeight: 400 }}>
-          Building <strong className={styles.glowingText}>World-Class Engineers</strong> to Solve <strong className={styles.glowingText}>Energy</strong> and <strong className={styles.glowingText}>EV Battery</strong> Challenges
+        <h1 className={styles.title}>
+          <span style={{ color: 'var(--accent-primary)' }}>EV Jobs & Career</span> Opportunities
+        </h1>
+        <p className={styles.subtitle}>
+          Building <strong className="glowing-text">World-Class Engineers</strong> to Solve <strong className="glowing-text">Energy</strong> and <strong className="glowing-text">EV Battery</strong> Challenges
         </p>
         <div className={styles.disclaimerShort}>
           <span>EV.ENGINEER™ is an independent learning platform. We are not affiliated with listed companies and do not guarantee job placements.</span>
@@ -87,29 +89,34 @@ export default function EVCareerContent({ groupedCompanies }: EVCareerContentPro
         <div className={styles.controlsLeft}>
           <Link
             href="/internships"
-            className={styles.trainingBtn}
+            className={`btn btn-secondary ${styles.actionBtn}`}
             data-track-event="ev_career_job_oriented_training_click"
           >
-            AV, EV & Battery Workshops
+            EV Workshops
           </Link>
           <a
             href="https://wa.me/919108206147?text=Hi%2C%20I%20am%20interested%20in%20EV%20Certificates%20and%20Job%20Oriented%20Training%20programs%20on%20EV.ENGINEER%E2%84%A2.%20Could%20you%20please%20provide%20more%20information%3F"
             target="_blank"
             rel="noopener noreferrer"
-            className={styles.contactBtn}
+            className={`btn btn-primary ${styles.actionBtn}`}
             data-track-event="ev_career_whatsapp_training_certificate_click"
           >
-            Job Oriented Training & Certificates
+            EV Training & Certificates
           </a>
           <a
             href="mailto:info@iTelematics.com?subject=Resume%20Submission%20%E2%80%94%20EV%20Career%20Opportunities&body=Hi%20Team%2C%0A%0AI%20came%20across%20EV.ENGINEER%E2%84%A2%20and%20would%20like%20to%20submit%20my%20resume%20for%20EV%2FAutomotive%20career%20opportunities.%0A%0APlease%20find%20my%20resume%20attached.%0A%0AThank%20you!"
-            className={styles.submitResumeBtn}
+            className={`btn btn-secondary ${styles.actionBtn}`}
             data-track-event="ev_career_submit_resume_click"
           >
             Submit Resume
           </a>
         </div>
-        <button onClick={toggleAll} className={styles.globalCollapseBtn}>
+        <button 
+          onClick={toggleAll} 
+          className={`btn btn-secondary ${styles.actionBtn}`}
+          data-track-event="ev_career_toggle_all_click"
+          data-track-state={allExpanded ? "collapse" : "expand"}
+        >
           {allExpanded ? "Collapse All" : "Expand All"}
         </button>
       </div>
@@ -132,6 +139,9 @@ export default function EVCareerContent({ groupedCompanies }: EVCareerContentPro
                   <div
                     onClick={() => toggleSection(category)}
                     style={{ display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" }}
+                    data-track-event="ev_career_section_toggle_click"
+                    data-track-category={category}
+                    data-track-state={expandedSections[category] ? "collapse" : "expand"}
                   >
                     <div className={styles.categoryTitleTable}>{category}</div>
                     <button
@@ -149,33 +159,33 @@ export default function EVCareerContent({ groupedCompanies }: EVCareerContentPro
                     <div className={styles.company}>{item.company}</div>
                   </td>
                   <td className={styles.td}>
-                    <a
-                      href={item.careerLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`${styles.btn} ${styles.btnPrimary}`}
-                      data-track-event="career_click"
-                      data-track-company={item.company}
-                      data-track-category={category}
-                      onClick={() => handleAcknowledgment(item.company)}
-                    >
-                      Careers ↗
-                    </a>
-                  </td>
-                  <td className={styles.td}>
-                    {item.developerLink ? (
                       <a
-                        href={item.developerLink}
+                        href={item.careerLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`${styles.btn} ${styles.btnSecondary}`}
-                        data-track-event="developer_click"
+                        className={`btn btn-primary ${styles.tableBtn}`}
+                        data-track-event="career_click"
                         data-track-company={item.company}
                         data-track-category={category}
                         onClick={() => handleAcknowledgment(item.company)}
                       >
-                        Developers ↗
+                        Careers ↗
                       </a>
+                    </td>
+                    <td className={styles.td}>
+                      {item.developerLink ? (
+                        <a
+                          href={item.developerLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`btn btn-secondary ${styles.tableBtn}`}
+                          data-track-event="developer_click"
+                          data-track-company={item.company}
+                          data-track-category={category}
+                          onClick={() => handleAcknowledgment(item.company)}
+                        >
+                          Developers ↗
+                        </a>
                     ) : (
                       <span className={styles.notAvailable}>Not Available</span>
                     )}
@@ -195,6 +205,9 @@ export default function EVCareerContent({ groupedCompanies }: EVCareerContentPro
               className={styles.categoryTitleMobile}
               onClick={() => toggleSection(category)}
               style={{ display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" }}
+              data-track-event="ev_career_section_toggle_click"
+              data-track-category={category}
+              data-track-state={expandedSections[category] ? "collapse" : "expand"}
             >
               <span>{category}</span>
               <span className={styles.collapseIconMobile}>{expandedSections[category] ? "−" : "+"}</span>
@@ -211,7 +224,7 @@ export default function EVCareerContent({ groupedCompanies }: EVCareerContentPro
                         href={item.careerLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`${styles.btn} ${styles.btnPrimary}`}
+                        className={`btn btn-primary ${styles.tableBtn}`}
                         data-track-event="career_click"
                         data-track-company={item.company}
                         data-track-category={category}
@@ -224,7 +237,7 @@ export default function EVCareerContent({ groupedCompanies }: EVCareerContentPro
                           href={item.developerLink}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={`${styles.btn} ${styles.btnSecondary}`}
+                          className={`btn btn-secondary ${styles.tableBtn}`}
                           data-track-event="developer_click"
                           data-track-company={item.company}
                           data-track-category={category}
@@ -245,7 +258,7 @@ export default function EVCareerContent({ groupedCompanies }: EVCareerContentPro
       </div>
 
       {/* Disclaimer Section */}
-      <div className={styles.disclaimerSection} ref={disclaimerRef}>
+      <div className={`glass-panel ${styles.disclaimerSection}`} ref={disclaimerRef}>
         <div className={styles.disclaimerTitle}>
           <span className={styles.infoIcon}>ⓘ</span> DISCLAIMER
         </div>
