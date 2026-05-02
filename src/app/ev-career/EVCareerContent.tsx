@@ -74,7 +74,7 @@ export default function EVCareerContent({ groupedCompanies }: EVCareerContentPro
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.title}>EV CAREER OPPORTUNITIES</h1>
+        <h1 className={styles.title}>EV Career Opportunities</h1>
         <p className={styles.subtitle} style={{ fontWeight: 400 }}>
           Building <strong className={styles.glowingText}>World-Class Engineers</strong> to Solve <strong className={styles.glowingText}>Energy</strong> and <strong className={styles.glowingText}>EV Battery</strong> Challenges
         </p>

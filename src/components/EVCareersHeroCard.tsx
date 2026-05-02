@@ -16,7 +16,7 @@ export default function EVCareersHeroCard({ cardClassName, titleClassName, textC
 
   const handleCardClick = () => {
     trackEvent("cta_section_click", {
-      section: "EV Careers & Internships",
+      section: "EV Careers, Jobs & Internships",
       target: "/internships"
     });
     router.push("/internships");
@@ -25,8 +25,7 @@ export default function EVCareersHeroCard({ cardClassName, titleClassName, textC
   const handleInternshipsClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     trackEvent("cta_click", {
-      label: "Internships",
-      section: "EV Careers & Internships",
+      section: "EV Careers, Jobs & Internships",
       target: "/internships"
     });
     router.push("/internships");
@@ -35,8 +34,7 @@ export default function EVCareersHeroCard({ cardClassName, titleClassName, textC
   const handleEVCareerClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     trackEvent("cta_click", {
-      label: "EV Career",
-      section: "EV Careers & Internships",
+      section: "EV Careers, Jobs & Internships",
       target: "/ev-career"
     });
     router.push("/ev-career");
@@ -49,7 +47,7 @@ export default function EVCareersHeroCard({ cardClassName, titleClassName, textC
       style={{ cursor: 'pointer' }}
     >
       <p className={titleClassName}>
-        EV Careers & Internships
+        EV Careers, Jobs & Internships
       </p>
       <p className={textClassName}>
         Gain hands-on experience in EV Battery Diagnostics, Autonomous System Integration, Battery Intelligence, Energy Systems, and real-world EV engineering workflows.
@@ -60,7 +58,7 @@ export default function EVCareersHeroCard({ cardClassName, titleClassName, textC
           className="btn btn-primary"
           style={{ padding: '8px 16px', fontSize: '0.9rem', minHeight: 'auto' }}
         >
-          Internships
+          Jobs & Internships
         </button>
         <button 
           onClick={handleEVCareerClick}

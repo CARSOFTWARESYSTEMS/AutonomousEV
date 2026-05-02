@@ -70,7 +70,7 @@ export default function Navbar() {
             </div>
           </div>
 
-          <Link href="/internships" className={styles.navItem}>Internships</Link>
+          <Link href="/internships" className={styles.navItem}>Jobs & Internships</Link>
 
           <Link href="/ev-career" className={styles.navItem}>EV Career</Link>
         </div>
@@ -122,8 +122,8 @@ export default function Navbar() {
           <Link href="/cybersecurity" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Cybersecurity</Link>
           <Link href="/battery-diagnostics" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>EV Battery Diagnostics</Link>
 
-          <div className={styles.mobileSectionTitle}>Internships</div>
-          <Link href="/internships" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Internships</Link>
+          <div className={styles.mobileSectionTitle}>Jobs & Internships</div>
+          <Link href="/internships" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Jobs & Internships</Link>
 
           <div className={styles.mobileSectionTitle}>Careers</div>
           <Link href="/ev-career" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>EV Career</Link>
