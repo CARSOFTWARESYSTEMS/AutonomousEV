@@ -114,6 +114,36 @@
   transform: translateY(-1px);
 }
 
+.trainingBtn {
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--accent-primary, #00ff88);
+  color: #000;
+  border: 1px solid var(--accent-primary, #00ff88);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  line-height: 1.4;
+  box-sizing: border-box;
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+}
+
+.trainingBtn:hover {
+  background: #00e67a;
+  transform: translateY(-1px);
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+}
+
 .contactBtn {
   -webkit-appearance: none;
   appearance: none;
@@ -451,6 +481,7 @@
     gap: 10px;
   }
 
+  .trainingBtn,
   .contactBtn,
   .submitResumeBtn,
   .globalCollapseBtn {

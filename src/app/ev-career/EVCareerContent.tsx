@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import styles from "./page.module.css";
 import { trackEvent } from "@/utils/analytics";
 
@@ -84,6 +85,13 @@ export default function EVCareerContent({ groupedCompanies }: EVCareerContentPro
 
       <div className={styles.controlsHeader}>
         <div className={styles.controlsLeft}>
+          <Link
+            href="/internships"
+            className={styles.trainingBtn}
+            data-track-event="ev_career_training_click"
+          >
+            Training
+          </Link>
           <a
             href="https://wa.me/919108206147?text=Hi%2C%20I%20would%20like%20to%20know%20more%20about%20EV%20career%20opportunities%20listed%20on%20EV.ENGINEER%E2%84%A2.%20Could%20you%20please%20share%20more%20details%3F"
             target="_blank"
