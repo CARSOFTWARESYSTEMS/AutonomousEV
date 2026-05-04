@@ -5,11 +5,11 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: 'AV & EV Internships | EV.ENGINEER™',
-  description: 'Practical, engineering-focused internships in EV battery health, autonomous vehicle systems, safety systems, passenger taxis, and RTOS architecture. Kickstart your career in autonomous eMobility.',
+  description: 'Practical, engineering-focused internships in EV battery health, autonomous vehicle systems, safety systems, air taxis (eVTOL), and RTOS architecture. Kickstart your career in autonomous eMobility.',
   keywords: [
     'EV Internships', 'AV Internships', 'Autonomous Vehicles Internship',
     'Electric Vehicle Research', 'Battery Diagnostics Internship',
-    'Robotaxi Internships', 'Super-Intelligent AI EMS',
+    'Air Taxi (eVTOL) Internships', 'Super-Intelligent AI EMS',
     'EV Engineering Internships', 'EV Repair Workshop Internships',
     'AICTE Internships', 'VTU Internships in EV'
   ]

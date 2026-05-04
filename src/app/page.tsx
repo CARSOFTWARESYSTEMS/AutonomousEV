@@ -163,8 +163,8 @@ export default function Home() {
           </div>
           <div className={styles.cards2}>
             <div className="glass-panel" style={{ borderLeft: '4px solid var(--accent-primary)' }}>
-              <h3 className={styles.cardTitle}>Autonomous Passenger Taxi</h3>
-              <p className={styles.cardText}>End-to-end design lifecycle for urban ride services. Covering passenger safety, fleet operations, ITS integration, and urban cybersecurity risks.</p>
+              <h3 className={styles.cardTitle}>Autonomous Air Taxi (eVTOL)</h3>
+              <p className={styles.cardText}>End-to-end design lifecycle for urban air mobility. Covering passenger safety, fleet operations, airspace integration, and urban cybersecurity risks.</p>
               <br/>
               <Link href="/design-development/passenger-taxi" className="btn btn-secondary" data-track-event="home_card_btn_click" data-track-card="passenger_taxi">View Lifecycle</Link>
             </div>

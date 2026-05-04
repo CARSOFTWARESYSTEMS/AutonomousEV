@@ -248,8 +248,8 @@ export default function InternshipsClient() {
 
           <Section title="Proof of Concept">
             <ProjectCard
-              title="Autonomous Passenger Taxi"
-              desc="End-to-end design lifecycle for urban ride services."
+              title="Autonomous Air Taxi (eVTOL)"
+              desc="End-to-end design lifecycle for urban air mobility."
               link="/design-development/passenger-taxi"
             />
             <ProjectCard

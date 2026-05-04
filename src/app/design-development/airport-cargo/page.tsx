@@ -11,7 +11,7 @@ export default function AirportCargoPage() {
       title="Autonomous Airport Cargo EV"
       subtitle="Structured automation for high-speed logistics and ground support."
       execSummary={
-        <p>Unlike urban robotaxis, airport cargo EVs operate in highly structured, closed-loop environments. This reduces the complexity of the perception stack but heavily emphasizes rigorous adherence to workflow, geofencing, and extreme operational reliability.</p>
+        <p>Unlike urban air taxis (eVTOL), airport cargo EVs operate in highly structured, closed-loop environments. This reduces the complexity of the perception stack but heavily emphasizes rigorous adherence to workflow, geofencing, and extreme operational reliability.</p>
       }
       whyItMatters={
         <p>Airport operations face intense pressure for efficiency. Ground support delays cascade into flight delays. Automating cargo tugs guarantees predictable turnaround times, provided the system can seamlessly integrate with the airport's fleet management architecture.</p>
