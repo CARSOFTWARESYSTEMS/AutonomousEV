@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ReactNode } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import PrerequisitesSection from "@/components/PrerequisitesSection";
 
@@ -94,8 +94,61 @@ export default function InternshipsClient() {
   const contactUsMsg = encodeURIComponent(`Hi, I would like to know more about the EV/AV ${typeText} opportunities listed on EV.ENGINEER™. Could you please share more details?`);
   const registerNowMsg = encodeURIComponent(`Hi, I am interested in ${typeText}s. Please let me know more details.`);
 
+  // Workshop poster popup
+  const [showPoster, setShowPoster] = useState(false);
+
+  useEffect(() => {
+    if (!isWorkshop) return;
+    setShowPoster(true);
+    const timer = setTimeout(() => setShowPoster(false), 10000);
+    return () => clearTimeout(timer);
+  }, [isWorkshop]);
+
   return (
     <div style={{ paddingTop: '80px', minHeight: '100vh' }}>
+
+      {/* Workshop Poster Full-Screen Popup */}
+      {showPoster && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 9999,
+            backgroundColor: 'rgba(0, 0, 0, 0.92)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '16px',
+            animation: 'fadeIn 0.4s ease',
+          }}
+        >
+          <img
+            src="/sudarshana-karkala_ev-battery-workshop_poster.png"
+            alt="EV Battery Workshop Poster"
+            style={{
+              maxWidth: '100%',
+              maxHeight: 'calc(100vh - 100px)',
+              objectFit: 'contain',
+              borderRadius: '12px',
+              boxShadow: '0 8px 64px rgba(0, 0, 0, 0.8)',
+            }}
+          />
+          <button
+            onClick={() => setShowPoster(false)}
+            className="btn btn-primary"
+            style={{
+              marginTop: '20px',
+              padding: '0.6rem 2rem',
+              fontSize: '1rem',
+              cursor: 'pointer',
+            }}
+            data-track-event="workshop_poster_close"
+          >
+            Close
+          </button>
+        </div>
+      )}
       <section className="section">
         <div className="container">
           <h1 style={{ fontSize: '2.5rem', fontWeight: 600, marginBottom: '16px' }}>
@@ -122,35 +175,31 @@ export default function InternshipsClient() {
               Prepare for EV Jobs & Career
             </Link>
             <a
-              href="https://wa.me/919108206147?text=Hi%2C%20I%20am%20interested%20in%20Resume%20Optimisation"
+              href="https://topmate.io/sudarshana_karkala"
               className="btn btn-secondary"
               target="_blank"
               rel="noopener noreferrer"
               data-track-event="cta_click"
-              data-track-label="Resume Optimisation"
+              data-track-label="Book Discovery Call"
             >
-              Resume Optimisation
+              Book Discovery Call
             </a>
-            <a
-              href="https://wa.me/919108206147?text=Hi%2C%20I%20am%20interested%20in%20a%20Mock%20Interview"
-              className="btn btn-secondary"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => setShowPoster(true)}
+              className="btn btn-primary"
               data-track-event="cta_click"
-              data-track-label="Mock Interview"
+              data-track-label="Upcoming Event"
             >
-              Mock Interview
-            </a>
-            <a
-              href="https://wa.me/919108206147?text=Hi%2C%20I%20am%20interested%20in%20EV%20Certificates%20and%20Job%20Oriented%20Training%20programs%20on%20EV.ENGINEER%E2%84%A2.%20Could%20you%20please%20provide%20more%20information%3F"
+              Upcoming Event
+            </button>
+            <Link
+              href="/workshop-gallery"
               className="btn btn-secondary"
-              target="_blank"
-              rel="noopener noreferrer"
               data-track-event="cta_click"
-              data-track-label="EV Certificate"
+              data-track-label="Previous Events"
             >
-              EV Certificate
-            </a>
+              Previous Events
+            </Link>
             <a
               href={`https://wa.me/919108206147?text=${registerNowMsg}`}
               target="_blank"
@@ -269,14 +318,15 @@ export default function InternshipsClient() {
             <h2 style={{ fontSize: '1.8rem', fontWeight: 600, marginBottom: '24px' }}>Ready to Take the Next Step?</h2>
             <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
               <a
-                href={`https://wa.me/919108206147?text=${contactUsMsg}`}
+                href="https://wa.me/919108206147?text=Hi%2C%20I%20am%20interested%20in%20EV%20Certificates%20and%20Job%20Oriented%20Training%20programs%20on%20EV.ENGINEER%E2%84%A2.%20Could%20you%20please%20provide%20more%20information%3F"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-secondary"
                 style={{ padding: '0.8rem 2.5rem', fontSize: '1.1rem' }}
-                data-track-event="internships_whatsapp_click"
+                data-track-event="cta_click"
+                data-track-label="EV Certificate"
               >
-                Contact Us
+                EV Certificate
               </a>
               <a
                 href={`mailto:info@iTelematics.com?subject=Resume%20Submission%20%E2%80%94%20EV%2FAV%20${typeTextCapitalized}&body=Hi%20Team%2C%0A%0AI%20came%20across%20EV.ENGINEER%E2%84%A2%20and%20would%20like%20to%20apply%20for%20an%20EV%2FAV%20${typeText}%20opportunity.%0A%0APlease%20find%20my%20resume%20attached.%0A%0AThank%20you!`}
@@ -308,7 +358,6 @@ export default function InternshipsClient() {
               >
                 Gallery
               </a>
-
               <a
                 href={`https://wa.me/919108206147?text=${registerNowMsg}`}
                 target="_blank"
