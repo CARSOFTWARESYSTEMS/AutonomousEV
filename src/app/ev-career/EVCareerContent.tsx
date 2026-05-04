@@ -88,7 +88,7 @@ export default function EVCareerContent({ groupedCompanies }: EVCareerContentPro
       <div className={styles.controlsHeader}>
         <div className={styles.controlsLeft}>
           <Link
-            href="/internships"
+            href="/workshop?ref=career"
             className={`btn btn-secondary ${styles.actionBtn}`}
             data-track-event="ev_career_job_oriented_training_click"
           >

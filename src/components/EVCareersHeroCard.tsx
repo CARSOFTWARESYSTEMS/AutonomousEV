@@ -40,6 +40,15 @@ export default function EVCareersHeroCard({ cardClassName, titleClassName, textC
     router.push("/ev-career");
   };
 
+  const handleWorkshopClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    trackEvent("cta_click", {
+      section: "EV Careers & Internships",
+      target: "/workshop"
+    });
+    router.push("/workshop?ref=home");
+  };
+
   return (
     <div 
       className={cardClassName} 
@@ -66,6 +75,13 @@ export default function EVCareersHeroCard({ cardClassName, titleClassName, textC
           style={{ padding: '8px 16px', fontSize: '0.9rem', minHeight: 'auto' }}
         >
           EV Career
+        </button>
+        <button 
+          onClick={handleWorkshopClick}
+          className="btn btn-secondary"
+          style={{ padding: '8px 16px', fontSize: '0.9rem', minHeight: 'auto' }}
+        >
+          Workshop
         </button>
       </div>
     </div>

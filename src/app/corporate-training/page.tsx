@@ -24,6 +24,14 @@ export default function CorporateTrainingPage() {
           >
             Ongoing vs Completed
           </a>
+          <Link
+            href="/workshop"
+            className="btn btn-primary"
+            data-track-event="cta_click"
+            data-track-label="Workshops"
+          >
+            Workshops
+          </Link>
           <a
             href="https://carsoftwaresystems.com/#testimonial"
             className="btn btn-secondary"
@@ -94,6 +102,14 @@ export default function CorporateTrainingPage() {
           >
             Ongoing vs Completed
           </a>
+          <Link
+            href="/workshop"
+            className="btn btn-primary"
+            data-track-event="cta_click"
+            data-track-label="Workshops"
+          >
+            Workshops
+          </Link>
           <a
             href="https://carsoftwaresystems.com/#testimonial"
             className="btn btn-secondary"
