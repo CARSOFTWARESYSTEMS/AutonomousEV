@@ -246,6 +246,11 @@ export default function InternshipsClient() {
               secondaryLink="/internships/ev-help-agent"
               secondaryLinkLabel="design flow"
             />
+            <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '-12px', paddingLeft: '32px' }}>
+              <Link href="/internships/ev-help-agent/usecases" className="pricing-link" data-track-event="internship_tertiary_click">
+                Real AI Dialogs ↗
+              </Link>
+            </div>
           </Section>
 
           <Section title="Research">

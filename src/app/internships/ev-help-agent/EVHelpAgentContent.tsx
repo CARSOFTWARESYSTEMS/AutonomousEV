@@ -14,7 +14,7 @@ const SectionHeader = ({ number, title, subtitle }: { number: string; title: str
 
 type Item = string | { label: string; subItems: (string | { label: string; subItems: string[] })[] };
 
-const ActivityCard = ({ title, goal, prerequisite, items, tips, codeBlock, customContent }: {
+const ActivityCard = ({ title, goal, prerequisite, items, tips, codeBlock, customContent, active }: {
   title: string;
   goal?: string;
   prerequisite?: string;
@@ -22,6 +22,7 @@ const ActivityCard = ({ title, goal, prerequisite, items, tips, codeBlock, custo
   tips?: string[];
   codeBlock?: string;
   customContent?: React.ReactNode;
+  active?: boolean;
 }) => {
   const renderItem = (item: Item, idx: number) => {
     if (typeof item === 'string') {
@@ -673,6 +674,7 @@ export default function EVHelpAgentContent() {
       <section className={styles.pageSection} style={{ textAlign: 'center' }}>
         <div className="container">
           <div className={styles.heroCtas}>
+            <Link href="/internships/ev-help-agent/usecases" className="btn btn-primary" data-track-event="ev_help_agent_usecases_click">Real AI Dialogs ↗</Link>
             <Link href="/internships" className="btn btn-secondary" data-track-event="ev_help_agent_back_click">Back to Internships</Link>
           </div>
         </div>
