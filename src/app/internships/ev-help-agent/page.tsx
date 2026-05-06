@@ -13,7 +13,16 @@ export const metadata: Metadata = {
     "AI Support Assistant",
     "EV Triage System",
     "Sudarshana Karkala",
-    "EV.ENGINEER"
+    "EV.ENGINEER",
+    "EV AI Agent",
+    "EV Voice Assistant",
+    "EV Diagnostics AI",
+    "Battery Intelligence Platform",
+    "AI EV Support",
+    "AI Battery Diagnostics",
+    "Agentic AI EV Platform",
+    "EV Engineering AI",
+    "EV Battery Safety AI"
   ],
 };
 
