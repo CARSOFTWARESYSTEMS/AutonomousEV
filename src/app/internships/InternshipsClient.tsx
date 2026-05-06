@@ -5,10 +5,12 @@ import { ReactNode, useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import PrerequisitesSection from "@/components/PrerequisitesSection";
 
-function ProjectCard({ title, desc, link, pricingLink }: { title: string, desc?: string, link: string, pricingLink?: string }) {
+function ProjectCard({ title, desc, link, pricingLink, secondaryLink, secondaryLinkLabel }: { title: string, desc?: string, link: string, pricingLink?: string, secondaryLink?: string, secondaryLinkLabel?: string }) {
   const isExternal = link.startsWith('http');
+  const sLink = pricingLink || secondaryLink;
+  const sLabel = pricingLink ? "Pricing" : secondaryLinkLabel;
 
-  if (pricingLink) {
+  if (sLink) {
     return (
       <div className="glass-panel" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
         <h3 style={{ fontSize: '1.2rem', marginBottom: '8px', color: 'var(--text-primary)', fontWeight: 500 }}>
@@ -19,8 +21,8 @@ function ProjectCard({ title, desc, link, pricingLink }: { title: string, desc?:
         <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
           <a
             href={link}
-            target="_blank"
-            rel="noopener noreferrer"
+            target={isExternal ? "_blank" : undefined}
+            rel={isExternal ? "noopener noreferrer" : undefined}
             style={{ display: 'inline-flex', alignItems: 'center', color: 'var(--accent-primary)', fontSize: '0.9rem', fontWeight: 600, textDecoration: 'none' }}
             data-track-event="internship_card_click"
             data-track-title={title}
@@ -29,16 +31,27 @@ function ProjectCard({ title, desc, link, pricingLink }: { title: string, desc?:
             <span style={{ marginLeft: '6px', fontSize: '1.1rem' }}>↗</span>
           </a>
           <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>·</span>
-          <a
-            href={pricingLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="pricing-link"
-            data-track-event="internship_pricing_click"
-            data-track-title={title}
-          >
-            Pricing ↗
-          </a>
+          {sLink.startsWith('http') ? (
+            <a
+              href={sLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="pricing-link"
+              data-track-event={pricingLink ? "internship_pricing_click" : "internship_secondary_click"}
+              data-track-title={title}
+            >
+              {sLabel} ↗
+            </a>
+          ) : (
+            <Link
+              href={sLink}
+              className="pricing-link"
+              data-track-event="internship_secondary_click"
+              data-track-title={title}
+            >
+              {sLabel} →
+            </Link>
+          )}
         </div>
       </div>
     );
@@ -230,6 +243,8 @@ export default function InternshipsClient() {
               title="EV Help Agent"
               desc="AI Voice Agent that talks to EV users, understands their problems, and answers relevant questions based on real-time queries."
               link="https://help.ev.engineer/"
+              secondaryLink="/internships/ev-help-agent"
+              secondaryLinkLabel="design flow"
             />
           </Section>
 
