@@ -171,7 +171,7 @@ export default function EVHelpAgentContent() {
             <div className={styles.metricLabel}>Diagnostics Categories</div>
           </div>
           <div className={styles.metricCard}>
-            <div className={styles.metricValue}>8+</div>
+            <div className={styles.metricValue}>9+</div>
             <div className={styles.metricLabel}>AI Agents Orchestrated</div>
           </div>
           <div className={styles.metricCard}>
@@ -207,13 +207,16 @@ export default function EVHelpAgentContent() {
                     { label: "Multi-Agent System" },
                     { label: "Tool Calling Layer" },
                     { label: "RAG Engine" },
-                    { label: "Safety Validation" }
+                    { label: "Diagnostics Engine" },
+                    { label: "Safety Validation" },
+                    { label: "Summary Generator" }
                   ],
-                  { label: "Summary & Ticketing" },
+                  { label: "Ticketing System" },
                   { label: "Human EV Engineer" }
                 ]}
               />
             }
+            tips={["AI-native architecture", "Scalable system", "Realtime AI orchestration", "Telemetry-ready platform"]}
           />
           <div style={{ marginBottom: "2rem" }} />
 
@@ -235,15 +238,34 @@ export default function EVHelpAgentContent() {
                     { label: "Safety Agent", active: true },
                     { label: "Knowledge Agent" },
                     { label: "Action Planning" },
+                    { label: "Summary Agent" },
                     { label: "Escalation Agent" }
                   ]
                 ]}
               />
             }
           />
-          <div style={{ marginBottom: "2rem" }} />
 
-          <div className={styles.grid2}>
+          <div style={{ marginTop: "4rem" }}>
+            <SectionHeader
+              number=""
+              title="Multi-Agent AI System"
+              subtitle="The platform is NOT a simple chatbot. It utilizes a decoupled Agentic AI architecture."
+            />
+            <div className={styles.grid3}>
+              <ActivityCard title="Conversation Agent" items={["Manages natural dialogue.", "Maintains multi-turn context.", "Future: Multilingual support."]} />
+              <ActivityCard title="Intent Detection Agent" items={["Analyzes transcripts for goals.", "Classifies into 11 categories.", "Future: Predictive intent."]} />
+              <ActivityCard title="EV Diagnostics Agent" items={["Queries symptom logic.", "Identifies vehicle failures.", "Future: Telemetry integration."]} />
+              <ActivityCard title="Battery Intelligence Agent" items={["Analyzes SOH/SOC context.", "Flags battery degradation.", "Future: SI-EMS sync."]} />
+              <ActivityCard title="Safety Agent" items={["Detects thermal runaway risks.", "Overrides unsafe workflows.", "Future: Automated BMS shutdown."]} active />
+              <ActivityCard title="Knowledge Retrieval Agent" items={["Executes semantic searches.", "Retrieves EV SOPs and manuals.", "Future: Real-time dynamic indexing."]} />
+              <ActivityCard title="Action Planning Agent" items={["Generates user action plans.", "Generates engineer action plans.", "Future: Automated dispatch."]} />
+              <ActivityCard title="Summary Agent" items={["Generates human-readable summaries.", "Creates structured JSON summaries.", "Future: Voice-memo generation."]} />
+              <ActivityCard title="Escalation Agent" items={["Routes critical issues to humans.", "Monitors AI confidence levels.", "Future: Live-agent handoff APIs."]} />
+            </div>
+          </div>
+
+          <div style={{ marginTop: "4rem", marginBottom: "2rem" }} className={styles.grid2}>
             <ActivityCard
               title="Diagram 3 — Voice AI Pipeline"
               customContent={
@@ -254,14 +276,17 @@ export default function EVHelpAgentContent() {
                     { label: "Audio Streaming" },
                     { label: "Speech-to-Text" },
                     { label: "LLM Processing (Realtime)", active: true },
+                    { label: "Tool Calling" },
+                    { label: "AI Reasoning" },
                     { label: "Text-to-Speech" },
-                    { label: "Audio Playback" }
+                    { label: "Voice Playback" }
                   ]}
                 />
               }
+              tips={["Low-latency labels", "Realtime indicators", "Streaming effects"]}
             />
             <ActivityCard
-              title="Diagram 4 — EV Battery Diagnostics Flow"
+              title="Diagram 4 — EV Battery Intelligence Flow"
               customContent={
                 <FlowDiagram 
                   direction="vertical"
@@ -272,27 +297,29 @@ export default function EVHelpAgentContent() {
                       { label: "Thermal Analysis" },
                       { label: "SOH/SOC Analysis" }
                     ],
-                    { label: "Risk Detection & Validation" },
+                    { label: "Risk Detection & Safety Validation" },
+                    { label: "Alerts & Recommendations" },
                     { label: "Engineering Dashboard" }
                   ]}
                 />
               }
+              tips={["Future integration with EV Battery Intelligence Platform and Battery Pack Aadhaar systems."]}
             />
           </div>
-          <div style={{ marginBottom: "2rem" }} />
 
           <div className={styles.grid2}>
             <ActivityCard
-              title="Diagram 5 — Human Escalation Workflow"
+              title="Diagram 5 — Engineering Workflow"
               customContent={
                 <FlowDiagram 
                   direction="vertical"
                   nodes={[
-                    { label: "AI Confidence Check" },
-                    { label: "Low Confidence / Safety Risk", active: true },
-                    { label: "Ticket Assignment" },
-                    { label: "Human Engineer Resolution" },
-                    { label: "AI Learning Pipeline" }
+                    { label: "Issue Detection" },
+                    { label: "AI Conversation" },
+                    { label: "Diagnostics & Risk Assessment", active: true },
+                    { label: "Action Plan & Ticket Creation" },
+                    { label: "Human Escalation" },
+                    { label: "Resolution & AI Learning Feedback Loop" }
                   ]}
                 />
               }
@@ -303,11 +330,11 @@ export default function EVHelpAgentContent() {
                 <FlowDiagram 
                   direction="vertical"
                   nodes={[
-                    { label: "EV Manuals & SOPs" },
+                    { label: "EV Documents (SOPs, Manuals, Guides)" },
                     { label: "Chunking & Embeddings" },
                     { label: "Vector Database (Semantic Search)" },
                     { label: "Context Injection", active: true },
-                    { label: "LLM Response" }
+                    { label: "AI Response" }
                   ]}
                 />
               }
@@ -369,6 +396,7 @@ export default function EVHelpAgentContent() {
                 "Rule-based IVR & chatbots",
                 "Static FAQ responses",
                 "No diagnostics intelligence",
+                "No EV awareness",
                 "No battery intelligence",
                 "No AI orchestration layer"
               ]}
@@ -399,14 +427,15 @@ export default function EVHelpAgentContent() {
           />
 
           <ActivityCard
-            title="Tool Calling Flow"
+            title="AI Tool Calling Flow"
             items={[
               "The AI Agent dynamically selects which tool to execute based on conversational context.",
-              { label: "Diagnostics Tool", subItems: ["Queries specific vehicle symptoms."] },
-              { label: "Ticket Tool", subItems: ["Generates structured support JSONs."] },
-              { label: "Telemetry Tool", subItems: ["Fetches realtime CAN data (Future)."] },
-              { label: "Knowledge Tool", subItems: ["Searches vector DB for SOPs."] },
-              { label: "Analytics Tool", subItems: ["Logs session telemetry."] }
+              { label: "Diagnostics Tool", subItems: ["Queries specific vehicle symptoms.", "Future: Automated DTC code extraction."] },
+              { label: "Knowledge Tool", subItems: ["Searches vector DB for SOPs.", "Future: Sync with external OEM databases."] },
+              { label: "Ticketing Tool", subItems: ["Generates structured support JSONs.", "Future: JIRA/Zendesk API webhooks."] },
+              { label: "Telemetry Tool", subItems: ["Fetches realtime CAN data.", "Future: MQTT stream ingestion."] },
+              { label: "Notification Tool", subItems: ["Alerts engineers.", "Future: Webhooks for incident response."] },
+              { label: "Analytics Tool", subItems: ["Logs session telemetry.", "Future: Fleet-wide dashboard insights."] }
             ]}
             customContent={
               <FlowDiagram 
@@ -416,76 +445,33 @@ export default function EVHelpAgentContent() {
                   { label: "AI Agent", active: true },
                   [
                     { label: "Diagnostics Tool" },
-                    { label: "Ticket Tool" },
+                    { label: "Knowledge Tool" },
+                    { label: "Ticketing Tool" },
                     { label: "Telemetry Tool" },
-                    { label: "Knowledge Tool" }
+                    { label: "Notification Tool" },
+                    { label: "Analytics Tool" }
                   ]
                 ]}
               />
             }
           />
-          <div style={{ marginBottom: "2rem" }} />
-
-          <div className={styles.grid2}>
-            <ActivityCard
-              title="1. Battery Heating Issue"
-              goal="Stop charging & check safety risks"
-              items={[
-                "Ask vehicle model and charging type (slow/fast/home/public).",
-                "Check for smell, smoke, swelling, sound, warning light.",
-                "Give safe guidance: stop charging if abnormal heat observed.",
-                "Create high-priority ticket if safety risk detected.",
-                "Summarize issue for engineer and create user action plan."
-              ]}
+          
+          <div style={{ marginTop: "4rem", marginBottom: "2rem" }}>
+            <SectionHeader
+              number=""
+              title="Real-World Use Cases"
+              subtitle="Premium use-case examples driving the AI platform."
             />
-            <ActivityCard
-              title="2. Range Drop Issue"
-              goal="Gather diagnostic data for battery health check"
-              items={[
-                "Collect vehicle model, battery age, odometer.",
-                "Identify recent charging pattern and last full charge range.",
-                "Check riding mode, load condition, tyre pressure, weather.",
-                "Output possible reasons and data required for diagnosis.",
-                "Create ticket for battery health check."
-              ]}
-            />
-            <ActivityCard
-              title="3. Charging Issue"
-              goal="Diagnose power or hardware failures"
-              items={[
-                "Ask charger type and charger LED status.",
-                "Check vehicle display errors and connector condition.",
-                "Verify power supply status and previous successful charge.",
-                "Escalation: Create urgent safety ticket if burning smell, spark, or melted connector reported."
-              ]}
-            />
-            <ActivityCard
-              title="4. EV Lock / App & Service"
-              goal="Resolve connectivity and follow-ups"
-              items={[
-                { label: "Lock/App Issue", subItems: ["Verify app login, Bluetooth, location permissions.", "Check lock LED/sound, phone battery, network status.", "Provide user troubleshooting checklist."] },
-                { label: "Service Follow-Up", subItems: ["Fetch ticket status.", "Summarize pending action.", "Escalate if SLA is breached."] }
-              ]}
-            />
-          </div>
-
-          <div style={{ marginTop: "2rem" }}>
-            <ActivityCard
-              title="Real-World Engineering Lifecycle"
-              customContent={
-                <FlowDiagram 
-                  direction="vertical"
-                  nodes={[
-                    { label: "Issue Detection" },
-                    { label: "AI Conversation" },
-                    { label: "Diagnostics & Risk Analysis", active: true },
-                    { label: "Engineering Action Plan" },
-                    { label: "Ticket Creation & Human Escalation" },
-                    { label: "Resolution & AI Learning Feedback Loop" }
-                  ]}
-                />
-              }
-            />
+            <div className={styles.grid3}>
+              <ActivityCard title="EV Battery Overheating" items={["Identifies abnormal heat.", "Provides safe stop instructions.", "Creates high-priority tickets."]} />
+              <ActivityCard title="Fast Charging Issue" items={["Diagnoses charger handshakes.", "Checks display error codes.", "Escalates connector melting risks."]} />
+              <ActivityCard title="BMS Warning Detection" items={["Interprets dashboard warning lights.", "Cross-references with SOPs.", "Routes to diagnostics engineer."]} />
+              <ActivityCard title="Battery Degradation Analysis" items={["Collects odometer and age data.", "Analyzes charging patterns.", "Recommends SOH checks."]} />
+              <ActivityCard title="Thermal Runaway Alerts" items={["Detects smoke/swelling reports.", "Overrides normal workflows.", "Initiates critical human escalation."]} active />
+              <ActivityCard title="EV Range Reduction" items={["Analyzes load and tyre pressure.", "Checks recent full charge limits.", "Outputs possible environmental reasons."]} />
+              <ActivityCard title="Fleet Diagnostics" items={["Handles multi-vehicle contexts.", "Prioritizes based on SLA.", "Future: Fleet dashboard sync."]} />
+              <ActivityCard title="AI-Powered EV Support" items={["Replaces legacy IVR.", "Answers complex technical FAQs.", "Improves first-call resolution."]} />
+            </div>
           </div>
         </div>
       </section>
@@ -564,31 +550,33 @@ export default function EVHelpAgentContent() {
             <ActivityCard
               title="Safety-First AI"
               items={[
-                "Never encourage users to open battery packs, touch high-voltage components, bypass BMS/chargers.",
-                "Escalate immediately for critical symptoms: Smoke, Fire, Burning smell, Swelling, Spark, Melted connector, Extreme heat.",
-                "Thermal runaway detection logic.",
-                "Engineering validation workflows."
+                "Thermal runaway risk detection.",
+                "Unsafe recommendation prevention.",
+                "Escalation-first safety model.",
+                "Engineering validation workflows.",
+                "Strict AI safety guardrails & Battery safety prioritization."
               ]}
               tips={["Agent must stop normal troubleshooting if critical risk is detected."]}
             />
             <ActivityCard
               title="Observability & Monitoring"
               items={[
-                "LangSmith & OpenTelemetry integration.",
-                "AI execution tracing and prompt tracking.",
-                "Real-time voice latency monitoring.",
+                "LangSmith & OpenTelemetry.",
+                "AI execution tracing and Prompt monitoring.",
+                "Real-time latency monitoring.",
                 "System health dashboards.",
-                "Async processing for ticket creation post-call."
+                "Hallucination tracking."
               ]}
             />
             <ActivityCard
               title="Enterprise Readiness"
               items={[
-                "Scalable API-first architecture.",
-                "Privacy-first design with user consent before recording.",
-                "Encrypt sensitive data at rest and in transit.",
-                "Role-Based Access Control (RBAC) & Audit logging.",
-                "Cloud-native deployment."
+                "Scalable & Modular architecture.",
+                "Role-Based Access Control (RBAC).",
+                "Audit logging.",
+                "API-first architecture.",
+                "Cloud-native deployment.",
+                "Future multi-tenant support."
               ]}
             />
           </div>
@@ -606,25 +594,7 @@ export default function EVHelpAgentContent() {
 
           <div className={styles.grid2}>
             <ActivityCard
-              title="1. Multi-Agent System Roles"
-              items={[
-                { label: "Main EV Help Agent", subItems: ["Greets, asks consent, understands issue, coordinates sub-agents."] },
-                { label: "Issue Classifier Agent", subItems: ["Analyzes transcript and outputs category/priority."] },
-                { label: "Safety Guardrail Agent", subItems: ["Checks for thermal runaway, fire, shock risks and overrides flow if needed."] },
-                { label: "Support Agents", subItems: ["Clarifying Question Agent", "RAG Answer Agent", "Ticket & Summary Agents"] }
-              ]}
-              codeBlock={`Main EV Help Agent
-  +-- Greeting Agent
-  +-- Issue Classifier Agent
-  +-- Safety Guardrail Agent
-  +-- Clarifying Question Agent
-  +-- RAG Answer Agent
-  +-- Ticket Creation Agent
-  +-- Summary Agent`}
-            />
-
-            <ActivityCard
-              title="2. Conversation Memory & Data Model"
+              title="1. Conversation Memory & Data Model"
               items={[
                 { label: "Short-Term Memory", subItems: ["Active conversation context (issue, vehicle type, symptoms)."] },
                 { label: "Long-Term Memory", subItems: ["Stored with consent (vehicle profile, previous tickets, battery health history)."] },
@@ -632,24 +602,35 @@ export default function EVHelpAgentContent() {
                 { label: "Conversation Doc", subItems: ["transcript[], detectedIssueCategory, riskLevel, summary, engineerSummary, status"] }
               ]}
             />
+            <ActivityCard
+              title="2. Future Telemetry Integration"
+              items={[
+                "Ingestion of realtime CAN data.",
+                "MQTT stream processing.",
+                "Battery telemetry & BMS integration.",
+                "GPS tracking and geolocation workflows.",
+                "IoT diagnostics and realtime battery analytics."
+              ]}
+              tips={["Paving the way for fully autonomous diagnostics ecosystems."]}
+            />
           </div>
 
           <div style={{ marginTop: "2rem" }} className={styles.grid2}>
             <ActivityCard
-              title="Frontend & UI"
-              items={["Next.js & React", "TypeScript", "TailwindCSS", "Existing EV.ENGINEER UI System"]}
+              title="Frontend Stack"
+              items={["Next.js", "React", "TypeScript", "Tailwind CSS", "EV.ENGINEER UI System"]}
             />
             <ActivityCard
               title="AI Stack"
-              items={["GPT-5 & OpenAI Realtime API", "Whisper", "LangGraph & LangChain", "Vector Embeddings"]}
+              items={["GPT-5", "OpenAI Realtime API", "Whisper", "LangGraph & LangChain", "Embeddings & Vector Database"]}
             />
             <ActivityCard
-              title="Backend Infrastructure"
-              items={["Python FastAPI", "Firebase (Auth/Storage)", "PostgreSQL", "ChromaDB", "Google Cloud Run"]}
+              title="Backend Stack"
+              items={["FastAPI", "Firebase", "PostgreSQL", "ChromaDB", "Cloud Run"]}
             />
             <ActivityCard
-              title="Future EV Stack Integration"
-              items={["MQTT & CAN Bus", "ESP32", "BMS Integration", "Telemetry APIs", "Battery Intelligence Platform"]}
+              title="Future EV Stack"
+              items={["MQTT", "CAN Bus", "ESP32", "BMS Integration", "IoT Telemetry", "EV Diagnostics APIs"]}
             />
           </div>
         </div>
@@ -660,70 +641,27 @@ export default function EVHelpAgentContent() {
         <div className="container">
           <SectionHeader
             number="8. Vision"
-            title="Future Roadmap & MVP Success Metrics"
+            title="Future Roadmap & EV Integrations"
             subtitle="Development phasing, rigorous testing strategy, and the long-term EV integration."
           />
 
           <Timeline 
             phases={[
-              { phase: "Phase 1", title: "Voice AI + Chat AI", desc: "Core conversation engine, intent classification, and baseline safety guardrails. Requirement finalization." },
-              { phase: "Phase 2", title: "Diagnostics + Ticketing", desc: "Structured engineer summaries, routing workflows, and dashboard integrations. Basic RAG FAQ." },
-              { phase: "Phase 3", title: "Agentic AI Workflows", desc: "Multi-agent tool calling, dynamic problem solving, and autonomous triaging. Engineer Dashboard build." },
-              { phase: "Phase 4", title: "Battery Intelligence Platform", desc: "Integration with BMS telemetry, CAN data analysis, predictive maintenance, and Voice Optimization." },
-              { phase: "Phase 5", title: "Autonomous EV Engineering", desc: "Full ecosystem sync with Battery Pack Aadhaar, SI-EMS, advanced fleet controls, and Pilot Testing with real users." }
+              { phase: "Phase 1", title: "Voice AI & Chat AI", desc: "Core conversation engine, intent classification, and conversation summaries." },
+              { phase: "Phase 2", title: "Diagnostics Intelligence", desc: "Ticketing workflows and safety engine implementation." },
+              { phase: "Phase 3", title: "Agentic AI Orchestration", desc: "Multi-agent tool calling, dynamic problem solving, and AI escalation workflows." },
+              { phase: "Phase 4", title: "EV Battery Intelligence", desc: "Integration with BMS telemetry, telemetry ingestion, and predictive diagnostics." },
+              { phase: "Phase 5", title: "Autonomous EV Engineering", desc: "Autonomous EV engineering infrastructure, AI engineering copilot, and full EV intelligence ecosystem." }
             ]}
           />
 
-          <div style={{ marginTop: "4rem" }} className={styles.grid2}>
+          <div style={{ marginTop: "4rem" }}>
             <ActivityCard
-              title="Verification & Testing Strategy"
+              title="Final Vision"
               items={[
-                { label: "Safety Testing", subItems: ["Agent must escalate inputs like 'Battery is smoking' and refuse unsafe bypass requests."] },
-                { label: "RAG Accuracy", subItems: ["No hallucinations; must state 'I need an engineer to verify' if knowledge is missing."] },
-                { label: "Functional & Voice", subItems: ["Test heating, range drop, lock failures. Measure speech recognition, latency, and noise handling."] }
-              ]}
-            />
-
-            <ActivityCard
-              title="MVP Success Metrics"
-              customContent={
-                <table style={{ width: "100%", borderCollapse: "collapse", color: "var(--text-secondary)", fontSize: "0.9rem" }}>
-                  <tbody>
-                    <tr>
-                      <td style={{ padding: "8px", borderBottom: "1px solid var(--glass-border)" }}>Issue classification accuracy</td>
-                      <td style={{ padding: "8px", borderBottom: "1px solid var(--glass-border)", color: "var(--accent-primary)", fontWeight: "bold" }}>&gt; 85%</td>
-                    </tr>
-                    <tr>
-                      <td style={{ padding: "8px", borderBottom: "1px solid var(--glass-border)" }}>Critical safety escalation accuracy</td>
-                      <td style={{ padding: "8px", borderBottom: "1px solid var(--glass-border)", color: "var(--accent-primary)", fontWeight: "bold" }}>&gt; 95%</td>
-                    </tr>
-                    <tr>
-                      <td style={{ padding: "8px", borderBottom: "1px solid var(--glass-border)" }}>Useful engineer summary rating</td>
-                      <td style={{ padding: "8px", borderBottom: "1px solid var(--glass-border)", color: "var(--accent-primary)", fontWeight: "bold" }}>&gt; 4/5</td>
-                    </tr>
-                    <tr>
-                      <td style={{ padding: "8px", borderBottom: "1px solid var(--glass-border)" }}>Voice conversation completion</td>
-                      <td style={{ padding: "8px", borderBottom: "1px solid var(--glass-border)", color: "var(--accent-primary)", fontWeight: "bold" }}>&gt; 80%</td>
-                    </tr>
-                    <tr>
-                      <td style={{ padding: "8px", borderBottom: "1px solid var(--glass-border)" }}>Average response latency</td>
-                      <td style={{ padding: "8px", borderBottom: "1px solid var(--glass-border)", color: "var(--accent-primary)", fontWeight: "bold" }}>&lt; 3 seconds</td>
-                    </tr>
-                  </tbody>
-                </table>
-              }
-            />
-          </div>
-
-          <div style={{ marginTop: "2rem" }}>
-            <ActivityCard
-              title="Future EV Battery Intelligence Integration"
-              items={[
-                "Integration with Battery Pack Aadhaar for tracking specific pack lifecycles.",
-                "Syncing with SI-EMS (Super-Intelligent Energy Management Systems).",
-                "Connecting to the broader EV Battery Intelligence Platform.",
-                "Enabling thermal intelligence and predictive diagnostics.",
-                "Creating continuous AI battery lifecycle intelligence."
+                "EV Help Agent is evolving into a next-generation AI-native EV Engineering Platform focused on:",
+                { label: "Focus Areas", subItems: ["EV diagnostics intelligence", "Battery safety intelligence", "Agentic AI workflows", "Autonomous engineering support", "EV telemetry intelligence", "Battery lifecycle intelligence", "Future EV infrastructure automation"] },
+                "The long-term vision is to build the foundational AI infrastructure layer for the future EV ecosystem."
               ]}
               tips={["EV.ENGINEER is building the future AI infrastructure for EV engineering."]}
             />
