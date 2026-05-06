@@ -151,6 +151,55 @@ export default function UseCasesContent() {
         </div>
       </section>
 
+      {/* TIMELINE: EV OWNERSHIP LIFECYCLE */}
+      <section className="container">
+        <div className={styles.sectionHeader} style={{ marginBottom: "1rem", marginTop: "2rem" }}>
+          <span className={styles.sectionNumber}>The Journey</span>
+          <h2 className={styles.sectionTitle}>Full EV Ownership Lifecycle</h2>
+          <p className={styles.sectionSubtitle}>
+            EV.ENGINEER continuously monitors and protects the vehicle across its entire 8-year lifespan.
+          </p>
+        </div>
+        
+        <div className={styles.timelineWrapper}>
+          <div className={styles.timelineTrack}>
+            <div className={styles.timelineTrackFill} style={{ width: '100%' }}></div>
+          </div>
+          <div className={styles.timelineNodes}>
+            <div className={styles.timelineNode}>
+              <div className={styles.timelineYear}>YEAR 1</div>
+              <div className={styles.timelineDot}></div>
+              <div className={styles.timelineContent}>Healthy battery. AI onboarding & driving analytics baseline.</div>
+            </div>
+            <div className={styles.timelineNode}>
+              <div className={styles.timelineYear}>YEAR 3</div>
+              <div className={styles.timelineDot}></div>
+              <div className={styles.timelineContent}>Warranty nearing expiry. AI recommends service.</div>
+            </div>
+            <div className={styles.timelineNode}>
+              <div className={styles.timelineYear}>YEAR 5</div>
+              <div className={styles.timelineDot}></div>
+              <div className={styles.timelineContent}>Extended warranty. Charging stress detected.</div>
+            </div>
+            <div className={styles.timelineNode}>
+              <div className={styles.timelineYear}>YEAR 6</div>
+              <div className={styles.timelineDot}></div>
+              <div className={styles.timelineContent}>Minor battery imbalance. Fast charging stress increases.</div>
+            </div>
+            <div className={styles.timelineNode}>
+              <div className={styles.timelineYear}>YEAR 7</div>
+              <div className={styles.timelineDot}></div>
+              <div className={styles.timelineContent}>Thermal trend anomalies. AI issues proactive alerts.</div>
+            </div>
+            <div className={`${styles.timelineNode} ${styles.timelineCritical}`}>
+              <div className={styles.timelineYear}>YEAR 8</div>
+              <div className={styles.timelineDot}></div>
+              <div className={styles.timelineContent}>Degradation visible. Motor derating & critical diagnostics.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* USE CASE 1: PREDICTIVE MAINTENANCE */}
       <section id="case1" className="container">
         <div className={styles.useCaseSection}>
@@ -180,25 +229,29 @@ export default function UseCasesContent() {
             <div className={styles.layer}>
               <div className={styles.layerLabel}><div className={styles.layerLabelDot}/> Layer 1 — Human Dialog</div>
               <div className={styles.chatContainer}>
-                <ChatBubble type="ai" sender="EV.ENGINEER" time="10:00 AM" text="Hello, I’m EV.ENGINEER, your AI-powered EV diagnostics assistant. I'm calling because your EV-CAR-2026 is approaching its 3-year warranty expiration." />
-                <ChatBubble type="user" sender="EV User" time="10:01 AM" text="Oh, hi. Yes, I remember. Is everything okay with the car?" />
-                <ChatBubble type="ai" sender="EV.ENGINEER" time="10:01 AM" text="Yes, overall health is great! However, our telemetry analysis noticed a slight degradation trend in the battery health (SOH). It's normal, but I'd suggest a quick service to ensure peak performance before the warranty ends." />
-                <ChatBubble type="user" sender="EV User" time="10:02 AM" text="Thanks for letting me know. Can we schedule that?" />
+                <ChatBubble type="ai" sender="EV.ENGINEER" time="10:00 AM" text="Hello Mr. Rajesh, I’m EV.ENGINEER. I noticed your EV-CAR-2026 is approaching its 3-year warranty expiration next month." />
+                <ChatBubble type="user" sender="EV User" time="10:01 AM" text="Oh, hi. Yes, I remember. Is something wrong with the battery?" />
+                <ChatBubble type="ai" sender="EV.ENGINEER" time="10:01 AM" text="No need to worry! The overall health is great. However, my telemetry analysis noticed a slight degradation trend in the battery health (SOH) over the last 15 fast-charging sessions." />
+                <ChatBubble type="ai" sender="EV.ENGINEER" time="10:01 AM" text="It is completely normal, but I'd suggest a quick cooling system inspection to ensure peak performance and lock in your warranty coverage." />
+                <ChatBubble type="user" sender="EV User" time="10:02 AM" text="Ah, that makes sense. Thanks for catching that. Can we schedule it?" />
               </div>
             </div>
             
             <div className={styles.layer}>
               <div className={styles.layerLabel}><div className={styles.layerLabelDot}/> Layer 2 — System Processing</div>
-              <Terminal title="EV SYSTEM ( Charging Analytics Engine )" jsonLines={[
-                <span key="1"><span className={styles.termPrefix}>[SYS]</span> Loading Telemetry Packet...</span>,
+              <Terminal title="EV.SYSTEM ( Telemetry & Diagnostics Pipeline )" jsonLines={[
+                <span key="1"><span className={styles.termPrefix}>[SYS]</span> 2026-10-04T10:00:12Z | Ingesting MQTT Packets...</span>,
                 <span key="2" className={styles.termModule}>&#123;</span>,
-                <span key="3">&nbsp;&nbsp;<span className={styles.termKey}>"vehicleId"</span>: <span className={styles.termString}>"EV-CAR-2026-VIN982"</span>,</span>,
-                <span key="4">&nbsp;&nbsp;<span className={styles.termKey}>"odometer_km"</span>: <span className={styles.termNumber}>42105</span>,</span>,
-                <span key="5">&nbsp;&nbsp;<span className={styles.termKey}>"battery_soh"</span>: <span className={styles.termNumber}>94.2</span>,</span>,
-                <span key="6">&nbsp;&nbsp;<span className={styles.termKey}>"soh_degradation_trend"</span>: <span className={styles.termString}>"marginal_increase"</span>,</span>,
-                <span key="7">&nbsp;&nbsp;<span className={styles.termKey}>"predictive_risk_score"</span>: <span className={styles.termNumber}>0.12</span></span>,
-                <span key="8">&#125;</span>,
-                <span key="9" className={styles.termComment}>// Triggering Outbound Workflow Agent...</span>
+                <span key="3">&nbsp;&nbsp;<span className={styles.termKey}>"telemetryId"</span>: <span className={styles.termString}>"TEL-90812-A"</span>,</span>,
+                <span key="4">&nbsp;&nbsp;<span className={styles.termKey}>"vehicleId"</span>: <span className={styles.termString}>"EV-CAR-2026-VIN982"</span>,</span>,
+                <span key="5">&nbsp;&nbsp;<span className={styles.termKey}>"odometer_km"</span>: <span className={styles.termNumber}>42105</span>,</span>,
+                <span key="6">&nbsp;&nbsp;<span className={styles.termKey}>"battery_soh"</span>: <span className={styles.termNumber}>94.2</span>,</span>,
+                <span key="7">&nbsp;&nbsp;<span className={styles.termKey}>"fast_charge_cycles"</span>: <span className={styles.termNumber}>112</span>,</span>,
+                <span key="8">&nbsp;&nbsp;<span className={styles.termKey}>"soh_degradation_trend"</span>: <span className={styles.termString}>"marginal_increase"</span>,</span>,
+                <span key="9">&nbsp;&nbsp;<span className={styles.termKey}>"predictive_risk_score"</span>: <span className={styles.termNumber}>0.12</span></span>,
+                <span key="10">&#125;</span>,
+                <span key="11" className={styles.termComment}>// Analyzing degradation curve...</span>,
+                <span key="12" className={styles.termComment}>// Triggering Orchestration: [Conversation Agent] + [Ticketing Agent]</span>
               ]} />
             </div>
 
@@ -220,6 +273,88 @@ export default function UseCasesContent() {
                     <div className={styles.actionStepNum}>2</div>
                     <div className={styles.actionStepText}>Recommend extended warranty.</div>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* USE CASE 2: PREDICTIVE SERVICE ALERT */}
+      <section id="case2" className="container">
+        <div className={styles.useCaseSection}>
+          <div className={styles.useCaseHeader}>
+            <div>
+              <div className={styles.useCaseNum}>Use Case 2</div>
+              <h2 className={styles.useCaseTitle}>Service Alert (Year 5 Warranty Expiry)</h2>
+              <div className={styles.useCaseMeta}>
+                <span className={styles.metaChip}>Vehicle: EV-SUV-2024</span>
+                <span className={styles.metaChip}>Odometer: 85,300 km</span>
+                <span className={`${styles.severityChip} ${styles.severityNormal}`}>Predictive AI</span>
+                <span className={`${styles.severityChip} ${styles.severityHigh}`} style={{marginLeft: '0.5rem', background: 'rgba(255, 165, 0, 0.12)', color: '#ffad00', borderColor: 'rgba(255, 165, 0, 0.3)'}}>Moderate Depth</span>
+              </div>
+            </div>
+            <ArchitectureAccordion 
+              title="View Technical Architecture"
+              nodes={[
+                { label: "Fleet Telemetry API" },
+                { label: "Thermal Prediction Model", active: true },
+                { label: "Conversation Agent" },
+                { label: "CRM Ticketing" }
+              ]}
+            />
+          </div>
+          
+          <div className={styles.layerGrid}>
+            <div className={styles.layer}>
+              <div className={styles.layerLabel}><div className={styles.layerLabelDot}/> Layer 1 — Human Dialog</div>
+              <div className={styles.chatContainer}>
+                <ChatBubble type="ai" sender="EV.ENGINEER" time="15:30 PM" text="Hello Mrs. Sharma, this is EV.ENGINEER. I hope you're having a good day. I'm reaching out because your extended warranty is expiring in exactly 45 days." />
+                <ChatBubble type="user" sender="EV User" time="15:31 PM" text="Oh really? I hadn't realized. Is everything alright with the car? Last time I fast-charged it seemed a bit loud." />
+                <ChatBubble type="ai" sender="EV.ENGINEER" time="15:31 PM" text="I'm glad you mentioned that! I checked the thermal drift history, and I did notice slightly elevated battery temperatures during repeated DC fast charging sessions over the past 90 days. The cooling fan is working harder than usual, which explains the noise." />
+                <ChatBubble type="ai" sender="EV.ENGINEER" time="15:32 PM" text="Before your warranty expires, I strongly recommend scheduling a cooling loop inspection. It will be completely covered, and it will prevent any thermal stress on the battery long-term." />
+                <ChatBubble type="user" sender="EV User" time="15:32 PM" text="Wow, thank you so much for catching that. Yes, let's schedule it." />
+              </div>
+            </div>
+            
+            <div className={styles.layer}>
+              <div className={styles.layerLabel}><div className={styles.layerLabelDot}/> Layer 2 — System Processing</div>
+              <Terminal title="EV.SYSTEM ( Thermal Risk Orchestrator )" jsonLines={[
+                <span key="1"><span className={styles.termPrefix}>[SYS]</span> 2026-10-15T15:31:02Z | Querying Thermal DB...</span>,
+                <span key="2" className={styles.termModule}>&#123;</span>,
+                <span key="3">&nbsp;&nbsp;<span className={styles.termKey}>"queryId"</span>: <span className={styles.termString}>"THRM-EV-SUV-2024"</span>,</span>,
+                <span key="4">&nbsp;&nbsp;<span className={styles.termKey}>"dc_fast_charge_count_90d"</span>: <span className={styles.termNumber}>24</span>,</span>,
+                <span key="5">&nbsp;&nbsp;<span className={styles.termKey}>"avg_peak_temp_c"</span>: <span className={styles.termNumber}>48.5</span>,</span>,
+                <span key="6">&nbsp;&nbsp;<span className={styles.termKey}>"cooling_pump_duty_cycle"</span>: <span className={styles.termString}>"98% (High)"</span>,</span>,
+                <span key="7">&nbsp;&nbsp;<span className={styles.termKey}>"forecast_6mo"</span>: <span className={styles.termString}>"Thermal Throttling Likely"</span></span>,
+                <span key="8">&#125;</span>,
+                <span key="9" className={styles.termComment}>// Orchestrating Agentic Workflow:</span>,
+                <span key="10" className={styles.termHighlight}>&gt; Agent[Conversation] - Generate reassuring prompt</span>,
+                <span key="11" className={styles.termHighlight}>&gt; Agent[Ticketing] - Draft 'Cooling Loop Flush'</span>
+              ]} />
+            </div>
+
+            <div className={styles.layer}>
+              <div className={styles.layerLabel}><div className={styles.layerLabelDot}/> Layer 3 — Engineering Insights</div>
+              <div className={styles.insightCards}>
+                <div className={styles.insightCard}>
+                  <div className={styles.insightCardTitle}>Thermal Stress Prediction</div>
+                  <div className={`${styles.insightValue} ${styles.insightValueWarn}`}>48.5°C</div>
+                  <div className={styles.insightBar}><div className={`${styles.insightBarFill} ${styles.barYellow}`} style={{width: '75%'}}></div></div>
+                  <div className={styles.insightSubtext}>Avg peak temp during DCFC. Normal is &lt;42°C.</div>
+                </div>
+                <div className={styles.insightCard}>
+                  <div className={styles.insightCardTitle}>Pump Duty Cycle Trend</div>
+                  <div className={styles.sohGraph} style={{ marginTop: 0, border: 'none', padding: 0, background: 'transparent' }}>
+                    <div className={styles.sohBars} style={{ height: '40px' }}>
+                      <div className={styles.sohBar} style={{height: '30%', background: '#4CA930'}}></div>
+                      <div className={styles.sohBar} style={{height: '40%', background: '#4CA930'}}></div>
+                      <div className={styles.sohBar} style={{height: '70%', background: '#fbbf24'}}></div>
+                      <div className={styles.sohBar} style={{height: '85%', background: '#fbbf24'}}></div>
+                      <div className={styles.sohBar} style={{height: '98%', background: '#ff6b6b'}}></div>
+                    </div>
+                  </div>
+                  <div className={styles.insightSubtext} style={{marginTop: '0.5rem'}}>Cooling pump working at maximum capacity.</div>
                 </div>
               </div>
             </div>
@@ -381,6 +516,81 @@ export default function UseCasesContent() {
         </div>
       </section>
 
+      {/* USE CASE 5: MOTOR FAILURE & TECHNICIAN COPILOT */}
+      <section id="case5" className="container">
+        <div className={styles.useCaseSection}>
+          <div className={styles.useCaseHeader}>
+            <div>
+              <div className={styles.useCaseNum}>Use Case 5</div>
+              <h2 className={styles.useCaseTitle}>Motor Torque Loss (Technician Copilot)</h2>
+              <div className={styles.useCaseMeta}>
+                <span className={styles.metaChip}>Vehicle: EV-SEDAN-2025</span>
+                <span className={styles.metaChip}>Technician Mode</span>
+                <span className={`${styles.severityChip} ${styles.severityNormal}`}>Diagnostics Copilot</span>
+                <span className={`${styles.severityChip} ${styles.severityHigh}`} style={{marginLeft: '0.5rem', background: 'rgba(76, 169, 48, 0.12)', color: 'var(--accent-primary)', borderColor: 'rgba(76, 169, 48, 0.3)'}}>Deep Engineering Depth</span>
+              </div>
+            </div>
+            <ArchitectureAccordion 
+              title="View Technical Architecture"
+              nodes={[
+                { label: "EV Technician" },
+                { label: "Diagnostics Copilot Agent", active: true },
+                { label: "CAN Packet Analyzer" },
+                { label: "Inverter Telemetry DB" }
+              ]}
+            />
+          </div>
+          
+          <div className={styles.layerGrid}>
+            <div className={styles.layer}>
+              <div className={styles.layerLabel}><div className={styles.layerLabelDot}/> Layer 1 — Engineering Workflow</div>
+              <div className={styles.chatContainer}>
+                <ChatBubble type="user" sender="EV Technician" time="09:12 AM" text="EV.ENGINEER, fetch CAN packet history for EV-SEDAN-2025. The customer reported weak acceleration and vibration. Analyze inverter current spikes over the last 3 drive cycles." />
+                <ChatBubble type="ai" sender="EV.ENGINEER" time="09:13 AM" text="Retrieving high-frequency CAN logs..." />
+                <ChatBubble type="ai" sender="EV.ENGINEER" time="09:13 AM" text="Analysis complete. I found anomalous Phase B current spikes (up to 420A) in the rear inverter during hard acceleration. The vibration correlates exactly with these spikes. This indicates a potential IGBT gating issue or a degraded resolver sensor on the motor." />
+                <ChatBubble type="user" sender="EV Technician" time="09:14 AM" text="Compare the Phase B spikes against Phase A and C. Show me the fault isolation logic." />
+                <ChatBubble type="ai" sender="EV.ENGINEER" time="09:15 AM" text="Phase A and C are stable at ~310A max. Phase B shows severe asymmetry. Fault isolation points to the Inverter Power Module (IPM) with 85% confidence, rather than the motor winding itself. Recommend running the stationary IPM diagnostic sequence." />
+              </div>
+            </div>
+            
+            <div className={styles.layer}>
+              <div className={styles.layerLabel}><div className={styles.layerLabelDot}/> Layer 2 — System Processing</div>
+              <Terminal title="EV.SYSTEM ( High-Frequency Telemetry Parser )" jsonLines={[
+                <span key="1"><span className={styles.termPrefix}>[SYS]</span> Extracting 10ms CAN logs [0x2A1_INV_CURR]...</span>,
+                <span key="2" className={styles.termModule}>&#123;</span>,
+                <span key="3">&nbsp;&nbsp;<span className={styles.termKey}>"can_timestamp"</span>: <span className={styles.termString}>"1696420102.405"</span>,</span>,
+                <span key="4">&nbsp;&nbsp;<span className={styles.termKey}>"phase_a_rms_amp"</span>: <span className={styles.termNumber}>305.2</span>,</span>,
+                <span key="5">&nbsp;&nbsp;<span className={styles.termKey}>"phase_b_rms_amp"</span>: <span className={styles.termNumber}>421.8</span>, <span className={styles.termComment}>// Anomaly</span></span>,
+                <span key="6">&nbsp;&nbsp;<span className={styles.termKey}>"phase_c_rms_amp"</span>: <span className={styles.termNumber}>312.0</span>,</span>,
+                <span key="7">&nbsp;&nbsp;<span className={styles.termKey}>"resolver_angle_deg"</span>: <span className={styles.termNumber}>142.5</span>,</span>,
+                <span key="8">&nbsp;&nbsp;<span className={styles.termKey}>"dtc_code"</span>: <span className={styles.termString}>"P0A78"</span></span>,
+                <span key="9">&#125;</span>,
+                <span key="10" className={styles.termComment}>// Running Phase Asymmetry ML Model...</span>,
+                <span key="11" className={styles.termHighlight}>&gt; Fault Isolation: Inverter IPM (Phase B)</span>
+              ]} />
+            </div>
+
+            <div className={styles.layer}>
+              <div className={styles.layerLabel}><div className={styles.layerLabelDot}/> Layer 3 — Engineering Insights</div>
+              <div className={styles.insightCards}>
+                <div className={styles.insightCard}>
+                  <div className={styles.insightCardTitle}>Inverter Phase Asymmetry</div>
+                  <div className={styles.insightValue}>Δ116 A</div>
+                  <div className={styles.insightBar}><div className={`${styles.insightBarFill} ${styles.barRed}`} style={{width: '90%'}}></div></div>
+                  <div className={styles.insightSubtext}>Phase B exceeds Phase A/C by 116A. Threshold is 20A.</div>
+                </div>
+                <div className={styles.insightCard}>
+                  <div className={styles.insightCardTitle}>Repair Recommendation</div>
+                  <div className={styles.actionPlan} style={{ marginTop: '0.5rem' }}>
+                    <div className={styles.actionStepText}>Do not replace drive unit. Initiate stationary IPM diagnostic sequence (SOP-INV-012) to verify IGBT gate driver integrity.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* USE CASE 6: REMOTE TECHNICIAN ANALYSIS */}
       <section id="case6" className="container">
         <div className={styles.useCaseSection}>
@@ -446,6 +656,71 @@ export default function UseCasesContent() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* AGENTIC AI ORCHESTRATION */}
+      <section className="container">
+        <div className={styles.agenticContainer}>
+          <h2 className={styles.agenticTitle}>Agentic AI Workflow Orchestration</h2>
+          <div className={styles.agenticGrid}>
+            <div className={styles.agentCard}>
+              <div className={styles.agentCardIcon}>🗣️</div>
+              <div className={styles.agentCardName}>Conversation Agent</div>
+            </div>
+            <div className={styles.agentCard}>
+              <div className={styles.agentCardIcon}>🩺</div>
+              <div className={styles.agentCardName}>Diagnostics Agent</div>
+            </div>
+            <div className={styles.agentCard}>
+              <div className={styles.agentCardIcon}>🛡️</div>
+              <div className={styles.agentCardName}>Safety Agent</div>
+            </div>
+            <div className={styles.agentCard}>
+              <div className={styles.agentCardIcon}>🔋</div>
+              <div className={styles.agentCardName}>Battery Intelligence</div>
+            </div>
+            <div className={styles.agentCard}>
+              <div className={styles.agentCardIcon}>📚</div>
+              <div className={styles.agentCardName}>RAG Knowledge</div>
+            </div>
+            <div className={styles.agentCard}>
+              <div className={styles.agentCardIcon}>🎫</div>
+              <div className={styles.agentCardName}>Ticketing Agent</div>
+            </div>
+            <div className={styles.agentCard}>
+              <div className={styles.agentCardIcon}>⚠️</div>
+              <div className={styles.agentCardName}>Escalation Agent</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* COMPARISON: WHY THIS PLATFORM IS DIFFERENT */}
+      <section className="container">
+        <div className={styles.sectionHeader} style={{ marginTop: "4rem", marginBottom: "1rem" }}>
+          <span className={styles.sectionNumber}>The Advantage</span>
+          <h2 className={styles.sectionTitle}>Why This Platform is Different</h2>
+        </div>
+        <div className={styles.comparisonGrid}>
+          <div className={styles.compareCard}>
+            <div className={styles.compareHeader}>Traditional EV Support</div>
+            <div className={styles.compareList}>
+              <div className={styles.compareItem}><span className={`${styles.compareIcon} ${styles.compareIconCon}`}>✖</span> Reactive & FAQ-based chatbot</div>
+              <div className={styles.compareItem}><span className={`${styles.compareIcon} ${styles.compareIconCon}`}>✖</span> Highly dependent on human escalations</div>
+              <div className={styles.compareItem}><span className={`${styles.compareIcon} ${styles.compareIconCon}`}>✖</span> No direct telemetry integration</div>
+              <div className={styles.compareItem}><span className={`${styles.compareIcon} ${styles.compareIconCon}`}>✖</span> Generic advice, lacks engineering depth</div>
+            </div>
+          </div>
+          <div className={`${styles.compareCard} ${styles.compareCardPro}`}>
+            <div className={`${styles.compareHeader} ${styles.compareProHeader}`}>EV.ENGINEER AI Support</div>
+            <div className={styles.compareList}>
+              <div className={styles.compareItem}><span className={`${styles.compareIcon} ${styles.compareIconPro}`}>✔</span> Predictive & Proactive Agentic Workflow</div>
+              <div className={styles.compareItem}><span className={`${styles.compareIcon} ${styles.compareIconPro}`}>✔</span> Autonomous diagnostics & repair planning</div>
+              <div className={styles.compareItem}><span className={`${styles.compareIcon} ${styles.compareIconPro}`}>✔</span> Direct high-frequency CAN/MQTT integration</div>
+              <div className={styles.compareItem}><span className={`${styles.compareIcon} ${styles.compareIconPro}`}>✔</span> Deep battery intelligence & thermal modeling</div>
             </div>
           </div>
         </div>
