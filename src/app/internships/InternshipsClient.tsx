@@ -5,7 +5,7 @@ import { ReactNode, useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import PrerequisitesSection from "@/components/PrerequisitesSection";
 
-function ProjectCard({ title, desc, link, pricingLink, secondaryLink, secondaryLinkLabel }: { title: string, desc?: string, link: string, pricingLink?: string, secondaryLink?: string, secondaryLinkLabel?: string }) {
+function ProjectCard({ title, desc, link, pricingLink, secondaryLink, secondaryLinkLabel, tertiaryLink, tertiaryLinkLabel }: { title: string, desc?: string, link: string, pricingLink?: string, secondaryLink?: string, secondaryLinkLabel?: string, tertiaryLink?: string, tertiaryLinkLabel?: string }) {
   const isExternal = link.startsWith('http');
   const sLink = pricingLink || secondaryLink;
   const sLabel = pricingLink ? "Pricing" : secondaryLinkLabel;
@@ -51,6 +51,33 @@ function ProjectCard({ title, desc, link, pricingLink, secondaryLink, secondaryL
             >
               {sLabel} →
             </Link>
+          )}
+          
+          {tertiaryLink && (
+            <>
+              <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>·</span>
+              {tertiaryLink.startsWith('http') ? (
+                <a
+                  href={tertiaryLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="pricing-link"
+                  data-track-event="internship_tertiary_click"
+                  data-track-title={title}
+                >
+                  {tertiaryLinkLabel} ↗
+                </a>
+              ) : (
+                <Link
+                  href={tertiaryLink}
+                  className="pricing-link"
+                  data-track-event="internship_tertiary_click"
+                  data-track-title={title}
+                >
+                  {tertiaryLinkLabel} →
+                </Link>
+              )}
+            </>
           )}
         </div>
       </div>
@@ -245,12 +272,9 @@ export default function InternshipsClient() {
               link="https://help.ev.engineer/"
               secondaryLink="/internships/ev-help-agent"
               secondaryLinkLabel="design flow"
+              tertiaryLink="/internships/ev-help-agent/usecases"
+              tertiaryLinkLabel="Real AI Dialogs"
             />
-            <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '-12px', paddingLeft: '32px' }}>
-              <Link href="/internships/ev-help-agent/usecases" className="pricing-link" data-track-event="internship_tertiary_click">
-                Real AI Dialogs ↗
-              </Link>
-            </div>
           </Section>
 
           <Section title="Research">
