@@ -9,7 +9,10 @@ export const metadata: Metadata = {
     'Electric Vehicle Research', 'Battery Diagnostics Internship',
     'Air Taxi (eVTOL) Internships', 'Super-Intelligent AI EMS',
     'EV Engineering Internships', 'EV Repair Workshop Internships',
-    'AICTE Internships', 'VTU Internships in EV'
+    'AICTE Internships', 'VTU Internships in EV',
+    'IN-SPACe Model Rocketry', 'Aerospace Engineering Internship',
+    'Rocket Telemetry', 'Rocket Avionics', 'Student Rocket Competition',
+    'Model Rocketry India', 'Flight Software Engineering', 'Aerospace Systems Engineering'
   ]
 };
 

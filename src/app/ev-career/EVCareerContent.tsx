@@ -5,6 +5,94 @@ import Link from "next/link";
 import styles from "./page.module.css";
 import { trackEvent } from "@/utils/analytics";
 
+// --- COMPETENCY MATRIX DATA ---
+const COMPETENCY_MATRIX = [
+  {
+    tab: "ITI / Technician",
+    roles: [
+      "EV Service Technician",
+      "Battery Repair Technician",
+      "Charging Station Technician",
+      "EV Diagnostics Technician",
+    ],
+    skills: ["Wiring", "Diagnostics Tools", "Safety Procedures", "Battery Inspection", "Repair Workflows"],
+  },
+  {
+    tab: "Diploma Engineering",
+    roles: [
+      "EV Test Engineer",
+      "Embedded Support Engineer",
+      "Battery Assembly Engineer",
+      "Service Diagnostics Engineer",
+    ],
+    skills: ["Electronics", "CAN Basics", "Testing", "Diagnostics", "Embedded Basics"],
+  },
+  {
+    tab: "BE / BTech",
+    roles: [
+      "BMS Engineer",
+      "EV Software Engineer",
+      "Embedded Engineer",
+      "Telematics Engineer",
+      "Battery Systems Engineer",
+      "Vehicle Integration Engineer",
+    ],
+    skills: ["Embedded Systems", "CAN Protocol", "Battery Systems", "Software Architecture", "Diagnostics", "Telemetry"],
+  },
+  {
+    tab: "MCA / Software",
+    roles: [
+      "EV Application Engineer",
+      "Cloud & Telematics Engineer",
+      "Fleet Platform Engineer",
+      "Mobility Software Engineer",
+    ],
+    skills: ["Backend Systems", "Mobile Apps", "Cloud Integration", "APIs", "Telemetry Platforms"],
+  },
+  {
+    tab: "MBA / Operations",
+    roles: [
+      "EV Program Manager",
+      "EV Operations Lead",
+      "Charging Infrastructure Manager",
+      "Mobility Operations Manager",
+    ],
+    skills: ["Operations", "Analytics", "Project Management", "EV Ecosystem Understanding"],
+  },
+  {
+    tab: "MTech / MS",
+    roles: [
+      "Battery Intelligence Engineer",
+      "Energy Systems Engineer",
+      "Advanced Diagnostics Engineer",
+      "AI-assisted Engineering Specialist",
+    ],
+    skills: ["Systems Engineering", "Analytics", "Simulations", "Advanced Battery Systems", "Energy Optimization"],
+  },
+  {
+    tab: "PhD / Research",
+    roles: [
+      "EV Research Scientist",
+      "Battery Research Engineer",
+      "Advanced Energy Systems Researcher",
+      "Mobility Innovation Scientist",
+    ],
+    skills: ["Research Methodology", "Advanced Simulations", "Modeling", "Optimization", "Publications"],
+  },
+  {
+    tab: "Leadership & Architecture",
+    roles: [
+      "EV Technical Architect",
+      "Engineering Manager",
+      "EV Technology Lead",
+      "Battery Platform Architect",
+      "Chief Engineer",
+      "Mobility Systems Architect",
+    ],
+    skills: ["Systems Architecture", "Leadership", "Technical Strategy", "Cross-functional Engineering", "Scalable System Design"],
+  },
+];
+
 interface EVCareerContentProps {
   groupedCompanies: Record<string, any[]>;
 }
@@ -292,6 +380,9 @@ export default function EVCareerContent({ groupedCompanies }: EVCareerContentPro
         ))}
       </div>
 
+      {/* Competency Matrix Section */}
+      <CompetencyMatrix />
+
       {/* Disclaimer Section */}
       <div className={`glass-panel ${styles.disclaimerSection}`} ref={disclaimerRef}>
         <div className={styles.disclaimerTitle}>
@@ -326,6 +417,173 @@ export default function EVCareerContent({ groupedCompanies }: EVCareerContentPro
           <p>
             By using this platform, users acknowledge that EV.ENGINEER™ is a learning and information platform only, and all career decisions and applications are made at their own discretion.
           </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// --- COMPETENCY MATRIX COMPONENT ---
+function CompetencyMatrix() {
+  const [activeTab, setActiveTab] = useState(0);
+  const [animating, setAnimating] = useState(false);
+
+  const handleTabChange = (index: number) => {
+    if (index === activeTab) return;
+    setAnimating(true);
+    setTimeout(() => {
+      setActiveTab(index);
+      setAnimating(false);
+    }, 180);
+  };
+
+  const active = COMPETENCY_MATRIX[activeTab];
+
+  return (
+    <div style={{ marginTop: '80px', marginBottom: '16px' }}>
+      {/* Section Header */}
+      <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 16px', borderRadius: '999px', background: 'rgba(76, 169, 48, 0.08)', border: '1px solid rgba(76, 169, 48, 0.25)', marginBottom: '20px' }}>
+          <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: 'var(--accent-primary)', boxShadow: '0 0 8px var(--accent-primary)', display: 'inline-block' }} />
+          <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--accent-primary)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>EV Engineering Careers</span>
+        </div>
+        <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '16px', lineHeight: 1.2 }}>
+          EV Engineering Roles, <span style={{ color: 'var(--accent-primary)' }}>Skills</span> &amp; Core Competencies
+        </h2>
+        <p style={{ fontSize: '1rem', color: 'var(--text-secondary)', maxWidth: '700px', margin: '0 auto', lineHeight: 1.7 }}>
+          Explore industry-aligned EV, Energy, Battery, Software, Diagnostics, and Technical Leadership roles with the core competencies required for each engineering path.
+        </p>
+      </div>
+
+      {/* Tab Bar */}
+      <div
+        style={{
+          display: 'flex',
+          gap: '8px',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          marginBottom: '32px',
+          padding: '0 8px',
+        }}
+        role="tablist"
+        aria-label="Qualification categories"
+      >
+        {COMPETENCY_MATRIX.map((item, i) => (
+          <button
+            key={i}
+            role="tab"
+            aria-selected={activeTab === i}
+            id={`competency-tab-${i}`}
+            onClick={() => {
+              handleTabChange(i);
+              trackEvent('ev_career_competency_tab_click', { tab: item.tab });
+            }}
+            style={{
+              padding: '8px 18px',
+              borderRadius: '999px',
+              border: activeTab === i ? '1px solid var(--accent-primary)' : '1px solid rgba(255,255,255,0.1)',
+              background: activeTab === i ? 'rgba(76, 169, 48, 0.12)' : 'rgba(255,255,255,0.03)',
+              color: activeTab === i ? 'var(--accent-primary)' : 'var(--text-secondary)',
+              fontWeight: activeTab === i ? 700 : 500,
+              fontSize: '0.85rem',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              boxShadow: activeTab === i ? '0 0 12px rgba(76, 169, 48, 0.2)' : 'none',
+              letterSpacing: '0.02em',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {item.tab}
+          </button>
+        ))}
+      </div>
+
+      {/* Content Panel */}
+      <div
+        role="tabpanel"
+        aria-labelledby={`competency-tab-${activeTab}`}
+        style={{
+          background: 'var(--glass-bg)',
+          backdropFilter: 'blur(12px)',
+          border: '1px solid var(--glass-border)',
+          borderLeft: '4px solid var(--accent-primary)',
+          borderRadius: '16px',
+          padding: '40px 36px',
+          opacity: animating ? 0 : 1,
+          transform: animating ? 'translateY(8px)' : 'translateY(0)',
+          transition: 'opacity 0.18s ease, transform 0.18s ease',
+          boxShadow: '0 4px 40px rgba(0,0,0,0.3)',
+        }}
+      >
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '40px' }}>
+          {/* Roles Column */}
+          <div>
+            <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent-primary)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '20px' }}>
+              Industry Roles
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {active.roles.map((role, i) => (
+                <div
+                  key={i}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    padding: '10px 16px',
+                    background: 'rgba(76, 169, 48, 0.07)',
+                    border: '1px solid rgba(76, 169, 48, 0.18)',
+                    borderRadius: '8px',
+                    color: 'var(--text-primary)',
+                    fontSize: '0.92rem',
+                    fontWeight: 500,
+                  }}
+                >
+                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--accent-primary)', flexShrink: 0, boxShadow: '0 0 6px var(--accent-primary)' }} />
+                  {role}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Skills Column */}
+          <div>
+            <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent-primary)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '20px' }}>
+              Core Skills &amp; Competencies
+            </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', alignContent: 'flex-start' }}>
+              {active.skills.map((skill, i) => (
+                <span
+                  key={i}
+                  style={{
+                    padding: '7px 14px',
+                    background: 'rgba(255,255,255,0.05)',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    borderRadius: '6px',
+                    color: 'var(--text-secondary)',
+                    fontSize: '0.85rem',
+                    fontWeight: 500,
+                    letterSpacing: '0.02em',
+                  }}
+                >
+                  {skill}
+                </span>
+              ))}
+            </div>
+
+            <div style={{ marginTop: '36px', paddingTop: '24px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+              <a
+                href="https://wa.me/919108206147?text=Hi%2C%20I%20am%20interested%20in%20EV%20career%20guidance%20and%20training%20programs%20on%20EV.ENGINEER%E2%84%A2."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-primary"
+                style={{ padding: '0.65rem 1.6rem', fontSize: '0.9rem', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                data-track-event="ev_career_competency_cta_click"
+                data-track-tab={active.tab}
+              >
+                Get Guidance for {active.tab} →
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>

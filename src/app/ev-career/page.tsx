@@ -3,10 +3,16 @@ import EVCareerContent from "./EVCareerContent";
 
 export const metadata: Metadata = {
   title: "EV Career Opportunities | EV.ENGINEER™",
-  description: "Explore global career opportunities in electric vehicles, EV batteries, energy systems, cell manufacturing, autonomous driving, and automotive software through EV.ENGINEER™.",
+  description: "Explore global career opportunities in electric vehicles, EV batteries, energy systems, cell manufacturing, autonomous driving, and automotive software through EV.ENGINEER™. Discover EV engineering roles, skills, and competencies for ITI, Diploma, BE/BTech, MTech, MBA, and PhD graduates.",
+  keywords: [
+    'EV Career', 'EV Engineering Roles', 'EV Competency Matrix', 'BMS Engineer Career',
+    'Battery Intelligence Engineer', 'EV Internship India', 'EV Career Guide',
+    'Electric Vehicle Jobs India', 'Automotive Software Engineer', 'Embedded Systems EV',
+    'Telematics Engineer', 'EV Battery Jobs', 'EV Technical Architect',
+  ],
   openGraph: {
-    title: "EV.ENGINEER™ - Career Opportunities",
-    description: "Building World-Class Engineers to Solve Energy and EV Battery Challenges.",
+    title: "EV.ENGINEER™ - Career Opportunities & Competency Matrix",
+    description: "Building World-Class EV Engineers & Technical Leaders. Explore industry-aligned roles, skills, and competency frameworks.",
   }
 };
 

@@ -4,8 +4,9 @@ import Link from "next/link";
 import { ReactNode, useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import PrerequisitesSection from "@/components/PrerequisitesSection";
+import { Rocket } from "lucide-react";
 
-function ProjectCard({ title, desc, link, pricingLink, secondaryLink, secondaryLinkLabel, tertiaryLink, tertiaryLinkLabel }: { title: string, desc?: string, link: string, pricingLink?: string, secondaryLink?: string, secondaryLinkLabel?: string, tertiaryLink?: string, tertiaryLinkLabel?: string }) {
+function ProjectCard({ title, desc, link, pricingLink, secondaryLink, secondaryLinkLabel, tertiaryLink, tertiaryLinkLabel, category, badge, tags, ctaLabel, icon: Icon }: { title: string, desc?: string, link: string, pricingLink?: string, secondaryLink?: string, secondaryLinkLabel?: string, tertiaryLink?: string, tertiaryLinkLabel?: string, category?: string, badge?: string, tags?: string[], ctaLabel?: string, icon?: any }) {
   const isExternal = link.startsWith('http');
   const sLink = pricingLink || secondaryLink;
   const sLabel = pricingLink ? "Pricing" : secondaryLinkLabel;
@@ -13,10 +14,32 @@ function ProjectCard({ title, desc, link, pricingLink, secondaryLink, secondaryL
   if (sLink) {
     return (
       <div className="glass-panel" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-        <h3 style={{ fontSize: '1.2rem', marginBottom: '8px', color: 'var(--text-primary)', fontWeight: 500 }}>
-          {title}
-        </h3>
+        {category && (
+          <div style={{ color: 'var(--accent-primary)', fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '8px', textTransform: 'uppercase' }}>
+            {category}
+          </div>
+        )}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+          {Icon && <Icon size={20} color="var(--accent-primary)" />}
+          <h3 style={{ fontSize: '1.2rem', color: 'var(--text-primary)', fontWeight: 500, margin: 0 }}>
+            {title}
+          </h3>
+        </div>
+        {badge && (
+          <div style={{ display: 'inline-block', background: 'rgba(76, 169, 48, 0.1)', padding: '4px 12px', borderRadius: '4px', fontSize: '0.75rem', color: 'var(--accent-primary)', fontWeight: 600, marginBottom: '12px', alignSelf: 'flex-start' }}>
+            {badge}
+          </div>
+        )}
         {desc && <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', flexGrow: 1, marginBottom: '16px' }}>{desc}</p>}
+        {tags && (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '24px' }}>
+            {tags.map((tag, i) => (
+              <span key={i} style={{ fontSize: '0.75rem', color: 'var(--text-muted)', background: 'rgba(255,255,255,0.05)', padding: '4px 10px', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
 
         <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
           <a
@@ -86,13 +109,36 @@ function ProjectCard({ title, desc, link, pricingLink, secondaryLink, secondaryL
 
   const cardContent = (
     <div className="glass-panel" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <h3 style={{ fontSize: '1.2rem', marginBottom: '8px', color: 'var(--text-primary)', fontWeight: 500 }}>
-        {title}
-      </h3>
+      {category && (
+        <div style={{ color: 'var(--accent-primary)', fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '8px', textTransform: 'uppercase' }}>
+          {category}
+        </div>
+      )}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+        {Icon && <Icon size={20} color="var(--accent-primary)" />}
+        <h3 style={{ fontSize: '1.2rem', color: 'var(--text-primary)', fontWeight: 500, margin: 0 }}>
+          {title}
+        </h3>
+      </div>
+      {badge && (
+        <div style={{ display: 'inline-block', background: 'rgba(76, 169, 48, 0.1)', padding: '4px 12px', borderRadius: '4px', fontSize: '0.75rem', color: 'var(--accent-primary)', fontWeight: 600, marginBottom: '12px', alignSelf: 'flex-start' }}>
+          {badge}
+        </div>
+      )}
       {desc && <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', flexGrow: 1, marginBottom: '16px' }}>{desc}</p>}
+      
+      {tags && (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '24px' }}>
+          {tags.map((tag, i) => (
+            <span key={i} style={{ fontSize: '0.75rem', color: 'var(--text-muted)', background: 'rgba(255,255,255,0.05)', padding: '4px 10px', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.05)' }}>
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
 
       <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', color: 'var(--accent-primary)', fontSize: '0.9rem', fontWeight: 600 }}>
-        {isExternal ? 'Visit Website' : 'Explore Program'}
+        {ctaLabel ? ctaLabel : (isExternal ? 'Visit Website' : 'Explore Program')}
         <span style={{ marginLeft: '6px', fontSize: '1.1rem', transition: 'transform 0.2s ease' }} className="cta-arrow">
           {isExternal ? '↗' : '→'}
         </span>
@@ -300,6 +346,15 @@ export default function InternshipsClient() {
               title="Autonomous Airport Cargo EV"
               desc="Duty-cycle analysis and integrations for closed-loop environments."
               link="/design-development/airport-cargo"
+            />
+          </Section>
+
+          <Section title="Space & Aerospace Engineering">
+            <ProjectCard
+              title="IN-SPACe Model Rocketry"
+              desc="End-to-end mission architecture, telemetry systems, avionics, recovery mechanisms, and systems engineering for national-level student rocketry competitions."
+              link="https://labs.ev.engineer/Internships/Rocketry/astroforge.html"
+              ctaLabel="Student Competition 2026"
             />
           </Section>
 

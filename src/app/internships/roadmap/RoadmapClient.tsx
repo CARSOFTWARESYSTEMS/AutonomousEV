@@ -87,6 +87,16 @@ const ROADMAP_PHASES = [
     icon: Plane,
     link: "/design-development/passenger-taxi",
     linkLabel: "Explore Air Taxi",
+  },
+  {
+    phase: "Phase 7",
+    track: "AEROSPACE & SPACE SYSTEMS",
+    title: "IN-SPACe Model Rocketry",
+    desc: "Research and develop mission-ready telemetry, avionics, recovery systems, and flight software architecture for student aerospace and model rocketry competitions.",
+    focus: ["Telemetry", "Avionics", "Recovery Systems", "Flight Software", "Mission Architecture", "Aerospace Engineering"],
+    icon: Rocket,
+    link: "https://labs.ev.engineer/Internships/Rocketry/astroforge.html",
+    linkLabel: "Explore Rocketry",
   }
 ];
 
