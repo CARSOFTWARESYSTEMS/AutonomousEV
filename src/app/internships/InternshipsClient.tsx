@@ -205,6 +205,14 @@ export default function InternshipsClient() {
           {!isWorkshop && <PrerequisitesSection />}
 
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginBottom: '64px', justifyContent: 'center' }}>
+            <Link
+              href="/internships/roadmap"
+              className="btn btn-secondary"
+              data-track-event="cta_click"
+              data-track-label="Roadmap Plan"
+            >
+              Roadmap Plan
+            </Link>
 
             <Link
               href="/ev-career"
@@ -240,15 +248,7 @@ export default function InternshipsClient() {
             >
               Previous Events
             </Link>
-            <a
-              href={`https://wa.me/919108206147?text=${registerNowMsg}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-primary"
-              data-track-event="internships_register_now_click"
-            >
-              Register Now
-            </a>
+
 
           </div>
 
