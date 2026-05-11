@@ -358,8 +358,8 @@ const RoadmapSection = () => {
         @media (max-width: 1024px) { .roadmap-card { max-width: 380px; padding: 22px 24px; } .side-left { padding-right: 24px; } .side-right { padding-left: 24px; } }
         @media (max-width: 768px) {
           .roadmap-node-wrap { flex-direction: row !important; gap: 0 !important; }
-          .roadmap-card-side { flex: 1 !important; padding-left: 16px !important; padding-right: 0 !important; justify-content: flex-start !important; order: 2 !important; }
-          .roadmap-axis-dot { order: 1 !important; flex-shrink: 0; }
+          .roadmap-card-side { flex: 1 !important; max-width: 100% !important; padding-left: 16px !important; padding-right: 0 !important; justify-content: flex-start !important; order: 2 !important; }
+          .roadmap-axis-dot { position: relative !important; left: auto !important; transform: none !important; order: 1 !important; flex-shrink: 0; }
           .roadmap-balance-side { display: none !important; }
           .roadmap-card { max-width: 100% !important; padding: 20px !important; border-left: 3px solid var(--accent-primary) !important; border-right: 1px solid var(--glass-border) !important; }
           .card-header-row { justify-content: flex-start !important; }
