@@ -381,6 +381,11 @@ export default function InternshipsClient() {
               link="/internships/miscellaneous/startup"
             />
             <ProjectCard
+              title="Selection Process & Fees structure"
+              link="/internships/training-internship"
+              ctaLabel="Explore Program →"
+            />
+            <ProjectCard
               title="VTU Internyet"
               link="https://vtu.internyet.in/"
             />

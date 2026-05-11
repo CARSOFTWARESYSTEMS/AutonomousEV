@@ -1,0 +1,1413 @@
+/* ─── Training & Internship Page ─── */
+
+/* ─── Hero ─── */
+.hero {
+  position: relative;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding-top: calc(80px + 3rem);
+  padding-bottom: 4rem;
+}
+
+.heroGlow {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 140vw;
+  height: 140vh;
+  background: radial-gradient(circle, rgba(0, 255, 163, 0.07) 0%, rgba(0, 0, 0, 0) 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.heroInner {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.heroPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.4rem 1.25rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.08);
+  border: 1px solid rgba(76, 169, 48, 0.25);
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeInUp 0.7s ease-out 0.1s forwards;
+}
+
+.heroTitle {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  line-height: 1.08;
+  color: #fff;
+  margin-bottom: 1rem;
+  letter-spacing: -0.03em;
+  opacity: 0;
+  animation: fadeInUp 0.8s ease-out 0.2s forwards;
+}
+
+.heroHighlight {
+  display: block;
+  color: var(--accent-primary);
+  font-size: clamp(1.1rem, 2.2vw, 1.45rem);
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 1.25rem;
+  opacity: 0;
+  animation: fadeInUp 0.8s ease-out 0.35s forwards;
+}
+
+.heroDesc {
+  font-size: 1.15rem;
+  color: var(--text-secondary);
+  max-width: 720px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.7;
+  opacity: 0;
+  animation: fadeInUp 0.8s ease-out 0.45s forwards;
+}
+
+.heroCtas {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeInUp 0.8s ease-out 0.55s forwards;
+}
+
+/* ─── Sections ─── */
+.pageSection {
+  padding: 5rem 0;
+  position: relative;
+}
+
+.pageSectionAlt {
+  padding: 5rem 0;
+  position: relative;
+  background: rgba(4, 20, 14, 0.4);
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.sectionNumber {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.1);
+  border: 1px solid rgba(76, 169, 48, 0.2);
+  padding: 0.3rem 1rem;
+  border-radius: 999px;
+  margin-bottom: 1rem;
+}
+
+.sectionTitle {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.75rem;
+}
+
+.sectionSubtitle {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+/* ─── Phase Timeline ─── */
+.phaseGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.phaseCard {
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.phaseCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-primary), transparent);
+  opacity: 0.6;
+}
+
+.phaseCard:hover {
+  transform: translateY(-4px);
+  border-color: rgba(76, 169, 48, 0.4);
+  box-shadow: 0 8px 32px rgba(76, 169, 48, 0.12);
+}
+
+.phaseCardCore {
+  composes: phaseCard;
+  border-color: rgba(76, 169, 48, 0.4);
+  background: linear-gradient(135deg, rgba(76, 169, 48, 0.08), var(--glass-bg));
+}
+
+.phaseCardCore:hover {
+  box-shadow: 0 8px 40px rgba(76, 169, 48, 0.2);
+}
+
+.phaseNumber {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.1);
+  border: 1px solid rgba(76, 169, 48, 0.2);
+  padding: 0.25rem 0.8rem;
+  border-radius: 999px;
+  margin-bottom: 1rem;
+}
+
+.phaseDuration {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.04em;
+}
+
+.phaseTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.phaseEffort {
+  font-size: 0.85rem;
+  color: var(--accent-primary);
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.phaseList {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.25rem;
+}
+
+.phaseList li {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  padding: 0.35rem 0 0.35rem 1.25rem;
+  position: relative;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  line-height: 1.5;
+}
+
+.phaseList li:last-child {
+  border-bottom: none;
+}
+
+.phaseList li::before {
+  content: '›';
+  position: absolute;
+  left: 0;
+  color: var(--accent-primary);
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.phaseFee {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  background: rgba(76, 169, 48, 0.06);
+  border: 1px solid rgba(76, 169, 48, 0.15);
+}
+
+.phaseFeeRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  padding: 0.25rem 0;
+}
+
+.phaseFeeTotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  padding-top: 0.5rem;
+  margin-top: 0.5rem;
+  border-top: 1px solid rgba(76, 169, 48, 0.2);
+}
+
+.phaseMilestone {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 1rem;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, rgba(76, 169, 48, 0.12), rgba(6, 40, 28, 0.6));
+  border: 1px solid rgba(76, 169, 48, 0.25);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+}
+
+.phaseGate {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 1rem;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-md);
+  background: rgba(255, 165, 0, 0.06);
+  border: 1px solid rgba(255, 165, 0, 0.2);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #f5a623;
+}
+
+/* ─── Tables ─── */
+.tableWrapper {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  margin-bottom: 2.5rem;
+}
+
+.dataTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.dataTable thead {
+  background: rgba(76, 169, 48, 0.08);
+}
+
+.dataTable th {
+  padding: 14px 18px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent-primary);
+  border-bottom: 1px solid var(--glass-border);
+  white-space: nowrap;
+}
+
+.dataTable td {
+  padding: 13px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  color: var(--text-secondary);
+}
+
+.dataTable tbody tr {
+  transition: background 0.2s ease;
+}
+
+.dataTable tbody tr:hover {
+  background: rgba(76, 169, 48, 0.04);
+}
+
+.dataTable tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ─── Fee Cards ─── */
+.feeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.feeCard {
+  padding: 1.75rem 1.5rem;
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  text-align: center;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.feeCard:hover {
+  transform: translateY(-3px);
+  border-color: rgba(76, 169, 48, 0.3);
+}
+
+.feeCardHighlight {
+  composes: feeCard;
+  border-color: rgba(76, 169, 48, 0.4);
+  background: linear-gradient(135deg, rgba(76, 169, 48, 0.1), var(--glass-bg));
+}
+
+.feeCardHighlight:hover {
+  box-shadow: 0 0 24px rgba(76, 169, 48, 0.2);
+}
+
+.feeCardIcon {
+  font-size: 1.6rem;
+  margin-bottom: 0.75rem;
+}
+
+.feeCardLabel {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.feeCardValue {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--accent-primary);
+}
+
+.feeCardSub {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 0.3rem;
+}
+
+.feeDisclaimer {
+  margin-top: 2rem;
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* ─── Eligibility Gates ─── */
+.gatesTimeline {
+  position: relative;
+  margin-top: 2rem;
+  padding-left: 2.5rem;
+}
+
+.gatesTimeline::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--accent-primary), transparent);
+}
+
+.gateItem {
+  position: relative;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.gateItem:hover {
+  border-color: rgba(76, 169, 48, 0.35);
+  transform: translateX(4px);
+}
+
+.gateItem::before {
+  content: '';
+  position: absolute;
+  left: -2.15rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  border: 2px solid var(--bg-dark);
+  box-shadow: 0 0 8px rgba(76, 169, 48, 0.5);
+}
+
+.gateNumber {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent-primary);
+  margin-bottom: 0.25rem;
+}
+
+.gateTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* ─── Deliverables / Outcomes Grid ─── */
+.listGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.listItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  transition: border-color 0.2s ease;
+}
+
+.listItem:hover {
+  border-color: rgba(76, 169, 48, 0.25);
+}
+
+.listItemDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+/* ─── Career Roles ─── */
+.rolesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.roleCard {
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+}
+
+.roleCard:hover {
+  transform: translateY(-3px);
+  border-color: rgba(76, 169, 48, 0.35);
+  box-shadow: 0 6px 20px rgba(76, 169, 48, 0.1);
+}
+
+.roleIcon {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.roleTitle {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+/* ─── Insight / Info Card ─── */
+.insightCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, rgba(76, 169, 48, 0.08), rgba(6, 40, 28, 0.6));
+  border: 1px solid rgba(76, 169, 48, 0.2);
+  margin-top: 1.5rem;
+}
+
+.insightIcon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.insightText {
+  font-size: 1rem;
+  color: var(--text-primary);
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.insightText strong {
+  color: var(--accent-primary);
+}
+
+/* ─── Summary Stats ─── */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 3rem;
+}
+
+.statCard {
+  padding: 1.5rem 1rem;
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-3px);
+}
+
+.statValue {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--accent-primary);
+  margin-bottom: 0.2rem;
+  line-height: 1;
+}
+
+.statLabel {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 500;
+}
+
+/* ─── Final CTA Section ─── */
+.finalSection {
+  padding: 6rem 0;
+  text-align: center;
+  position: relative;
+}
+
+.finalGlow {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80vw;
+  height: 300px;
+  background: radial-gradient(ellipse, rgba(76, 169, 48, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.finalTitle {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.finalDesc {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.7;
+}
+
+.finalCtas {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ─── Animations ─── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fadeIn {
+  opacity: 0;
+  animation: fadeInUp 0.7s ease-out forwards;
+}
+
+.fadeInD1 { animation-delay: 0.1s; }
+.fadeInD2 { animation-delay: 0.2s; }
+.fadeInD3 { animation-delay: 0.3s; }
+.fadeInD4 { animation-delay: 0.4s; }
+
+/* ─── Responsive ─── */
+@media (max-width: 1024px) {
+  .feeGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding-top: calc(80px + 2rem);
+    min-height: auto;
+    padding-bottom: 2rem;
+  }
+  .heroCtas {
+    flex-direction: column;
+    align-items: center;
+  }
+  .heroCtas > * {
+    width: 100%;
+    max-width: 280px;
+  }
+  .phaseGrid {
+    grid-template-columns: 1fr;
+  }
+  .feeGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .rolesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .listGrid {
+    grid-template-columns: 1fr;
+  }
+  .gatesTimeline {
+    padding-left: 2rem;
+  }
+  .finalCtas {
+    flex-direction: column;
+    align-items: center;
+  }
+  .finalCtas > * {
+    width: 100%;
+    max-width: 280px;
+  }
+}
+
+@media (max-width: 480px) {
+  .feeGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .statsGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .rolesGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── Phase Row (2-col pairing on desktop) ─── */
+.phaseRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.phaseRowSingle {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.phaseRowSingle > * {
+  max-width: 680px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .phaseRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── Who is this for ─── */
+.whoCard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.whoItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1.25rem 1rem;
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  text-align: center;
+  transition: border-color 0.25s ease, transform 0.25s ease;
+}
+
+.whoItem:hover {
+  border-color: rgba(76,169,48,0.3);
+  transform: translateY(-2px);
+}
+
+.whoItemIcon { font-size: 1.6rem; }
+
+.whoItemTitle {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.whoItemDesc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ─── Effort Visual ─── */
+.effortVisual {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+  .effortVisual {
+    grid-template-columns: 1fr;
+  }
+}
+
+.effortCard {
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+}
+
+.effortCardTitle {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent-primary);
+  margin-bottom: 1.5rem;
+}
+
+/* Timeline strip */
+.timelineStrip {
+  display: flex;
+  gap: 3px;
+  border-radius: 6px;
+  overflow: hidden;
+  height: 36px;
+  margin-bottom: 1rem;
+}
+
+.timelineMonth {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: #fff;
+  position: relative;
+  cursor: default;
+  transition: opacity 0.2s ease;
+}
+
+.timelineMonth:hover { opacity: 0.85; }
+
+.tmTraining   { background: rgba(76,169,48,0.55); }
+.tmPoc        { background: rgba(76,169,48,0.75); }
+.tmDev        { background: rgba(76,169,48,0.9); }
+.tmTesting    { background: rgba(76,169,48,1); }
+.tmCert       { background: linear-gradient(135deg, #f5a623, #e88c00); }
+
+.timelineLegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.legendChip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+}
+
+.legendChipDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+/* Weekly schedule */
+.weekSchedule {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dayRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dayLabel {
+  width: 28px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.dayBlocks {
+  display: flex;
+  gap: 4px;
+}
+
+.dayBlock {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  background: rgba(76,169,48,0.6);
+  border: 1px solid rgba(76,169,48,0.3);
+}
+
+.dayBlockHalf {
+  background: rgba(76,169,48,0.3);
+}
+
+.dayTotal {
+  font-size: 0.72rem;
+  color: var(--accent-primary);
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+.dayOptional {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-left: 4px;
+}
+
+/* Key metrics grid */
+.effortMetrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.effortMetric {
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  background: rgba(76,169,48,0.06);
+  border: 1px solid rgba(76,169,48,0.15);
+  text-align: center;
+}
+
+.effortMetricValue {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--accent-primary);
+}
+
+.effortMetricLabel {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* ─── Dual Fee Mode ─── */
+.feeModeGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 640px) {
+  .feeModeGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.feeModeCard {
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  transition: transform 0.3s ease;
+}
+
+.feeModeCard:hover {
+  transform: translateY(-3px);
+}
+
+.feeModeCardOnline {
+  composes: feeModeCard;
+  border-color: rgba(76,169,48,0.5);
+  background: linear-gradient(135deg, rgba(76,169,48,0.1), var(--glass-bg));
+  box-shadow: 0 4px 24px rgba(76,169,48,0.12);
+}
+
+.feeModeLabel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.feeModeBadge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent-primary), #39C931);
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  margin-bottom: 0.75rem;
+}
+
+.feeModeTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1.25rem;
+}
+
+.feeModeLine {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  padding: 0.3rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.feeModeLine:last-of-type {
+  border-bottom: none;
+}
+
+.feeModeTotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  padding-top: 0.75rem;
+  margin-top: 0.5rem;
+  border-top: 1px solid rgba(76,169,48,0.25);
+}
+
+.feeAdvanceCard {
+  padding: 1.5rem 2rem;
+  border-radius: var(--radius-lg);
+  background: rgba(76,169,48,0.05);
+  border: 1px solid rgba(76,169,48,0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.feeAdvanceLabel {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.feeAdvanceLabel strong {
+  color: var(--text-primary);
+}
+
+.feeAdvanceValue {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--accent-primary);
+}
+
+@media (max-width: 480px) {
+  .effortMetrics {
+    grid-template-columns: 1fr 1fr;
+  }
+  .feeAdvanceCard {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* ─── Student Offer Section ─── */
+.studentOfferSection {
+  padding: 6rem 0;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(7, 15, 30, 0.95), rgba(3, 20, 35, 0.98));
+  border-top: 1px solid rgba(56, 189, 248, 0.15);
+  border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+}
+
+.studentOfferGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120vw;
+  height: 120vh;
+  background: radial-gradient(ellipse at center,
+    rgba(56, 189, 248, 0.08) 0%,
+    rgba(251, 191, 36, 0.04) 40%,
+    transparent 70%);
+  pointer-events: none;
+}
+
+.studentOfferBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.4rem 1.25rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  margin-bottom: 1.5rem;
+  animation: fadeInUp 0.7s ease-out 0.1s both;
+}
+
+.studentOfferTitle {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  color: #fff;
+  text-align: center;
+  line-height: 1.15;
+  margin-bottom: 1rem;
+  animation: fadeInUp 0.7s ease-out 0.2s both;
+}
+
+.studentOfferHighlight {
+  background: linear-gradient(135deg, #38bdf8, #fbbf24);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.studentOfferDesc {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 660px;
+  margin: 0 auto 3rem;
+  line-height: 1.7;
+  text-align: center;
+  animation: fadeInUp 0.7s ease-out 0.3s both;
+}
+
+.studentOfferDesc strong {
+  color: #fbbf24;
+}
+
+.studentOfferCards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+  animation: fadeInUp 0.7s ease-out 0.4s both;
+}
+
+@media (max-width: 768px) {
+  .studentOfferCards {
+    grid-template-columns: 1fr;
+  }
+}
+
+.studentOfferCard {
+  padding: 2rem 1.5rem;
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: center;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.studentOfferCard:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.studentOfferCardIcon {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.studentOfferCardTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.studentOfferCardDesc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.studentOfferCta {
+  text-align: center;
+  animation: fadeInUp 0.7s ease-out 0.5s both;
+}
+
+.studentOfferBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 1rem 2.5rem;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+  background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 20px rgba(56, 189, 248, 0.35);
+  letter-spacing: 0.02em;
+}
+
+.studentOfferBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(56, 189, 248, 0.5);
+}
+
+.studentOfferNote {
+  margin-top: 1.25rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+}
+
+/* ─── Roadmap Phase Timeline ─── */
+.roadmapTimeline {
+  position: relative;
+  margin-top: 2rem;
+}
+
+/* central vertical line */
+.roadmapTimeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--accent-primary), rgba(76, 169, 48, 0.15));
+  transform: translateX(-50%);
+}
+
+.roadmapRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 3rem;
+}
+
+/* node on center line */
+.roadmapNode {
+  position: absolute;
+  left: 50%;
+  top: 2rem;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  border: 3px solid var(--bg-dark);
+  box-shadow: 0 0 12px rgba(76, 169, 48, 0.6);
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+.roadmapCard {
+  width: calc(50% - 48px);
+  padding: 1.75rem;
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  position: relative;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.roadmapCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-primary), transparent);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  opacity: 0.6;
+}
+
+.roadmapCard:hover {
+  transform: translateY(-4px);
+  border-color: rgba(76, 169, 48, 0.4);
+  box-shadow: 0 8px 32px rgba(76, 169, 48, 0.12);
+}
+
+.roadmapCardCore {
+  composes: roadmapCard;
+  border-color: rgba(76, 169, 48, 0.45);
+  background: linear-gradient(135deg, rgba(76, 169, 48, 0.08), var(--glass-bg));
+}
+
+/* left-side card: right-aligned connector */
+.roadmapLeft {
+  margin-right: 96px;
+  text-align: right;
+}
+
+.roadmapLeft::after {
+  content: '';
+  position: absolute;
+  right: -48px;
+  top: 2.6rem;
+  width: 48px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-primary));
+}
+
+/* right-side card */
+.roadmapRight {
+  margin-left: 96px;
+}
+
+.roadmapRight::after {
+  content: '';
+  position: absolute;
+  left: -48px;
+  top: 2.6rem;
+  width: 48px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-primary), transparent);
+}
+
+.roadmapLeft .phaseList li {
+  text-align: left;
+}
+
+/* Month 13 centered card */
+.roadmapCenter {
+  width: calc(50% - 48px);
+  margin: 0 auto;
+  margin-top: 1rem;
+}
+
+/* Mobile roadmap: stack vertically */
+@media (max-width: 768px) {
+  .roadmapTimeline::before {
+    left: 12px;
+  }
+  .roadmapRow {
+    flex-direction: column;
+    padding-left: 36px;
+  }
+  .roadmapNode {
+    left: 12px;
+    top: 1.75rem;
+  }
+  .roadmapCard {
+    width: 100%;
+    text-align: left;
+  }
+  .roadmapLeft {
+    margin-right: 0;
+    margin-bottom: 1.5rem;
+    text-align: left;
+  }
+  .roadmapLeft::after { display: none; }
+  .roadmapRight {
+    margin-left: 0;
+  }
+  .roadmapRight::after { display: none; }
+  .roadmapCenter {
+    width: 100%;
+    margin-left: 0;
+  }
+}
