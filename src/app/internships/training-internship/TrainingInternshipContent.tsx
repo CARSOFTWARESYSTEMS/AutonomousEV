@@ -347,16 +347,12 @@ const RoadmapSection = () => {
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
-        .roadmap-node-wrap { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 0; position: relative; z-index: 2; }
-        .roadmap-card-side { flex: 0 0 calc(50% - 26px); max-width: calc(50% - 26px); display: flex; }
-        .side-left { justify-content: flex-end; padding-right: 40px; }
-        .side-right { justify-content: flex-start; padding-left: 40px; }
-        .roadmap-balance-side { flex: 0 0 calc(50% - 26px); max-width: calc(50% - 26px); }
-        .roadmap-card { max-width: 460px; width: 100%; padding: 28px 30px; transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s; }
-        .roadmap-card:hover { border-color: var(--accent-primary) !important; box-shadow: 0 8px 40px rgba(76,169,48,0.18) !important; transform: translateY(-3px) !important; }
-        .card-left { border-right: 3px solid var(--accent-primary) !important; border-left: 1px solid var(--glass-border) !important; }
-        .card-right { border-left: 3px solid var(--accent-primary) !important; border-right: 1px solid var(--glass-border) !important; }
-        .roadmap-axis-dot { width: 52px; height: 52px; border-radius: 50%; background: var(--bg-deep); border: 2px solid var(--accent-primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index: 10; position: relative; }
+        .roadmap-node-wrap { display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 0; position: relative; z-index: 2; }
+        .roadmap-card-side { flex: 0 0 calc(50% - 40px); max-width: calc(50% - 40px); display: flex; }
+        .side-left { justify-content: flex-end; }
+        .side-right { justify-content: flex-start; }
+        .roadmap-balance-side { flex: 0 0 calc(50% - 40px); max-width: calc(50% - 40px); }
+        .roadmap-axis-dot { width: 52px; height: 52px; border-radius: 50%; background: var(--bg-deep); border: 2px solid var(--accent-primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index: 10; position: absolute; left: 50%; transform: translateX(-50%); }
         .roadmap-bg-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 3px; background: rgba(255,255,255,0.04); transform: translateX(-50%); z-index: 0; }
         .roadmap-progress-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 3px; background: linear-gradient(to bottom, var(--success), var(--accent-primary)); transform-origin: top; transform: translateX(-50%); z-index: 1; box-shadow: 0 0 18px var(--accent-glow); }
         @media (max-width: 1024px) { .roadmap-card { max-width: 380px; padding: 22px 24px; } .side-left { padding-right: 24px; } .side-right { padding-left: 24px; } }
