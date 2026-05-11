@@ -10,28 +10,40 @@ export const PHASES = [
     num: "01", label: "Phase 1", title: "Training",
     duration: "Month 1 – Month 3", effort: "15 hrs/week · Mon–Fri 2h · Sat 5h",
     items: ["Month 1: Introduction, fundamentals, module overview, feature concepts", "Month 2: Feasibility study, wireframes, system analysis, documentation, design", "Month 3: Development basics, testing process, localization, security testing, training completion"],
-    phaseTotal: { online: "₹35,400", workspace: "₹53,100", note: "3 months incl. GST" },
+    phaseTotal: { 
+      online: "₹35,400", workspace: "₹53,100", note: "3 months incl. GST",
+      monthlyOnline: "₹11,800/mo", monthlyWorkspace: "₹17,700/mo"
+    },
     milestone: "Training Completion Certificate", isCore: false,
   },
   {
     num: "02", label: "Phase 2", title: "Proof of Concept",
     duration: "Month 4 – Month 6", effort: "15 hrs/week",
     items: ["Month 4: Feature 1 feasibility, wireframe, design, working POC demo", "Month 5: Feature 2 feasibility, wireframe, design, working POC demo", "Month 6: Feature 3 feasibility, wireframe, design, working POC demo"],
-    phaseTotal: { online: "₹35,400", workspace: "₹53,100", note: "3 months incl. GST" },
+    phaseTotal: { 
+      online: "₹35,400", workspace: "₹53,100", note: "3 months incl. GST",
+      monthlyOnline: "₹11,800/mo", monthlyWorkspace: "₹17,700/mo"
+    },
     milestone: null, isCore: false,
   },
   {
     num: "03", label: "Phase 3", title: "Product Development",
     duration: "Month 7 – Month 9", effort: "15 hrs/week",
     items: ["Month 7: Feature 1 development, unit testing, code review, demo", "Month 8: Feature 2 development, unit testing, code review, demo", "Month 9: Feature 3 development, unit testing, code review, demo"],
-    phaseTotal: { online: "₹35,400", workspace: "₹53,100", note: "3 months incl. GST" },
+    phaseTotal: { 
+      online: "₹35,400", workspace: "₹53,100", note: "3 months incl. GST",
+      monthlyOnline: "₹11,800/mo", monthlyWorkspace: "₹17,700/mo"
+    },
     milestone: null, isCore: true,
   },
   {
     num: "04", label: "Phase 4", title: "Testing & Release Readiness",
     duration: "Month 10 – Month 12", effort: "15 hrs/week",
     items: ["Month 10: Quality testing, security testing, bug fixes, demo after fixes", "Month 11: Integration testing, beta testing, production demo, webinar / seminar", "Month 12: Pre-release checklist, production deployment, post-release verification, final review"],
-    phaseTotal: { online: "₹35,400", workspace: "₹53,100", note: "3 months incl. GST" },
+    phaseTotal: { 
+      online: "₹35,400", workspace: "₹53,100", note: "3 months incl. GST",
+      monthlyOnline: "₹11,800/mo", monthlyWorkspace: "₹17,700/mo"
+    },
     milestone: "Internship Completion Certificate", isCore: false,
   },
 ];

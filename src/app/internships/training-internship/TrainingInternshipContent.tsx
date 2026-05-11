@@ -161,112 +161,121 @@ const RoadmapNode = ({ phase, index }: { phase: typeof PHASES[0]; index: number 
 
   const isEven = index % 2 === 0;
 
-  return (
-    <motion.div
-      ref={ref}
-      style={{ opacity, scale, flexDirection: isEven ? "row" : "row-reverse" }}
-      className="roadmap-node-wrap"
-    >
-      <div className={`roadmap-card-side ${isEven ? "side-left" : "side-right"}`}>
-        <div className={`roadmap-card glass-panel ${isEven ? "card-left" : "card-right"}`} style={phase.isCore ? { borderColor: "var(--accent-primary)", boxShadow: "0 0 20px rgba(76,169,48,0.15)" } : {}}>
+  const CardContent = (
+    <div className={`roadmap-card glass-panel ${isEven ? "card-left" : "card-right"}`} style={phase.isCore ? { borderColor: "var(--accent-primary)", boxShadow: "0 0 20px rgba(76,169,48,0.15)" } : {}}>
+      <div style={{
+        display: "flex", alignItems: "center",
+        justifyContent: isEven ? "flex-end" : "flex-start",
+        gap: "10px", marginBottom: "18px",
+      }} className="card-header-row">
+        <span style={{
+          fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.12em",
+          color: "var(--accent-primary)", textTransform: "uppercase",
+          background: "rgba(76,169,48,0.1)", padding: "3px 10px",
+          borderRadius: "4px", border: "1px solid rgba(76,169,48,0.2)",
+        }}>{phase.label}</span>
+      </div>
 
-          <div style={{
-            display: "flex", alignItems: "center",
-            justifyContent: isEven ? "flex-end" : "flex-start",
-            gap: "10px", marginBottom: "18px",
-          }} className="card-header-row">
-            <span style={{
-              fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.12em",
-              color: "var(--accent-primary)", textTransform: "uppercase",
-              background: "rgba(76,169,48,0.1)", padding: "3px 10px",
-              borderRadius: "4px", border: "1px solid rgba(76,169,48,0.2)",
-            }}>{phase.label}</span>
-          </div>
+      <h3 style={{
+        fontSize: "1.25rem", fontWeight: 700,
+        color: "var(--text-primary)", marginBottom: "12px",
+        lineHeight: 1.3, letterSpacing: "-0.02em",
+        textAlign: isEven ? "right" : "left",
+      }} className="card-title">{phase.title}</h3>
 
-          <h3 style={{
-            fontSize: "1.25rem", fontWeight: 700,
-            color: "var(--text-primary)", marginBottom: "12px",
-            lineHeight: 1.3, letterSpacing: "-0.02em",
-            textAlign: isEven ? "right" : "left",
-          }} className="card-title">{phase.title}</h3>
-
-          <div style={{
-            display: "flex", alignItems: "center", gap: "12px",
-            justifyContent: isEven ? "flex-end" : "flex-start",
-            marginBottom: "14px", flexWrap: "wrap",
-          }} className="card-duration-row">
-            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              <Calendar size={13} color="var(--text-muted)" />
-              <span style={{ fontSize: "0.82rem", color: "var(--text-muted)", fontWeight: 500 }}>
-                {phase.duration}
-              </span>
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              <CheckSquare size={13} color="var(--text-muted)" />
-              <span style={{ fontSize: "0.82rem", color: "var(--text-muted)", fontWeight: 500 }}>
-                {phase.effort}
-              </span>
-            </div>
-          </div>
-
-          <ul style={{
-            color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.65,
-            marginBottom: "18px", listStyle: "none", padding: 0,
-            textAlign: isEven ? "right" : "left",
-          }} className="card-desc">
-            {phase.items.map((item, i) => (
-              <li key={i} style={{ marginBottom: "6px" }}>
-                <span style={{ color: "var(--accent-primary)", marginRight: "6px" }}>•</span>{item}
-              </li>
-            ))}
-          </ul>
-
-          {phase.phaseTotal && (
-            <div style={{
-              display: "flex", flexDirection: "column", gap: "4px",
-              padding: "10px 14px", borderRadius: "8px",
-              background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)",
-              marginBottom: "20px",
-              alignItems: isEven ? "flex-end" : "flex-start",
-              textAlign: isEven ? "right" : "left",
-            }}>
-              <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Total Fees ({phase.phaseTotal.note})</span>
-              <div style={{ display: "flex", gap: "12px" }}>
-                <span style={{ fontSize: "0.85rem", color: "var(--text-primary)" }}><strong style={{ color: "var(--accent-primary)" }}>Online:</strong> {phase.phaseTotal.online}</span>
-                <span style={{ fontSize: "0.85rem", color: "var(--text-primary)" }}><strong style={{ color: "var(--accent-primary)" }}>Workspace:</strong> {phase.phaseTotal.workspace}</span>
-              </div>
-            </div>
-          )}
-
-          {phase.milestone && (
-            <div style={{
-              display: "flex", alignItems: "flex-start", gap: "8px",
-              padding: "10px 14px", borderRadius: "8px",
-              background: "rgba(76,169,48,0.06)", border: "1px solid rgba(76,169,48,0.15)",
-              marginBottom: "10px",
-              justifyContent: isEven ? "flex-end" : "flex-start",
-            }} className="card-deliverable">
-              <Award size={13} color="var(--accent-primary)" style={{ marginTop: "2px", flexShrink: 0 }} />
-              <span style={{ fontSize: "0.8rem", color: "var(--accent-primary)", fontWeight: 600 }}>
-                {phase.milestone}
-              </span>
-            </div>
-          )}
-
+      <div style={{
+        display: "flex", alignItems: "center", gap: "12px",
+        justifyContent: isEven ? "flex-end" : "flex-start",
+        marginBottom: "14px", flexWrap: "wrap",
+      }} className="card-duration-row">
+        <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+          <Calendar size={13} color="var(--text-muted)" />
+          <span style={{ fontSize: "0.82rem", color: "var(--text-muted)", fontWeight: 500 }}>
+            {phase.duration}
+          </span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+          <CheckSquare size={13} color="var(--text-muted)" />
+          <span style={{ fontSize: "0.82rem", color: "var(--text-muted)", fontWeight: 500 }}>
+            {phase.effort}
+          </span>
         </div>
       </div>
 
-      <motion.div
-        style={{ boxShadow: glowBox }}
-        className="roadmap-axis-dot"
-      >
-        <span style={{
-          fontSize: "0.7rem", fontWeight: 800,
-          color: "var(--accent-primary)", letterSpacing: "0.02em",
-        }}>{phase.num}</span>
-      </motion.div>
+      <ul style={{
+        color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.65,
+        marginBottom: "18px", listStyle: "none", padding: 0,
+        textAlign: isEven ? "right" : "left",
+      }} className="card-desc">
+        {phase.items.map((item, i) => (
+          <li key={i} style={{ marginBottom: "6px" }}>
+            <span style={{ color: "var(--accent-primary)", marginRight: "6px" }}>•</span>{item}
+          </li>
+        ))}
+      </ul>
 
-      <div className="roadmap-balance-side" />
+      {phase.phaseTotal && (
+        <div style={{
+          display: "flex", flexDirection: "column", gap: "4px",
+          padding: "10px 14px", borderRadius: "8px",
+          background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)",
+          marginBottom: "20px",
+          alignItems: isEven ? "flex-end" : "flex-start",
+          textAlign: isEven ? "right" : "left",
+        }}>
+          <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "4px" }}>Phase Fees</span>
+          <div style={{ display: "flex", gap: "16px", marginBottom: "4px" }}>
+            <span style={{ fontSize: "0.82rem", color: "var(--text-secondary)" }}>Online: {phase.phaseTotal.monthlyOnline}</span>
+            <span style={{ fontSize: "0.82rem", color: "var(--text-secondary)" }}>Workspace: {phase.phaseTotal.monthlyWorkspace}</span>
+          </div>
+          <div style={{ display: "flex", gap: "16px", borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "8px" }}>
+            <span style={{ fontSize: "0.85rem", color: "var(--text-primary)" }}><strong style={{ color: "var(--accent-primary)" }}>Total Online:</strong> {phase.phaseTotal.online}</span>
+            <span style={{ fontSize: "0.85rem", color: "var(--text-primary)" }}><strong style={{ color: "var(--accent-primary)" }}>Total Workspace:</strong> {phase.phaseTotal.workspace}</span>
+          </div>
+          <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", fontStyle: "italic", marginTop: "2px" }}>({phase.phaseTotal.note})</span>
+        </div>
+      )}
+
+      {phase.milestone && (
+        <div style={{
+          display: "flex", alignItems: "flex-start", gap: "8px",
+          padding: "10px 14px", borderRadius: "8px",
+          background: "rgba(76,169,48,0.06)", border: "1px solid rgba(76,169,48,0.15)",
+          marginBottom: "10px",
+          justifyContent: isEven ? "flex-end" : "flex-start",
+        }} className="card-deliverable">
+          <Award size={13} color="var(--accent-primary)" style={{ marginTop: "2px", flexShrink: 0 }} />
+          <span style={{ fontSize: "0.8rem", color: "var(--accent-primary)", fontWeight: 600 }}>
+            {phase.milestone}
+          </span>
+        </div>
+      )}
+    </div>
+  );
+
+  return (
+    <motion.div
+      ref={ref}
+      style={{ opacity, scale }}
+      className="roadmap-node-wrap"
+    >
+      {isEven ? (
+        <>
+          <div className="roadmap-card-side side-left">{CardContent}</div>
+          <motion.div style={{ boxShadow: glowBox }} className="roadmap-axis-dot">
+            <span style={{ fontSize: "0.7rem", fontWeight: 800, color: "var(--accent-primary)", letterSpacing: "0.02em" }}>{phase.num}</span>
+          </motion.div>
+          <div className="roadmap-balance-side" />
+        </>
+      ) : (
+        <>
+          <div className="roadmap-balance-side" />
+          <motion.div style={{ boxShadow: glowBox }} className="roadmap-axis-dot">
+            <span style={{ fontSize: "0.7rem", fontWeight: 800, color: "var(--accent-primary)", letterSpacing: "0.02em" }}>{phase.num}</span>
+          </motion.div>
+          <div className="roadmap-card-side side-right">{CardContent}</div>
+        </>
+      )}
     </motion.div>
   );
 };
@@ -338,12 +347,11 @@ const RoadmapSection = () => {
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
-        .roadmap-node-wrap { display: flex; flex-direction: row; align-items: center; gap: 0; position: relative; z-index: 2; }
-        .roadmap-card-side { flex: 1; display: flex; }
+        .roadmap-node-wrap { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 0; position: relative; z-index: 2; }
+        .roadmap-card-side { flex: 0 0 calc(50% - 26px); max-width: calc(50% - 26px); display: flex; }
         .side-left { justify-content: flex-end; padding-right: 40px; }
-        .side-right { justify-content: flex-start; padding-left: 40px; order: 2; }
-        .roadmap-balance-side { flex: 1; }
-        .side-right + .roadmap-balance-side { order: 3; }
+        .side-right { justify-content: flex-start; padding-left: 40px; }
+        .roadmap-balance-side { flex: 0 0 calc(50% - 26px); max-width: calc(50% - 26px); }
         .roadmap-card { max-width: 460px; width: 100%; padding: 28px 30px; transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s; }
         .roadmap-card:hover { border-color: var(--accent-primary) !important; box-shadow: 0 8px 40px rgba(76,169,48,0.18) !important; transform: translateY(-3px) !important; }
         .card-left { border-right: 3px solid var(--accent-primary) !important; border-left: 1px solid var(--glass-border) !important; }
