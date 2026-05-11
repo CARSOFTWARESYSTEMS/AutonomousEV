@@ -39,7 +39,7 @@ const ArchitectureAccordion = ({ title, nodes }: { title: string, nodes: any[] }
   const [open, setOpen] = useState(false);
   return (
     <div className={styles.accordionItem}>
-      <button 
+      <button
         className={`${styles.accordionBtn} ${open ? styles.accordionBtnOpen : ''}`}
         onClick={() => setOpen(!open)}
       >
@@ -95,7 +95,7 @@ export default function UseCasesContent() {
         <div className={styles.heroGlow} />
         <div className={styles.heroInner}>
           <div className={styles.heroPill}><span>EV Help Agent — Real World AI Support Use Cases</span></div>
-          <h1 className={styles.heroTitle}>Realtime AI Dialogs & EV Diagnostics Intelligence</h1>
+          <h1 className={styles.heroTitle}>Realtime AI Voice Dialogs & EV Diagnostics Intelligence</h1>
           <p className={styles.heroDesc}>
             Experience a production-ready AI EV support ecosystem. Featuring human-like interactions, agentic tool orchestration, engineering escalation workflows, and backend telemetry processing.
           </p>
@@ -160,7 +160,7 @@ export default function UseCasesContent() {
             EV.ENGINEER continuously monitors and protects the vehicle across its entire 8-year lifespan.
           </p>
         </div>
-        
+
         <div className={styles.timelineWrapper}>
           <div className={styles.timelineTrack}>
             <div className={styles.timelineTrackFill} style={{ width: '100%' }}></div>
@@ -213,7 +213,7 @@ export default function UseCasesContent() {
                 <span className={`${styles.severityChip} ${styles.severityNormal}`}>Predictive</span>
               </div>
             </div>
-            <ArchitectureAccordion 
+            <ArchitectureAccordion
               title="View Technical Architecture"
               nodes={[
                 { label: "Predictive Analytics Engine" },
@@ -224,10 +224,10 @@ export default function UseCasesContent() {
               ]}
             />
           </div>
-          
+
           <div className={styles.layerGrid}>
             <div className={styles.layer}>
-              <div className={styles.layerLabel}><div className={styles.layerLabelDot}/> Layer 1 — Human Dialog</div>
+              <div className={styles.layerLabel}><div className={styles.layerLabelDot} /> Layer 1 — Human Dialog</div>
               <div className={styles.chatContainer}>
                 <ChatBubble type="ai" sender="EV.ENGINEER" time="10:00 AM" text="Hello Mr. Rajesh, I’m EV.ENGINEER. I noticed your EV-CAR-2026 is approaching its 3-year warranty expiration next month." />
                 <ChatBubble type="user" sender="EV User" time="10:01 AM" text="Oh, hi. Yes, I remember. Is something wrong with the battery?" />
@@ -236,9 +236,9 @@ export default function UseCasesContent() {
                 <ChatBubble type="user" sender="EV User" time="10:02 AM" text="Ah, that makes sense. Thanks for catching that. Can we schedule it?" />
               </div>
             </div>
-            
+
             <div className={styles.layer}>
-              <div className={styles.layerLabel}><div className={styles.layerLabelDot}/> Layer 2 — System Processing</div>
+              <div className={styles.layerLabel}><div className={styles.layerLabelDot} /> Layer 2 — System Processing</div>
               <Terminal title="EV.SYSTEM ( Telemetry & Diagnostics Pipeline )" jsonLines={[
                 <span key="1"><span className={styles.termPrefix}>[SYS]</span> 2026-10-04T10:00:12Z | Ingesting MQTT Packets...</span>,
                 <span key="2" className={styles.termModule}>&#123;</span>,
@@ -256,12 +256,12 @@ export default function UseCasesContent() {
             </div>
 
             <div className={styles.layer}>
-              <div className={styles.layerLabel}><div className={styles.layerLabelDot}/> Layer 3 — Engineering Insights</div>
+              <div className={styles.layerLabel}><div className={styles.layerLabelDot} /> Layer 3 — Engineering Insights</div>
               <div className={styles.insightCards}>
                 <div className={styles.insightCard}>
                   <div className={styles.insightCardTitle}>Battery Health (SOH) Trend</div>
                   <div className={styles.insightValue}>94.2%</div>
-                  <div className={styles.insightBar}><div className={`${styles.insightBarFill} ${styles.barGreen}`} style={{width: '94%'}}></div></div>
+                  <div className={styles.insightBar}><div className={`${styles.insightBarFill} ${styles.barGreen}`} style={{ width: '94%' }}></div></div>
                   <div className={styles.insightSubtext}>Expected: 96% | Slight deviation detected</div>
                 </div>
                 <div className={styles.actionPlan}>
@@ -291,10 +291,10 @@ export default function UseCasesContent() {
                 <span className={styles.metaChip}>Vehicle: EV-SUV-2024</span>
                 <span className={styles.metaChip}>Odometer: 85,300 km</span>
                 <span className={`${styles.severityChip} ${styles.severityNormal}`}>Predictive AI</span>
-                <span className={`${styles.severityChip} ${styles.severityHigh}`} style={{marginLeft: '0.5rem', background: 'rgba(255, 165, 0, 0.12)', color: '#ffad00', borderColor: 'rgba(255, 165, 0, 0.3)'}}>Moderate Depth</span>
+                <span className={`${styles.severityChip} ${styles.severityHigh}`} style={{ marginLeft: '0.5rem', background: 'rgba(255, 165, 0, 0.12)', color: '#ffad00', borderColor: 'rgba(255, 165, 0, 0.3)' }}>Moderate Depth</span>
               </div>
             </div>
-            <ArchitectureAccordion 
+            <ArchitectureAccordion
               title="View Technical Architecture"
               nodes={[
                 { label: "Fleet Telemetry API" },
@@ -304,10 +304,10 @@ export default function UseCasesContent() {
               ]}
             />
           </div>
-          
+
           <div className={styles.layerGrid}>
             <div className={styles.layer}>
-              <div className={styles.layerLabel}><div className={styles.layerLabelDot}/> Layer 1 — Human Dialog</div>
+              <div className={styles.layerLabel}><div className={styles.layerLabelDot} /> Layer 1 — Human Dialog</div>
               <div className={styles.chatContainer}>
                 <ChatBubble type="ai" sender="EV.ENGINEER" time="15:30 PM" text="Hello Mrs. Sharma, this is EV.ENGINEER. I hope you're having a good day. I'm reaching out because your extended warranty is expiring in exactly 45 days." />
                 <ChatBubble type="user" sender="EV User" time="15:31 PM" text="Oh really? I hadn't realized. Is everything alright with the car? Last time I fast-charged it seemed a bit loud." />
@@ -316,9 +316,9 @@ export default function UseCasesContent() {
                 <ChatBubble type="user" sender="EV User" time="15:32 PM" text="Wow, thank you so much for catching that. Yes, let's schedule it." />
               </div>
             </div>
-            
+
             <div className={styles.layer}>
-              <div className={styles.layerLabel}><div className={styles.layerLabelDot}/> Layer 2 — System Processing</div>
+              <div className={styles.layerLabel}><div className={styles.layerLabelDot} /> Layer 2 — System Processing</div>
               <Terminal title="EV.SYSTEM ( Thermal Risk Orchestrator )" jsonLines={[
                 <span key="1"><span className={styles.termPrefix}>[SYS]</span> 2026-10-15T15:31:02Z | Querying Thermal DB...</span>,
                 <span key="2" className={styles.termModule}>&#123;</span>,
@@ -335,26 +335,26 @@ export default function UseCasesContent() {
             </div>
 
             <div className={styles.layer}>
-              <div className={styles.layerLabel}><div className={styles.layerLabelDot}/> Layer 3 — Engineering Insights</div>
+              <div className={styles.layerLabel}><div className={styles.layerLabelDot} /> Layer 3 — Engineering Insights</div>
               <div className={styles.insightCards}>
                 <div className={styles.insightCard}>
                   <div className={styles.insightCardTitle}>Thermal Stress Prediction</div>
                   <div className={`${styles.insightValue} ${styles.insightValueWarn}`}>48.5°C</div>
-                  <div className={styles.insightBar}><div className={`${styles.insightBarFill} ${styles.barYellow}`} style={{width: '75%'}}></div></div>
+                  <div className={styles.insightBar}><div className={`${styles.insightBarFill} ${styles.barYellow}`} style={{ width: '75%' }}></div></div>
                   <div className={styles.insightSubtext}>Avg peak temp during DCFC. Normal is &lt;42°C.</div>
                 </div>
                 <div className={styles.insightCard}>
                   <div className={styles.insightCardTitle}>Pump Duty Cycle Trend</div>
                   <div className={styles.sohGraph} style={{ marginTop: 0, border: 'none', padding: 0, background: 'transparent' }}>
                     <div className={styles.sohBars} style={{ height: '40px' }}>
-                      <div className={styles.sohBar} style={{height: '30%', background: '#4CA930'}}></div>
-                      <div className={styles.sohBar} style={{height: '40%', background: '#4CA930'}}></div>
-                      <div className={styles.sohBar} style={{height: '70%', background: '#fbbf24'}}></div>
-                      <div className={styles.sohBar} style={{height: '85%', background: '#fbbf24'}}></div>
-                      <div className={styles.sohBar} style={{height: '98%', background: '#ff6b6b'}}></div>
+                      <div className={styles.sohBar} style={{ height: '30%', background: '#4CA930' }}></div>
+                      <div className={styles.sohBar} style={{ height: '40%', background: '#4CA930' }}></div>
+                      <div className={styles.sohBar} style={{ height: '70%', background: '#fbbf24' }}></div>
+                      <div className={styles.sohBar} style={{ height: '85%', background: '#fbbf24' }}></div>
+                      <div className={styles.sohBar} style={{ height: '98%', background: '#ff6b6b' }}></div>
                     </div>
                   </div>
-                  <div className={styles.insightSubtext} style={{marginTop: '0.5rem'}}>Cooling pump working at maximum capacity.</div>
+                  <div className={styles.insightSubtext} style={{ marginTop: '0.5rem' }}>Cooling pump working at maximum capacity.</div>
                 </div>
               </div>
             </div>
@@ -375,7 +375,7 @@ export default function UseCasesContent() {
                 <span className={`${styles.severityChip} ${styles.severityHigh}`}>High Priority</span>
               </div>
             </div>
-            <ArchitectureAccordion 
+            <ArchitectureAccordion
               title="View Technical Architecture"
               nodes={[
                 { label: "Voice API Gateway" },
@@ -385,10 +385,10 @@ export default function UseCasesContent() {
               ]}
             />
           </div>
-          
+
           <div className={styles.layerGrid}>
             <div className={styles.layer}>
-              <div className={styles.layerLabel}><div className={styles.layerLabelDot}/> Layer 1 — Human Dialog</div>
+              <div className={styles.layerLabel}><div className={styles.layerLabelDot} /> Layer 1 — Human Dialog</div>
               <div className={styles.chatContainer}>
                 <ChatBubble type="user" sender="EV User" time="14:20 PM" text="My car's range is dropping really fast. I charged it to 100% but it dropped to 80% after just 5 kilometers. I'm worried this is going to cost a fortune to replace." />
                 <ChatBubble type="ai" sender="EV.ENGINEER" time="14:20 PM" text="I completely understand your frustration. Sudden range drops can be very stressful. Let's figure this out together. I'm running a quick diagnostic on your battery health." />
@@ -396,9 +396,9 @@ export default function UseCasesContent() {
                 <ChatBubble type="user" sender="EV User" time="14:21 PM" text="Oh, that’s a relief. Can I bring it in today?" />
               </div>
             </div>
-            
+
             <div className={styles.layer}>
-              <div className={styles.layerLabel}><div className={styles.layerLabelDot}/> Layer 2 — System Processing</div>
+              <div className={styles.layerLabel}><div className={styles.layerLabelDot} /> Layer 2 — System Processing</div>
               <Terminal title="EV SYSTEM ( AI Diagnostics Engine )" jsonLines={[
                 <span key="1"><span className={styles.termPrefix}>[REQ]</span> Analyzing SOC instability...</span>,
                 <span key="2" className={styles.termModule}>&#123;</span>,
@@ -413,7 +413,7 @@ export default function UseCasesContent() {
             </div>
 
             <div className={styles.layer}>
-              <div className={styles.layerLabel}><div className={styles.layerLabelDot}/> Layer 3 — Engineering Insights</div>
+              <div className={styles.layerLabel}><div className={styles.layerLabelDot} /> Layer 3 — Engineering Insights</div>
               <div className={styles.insightCards}>
                 <div className={styles.insightCard}>
                   <div className={styles.insightCardTitle}>Internal Resistance Trend</div>
@@ -423,11 +423,11 @@ export default function UseCasesContent() {
                 <div className={styles.sohGraph}>
                   <div className={styles.sohTitle}>Historical Degradation (SOH)</div>
                   <div className={styles.sohBars}>
-                    <div className={styles.sohBar} style={{height: '100%'}}></div>
-                    <div className={styles.sohBar} style={{height: '92%'}}></div>
-                    <div className={styles.sohBar} style={{height: '85%'}}></div>
-                    <div className={styles.sohBar} style={{height: '78%'}}></div>
-                    <div className={`${styles.sohBar} ${styles.sohBarWarn}`} style={{height: '71%'}}></div>
+                    <div className={styles.sohBar} style={{ height: '100%' }}></div>
+                    <div className={styles.sohBar} style={{ height: '92%' }}></div>
+                    <div className={styles.sohBar} style={{ height: '85%' }}></div>
+                    <div className={styles.sohBar} style={{ height: '78%' }}></div>
+                    <div className={`${styles.sohBar} ${styles.sohBarWarn}`} style={{ height: '71%' }}></div>
                   </div>
                   <div className={styles.sohLabels}><span>Yr 1</span><span>Yr 8</span></div>
                 </div>
@@ -450,7 +450,7 @@ export default function UseCasesContent() {
                 <span className={`${styles.severityChip} ${styles.severityCritical}`}>Critical Safety Risk</span>
               </div>
             </div>
-            <ArchitectureAccordion 
+            <ArchitectureAccordion
               title="View Technical Architecture"
               nodes={[
                 { label: "Telemetry Stream" },
@@ -460,19 +460,19 @@ export default function UseCasesContent() {
               ]}
             />
           </div>
-          
+
           <div className={styles.layerGrid}>
             <div className={styles.layer}>
-              <div className={styles.layerLabel}><div className={styles.layerLabelDot}/> Layer 1 — Human Dialog</div>
+              <div className={styles.layerLabel}><div className={styles.layerLabelDot} /> Layer 1 — Human Dialog</div>
               <div className={styles.chatContainer}>
                 <ChatBubble type="user" sender="EV User" time="18:05 PM" text="My dashboard is showing a red temperature warning, and the charging stopped automatically." />
                 <ChatBubble type="ai" sender="EV.ENGINEER" time="18:05 PM" text="I am detecting abnormal thermal activity in your battery pack. This may become a safety issue. For your safety, I have locked the charging port." />
                 <ChatBubble type="ai" sender="EV.ENGINEER" time="18:06 PM" text="Please step away from the vehicle. Do not attempt to charge or ride it. I am escalating this immediately to our critical response team." />
               </div>
             </div>
-            
+
             <div className={styles.layer}>
-              <div className={styles.layerLabel}><div className={styles.layerLabelDot}/> Layer 2 — System Processing</div>
+              <div className={styles.layerLabel}><div className={styles.layerLabelDot} /> Layer 2 — System Processing</div>
               <Terminal title="EV SYSTEM ( Safety Agent Validation )" jsonLines={[
                 <span key="1" className={styles.termHighlight}>[CRITICAL] Thermal Runaway Prediction Active!</span>,
                 <span key="2" className={styles.termModule}>&#123;</span>,
@@ -486,7 +486,7 @@ export default function UseCasesContent() {
             </div>
 
             <div className={styles.layer}>
-              <div className={styles.layerLabel}><div className={styles.layerLabelDot}/> Layer 3 — Engineering Insights</div>
+              <div className={styles.layerLabel}><div className={styles.layerLabelDot} /> Layer 3 — Engineering Insights</div>
               <div className={styles.insightCards}>
                 <div className={styles.insightCard}>
                   <div className={styles.insightCardTitle}>Thermal Heatmap</div>
@@ -527,10 +527,10 @@ export default function UseCasesContent() {
                 <span className={styles.metaChip}>Vehicle: EV-SEDAN-2025</span>
                 <span className={styles.metaChip}>Technician Mode</span>
                 <span className={`${styles.severityChip} ${styles.severityNormal}`}>Diagnostics Copilot</span>
-                <span className={`${styles.severityChip} ${styles.severityHigh}`} style={{marginLeft: '0.5rem', background: 'rgba(76, 169, 48, 0.12)', color: 'var(--accent-primary)', borderColor: 'rgba(76, 169, 48, 0.3)'}}>Deep Engineering Depth</span>
+                <span className={`${styles.severityChip} ${styles.severityHigh}`} style={{ marginLeft: '0.5rem', background: 'rgba(76, 169, 48, 0.12)', color: 'var(--accent-primary)', borderColor: 'rgba(76, 169, 48, 0.3)' }}>Deep Engineering Depth</span>
               </div>
             </div>
-            <ArchitectureAccordion 
+            <ArchitectureAccordion
               title="View Technical Architecture"
               nodes={[
                 { label: "EV Technician" },
@@ -540,10 +540,10 @@ export default function UseCasesContent() {
               ]}
             />
           </div>
-          
+
           <div className={styles.layerGrid}>
             <div className={styles.layer}>
-              <div className={styles.layerLabel}><div className={styles.layerLabelDot}/> Layer 1 — Engineering Workflow</div>
+              <div className={styles.layerLabel}><div className={styles.layerLabelDot} /> Layer 1 — Engineering Workflow</div>
               <div className={styles.chatContainer}>
                 <ChatBubble type="user" sender="EV Technician" time="09:12 AM" text="EV.ENGINEER, fetch CAN packet history for EV-SEDAN-2025. The customer reported weak acceleration and vibration. Analyze inverter current spikes over the last 3 drive cycles." />
                 <ChatBubble type="ai" sender="EV.ENGINEER" time="09:13 AM" text="Retrieving high-frequency CAN logs..." />
@@ -552,9 +552,9 @@ export default function UseCasesContent() {
                 <ChatBubble type="ai" sender="EV.ENGINEER" time="09:15 AM" text="Phase A and C are stable at ~310A max. Phase B shows severe asymmetry. Fault isolation points to the Inverter Power Module (IPM) with 85% confidence, rather than the motor winding itself. Recommend running the stationary IPM diagnostic sequence." />
               </div>
             </div>
-            
+
             <div className={styles.layer}>
-              <div className={styles.layerLabel}><div className={styles.layerLabelDot}/> Layer 2 — System Processing</div>
+              <div className={styles.layerLabel}><div className={styles.layerLabelDot} /> Layer 2 — System Processing</div>
               <Terminal title="EV.SYSTEM ( High-Frequency Telemetry Parser )" jsonLines={[
                 <span key="1"><span className={styles.termPrefix}>[SYS]</span> Extracting 10ms CAN logs [0x2A1_INV_CURR]...</span>,
                 <span key="2" className={styles.termModule}>&#123;</span>,
@@ -571,12 +571,12 @@ export default function UseCasesContent() {
             </div>
 
             <div className={styles.layer}>
-              <div className={styles.layerLabel}><div className={styles.layerLabelDot}/> Layer 3 — Engineering Insights</div>
+              <div className={styles.layerLabel}><div className={styles.layerLabelDot} /> Layer 3 — Engineering Insights</div>
               <div className={styles.insightCards}>
                 <div className={styles.insightCard}>
                   <div className={styles.insightCardTitle}>Inverter Phase Asymmetry</div>
                   <div className={styles.insightValue}>Δ116 A</div>
-                  <div className={styles.insightBar}><div className={`${styles.insightBarFill} ${styles.barRed}`} style={{width: '90%'}}></div></div>
+                  <div className={styles.insightBar}><div className={`${styles.insightBarFill} ${styles.barRed}`} style={{ width: '90%' }}></div></div>
                   <div className={styles.insightSubtext}>Phase B exceeds Phase A/C by 116A. Threshold is 20A.</div>
                 </div>
                 <div className={styles.insightCard}>
@@ -604,7 +604,7 @@ export default function UseCasesContent() {
                 <span className={`${styles.severityChip} ${styles.severityNormal}`}>Diagnostics</span>
               </div>
             </div>
-            <ArchitectureAccordion 
+            <ArchitectureAccordion
               title="View Technical Architecture"
               nodes={[
                 { label: "EV Technician" },
@@ -615,19 +615,19 @@ export default function UseCasesContent() {
               ]}
             />
           </div>
-          
+
           <div className={styles.layerGrid}>
             <div className={styles.layer}>
-              <div className={styles.layerLabel}><div className={styles.layerLabelDot}/> Layer 1 — Engineering Request</div>
+              <div className={styles.layerLabel}><div className={styles.layerLabelDot} /> Layer 1 — Engineering Request</div>
               <div className={styles.chatContainer}>
                 <ChatBubble type="user" sender="EV Technician" time="09:15 AM" text="Fetch CAN telemetry for EV-CAR-2026. Analyze thermal drift and compare historical degradation across the last 100 fast charging cycles." />
                 <ChatBubble type="ai" sender="EV.ENGINEER" time="09:16 AM" text="Retrieving telemetry..." />
                 <ChatBubble type="ai" sender="EV.ENGINEER" time="09:16 AM" text="Analysis complete. Cell imbalance is at 145mV (Module 4). Thermal drift identified during DC fast charging above 50kW. RAG Knowledge base suggests SOP-BATT-042: Initiate deep balancing cycle before replacing module." />
               </div>
             </div>
-            
+
             <div className={styles.layer}>
-              <div className={styles.layerLabel}><div className={styles.layerLabelDot}/> Layer 2 — System Processing</div>
+              <div className={styles.layerLabel}><div className={styles.layerLabelDot} /> Layer 2 — System Processing</div>
               <Terminal title="EV SYSTEM ( Vehicle Telemetry Server )" jsonLines={[
                 <span key="1"><span className={styles.termPrefix}>[QUERY]</span> RAG Knowledge DB...</span>,
                 <span key="2" className={styles.termComment}>&gt; Found: SOP-BATT-042 (Cell Balancing Protocol)</span>,
@@ -641,12 +641,12 @@ export default function UseCasesContent() {
             </div>
 
             <div className={styles.layer}>
-              <div className={styles.layerLabel}><div className={styles.layerLabelDot}/> Layer 3 — Engineering Insights</div>
+              <div className={styles.layerLabel}><div className={styles.layerLabelDot} /> Layer 3 — Engineering Insights</div>
               <div className={styles.insightCards}>
                 <div className={styles.insightCard}>
                   <div className={styles.insightCardTitle}>Cell Imbalance Analysis</div>
                   <div className={styles.insightValue}>145 mV</div>
-                  <div className={styles.insightBar}><div className={`${styles.insightBarFill} ${styles.barYellow}`} style={{width: '60%'}}></div></div>
+                  <div className={styles.insightBar}><div className={`${styles.insightBarFill} ${styles.barYellow}`} style={{ width: '60%' }}></div></div>
                   <div className={styles.insightSubtext}>Delta V exceeds 100mV threshold. Module 4 flagged.</div>
                 </div>
                 <div className={styles.insightCard}>
