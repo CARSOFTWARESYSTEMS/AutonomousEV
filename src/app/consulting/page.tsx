@@ -1,4 +1,5 @@
 import Link from "next/link";
+import EngagementModels from "@/components/EngagementModels";
 
 export const metadata = {
   title: "Consulting Services | EV.ENGINEER™",
@@ -14,6 +15,8 @@ export default function ConsultingPage() {
           Empower your engineering roadmap with production-validated insights.
         </p>
       </header>
+
+      <EngagementModels />
 
       <div className="grid" style={{ gap: "24px", maxWidth: "900px", margin: "0 auto 64px" }}>
         <div className="glass-panel" style={{ borderLeft: "4px solid var(--color-accent)" }}>

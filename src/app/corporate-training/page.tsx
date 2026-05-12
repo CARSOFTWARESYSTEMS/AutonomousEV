@@ -1,4 +1,5 @@
 import Link from "next/link";
+import EngagementModels from "@/components/EngagementModels";
 
 export const metadata = {
   title: "Corporate Training | EV.ENGINEER™",
@@ -44,6 +45,8 @@ export default function CorporateTrainingPage() {
           </a>
         </div>
       </header>
+
+      <EngagementModels />
 
       <section style={{ marginBottom: "64px" }}>
         <h2 style={{ fontSize: "2rem", marginBottom: "32px", textAlign: "center" }}>Our Delivery Tracks</h2>
