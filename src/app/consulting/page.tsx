@@ -11,9 +11,16 @@ export default function ConsultingPage() {
     <div className="container" style={{ paddingTop: "120px", paddingBottom: "80px" }}>
       <header style={{ textAlign: "center", marginBottom: "64px" }}>
         <h1 style={{ fontSize: "3rem", marginBottom: "16px" }}>Strategic & Technical Consulting</h1>
-        <p style={{ fontSize: "1.2rem", color: "var(--color-text-secondary)", maxWidth: "800px", margin: "0 auto" }}>
+        <p style={{ fontSize: "1.2rem", color: "var(--color-text-secondary)", maxWidth: "800px", margin: "0 auto 24px" }}>
           Empower your engineering roadmap with production-validated insights.
         </p>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'center', maxWidth: '1000px', margin: '0 auto' }}>
+          {['EV Systems Architecture', 'Battery Intelligence', 'Telematics Systems', 'Engineering Leadership', 'Product Engineering', 'Diagnostics Systems', 'GenAI-Assisted Engineering', 'Agentic AI Workflows', 'Autonomous EV Intelligence', 'Connected Mobility', 'EV Workforce Development'].map(tag => (
+            <span key={tag} style={{ fontSize: '0.85rem', color: 'var(--accent-primary)', background: 'rgba(76, 169, 48, 0.05)', padding: '6px 14px', borderRadius: '999px', border: '1px solid rgba(76, 169, 48, 0.15)', boxShadow: '0 0 10px rgba(76, 169, 48, 0.05)' }}>
+              {tag}
+            </span>
+          ))}
+        </div>
       </header>
 
       <EngagementModels />
@@ -43,6 +50,24 @@ export default function ConsultingPage() {
           <h2 style={{ fontSize: "1.5rem", marginBottom: "12px", color: "var(--color-text-primary)" }}>Roadmap & Advisory</h2>
           <p style={{ color: "var(--color-text-secondary)", lineHeight: 1.6 }}>Helping leadership navigate the complex intersection of hardware procurement, open-source stack integration, testing regulations (including Singapore/CETRAN frameworks), and ODD sizing.</p>
         </div>
+      </div>
+
+      <div style={{ 
+        background: 'linear-gradient(to bottom, rgba(4, 20, 14, 0.4), rgba(0,0,0,0.6))', 
+        padding: '64px 32px', 
+        borderRadius: '24px', 
+        marginTop: '80px', 
+        marginBottom: '64px',
+        border: '1px solid rgba(76, 169, 48, 0.15)',
+        boxShadow: '0 20px 60px rgba(0,0,0,0.5)'
+      }}>
+        <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+          <h2 style={{ fontSize: '2.5rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '16px' }}>Strategic Engineering Collaboration</h2>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', maxWidth: '800px', margin: '0 auto' }}>
+            A premium engagement ecosystem designed to build your EV engineering capabilities and accelerate your roadmap.
+          </p>
+        </div>
+        <EngagementModels />
       </div>
 
       <section style={{ textAlign: "center", padding: "40px 0", borderTop: "1px solid var(--color-glass-border)" }}>

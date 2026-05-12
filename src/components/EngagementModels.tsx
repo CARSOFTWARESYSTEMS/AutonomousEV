@@ -3,7 +3,7 @@ import React from "react";
 
 export default function EngagementModels() {
   return (
-    <div style={{ marginTop: "64px", marginBottom: "64px", borderTop: "1px solid var(--color-glass-border)", paddingTop: "64px" }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "48px", marginTop: "48px", marginBottom: "64px" }}>
       <style dangerouslySetInnerHTML={{__html: `
         .highlight-card {
           border: 2px solid var(--accent-primary) !important;
@@ -38,25 +38,25 @@ export default function EngagementModels() {
         .highlight-strip:hover {
           box-shadow: 0 0 30px rgba(76, 169, 48, 0.2);
         }
+        .cta-arrow {
+          display: inline-block;
+          transition: transform 0.2s ease;
+          margin-left: 4px;
+        }
+        .btn:hover .cta-arrow, a:hover .cta-arrow {
+          transform: translateX(4px);
+        }
       `}} />
 
-      {/* Title & Subtitle */}
-      <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-        <h2 style={{ fontSize: '2.5rem', fontWeight: 700, marginBottom: '16px', color: 'var(--text-primary)' }}>
-          EV.ENGINEER™ Engagement Models
-        </h2>
-        <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', maxWidth: '900px', margin: '0 auto', lineHeight: 1.6 }}>
-          Flexible engagement models designed for EV workshops, workforce development, corporate engineering training, technical leadership, startup engineering buildout, and long-term EV ecosystem growth.
-        </p>
-      </div>
+      {/* Title & Subtitle removed per requirements */}
 
       {/* Highlight Strip */}
-      <div className="glass-panel highlight-strip">
+      <div className="glass-panel highlight-strip" style={{ marginBottom: "0" }}>
         <h3 style={{ fontSize: '1.2rem', fontWeight: 600, color: 'var(--accent-primary)', marginBottom: '16px' }}>
           Mentored and trained 2000+ engineers and professionals since 2012 across:
         </h3>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center' }}>
-          {['iOS & Mobile Applications', 'IoT & Smart Home Systems', 'Cybersecurity', 'Energy Systems', 'Electric Vehicles', 'Automotive Software Development', 'Telematics', 'GenAI & Agentic AI', 'EV Battery Systems', 'Engineering Leadership'].map(skill => (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center', marginBottom: '24px' }}>
+          {['Electric Vehicles', 'Automotive Software Development', 'Battery Technologies', 'Telematics Systems', 'IoT & Smart Home Systems', 'Cybersecurity', 'Energy Systems', 'GenAI & Agentic AI', 'Embedded Systems', 'Mobile Applications', 'Engineering Leadership'].map(skill => (
             <span key={skill} style={{ 
               fontSize: '0.85rem', 
               color: 'var(--text-primary)', 
@@ -68,6 +68,15 @@ export default function EngagementModels() {
               {skill}
             </span>
           ))}
+        </div>
+        {/* Premium Links */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'center' }}>
+          <a href="https://labs.ev.engineer/" target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ padding: '8px 20px', fontSize: '0.9rem' }}>
+            Explore Labs <span className="cta-arrow">→</span>
+          </a>
+          <a href="https://carsoftwaresystems.com/#testimonial" target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ padding: '8px 20px', fontSize: '0.9rem' }}>
+            Workshop Gallery <span className="cta-arrow">→</span>
+          </a>
         </div>
       </div>
 
@@ -88,9 +97,12 @@ export default function EngagementModels() {
             Free
           </div>
           <div>
-            <Link href="/workshop-gallery" className="btn btn-secondary" style={{ width: '100%' }}>
-              Join Webinar →
+            <Link href="/workshop-gallery" className="btn btn-secondary" style={{ width: '100%', marginBottom: '12px' }}>
+              Join Webinar <span className="cta-arrow">→</span>
             </Link>
+            <a href="https://www.evsociety.org/events" target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ width: '100%' }}>
+              EV Society <span className="cta-arrow">→</span>
+            </a>
           </div>
         </div>
       </div>
@@ -121,7 +133,7 @@ export default function EngagementModels() {
             </ul>
           </div>
           <Link href="/workshop" className="btn btn-secondary" style={{ width: '100%' }}>
-            Explore Workshops →
+            Explore Workshops <span className="cta-arrow">→</span>
           </Link>
         </div>
 
@@ -138,8 +150,15 @@ export default function EngagementModels() {
             1–3 Months
           </div>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginBottom: '16px', flexGrow: 1 }}>
-            Structured corporate engineering training programs designed for EV workforce development, diagnostics systems, battery engineering, telematics, software engineering, testing workflows, and technical leadership readiness.
+            Structured corporate engineering training programs designed for EV workforce development, GenAI-assisted engineering, Agentic AI workflows, Autonomous Electric Vehicle Intelligence, diagnostics systems, telematics, software engineering, testing workflows, and technical leadership readiness.
           </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', justifyContent: 'center', marginBottom: '16px' }}>
+            {['GenAI', 'Agentic AI', 'EV Intelligence', 'Diagnostics', 'Telematics', 'Engineering Leadership'].map(tag => (
+              <span key={tag} style={{ fontSize: '0.7rem', color: 'var(--accent-primary)', background: 'rgba(76, 169, 48, 0.08)', padding: '4px 10px', borderRadius: '4px', border: '1px solid rgba(76, 169, 48, 0.2)' }}>
+                {tag}
+              </span>
+            ))}
+          </div>
           <div style={{ fontSize: '0.9rem', color: 'var(--text-primary)', fontWeight: 600, marginBottom: '24px', padding: '12px 8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', textAlign: 'center' }}>
             Hire EV experts from EV.ENGINEER™
           </div>
@@ -154,7 +173,7 @@ export default function EngagementModels() {
             </ul>
           </div>
           <Link href="/corporate-training" className="btn btn-primary" style={{ width: '100%' }}>
-            Explore Corporate Training →
+            Explore Corporate Training <span className="cta-arrow">→</span>
           </Link>
         </div>
 
@@ -186,14 +205,14 @@ export default function EngagementModels() {
             </ul>
           </div>
           <Link href="/consulting" className="btn btn-secondary" style={{ width: '100%' }}>
-            Explore Strategic Consulting →
+            Explore Strategic Consulting <span className="cta-arrow">→</span>
           </Link>
         </div>
 
       </div>
 
       {/* Final CTA Section */}
-      <div style={{ marginTop: '80px', textAlign: 'center', paddingBottom: '32px' }}>
+      <div style={{ marginTop: '32px', textAlign: 'center', paddingBottom: '32px' }}>
         <h2 style={{ fontSize: '2rem', fontWeight: 600, marginBottom: '16px', color: 'var(--text-primary)' }}>
           Looking to Build EV Engineering Capabilities?
         </h2>
@@ -202,10 +221,10 @@ export default function EngagementModels() {
         </p>
         <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
           <a href="https://itelematics.com/contact" target="_blank" rel="noopener noreferrer" className="btn btn-primary">
-            Contact for Collaboration →
+            Contact for Collaboration <span className="cta-arrow">→</span>
           </a>
           <a href="https://topmate.io/sudarshana_karkala" target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
-            Schedule Discovery Call →
+            Schedule Discovery Call <span className="cta-arrow">→</span>
           </a>
         </div>
       </div>
