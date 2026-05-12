@@ -3,7 +3,7 @@ import EngagementModels from "@/components/EngagementModels";
 
 export const metadata = {
   title: "Corporate Training | EV.ENGINEER™",
-  description: "Delivery of engineering-grade AV/EV training for corporations, specifically focused on Singapore deployment models.",
+  description: "Delivery of engineering-grade AV/EV corporate training focused on battery technologies, diagnostics, Agentic AI, and autonomous deployment.",
 };
 
 export default function CorporateTrainingPage() {
@@ -48,7 +48,7 @@ export default function CorporateTrainingPage() {
 
       <EngagementModels />
 
-      <section style={{ marginBottom: "64px" }}>
+      <section id="delivery-tracks" style={{ marginBottom: "64px", scrollMarginTop: "120px" }}>
         <h2 style={{ fontSize: "2rem", marginBottom: "32px", textAlign: "center" }}>Our Delivery Tracks</h2>
         <div className="grid-2" style={{ marginBottom: '32px' }}>
           
@@ -142,7 +142,7 @@ export default function CorporateTrainingPage() {
 
       <section style={{ textAlign: "center" }}>
         <h2 style={{ fontSize: "2rem", marginBottom: "24px" }}>Ready to upgrade your team?</h2>
-        <Link href="/contact" className="btn btn-primary">Inquire About Training Options</Link>
+        <Link href="/contact" className="btn btn-primary" data-track-event="cta_click" data-track-label="Inquire Training Options">Inquire About Training Options</Link>
       </section>
 
     </div>

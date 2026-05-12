@@ -46,14 +46,21 @@ export default function EngagementModels() {
         .btn:hover .cta-arrow, a:hover .cta-arrow {
           transform: translateX(4px);
         }
+        @keyframes pulseGlow {
+          0% { box-shadow: 0 0 10px rgba(76, 169, 48, 0.1); transform: scale(1); border-color: rgba(76, 169, 48, 0.2); }
+          50% { box-shadow: 0 0 20px rgba(76, 169, 48, 0.4); transform: scale(1.02); border-color: rgba(76, 169, 48, 0.5); }
+          100% { box-shadow: 0 0 10px rgba(76, 169, 48, 0.1); transform: scale(1); border-color: rgba(76, 169, 48, 0.2); }
+        }
         .hire-experts-box {
           transition: all 0.3s ease;
+          animation: pulseGlow 3s infinite ease-in-out;
+          cursor: pointer;
+          display: block;
+          text-decoration: none;
         }
         .hire-experts-box:hover {
           background: rgba(76, 169, 48, 0.1) !important;
-          border-color: rgba(76, 169, 48, 0.4) !important;
-          transform: translateY(-2px);
-          box-shadow: 0 4px 15px rgba(76, 169, 48, 0.2);
+          animation-play-state: paused;
         }
       `}} />
 
@@ -83,10 +90,10 @@ export default function EngagementModels() {
             Free
           </div>
           <div>
-            <Link href="/workshop-gallery" className="btn btn-secondary" style={{ width: '100%', marginBottom: '12px' }}>
+            <Link href="/workshop-gallery" className="btn btn-secondary" data-track-event="cta_click" data-track-label="Join Webinar" style={{ width: '100%', marginBottom: '12px' }}>
               Join Webinar <span className="cta-arrow">→</span>
             </Link>
-            <a href="https://www.evsociety.org/events" target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ width: '100%' }}>
+            <a href="https://www.evsociety.org/events" target="_blank" rel="noopener noreferrer" className="btn btn-secondary" data-track-event="outbound_link" data-track-label="EV Society" style={{ width: '100%' }}>
               EV Society <span className="cta-arrow">→</span>
             </a>
           </div>
@@ -118,7 +125,7 @@ export default function EngagementModels() {
               <li>EV Awareness Programs</li>
             </ul>
           </div>
-          <Link href="/workshop" className="btn btn-secondary" style={{ width: '100%' }}>
+          <Link href="/workshop" className="btn btn-secondary" data-track-event="cta_click" data-track-label="Explore Workshops" style={{ width: '100%' }}>
             Explore Workshops <span className="cta-arrow">→</span>
           </Link>
         </div>
@@ -145,9 +152,9 @@ export default function EngagementModels() {
               </span>
             ))}
           </div>
-          <div className="hire-experts-box" style={{ fontSize: '0.9rem', color: 'var(--text-primary)', fontWeight: 600, marginBottom: '24px', padding: '12px 8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', textAlign: 'center' }}>
+          <a href="https://itelematics.com/contact" target="_blank" rel="noopener noreferrer" className="hire-experts-box" data-track-event="cta_click" data-track-label="Hire EV experts" style={{ fontSize: '0.9rem', color: 'var(--text-primary)', fontWeight: 600, marginBottom: '24px', padding: '12px 8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', textAlign: 'center' }}>
             Hire EV experts from EV.ENGINEER™
-          </div>
+          </a>
           <div style={{ marginBottom: '24px' }}>
             <div style={{ fontSize: '0.85rem', color: 'var(--text-primary)', fontWeight: 600, marginBottom: '8px' }}>Suitable For:</div>
             <ul style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', lineHeight: 1.8, paddingLeft: '16px', listStyleType: 'disc' }}>
@@ -158,7 +165,7 @@ export default function EngagementModels() {
               <li>Technical Leadership Development</li>
             </ul>
           </div>
-          <Link href="/corporate-training" className="btn btn-primary" style={{ width: '100%' }}>
+          <Link href="#delivery-tracks" className="btn btn-primary" data-track-event="cta_click" data-track-label="Explore Corporate Training" style={{ width: '100%' }}>
             Explore Corporate Training <span className="cta-arrow">→</span>
           </Link>
         </div>
@@ -190,7 +197,7 @@ export default function EngagementModels() {
               <li>Engineering-Driven Founders</li>
             </ul>
           </div>
-          <Link href="/consulting" className="btn btn-secondary" style={{ width: '100%' }}>
+          <Link href="/consulting" className="btn btn-secondary" data-track-event="cta_click" data-track-label="Explore Strategic Consulting" style={{ width: '100%' }}>
             Explore Strategic Consulting <span className="cta-arrow">→</span>
           </Link>
         </div>
@@ -206,10 +213,10 @@ export default function EngagementModels() {
           Collaborate with EV.ENGINEER™ for engineering workshops, workforce development, technical leadership, corporate training, startup consulting, diagnostics systems, and long-term EV ecosystem growth.
         </p>
         <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <a href="https://itelematics.com/contact" target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+          <a href="https://itelematics.com/contact" target="_blank" rel="noopener noreferrer" className="btn btn-primary" data-track-event="cta_click" data-track-label="Contact for Collaboration">
             Contact for Collaboration <span className="cta-arrow">→</span>
           </a>
-          <a href="https://topmate.io/sudarshana_karkala" target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
+          <a href="https://topmate.io/sudarshana_karkala" target="_blank" rel="noopener noreferrer" className="btn btn-secondary" data-track-event="cta_click" data-track-label="Schedule Discovery Call">
             Schedule Discovery Call <span className="cta-arrow">→</span>
           </a>
         </div>

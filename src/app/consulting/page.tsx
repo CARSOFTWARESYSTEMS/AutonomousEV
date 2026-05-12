@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Consulting Services | EV.ENGINEER™",
-  description: "Architecture reviews, simulation strategy, cybersecurity, and EV battery consulting for autonomous platforms.",
+  title: "Strategic Consulting | EV.ENGINEER™",
+  description: "Strategic engineering consulting for EV architecture, AI-driven SI-EMS, battery intelligence, and autonomous mobility platforms.",
 };
 
 export default function ConsultingPage() {
@@ -39,7 +39,7 @@ export default function ConsultingPage() {
         <div className="glass-panel" style={{ borderLeft: "4px solid var(--color-accent)" }}>
           <h2 style={{ fontSize: "1.5rem", marginBottom: "12px", color: "var(--color-text-primary)", lineHeight: 1.4 }}>AI-Driven Super-Intelligent Energy Management Systems for Autonomous EVs</h2>
           <p style={{ color: "var(--color-text-secondary)", lineHeight: 1.6, marginBottom: "16px" }}>Leveraging deep learning, Agentic AI, and continuous thermal intelligence to dynamically optimize energy distribution, extend battery lifecycle, and maximize operational uptime for autonomous fleets.</p>
-          <a href="https://autonomous.ev.engineer/si-ems" style={{ color: "var(--color-accent)", fontWeight: 600, fontSize: "0.95rem", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+          <a href="https://autonomous.ev.engineer/si-ems" data-track-event="cta_click" data-track-label="Explore SI-EMS Architecture" style={{ color: "var(--accent-primary)", fontWeight: 600, fontSize: "0.95rem", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "4px", marginTop: "auto" }}>
             Explore SI-EMS Architecture <span style={{ transition: "transform 0.2s ease" }}>→</span>
           </a>
         </div>
@@ -83,7 +83,7 @@ export default function ConsultingPage() {
         <p style={{ color: "var(--color-text-secondary)", marginBottom: "32px", maxWidth: "600px", margin: "0 auto 32px" }}>
           Our corporate engagement model is highly flexible—from rapid architecture sprints to long-term advisory retainers.
         </p>
-        <Link href="/contact" className="btn btn-primary">Schedule a Consultation</Link>
+        <Link href="/contact" className="btn btn-primary" data-track-event="cta_click" data-track-label="Schedule Consulting Consultation">Schedule a Consultation</Link>
       </section>
 
     </div>
