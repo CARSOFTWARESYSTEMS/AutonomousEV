@@ -1,5 +1,4 @@
 import Link from "next/link";
-import EngagementModels from "@/components/EngagementModels";
 
 export const metadata = {
   title: "Consulting Services | EV.ENGINEER™",
@@ -10,20 +9,11 @@ export default function ConsultingPage() {
   return (
     <div className="container" style={{ paddingTop: "120px", paddingBottom: "80px" }}>
       <header style={{ textAlign: "center", marginBottom: "64px" }}>
-        <h1 style={{ fontSize: "3rem", marginBottom: "16px", lineHeight: 1.2 }}>Engineering Strategy for EV, Battery & Connected Mobility Systems</h1>
-        <p style={{ fontSize: "1.2rem", color: "var(--color-text-secondary)", maxWidth: "900px", margin: "0 auto 24px", lineHeight: 1.6 }}>
-          Collaborate with EV.ENGINEER™ to accelerate EV product engineering, workforce capability, diagnostics systems, telematics platforms, battery intelligence, and technical leadership initiatives.
+        <h1 style={{ fontSize: "3rem", marginBottom: "16px" }}>Strategic Consulting</h1>
+        <p style={{ fontSize: "1.2rem", color: "var(--color-text-secondary)", maxWidth: "800px", margin: "0 auto" }}>
+          Empower your engineering roadmap with production-validated insights.
         </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'center', maxWidth: '1000px', margin: '0 auto' }}>
-          {['EV Systems', 'Battery Intelligence', 'Diagnostics', 'Telematics', 'Engineering Leadership', 'Product Engineering'].map(tag => (
-            <span key={tag} style={{ fontSize: '0.85rem', color: 'var(--accent-primary)', background: 'rgba(76, 169, 48, 0.05)', padding: '6px 14px', borderRadius: '999px', border: '1px solid rgba(76, 169, 48, 0.15)', boxShadow: '0 0 10px rgba(76, 169, 48, 0.05)' }}>
-              {tag}
-            </span>
-          ))}
-        </div>
       </header>
-
-      <EngagementModels />
 
       <div className="grid" style={{ gap: "24px", maxWidth: "900px", margin: "0 auto 64px" }}>
         <div className="glass-panel" style={{ borderLeft: "4px solid var(--color-accent)" }}>
@@ -45,6 +35,14 @@ export default function ConsultingPage() {
           <h2 style={{ fontSize: "1.5rem", marginBottom: "12px", color: "var(--color-text-primary)" }}>Continuous Diagnostics & Thermal Intelligence</h2>
           <p style={{ color: "var(--color-text-secondary)", lineHeight: 1.6 }}>Developing bespoke algorithms to monitor and predict battery behavior under continuous AV compute loads, prioritizing fleet availability and predicting imminent thermal degradation.</p>
         </div>
+
+        <div className="glass-panel" style={{ borderLeft: "4px solid var(--color-accent)" }}>
+          <h2 style={{ fontSize: "1.5rem", marginBottom: "12px", color: "var(--color-text-primary)", lineHeight: 1.4 }}>AI-Driven Super-Intelligent Energy Management Systems for Autonomous EVs</h2>
+          <p style={{ color: "var(--color-text-secondary)", lineHeight: 1.6, marginBottom: "16px" }}>Leveraging deep learning, Agentic AI, and continuous thermal intelligence to dynamically optimize energy distribution, extend battery lifecycle, and maximize operational uptime for autonomous fleets.</p>
+          <a href="https://autonomous.ev.engineer/si-ems" style={{ color: "var(--color-accent)", fontWeight: 600, fontSize: "0.95rem", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+            Explore SI-EMS Architecture <span style={{ transition: "transform 0.2s ease" }}>→</span>
+          </a>
+        </div>
         
         <div className="glass-panel" style={{ borderLeft: "4px solid var(--color-accent)" }}>
           <h2 style={{ fontSize: "1.5rem", marginBottom: "12px", color: "var(--color-text-primary)" }}>Roadmap & Advisory</h2>
@@ -52,22 +50,32 @@ export default function ConsultingPage() {
         </div>
       </div>
 
-      <div style={{ 
-        background: 'linear-gradient(to bottom, rgba(4, 20, 14, 0.4), rgba(0,0,0,0.6))', 
-        padding: '64px 32px', 
-        borderRadius: '24px', 
-        marginTop: '80px', 
-        marginBottom: '64px',
-        border: '1px solid rgba(76, 169, 48, 0.15)',
-        boxShadow: '0 20px 60px rgba(0,0,0,0.5)'
-      }}>
-        <div style={{ textAlign: 'center', marginBottom: '16px' }}>
-          <h2 style={{ fontSize: '2.5rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '16px' }}>Strategic Engineering Collaboration</h2>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', maxWidth: '800px', margin: '0 auto' }}>
-            A premium engagement ecosystem designed to build your EV engineering capabilities and accelerate your roadmap.
-          </p>
+      <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', maxWidth: '900px', margin: '0 auto 64px', width: '100%' }}>
+        <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '8px' }}>
+          Strategic
         </div>
-        <EngagementModels />
+        <h3 style={{ fontSize: '1.5rem', color: 'var(--text-primary)', marginBottom: '8px' }}>Startup Engineering Buildout</h3>
+        <div style={{ color: 'var(--accent-primary)', fontSize: '0.9rem', fontWeight: 600, marginBottom: '16px' }}>
+          1–3 Years
+        </div>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginBottom: '16px', flexGrow: 1 }}>
+          Long-term engineering collaboration model focused on building EV engineering culture, technical leadership, architecture direction, engineering teams, diagnostics systems, and startup execution capability.
+        </p>
+        <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '24px', padding: '12px 8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', textAlign: 'center' }}>
+          Hire me as:<br/>
+          <span style={{ color: 'var(--text-primary)', fontWeight: 600, display: 'inline-block', marginTop: '4px' }}>Co-Founder | Director | Technical Advisor</span><br/>
+          <a href="https://autonomous.ev.engineer/about/sudarshana-karkala" style={{ color: 'var(--accent-primary)', textDecoration: 'underline', marginTop: '6px', display: 'inline-block' }}>About Sudarshana Karkala</a>
+        </div>
+        <div style={{ marginBottom: '24px' }}>
+          <div style={{ fontSize: '0.85rem', color: 'var(--text-primary)', fontWeight: 600, marginBottom: '8px' }}>Suitable For:</div>
+          <ul style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', lineHeight: 1.8, paddingLeft: '16px', listStyleType: 'disc' }}>
+            <li>EV Startups</li>
+            <li>Product Companies</li>
+            <li>Deep-Tech Ventures</li>
+            <li>Mobility Innovation Teams</li>
+            <li>Engineering-Driven Founders</li>
+          </ul>
+        </div>
       </div>
 
       <section style={{ textAlign: "center", padding: "40px 0", borderTop: "1px solid var(--color-glass-border)" }}>

@@ -46,24 +46,24 @@ export default function EngagementModels() {
         .btn:hover .cta-arrow, a:hover .cta-arrow {
           transform: translateX(4px);
         }
+        .hire-experts-box {
+          transition: all 0.3s ease;
+        }
+        .hire-experts-box:hover {
+          background: rgba(76, 169, 48, 0.1) !important;
+          border-color: rgba(76, 169, 48, 0.4) !important;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 15px rgba(76, 169, 48, 0.2);
+        }
       `}} />
 
       {/* Title & Subtitle removed per requirements */}
 
       {/* Highlight Strip */}
       <div className="glass-panel highlight-strip" style={{ marginBottom: "0" }}>
-        <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', marginBottom: '24px', lineHeight: 1.6, maxWidth: '800px', margin: '0 auto 24px' }}>
-          Mentored and trained 2000+ engineers and professionals since 2012 across EV systems, automotive software, telematics, battery technologies, diagnostics, cybersecurity, connected mobility, and engineering leadership.
+        <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', marginBottom: '0', lineHeight: 1.6, maxWidth: '800px', margin: '0 auto' }}>
+          Mentored and trained 2000+ engineers and professionals since 2012 across EV systems, automotive software, telematics, battery technologies, diagnostics, cybersecurity, connected mobility, Generative AI, Agentic AI, Autonomous Electric Vehicle Intelligence, and engineering leadership.
         </p>
-        {/* Premium Links */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'center' }}>
-          <a href="https://labs.ev.engineer/" target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ padding: '8px 20px', fontSize: '0.9rem' }}>
-            Explore Labs <span className="cta-arrow">→</span>
-          </a>
-          <a href="https://carsoftwaresystems.com/#testimonial" target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ padding: '8px 20px', fontSize: '0.9rem' }}>
-            Workshop Gallery <span className="cta-arrow">→</span>
-          </a>
-        </div>
       </div>
 
       {/* Top Center Card */}
@@ -136,7 +136,7 @@ export default function EngagementModels() {
             1–3 Months
           </div>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginBottom: '16px', flexGrow: 1 }}>
-            Structured engineering training programs focused on EV systems, diagnostics, battery technologies, telematics, GenAI-assisted engineering workflows, and technical leadership development.
+            Structured engineering training programs focused on -
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', justifyContent: 'center', marginBottom: '16px' }}>
             {['EV Systems', 'Battery Technologies', 'Diagnostics', 'Telematics', 'GenAI-Assisted Engineering', 'Engineering Leadership'].map(tag => (
@@ -145,7 +145,7 @@ export default function EngagementModels() {
               </span>
             ))}
           </div>
-          <div style={{ fontSize: '0.9rem', color: 'var(--text-primary)', fontWeight: 600, marginBottom: '24px', padding: '12px 8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', textAlign: 'center' }}>
+          <div className="hire-experts-box" style={{ fontSize: '0.9rem', color: 'var(--text-primary)', fontWeight: 600, marginBottom: '24px', padding: '12px 8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', textAlign: 'center' }}>
             Hire EV experts from EV.ENGINEER™
           </div>
           <div style={{ marginBottom: '24px' }}>
