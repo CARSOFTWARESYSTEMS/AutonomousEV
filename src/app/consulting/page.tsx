@@ -10,12 +10,12 @@ export default function ConsultingPage() {
   return (
     <div className="container" style={{ paddingTop: "120px", paddingBottom: "80px" }}>
       <header style={{ textAlign: "center", marginBottom: "64px" }}>
-        <h1 style={{ fontSize: "3rem", marginBottom: "16px" }}>Strategic & Technical Consulting</h1>
-        <p style={{ fontSize: "1.2rem", color: "var(--color-text-secondary)", maxWidth: "800px", margin: "0 auto 24px" }}>
-          Empower your engineering roadmap with production-validated insights.
+        <h1 style={{ fontSize: "3rem", marginBottom: "16px", lineHeight: 1.2 }}>Engineering Strategy for EV, Battery & Connected Mobility Systems</h1>
+        <p style={{ fontSize: "1.2rem", color: "var(--color-text-secondary)", maxWidth: "900px", margin: "0 auto 24px", lineHeight: 1.6 }}>
+          Collaborate with EV.ENGINEER™ to accelerate EV product engineering, workforce capability, diagnostics systems, telematics platforms, battery intelligence, and technical leadership initiatives.
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'center', maxWidth: '1000px', margin: '0 auto' }}>
-          {['EV Systems Architecture', 'Battery Intelligence', 'Telematics Systems', 'Engineering Leadership', 'Product Engineering', 'Diagnostics Systems', 'GenAI-Assisted Engineering', 'Agentic AI Workflows', 'Autonomous EV Intelligence', 'Connected Mobility', 'EV Workforce Development'].map(tag => (
+          {['EV Systems', 'Battery Intelligence', 'Diagnostics', 'Telematics', 'Engineering Leadership', 'Product Engineering'].map(tag => (
             <span key={tag} style={{ fontSize: '0.85rem', color: 'var(--accent-primary)', background: 'rgba(76, 169, 48, 0.05)', padding: '6px 14px', borderRadius: '999px', border: '1px solid rgba(76, 169, 48, 0.15)', boxShadow: '0 0 10px rgba(76, 169, 48, 0.05)' }}>
               {tag}
             </span>

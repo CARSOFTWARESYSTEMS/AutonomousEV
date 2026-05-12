@@ -52,23 +52,9 @@ export default function EngagementModels() {
 
       {/* Highlight Strip */}
       <div className="glass-panel highlight-strip" style={{ marginBottom: "0" }}>
-        <h3 style={{ fontSize: '1.2rem', fontWeight: 600, color: 'var(--accent-primary)', marginBottom: '16px' }}>
-          Mentored and trained 2000+ engineers and professionals since 2012 across:
-        </h3>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center', marginBottom: '24px' }}>
-          {['Electric Vehicles', 'Automotive Software Development', 'Battery Technologies', 'Telematics Systems', 'IoT & Smart Home Systems', 'Cybersecurity', 'Energy Systems', 'GenAI & Agentic AI', 'Embedded Systems', 'Mobile Applications', 'Engineering Leadership'].map(skill => (
-            <span key={skill} style={{ 
-              fontSize: '0.85rem', 
-              color: 'var(--text-primary)', 
-              background: 'rgba(255,255,255,0.05)', 
-              padding: '6px 14px', 
-              borderRadius: '999px', 
-              border: '1px solid rgba(255,255,255,0.1)' 
-            }}>
-              {skill}
-            </span>
-          ))}
-        </div>
+        <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', marginBottom: '24px', lineHeight: 1.6, maxWidth: '800px', margin: '0 auto 24px' }}>
+          Mentored and trained 2000+ engineers and professionals since 2012 across EV systems, automotive software, telematics, battery technologies, diagnostics, cybersecurity, connected mobility, and engineering leadership.
+        </p>
         {/* Premium Links */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'center' }}>
           <a href="https://labs.ev.engineer/" target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ padding: '8px 20px', fontSize: '0.9rem' }}>
@@ -91,7 +77,7 @@ export default function EngagementModels() {
             1 Hour
           </div>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginBottom: '24px' }}>
-            Online engineering awareness sessions focused on EV systems, battery technologies, diagnostics, software engineering, telematics, energy systems, and workforce development.
+            Engineering awareness sessions focused on EV systems, battery technologies, diagnostics, software engineering, telematics, and workforce development.
           </p>
           <div style={{ display: 'inline-block', background: 'rgba(76, 169, 48, 0.1)', padding: '4px 12px', borderRadius: '4px', fontSize: '0.75rem', color: 'var(--accent-primary)', fontWeight: 600, marginBottom: '24px' }}>
             Free
@@ -150,10 +136,10 @@ export default function EngagementModels() {
             1–3 Months
           </div>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginBottom: '16px', flexGrow: 1 }}>
-            Structured corporate engineering training programs designed for EV workforce development, GenAI-assisted engineering, Agentic AI workflows, Autonomous Electric Vehicle Intelligence, diagnostics systems, telematics, software engineering, testing workflows, and technical leadership readiness.
+            Structured engineering training programs focused on EV systems, diagnostics, battery technologies, telematics, GenAI-assisted engineering workflows, and technical leadership development.
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', justifyContent: 'center', marginBottom: '16px' }}>
-            {['GenAI', 'Agentic AI', 'EV Intelligence', 'Diagnostics', 'Telematics', 'Engineering Leadership'].map(tag => (
+            {['EV Systems', 'Battery Technologies', 'Diagnostics', 'Telematics', 'GenAI-Assisted Engineering', 'Engineering Leadership'].map(tag => (
               <span key={tag} style={{ fontSize: '0.7rem', color: 'var(--accent-primary)', background: 'rgba(76, 169, 48, 0.08)', padding: '4px 10px', borderRadius: '4px', border: '1px solid rgba(76, 169, 48, 0.2)' }}>
                 {tag}
               </span>
