@@ -125,7 +125,7 @@ export default function WorkshopGalleryPage() {
               return (
                 <div key={sIdx}>
                   <h2 style={{ 
-                    fontSize: "1.8rem", 
+                    fontSize: "clamp(1.4rem, 4vw, 1.8rem)", 
                     fontWeight: 600, 
                     marginBottom: "24px", 
                     color: "var(--accent-primary)",
@@ -137,7 +137,7 @@ export default function WorkshopGalleryPage() {
                   <div
                     style={{
                       display: "grid",
-                      gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+                      gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
                       gap: "20px",
                     }}
                   >
