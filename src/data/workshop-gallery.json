@@ -196,6 +196,27 @@
         "label": "Electric Vehicle Engineering & Development (Session 1)",
         "label2": "IIT Madras EV Lab - CODE 2025",
         "src": "/workshops/evend-1.jpg"
+      },
+      {
+        "filename": "aj-1.jpg",
+        "date": "2026-26",
+        "label": "Signing MOU with AJ College of Engineering and Management",
+        "label2": "IIT Madras EV Lab - CODE 2026",
+        "src": "/workshops/aj-1.jpg"
+      },
+      {
+        "filename": "aj-2.jpg",
+        "date": "2025-26",
+        "label": "Signing MOU with AJ College of Engineering and Management",
+        "label2": "IIT Madras EV Lab - CODE 2025",
+        "src": "/workshops/aj-2.jpg"
+      },
+      {
+        "filename": "srinivasa-1.jpg",
+        "date": "2025-26",
+        "label": "Srinivasa College of Engineering and Management",
+        "label2": "IIT Madras EV Lab - CODE 2025",
+        "src": "/workshops/srinivasa-1.jpg"
       }
     ]
   }
