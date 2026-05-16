@@ -217,6 +217,34 @@
         "label": "Srinivasa College of Engineering and Management",
         "label2": "IIT Madras EV Lab - CODE 2025",
         "src": "/workshops/srinivasa-1.jpg"
+      },
+      {
+        "filename": "schaeffler-india.jpg",
+        "date": "2025-26",
+        "label": "Schaeffler India",
+        "label2": "Gen AI workshop",
+        "src": "/workshops/schaeffler-india.jpg"
+      },
+      {
+        "filename": "schaeffler-india2.jpg",
+        "date": "2025-26",
+        "label": "Schaeffler India",
+        "label2": "Gen AI workshop",
+        "src": "/workshops/schaeffler-india2.jpg"
+      },
+      {
+        "filename": "crompton.jpg",
+        "date": "2025-26",
+        "label": "Crompton Electricals, Mumbai",
+        "label2": "iOS - IoT & Sensors for Automation Workshop",
+        "src": "/workshops/crompton.jpg"
+      },
+      {
+        "filename": "crompton-1.jpg",
+        "date": "2025-26",
+        "label": "Crompton Electricals, Mumbai",
+        "label2": "iOS - IoT & Sensors for Automation Workshop",
+        "src": "/workshops/crompton-1.jpg"
       }
     ]
   }
