@@ -1,5 +1,23 @@
 [
   {
+    "filename": "evsociety2026_webinar3.jpeg",
+    "date": "2026-03-11",
+    "label": "Mar 2026 Webinar",
+    "src": "/workshops/evsociety2026_webinar3.jpeg"
+  },
+  {
+    "filename": "evsociety2026_webinar2.jpeg",
+    "date": "2026-02-25",
+    "label": "Feb 2026 Webinar & Internship",
+    "src": "/workshops/evsociety2026_webinar2.jpeg"
+  },
+  {
+    "filename": "evsociety2026_webinar1.jpeg",
+    "date": "2026-02-11",
+    "label": "Feb 2026 Webinar & Internship",
+    "src": "/workshops/evsociety2026_webinar1.jpeg"
+  },
+  {
     "filename": "30052026.png",
     "date": "2026-05-30",
     "label": "May 2026 Workshop",
@@ -10,18 +28,6 @@
     "date": "2026-04-23",
     "label": "April 2026 Workshop",
     "src": "/workshops/23042026.jpg"
-  },
-  {
-    "filename": "02042026-2.jpg",
-    "date": "2026-04-02",
-    "label": "April 2026 Workshop (Day 2)",
-    "src": "/workshops/02042026-2.jpg"
-  },
-  {
-    "filename": "02042026.jpg",
-    "date": "2026-04-02",
-    "label": "April 2026 Workshop (Day 1)",
-    "src": "/workshops/02042026.jpg"
   },
   {
     "filename": "11032026.jpg",
@@ -36,22 +42,10 @@
     "src": "/workshops/06032026-2.jpg"
   },
   {
-    "filename": "06032026.jpg",
-    "date": "2026-03-06",
-    "label": "March 2026 Workshop (Session 1)",
-    "src": "/workshops/06032026.jpg"
-  },
-  {
     "filename": "25022026.jpg",
     "date": "2026-02-25",
     "label": "February 2026 Workshop",
     "src": "/workshops/25022026.jpg"
-  },
-  {
-    "filename": "21022026.jpg",
-    "date": "2026-02-21",
-    "label": "NITKonnect 2026 - EV Panel Discussion",
-    "src": "/workshops/21022026.jpg"
   },
   {
     "filename": "11022026.jpg",
@@ -70,6 +64,30 @@
     "date": "2025-11-03",
     "label": "November 2025 Workshop",
     "src": "/workshops/03112025.png"
+  },
+  {
+    "filename": "21022026.jpg",
+    "date": "2026-02-21",
+    "label": "NITKonnect 2026 - EV Panel Discussion",
+    "src": "/workshops/21022026.jpg"
+  },
+  {
+    "filename": "02042026-2.jpg",
+    "date": "2026-04-02",
+    "label": "April 2026 Workshop (Day 2)",
+    "src": "/workshops/02042026-2.jpg"
+  },
+  {
+    "filename": "02042026.jpg",
+    "date": "2026-04-02",
+    "label": "April 2026 Workshop (Day 1)",
+    "src": "/workshops/02042026.jpg"
+  },
+  {
+    "filename": "06032026.jpg",
+    "date": "2026-03-06",
+    "label": "March 2026 Workshop (Session 1)",
+    "src": "/workshops/06032026.jpg"
   },
   {
     "filename": "08082025.jpg",
