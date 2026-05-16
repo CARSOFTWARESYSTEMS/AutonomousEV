@@ -118,98 +118,103 @@ export default function WorkshopGalleryPage() {
             </div>
           </div>
 
-          {/* Grid */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-              gap: "20px",
-            }}
-          >
-            {galleryData.map((item, idx) => (
-              <div
-                key={idx}
-                className="glass-panel"
-                onClick={() => {
-                  setLightbox({ src: item.src, label: item.label });
-                }}
-                data-track-event="gallery_photo_click"
-                data-track-label={item.label}
-                style={{
-                  padding: 0,
-                  overflow: "hidden",
-                  cursor: "zoom-in",
-                  transition: "transform 0.2s ease, box-shadow 0.2s ease",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLDivElement).style.transform = "translateY(-4px)";
-                  (e.currentTarget as HTMLDivElement).style.boxShadow =
-                    "0 12px 40px rgba(0,0,0,0.5)";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)";
-                  (e.currentTarget as HTMLDivElement).style.boxShadow = "";
-                }}
-              >
-                <div style={{ position: "relative", paddingBottom: "66%", overflow: "hidden" }}>
-                  <img
-                    src={item.src}
-                    alt={item.label}
-                    loading="lazy"
+          {/* Sections */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "64px" }}>
+            {galleryData.map((section, sIdx) => {
+              if (!section.items || section.items.length === 0) return null;
+              return (
+                <div key={sIdx}>
+                  <h2 style={{ 
+                    fontSize: "1.8rem", 
+                    fontWeight: 600, 
+                    marginBottom: "24px", 
+                    color: "var(--accent-primary)",
+                    borderBottom: "1px solid rgba(255,255,255,0.1)",
+                    paddingBottom: "12px"
+                  }}>
+                    {section.sectionName}
+                  </h2>
+                  <div
                     style={{
-                      position: "absolute",
-                      inset: 0,
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      transition: "transform 0.3s ease",
-                    }}
-                    onMouseEnter={(e) =>
-                      ((e.currentTarget as HTMLImageElement).style.transform = "scale(1.04)")
-                    }
-                    onMouseLeave={(e) =>
-                      ((e.currentTarget as HTMLImageElement).style.transform = "scale(1)")
-                    }
-                  />
-                  {idx === 0 && (
-                    <span
-                      style={{
-                        position: "absolute",
-                        top: "10px",
-                        left: "10px",
-                        background: "var(--accent-primary)",
-                        color: "#000",
-                        fontSize: "0.7rem",
-                        fontWeight: 700,
-                        padding: "3px 10px",
-                        borderRadius: "20px",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.05em",
-                      }}
-                    >
-                      Latest
-                    </span>
-                  )}
-                </div>
-                <div style={{ padding: "14px 16px" }}>
-                  <p
-                    style={{
-                      fontSize: "0.9rem",
-                      color: "var(--text-primary)",
-                      fontWeight: 500,
-                      marginBottom: "4px",
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+                      gap: "20px",
                     }}
                   >
-                    {item.label}
-                  </p>
-                  <p style={{ fontSize: "0.8rem", color: "var(--accent-primary)" }}>
-                    {formatDate(item.date)}
-                  </p>
+                    {section.items.map((item, idx) => (
+                      <div
+                        key={idx}
+                        className="glass-panel"
+                        onClick={() => {
+                          setLightbox({ src: item.src, label: item.label });
+                        }}
+                        data-track-event="gallery_photo_click"
+                        data-track-label={item.label}
+                        style={{
+                          padding: 0,
+                          overflow: "hidden",
+                          cursor: "zoom-in",
+                          transition: "transform 0.2s ease, box-shadow 0.2s ease",
+                          display: "flex",
+                          flexDirection: "column",
+                        }}
+                        onMouseEnter={(e) => {
+                          (e.currentTarget as HTMLDivElement).style.transform = "translateY(-4px)";
+                          (e.currentTarget as HTMLDivElement).style.boxShadow =
+                            "0 12px 40px rgba(0,0,0,0.5)";
+                        }}
+                        onMouseLeave={(e) => {
+                          (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)";
+                          (e.currentTarget as HTMLDivElement).style.boxShadow = "";
+                        }}
+                      >
+                        <div style={{ position: "relative", paddingBottom: "66%", overflow: "hidden" }}>
+                          <img
+                            src={item.src}
+                            alt={item.label}
+                            loading="lazy"
+                            style={{
+                              position: "absolute",
+                              inset: 0,
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "cover",
+                              transition: "transform 0.3s ease",
+                            }}
+                            onMouseEnter={(e) =>
+                              ((e.currentTarget as HTMLImageElement).style.transform = "scale(1.04)")
+                            }
+                            onMouseLeave={(e) =>
+                              ((e.currentTarget as HTMLImageElement).style.transform = "scale(1)")
+                            }
+                          />
+                        </div>
+                        <div style={{ padding: "14px 16px" }}>
+                          <p
+                            style={{
+                              fontSize: "0.9rem",
+                              color: "var(--text-primary)",
+                              fontWeight: 500,
+                              marginBottom: "4px",
+                            }}
+                          >
+                            {item.label}
+                          </p>
+                          <p style={{ fontSize: "0.8rem", color: "var(--accent-primary)", marginBottom: item.label2 ? "6px" : "0" }}>
+                            {formatDate(item.date)}
+                          </p>
+                          {item.label2 && (
+                            <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", lineHeight: 1.4 }}>
+                              {item.label2}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Bottom CTA */}

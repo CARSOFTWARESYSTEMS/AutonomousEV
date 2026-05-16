@@ -1,116 +1,159 @@
 [
   {
-    "filename": "evsociety2026_webinar3.jpeg",
-    "date": "2026-03-11",
-    "label": "Mar 2026 EV Webinar (Shilajit Das, EV Battery, NITK Surathkal, Mangalore)",
-    "src": "/workshops/evsociety2026_webinar3.jpeg"
+    "sectionName": "Certificate distribution",
+    "items": [
+      {
+        "filename": "evsociety2026_webinar3.jpeg",
+        "date": "2026-03-11",
+        "label": "Mar 2026 EV Webinar",
+        "label2": "Shilajit Das, EV Battery, NITK Surathkal, Mangalore",
+        "src": "/workshops/evsociety2026_webinar3.jpeg"
+      },
+      {
+        "filename": "evsociety2026_webinar2.jpeg",
+        "date": "2026-02-25",
+        "label": "Feb 2026 Webinar & EV Internship",
+        "label2": "Shreelakshmi Hegde, AI ML, Canara Engineering College, Mangalore",
+        "src": "/workshops/evsociety2026_webinar2.jpeg"
+      },
+      {
+        "filename": "evsociety2026_webinar1.jpeg",
+        "date": "2026-02-11",
+        "label": "Feb 2026 Webinar & EV Internship",
+        "label2": "Sreenath Asha, ECE, AJ Engineering College, Mangalore",
+        "src": "/workshops/evsociety2026_webinar1.jpeg"
+      }
+    ]
   },
   {
-    "filename": "evsociety2026_webinar2.jpeg",
-    "date": "2026-02-25",
-    "label": "Feb 2026 Webinar & EV Internship (Shreelakshmi Hegde, AI ML, Canara Engineering College, Mangalore)",
-    "src": "/workshops/evsociety2026_webinar2.jpeg"
+    "sectionName": "EV Society - Workshops",
+    "items": [
+      {
+        "filename": "30052026.png",
+        "date": "2026-05-30",
+        "label": "May 2026 Workshop",
+        "label2": "Hands-on EV Engineering and Autonomous Systems Workshop",
+        "src": "/workshops/30052026.png"
+      },
+      {
+        "filename": "23042026.jpg",
+        "date": "2026-04-23",
+        "label": "April 2026 Workshop",
+        "label2": "EV Powertrain and Battery Management System Training",
+        "src": "/workshops/23042026.jpg"
+      },
+      {
+        "filename": "11032026.jpg",
+        "date": "2026-03-11",
+        "label": "March 2026 Workshop",
+        "label2": "Electric Vehicle Architecture and Control Systems",
+        "src": "/workshops/11032026.jpg"
+      },
+      {
+        "filename": "06032026-2.jpg",
+        "date": "2026-03-06",
+        "label": "March 2026 Workshop (Session 2)",
+        "label2": "Advanced Autonomous Vehicle Concepts and Testing",
+        "src": "/workshops/06032026-2.jpg"
+      },
+      {
+        "filename": "25022026.jpg",
+        "date": "2026-02-25",
+        "label": "February 2026 Workshop",
+        "label2": "Battery Safety and Thermal Management Seminar",
+        "src": "/workshops/25022026.jpg"
+      },
+      {
+        "filename": "11022026.jpg",
+        "date": "2026-02-11",
+        "label": "February 2026 Workshop",
+        "label2": "Introduction to EV Hardware and Software Integration",
+        "src": "/workshops/11022026.jpg"
+      },
+      {
+        "filename": "11122025.png",
+        "date": "2025-12-11",
+        "label": "December 2025 Workshop",
+        "label2": "End-of-Year EV Society Technology Recap",
+        "src": "/workshops/11122025.png"
+      },
+      {
+        "filename": "03112025.png",
+        "date": "2025-11-03",
+        "label": "November 2025 Workshop",
+        "label2": "Fundamentals of EV Motor Controllers",
+        "src": "/workshops/03112025.png"
+      }
+    ]
   },
   {
-    "filename": "evsociety2026_webinar1.jpeg",
-    "date": "2026-02-11",
-    "label": "Feb 2026 Webinar & EV Internship (Sreenath Asha, ECE, AJ Engineering College, Mangalore)",
-    "src": "/workshops/evsociety2026_webinar1.jpeg"
+    "sectionName": "External Workshops",
+    "items": [
+      {
+        "filename": "02042026-2.jpg",
+        "date": "2026-04-02",
+        "label": "April 2026 Workshop (Day 2)",
+        "label2": "External Partner Training on Advanced Diagnostics",
+        "src": "/workshops/02042026-2.jpg"
+      },
+      {
+        "filename": "02042026.jpg",
+        "date": "2026-04-02",
+        "label": "April 2026 Workshop (Day 1)",
+        "label2": "External Partner Training on System Calibration",
+        "src": "/workshops/02042026.jpg"
+      },
+      {
+        "filename": "06032026.jpg",
+        "date": "2026-03-06",
+        "label": "March 2026 Workshop (Session 1)",
+        "label2": "Collaborative EV Research and Prototyping Session",
+        "src": "/workshops/06032026.jpg"
+      },
+      {
+        "filename": "08082025.jpg",
+        "date": "2025-08-08",
+        "label": "August 2025 Workshop",
+        "label2": "Industry Insights and Next-Gen Battery Technologies",
+        "src": "/workshops/08082025.jpg"
+      },
+      {
+        "filename": "07052025.jpg",
+        "date": "2025-05-07",
+        "label": "May 2025 Workshop",
+        "label2": "Electric Mobility Trends and Development",
+        "src": "/workshops/07052025.jpg"
+      },
+      {
+        "filename": "07042025.jpg",
+        "date": "2025-04-07",
+        "label": "April 2025 Workshop",
+        "label2": "Autonomous Systems Navigation Workshop",
+        "src": "/workshops/07042025.jpg"
+      },
+      {
+        "filename": "02042025.jpg",
+        "date": "2025-04-02",
+        "label": "April 2025 Workshop",
+        "label2": "EV Safety Protocols and Regulations",
+        "src": "/workshops/02042025.jpg"
+      }
+    ]
   },
   {
-    "filename": "30052026.png",
-    "date": "2026-05-30",
-    "label": "May 2026 Workshop",
-    "src": "/workshops/30052026.png"
+    "sectionName": "External Events",
+    "items": [
+      {
+        "filename": "21022026.jpg",
+        "date": "2026-02-21",
+        "label": "NITKonnect 2026 - EV Panel Discussion",
+        "label2": "Expert Panel Discussion on the Future of Electric Vehicles",
+        "src": "/workshops/21022026.jpg"
+      }
+    ]
   },
   {
-    "filename": "23042026.jpg",
-    "date": "2026-04-23",
-    "label": "April 2026 Workshop",
-    "src": "/workshops/23042026.jpg"
-  },
-  {
-    "filename": "11032026.jpg",
-    "date": "2026-03-11",
-    "label": "March 2026 Workshop",
-    "src": "/workshops/11032026.jpg"
-  },
-  {
-    "filename": "06032026-2.jpg",
-    "date": "2026-03-06",
-    "label": "March 2026 Workshop (Session 2)",
-    "src": "/workshops/06032026-2.jpg"
-  },
-  {
-    "filename": "25022026.jpg",
-    "date": "2026-02-25",
-    "label": "February 2026 Workshop",
-    "src": "/workshops/25022026.jpg"
-  },
-  {
-    "filename": "11022026.jpg",
-    "date": "2026-02-11",
-    "label": "February 2026 Workshop",
-    "src": "/workshops/11022026.jpg"
-  },
-  {
-    "filename": "11122025.png",
-    "date": "2025-12-11",
-    "label": "December 2025 Workshop",
-    "src": "/workshops/11122025.png"
-  },
-  {
-    "filename": "03112025.png",
-    "date": "2025-11-03",
-    "label": "November 2025 Workshop",
-    "src": "/workshops/03112025.png"
-  },
-  {
-    "filename": "21022026.jpg",
-    "date": "2026-02-21",
-    "label": "NITKonnect 2026 - EV Panel Discussion",
-    "src": "/workshops/21022026.jpg"
-  },
-  {
-    "filename": "02042026-2.jpg",
-    "date": "2026-04-02",
-    "label": "April 2026 Workshop (Day 2)",
-    "src": "/workshops/02042026-2.jpg"
-  },
-  {
-    "filename": "02042026.jpg",
-    "date": "2026-04-02",
-    "label": "April 2026 Workshop (Day 1)",
-    "src": "/workshops/02042026.jpg"
-  },
-  {
-    "filename": "06032026.jpg",
-    "date": "2026-03-06",
-    "label": "March 2026 Workshop (Session 1)",
-    "src": "/workshops/06032026.jpg"
-  },
-  {
-    "filename": "08082025.jpg",
-    "date": "2025-08-08",
-    "label": "August 2025 Workshop",
-    "src": "/workshops/08082025.jpg"
-  },
-  {
-    "filename": "07052025.jpg",
-    "date": "2025-05-07",
-    "label": "May 2025 Workshop",
-    "src": "/workshops/07052025.jpg"
-  },
-  {
-    "filename": "07042025.jpg",
-    "date": "2025-04-07",
-    "label": "April 2025 Workshop",
-    "src": "/workshops/07042025.jpg"
-  },
-  {
-    "filename": "02042025.jpg",
-    "date": "2025-04-02",
-    "label": "April 2025 Workshop",
-    "src": "/workshops/02042025.jpg"
+    "sectionName": "Gallery",
+    "items": []
   }
 ]
