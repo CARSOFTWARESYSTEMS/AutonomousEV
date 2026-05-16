@@ -31,6 +31,7 @@ export default function Home() {
               <div className={styles.actions}>
                 <Link href="/corporate-training" className="btn btn-secondary" data-track-event="hero_training_click">Corporate Training</Link>
                 <Link href="/consulting" className="btn btn-primary" data-track-event="hero_consulting_click">Consulting</Link>
+                <Link href="/workshop-gallery" className="btn btn-secondary" data-track-event="hero_gallery_click">Gallery</Link>
               </div>
             </div>
 
@@ -260,6 +261,7 @@ export default function Home() {
           <div className={styles.heroCtas}>
             <Link href="/corporate-training" className="btn btn-secondary" data-track-event="bottom_cta_training_click">Corporate Training</Link>
             <Link href="/consulting" className="btn btn-primary" data-track-event="bottom_cta_consulting_click">Engage Consulting</Link>
+            <Link href="/workshop-gallery" className="btn btn-secondary" data-track-event="bottom_cta_gallery_click">Gallery</Link>
           </div>
         </div>
       </section>
