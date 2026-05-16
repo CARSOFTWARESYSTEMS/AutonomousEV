@@ -22,6 +22,20 @@
         "label": "Feb 2026 Webinar & EV Internship",
         "label2": "Sreenath Asha, ECE, AJ Engineering College, Mangalore",
         "src": "/workshops/evsociety2026_webinar1.jpeg"
+      },
+      {
+        "filename": "evend-lab.jpg",
+        "date": "2026-02-21",
+        "label": "Electric Vehicle Engineering & Development (Session 2)",
+        "label2": "IIT Madras EV Lab - CODE 2026",
+        "src": "/workshops/evend-lab.jpg"
+      },
+      {
+        "filename": "evend.jpg",
+        "date": "2025-04-19",
+        "label": "Electric Vehicle Engineering & Development (Session 1)",
+        "label2": "IIT Madras EV Lab - CODE 2025",
+        "src": "/workshops/evend.jpg"
       }
     ]
   },
@@ -151,7 +165,14 @@
     "sectionName": "External Events",
     "items": [
       {
-        "filename": "21022026.jpg",
+        "filename": "nitkonnect2026.jpg",
+        "date": "2026-02-21",
+        "label": "NITKonnect 2026 - EV Panel Discussion",
+        "label2": "Expert Panel Discussion on the Future of Electric Vehicles",
+        "src": "/workshops/nitkonnect2026.jpg"
+      },
+      {
+        "filename": "19022026.jpg",
         "date": "2026-02-21",
         "label": "NITKonnect 2026 - EV Panel Discussion",
         "label2": "Expert Panel Discussion on the Future of Electric Vehicles",
@@ -161,6 +182,21 @@
   },
   {
     "sectionName": "Gallery",
-    "items": []
+    "items": [
+      {
+        "filename": "evend-lab-1.jpg",
+        "date": "2026-02-21",
+        "label": "Electric Vehicle Engineering & Development (Session 2)",
+        "label2": "IIT Madras EV Lab - CODE 2026",
+        "src": "/workshops/evend-lab-1.jpg"
+      },
+      {
+        "filename": "evend-1.jpg",
+        "date": "2025-04-19",
+        "label": "Electric Vehicle Engineering & Development (Session 1)",
+        "label2": "IIT Madras EV Lab - CODE 2025",
+        "src": "/workshops/evend-1.jpg"
+      }
+    ]
   }
 ]
