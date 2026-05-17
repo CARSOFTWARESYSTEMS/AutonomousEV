@@ -9,6 +9,7 @@ export default function WorkshopGalleryPage() {
 
   function formatDate(dateStr: string) {
     const d = new Date(dateStr + "T00:00:00");
+    if (isNaN(d.getTime())) return "";
     return d.toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" });
   }
 
