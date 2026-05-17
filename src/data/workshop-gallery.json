@@ -172,6 +172,13 @@
         "src": "/workshops/nitkonnect2026.jpg"
       },
       {
+        "filename": "nitkonnect2026-1.jpg",
+        "date": "2026-02-21",
+        "label": "NITKonnect 2026 - EV Panel Discussion",
+        "label2": "Expert Panel Discussion on the Future of Electric Vehicles",
+        "src": "/workshops/nitkonnect2026-1.jpg"
+      },
+      {
         "filename": "19022026.jpg",
         "date": "2026-02-21",
         "label": "NITKonnect 2026 - EV Panel Discussion",
@@ -183,6 +190,13 @@
   {
     "sectionName": "Gallery",
     "items": [
+      {
+        "filename": "rajive_paceprogram.jpg",
+        "date": "2025-26",
+        "label": "Rajiv Talreja PACE Program",
+        "label2": "EV ENGINEER - 2026",
+        "src": "/workshops/ajive_paceprogram.jpg"
+      },
       {
         "filename": "evend-lab-1.jpg",
         "date": "2026-03-21",
@@ -245,6 +259,111 @@
         "label": "Crompton Electricals, Mumbai",
         "label2": "iOS - IoT & Sensors for Automation Workshop",
         "src": "/workshops/crompton-2.jpg"
+      },
+      {
+        "filename": "canara1.jpg",
+        "date": "2025-26",
+        "label": "Canara Engineering College, Mangalore",
+        "label2": "EV ENGINEER - 2026",
+        "src": "/workshops/canara1.jpg"
+      },
+      {
+        "filename": "aj-3.jpg",
+        "date": "2025-26",
+        "label": "AJ College of Engineering and Management",
+        "label2": "EV ENGINEER - 2026",
+        "src": "/workshops/aj-3.jpg"
+      },
+      {
+        "filename": "iitmcode.jpg",
+        "date": "2025-26",
+        "label": "IITM CODE 2025",
+        "label2": "Electric Vehicle Engineering & Development",
+        "src": "/workshops/iitmcode.jpg"
+      },
+      {
+        "filename": "iitmcode2.jpg",
+        "date": "2026-03-21",
+        "label": "IITM CODE 2026 (Lab Session)",
+        "label2": "Electric Vehicle Engineering & Development",
+        "src": "/workshops/iitmcode2.jpg"
+      },
+      {
+        "filename": "mite1.jpg",
+        "date": "201X",
+        "label": "Mangalore Institute of Technology and Engineering, Mangalore",
+        "label2": "EV ENGINEER - 2026",
+        "src": "/workshops/mite1.jpg"
+      },
+      {
+        "filename": "mite2.jpg",
+        "date": "201X",
+        "label": "Mangalore Institute of Technology and Engineering, Mangalore",
+        "label2": "EV ENGINEER - 2026",
+        "src": "/workshops/mite2.jpg"
+      },
+      {
+        "filename": "mite3.jpg",
+        "date": "201X",
+        "label": "Mangalore Institute of Technology and Engineering, Mangalore",
+        "label2": "EV ENGINEER - 2026",
+        "src": "/workshops/mite3.jpg"
+      },
+      {
+        "filename": "nitkmba1.jpg",
+        "date": "2026-05-15",
+        "label": "NITK Surathkal - MBA 2026",
+        "label2": "",
+        "src": "/workshops/nitkmba1.jpg"
+      },
+      {
+        "filename": "nitkmba2.jpg",
+        "date": "2026-05-15",
+        "label": "NITK Surathkal - MBA 2026",
+        "label2": "",
+        "src": "/workshops/nitkmba2.jpg"
+      },
+      {
+        "filename": "pccegoa.jpg",
+        "date": "2016",
+        "label": "Pardesi College of Engineering and Management, Goa",
+        "label2": "EV Workshop",
+        "src": "/workshops/pccegoa.jpg"
+      },
+      {
+        "filename": "sdm1.jpg",
+        "date": "2026",
+        "label": "SDM College of Engineering and Technology, Ujire",
+        "label2": "EV Battery Workshop",
+        "src": "/workshops/sdm1.jpg"
+      },
+      {
+        "filename": "sdm2.jpg",
+        "date": "2025",
+        "label": "SDM College of Engineering and Technology, Ujire",
+        "label2": "EV Battery Workshop",
+        "src": "/workshops/sdm2.jpg"
+      },
+      {
+        "filename": "sdm3.jpg",
+        "date": "2026",
+        "label": "SDM College of Engineering and Technology, Ujire",
+        "label2": "EV Battery Workshop",
+        "src": "/workshops/sdm3.jpg"
+      },
+      {
+        "filename": "sdm4.jpg",
+        "date": "2026",
+        "label": "SDM College of Engineering and Technology, Ujire",
+        "label2": "EV Battery Workshop",
+        "src": "/workshops/sdm4.jpg"
+      },
+      {
+        "filename": "vtu1.jpg",
+        "date": "2025",
+        "label": "Constituent College of VTU",
+        "label2": "EV.ENGINEER",
+        "src": "/workshops/vtu1.jpg"
       }
     ]
   }
