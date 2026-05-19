@@ -11,9 +11,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "EV.ENGINEER™ | Engineering the Future of Autonomous eMobility",
-  description: "Production-grade training, technical concepts, simulation-driven learning, cybersecurity insight, and engineering consulting for Autonomous EV systems by Sudarshana Karkala, Principal Architect at Thasmai Infotech Private Limited.",
-  keywords: ["Autonomous EV training Singapore", "Autonomous vehicle consulting", "AV simulations", "AV cybersecurity", "EV battery health diagnostics for autonomous vehicles", "CETRAN AV ecosystem", "Singapore autonomous vehicle training", "Autonomous air taxi design", "eVTOL engineering", "Airport cargo autonomous EV design", "Sudarshana Karkala", "Sudarshana Karkala EV Engineer", "Sudarshana Karkala iTelematics", "Sudarshana Karkala Principal Architect"],
+  title: "EV.ENGINEER™ | Lithium-Ion EV Battery Intelligence Platform",
+  description: "Lithium-Ion EV Battery Intelligence Platform. Building intelligent battery ecosystems through AI-driven diagnostics, thermal safety systems, battery lifecycle intelligence, second-life battery technologies, and deep-tech engineering innovation.",
+  keywords: ["Lithium-Ion EV Battery Intelligence", "EV Battery Diagnostics", "Battery AI", "Battery Safety", "Battery Analytics", "Battery Lifecycle Intelligence", "Second-Life Batteries", "BMS Intelligence", "Battery Thermal Intelligence", "EV Battery Research", "Battery Intelligence Platform", "Sudarshana Karkala", "Autonomous EV training Singapore"],
   authors: [{ name: "Sudarshana Karkala" }],
   creator: "Sudarshana Karkala",
 };

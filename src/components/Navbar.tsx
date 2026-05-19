@@ -30,42 +30,17 @@ export default function Navbar() {
             Engineering
             <div className={styles.dropdown}>
               <div className={styles.dropdownColumn}>
-                <div className={styles.dropdownTitle}>Foundations</div>
-                <Link href="/av-concepts" className={styles.dropdownLink}>AV Concepts</Link>
+                <div className={styles.dropdownTitle}>Battery Systems</div>
+                <Link href="/" className={styles.dropdownLink}>Battery Intelligence</Link>
                 <Link href="/technical-concepts" className={styles.dropdownLink}>Technical Concepts</Link>
-                <Link href="/non-technical-concepts" className={styles.dropdownLink}>Non-Technical Concepts</Link>
+                <Link href="/av-concepts" className={styles.dropdownLink}>AV Concepts</Link>
               </div>
               <div className={styles.dropdownColumn}>
-                <div className={styles.dropdownTitle}>Core Systems</div>
-                <Link href="/driverless-car-technologies" className={styles.dropdownLink}>Driverless Car Tech</Link>
-                <Link href="/intelligent-transportation-systems" className={styles.dropdownLink}>Intelligent Transportation</Link>
-                <Link href="/rtos" className={styles.dropdownLink}>RTOS for AV</Link>
-                <Link href="/machine-learning" className={styles.dropdownLink}>Machine Learning &amp; AI</Link>
-                <Link href="/si-ems" className={styles.dropdownLink}>SI-EMS Research</Link>
-              </div>
-              <div className={styles.dropdownColumn}>
-                <div className={styles.dropdownTitle}>Applied &amp; Tools</div>
-                <Link href="/simulations" className={styles.dropdownLink}>Hands-On Simulations</Link>
-                <Link href="/developer-portal" className={styles.dropdownLink}>Developer Portal</Link>
-              </div>
-            </div>
-          </div>
-
-          <div className={styles.navItem}>
-            EV Ecosystem
-            <div className={styles.dropdown}>
-              <div className={styles.dropdownColumn}>
-                <div className={styles.dropdownTitle}>AV Ecosystem</div>
-                <Link href="/ecosystem/india" className={styles.dropdownLink}>India</Link>
-                <Link href="/ecosystem/europe" className={styles.dropdownLink}>Europe</Link>
-                <Link href="/ecosystem/singapore" className={styles.dropdownLink}>Singapore</Link>
-                <Link href="/ecosystem/usa" className={styles.dropdownLink}>USA</Link>
-              </div>
-              <div className={styles.dropdownColumn}>
-                <div className={styles.dropdownTitle}>Risks &amp; Maintenance</div>
-                <Link href="/challenges" className={styles.dropdownLink}>Challenges</Link>
+                <div className={styles.dropdownTitle}>Ecosystem & Risks</div>
                 <Link href="/cybersecurity" className={styles.dropdownLink}>Cybersecurity</Link>
-                <Link href="/battery-diagnostics" className={styles.dropdownLink}>EV Battery Diagnostics</Link>
+                <Link href="/ecosystem/singapore" className={styles.dropdownLink}>Ecosystem</Link>
+                <Link href="/challenges" className={styles.dropdownLink}>Risks & Maintenance</Link>
+                <Link href="/developer-portal" className={styles.dropdownLink}>Developer Portal</Link>
               </div>
             </div>
           </div>
@@ -73,6 +48,8 @@ export default function Navbar() {
           <Link href="/internships" className={styles.navItem}>Internships</Link>
 
           <Link href="/ev-career" className={styles.navItem}>EV Career</Link>
+
+          <Link href="/workshop-gallery" className={styles.navItem}>Gallery</Link>
         </div>
 
         <div className={styles.actions}>
@@ -97,36 +74,23 @@ export default function Navbar() {
           <Link href="/about" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>About Us</Link>
           <Link href="/about/sudarshana-karkala" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Sudarshana Karkala</Link>
 
-          <div className={styles.mobileSectionTitle}>Engineering — Foundations</div>
-          <Link href="/av-concepts" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>AV Concepts</Link>
+          <div className={styles.mobileSectionTitle}>Engineering</div>
+          <Link href="/" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Battery Intelligence</Link>
           <Link href="/technical-concepts" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Technical Concepts</Link>
-          <Link href="/non-technical-concepts" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Non-Technical Concepts</Link>
-
-          <div className={styles.mobileSectionTitle}>Engineering — Core & Tools</div>
-          <Link href="/driverless-car-technologies" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Driverless Car Tech</Link>
-          <Link href="/intelligent-transportation-systems" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Intelligent Transportation</Link>
-          <Link href="/rtos" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>RTOS for AV</Link>
-          <Link href="/machine-learning" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Machine Learning &amp; AI</Link>
-          <Link href="/simulations" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Hands-On Simulations</Link>
-          <Link href="/developer-portal" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Developer Portal</Link>
-          <Link href="/si-ems" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>SI-EMS Research</Link>
-
-          <div className={styles.mobileSectionTitle}>EV Ecosystem</div>
-          <Link href="/ecosystem/india" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>India Ecosystem</Link>
-          <Link href="/ecosystem/europe" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Europe Ecosystem</Link>
-          <Link href="/ecosystem/singapore" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Singapore Ecosystem</Link>
-          <Link href="/ecosystem/usa" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>USA Ecosystem</Link>
-
-          <div className={styles.mobileSectionTitle}>Risks &amp; Maintenance</div>
-          <Link href="/challenges" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Challenges</Link>
+          <Link href="/av-concepts" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>AV Concepts</Link>
           <Link href="/cybersecurity" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Cybersecurity</Link>
-          <Link href="/battery-diagnostics" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>EV Battery Diagnostics</Link>
+          <Link href="/ecosystem/singapore" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Ecosystem</Link>
+          <Link href="/challenges" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Risks &amp; Maintenance</Link>
+          <Link href="/developer-portal" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Developer Portal</Link>
 
           <div className={styles.mobileSectionTitle}>Internships</div>
           <Link href="/internships" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Internships</Link>
 
           <div className={styles.mobileSectionTitle}>Careers</div>
           <Link href="/ev-career" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>EV Career</Link>
+
+          <div className={styles.mobileSectionTitle}>Gallery</div>
+          <Link href="/workshop-gallery" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Workshop Gallery</Link>
 
           <Link href="/contact" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Contact</Link>
 

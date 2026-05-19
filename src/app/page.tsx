@@ -17,21 +17,18 @@ export default function Home() {
               <a href="https://iTelematics.com" target="_blank" rel="noopener noreferrer" className={styles.locationBadge} style={{ textDecoration: 'none' }}>iTelematics® Software Private Limited</a>
 
               <h1 className={styles.headline}>
-                Engineering the{" "}<br />
-                Future of{" "}
-                <span className={styles.highlight}>Autonomous</span>{" "}
-                <span className={styles.brandWhite}>eMobility</span>
+                Lithium-Ion EV{" "}<br />
+                <span className={styles.highlight}>Battery Intelligence</span>{" "}
+                <span className={styles.brandWhite}>Platform</span>
               </h1>
 
               <p className={styles.subheadline}>
-                Production-grade training, technical concepts, simulation-driven learning,
-                cybersecurity insight, and engineering consulting for Autonomous EV systems.
+                Building intelligent battery ecosystems through AI-driven diagnostics, thermal safety systems, battery lifecycle intelligence, second-life battery technologies, and deep-tech engineering innovation.
               </p>
 
               <div className={styles.actions}>
-                <Link href="/corporate-training" className="btn btn-secondary" data-track-event="hero_training_click">Corporate Training</Link>
-                <Link href="/consulting" className="btn btn-primary" data-track-event="hero_consulting_click">Consulting</Link>
-                <Link href="/workshop-gallery" className="btn btn-secondary" data-track-event="hero_gallery_click">Gallery</Link>
+                <Link href="/internships/battery-fire-prevention" className="btn btn-secondary" data-track-event="hero_explore_battery_click">Explore Battery Intelligence</Link>
+                <Link href="/ev-battery-talent-network" className="btn btn-primary" data-track-event="hero_hire_talent_click">Find EV Battery Specialists</Link>
               </div>
             </div>
 
@@ -202,6 +199,22 @@ export default function Home() {
         </div>
       </section>
 
+      {/* 7.5 HIRE PREMIUM EV BATTERY TALENT */}
+      <section className="section bg-surface">
+        <div className="container" style={{ textAlign: "center" }}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Hire Premium <span className={styles.accentText}>EV Battery Talent</span></h2>
+            <p className={styles.sectionSubtitle} style={{ maxWidth: "800px", margin: "0 auto 32px" }}>
+              Access technically validated EV battery professionals across AI, diagnostics, BMS, embedded systems, thermal intelligence, battery analytics, and second-life battery technologies.
+            </p>
+          </div>
+          <div className={styles.actions} style={{ justifyContent: "center" }}>
+            <Link href="/ev-battery-talent-network" className="btn btn-primary" data-track-event="home_hire_leaders_click">Find EV Battery Specialists</Link>
+            <Link href="/ev-battery-talent-network" className="btn btn-secondary" data-track-event="home_submit_requirements_click">Submit Hiring Requirements</Link>
+          </div>
+        </div>
+      </section>
+
       {/* 8. CORPORATE OFFERINGS */}
       <section className="section bg-surface">
         <div className="container">
@@ -261,7 +274,6 @@ export default function Home() {
           <div className={styles.heroCtas}>
             <Link href="/corporate-training" className="btn btn-secondary" data-track-event="bottom_cta_training_click">Corporate Training</Link>
             <Link href="/consulting" className="btn btn-primary" data-track-event="bottom_cta_consulting_click">Engage Consulting</Link>
-            <Link href="/workshop-gallery" className="btn btn-secondary" data-track-event="bottom_cta_gallery_click">Gallery</Link>
           </div>
         </div>
       </section>

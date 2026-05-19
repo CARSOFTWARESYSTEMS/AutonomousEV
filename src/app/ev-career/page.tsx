@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "EV.ENGINEER™ - Career Opportunities & Competency Matrix",
-    description: "Building World-Class EV Engineers & Technical Leaders. Explore industry-aligned roles, skills, and competency frameworks.",
+    description: "Building World-Class EV Leaders to Solve Energy & Battery Challenges. Explore industry-aligned roles, skills, and competency frameworks.",
   }
 };
 
