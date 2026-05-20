@@ -5,5 +5,12 @@
     "careerLink": "https://careers.mcafee.com/global/en",
     "developerLink": "",
     "trainingLink": "https://www.mcafee.com/learn/"
-  }
+  },
+  {
+    "company": "FORTINET",
+    "categoryLabel": "Automotive Security",
+    "careerLink": "https://www.fortinet.com/corporate/careers",
+    "developerLink": "https://www.fortinet.com/content/dam/maindam/PUBLIC/02_MARKETING/02_Collateral/eBooks/ebook-Automotive-Cloud.pdf",
+    "trainingLink": "https://www.fortinet.com/nse-training"
+  },
 ]
