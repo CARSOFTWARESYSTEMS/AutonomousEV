@@ -42,17 +42,29 @@ function ProjectCard({ title, desc, link, pricingLink, secondaryLink, secondaryL
         )}
 
         <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-          <a
-            href={link}
-            target={isExternal ? "_blank" : undefined}
-            rel={isExternal ? "noopener noreferrer" : undefined}
-            style={{ display: 'inline-flex', alignItems: 'center', color: 'var(--accent-primary)', fontSize: '0.9rem', fontWeight: 600, textDecoration: 'none' }}
-            data-track-event="internship_card_click"
-            data-track-title={title}
-          >
-            Visit Website
-            <span style={{ marginLeft: '6px', fontSize: '1.1rem' }}>↗</span>
-          </a>
+          {isExternal ? (
+            <a
+              href={link}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ display: 'inline-flex', alignItems: 'center', color: 'var(--accent-primary)', fontSize: '0.9rem', fontWeight: 600, textDecoration: 'none' }}
+              data-track-event="internship_card_click"
+              data-track-title={title}
+            >
+              {ctaLabel ? ctaLabel : "Visit Website"}
+              <span style={{ marginLeft: '6px', fontSize: '1.1rem' }}>↗</span>
+            </a>
+          ) : (
+            <Link
+              href={link}
+              style={{ display: 'inline-flex', alignItems: 'center', color: 'var(--accent-primary)', fontSize: '0.9rem', fontWeight: 600, textDecoration: 'none' }}
+              data-track-event="internship_card_click"
+              data-track-title={title}
+            >
+              {ctaLabel ? ctaLabel : "Explore Program"}
+              <span style={{ marginLeft: '6px', fontSize: '1.1rem' }}>→</span>
+            </Link>
+          )}
           <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>·</span>
           {sLink.startsWith('http') ? (
             <a
@@ -302,7 +314,10 @@ export default function InternshipsClient() {
             <ProjectCard
               title="EV Battery Intelligence Platform"
               desc="Risk analysis and advanced thermal runaway prevention implementations."
-              link="/internships/battery-fire-prevention"
+              link="/internships/battery-cybersecurity"
+              ctaLabel="Cybersecurity"
+              secondaryLink="/internships/battery-fire-prevention"
+              secondaryLinkLabel="Fire Prevention"
             />
             <ProjectCard
               title="Battery Pack Aadhaar System"

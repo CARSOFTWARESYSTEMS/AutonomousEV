@@ -49,6 +49,9 @@ const ROADMAP_PHASES = [
     icon: Activity,
     link: "/internships/battery-fire-prevention",
     linkLabel: "Explore Platform",
+    extraLinks: [
+      { href: "/internships/battery-cybersecurity", label: "Cybersecurity" }
+    ]
   },
   {
     phase: "Phase 3",
