@@ -113,13 +113,13 @@ const HANDBOOK_PARTS: HandbookPart[] = [
   {
     num: "Part 3",
     title: "Cell Chemistry and Selection",
-    desc: "Deep comparative study of cylindrical, prismatic, pouch cell formats. Selection matrix for NMC, LFP, LCO, post-lithium sodium-ion, and solid-state cell specifications. Covers datasheet reading, second-life evaluation, cell aging, safety, and the complete selection process.",
+    desc: "Grade and select retired EV cells for second-life reuse. Covers LFP vs NMC chemistry suitability for ESS applications, cell format comparison, datasheet reading, internal resistance sorting, SOH-based grading protocols, and the cell selection decision matrix for repackaging retired modules.",
     difficulty: "Engineer",
     prerequisites: "Part 1",
     duration: "4.0 Hrs",
-    skillsGained: ["Cell Spec Auditing", "Format Selection Matrix", "Sodium-ion Analytics", "Datasheet Reading", "Second-Life Evaluation"],
+    skillsGained: ["Second-Life Cell Grading", "Internal Resistance Sorting", "Chemistry Suitability Analysis", "Datasheet Reading", "SOH-Based Selection Matrix"],
     domains: ["Chemical Engineering", "Manufacturing"],
-    futureRelevance: "Crucial for solid-state cell characterization pipelines emerging globally by 2026-2028.",
+    futureRelevance: "Automated cell grading pipelines are the bottleneck for commercial second-life battery supply chains through 2028.",
     status: "Draft",
     badgeClass: styles.badgeDraft,
     subsections: [
@@ -144,13 +144,13 @@ const HANDBOOK_PARTS: HandbookPart[] = [
   {
     num: "Part 4",
     title: "Electrical and Pack Design",
-    desc: "High-voltage interconnects, rigid/flexible busbar sizing, series-parallel configurations, contactor coordination, pyrofuses, and insulation monitoring systems.",
+    desc: "Design a safe electrical architecture for reused cells and modules with unknown degradation histories. Covers series-parallel configuration for second-life targets, busbar sizing for aged cell impedance, contactor pre-charge coordination, pyrofuse protection, and insulation monitoring for packs with higher leakage risk.",
     difficulty: "Engineer",
     prerequisites: "Part 3",
     duration: "5.0 Hrs",
-    skillsGained: ["Busbar Resistive Sizing", "Contactor Selection", "HV Isolation Mapping"],
+    skillsGained: ["Second-Life Pack Electrical Layout", "Busbar Sizing for Aged Cells", "Contactor Pre-charge Design", "HV Isolation Mapping", "IMD for High-Risk Packs"],
     domains: ["Electrical Design", "HV Safety"],
-    futureRelevance: "Foundational for 800V fast-charging layouts and ultra-low resistance copper busbars.",
+    futureRelevance: "Safe electrical design for retired cells is foundational to any commercially viable second-life battery product.",
     status: "Planned",
     badgeClass: styles.badgePlanned,
     subsections: [
@@ -166,13 +166,13 @@ const HANDBOOK_PARTS: HandbookPart[] = [
   {
     num: "Part 5",
     title: "BMS Hardware",
-    desc: "Master-slave BMS topology, high-precision voltage/current sense circuits, multi-cell analog front-ends (AFE), and galvanically isolated daisy-chain communication buses.",
+    desc: "Architect a second-life-aware BMS hardware platform. Covers AFE chip selection optimized for wide impedance ranges, passive and active cell balancing for mismatched SOH cells, galvanically isolated daisy-chain communication, current sensing accuracy requirements for degraded cells, and BMS hardware redundancy for safety-critical ESS applications.",
     difficulty: "Engineer",
     prerequisites: "Part 4",
     duration: "4.5 Hrs",
-    skillsGained: ["BMS Schematic Layout", "AFE Chip Selection", "Daisy-Chain Noise Isolation"],
+    skillsGained: ["BMS Schematic Layout", "AFE Selection for Aged Cells", "Active Balancing for SOH Mismatch", "Daisy-Chain Isolation", "ESS BMS Redundancy Design"],
     domains: ["Electronics", "Hardware Engineering"],
-    futureRelevance: "Required for robust multi-cell serial telemetry over extreme electromagnetic interference environments.",
+    futureRelevance: "BMS hardware capable of managing heterogeneous, degraded cell populations is the core differentiator for second-life product quality.",
     status: "Planned",
     badgeClass: styles.badgePlanned,
     subsections: [
@@ -188,13 +188,13 @@ const HANDBOOK_PARTS: HandbookPart[] = [
   {
     num: "Part 6",
     title: "BMS Software",
-    desc: "State of Charge (SOC) estimation methods, State of Health (SOH), State of Function (SOF) algorithms, and balancing software control logic.",
+    desc: "Build diagnostics-first BMS software for second-life battery packs where cell history is unknown and degradation is non-uniform. Covers SOC estimation with high uncertainty tolerance, SOH and SOF tracking for aged cells, adaptive balancing logic for mismatched modules, fault detection and safe-state management, and CAN bus communication for ESS controllers.",
     difficulty: "Architect",
     prerequisites: "Part 5",
     duration: "6.0 Hrs",
-    skillsGained: ["SOC Estimation Methods", "SOH Diagnostics", "Balancing Controls Logic"],
+    skillsGained: ["SOC Estimation Under Uncertainty", "SOH-Adaptive Balancing Logic", "Fault Detection for Degraded Cells", "ESS CAN Communication", "Safe-State Management"],
     domains: ["Software", "Controls Systems"],
-    futureRelevance: "Transitioning to edge-AI estimation engines replacing legacy Coulomb counting models completely by 2027.",
+    futureRelevance: "Diagnostics-first BMS software is the intelligence layer that determines whether a second-life pack is safe, profitable, and bankable.",
     status: "Planned",
     badgeClass: styles.badgePlanned,
     subsections: [
@@ -316,13 +316,13 @@ const HANDBOOK_PARTS: HandbookPart[] = [
   {
     num: "Part 12",
     title: "AI and Battery Intelligence",
-    desc: "Deploying machine learning models for early cell micro-short detection, remaining useful life (RUL) estimation, and predictive battery diagnostics.",
+    desc: "Deploy AI to score, predict, and optimize second-life battery assets. Covers ML-based SOH prediction for retired cells, remaining useful life (RUL) estimation to determine second-life application suitability, anomaly detection for hidden internal damage, TinyML deployment on BMS edge hardware, and second-life scoring models for automated grading pipelines.",
     difficulty: "Architect",
     prerequisites: "Part 11",
     duration: "5.5 Hrs",
-    skillsGained: ["TinyML Model Deployment", "LSTM RUL Predictors", "Anomaly Short Diagnostics"],
+    skillsGained: ["Second-Life SOH Prediction", "RUL Estimation Models", "Anomaly Detection for Hidden Damage", "TinyML Edge Deployment", "Automated Grading Scoring"],
     domains: ["AI / Machine Learning", "Controls Systems"],
-    futureRelevance: "Essential for proactive fleet telemetry platforms to spot battery hazards hours before thermal runaway.",
+    futureRelevance: "AI-driven second-life scoring is what separates a manual triage operation from a scalable, bankable second-life battery product.",
     status: "Planned",
     badgeClass: styles.badgePlanned,
     subsections: [
@@ -333,13 +333,13 @@ const HANDBOOK_PARTS: HandbookPart[] = [
   {
     num: "Part 13",
     title: "Cloud Telemetry and Fleet Intelligence",
-    desc: "IoT fleet ingestion architectures, MQTT transport under TLS 1.3, Google Protobuf serialization protocols, and real-world battery digital twins.",
+    desc: "Build the cloud intelligence layer for your second-life battery fleet. Covers MQTT telemetry ingestion over TLS 1.3, Protobuf schema design for battery state streaming, time-series database architecture for long-duration lifecycle tracking, Grafana fleet health dashboards, digital twin construction for second-life asset management, and Battery Passport data compliance (EU 2023/1542).",
     difficulty: "Architect",
     prerequisites: "Part 12",
     duration: "4.0 Hrs",
-    skillsGained: ["Protobuf Schema Design", "MQTT Telemetry Ingestion", "Digital Twin Fleet Mapping"],
+    skillsGained: ["Fleet Telemetry Ingestion", "Protobuf Schema for Battery State", "Lifecycle Time-Series DBs", "Fleet Health Dashboards", "Battery Passport Compliance"],
     domains: ["Cloud Telematics", "Software Systems"],
-    futureRelevance: "Required for European Battery Passports compliance and vehicle-to-grid grid balancing networks.",
+    futureRelevance: "EU Battery Passport regulation (2026) requires full lifecycle data traceability — cloud telemetry is how second-life operators prove compliance.",
     status: "Planned",
     badgeClass: styles.badgePlanned,
     subsections: [
@@ -350,13 +350,13 @@ const HANDBOOK_PARTS: HandbookPart[] = [
   {
     num: "Part 14",
     title: "EV Battery Cybersecurity",
-    desc: "Securing CAN/CAN FD traffic, ISO 21434 risk mitigation models, BMS Hardware Security Modules (HSM), and secure OTA telemetry channels.",
+    desc: "Protect the battery identity, telemetry, and control surface of your second-life product. Covers TARA threat modeling for second-life BMS attack surfaces, SecOC message authentication for CAN bus communication, HSM-based secure boot and key management, OTA firmware security for remotely managed ESS packs, and ISO 21434 / UNECE R155 cybersecurity lifecycle compliance.",
     difficulty: "Expert",
     prerequisites: "Part 13",
     duration: "5.0 Hrs",
-    skillsGained: ["CAN-FD SecOC Message Signing", "ISO 21434 Threat Modeling", "HSM Secure Boot Mapping"],
+    skillsGained: ["TARA for Second-Life BMS", "SecOC CAN Authentication", "HSM Key Management", "Secure OTA for ESS", "ISO 21434 Compliance Mapping"],
     domains: ["Cybersecurity", "Networking"],
-    futureRelevance: "Strict cybersecurity rules (UNECE R155) require complete cryptographic assurance of vehicle BMS by 2026.",
+    futureRelevance: "Connected second-life ESS packs are high-value grid assets — cybersecurity is the difference between a safe product and a remotely exploitable risk.",
     status: "Planned",
     badgeClass: styles.badgePlanned,
     subsections: [
@@ -367,13 +367,13 @@ const HANDBOOK_PARTS: HandbookPart[] = [
   {
     num: "Part 15",
     title: "Second-Life Battery Systems",
-    desc: "Second-life grading protocols, rapid EIS-based health sorting, pack teardown automation, and scaling retired EV modules for stationary energy storage.",
+    desc: "Integrate all product layers into a complete, deployable second-life battery system. Covers full-stack second-life product design from retired cell triage through hardware assembly, BMS software commissioning, AI diagnostics integration, cloud telemetry activation, cybersecurity hardening, safety validation, and lifecycle exit planning for grid energy storage applications.",
     difficulty: "Engineer",
     prerequisites: "Part 11",
     duration: "3.5 Hrs",
-    skillsGained: ["Retired Pack Disassembly Triage", "EIS Grading Protocols", "Stationary Storage Sizing"],
-    domains: ["Circular Economy", "Mechanical Systems"],
-    futureRelevance: "Mass scale-up of retired EV packs requires highly automated triage grading stations to keep repacking viable.",
+    skillsGained: ["Full-Stack Second-Life Integration", "Product Commissioning Workflow", "Safety Validation Evidence", "ESS Deployment Checklist", "Lifecycle Exit Planning"],
+    domains: ["Circular Economy", "Systems Integration"],
+    futureRelevance: "Engineers who can integrate every layer of a second-life battery product end-to-end will define the next generation of grid-scale circular energy infrastructure.",
     status: "Planned",
     badgeClass: styles.badgePlanned,
     subsections: [
@@ -1025,103 +1025,117 @@ interface SystemLevel {
 const SYSTEM_LEVELS: SystemLevel[] = [
   {
     levelNum: 1,
-    name: "Cell Level",
+    name: "Battery Hardware",
     status: "Operational",
     statusColor: "#10b981",
     indicatorState: "solid",
-    voltageDetail: "2.5V - 4.2V nominal",
-    limitDetail: "-20°C to 60°C peak operating threshold",
-    keyFocus: ["Basic battery chemistry (how cells store and release energy)", "Equivalent Series Resistance (ESR) — internal cell resistance", "How aging and temperature affect cell capacity"],
-    schematicText: "[Anode (Silicon-Graphite)] ── (Electrolyte Interface) ── [Cathode (High-Nickel NMC)]",
-    description: "The individual cell is the fundamental unit of every battery pack. Understanding cell chemistry, voltage, capacity, and aging is the essential starting point before building anything larger.",
-    engineeringTip: "Watch out for micro-shorts at high state-of-charge when cell temperatures drop below 10°C; this triggers dangerous lithium plating on anodes."
+    voltageDetail: "2.5V – 4.2V cell | 48V–800V pack bus",
+    limitDetail: "IP68 enclosure | -20°C to 60°C operating window",
+    keyFocus: [
+      "Cell selection, grading, and format choice (cylindrical, prismatic, pouch)",
+      "Module assembly: series-parallel layout, busbars, and thermal interface materials",
+      "Pack enclosure: contactor coordination, fuse protection, crash safety, and sealing"
+    ],
+    schematicText: "[Graded Cells] ── (Module Assembly + Busbars) ── [Pack Enclosure + HV Contactors]",
+    description: "The hardware foundation of the second-life battery product. Covers cell grading and selection, module packaging with series-parallel configuration, busbar and contactor sizing, thermal management, and the structural pack enclosure design — the physical product your learner will build.",
+    engineeringTip: "For second-life packs, sort cells by internal resistance into ±5% bands before assembly. Mismatched resistance cells create parasitic current loops, generating hidden heat pockets."
   },
   {
     levelNum: 2,
-    name: "Module Level",
-    status: "Operational",
+    name: "BMS Layer",
+    status: "Active",
     statusColor: "#10b981",
     indicatorState: "solid",
-    voltageDetail: "48V typical serial unit",
-    limitDetail: "Passive balancing max discharge: 150mA",
-    keyFocus: ["How cells are arranged in series and parallel", "Physical barriers to isolate cells from each other", "Cooling plate design to manage heat"],
-    schematicText: "[12s4p Cell Grid] ── (Cooling Plate + Thermal Interface Material)",
-    description: "A module groups multiple cells together into a manageable physical package. It houses temperature sensors, voltage monitoring, and structural spacers to hold cells safely.",
-    engineeringTip: "To minimize parasitic heating, verify that the series cell links are wire-bonded or high-frequency laser-welded with zero micro-cracks."
+    voltageDetail: "AFE precision: ±1 mV cell voltage sensing",
+    limitDetail: "CAN-FD frame rate: 100 Hz cell telemetry loop",
+    keyFocus: [
+      "Cell voltage and temperature sensing using Analog Front-End (AFE) chips",
+      "State of Charge (SOC) and State of Health (SOH) estimation algorithms",
+      "Protection logic: overcurrent, over-temperature, cell balancing, and fault management"
+    ],
+    schematicText: "[AFE Chip Stack] ── (SOC/SOH Estimator) ── [Protection Logic + CAN-FD Output]",
+    description: "The brain of the battery product. The BMS continuously monitors every cell, estimates charge state and health, enforces safety limits, and communicates pack status to the vehicle or stationary system. For second-life packs, the BMS must account for degraded and mismatched cells.",
+    engineeringTip: "For second-life BMS design, widen your SOC estimation uncertainty bounds by 5–8% compared to new-cell packs — aging cells show wider OCV hysteresis that naive estimators misread."
   },
   {
     levelNum: 3,
-    name: "Pack Level",
-    status: "Calibrated",
-    statusColor: "#10b981",
-    indicatorState: "solid",
-    voltageDetail: "400V / 800V Dual Traction Bus",
-    limitDetail: "IP68 immersion certification standard",
-    keyFocus: ["High-voltage contactor and fuse coordination", "BMS isolation and sensing across the full pack", "Emergency disconnect (pyrofuse) protection"],
-    schematicText: "[Module Chain] ── (Isolation Monitor) ── [Emergency Fuse + HV Contactors]",
-    description: "The complete battery pack is the final energy enclosure fitted to the vehicle. It contains the high-voltage distribution, safety hardware, thermal barriers, and the main BMS controller.",
-    engineeringTip: "The pyrotechnic pyrofuse is your final defense. Coordinate the fuse speed with contactor air-gap arc limits to prevent fatal contacts."
-  },
-  {
-    levelNum: 4,
-    name: "Vehicle Level",
-    status: "Connected",
-    statusColor: "#38bdf8",
-    indicatorState: "solid",
-    voltageDetail: "12V auxiliary / 800V Traction",
-    limitDetail: "CAN-FD Bus Speed: 500kbps under SecOC",
-    keyFocus: ["How driving patterns (highway, city) affect battery demand", "High-performance motor drive inverter integration", "Vehicle Control Unit (VCU) power management"],
-    schematicText: "[Traction Battery Pack] ── (CAN Bus) ── [Motor Inverter + Drive System]",
-    description: "The vehicle level defines how the battery interacts with the rest of the car — the motor, charging ports, vehicle control unit, and all power routing under different driving conditions.",
-    engineeringTip: "Implement dynamic peak charge limits that reflect both instant cell temp and calculated OCV lines during highway acceleration."
-  },
-  {
-    levelNum: 5,
-    name: "Cloud Level",
-    status: "Synced",
-    statusColor: "#10b981",
-    indicatorState: "pulse",
-    protocols: "MQTT over TLS 1.3 / Google Protobuf",
-    keyFocus: ["Sending battery data securely to the cloud over the internet", "Digital twin — a live software model of your real battery", "European Battery Passport tracking and compliance"],
-    schematicText: "[EV Gateway] ── (Secure Internet Link) ── [Cloud Database + Digital Twin]",
-    description: "The cloud level collects real-time data from every vehicle in a fleet, stores charging and health histories, and makes that data available for diagnostics, compliance, and predictive analytics.",
-    engineeringTip: "Use delta-compression on your Protobuf schemas to keep cell-level telemetry transfers viable over cellular networks."
-  },
-  {
-    levelNum: 6,
-    name: "AI Layer",
+    name: "AI Intelligence",
     status: "Analyzing",
     statusColor: "#a855f7",
     indicatorState: "pulse",
-    algorithms: "SOC Estimator / Remaining Useful Life Predictor",
-    keyFocus: ["SOC estimation methods — knowing how much charge is left", "AI models forecasting how much battery life remains", "Edge AI on the BMS detecting early warning signs"],
-    schematicText: "[Voltage, Current, Temp Sensors] ── (SOC Estimation) ── [AI Forecasting Engine]",
-    description: "The AI layer is the intelligence layer — it figures out how much charge is left (SOC), predicts how long the battery will last, and detects early signs of cell problems before they become dangerous.",
-    engineeringTip: "Run a lightweight Coulomb-counter in parallel with the EKF observer. If OCV drift rises, use the EKF outputs to reset integration bounds."
+    algorithms: "SOH Predictor / Second-Life Scorer / Anomaly Detector",
+    keyFocus: [
+      "AI-based second-life scoring — grading retired cells for reuse viability",
+      "Remaining Useful Life (RUL) prediction models forecasting pack longevity",
+      "Anomaly detection identifying hidden thermal risk or capacity fade acceleration"
+    ],
+    schematicText: "[Health Data Stream] ── (ML Inference Engine) ── [Second-Life Score + RUL Output]",
+    description: "The intelligence layer transforms raw battery telemetry into actionable predictions. AI models predict State of Health, score cells for second-life eligibility, detect early warning signs of failure, and optimize charging profiles — making the battery smarter over its full lifecycle.",
+    engineeringTip: "Train your second-life scorer on capacity and internal resistance data from charge cycle 0 to retirement. Cells within 8% IR variance cluster into the same second-life grade reliably."
   },
   {
-    levelNum: 7,
-    name: "Security Layer",
+    levelNum: 4,
+    name: "Cloud Telemetry",
+    status: "Streaming",
+    statusColor: "#38bdf8",
+    indicatorState: "pulse",
+    protocols: "MQTT over TLS 1.3 / REST API / Protobuf",
+    keyFocus: [
+      "Real-time battery health streaming from pack to cloud via secure MQTT channels",
+      "Fleet-level lifecycle dashboard: SOH trends, charge history, and fault events",
+      "Battery Passport traceability — logging cell provenance and lifecycle events"
+    ],
+    schematicText: "[BMS Gateway] ── (Secure MQTT / Internet) ── [Cloud DB + Analytics Dashboard]",
+    description: "The telemetry layer connects each battery product to a cloud intelligence platform. Every charge cycle, temperature event, and health metric is streamed, stored, and visualized — enabling fleet-level predictive maintenance, lifecycle traceability, and regulatory Battery Passport compliance.",
+    engineeringTip: "Use delta-encoding on cell voltage payloads to reduce per-second MQTT packet size by 60–70% without losing per-cell resolution — critical for cellular-connected stationary packs."
+  },
+  {
+    levelNum: 5,
+    name: "Cybersecurity",
     status: "Encrypted",
     statusColor: "#ef4444",
     indicatorState: "locked",
-    standards: "ISO 21434 / UNECE R155 Cybersecurity",
-    keyFocus: ["Secure boot — making sure only trusted software runs on the BMS", "Secure message authentication on the vehicle network", "Secure over-the-air (OTA) firmware update validation"],
-    schematicText: "[OTA Firmware Update] ── (Signature Verification) ── [Secure Flash]",
-    description: "The security layer protects the battery system from cyber attacks and software tampering. It ensures that only trusted firmware runs, that vehicle network messages are authentic, and that telemetry data is encrypted.",
-    engineeringTip: "Always isolate the cellular telemetry module from the direct traction contactor loop by enforcing physical gateway packet filtering."
+    standards: "ISO 21434 / UNECE R155 / SecOC",
+    keyFocus: [
+      "Secure boot — ensuring only authenticated firmware runs on the BMS",
+      "Battery identity protection: cryptographic pack identity and tamper detection",
+      "Secure OTA firmware updates with signature verification before flash"
+    ],
+    schematicText: "[BMS Firmware OTA] ── (HSM Signature Check) ── [Secure Flash + Audit Log]",
+    description: "The security layer protects the battery product from tampering, unauthorized firmware, and network attacks. For second-life packs — which may change hands multiple times — secure identity and audit trails are critical to track health history and prevent counterfeit cell swaps.",
+    engineeringTip: "Embed a unique cryptographic pack identity at first commissioning. Every ownership transfer and health event should be signed to the identity chain — this is the foundation of the Battery Passport."
   },
   {
-    levelNum: 8,
-    name: "Second-life Lifecycle",
-    status: "In Testing",
+    levelNum: 6,
+    name: "Validation & Safety",
+    status: "Testing",
     statusColor: "#eab308",
     indicatorState: "solid",
-    sohDetail: "Retirement limit: SOH < 80%",
-    keyFocus: ["Battery health sorting — grading retired packs for reuse", "Safe disassembly and triage of retired EV modules", "Sizing retired modules for stationary energy storage"],
-    schematicText: "[Retired EV Pack (SOH < 80%)] ── (Health Sorting & Grading) ── [Stationary Storage System]",
-    description: "When EV batteries are retired from vehicles (typically when capacity drops below 80%), they still have useful energy storage life. The second-life layer grades, repacks, and reuses them in stationary storage applications.",
-    engineeringTip: "During pack sorting, use high-frequency impedance checks rather than full frequency sweeps — this speeds up the triage process significantly."
+    standards: "UN 38.3 | ECE R100 | ISO 26262 | IEC 62619",
+    keyFocus: [
+      "Thermal runaway propagation testing and firewall barrier validation",
+      "Engineering review gates at each design milestone before hardware build",
+      "Compliance evidence: safety test reports required for market entry"
+    ],
+    schematicText: "[Pack Assembly] ── (Safety Test Suite) ── [Compliance Certificate + Field Deployment]",
+    description: "The validation layer ensures the battery product meets safety standards and performance requirements before field deployment. For second-life packs, additional diagnostics validate that degraded cells perform safely within tightened operating limits.",
+    engineeringTip: "Run a 1C capacity check and 10-second 3C pulse discharge test on every second-life module before final assembly. Modules that fail the pulse test have hidden resistance that will cause uneven heating."
+  },
+  {
+    levelNum: 7,
+    name: "Second-Life Lifecycle",
+    status: "Deployed",
+    statusColor: "#ec4899",
+    indicatorState: "pulse",
+    sohDetail: "Retirement trigger: SOH < 80% for traction | Graded 70–80% for ESS",
+    keyFocus: [
+      "Incoming inspection and cell health grading using SOH and internal resistance testing",
+      "Pack reconfiguration: reassembling graded cells into second-life modules",
+      "Lifecycle intelligence dashboard: monitoring second-life packs in stationary storage"
+    ],
+    schematicText: "[Retired EV Pack] ── (Grading + Reconfiguration) ── [Stationary ESS + Lifecycle Monitor]",
+    description: "The second-life lifecycle layer is the end-to-end engineering process of transforming a retired EV battery into a productive stationary energy storage system. It integrates hardware teardown, health grading, pack reconfiguration, BMS integration, AI scoring, cloud telemetry, and ongoing lifecycle monitoring.",
+    engineeringTip: "Design second-life packs with an active balancing BMS from day one — passive balancing loses too much energy when cells have wide SOH variance. Active topology pays for itself in lifetime kWh delivered."
   }
 ];
 
@@ -2163,13 +2177,13 @@ export default function BatteryPackDesignContent() {
             <div className={styles.heroGlow} />
             <div className={styles.heroInner}>
               <div className={styles.heroPill}>
-                <span>📘 Technical Engineering Handbook</span>
+                <span>⚡ Second-Life Battery Product Engineering</span>
               </div>
               <h1 className={styles.heroTitle}>
                 EV Battery Pack Design
               </h1>
               <p className={styles.heroSubtitle}>
-                Design EV Battery Packs from Scratch — Hardware, BMS, Thermal, Safety, AI, Cybersecurity, Cloud, and Second-Life Intelligence
+                Design and Build a Complete Second-Life EV Battery Pack Product — Hardware, BMS, AI Intelligence, Cybersecurity, Cloud Telemetry, Safety, and Lifecycle Engineering
               </p>
               
               <div className={styles.heroCtas}>
@@ -2336,22 +2350,21 @@ export default function BatteryPackDesignContent() {
           {/* ═══ HANDBOOK OVERVIEW ═══ */}
           <section id="overview" className={styles.pageSection} ref={sectionRefs.overview}>
             <div className={styles.sectionHeader}>
-              <span className={styles.sectionLabel}>System Scope</span>
-              <h2 className={styles.sectionTitle}>Handbook Overview & Engineering Platform</h2>
+              <span className={styles.sectionLabel}>Product Engineering Platform</span>
+              <h2 className={styles.sectionTitle}>Handbook Overview — Second-Life Battery Product Engineering</h2>
               <p className={styles.sectionSubtitle}>
-                Welcome to the unified core documentation reference for 2026–2030 traction battery design. 
-                This platform is meticulously crafted to bridge electrochemical theory with high-voltage physical architectures.
+                This handbook is a product engineering platform for designing and building a complete second-life EV battery pack — from retired cell triage through hardware assembly, BMS intelligence, AI diagnostics, cloud fleet telemetry, cybersecurity, safety validation, and lifecycle exit planning.
               </p>
             </div>
 
             <div className="grid-2">
               <div className="glass-panel" style={{ padding: "2rem" }}>
-                <h3 style={{ color: "#fff", fontSize: "1.1rem", marginBottom: "1rem" }}>Target Engineering Audience</h3>
+                <h3 style={{ color: "#fff", fontSize: "1.1rem", marginBottom: "1rem" }}>Who This Platform Is For</h3>
                 <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1rem" }}>
-                  This handbook serves as the structural knowledge baseline for electric vehicle specialists across seven critical sub-disciplines:
+                  Engineers who want to design, build, and deploy a real second-life battery product — not just study battery theory. Every chapter advances a concrete deliverable in the capstone build.
                 </p>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                  {["EV Engineers", "Battery Designers", "BMS Firmware Engineers", "Thermal Architects", "AI Telemetry Analysts", "Cybersecurity Engineers", "Second-Life Strategists"].map((tag, i) => (
+                  {["Second-Life Product Engineers", "BMS Firmware Engineers", "AI Battery Analysts", "Cloud Telemetry Architects", "Cybersecurity Engineers", "ESS Systems Designers", "Battery Lifecycle Strategists"].map((tag, i) => (
                     <span key={i} style={{ fontSize: "0.75rem", color: "var(--accent-primary)", background: "rgba(76, 169, 48, 0.08)", border: "1px solid rgba(76, 169, 48, 0.2)", padding: "4px 12px", borderRadius: "4px" }}>
                       {tag}
                     </span>
@@ -2360,13 +2373,12 @@ export default function BatteryPackDesignContent() {
               </div>
 
               <div className="glass-panel" style={{ padding: "2rem" }}>
-                <h3 style={{ color: "#fff", fontSize: "1.1rem", marginBottom: "1rem" }}>Core Focus Dimensions</h3>
+                <h3 style={{ color: "#fff", fontSize: "1.1rem", marginBottom: "1rem" }}>Six Product Engineering Domains</h3>
                 <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1rem" }}>
-                  Moving beyond basic formulas, we analyze the entire lifecycle of power containment: 
-                  from cell grading algorithms through thermal propagation safety, up to multi-tenant telemetry layers.
+                  Each domain maps to a layer of the second-life battery product stack — from physical hardware through intelligence, connectivity, security, compliance, and circular lifecycle economics.
                 </p>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                  {["Hardware", "Software", "Thermal", "Safety", "AI / IoT", "Cybersecurity", "Recycling"].map((tag, i) => (
+                  {["Hardware & Grading", "BMS Intelligence", "AI Diagnostics", "Cloud Telemetry", "Cybersecurity", "Lifecycle & Compliance"].map((tag, i) => (
                     <span key={i} style={{ fontSize: "0.75rem", color: "#38bdf8", background: "rgba(56, 189, 248, 0.08)", border: "1px solid rgba(56, 189, 248, 0.2)", padding: "4px 12px", borderRadius: "4px" }}>
                       {tag}
                     </span>
@@ -2378,6 +2390,91 @@ export default function BatteryPackDesignContent() {
             <div style={{ marginTop: "1.5rem" }}>
               <EngineeringNote>
                 This handbook is designed for fast, high-contrast, scalable reading. The complete documentation system is structured to compile immutably into a standard handbook PDF, ensuring clean print integration for lab environments and manufacturing plants.
+              </EngineeringNote>
+            </div>
+          </section>
+
+          {/* ═══ SECOND-LIFE PRODUCT LIFECYCLE ═══ */}
+          <section id="lifecycle" className={styles.pageSection}>
+            <div className={styles.sectionHeader}>
+              <span className={styles.sectionLabel}>Product Lifecycle Pipeline</span>
+              <h2 className={styles.sectionTitle}>Second-Life Battery Pack — Product Lifecycle</h2>
+              <p className={styles.sectionSubtitle}>
+                Every chapter in this handbook advances one or more stages of this pipeline. From retired EV battery arrival through grading, hardware build, BMS commissioning, AI intelligence, cloud deployment, cybersecurity hardening, and lifecycle exit — this is the product you are building.
+              </p>
+            </div>
+
+            {/* Pipeline stages */}
+            {(() => {
+              const stages: { phase: string; phaseColor: string; items: { num: string; label: string; sub: string }[] }[] = [
+                {
+                  phase: "Input & Assessment",
+                  phaseColor: "#f59e0b",
+                  items: [
+                    { num: "01", label: "Retired EV Battery Arrival", sub: "Used traction pack intake" },
+                    { num: "02", label: "Pack Teardown & Inspection", sub: "Cell extraction + visual triage" },
+                    { num: "03", label: "Cell Grading & SOH Scoring", sub: "IR sorting + capacity test" },
+                    { num: "04", label: "Chemistry & Format Selection", sub: "LFP vs NMC suitability check" },
+                  ],
+                },
+                {
+                  phase: "Hardware Build",
+                  phaseColor: "#38bdf8",
+                  items: [
+                    { num: "05", label: "Electrical Architecture Design", sub: "Series-parallel + busbar sizing" },
+                    { num: "06", label: "BMS Hardware Integration", sub: "AFE + balancing + isolation" },
+                    { num: "07", label: "Thermal Management", sub: "Cooling layout + TIM selection" },
+                    { num: "08", label: "Mechanical Enclosure & IP Rating", sub: "CTP + IP68 sealing" },
+                  ],
+                },
+                {
+                  phase: "Software & Intelligence",
+                  phaseColor: "#a855f7",
+                  items: [
+                    { num: "09", label: "BMS Firmware Commissioning", sub: "SOC/SOH/SOF + fault logic" },
+                    { num: "10", label: "AI SOH Prediction & Scoring", sub: "ML model + RUL estimation" },
+                    { num: "11", label: "Anomaly Detection", sub: "Hidden damage flagging" },
+                    { num: "12", label: "Cloud Telemetry Activation", sub: "MQTT + digital twin + Grafana" },
+                  ],
+                },
+                {
+                  phase: "Validation & Deployment",
+                  phaseColor: "#10b981",
+                  items: [
+                    { num: "13", label: "Cybersecurity Hardening", sub: "TARA + SecOC + secure OTA" },
+                    { num: "14", label: "Safety Validation", sub: "UN 38.3 / ECE R100 / IEC 62619" },
+                    { num: "15", label: "ESS Deployment", sub: "Grid or backup commissioning" },
+                    { num: "16", label: "Lifecycle Intelligence Dashboard", sub: "Fleet SOH + exit planning" },
+                  ],
+                },
+              ];
+              return (
+                <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+                  {stages.map((group, gi) => (
+                    <div key={gi}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
+                        <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: group.phaseColor, flexShrink: 0 }} />
+                        <span style={{ fontSize: "0.72rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: group.phaseColor }}>{group.phase}</span>
+                        <div style={{ flex: 1, height: "1px", background: `${group.phaseColor}30` }} />
+                      </div>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "0.75rem" }}>
+                        {group.items.map((item, ii) => (
+                          <div key={ii} style={{ background: "rgba(255,255,255,0.03)", border: `1px solid ${group.phaseColor}25`, borderLeft: `3px solid ${group.phaseColor}`, borderRadius: "var(--radius-md)", padding: "1rem 1.1rem", display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+                            <div style={{ fontSize: "0.62rem", fontWeight: 800, color: group.phaseColor, letterSpacing: "0.12em" }}>STAGE {item.num}</div>
+                            <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "#fff", lineHeight: 1.3 }}>{item.label}</div>
+                            <div style={{ fontSize: "0.73rem", color: "var(--text-secondary)", lineHeight: 1.4 }}>{item.sub}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              );
+            })()}
+
+            <div style={{ marginTop: "1.5rem" }}>
+              <EngineeringNote>
+                This is not a theoretical pipeline — it is the capstone build sequence. Each stage corresponds to one or more handbook parts. By Part 15, you will have passed through all 16 stages with real engineering artifacts at each checkpoint.
               </EngineeringNote>
             </div>
           </section>
@@ -2690,9 +2787,9 @@ export default function BatteryPackDesignContent() {
           <section id="architecture" className={styles.pageSection} ref={sectionRefs.architecture}>
             <div className={styles.sectionHeader}>
               <span className={styles.sectionLabel}>System Schematics</span>
-              <h2 className={styles.sectionTitle}>Advanced EV Architecture Cockpit</h2>
+              <h2 className={styles.sectionTitle}>Second-Life Battery Product Architecture</h2>
               <p className={styles.sectionSubtitle}>
-                Select a system level below to access the dynamic live cockpit display. Audit electrical requirements, environmental safety bounds, active protocols, and core engineering schematics.
+                Select a product layer to explore the engineering architecture, key design decisions, and real-world implementation focus for each layer of the second-life battery product system.
               </p>
             </div>
 
@@ -2729,7 +2826,7 @@ export default function BatteryPackDesignContent() {
                   <div className={styles.archCockpit}>
                     <div className={styles.archCockpitHeader}>
                       <div>
-                        <div className={styles.archCockpitLevel}>System Level {level.levelNum}</div>
+                        <div className={styles.archCockpitLevel}>Product Layer {level.levelNum}</div>
                         <h3 className={styles.archCockpitTitle}>{level.name}</h3>
                       </div>
                       <span 
@@ -2796,7 +2893,7 @@ export default function BatteryPackDesignContent() {
                     </div>
 
                     <h4 className={styles.pathwaySectionHeader} style={{ fontSize: "0.8rem", marginTop: "1.5rem" }}>
-                      Key Architectural Focus Items
+                      Key Engineering Focus for This Layer
                     </h4>
                     <div className={styles.archFocusList}>
                       {level.keyFocus.map((focus, idx) => (
@@ -2820,10 +2917,10 @@ export default function BatteryPackDesignContent() {
           {/* ═══ CAPSTONE PROJECT SECTION ═══ */}
           <section id="capstone" className={styles.pageSection} ref={sectionRefs.capstone}>
             <div className={styles.sectionHeader}>
-              <span className={styles.sectionLabel}>Final Integrations</span>
-              <h2 className={styles.sectionTitle}>Capstone Project: EV Battery Pack Design</h2>
+              <span className={styles.sectionLabel}>Final Integration — Build a Real Product</span>
+              <h2 className={styles.sectionTitle}>Capstone: Build a Complete Second-Life Battery Pack Product</h2>
               <p className={styles.sectionSubtitle}>
-                The capstone is structured as progressive deliverables. You don't need to complete all levels — each builds on the previous one at your own pace.
+                The capstone is a progressive build. Start at your level and work up — each tier adds a real engineering layer to your second-life battery product. You're not just learning; you're building something real.
               </p>
             </div>
 
@@ -2831,9 +2928,9 @@ export default function BatteryPackDesignContent() {
               {/* Beginner Deliverable */}
               <div style={{ background: "rgba(76,169,48,0.06)", border: "1px solid rgba(76,169,48,0.25)", borderTop: "3px solid var(--accent-primary)", borderRadius: "var(--radius-lg)", padding: "1.5rem" }}>
                 <div style={{ fontSize: "0.65rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--accent-primary)", marginBottom: "8px" }}>Beginner Deliverable</div>
-                <h4 style={{ color: "#fff", fontSize: "1rem", marginBottom: "0.75rem" }}>Requirements Sheet + Basic Sizing</h4>
+                <h4 style={{ color: "#fff", fontSize: "1rem", marginBottom: "0.75rem" }}>Second-Life Pack Requirements + Basic Sizing</h4>
                 <p style={{ color: "var(--text-secondary)", fontSize: "0.82rem", lineHeight: 1.6, marginBottom: "1rem" }}>
-                  Your first milestone. Write a clear requirement document for your target pack and perform a basic cell sizing calculation.
+                  Define your second-life battery product: what it powers, what cells you're working with, and the target energy, voltage, and capacity. Your foundation document for everything that follows.
                 </p>
                 <ul style={{ paddingLeft: "1.25rem", color: "var(--text-secondary)", fontSize: "0.8rem", lineHeight: 1.7 }}>
                   <li>Target voltage, capacity, and energy requirements document</li>
@@ -2846,30 +2943,31 @@ export default function BatteryPackDesignContent() {
               {/* Engineer Deliverable */}
               <div style={{ background: "rgba(56,189,248,0.05)", border: "1px solid rgba(56,189,248,0.2)", borderTop: "3px solid #38bdf8", borderRadius: "var(--radius-lg)", padding: "1.5rem" }}>
                 <div style={{ fontSize: "0.65rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em", color: "#38bdf8", marginBottom: "8px" }}>Engineer Deliverable</div>
-                <h4 style={{ color: "#fff", fontSize: "1rem", marginBottom: "0.75rem" }}>Electrical + Thermal + BMS Concept</h4>
+                <h4 style={{ color: "#fff", fontSize: "1rem", marginBottom: "0.75rem" }}>Hardware Architecture + BMS Design + Diagnostics</h4>
                 <p style={{ color: "var(--text-secondary)", fontSize: "0.82rem", lineHeight: 1.6, marginBottom: "1rem" }}>
-                  Build on your beginner design with physical integration — how the cells connect, cool, and are monitored.
+                  Build the physical and electronic core of your second-life pack — wiring, cooling, sensing, and the BMS hardware that keeps it safe.
                 </p>
                 <ul style={{ paddingLeft: "1.25rem", color: "var(--text-secondary)", fontSize: "0.8rem", lineHeight: 1.7 }}>
+                  <li>Cell grading report: SOH and internal resistance test results</li>
                   <li>Electrical schematic: busbars, contactors, fuses (KiCad)</li>
-                  <li>Thermal analysis: cooling layout and temperature margins</li>
-                  <li>BMS hardware block diagram with sensing and balancing</li>
-                  <li>SOC estimation approach documented (Coulomb counting or similar)</li>
+                  <li>Thermal layout: cooling strategy and temperature margins</li>
+                  <li>BMS hardware block diagram with sensing, balancing, and diagnostics</li>
                 </ul>
               </div>
 
               {/* Architect Deliverable */}
               <div style={{ background: "rgba(168,85,247,0.05)", border: "1px solid rgba(168,85,247,0.2)", borderTop: "3px solid #a855f7", borderRadius: "var(--radius-lg)", padding: "1.5rem" }}>
                 <div style={{ fontSize: "0.65rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em", color: "#a855f7", marginBottom: "8px" }}>Architect Deliverable</div>
-                <h4 style={{ color: "#fff", fontSize: "1rem", marginBottom: "0.75rem" }}>Safety + Telemetry + Cybersecurity + Second-Life</h4>
+                <h4 style={{ color: "#fff", fontSize: "1rem", marginBottom: "0.75rem" }}>AI Intelligence + Cloud Telemetry + Cybersecurity + Lifecycle Intelligence</h4>
                 <p style={{ color: "var(--text-secondary)", fontSize: "0.82rem", lineHeight: 1.6, marginBottom: "1rem" }}>
-                  The full system submission covering safety compliance, cloud telemetry, security, and end-of-life planning.
+                  The complete second-life battery product submission — from AI-driven diagnostics and cloud fleet intelligence to cybersecurity architecture and full lifecycle planning.
                 </p>
                 <ul style={{ paddingLeft: "1.25rem", color: "var(--text-secondary)", fontSize: "0.8rem", lineHeight: 1.7 }}>
-                  <li>Safety compliance checklist (UN 38.3, ECE R100, ISO 26262)</li>
-                  <li>Cloud telemetry dashboard showing live pack data (Grafana)</li>
-                  <li>Basic cybersecurity threat model for the BMS communication network</li>
-                  <li>Second-life plan: at what health level would you retire this pack and for what use?</li>
+                  <li>SOH prediction model: ML-based remaining useful life estimate for your graded cells</li>
+                  <li>Cloud telemetry pipeline: MQTT ingestion → time-series DB → Grafana fleet dashboard</li>
+                  <li>Cybersecurity threat model: TARA for BMS CAN bus + OTA update attack surface (ISO 21434)</li>
+                  <li>Second-life lifecycle plan: retirement trigger, target ESS application, end-of-life recycling pathway</li>
+                  <li>Safety validation matrix: UN 38.3, ECE R100, IEC 62619 compliance evidence</li>
                 </ul>
               </div>
             </div>
@@ -5826,13 +5924,164 @@ export default function BatteryPackDesignContent() {
             </div>
           </section>
 
+          {/* ═══ FAQ SECTION ═══ */}
+          <section id="faq" className={styles.pageSection}>
+            <div className={styles.sectionHeader}>
+              <span className={styles.sectionLabel}>Frequently Asked Questions</span>
+              <h2 className={styles.sectionTitle}>EV Battery Pack Design — FAQ</h2>
+              <p className={styles.sectionSubtitle}>
+                Common questions about learning EV battery pack design, this handbook, and EV.ENGINEER.
+              </p>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", maxWidth: "860px" }}>
+              {([
+                {
+                  q: "What is EV Battery Pack Design?",
+                  a: "EV Battery Pack Design is the engineering discipline of architecting lithium-ion battery systems for electric vehicles — covering cell selection, module assembly, high-voltage electrical design, thermal management, BMS software, safety compliance, and second-life battery reuse.",
+                },
+                {
+                  q: "How do I learn Lithium-Ion Battery Pack Design?",
+                  a: "This handbook by EV.ENGINEER and Sudarshana Karkala provides a structured 19-part curriculum. Start with Part 0 (orientation) and Part 1 (battery fundamentals), then progress through electrical design, BMS hardware and software, thermal management, AI diagnostics, cloud telemetry, cybersecurity, and second-life systems.",
+                },
+                {
+                  q: "Why is LFP important for EV battery packs?",
+                  a: "LFP (Lithium Iron Phosphate) chemistry is cobalt-free, highly thermally stable, and has excellent cycle life — making it ideal for traction packs and second-life stationary storage. Its lower cost per kWh and long cycle life make it the chemistry of choice for cost-sensitive and longevity-focused applications.",
+                },
+                {
+                  q: "What is second-life battery pack design?",
+                  a: "Second-life battery pack design involves repurposing retired EV battery cells (typically at 70–80% remaining health) for secondary applications like grid energy storage, backup power, or light mobility. The process includes State-of-Health grading, cell sorting by internal resistance, module reassembly, and designing safe operating envelopes for degraded cells.",
+                },
+                {
+                  q: "What is the role of BMS in EV battery safety?",
+                  a: "The Battery Management System (BMS) is the intelligence core of the EV battery pack. It monitors cell voltages, temperatures, and current to estimate State of Charge and State of Health, protect against overcharge, over-discharge, and thermal runaway, balance cell voltages, and communicate fault states to the vehicle control system.",
+                },
+                {
+                  q: "How are AI and cloud telemetry used in EV battery systems?",
+                  a: "AI is used for predictive State of Health estimation, remaining useful life forecasting, early fault detection, and anomaly detection. Cloud telemetry enables fleet-level monitoring, digital twin construction, over-the-air updates, and data-driven maintenance scheduling — combining edge BMS intelligence with cloud analytics platforms.",
+                },
+                {
+                  q: "Why is cybersecurity important in EV battery systems?",
+                  a: "EV battery systems are networked, connected assets. Cybersecurity protects communication channels from tampering, ensures firmware integrity via secure boot and authenticated OTA updates, and prevents remote attacks on safety-critical BMS functions. ISO 21434 defines the threat modeling and cybersecurity lifecycle for automotive systems.",
+                },
+                {
+                  q: "Who created this EV Battery Pack Design handbook?",
+                  a: "This handbook is created by EV.ENGINEER under the guidance of Sudarshana Karkala, focusing on EV battery safety, diagnostics, second-life systems, AI battery intelligence, cloud telemetry, and cybersecurity.",
+                },
+              ] as { q: string; a: string }[]).map((item, i) => (
+                <div
+                  key={i}
+                  style={{
+                    border: "1px solid rgba(255,255,255,0.06)",
+                    borderRadius: "var(--radius-md)",
+                    overflow: "hidden",
+                    background: openFaq[i] ? "rgba(76,169,48,0.03)" : "transparent",
+                    transition: "background 0.2s",
+                  }}
+                >
+                  <button
+                    onClick={() => {
+                      setOpenFaq(prev => ({ ...prev, [i]: !prev[i] }));
+                      if (!openFaq[i]) {
+                        trackEvent("faq_expand", {
+                          page_path: "/internships/battery-pack-design",
+                          section_id: "faq",
+                          content_type: "faq",
+                          section_title: item.q,
+                        });
+                      }
+                    }}
+                    aria-expanded={!!openFaq[i]}
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      gap: "1rem",
+                      padding: "1rem 1.25rem",
+                      background: "transparent",
+                      border: "none",
+                      color: openFaq[i] ? "var(--accent-primary)" : "var(--text-primary)",
+                      fontSize: "0.9rem",
+                      fontWeight: 600,
+                      textAlign: "left",
+                      cursor: "pointer",
+                      transition: "color 0.2s",
+                    }}
+                  >
+                    <span>{item.q}</span>
+                    {openFaq[i] ? <ChevronDown size={15} style={{ flexShrink: 0 }} /> : <ChevronRight size={15} style={{ flexShrink: 0 }} />}
+                  </button>
+                  {openFaq[i] && (
+                    <div
+                      style={{
+                        padding: "0 1.25rem 1rem",
+                        color: "var(--text-secondary)",
+                        fontSize: "0.875rem",
+                        lineHeight: 1.65,
+                        borderTop: "1px solid rgba(255,255,255,0.04)",
+                        paddingTop: "0.875rem",
+                      }}
+                    >
+                      {item.a}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* ═══ INTERNAL LINKS & RELATED RESOURCES ═══ */}
+          <section className={styles.pageSection} style={{ paddingTop: "2rem", paddingBottom: "2rem" }}>
+            <div className={styles.sectionHeader} style={{ marginBottom: "1.5rem" }}>
+              <span className={styles.sectionLabel}>Explore More</span>
+              <h2 className={styles.sectionTitle}>EV Battery Engineering Resources</h2>
+              <p className={styles.sectionSubtitle}>
+                Related programs, tools, and deep-tech platforms from EV.ENGINEER and Sudarshana Karkala.
+              </p>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem" }}>
+              {[
+                { href: "/internships", label: "EV Battery Intelligence Platform", desc: "Full internship and learning catalog across EV battery disciplines." },
+                { href: "/internships/roadmap", label: "EV Systems Engineering Roadmap", desc: "Career path from beginner to battery architect." },
+                { href: "/internships/battery-fire-prevention", label: "EV Battery Fire Prevention", desc: "Thermal runaway diagnostics and safety systems engineering." },
+                { href: "/si-ems", label: "Smart Integrated EMS", desc: "AI-driven energy management system engineering." },
+              ].map((link, i) => (
+                <Link
+                  key={i}
+                  href={link.href}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "6px",
+                    padding: "1rem 1.25rem",
+                    background: "rgba(255,255,255,0.02)",
+                    border: "1px solid rgba(255,255,255,0.06)",
+                    borderRadius: "var(--radius-md)",
+                    textDecoration: "none",
+                    transition: "border-color 0.2s, background 0.2s",
+                  }}
+                  data-track-event="internal_link_click"
+                  data-track-section-id="related-resources"
+                >
+                  <span style={{ color: "var(--accent-primary)", fontWeight: 700, fontSize: "0.85rem" }}>{link.label}</span>
+                  <span style={{ color: "var(--text-muted)", fontSize: "0.75rem", lineHeight: 1.4 }}>{link.desc}</span>
+                </Link>
+              ))}
+            </div>
+          </section>
+
           {/* AUTHOR & ARCHITECT BLOCK */}
           <section className={styles.pageSection} style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "4rem", paddingBottom: "2rem" }}>
             <div className="container" style={{ maxWidth: "800px", margin: "0 auto" }}>
               <div className="glass-panel" style={{ padding: "2rem", borderLeft: "4px solid var(--accent-primary)", textAlign: "left" }}>
-                <p style={{ fontSize: "0.75rem", color: "var(--accent-primary)", fontWeight: "700", textTransform: "uppercase", marginBottom: "4px", letterSpacing: "1px" }}>EV.ENGINEER™</p>
-                <h3 style={{ fontSize: "1.8rem", marginBottom: "8px", color: "#fff", fontWeight: 700 }}>Sudarshana Karkala</h3>
+                <p style={{ fontSize: "0.75rem", color: "var(--accent-primary)", fontWeight: "700", textTransform: "uppercase", marginBottom: "4px", letterSpacing: "1px" }}>Created by</p>
+                <h2 style={{ fontSize: "1.8rem", marginBottom: "4px", color: "#fff", fontWeight: 700 }}>Sudarshana Karkala</h2>
+                <p style={{ fontSize: "0.7rem", color: "var(--accent-primary)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "10px" }}>EV Battery Pack Design Handbook — EV.ENGINEER</p>
                 <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginBottom: "12px" }}>Co-Founder, Principal Architect | Thasmai Infotech Private Limited</p>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.88rem", lineHeight: 1.65, marginBottom: "16px" }}>
+                  Sudarshana Karkala is building EV.ENGINEER as an engineering platform focused on EV battery safety, diagnostics, second-life battery systems, AI-powered battery intelligence, cloud telemetry, and EV cybersecurity. This EV Battery Pack Design Handbook is part of that mission — structured to take engineers from fundamentals to real-world production-level battery architecture.
+                </p>
                 <div style={{
                   display: "inline-block",
                   fontSize: "0.85rem",
@@ -5846,12 +6095,17 @@ export default function BatteryPackDesignContent() {
                   Available for strategic architectural consulting and advanced automotive R&D partnerships.
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "12px", fontSize: "0.85rem", flexWrap: "wrap" }}>
-                  <a href="tel:+919845561518" style={{ color: "var(--accent-primary)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px" }}>
+                  <a href="tel:+919845561518" style={{ color: "var(--accent-primary)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px" }}
+                    data-track-event="sudarshana_profile_click"
+                    data-track-section-id="author-block">
                     <span>📞</span> +91 9845561518
                   </a>
                   <span style={{ color: "rgba(255,255,255,0.2)" }}>|</span>
-                  <a href="https://www.linkedin.com/in/sudarshanakarkala/" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-primary)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px" }}>
-                    <span>🔗</span> LinkedIn Profile
+                  <a href="https://www.linkedin.com/in/sudarshanakarkala/" target="_blank" rel="noopener noreferrer"
+                    style={{ color: "var(--accent-primary)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px" }}
+                    data-track-event="linkedin_profile_click"
+                    data-track-section-id="author-block">
+                    <span>🔗</span> LinkedIn — Sudarshana Karkala
                   </a>
                 </div>
               </div>
