@@ -283,7 +283,7 @@ const HANDBOOK_PARTS: HandbookPart[] = [
     duration: "3.5 Hrs",
     skillsGained: ["UN 38.3 Certification Auditing", "ECE R100 Rev.3 Safety Testing", "ISO 12405 Protocol Execution"],
     domains: ["Standards", "Compliance Testing"],
-    futureRelevance: "Primary gating mechanism for legal entry of custom transport packs into international markets.",
+    futureRelevance: "Safety standards compliance is the primary gating mechanism for deploying second-life battery products in commercial and grid-connected markets.",
     status: "Planned",
     badgeClass: styles.badgePlanned,
     subsections: [
@@ -333,7 +333,7 @@ const HANDBOOK_PARTS: HandbookPart[] = [
   {
     num: "Part 13",
     title: "Cloud Telemetry and Fleet Intelligence",
-    desc: "Build the cloud intelligence layer for your second-life battery fleet. Covers MQTT telemetry ingestion over TLS 1.3, Protobuf schema design for battery state streaming, time-series database architecture for long-duration lifecycle tracking, Grafana fleet health dashboards, digital twin construction for second-life asset management, and Battery Passport data compliance (EU 2023/1542).",
+    desc: "Build secure cloud telemetry pipelines and fleet intelligence for your second-life battery product. Covers battery state streaming, time-series database architecture for lifecycle tracking, fleet health dashboards, digital twin construction for second-life asset management, and Battery Passport data compliance (EU 2023/1542).",
     difficulty: "Architect",
     prerequisites: "Part 12",
     duration: "4.0 Hrs",
@@ -350,7 +350,7 @@ const HANDBOOK_PARTS: HandbookPart[] = [
   {
     num: "Part 14",
     title: "EV Battery Cybersecurity",
-    desc: "Protect the battery identity, telemetry, and control surface of your second-life product. Covers TARA threat modeling for second-life BMS attack surfaces, SecOC message authentication for CAN bus communication, HSM-based secure boot and key management, OTA firmware security for remotely managed ESS packs, and ISO 21434 / UNECE R155 cybersecurity lifecycle compliance.",
+    desc: "Protect the battery identity, telemetry, and control surface of your second-life product. Covers battery cybersecurity threat modeling for BMS attack surfaces, secure CAN bus communication and authentication, hardware security modules for key management, secure OTA firmware updates for remotely managed ESS packs, and automotive cybersecurity standards compliance.",
     difficulty: "Expert",
     prerequisites: "Part 13",
     duration: "5.0 Hrs",
@@ -383,57 +383,59 @@ const HANDBOOK_PARTS: HandbookPart[] = [
   },
   {
     num: "Part 16",
-    title: "Modern EV Architectures",
-    desc: "800V bus overlays, multi-voltage traction converters (400V/800V dynamizing configurations), distributed BMS, and MegaWatt charging integration (MCS).",
+    title: "Modular Energy System Architectures",
+    desc: "Design scalable second-life energy systems for grid support, rural charging, backup power, and fleet storage. Covers modular ESS architecture, swappable energy block design, microgrid integration, distributed BMS topologies, and scalable voltage configurations for 48V–400V second-life applications.",
     difficulty: "Architect",
     prerequisites: "Part 4",
     duration: "4.0 Hrs",
-    skillsGained: ["800V Architecture Design", "Megawatt Charging Systems Sizing", "Multi-Voltage Switching Loops"],
+    skillsGained: ["Modular ESS Architecture", "Swappable Energy Block Design", "Microgrid Integration", "Distributed BMS Topology", "Scalable Second-Life System Design"],
     domains: ["Electrical Systems", "Systems Architecture"],
-    futureRelevance: "Silicon Carbide (SiC) 800V traction systems are becoming the gold standard for charging time reductions.",
+    futureRelevance: "Modular second-life energy systems are the infrastructure backbone for rural electrification, EV charging support, and grid balancing through 2030.",
     status: "Planned",
     badgeClass: styles.badgePlanned,
     subsections: [
-      { title: "16.1 Dynamic 400V/800V Charging Configurations", anchor: "part-16-1" },
-      { title: "16.2 MegaWatt Charging Systems (MCS) & High-Rate Thermal Loops", anchor: "part-16-2" },
-      { title: "16.3 Silicon Carbide (SiC) Inverter Architecture", anchor: "part-16-3" },
-      { title: "16.4 Distributed BMS Topology", anchor: "part-16-4" },
-      { title: "16.5 Exercises", anchor: "part-16-5" },
+      { title: "16.1 Modular ESS Architecture for Second-Life Packs", anchor: "part-16-1" },
+      { title: "16.2 Swappable Energy Block Design & Serviceability", anchor: "part-16-2" },
+      { title: "16.3 Microgrid & Rural Charging Integration", anchor: "part-16-3" },
+      { title: "16.4 Distributed BMS for Multi-Pack Systems", anchor: "part-16-4" },
+      { title: "16.5 Fleet Storage System Sizing", anchor: "part-16-5" },
       { title: "16.6 Navigation to Part 17", anchor: "part-16-6" }
     ]
   },
   {
     num: "Part 17",
     title: "End-to-End Reference Design",
-    desc: "Full production-ready reference pack: 800V LFP layout, Cell-to-Pack structural blueprints, complete schematic CAD models, and cooling design analyses.",
+    desc: "A complete, walkthrough reference design for an intelligent second-life battery product. Covers cell intake and grading workflow, module reuse strategy, pack reconfiguration, BMS integration, AI diagnostics wiring, cloud telemetry pipeline, cybersecurity controls, safety validation evidence, and lifecycle traceability from retired cell to deployed ESS product.",
     difficulty: "Expert",
     prerequisites: "Part 8",
     duration: "5.5 Hrs",
-    skillsGained: ["Reference CAD Auditing", "Electrical Schematic Mapping", "Cooling Flow Validation"],
+    skillsGained: ["Full-Product Reference Architecture", "Grading-to-Deployment Workflow", "BMS + AI + Telemetry Integration", "Safety Evidence Assembly", "Lifecycle Traceability Design"],
     domains: ["Systems Engineering", "Design Validation"],
-    futureRelevance: "State-of-the-art reference pack integration models ready for automotive factories.",
+    futureRelevance: "End-to-end second-life reference designs will define the standard for bankable, safe, and scalable battery reuse products globally.",
     status: "Planned",
     badgeClass: styles.badgePlanned,
     subsections: [
-      { title: "17.1 Unified 800V Reference Schematic Schematics", anchor: "part-17-1" },
-      { title: "17.2 Cooling Flow Design Review and Validation", anchor: "part-17-2" }
+      { title: "17.1 Cell Intake, Grading & Module Reuse Workflow", anchor: "part-17-1" },
+      { title: "17.2 BMS + AI + Telemetry Integration Reference", anchor: "part-17-2" },
+      { title: "17.3 Cybersecurity & Safety Validation Evidence", anchor: "part-17-3" },
+      { title: "17.4 Lifecycle Traceability & Cloud Monitoring", anchor: "part-17-4" }
     ]
   },
   {
     num: "Part 18",
     title: "Capstone Project and Verification",
-    desc: "Hands-on capstone project: design, model, simulate, and present a 400V/800V dynamic transport pack prototype under industry jury evaluation criteria.",
+    desc: "Design, model, validate, and present a modular intelligent second-life battery product for energy storage, charging support, backup systems, or EV infrastructure applications. Structured across three tiers: requirements and sizing (Beginner), electrical architecture + BMS + diagnostics strategy (Engineer), and full AI + telemetry + cybersecurity + lifecycle management + validation deployment (Architect).",
     difficulty: "Expert",
     prerequisites: "All Parts",
     duration: "8.0 Hrs",
-    skillsGained: ["E2E Pack Prototype Design", "CAD / Simulation submissions", "Verification Checklist Auditing"],
+    skillsGained: ["Second-Life Product Design", "BMS + AI + Telemetry Integration", "Safety Validation Evidence", "Lifecycle & Deployment Planning", "Product Readiness Review"],
     domains: ["Systems Integration", "Testing Validation"],
-    futureRelevance: "Final capstone portfolio demonstrating verified capability to prospective automotive engineering divisions.",
+    futureRelevance: "A verified second-life battery product capstone portfolio demonstrates real engineering capability for the circular energy economy.",
     status: "Coming Next",
     badgeClass: styles.badgeComingNext,
     subsections: [
-      { title: "18.1 Traction Pack CAD and Simulation Submission Requirements", anchor: "part-18-1" },
-      { title: "18.2 Industry Review Jury Evaluation Guidelines & Checklists", anchor: "part-18-2" }
+      { title: "18.1 Second-Life Product Design & Submission Requirements", anchor: "part-18-1" },
+      { title: "18.2 Product Readiness Review Guidelines & Checklists", anchor: "part-18-2" }
     ]
   }
 ];
@@ -483,8 +485,8 @@ const LEARNING_PATHS: LearningPath[] = [
     totalHours: "26.5 Hours",
     tag: "Systems Integration",
     tagColor: "#38bdf8",
-    focusPoints: ["Busbar & Interconnect CAD", "Contactor & Fuse Sizing", "AFE Front-End Layouts", "Active/Passive Thermal CFD"],
-    outcomes: ["Design physical battery module structures with CFD plates", "Assemble master-slave BMS daisy chain schematics", "Mitigate thermal propagation using silica aerogels"],
+    focusPoints: ["Busbar & Interconnect Design", "Contactor & Fuse Sizing", "AFE Front-End Layouts", "Thermal Design & Cooling Strategy"],
+    outcomes: ["Design battery module structures with thermal management for second-life packs", "Assemble BMS hardware schematics with sensing, balancing, and fault detection", "Mitigate thermal propagation using aerogel barriers and safe enclosure design"],
     steps: [
       { partNum: "Part 4", partTitle: "Electrical and Pack Design", focus: "HV contactors, pyrofuses & busbars" },
       { partNum: "Part 5", partTitle: "BMS Hardware", focus: "AFE sensing, passive balancing, isolated SPI" },
@@ -496,18 +498,18 @@ const LEARNING_PATHS: LearningPath[] = [
   {
     id: "architect",
     title: "Architect Path",
-    subtitle: "Global Product Specifications & Compliance",
+    subtitle: "Product Compliance, Intelligence & System Integration",
     icon: "📐",
     totalHours: "25.0 Hours",
-    tag: "Global Specs & Validation",
+    tag: "Product Validation & Deployment",
     tagColor: "#a855f7",
-    focusPoints: ["SOC Estimation Methods", "ECE R100 Safety Testing", "MegaWatt Charging Thermal Loops", "Reference Blueprint CAD"],
-    outcomes: ["Implement SOC estimation methods in BMS firmware", "Pass global UN 38.3 shipping compliance tests", "Architect 800V silicon carbide traction converters"],
+    focusPoints: ["Diagnostics-First BMS Software", "Safety Standards & Compliance", "Modular ESS Architecture", "End-to-End Reference Design"],
+    outcomes: ["Implement SOC/SOH estimation for degraded second-life cells", "Build safety evidence for UN 38.3, ECE R100, and IEC 62619", "Design scalable modular energy system architectures for ESS deployment"],
     steps: [
       { partNum: "Part 6", partTitle: "BMS Software", focus: "SOC estimation methods & battery state tracking" },
       { partNum: "Part 10", partTitle: "Standards & Compliance", focus: "UN 38.3 shipping, ECE R100 test bounds" },
-      { partNum: "Part 16", partTitle: "Modern EV Architectures", focus: "800V SiC converters & dynamic charging loops" },
-      { partNum: "Part 17", partTitle: "End-to-End Reference Design", focus: "Unified 800V reference pack schematic CAD" }
+      { partNum: "Part 16", partTitle: "Modular Energy System Architectures", focus: "Swappable energy blocks & microgrid integration" },
+      { partNum: "Part 17", partTitle: "End-to-End Reference Design", focus: "Grading-to-deployment second-life product reference" }
     ]
   },
   {
@@ -518,12 +520,12 @@ const LEARNING_PATHS: LearningPath[] = [
     totalHours: "19.0 Hours",
     tag: "Edge AI & Telematics",
     tagColor: "#ec4899",
-    focusPoints: ["TinyML Micro-Short Models", "LSTM Remaining Useful Life", "Encrypted MQTT TLS 1.3", "Battery Passports"],
-    outcomes: ["Compile LSTM prediction models into edge controllers", "Stream unified Protobuf telemetry to cloud databases", "Analyze lithium dendrite short circuits via EIS"],
+    focusPoints: ["TinyML SOH Prediction Models", "LSTM Remaining Useful Life", "Secure cloud telemetry pipelines", "Battery Passport compliance"],
+    outcomes: ["Deploy AI-based second-life scoring and RUL estimation on edge hardware", "Build secure cloud telemetry pipelines for fleet battery monitoring", "Analyze cell health and detect hidden internal damage via impedance diagnostics"],
     steps: [
-      { partNum: "Part 11", partTitle: "Diagnostics & Health", focus: "EIS Bode/Nyquist impedance spectroscopy" },
-      { partNum: "Part 12", partTitle: "AI & Battery Intelligence", focus: "LSTM early dendrite short-circuit models" },
-      { partNum: "Part 13", partTitle: "Cloud Telemetry", focus: "MQTT, Google Protobuf & digital twin DBs" }
+      { partNum: "Part 11", partTitle: "Diagnostics & Health", focus: "Impedance-based health diagnostics" },
+      { partNum: "Part 12", partTitle: "AI & Battery Intelligence", focus: "Second-life scoring and RUL prediction models" },
+      { partNum: "Part 13", partTitle: "Cloud Telemetry", focus: "Secure telemetry pipelines & fleet digital twins" }
     ]
   },
   {
@@ -534,24 +536,24 @@ const LEARNING_PATHS: LearningPath[] = [
     totalHours: "9.0 Hours",
     tag: "Cybersecurity",
     tagColor: "#ef4444",
-    focusPoints: ["ISO 21434 Threat Modeling", "SecOC CAN-FD Signing", "Hardware Security Modules", "OTA Cryptographic Keys"],
-    outcomes: ["Incorporate SecOC authentication into CAN buses", "Draft complete ISO 21434 threat matrices for EV systems", "Design secure boot verification structures with HSMs"],
+    focusPoints: ["Battery Cybersecurity Threat Modeling", "Secure CAN bus communication", "Hardware Security Modules", "Secure OTA firmware updates"],
+    outcomes: ["Apply automotive cybersecurity standards to battery BMS attack surfaces", "Design secure communication and authentication for battery networks", "Build secure boot and OTA firmware architecture for remotely managed ESS packs"],
     steps: [
-      { partNum: "Part 14", partTitle: "EV Battery Cybersecurity", focus: "CAN SecOC overlays, HSM keys, ISO 21434" }
+      { partNum: "Part 14", partTitle: "EV Battery Cybersecurity", focus: "Battery cybersecurity and secure OTA systems" }
     ]
   },
   {
     id: "secondlife",
-    title: "Second-Life Specialization",
-    subtitle: "Circular Battery Sourcing & Repack Integration",
+    title: "Second-Life Product Specialization",
+    subtitle: "Full-Stack Intelligent Second-Life Battery Product Engineering",
     icon: "♻️",
     totalHours: "7.0 Hours",
-    tag: "Circular Economy",
+    tag: "Second-Life Product Engineering",
     tagColor: "#10b981",
-    focusPoints: ["High-Throughput EIS sorting", "Triage Disassembly Robotics", "Stationary Storage Sizing", "Economic Margin Models"],
-    outcomes: ["Perform EIS grading on retired vehicle cells", "Size stationary backup storage grids with used modules", "Develop fire safety barriers for secondary packs"],
+    focusPoints: ["Cell Grading & SOH Triage", "Electrical Repack Architecture", "ESS Sizing & Deployment", "Lifecycle Intelligence & Exit Planning"],
+    outcomes: ["Grade and select retired EV cells for second-life ESS applications", "Design safe electrical and BMS architecture for reused modules", "Commission, monitor, and plan lifecycle exit for deployed second-life packs"],
     steps: [
-      { partNum: "Part 15", partTitle: "Second-Life Systems", focus: "Triage automation, EIS sorting & repacking" }
+      { partNum: "Part 15", partTitle: "Second-Life Systems", focus: "Full-stack second-life product integration" }
     ]
   }
 ];
@@ -783,9 +785,9 @@ const TOOLS_ECOSYSTEM: ToolItem[] = [
     category: "mechanical",
     purpose: "Open-source 3D CAD modeling software for designing custom battery cell holders, modules, and cooling bracket wraps.",
     usageArea: "Cell Module Structural CAD",
-    level: "Beginner",
+    level: "Intermediate",
     license: "Free / Open-Source",
-    requirement: "Mandatory",
+    requirement: "Optional",
     macOS: "Apple Silicon Native"
   },
   {
@@ -795,17 +797,17 @@ const TOOLS_ECOSYSTEM: ToolItem[] = [
     usageArea: "Cell Electrochemical Modeling",
     level: "Advanced",
     license: "Free / Open-Source",
-    requirement: "Optional",
+    requirement: "Awareness Only",
     macOS: "Apple Silicon Native"
   },
   {
     name: "Wireshark",
     category: "general",
-    purpose: "Network packet analyzer to capture and audit raw CAN-FD frames or debug encrypted MQTT over TLS 1.3 packets.",
+    purpose: "Network packet analyzer to capture and audit raw CAN-FD frames or debug encrypted MQTT telemetry packets.",
     usageArea: "CAN Bus & Network Debugging",
-    level: "Intermediate",
+    level: "Advanced",
     license: "Free / Open-Source",
-    requirement: "Optional",
+    requirement: "Awareness Only",
     macOS: "Apple Silicon Native"
   },
   {
@@ -813,9 +815,9 @@ const TOOLS_ECOSYSTEM: ToolItem[] = [
     category: "cloud",
     purpose: "Time-series database and visualization engine for plotting real-time battery pack temperatures, voltages, and SOC.",
     usageArea: "Fleet Telemetry Dashboard",
-    level: "Intermediate",
+    level: "Advanced",
     license: "Free / Open-Source",
-    requirement: "Optional",
+    requirement: "Awareness Only",
     macOS: "Apple Silicon Native"
   },
   {
@@ -843,9 +845,9 @@ const TOOLS_ECOSYSTEM: ToolItem[] = [
     category: "cloud",
     purpose: "Containerization platform to build, package, and deploy isolated telemetry databases and ingestion servers.",
     usageArea: "Telematics Server Deployment",
-    level: "Intermediate",
+    level: "Advanced",
     license: "Free / Open-Source",
-    requirement: "Optional",
+    requirement: "Awareness Only",
     macOS: "Apple Silicon Native"
   },
   {
@@ -875,7 +877,7 @@ const TOOLS_ECOSYSTEM: ToolItem[] = [
     usageArea: "Predictive AI Diagnostics",
     level: "Advanced",
     license: "Free / Open-Source",
-    requirement: "Optional",
+    requirement: "Awareness Only",
     macOS: "Apple Silicon Native"
   },
   {
@@ -1029,8 +1031,8 @@ const SYSTEM_LEVELS: SystemLevel[] = [
     status: "Operational",
     statusColor: "#10b981",
     indicatorState: "solid",
-    voltageDetail: "2.5V – 4.2V cell | 48V–800V pack bus",
-    limitDetail: "IP68 enclosure | -20°C to 60°C operating window",
+    voltageDetail: "2.5V – 4.2V cell | 48V–400V typical second-life system",
+    limitDetail: "Application-specific enclosure protection | -20°C to 60°C operating window",
     keyFocus: [
       "Cell selection, grading, and format choice (cylindrical, prismatic, pouch)",
       "Module assembly: series-parallel layout, busbars, and thermal interface materials",
@@ -1038,7 +1040,7 @@ const SYSTEM_LEVELS: SystemLevel[] = [
     ],
     schematicText: "[Graded Cells] ── (Module Assembly + Busbars) ── [Pack Enclosure + HV Contactors]",
     description: "The hardware foundation of the second-life battery product. Covers cell grading and selection, module packaging with series-parallel configuration, busbar and contactor sizing, thermal management, and the structural pack enclosure design — the physical product your learner will build.",
-    engineeringTip: "For second-life packs, sort cells by internal resistance into ±5% bands before assembly. Mismatched resistance cells create parasitic current loops, generating hidden heat pockets."
+    engineeringTip: "For second-life packs, sort cells by internal resistance into ±5% bands before assembly. Mismatched resistance cells create parasitic current loops, generating hidden heat pockets. Note: systems above 60V DC require qualified HV safety engineering and appropriate PPE at all times."
   },
   {
     levelNum: 2,
@@ -1374,18 +1376,18 @@ const REVIEW_GATES: ReviewGate[] = [
   },
   {
     gateNum: 8,
-    abbr: "FRR",
-    name: "Flight/Vehicle Readiness Review",
-    goal: "Verify battery pack is securely integrated into vehicle chassis. Validate SecOC CAN-FD cryptographic message signing and stream telemetry packet outputs.",
+    abbr: "DRR",
+    name: "Deployment Readiness Review",
+    goal: "Verify the battery product is ready for deployment. Validate secure communication channels, CAN or MQTT message authentication, telemetry pipeline integrity, and that all safety interlocks are confirmed active.",
     failureModes: [
-      "SecOC cryptographic freshness counters mismatching, dropping important CAN data.",
-      "Telemetry stream frame drops under high-rate dynamic test acceleration profiles."
+      "Communication authentication failures causing dropped or rejected control messages.",
+      "Telemetry stream frame drops or buffer overflows under continuous monitoring load."
     ],
-    dependencies: ["Vehicle Software Lead", "Cybersecurity Architect"],
-    metrics: ["CAN-FD message signing speed: < 200 us", "Telemetry MQTT buffer drops: 0%"],
+    dependencies: ["Systems Integration Lead", "Cybersecurity Architect"],
+    metrics: ["Message authentication latency: < 200 µs", "Telemetry MQTT buffer drops: 0%"],
     checksheet: [
-      { item: "SecOC cryptographic key exchange verified", owner: "Cybersecurity Lead" },
-      { item: "Vehicle control unit battery commands active", owner: "Software Lead" }
+      { item: "Secure communication keys provisioned and verified", owner: "Cybersecurity Lead" },
+      { item: "Telemetry pipeline tested end-to-end under load", owner: "Software Lead" }
     ]
   },
   {
@@ -2667,7 +2669,7 @@ export default function BatteryPackDesignContent() {
               <span className={styles.sectionLabel}>Index Register</span>
               <h2 className={styles.sectionTitle}>Handbook Master Index Register</h2>
               <p className={styles.sectionSubtitle}>
-                Explore the complete 19-part directory encompassing the entire body of knowledge for 2026–2030 electric transport pack design.
+                Explore the complete 19-part directory — from battery fundamentals through hardware, BMS, AI diagnostics, cloud telemetry, cybersecurity, and lifecycle engineering for intelligent second-life battery products.
               </p>
             </div>
 
@@ -2973,9 +2975,9 @@ export default function BatteryPackDesignContent() {
             </div>
 
             <CapstoneOutput>
-              <h4 style={{ color: "#10b981", fontSize: "1rem", marginBottom: "0.5rem" }}>Jury Evaluation</h4>
+              <h4 style={{ color: "#10b981", fontSize: "1rem", marginBottom: "0.5rem" }}>Product Readiness Review</h4>
               <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", lineHeight: 1.6, marginBottom: 0 }}>
-                Submissions are scored on: technical accuracy (40%), design completeness (30%), safety analysis depth (20%), and presentation clarity (10%). Submit as a GitHub repository with a structured README. Beginners submit the first deliverable only — engineers and architects build on top.
+                Submissions are scored on: technical accuracy (40%), design completeness (30%), safety analysis depth (20%), and presentation clarity (10%). Submit as a GitHub repository with a structured README. Beginners submit the first deliverable only — engineers and architects build on top of the previous tier.
               </p>
             </CapstoneOutput>
           </section>
@@ -3888,7 +3890,7 @@ export default function BatteryPackDesignContent() {
                   <span className={styles.sectionLabel}>Core Module · Beginner · 3.5 Hrs</span>
                   <h2 className={styles.sectionTitle}>Part 1 — Battery Fundamentals</h2>
                   <p className={styles.sectionSubtitle}>
-                    Establish a deep electrochemical and electrical foundation for traction pack system engineering.
+                    Establish a deep electrochemical and electrical foundation for battery system engineering — the fundamentals behind every traction pack, ESS, and second-life product you will build.
                   </p>
                 </div>
                 <span className={styles.partSectionToggleBtn} aria-hidden="true">
@@ -5705,18 +5707,21 @@ export default function BatteryPackDesignContent() {
             </div>
 
             {/* Tier legend */}
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginBottom: "1.5rem", padding: "1rem", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "var(--radius-md)" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.78rem" }}>
-                <span style={{ padding: "2px 8px", borderRadius: "4px", background: "rgba(76,169,48,0.15)", border: "1px solid rgba(76,169,48,0.35)", color: "var(--accent-primary)", fontWeight: 700, fontSize: "0.7rem" }}>Mandatory</span>
-                <span style={{ color: "var(--text-muted)" }}>Required from Part 0 — install before you start</span>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.78rem" }}>
-                <span style={{ padding: "2px 8px", borderRadius: "4px", background: "rgba(56,189,248,0.10)", border: "1px solid rgba(56,189,248,0.3)", color: "#38bdf8", fontWeight: 700, fontSize: "0.7rem" }}>Optional</span>
-                <span style={{ color: "var(--text-muted)" }}>Needed for engineer/architect parts — install when you reach them</span>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.78rem" }}>
-                <span style={{ padding: "2px 8px", borderRadius: "4px", background: "rgba(168,85,247,0.08)", border: "1px solid rgba(168,85,247,0.25)", color: "#a855f7", fontWeight: 700, fontSize: "0.7rem" }}>Awareness Only</span>
-                <span style={{ color: "var(--text-muted)" }}>Industry tools — good to know exist, not required for this handbook</span>
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "1.5rem", padding: "1rem 1.25rem", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "var(--radius-md)" }}>
+              <div style={{ fontSize: "0.72rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", marginBottom: "4px" }}>Tool Tiers</div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.78rem" }}>
+                  <span style={{ padding: "2px 8px", borderRadius: "4px", background: "rgba(76,169,48,0.15)", border: "1px solid rgba(76,169,48,0.35)", color: "var(--accent-primary)", fontWeight: 700, fontSize: "0.7rem" }}>Mandatory</span>
+                  <span style={{ color: "var(--text-muted)" }}>Beginner essentials — Python, VS Code, GitHub, Jupyter. Install before Part 0.</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.78rem" }}>
+                  <span style={{ padding: "2px 8px", borderRadius: "4px", background: "rgba(56,189,248,0.10)", border: "1px solid rgba(56,189,248,0.3)", color: "#38bdf8", fontWeight: 700, fontSize: "0.7rem" }}>Optional</span>
+                  <span style={{ color: "var(--text-muted)" }}>Engineering and hardware tools — KiCad, MQTT Explorer, Firebase, CAN tools. Install when you reach them.</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.78rem" }}>
+                  <span style={{ padding: "2px 8px", borderRadius: "4px", background: "rgba(168,85,247,0.08)", border: "1px solid rgba(168,85,247,0.25)", color: "#a855f7", fontWeight: 700, fontSize: "0.7rem" }}>Awareness Only</span>
+                  <span style={{ color: "var(--text-muted)" }}>Advanced and industry tools — Grafana, TensorFlow, ANSYS, Docker. Not required for this handbook.</span>
+                </div>
               </div>
             </div>
 
@@ -5862,18 +5867,18 @@ export default function BatteryPackDesignContent() {
               <span className={styles.sectionLabel}>Certification Layer — Assessment</span>
               <h2 className={styles.sectionTitle}>Capstone Output Overview and Readiness Checklist</h2>
               <p className={styles.sectionSubtitle}>
-                The capstone project is a full end-to-end battery pack design submission evaluated by an industry jury. Here is what you will produce.
+                The capstone project is a full end-to-end second-life battery product design submission evaluated through a product readiness review. Here is what you will produce.
               </p>
             </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.25rem", marginBottom: "2.5rem" }}>
               {[
-                { icon: "📐", title: "CAD Pack Enclosure Model", desc: "Full 3D cell-to-pack mechanical assembly with IP68 sealing, cell compression fixtures, and CTP structural integration." },
-                { icon: "⚡", title: "Electrical Schematic", desc: "Complete HV busbar layout, contactor/fuse coordination diagram, and BMS master-slave schematic in KiCad." },
-                { icon: "🌡️", title: "Thermal Analysis Report", desc: "CFD cold-plate simulation results showing temperature distribution under 2C continuous charge and 4C peak discharge." },
-                { icon: "🛡️", title: "Safety Compliance Matrix", desc: "UN 38.3, ECE R100 Rev.3, and ISO 26262 compliance checklist with evidence references for each test category." },
-                { icon: "🧠", title: "BMS Firmware Demo", desc: "Running SOC estimation (EKF or Coulomb counting) with CAN bus logging of cell voltages and temperatures." },
-                { icon: "📊", title: "Telemetry Dashboard", desc: "Grafana dashboard showing live pack telemetry from MQTT broker — voltage, temperature, SOC, and fault flags." },
+                { icon: "📐", title: "Cell Grading & Pack Assembly Design", desc: "SOH grading report, module reuse strategy, 3D enclosure model with sealing, cell compression fixtures, and structural layout." },
+                { icon: "⚡", title: "Electrical Schematic", desc: "Complete busbar layout, contactor/fuse coordination diagram, and BMS hardware schematic for the second-life pack." },
+                { icon: "🌡️", title: "Thermal Analysis Report", desc: "Cooling strategy with temperature margin analysis, thermal interface material selection, and operating envelope for degraded cells." },
+                { icon: "🛡️", title: "Safety Compliance Matrix", desc: "UN 38.3, ECE R100, IEC 62619 compliance checklist with evidence references and second-life-specific safety risk assessment." },
+                { icon: "🧠", title: "BMS + AI Diagnostics Demo", desc: "Running SOC/SOH estimation with SOH prediction model output, anomaly detection flags, and CAN bus telemetry logging." },
+                { icon: "📊", title: "Fleet Telemetry Dashboard", desc: "Cloud telemetry dashboard showing live pack state — voltage, temperature, SOC, SOH trend, and fault flags." },
               ].map((item, i) => (
                 <div key={i} className={styles.capstoneCard}>
                   <div className={styles.capstoneCardHeader}>
@@ -5886,7 +5891,7 @@ export default function BatteryPackDesignContent() {
             </div>
 
             <div className={styles.engineeringNote}>
-              <div className={styles.blockHeader}><BookOpen size={15} /> Jury Evaluation Criteria</div>
+              <div className={styles.blockHeader}><BookOpen size={15} /> Product Readiness Review Criteria</div>
               Submissions are scored on: technical accuracy (40%), design completeness (30%), safety analysis depth (20%), and presentation clarity (10%). All deliverables must be submitted as a GitHub repository with a structured README.
             </div>
           </section>
