@@ -761,6 +761,38 @@ export default function UseCasesContent() {
         </div>
       </section>
 
+      {/* AUTHOR & ARCHITECT BLOCK */}
+      <section className={styles.pageSection} style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "4rem", paddingBottom: "2rem" }}>
+        <div className="container" style={{ maxWidth: "800px", margin: "0 auto" }}>
+          <div className="glass-panel" style={{ padding: "2rem", borderLeft: "4px solid var(--accent-primary)", textAlign: "left" }}>
+            <p style={{ fontSize: "0.75rem", color: "var(--accent-primary)", fontWeight: "700", textTransform: "uppercase", marginBottom: "4px", letterSpacing: "1px" }}>EV.ENGINEER™</p>
+            <h3 style={{ fontSize: "1.8rem", marginBottom: "8px", color: "#fff", fontWeight: 700 }}>Sudarshana Karkala</h3>
+            <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginBottom: "12px" }}>Co-Founder, Principal Architect | Thasmai Infotech Private Limited</p>
+            <div style={{
+              display: "inline-block",
+              fontSize: "0.85rem",
+              padding: "8px 14px",
+              marginBottom: "16px",
+              borderRadius: "6px",
+              background: "linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.08))",
+              borderLeft: "3px solid var(--accent-primary)",
+              color: "#fff"
+            }}>
+              Available for strategic architectural consulting and advanced automotive R&D partnerships.
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: "12px", fontSize: "0.85rem", flexWrap: "wrap" }}>
+              <a href="tel:+919845561518" style={{ color: "var(--accent-primary)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px" }}>
+                <span>📞</span> +91 9845561518
+              </a>
+              <span style={{ color: "rgba(255,255,255,0.2)" }}>|</span>
+              <a href="https://www.linkedin.com/in/sudarshanakarkala/" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-primary)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px" }}>
+                <span>🔗</span> LinkedIn Profile
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* FOOTER CTA */}
       <section className={styles.pageSection} style={{ textAlign: 'center' }}>
         <div className="container">
