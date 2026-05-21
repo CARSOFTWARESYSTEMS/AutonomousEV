@@ -150,8 +150,8 @@ const HANDBOOK_PARTS: HandbookPart[] = [
     skillsGained: ["Busbar Resistive Sizing", "Contactor Selection", "HV Isolation Mapping"],
     domains: ["Electrical Design", "HV Safety"],
     futureRelevance: "Foundational for 800V fast-charging layouts and ultra-low resistance copper busbars.",
-    status: "Draft",
-    badgeClass: styles.badgeDraft,
+    status: "Planned",
+    badgeClass: styles.badgePlanned,
     subsections: [
       { title: "4.1 HV Interconnects & Wire Bond Resistance Sizing", anchor: "part-4-1" },
       { title: "4.2 Fuse Coordination & Fast Pyrofuse BMS Interrupt Loops", anchor: "part-4-2" },
@@ -172,8 +172,8 @@ const HANDBOOK_PARTS: HandbookPart[] = [
     skillsGained: ["BMS Schematic Layout", "AFE Chip Selection", "Daisy-Chain Noise Isolation"],
     domains: ["Electronics", "Hardware Engineering"],
     futureRelevance: "Required for robust multi-cell serial telemetry over extreme electromagnetic interference environments.",
-    status: "Draft",
-    badgeClass: styles.badgeDraft,
+    status: "Planned",
+    badgeClass: styles.badgePlanned,
     subsections: [
       { title: "5.1 Analog Front-Ends & Passive Cell Balancing Circuits", anchor: "part-5-1" },
       { title: "5.2 Galvanic Isolation & Isolated SPI Ring Redundancies", anchor: "part-5-2" },
@@ -187,15 +187,15 @@ const HANDBOOK_PARTS: HandbookPart[] = [
   {
     num: "Part 6",
     title: "BMS Software",
-    desc: "Extended Kalman Filters (EKF) for State of Charge (SOC) estimation, State of Health (SOH), State of Function (SOF) algorithms, and balancing software control logic.",
+    desc: "State of Charge (SOC) estimation methods, State of Health (SOH), State of Function (SOF) algorithms, and balancing software control logic.",
     difficulty: "Architect",
     prerequisites: "Part 5",
     duration: "6.0 Hrs",
-    skillsGained: ["EKF Observer Coding", "SOH Coulomb Counting Overlays", "Balancing Controls Logic"],
+    skillsGained: ["SOC Estimation Methods", "SOH Diagnostics", "Balancing Controls Logic"],
     domains: ["Software", "Controls Systems"],
     futureRelevance: "Transitioning to edge-AI estimation engines replacing legacy Coulomb counting models completely by 2027.",
-    status: "Draft",
-    badgeClass: styles.badgeDraft,
+    status: "Planned",
+    badgeClass: styles.badgePlanned,
     subsections: [
       { title: "6.1 Kalman Filters & State of Charge (SOC) Modeling", anchor: "part-6-1" },
       { title: "6.2 SOH Diagnostics & Capacity Degradation Overlays", anchor: "part-6-2" },
@@ -210,15 +210,15 @@ const HANDBOOK_PARTS: HandbookPart[] = [
   {
     num: "Part 7",
     title: "Thermal Design",
-    desc: "Liquid cooling cold-plates, ribbon channel design, coolant flow modeling, phase change materials (PCM), thermal interface materials (TIM), and active cooling layouts.",
+    desc: "Liquid cooling cold-plates, cooling channel design, coolant flow modeling, phase change materials (PCM), thermal interface materials (TIM), and active cooling layouts.",
     difficulty: "Engineer",
     prerequisites: "Part 2",
     duration: "4.5 Hrs",
-    skillsGained: ["Liquid Coolant Routing", "TIM Selection", "Thermal Flow CFD Auditing"],
+    skillsGained: ["Liquid Coolant Routing", "TIM Selection", "Cooling Design Review"],
     domains: ["Thermal", "Mechanical Engineering"],
     futureRelevance: "Critical for ultra-fast charging (4C+) thermal mitigation and solid-state heat management.",
-    status: "Draft",
-    badgeClass: styles.badgeDraft,
+    status: "Planned",
+    badgeClass: styles.badgePlanned,
     subsections: [
       { title: "7.1 Coolant Ribbon Plates & Single-Phase Liquid Cooling", anchor: "part-7-1" },
       { title: "7.2 Phase Change Materials (PCM) & Structural TIM Selections", anchor: "part-7-2" },
@@ -239,8 +239,8 @@ const HANDBOOK_PARTS: HandbookPart[] = [
     skillsGained: ["CTP Structural Enclosure Design", "Vibration Isolation FEA", "IP68 Enclosure Seals"],
     domains: ["Mechanical Design", "Manufacturing"],
     futureRelevance: "Essential for cell-to-chassis structural integration to optimize vehicle energy-to-weight index.",
-    status: "Draft",
-    badgeClass: styles.badgeDraft,
+    status: "Planned",
+    badgeClass: styles.badgePlanned,
     subsections: [
       { title: "8.1 Cell-to-Pack (CTP) & Cell-to-Chassis Integration", anchor: "part-8-1" },
       { title: "8.2 Enclosure Crashworthiness FEA & Vibration Isolation", anchor: "part-8-2" },
@@ -254,17 +254,17 @@ const HANDBOOK_PARTS: HandbookPart[] = [
   {
     num: "Part 9",
     title: "Safety Engineering",
-    desc: "Thermal runaway kinetics, cell venting mechanisms, exhaust gas manifold design, and inter-cell thermal barrier design (silica aerogels, mica sheets).",
+    desc: "Thermal runaway risk and prevention, cell venting mechanisms, exhaust gas manifold design, and inter-cell thermal barrier design (silica aerogels, mica sheets).",
     difficulty: "Architect",
     prerequisites: "Part 8",
     duration: "4.5 Hrs",
     skillsGained: ["Thermal Propagation Blocking", "Venting Exhaust Manifolds", "Aerogel Selection"],
     domains: ["Safety", "Thermal Management"],
     futureRelevance: "Mandatory compliance base to prevent adjacent cell chain combustion under rigorous global testing protocols.",
-    status: "Draft",
-    badgeClass: styles.badgeDraft,
+    status: "Planned",
+    badgeClass: styles.badgePlanned,
     subsections: [
-      { title: "9.1 Thermal Runaway Kinetics & Trigger Mechanisms", anchor: "part-9-1" },
+      { title: "9.1 Thermal Runaway Risk & Trigger Mechanisms", anchor: "part-9-1" },
       { title: "9.2 Venting Gas Routing & High-Temp Gas Manifolds", anchor: "part-9-2" },
       { title: "9.3 Silica Aerogel & Ceramic Composite Barriers", anchor: "part-9-3" },
       { title: "9.4 Fire Suppression Integration", anchor: "part-9-4" },
@@ -283,8 +283,8 @@ const HANDBOOK_PARTS: HandbookPart[] = [
     skillsGained: ["UN 38.3 Certification Auditing", "ECE R100 Rev.3 Safety Testing", "ISO 12405 Protocol Execution"],
     domains: ["Standards", "Compliance Testing"],
     futureRelevance: "Primary gating mechanism for legal entry of custom transport packs into international markets.",
-    status: "Draft",
-    badgeClass: styles.badgeDraft,
+    status: "Planned",
+    badgeClass: styles.badgePlanned,
     subsections: [
       { title: "10.1 UN 38.3 Shipping Certification Methods", anchor: "part-10-1" },
       { title: "10.2 ECE R100 Rev.3 Cell/Pack Safety Certification", anchor: "part-10-2" },
@@ -298,17 +298,17 @@ const HANDBOOK_PARTS: HandbookPart[] = [
   {
     num: "Part 11",
     title: "Diagnostics and Battery Health",
-    desc: "Electrochemical Impedance Spectroscopy (EIS) methods, phase-shift diagnostic probing, capacity fade tracking, and internal resistance degradation models.",
+    desc: "Battery health test methods, impedance-based diagnostics, capacity fade tracking, and internal resistance degradation models.",
     difficulty: "Expert",
     prerequisites: "Part 6",
     duration: "4.0 Hrs",
-    skillsGained: ["EIS Bode Plot Interpretation", "Lithium Plating Analytics", "Capacity Retention Calculations"],
+    skillsGained: ["Battery Health Test Data Analysis", "Lithium Plating Analytics", "Capacity Retention Calculations"],
     domains: ["Diagnostics", "Electrochemistry"],
     futureRelevance: "High-throughput on-vehicle EIS hardware sensors arriving to top-tier heavy vehicles by 2027.",
-    status: "Draft",
-    badgeClass: styles.badgeDraft,
+    status: "Planned",
+    badgeClass: styles.badgePlanned,
     subsections: [
-      { title: "11.1 EIS Spectra Bode and Nyquist Plots", anchor: "part-11-1" },
+      { title: "11.1 Battery Health Test Data Analysis", anchor: "part-11-1" },
       { title: "11.2 Probing Lithium Plating and Electrolyte Consumptions", anchor: "part-11-2" }
     ]
   },
@@ -322,8 +322,8 @@ const HANDBOOK_PARTS: HandbookPart[] = [
     skillsGained: ["TinyML Model Deployment", "LSTM RUL Predictors", "Anomaly Short Diagnostics"],
     domains: ["AI / Machine Learning", "Controls Systems"],
     futureRelevance: "Essential for proactive fleet telemetry platforms to spot battery hazards hours before thermal runaway.",
-    status: "Draft",
-    badgeClass: styles.badgeDraft,
+    status: "Planned",
+    badgeClass: styles.badgePlanned,
     subsections: [
       { title: "12.1 Edge AI TinyML for Lithium Dendrite Short Detection", anchor: "part-12-1" },
       { title: "12.2 Remaining Useful Life (RUL) LSTM Predictor Code", anchor: "part-12-2" }
@@ -339,8 +339,8 @@ const HANDBOOK_PARTS: HandbookPart[] = [
     skillsGained: ["Protobuf Schema Design", "MQTT Telemetry Ingestion", "Digital Twin Fleet Mapping"],
     domains: ["Cloud Telematics", "Software Systems"],
     futureRelevance: "Required for European Battery Passports compliance and vehicle-to-grid grid balancing networks.",
-    status: "Draft",
-    badgeClass: styles.badgeDraft,
+    status: "Planned",
+    badgeClass: styles.badgePlanned,
     subsections: [
       { title: "13.1 MQTT Over TLS & High-Rate Ingestion Pipelines", anchor: "part-13-1" },
       { title: "13.2 Battery Digital Twin Architecture & Time-Series DBs", anchor: "part-13-2" }
@@ -390,8 +390,8 @@ const HANDBOOK_PARTS: HandbookPart[] = [
     skillsGained: ["800V Architecture Design", "Megawatt Charging Systems Sizing", "Multi-Voltage Switching Loops"],
     domains: ["Electrical Systems", "Systems Architecture"],
     futureRelevance: "Silicon Carbide (SiC) 800V traction systems are becoming the gold standard for charging time reductions.",
-    status: "Draft",
-    badgeClass: styles.badgeDraft,
+    status: "Planned",
+    badgeClass: styles.badgePlanned,
     subsections: [
       { title: "16.1 Dynamic 400V/800V Charging Configurations", anchor: "part-16-1" },
       { title: "16.2 MegaWatt Charging Systems (MCS) & High-Rate Thermal Loops", anchor: "part-16-2" },
@@ -404,18 +404,18 @@ const HANDBOOK_PARTS: HandbookPart[] = [
   {
     num: "Part 17",
     title: "End-to-End Reference Design",
-    desc: "Full production-ready reference pack: 800V LFP layout, Cell-to-Pack structural blueprints, complete schematic CAD models, and ribbon CFD analyses.",
+    desc: "Full production-ready reference pack: 800V LFP layout, Cell-to-Pack structural blueprints, complete schematic CAD models, and cooling design analyses.",
     difficulty: "Expert",
     prerequisites: "Part 8",
     duration: "5.5 Hrs",
-    skillsGained: ["Reference CAD Auditing", "Electrical Schematic Mapping", "Liquid CFD Validation"],
+    skillsGained: ["Reference CAD Auditing", "Electrical Schematic Mapping", "Cooling Flow Validation"],
     domains: ["Systems Engineering", "Design Validation"],
     futureRelevance: "State-of-the-art reference pack integration models ready for automotive factories.",
     status: "Planned",
     badgeClass: styles.badgePlanned,
     subsections: [
       { title: "17.1 Unified 800V Reference Schematic Schematics", anchor: "part-17-1" },
-      { title: "17.2 CFD Coolant Ribbon Flow Velocity CFD Auditing", anchor: "part-17-2" }
+      { title: "17.2 Cooling Flow Design Review and Validation", anchor: "part-17-2" }
     ]
   },
   {
@@ -465,13 +465,13 @@ const LEARNING_PATHS: LearningPath[] = [
     totalHours: "11.5 Hours",
     tag: "Fundamentals",
     tagColor: "var(--accent-primary)",
-    focusPoints: ["Electrochemistry Basics", "Equivalent Circuit Modeling", "WLTP Drive Cycles", "Format Sizing Matrix"],
-    outcomes: ["Perform cell chemistry comparison audits", "Size energy-mass budgets for simple drive cycles", "Establish lab electrical safety protocol limits"],
+    focusPoints: ["How Batteries Work", "Basic Circuit Modeling", "Vehicle Usage Profiles", "Cell Format Sizing"],
+    outcomes: ["Compare cell chemistries and understand tradeoffs", "Size energy budgets for simple vehicle scenarios", "Establish lab electrical safety protocol limits"],
     steps: [
-      { partNum: "Part 0", partTitle: "Handbook Orientation", focus: "Safety Bounds & High-Voltage PPE protocols" },
-      { partNum: "Part 1", partTitle: "Battery Fundamentals", focus: "Butler-Volmer kinetics & ESR circuit modeling" },
-      { partNum: "Part 2", partTitle: "EV Battery Requirements", focus: "Drive cycle loading specs (WLTP, US06)" },
-      { partNum: "Part 3", partTitle: "Cell Chemistry and Selection", focus: "NMC vs LFP format sizing tradeoffs" }
+      { partNum: "Part 0", partTitle: "Handbook Orientation", focus: "Safety basics & high-voltage PPE protocols" },
+      { partNum: "Part 1", partTitle: "Battery Fundamentals", focus: "How batteries work and basic circuit modeling" },
+      { partNum: "Part 2", partTitle: "EV Battery Requirements", focus: "Vehicle usage profiles and energy requirements" },
+      { partNum: "Part 3", partTitle: "Cell Chemistry and Selection", focus: "NMC vs LFP cell format sizing tradeoffs" }
     ]
   },
   {
@@ -500,10 +500,10 @@ const LEARNING_PATHS: LearningPath[] = [
     totalHours: "25.0 Hours",
     tag: "Global Specs & Validation",
     tagColor: "#a855f7",
-    focusPoints: ["Extended Kalman Filter SOC/SOH", "ECE R100 Rev.3 Safety Testing", "MegaWatt MCS Thermal Loops", "Reference Blueprint CAD"],
-    outcomes: ["Deploy robust state-observers (EKF) in firmware", "Pass global UN 38.3 shipping compliance tests", "Architect 800V silicon carbide traction converters"],
+    focusPoints: ["SOC Estimation Methods", "ECE R100 Safety Testing", "MegaWatt Charging Thermal Loops", "Reference Blueprint CAD"],
+    outcomes: ["Implement SOC estimation methods in BMS firmware", "Pass global UN 38.3 shipping compliance tests", "Architect 800V silicon carbide traction converters"],
     steps: [
-      { partNum: "Part 6", partTitle: "BMS Software", focus: "Extended Kalman Filter SOC & capacity overlays" },
+      { partNum: "Part 6", partTitle: "BMS Software", focus: "SOC estimation methods & battery state tracking" },
       { partNum: "Part 10", partTitle: "Standards & Compliance", focus: "UN 38.3 shipping, ECE R100 test bounds" },
       { partNum: "Part 16", partTitle: "Modern EV Architectures", focus: "800V SiC converters & dynamic charging loops" },
       { partNum: "Part 17", partTitle: "End-to-End Reference Design", focus: "Unified 800V reference pack schematic CAD" }
@@ -730,7 +730,7 @@ const TOOLS_ECOSYSTEM: ToolItem[] = [
   {
     name: "Python",
     category: "simulation",
-    purpose: "Telemetry analytics, capacity degradation curve fitting, EIS Nyquist graphing, and battery model sizing scripts.",
+    purpose: "Telemetry analytics, capacity degradation curve fitting, battery health test data analysis, and battery model sizing scripts.",
     usageArea: "Battery Sizing & Degradation Analytics",
     level: "Beginner",
     license: "Free / Open-Source",
@@ -750,7 +750,7 @@ const TOOLS_ECOSYSTEM: ToolItem[] = [
   {
     name: "Jupyter Notebooks",
     category: "simulation",
-    purpose: "Interactive scripting workspace for plotting cell test data logs, EIS Nyquist plots, and thermal curves.",
+    purpose: "Interactive scripting workspace for plotting cell test data logs, battery health test results, and thermal curves.",
     usageArea: "Data Analysis & Prototyping",
     level: "Intermediate",
     license: "Free / Open-Source",
@@ -764,7 +764,7 @@ const TOOLS_ECOSYSTEM: ToolItem[] = [
     usageArea: "BMS PCB Schematic Layout",
     level: "Intermediate",
     license: "Free / Open-Source",
-    requirement: "Mandatory",
+    requirement: "Optional",
     macOS: "Apple Silicon Native"
   },
   {
@@ -774,7 +774,7 @@ const TOOLS_ECOSYSTEM: ToolItem[] = [
     usageArea: "Cell Balance Circuit Simulation",
     level: "Intermediate",
     license: "Free / Open-Source",
-    requirement: "Mandatory",
+    requirement: "Optional",
     macOS: "Apple Silicon Native"
   },
   {
@@ -794,17 +794,17 @@ const TOOLS_ECOSYSTEM: ToolItem[] = [
     usageArea: "Cell Electrochemical Modeling",
     level: "Advanced",
     license: "Free / Open-Source",
-    requirement: "Mandatory",
+    requirement: "Optional",
     macOS: "Apple Silicon Native"
   },
   {
     name: "Wireshark",
     category: "general",
-    purpose: "Network packet analyzer to capture and audit raw CAN-FD SecOC frames or debug encrypted MQTT over TLS 1.3 packets.",
-    usageArea: "CAN Bus & Network Decryption",
+    purpose: "Network packet analyzer to capture and audit raw CAN-FD frames or debug encrypted MQTT over TLS 1.3 packets.",
+    usageArea: "CAN Bus & Network Debugging",
     level: "Intermediate",
     license: "Free / Open-Source",
-    requirement: "Mandatory",
+    requirement: "Optional",
     macOS: "Apple Silicon Native"
   },
   {
@@ -814,7 +814,7 @@ const TOOLS_ECOSYSTEM: ToolItem[] = [
     usageArea: "Fleet Telemetry Dashboard",
     level: "Intermediate",
     license: "Free / Open-Source",
-    requirement: "Mandatory",
+    requirement: "Optional",
     macOS: "Apple Silicon Native"
   },
   {
@@ -844,7 +844,7 @@ const TOOLS_ECOSYSTEM: ToolItem[] = [
     usageArea: "Telematics Server Deployment",
     level: "Intermediate",
     license: "Free / Open-Source",
-    requirement: "Mandatory",
+    requirement: "Optional",
     macOS: "Apple Silicon Native"
   },
   {
@@ -933,7 +933,7 @@ const DEPENDENCY_NODES: DependencyNode[] = [
     id: "fundamentals",
     name: "Battery Fundamentals",
     partIndex: 1,
-    desc: "Electrochemistry & Butler-Volmer kinetics",
+    desc: "How batteries store energy & basic electrical behavior",
     prereqs: ["Orientation"],
     leadsTo: ["electrical", "thermal"]
   },
@@ -957,7 +957,7 @@ const DEPENDENCY_NODES: DependencyNode[] = [
     id: "bms-sw",
     name: "BMS Software",
     partIndex: 6,
-    desc: "EKF state observers & SOC calculations",
+    desc: "SOC estimation methods & battery state tracking",
     prereqs: ["BMS Hardware"],
     leadsTo: ["ai-intel"]
   },
@@ -965,7 +965,7 @@ const DEPENDENCY_NODES: DependencyNode[] = [
     id: "thermal",
     name: "Thermal Design",
     partIndex: 7,
-    desc: "Ribbon cooling & TIM heat mitigation",
+    desc: "Cooling design review & heat management",
     prereqs: ["Fundamentals"],
     leadsTo: ["safety"]
   },
@@ -997,7 +997,7 @@ const DEPENDENCY_NODES: DependencyNode[] = [
     id: "cybersecurity",
     name: "Cybersecurity",
     partIndex: 14,
-    desc: "SecOC authentication & HSM secure boot",
+    desc: "Secure communication and secure boot basics",
     prereqs: ["Cloud Telemetry"],
     leadsTo: ["capstone"]
   }
@@ -1030,9 +1030,9 @@ const SYSTEM_LEVELS: SystemLevel[] = [
     indicatorState: "solid",
     voltageDetail: "2.5V - 4.2V nominal",
     limitDetail: "-20°C to 60°C peak operating threshold",
-    keyFocus: ["Lithium-ion Butler-Volmer kinetics", "Equivalent Series Resistance (ESR) circuit modeling", "SEI layer growth dynamics under high C-rates"],
-    schematicText: "[Anode (Silicon-Graphite)] ── (Solid Electrolyte Interface Layer) ── [Cathode (High-Nickel NMC)]",
-    description: "The fundamental electrochemical power source of the vehicle. Sizing begins with auditing individual cell chemistry specs and tabless cylindrical geometry limits.",
+    keyFocus: ["Basic battery chemistry (how cells store and release energy)", "Equivalent Series Resistance (ESR) — internal cell resistance", "How aging and temperature affect cell capacity"],
+    schematicText: "[Anode (Silicon-Graphite)] ── (Electrolyte Interface) ── [Cathode (High-Nickel NMC)]",
+    description: "The individual cell is the fundamental unit of every battery pack. Understanding cell chemistry, voltage, capacity, and aging is the essential starting point before building anything larger.",
     engineeringTip: "Watch out for micro-shorts at high state-of-charge when cell temperatures drop below 10°C; this triggers dangerous lithium plating on anodes."
   },
   {
@@ -1043,9 +1043,9 @@ const SYSTEM_LEVELS: SystemLevel[] = [
     indicatorState: "solid",
     voltageDetail: "48V typical serial unit",
     limitDetail: "Passive balancing max discharge: 150mA",
-    keyFocus: ["Series-Parallel cell array configuration", "Mica mechanical sheet isolation barriers", "Aluminum Ribbon-coolant plate CFD modeling"],
-    schematicText: "[12s4p Cell Serial-Parallel Grid] ── (Ribbon Channel Cold-Plate Thermal TIM)",
-    description: "Combines multiple cells into secure physical packages. Houses voltage/temperature sensing nodes, balancing front-ends, and structural spacer bars.",
+    keyFocus: ["How cells are arranged in series and parallel", "Physical barriers to isolate cells from each other", "Cooling plate design to manage heat"],
+    schematicText: "[12s4p Cell Grid] ── (Cooling Plate + Thermal Interface Material)",
+    description: "A module groups multiple cells together into a manageable physical package. It houses temperature sensors, voltage monitoring, and structural spacers to hold cells safely.",
     engineeringTip: "To minimize parasitic heating, verify that the series cell links are wire-bonded or high-frequency laser-welded with zero micro-cracks."
   },
   {
@@ -1056,9 +1056,9 @@ const SYSTEM_LEVELS: SystemLevel[] = [
     indicatorState: "solid",
     voltageDetail: "400V / 800V Dual Traction Bus",
     limitDetail: "IP68 immersion certification standard",
-    keyFocus: ["High-Voltage contactor welding coordination", "BMS central controller galvanic isolation SPI", "Fast pyrofuse mechanical trigger loops"],
-    schematicText: "[Module Cluster Series Chain] ── (Isolation Monitoring IMD) ── [Pyrofuse + HV Contactors]",
-    description: "The final vehicle-level structural energy enclosure. Contains high voltage distribution units, thermal propagation barriers, and gas manifolds.",
+    keyFocus: ["High-voltage contactor and fuse coordination", "BMS isolation and sensing across the full pack", "Emergency disconnect (pyrofuse) protection"],
+    schematicText: "[Module Chain] ── (Isolation Monitor) ── [Emergency Fuse + HV Contactors]",
+    description: "The complete battery pack is the final energy enclosure fitted to the vehicle. It contains the high-voltage distribution, safety hardware, thermal barriers, and the main BMS controller.",
     engineeringTip: "The pyrotechnic pyrofuse is your final defense. Coordinate the fuse speed with contactor air-gap arc limits to prevent fatal contacts."
   },
   {
@@ -1069,9 +1069,9 @@ const SYSTEM_LEVELS: SystemLevel[] = [
     indicatorState: "solid",
     voltageDetail: "12V auxiliary / 800V Traction",
     limitDetail: "CAN-FD Bus Speed: 500kbps under SecOC",
-    keyFocus: ["WLTP and US06 dynamic drive cycle loading", "Silicon Carbide (SiC) traction converter loops", "Vehicle Control Unit (VCU) power mapping"],
-    schematicText: "[Central Traction Battery Pack] ── (CAN-FD Bus) ── [SiC Inverter + Dynamic Motor Drive]",
-    description: "Establishes structural and data connections with the vehicle chassis. Integrates high-performance charging interfaces and drive cycles.",
+    keyFocus: ["How driving patterns (highway, city) affect battery demand", "High-performance motor drive inverter integration", "Vehicle Control Unit (VCU) power management"],
+    schematicText: "[Traction Battery Pack] ── (CAN Bus) ── [Motor Inverter + Drive System]",
+    description: "The vehicle level defines how the battery interacts with the rest of the car — the motor, charging ports, vehicle control unit, and all power routing under different driving conditions.",
     engineeringTip: "Implement dynamic peak charge limits that reflect both instant cell temp and calculated OCV lines during highway acceleration."
   },
   {
@@ -1081,9 +1081,9 @@ const SYSTEM_LEVELS: SystemLevel[] = [
     statusColor: "#10b981",
     indicatorState: "pulse",
     protocols: "MQTT over TLS 1.3 / Google Protobuf",
-    keyFocus: ["Real-world Battery Digital Twin modeling", "European Battery Passports data compliance", "Time-series database fleet telematics telemetry"],
-    schematicText: "[EV Telematics Gateway] ── (Secure TLS 1.3 MQTT) ── [Cloud Time-Series Database Digital Twin]",
-    description: "A centralized ingestion platform storing and mapping vehicle fleet data. Tracks long-term charging histories and generates cell logs.",
+    keyFocus: ["Sending battery data securely to the cloud over the internet", "Digital twin — a live software model of your real battery", "European Battery Passport tracking and compliance"],
+    schematicText: "[EV Gateway] ── (Secure Internet Link) ── [Cloud Database + Digital Twin]",
+    description: "The cloud level collects real-time data from every vehicle in a fleet, stores charging and health histories, and makes that data available for diagnostics, compliance, and predictive analytics.",
     engineeringTip: "Use delta-compression on your Protobuf schemas to keep cell-level telemetry transfers viable over cellular networks."
   },
   {
@@ -1092,10 +1092,10 @@ const SYSTEM_LEVELS: SystemLevel[] = [
     status: "Analyzing",
     statusColor: "#a855f7",
     indicatorState: "pulse",
-    algorithms: "LSTM RUL / TinyML Early Short Predictor",
-    keyFocus: ["Extended Kalman Filter (EKF) SOC/SOH software observers", "LSTM algorithms forecasting Remaining Useful Life", "TinyML edge code spotting micro-shorts"],
-    schematicText: "[Raw V, I, T Sensors] ── (Edge EKF State Observer) ── [AI LSTM Forecasting Engine]",
-    description: "The computational brain predicting pack performance. Calculates dynamic State of Charge (SOC) and estimates capacity degradation trends.",
+    algorithms: "SOC Estimator / Remaining Useful Life Predictor",
+    keyFocus: ["SOC estimation methods — knowing how much charge is left", "AI models forecasting how much battery life remains", "Edge AI on the BMS detecting early warning signs"],
+    schematicText: "[Voltage, Current, Temp Sensors] ── (SOC Estimation) ── [AI Forecasting Engine]",
+    description: "The AI layer is the intelligence layer — it figures out how much charge is left (SOC), predicts how long the battery will last, and detects early signs of cell problems before they become dangerous.",
     engineeringTip: "Run a lightweight Coulomb-counter in parallel with the EKF observer. If OCV drift rises, use the EKF outputs to reset integration bounds."
   },
   {
@@ -1105,9 +1105,9 @@ const SYSTEM_LEVELS: SystemLevel[] = [
     statusColor: "#ef4444",
     indicatorState: "locked",
     standards: "ISO 21434 / UNECE R155 Cybersecurity",
-    keyFocus: ["BMS Hardware Security Module (HSM) secure boot keys", "SecOC CAN-FD message cryptographic validation", "Secure OTA firmware signature validation"],
-    schematicText: "[Incoming OTA Firmware Update] ── (HSM Cryptographic Key Verification) ── [Secure Flash]",
-    description: "Secures internal networks and cellular connections. Prevents physical injection attacks on CAN buses and isolates telemetry fields.",
+    keyFocus: ["Secure boot — making sure only trusted software runs on the BMS", "Secure message authentication on the vehicle network", "Secure over-the-air (OTA) firmware update validation"],
+    schematicText: "[OTA Firmware Update] ── (Signature Verification) ── [Secure Flash]",
+    description: "The security layer protects the battery system from cyber attacks and software tampering. It ensures that only trusted firmware runs, that vehicle network messages are authentic, and that telemetry data is encrypted.",
     engineeringTip: "Always isolate the cellular telemetry module from the direct traction contactor loop by enforcing physical gateway packet filtering."
   },
   {
@@ -1117,10 +1117,10 @@ const SYSTEM_LEVELS: SystemLevel[] = [
     statusColor: "#eab308",
     indicatorState: "solid",
     sohDetail: "Retirement limit: SOH < 80%",
-    keyFocus: ["Rapid EIS-based electrochemical sorting protocols", "Automated pack disassembly robotic triaging", "Stationary backup grid storage container sizing"],
-    schematicText: "[Retired EV Pack (SOH < 80%)] ── (Rapid EIS Health Sorting) ── [10 kWh Stationary Modular Storage]",
-    description: "Enforces battery circular economy. Filters retired EV packs, grading healthy modules for long-term stationary backup power storage grid installations.",
-    engineeringTip: "During pack sorting, use Nyquist phase angle shifts at 10Hz rather than full 10mHz EIS sweeps; this reduces diagnostic triage sorting time by 90%."
+    keyFocus: ["Battery health sorting — grading retired packs for reuse", "Safe disassembly and triage of retired EV modules", "Sizing retired modules for stationary energy storage"],
+    schematicText: "[Retired EV Pack (SOH < 80%)] ── (Health Sorting & Grading) ── [Stationary Storage System]",
+    description: "When EV batteries are retired from vehicles (typically when capacity drops below 80%), they still have useful energy storage life. The second-life layer grades, repacks, and reuses them in stationary storage applications.",
+    engineeringTip: "During pack sorting, use high-frequency impedance checks rather than full frequency sweeps — this speeds up the triage process significantly."
   }
 ];
 
@@ -1249,15 +1249,15 @@ const REVIEW_GATES: ReviewGate[] = [
     gateNum: 1,
     abbr: "SRR",
     name: "System Requirements Review",
-    goal: "Freeze pack capacity (kWh), vehicle physical envelope sizing (mm), and continuous discharge power limits (kW) derived from WLTP drive schedules.",
+    goal: "Freeze pack capacity (kWh), vehicle physical envelope sizing (mm), and continuous discharge power limits (kW) derived from the target vehicle usage profile.",
     failureModes: [
-      "Inaccurate WLTP peak power estimates causing cell capacity sizing shortfalls.",
+      "Inaccurate peak power estimates causing cell capacity sizing shortfalls.",
       "Chassis volume constraint miscalculations resulting in later pack frame adjustments."
     ],
     dependencies: ["Vehicle Integration Team", "Powertrain Specialists"],
     metrics: ["Pack target mass: < 450 kg", "Continuous discharge limit: 120 kW"],
     checksheet: [
-      { item: "WLTP dynamic cycle profiles frozen", owner: "Systems Lead" },
+      { item: "Vehicle usage profile and drive cycle assumptions frozen", owner: "Systems Lead" },
       { item: "Maximum continuous bus current calculated", owner: "Electrical Lead" }
     ]
   },
@@ -1281,7 +1281,7 @@ const REVIEW_GATES: ReviewGate[] = [
     gateNum: 3,
     abbr: "PDR",
     name: "Preliminary Design Review",
-    goal: "Audit busbar physical layout cross-sections, BMS slave-master wiring layouts, and initial cooling plate ribbon CFD models.",
+    goal: "Audit busbar physical layout cross-sections, BMS slave-master wiring layouts, and initial cooling plate design review.",
     failureModes: [
       "Inadequate copper busbar cross-sections causing thermal heat points under peak discharges.",
       "Poor isolated SPI communications routing creating electromagnet interference (EMI) errors."
@@ -1289,7 +1289,7 @@ const REVIEW_GATES: ReviewGate[] = [
     dependencies: ["Thermal CFD Team", "Electrical PCB Designers"],
     metrics: ["Busbar current density: < 6 A/mm²", "Coolant pressure drop: < 35 kPa"],
     checksheet: [
-      { item: "Coolant ribbon velocity CFD completed", owner: "Thermal Lead" },
+      { item: "Cooling design review and flow analysis completed", owner: "Thermal Lead" },
       { item: "Galvanic isolation boundaries mapped", owner: "Electrical Lead" }
     ]
   },
@@ -2224,6 +2224,51 @@ export default function BatteryPackDesignContent() {
             </div>
           </div>
 
+          {/* ─── CONTENT STATUS BLOCK ─── */}
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+            gap: "0.75rem",
+            padding: "1rem 1.25rem",
+            background: "rgba(6, 20, 40, 0.5)",
+            border: "1px solid rgba(255,255,255,0.07)",
+            borderRadius: "var(--radius-lg)",
+            marginBottom: "1.25rem",
+          }}>
+            <div>
+              <div style={{ fontSize: "0.6rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--accent-primary)", marginBottom: "6px" }}>Available Now</div>
+              <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)", lineHeight: 1.5 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "3px" }}>
+                  <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "var(--accent-primary)", display: "inline-block", flexShrink: 0 }} />
+                  Part 0 — Handbook Orientation
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "3px" }}>
+                  <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "var(--accent-primary)", display: "inline-block", flexShrink: 0 }} />
+                  Part 1 — Battery Fundamentals
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                  <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "var(--accent-primary)", display: "inline-block", flexShrink: 0 }} />
+                  Part 2 — Requirements & System Definition
+                </div>
+              </div>
+            </div>
+            <div>
+              <div style={{ fontSize: "0.6rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em", color: "#eab308", marginBottom: "6px" }}>Draft in Progress</div>
+              <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)", lineHeight: 1.5 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                  <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#eab308", display: "inline-block", flexShrink: 0 }} />
+                  Part 3 — Cell Chemistry and Selection
+                </div>
+              </div>
+            </div>
+            <div>
+              <div style={{ fontSize: "0.6rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--text-muted)", marginBottom: "6px" }}>Planned Next</div>
+              <div style={{ fontSize: "0.8rem", color: "var(--text-muted)", lineHeight: 1.5 }}>
+                Part 4 onwards — Electrical Design, BMS Hardware, BMS Software, Thermal, Mechanical, Safety, Standards, AI, Cloud, Cybersecurity, Second-Life, Architectures, Reference Design, and Capstone.
+              </div>
+            </div>
+          </div>
+
           {/* BREADCRUMB LIST */}
           <div className={styles.breadcrumbs} style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -2732,25 +2777,64 @@ export default function BatteryPackDesignContent() {
           <section id="capstone" className={styles.pageSection} ref={sectionRefs.capstone}>
             <div className={styles.sectionHeader}>
               <span className={styles.sectionLabel}>Final Integrations</span>
-              <h2 className={styles.sectionTitle}>Capstone Project: Production Pack Design Blueprint</h2>
+              <h2 className={styles.sectionTitle}>Capstone Project: EV Battery Pack Design</h2>
               <p className={styles.sectionSubtitle}>
-                The ultimate hands-on capstone project requires candidates to design, simulate, validate, and document a 400V structural EV battery pack blueprint.
+                The capstone is structured as progressive deliverables. You don't need to complete all levels — each builds on the previous one at your own pace.
               </p>
             </div>
 
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.25rem", marginBottom: "1.5rem" }}>
+              {/* Beginner Deliverable */}
+              <div style={{ background: "rgba(76,169,48,0.06)", border: "1px solid rgba(76,169,48,0.25)", borderTop: "3px solid var(--accent-primary)", borderRadius: "var(--radius-lg)", padding: "1.5rem" }}>
+                <div style={{ fontSize: "0.65rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--accent-primary)", marginBottom: "8px" }}>Beginner Deliverable</div>
+                <h4 style={{ color: "#fff", fontSize: "1rem", marginBottom: "0.75rem" }}>Requirements Sheet + Basic Sizing</h4>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.82rem", lineHeight: 1.6, marginBottom: "1rem" }}>
+                  Your first milestone. Write a clear requirement document for your target pack and perform a basic cell sizing calculation.
+                </p>
+                <ul style={{ paddingLeft: "1.25rem", color: "var(--text-secondary)", fontSize: "0.8rem", lineHeight: 1.7 }}>
+                  <li>Target voltage, capacity, and energy requirements document</li>
+                  <li>Cell format selected with justification (NMC or LFP)</li>
+                  <li>Series and parallel cell count calculation</li>
+                  <li>Estimated pack weight and volume budget</li>
+                </ul>
+              </div>
+
+              {/* Engineer Deliverable */}
+              <div style={{ background: "rgba(56,189,248,0.05)", border: "1px solid rgba(56,189,248,0.2)", borderTop: "3px solid #38bdf8", borderRadius: "var(--radius-lg)", padding: "1.5rem" }}>
+                <div style={{ fontSize: "0.65rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em", color: "#38bdf8", marginBottom: "8px" }}>Engineer Deliverable</div>
+                <h4 style={{ color: "#fff", fontSize: "1rem", marginBottom: "0.75rem" }}>Electrical + Thermal + BMS Concept</h4>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.82rem", lineHeight: 1.6, marginBottom: "1rem" }}>
+                  Build on your beginner design with physical integration — how the cells connect, cool, and are monitored.
+                </p>
+                <ul style={{ paddingLeft: "1.25rem", color: "var(--text-secondary)", fontSize: "0.8rem", lineHeight: 1.7 }}>
+                  <li>Electrical schematic: busbars, contactors, fuses (KiCad)</li>
+                  <li>Thermal analysis: cooling layout and temperature margins</li>
+                  <li>BMS hardware block diagram with sensing and balancing</li>
+                  <li>SOC estimation approach documented (Coulomb counting or similar)</li>
+                </ul>
+              </div>
+
+              {/* Architect Deliverable */}
+              <div style={{ background: "rgba(168,85,247,0.05)", border: "1px solid rgba(168,85,247,0.2)", borderTop: "3px solid #a855f7", borderRadius: "var(--radius-lg)", padding: "1.5rem" }}>
+                <div style={{ fontSize: "0.65rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em", color: "#a855f7", marginBottom: "8px" }}>Architect Deliverable</div>
+                <h4 style={{ color: "#fff", fontSize: "1rem", marginBottom: "0.75rem" }}>Safety + Telemetry + Cybersecurity + Second-Life</h4>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.82rem", lineHeight: 1.6, marginBottom: "1rem" }}>
+                  The full system submission covering safety compliance, cloud telemetry, security, and end-of-life planning.
+                </p>
+                <ul style={{ paddingLeft: "1.25rem", color: "var(--text-secondary)", fontSize: "0.8rem", lineHeight: 1.7 }}>
+                  <li>Safety compliance checklist (UN 38.3, ECE R100, ISO 26262)</li>
+                  <li>Cloud telemetry dashboard showing live pack data (Grafana)</li>
+                  <li>Basic cybersecurity threat model for the BMS communication network</li>
+                  <li>Second-life plan: at what health level would you retire this pack and for what use?</li>
+                </ul>
+              </div>
+            </div>
+
             <CapstoneOutput>
-              <h4 style={{ color: "#10b981", fontSize: "1.1rem", marginBottom: "0.75rem" }}>Unified Capstone Deliverables Checklist</h4>
-              <p style={{ color: "var(--text-secondary)", marginBottom: "1rem" }}>
-                Candidates must submit a complete, validated design document containing:
+              <h4 style={{ color: "#10b981", fontSize: "1rem", marginBottom: "0.5rem" }}>Jury Evaluation</h4>
+              <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", lineHeight: 1.6, marginBottom: 0 }}>
+                Submissions are scored on: technical accuracy (40%), design completeness (30%), safety analysis depth (20%), and presentation clarity (10%). Submit as a GitHub repository with a structured README. Beginners submit the first deliverable only — engineers and architects build on top.
               </p>
-              <ul style={{ listStyle: "circle", paddingLeft: "1.5rem", color: "var(--text-secondary)", fontSize: "0.85rem", lineHeight: 1.7 }}>
-                <li>Detailed mechanical CAD blueprints of pack structural frame (Cell-to-Pack format)</li>
-                <li>Thermal simulation cooling plate fluid dynamics sheet showing peak operating margins</li>
-                <li>BMS wiring configuration schematics with isolated SPI channel assignments</li>
-                <li>BMS firmware script written in C/Python demonstrating Extended Kalman Filter (EKF) SOC estimation</li>
-                <li>ISO 21434 compliant threat modeling matrix including security control boundaries</li>
-                <li>Comprehensive cost projection spreadsheet detailing repacking circular economy metrics</li>
-              </ul>
             </CapstoneOutput>
           </section>
 
@@ -3587,7 +3671,7 @@ export default function BatteryPackDesignContent() {
                   <span className={styles.audienceCardLabel} style={{ color: "var(--accent-primary)", marginBottom: "0.25rem" }}>UP NEXT</span>
                   <h4 style={{ color: "var(--text-primary)", fontSize: "1.2rem", fontWeight: 700, marginBottom: "0.5rem" }}>Part 1: Battery Fundamentals</h4>
                   <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", lineHeight: 1.5, marginBottom: "1.5rem" }}>
-                    Dive into electrochemistry. Understand how Butler-Volmer kinetics dictate charge transfers at active sites, model dynamic equivalent series circuits, and analyze solid-electrolyte interface (SEI) growth triggers.
+                    Dive into battery fundamentals. Understand how cells store and release energy, model basic equivalent circuits, and learn what happens inside a cell as it ages and heats up.
                   </p>
 
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem", marginBottom: "1.5rem" }}>
@@ -5467,8 +5551,24 @@ export default function BatteryPackDesignContent() {
               <span className={styles.sectionLabel}>Practical Layer — Tools</span>
               <h2 className={styles.sectionTitle}>Tools and Software Ecosystem</h2>
               <p className={styles.sectionSubtitle}>
-                The complete software, simulation, and hardware tool chain used across this handbook. Filter by category or requirement level.
+                The software and hardware tool chain used across this handbook, organized by who needs what. Beginners start with mandatory tools only.
               </p>
+            </div>
+
+            {/* Tier legend */}
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginBottom: "1.5rem", padding: "1rem", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "var(--radius-md)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.78rem" }}>
+                <span style={{ padding: "2px 8px", borderRadius: "4px", background: "rgba(76,169,48,0.15)", border: "1px solid rgba(76,169,48,0.35)", color: "var(--accent-primary)", fontWeight: 700, fontSize: "0.7rem" }}>Mandatory</span>
+                <span style={{ color: "var(--text-muted)" }}>Required from Part 0 — install before you start</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.78rem" }}>
+                <span style={{ padding: "2px 8px", borderRadius: "4px", background: "rgba(56,189,248,0.10)", border: "1px solid rgba(56,189,248,0.3)", color: "#38bdf8", fontWeight: 700, fontSize: "0.7rem" }}>Optional</span>
+                <span style={{ color: "var(--text-muted)" }}>Needed for engineer/architect parts — install when you reach them</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.78rem" }}>
+                <span style={{ padding: "2px 8px", borderRadius: "4px", background: "rgba(168,85,247,0.08)", border: "1px solid rgba(168,85,247,0.25)", color: "#a855f7", fontWeight: 700, fontSize: "0.7rem" }}>Awareness Only</span>
+                <span style={{ color: "var(--text-muted)" }}>Industry tools — good to know exist, not required for this handbook</span>
+              </div>
             </div>
 
             <div className={styles.toolCategoryFilter}>
@@ -5524,7 +5624,7 @@ export default function BatteryPackDesignContent() {
               {[
                 { key: "ppe", label: "PPE Verified", note: "Insulated gloves (Class 0 min), face shield, arc-rated jacket, ESD wrist strap." },
                 { key: "tools", label: "Insulated Tools Only", note: "All tools rated 1000V+. No bare metal contact with positive terminal." },
-                { key: "extinguisher", label: "Fire Suppression Ready", note: "Class D or CO₂ extinguisher within reach. Water strictly prohibited near cells." },
+                { key: "extinguisher", label: "Fire Suppression Ready", note: "Use fire suppression appropriate for the battery chemistry and local regulations — consult trained safety personnel. A CO₂ or dry powder extinguisher is typically nearby." },
                 { key: "extraction", label: "Ventilation Active", note: "Lab ventilation running. Thermal runaway releases toxic HF gas — extraction fan mandatory." },
                 { key: "discharging", label: "Pack Discharged to Safe SoC", note: "Pack SoC below 30% for disassembly. Measure OCV before opening enclosure." },
                 { key: "transport", label: "Safe Transport Protocol", note: "Lithium packs transported in fire-rated containment bag. Never in unsealed containers." },
@@ -5670,7 +5770,7 @@ export default function BatteryPackDesignContent() {
 
             <div style={{ marginTop: "2rem" }}>
               <SafetyWarning>
-                <strong>Critical Thermal Safety Warning:</strong> Never manipulate active lithium cells without standard ground isolation, protective fire containment gear, and certified extraction vents. Thermal runaway propagation represents severe safety risks.
+                <strong>Critical Safety Warning:</strong> Never work alone on live high-voltage battery packs above 60V DC. Always use certified PPE and ground isolation. Fire suppression should be appropriate for the battery chemistry and local regulations — consult trained safety personnel before working in a lab environment. Second-life and unknown-history packs must be treated as unknown-risk systems until fully tested.
               </SafetyWarning>
             </div>
           </section>
