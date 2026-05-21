@@ -82,19 +82,31 @@ const HANDBOOK_PARTS: HandbookPart[] = [
   },
   {
     num: "Part 2",
-    title: "EV Battery Requirements",
-    desc: "Sizing traction packs to complex drive cycles (WLTP, US06), volumetric and gravimetric energy density goals, dynamic C-Rate load requests, and structural chassis bounds.",
+    title: "EV Battery Requirements and System Definition",
+    desc: "Systems engineering and requirements capture for traction packs, customer voice translation, vehicle-level constraints, environmental stress mapping, safety hazard mitigation, repairability, and lifecycle trade-off optimization.",
     difficulty: "Beginner",
     prerequisites: "Part 1",
-    duration: "2.5 Hrs",
-    skillsGained: ["Drive Cycle Loading Maps", "Pack Energy-Mass Budgeting", "C-Rate Curve Modeling"],
-    domains: ["Systems Engineering", "Mechanical Design"],
-    futureRelevance: "Essential for 2026-2030 lightweight packaging targets and high-performance sports car EV specs.",
+    duration: "3.0 Hrs",
+    skillsGained: ["Requirements Engineering", "Customer Voice Translation", "Safety Hazard Auditing", "Traceability Mapping", "System Trade-off Analysis"],
+    domains: ["Systems Engineering", "Safety & Verification", "Lifecycle Analysis"],
+    futureRelevance: "Crucial for automotive system sign-off, safety certification compliance, and battery circularity economics.",
     status: "Available",
     badgeClass: styles.badgeAvailable,
     subsections: [
-      { title: "2.1 Sizing under WLTP & US06 Acceleration Profiles", anchor: "part-2-1" },
-      { title: "2.2 Volumetric vs Gravimetric Packing Density Boundaries", anchor: "part-2-2" }
+      { title: "2.1 Why Requirements Matter", anchor: "part-2-1" },
+      { title: "2.2 EV Battery Application Types", anchor: "part-2-2" },
+      { title: "2.3 Running Example — Second-Life Battery Pack", anchor: "part-2-3" },
+      { title: "2.4 Customer Requirement Capture", anchor: "part-2-4" },
+      { title: "2.5 Vehicle/System Requirement Definition", anchor: "part-2-5" },
+      { title: "2.6 Environmental and Thermal Requirements", anchor: "part-2-6" },
+      { title: "2.7 Safety Requirements", anchor: "part-2-7" },
+      { title: "2.8 Serviceability and Maintainability", anchor: "part-2-8" },
+      { title: "2.9 Cost, Weight, Volume, and Lifecycle Trade-offs", anchor: "part-2-9" },
+      { title: "2.10 Battery Requirement Specification Document", anchor: "part-2-10" },
+      { title: "2.11 System Engineering Workflow", anchor: "part-2-11" },
+      { title: "2.12 Beginner Engineering Exercises", anchor: "part-2-12" },
+      { title: "2.13 Key Engineering Takeaways", anchor: "part-2-13" },
+      { title: "2.14 Navigation to Part 3", anchor: "part-2-14" }
     ]
   },
   {
@@ -1366,11 +1378,20 @@ export default function BatteryPackDesignContent() {
   const [seriesCount, setSeriesCount] = useState<number>(96);
   const [parallelCount, setParallelCount] = useState<number>(6);
 
+  // Interactive UI states for Part 2 Requirements
+  const [activeAppType, setActiveAppType] = useState<string>("car");
+  const [gradingSoh, setGradingSoh] = useState<number>(85);
+  const [gradingIr, setGradingIr] = useState<number>(1.2);
+  const [selectedVocKey, setSelectedVocKey] = useState<string>("range");
+  const [tradeoffSliderValue, setTradeoffSliderValue] = useState<number>(3);
+  const [part2ExerciseSolutions, setPart2ExerciseSolutions] = useState<Record<number, boolean>>({});
+
   const sectionRefs = {
     hero: useRef<HTMLElement>(null),
     overview: useRef<HTMLElement>(null),
     part0Orientation: useRef<HTMLElement>(null),
     part1Fundamentals: useRef<HTMLElement>(null),
+    part2Requirements: useRef<HTMLElement>(null),
     masterIndex: useRef<HTMLElement>(null),
     architecture: useRef<HTMLElement>(null),
     roadmap: useRef<HTMLElement>(null),
@@ -1411,6 +1432,48 @@ export default function BatteryPackDesignContent() {
 
   const toggleGlossary = (index: number) => {
     setExpandedGlossary(prev => ({ ...prev, [index]: !prev[index] }));
+  };
+
+  const renderAppMetrics = (voltage: number, capacity: number, continuousC: number, peakC: number, cooling: string, secondLife: string) => {
+    return (
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem", marginTop: "10px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+          <div>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: "4px" }}>
+              <span>Operating Voltage</span>
+              <span style={{ color: "#fff", fontWeight: 600 }}>{voltage} V</span>
+            </div>
+            <div style={{ height: "4px", background: "rgba(255,255,255,0.05)", borderRadius: "2px", overflow: "hidden" }}>
+              <div style={{ width: `${Math.min(100, (voltage / 850) * 100)}%`, height: "100%", background: "var(--accent-primary)" }} />
+            </div>
+          </div>
+          <div>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: "4px" }}>
+              <span>Energy Capacity</span>
+              <span style={{ color: "#fff", fontWeight: 600 }}>{capacity} Ah</span>
+            </div>
+            <div style={{ height: "4px", background: "rgba(255,255,255,0.05)", borderRadius: "2px", overflow: "hidden" }}>
+              <div style={{ width: `${Math.min(100, (capacity / 1200) * 100)}%`, height: "100%", background: "#38bdf8" }} />
+            </div>
+          </div>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+          <div>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: "4px" }}>
+              <span>Continuous / Peak Discharge</span>
+              <span style={{ color: "#fff", fontWeight: 600 }}>{continuousC}C / {peakC}C</span>
+            </div>
+            <div style={{ height: "4px", background: "rgba(255,255,255,0.05)", borderRadius: "2px", overflow: "hidden" }}>
+              <div style={{ width: `${Math.min(100, (peakC / 10) * 100)}%`, height: "100%", background: "#a855f7" }} />
+            </div>
+          </div>
+          <div style={{ fontSize: "0.72rem", color: "var(--text-muted)" }}>
+            <div style={{ marginBottom: "2px" }}>Cooling Class: <span style={{ color: "#fff", fontWeight: 600 }}>{cooling}</span></div>
+            <div>Second-Life Feasibility: <span style={{ color: "#fff", fontWeight: 600 }}>{secondLife}</span></div>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   // Filter handbook parts based on search
@@ -3446,7 +3509,7 @@ export default function BatteryPackDesignContent() {
                         <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%" }}>
                           <div style={{ border: "2px dashed rgba(255,255,255,0.2)", padding: "10px", borderRadius: "6px", display: "flex", justifyContent: "space-around" }}>
                             {[1, 2, 3, 4].map(i => (
-                              <div key={i} style={{ width: "22px", height: "45px", borderRadius: "3px", border: "2px solid var(--accent-primary)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.5rem" }} key={i}>C</div>
+                              <div key={i} style={{ width: "22px", height: "45px", borderRadius: "3px", border: "2px solid var(--accent-primary)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.5rem" }}>C</div>
                             ))}
                           </div>
                           <div style={{ height: "4px", background: "rgba(76, 169, 48, 0.4)", borderRadius: "2px" }} />
@@ -4222,11 +4285,859 @@ export default function BatteryPackDesignContent() {
                   style={{ alignItems: "flex-end", cursor: "pointer" }}
                   onClick={(e) => {
                     e.preventDefault();
+                    scrollTo("part2Requirements");
+                  }}
+                >
+                  <span className={styles.chapterNavLabel}>Next Part</span>
+                  <span className={styles.chapterNavTitle}>Part 2: EV Battery Requirements and System Definition</span>
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+          {/* ═══ PART 2: EV BATTERY REQUIREMENTS AND SYSTEM DEFINITION ═══ */}
+          <section id="part2Requirements" className={styles.pageSection} ref={sectionRefs.part2Requirements}>
+            <div className={styles.sectionHeader}>
+              <span className={styles.sectionLabel}>Core Module</span>
+              <h2 className={styles.sectionTitle}>Part 2 — EV Battery Requirements and System Definition</h2>
+              <p className={styles.sectionSubtitle}>
+                Master the engineering discipline of requirements capture, system-level trade-offs, environmental constraints, and safety boundary definition.
+              </p>
+            </div>
+
+            <div className={styles.chapterBox}>
+              <div className={styles.chapterTitle}>Part 2: EV Battery Requirements Reader</div>
+
+              {/* 2.1 Why Requirements Matter */}
+              <div id="part-2-1" style={{ scrollMarginTop: "100px", marginBottom: "3rem" }}>
+                <div className={styles.orientationSectionHeader}>
+                  <h3 className={styles.orientationSubTitle}>2.1 Why Requirements Matter</h3>
+                  <span className={styles.orientationAnchorBadge}>P2.1</span>
+                </div>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1.25rem" }}>
+                  Battery pack development is a high-stakes, multi-disciplinary engineering endeavor where electrical, chemical, mechanical, thermal, and software systems intersect under extreme safety constraints. Developing a battery pack without rigorous, upfront requirements engineering is a direct path to project failure. Common consequences of poor requirement definition include packaging mismatches during vehicle integration, severe thermal management failures under fast-charging loads, and catastrophic thermal runaway.
+                </p>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1.25rem" }}>
+                  Rigorous requirements engineering establishes clear boundaries and performance targets before physical prototyping begins. It differentiates between customer expectations (e.g., "fast acceleration") and engineering requirements (e.g., "discharge current of 450A for 10 seconds at cell temperatures between 15°C and 45°C"). This translation forms the backbone of pack architecture.
+                </p>
+
+                <div className="glass-panel" style={{ padding: "1.5rem", marginTop: "1.5rem" }}>
+                  <h4 style={{ color: "#fff", fontSize: "0.95rem", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "8px" }}>
+                    <span>⚙️</span> Requirement-to-Validation Engineering Lifecycle (V-Model)
+                  </h4>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "10px", textAlign: "center" }}>
+                    {[
+                      { step: "1. Capture Requirements", desc: "VOC & System Goals", border: "var(--accent-primary)" },
+                      { step: "2. Architecture Design", desc: "Cell/Module/Pack Sizing", border: "#38bdf8" },
+                      { step: "3. Simulation & Optimization", desc: "Thermal & Electrical FEA", border: "#a855f7" },
+                      { step: "4. Build & Verify", desc: "HIL Testing & Prototyping", border: "#eab308" },
+                      { step: "5. Validation & Sign-off", desc: "UN 38.3 / ISO 26262 Certification", border: "#10b981" }
+                    ].map((phase, idx) => (
+                      <div key={idx} style={{ padding: "12px", border: `1px solid ${phase.border}`, borderRadius: "6px", background: "rgba(255,255,255,0.02)", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                        <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#fff", marginBottom: "4px" }}>{phase.step}</div>
+                        <div style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>{phase.desc}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{ textAlign: "center", color: "var(--accent-primary)", fontSize: "0.75rem", marginTop: "12px" }}>
+                    ➔ Continuous Traceability: System Verification maps directly back to Captured Requirements ➔
+                  </div>
+                </div>
+              </div>
+
+              {/* 2.2 EV Battery Application Types */}
+              <div id="part-2-2" style={{ scrollMarginTop: "100px", marginBottom: "3rem" }}>
+                <div className={styles.orientationSectionHeader}>
+                  <h3 className={styles.orientationSubTitle}>2.2 EV Battery Application Types</h3>
+                  <span className={styles.orientationAnchorBadge}>P2.2</span>
+                </div>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1.25rem" }}>
+                  EV battery packs are not one-size-fits-all. Different applications require drastically different voltage levels, energy capacities, safety architectures, and cooling topologies. Sizing a system requires analyzing the specific duty cycles and volume envelopes of the target application.
+                </p>
+
+                {/* Dynamic Selection Grid */}
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "10px", marginBottom: "1.5rem" }}>
+                  {[
+                    { key: "ebike", name: "E-Bike", icon: "🚲" },
+                    { key: "scooter", name: "Scooter / Micromobility", icon: "🛴" },
+                    { key: "motorcycle", name: "Motorcycle", icon: "🏍️" },
+                    { key: "car", name: "Passenger EV (BEV)", icon: "🚗" },
+                    { key: "commercial", name: "Commercial Truck", icon: "🚛" },
+                    { key: "stationary", name: "Stationary ESS", icon: "🔋" },
+                    { key: "secondlife", name: "Second-Life Pack", icon: "♻️" }
+                  ].map((app) => (
+                    <button
+                      key={app.key}
+                      onClick={() => setActiveAppType(app.key)}
+                      style={{
+                        padding: "12px 8px",
+                        background: activeAppType === app.key ? "rgba(76,169,48,0.15)" : "rgba(255,255,255,0.02)",
+                        border: activeAppType === app.key ? "1.5px solid var(--accent-primary)" : "1.5px solid rgba(255,255,255,0.06)",
+                        borderRadius: "6px",
+                        color: "#fff",
+                        cursor: "pointer",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        gap: "6px",
+                        transition: "all 0.2s ease"
+                      }}
+                    >
+                      <span style={{ fontSize: "1.2rem" }}>{app.icon}</span>
+                      <span style={{ fontSize: "0.75rem", fontWeight: 600 }}>{app.name}</span>
+                    </button>
+                  ))}
+                </div>
+
+                {/* Dynamic Details Panel */}
+                <div className="glass-panel" style={{ padding: "1.5rem" }}>
+                  {activeAppType === "ebike" && (
+                    <div>
+                      <h4 style={{ color: "#fff", fontSize: "1rem", marginBottom: "8px" }}>E-Bike Battery Pack Specs</h4>
+                      <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", marginBottom: "12px" }}>
+                        Low voltage, lightweight, and convection-cooled. Focused on portability, safety during indoor charging, and cost limits.
+                      </p>
+                      {renderAppMetrics(36, 15, 1.5, 3.0, "Passive Air (Convection)", "High (Often 18650 cells)")}
+                    </div>
+                  )}
+                  {activeAppType === "scooter" && (
+                    <div>
+                      <h4 style={{ color: "#fff", fontSize: "1rem", marginBottom: "8px" }}>Scooter / Micromobility Specs</h4>
+                      <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", marginBottom: "12px" }}>
+                        Requires ruggedized mechanical casings to handle frequent drops, vibrations, and swappable battery slot mechanism contact cycles.
+                      </p>
+                      {renderAppMetrics(48, 25, 2.0, 4.0, "Passive Air / Heat Spreading Pads", "High")}
+                    </div>
+                  )}
+                  {activeAppType === "motorcycle" && (
+                    <div>
+                      <h4 style={{ color: "#fff", fontSize: "1rem", marginBottom: "8px" }}>Electric Motorcycle Specs</h4>
+                      <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", marginBottom: "12px" }}>
+                        Strict aerodynamic packaging and volumetric limitations. Demands high discharge rates for quick acceleration without excessive thermal accumulation.
+                      </p>
+                      {renderAppMetrics(110, 40, 3.0, 8.0, "Forced Air / Liquid Cooled Fins", "Medium")}
+                    </div>
+                  )}
+                  {activeAppType === "car" && (
+                    <div>
+                      <h4 style={{ color: "#fff", fontSize: "1rem", marginBottom: "8px" }}>Passenger EV (BEV) Specs</h4>
+                      <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", marginBottom: "12px" }}>
+                        High-voltage (400V–800V) systems designed for maximum range, active liquid cooling, high-power fast charging (350kW+), and structural chassis crash safety.
+                      </p>
+                      {renderAppMetrics(400, 200, 1.0, 5.0, "Active Liquid Cooling Plates", "Low")}
+                    </div>
+                  )}
+                  {activeAppType === "commercial" && (
+                    <div>
+                      <h4 style={{ color: "#fff", fontSize: "1rem", marginBottom: "8px" }}>Commercial Truck Specs</h4>
+                      <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", marginBottom: "12px" }}>
+                        Extremely large scale packs (&gt;300 kWh) designed for deep cycling, long operational lifespan, maximum continuous power, and structural side-frame crash protection.
+                      </p>
+                      {renderAppMetrics(650, 600, 1.5, 3.0, "Active Liquid Chilling", "High (Repurposed as ESS)")}
+                    </div>
+                  )}
+                  {activeAppType === "stationary" && (
+                    <div>
+                      <h4 style={{ color: "#fff", fontSize: "1rem", marginBottom: "8px" }}>Stationary Energy Storage System (ESS) Specs</h4>
+                      <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", marginBottom: "12px" }}>
+                        No volumetric/gravimetric mass constraints. Focuses strictly on cost per kWh, calendar longevity (&gt;15 years), and grid safety. Perfect match for LFP or Sodium-Ion cells.
+                      </p>
+                      {renderAppMetrics(800, 1200, 0.5, 1.0, "HVAC / Active Liquid Cooling", "N/A (End of first-life)")}
+                    </div>
+                  )}
+                  {activeAppType === "secondlife" && (
+                    <div>
+                      <h4 style={{ color: "#fff", fontSize: "1rem", marginBottom: "8px" }}>Second-Life Battery Pack Specs</h4>
+                      <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", marginBottom: "12px" }}>
+                        Assembled using degraded cells (SOH 70%–80%) harvested from retired electric vehicles. Requires advanced grading algorithms and safe design envelopes.
+                      </p>
+                      {renderAppMetrics(350, 100, 0.5, 1.5, "Forced Air / Passive Convective", "N/A (Recycled directly)")}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* 2.3 Running Example — Second-Life Battery Pack */}
+              <div id="part-2-3" style={{ scrollMarginTop: "100px", marginBottom: "3rem" }}>
+                <div className={styles.orientationSectionHeader}>
+                  <h3 className={styles.orientationSubTitle}>2.3 Running Example — Second-Life Battery Pack</h3>
+                  <span className={styles.orientationAnchorBadge}>P2.3</span>
+                </div>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1.25rem" }}>
+                  To ground these engineering principles, this handbook uses a real-world running design challenge: the <strong>Second-Life LFP Battery Pack</strong>. When EV batteries degrade to roughly 70%–80% of their original capacity, they are no longer suitable for vehicular range requirements. However, the cells are still highly viable for secondary applications (like grid energy storage, backup power, or light mobility).
+                </p>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1.25rem" }}>
+                  Repurposing cells involves harvesting them from retired packs, testing and grading them based on State of Health (SOH) and Internal Resistance (IR), and grouping similar-performing cells into secondary modules. Because LFP chemistry has high thermal stability and a long cycle life, it is ideal for second-life stationary storage applications.
+                </p>
+
+                <div className="glass-panel" style={{ padding: "1.5rem" }}>
+                  <h4 style={{ color: "#fff", fontSize: "0.95rem", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "8px" }}>
+                    <span>♻️</span> Interactive Second-Life Cell Grading Simulator
+                  </h4>
+                  <p style={{ color: "var(--text-muted)", fontSize: "0.8rem", marginBottom: "1.5rem" }}>
+                    Simulate testing cells harvested from a retired commuter bus. Adjust State of Health (SOH) and Internal Resistance (IR) parameters to evaluate their suitability for repurposing.
+                  </p>
+
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1.5rem", marginBottom: "1.5rem" }}>
+                    <div>
+                      <label style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem", color: "var(--text-secondary)", marginBottom: "6px" }}>
+                        <span>State of Health (SOH)</span>
+                        <span style={{ color: "var(--accent-primary)", fontWeight: 700 }}>{gradingSoh}%</span>
+                      </label>
+                      <input 
+                        type="range" 
+                        min="50" 
+                        max="100" 
+                        value={gradingSoh} 
+                        onChange={(e) => setGradingSoh(parseInt(e.target.value))} 
+                        style={{ width: "100%", accentColor: "var(--accent-primary)" }}
+                      />
+                      <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.65rem", color: "var(--text-muted)", marginTop: "4px" }}>
+                        <span>50% (Highly Degraded)</span>
+                        <span>100% (Brand New)</span>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem", color: "var(--text-secondary)", marginBottom: "6px" }}>
+                        <span>Internal Resistance (IR)</span>
+                        <span style={{ color: "var(--accent-primary)", fontWeight: 700 }}>{gradingIr} mΩ</span>
+                      </label>
+                      <input 
+                        type="range" 
+                        min="0.5" 
+                        max="5.0" 
+                        step="0.1" 
+                        value={gradingIr} 
+                        onChange={(e) => setGradingIr(parseFloat(e.target.value))} 
+                        style={{ width: "100%", accentColor: "var(--accent-primary)" }}
+                      />
+                      <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.65rem", color: "var(--text-muted)", marginTop: "4px" }}>
+                        <span>0.5 mΩ (Low Loss)</span>
+                        <span>5.0 mΩ (High Heat)</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {(() => {
+                    let grade = "Recycle";
+                    let color = "#ef4444";
+                    let desc = "Cell shows extreme capacity loss or excessive resistance. High heat risk under load. Unfit for secondary use, must be chemically recycled.";
+                    
+                    if (gradingSoh >= 80 && gradingIr <= 1.5) {
+                      grade = "Grade A (Light Vehicle / Mobile Second-Life)";
+                      color = "var(--accent-primary)";
+                      desc = "Excellent health and minimal internal resistance. Suitable for light traction applications, golf carts, or marine auxiliary power.";
+                    } else if (gradingSoh >= 70 && gradingIr <= 2.5) {
+                      grade = "Grade B (Stationary ESS / Grid Backup)";
+                      color = "#eab308";
+                      desc = "Adequate remaining capacity and stable internal resistance. Highly recommended for grid-tied solar storage, peak shaving, or backup power vaults.";
+                    }
+
+                    return (
+                      <div style={{ border: `1.5px solid ${color}`, background: `${color}08`, padding: "12px 16px", borderRadius: "6px" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
+                          <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "1px" }}>Grading Result</span>
+                          <span style={{ fontSize: "0.85rem", fontWeight: 700, color: color }}>{grade}</span>
+                        </div>
+                        <p style={{ color: "var(--text-secondary)", fontSize: "0.8rem", margin: 0 }}>{desc}</p>
+                      </div>
+                    );
+                  })()}
+                </div>
+              </div>
+
+              {/* 2.4 Customer Requirement Capture */}
+              <div id="part-2-4" style={{ scrollMarginTop: "100px", marginBottom: "3rem" }}>
+                <div className={styles.orientationSectionHeader}>
+                  <h3 className={styles.orientationSubTitle}>2.4 Customer Requirement Capture</h3>
+                  <span className={styles.orientationAnchorBadge}>P2.4</span>
+                </div>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1.25rem" }}>
+                  Systems engineering begins by collecting the "Voice of the Customer" (VOC) and translating these high-level, often qualitative desires into quantitative, testable engineering specifications.
+                </p>
+
+                <div className="glass-panel" style={{ padding: "1.5rem" }}>
+                  <h4 style={{ color: "#fff", fontSize: "0.95rem", marginBottom: "1rem" }}>🔊 Voice of Customer (VOC) Technical Specification Translator</h4>
+                  
+                  <div style={{ display: "flex", gap: "10px", marginBottom: "1.25rem", flexWrap: "wrap" }}>
+                    {[
+                      { key: "range", label: "Long Range Drive" },
+                      { key: "charge", label: "Ultra-Fast Charging" },
+                      { key: "durability", label: "Decade Longevity" },
+                      { key: "safety", label: "Severe Crash Safety" }
+                    ].map((btn) => (
+                      <button
+                        key={btn.key}
+                        onClick={() => setSelectedVocKey(btn.key)}
+                        style={{
+                          padding: "8px 12px",
+                          background: selectedVocKey === btn.key ? "rgba(56,189,248,0.15)" : "rgba(255,255,255,0.02)",
+                          border: selectedVocKey === btn.key ? "1px solid #38bdf8" : "1px solid rgba(255,255,255,0.06)",
+                          borderRadius: "4px",
+                          color: selectedVocKey === btn.key ? "#38bdf8" : "#fff",
+                          cursor: "pointer",
+                          fontSize: "0.75rem",
+                          fontWeight: 600,
+                          transition: "all 0.15s ease"
+                        }}
+                      >
+                        {btn.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  {selectedVocKey === "range" && (
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", fontSize: "0.8rem" }}>
+                      <div style={{ padding: "10px", background: "rgba(255,255,255,0.02)", borderRadius: "4px" }}>
+                        <strong style={{ color: "#eab308", display: "block", marginBottom: "4px" }}>Customer Voice:</strong>
+                        "I want to drive at least 320 miles on the highway without stopping to charge."
+                      </div>
+                      <div style={{ padding: "10px", background: "rgba(56,189,248,0.05)", borderRadius: "4px", borderLeft: "3px solid #38bdf8" }}>
+                        <strong style={{ color: "#38bdf8", display: "block", marginBottom: "4px" }}>Engineered System Specs:</strong>
+                        • Minimum usable pack capacity: 85 kWh<br />
+                        • Peak continuous energy discharge: 28 kW continuous at 70 mph<br />
+                        • Cell Chemistry: High specific energy NMC (or advanced LFP)
+                      </div>
+                    </div>
+                  )}
+                  {selectedVocKey === "charge" && (
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", fontSize: "0.8rem" }}>
+                      <div style={{ padding: "10px", background: "rgba(255,255,255,0.02)", borderRadius: "4px" }}>
+                        <strong style={{ color: "#eab308", display: "block", marginBottom: "4px" }}>Customer Voice:</strong>
+                        "I only want to spend 15 minutes at charging stations during road trips."
+                      </div>
+                      <div style={{ padding: "10px", background: "rgba(56,189,248,0.05)", borderRadius: "4px", borderLeft: "3px solid #38bdf8" }}>
+                        <strong style={{ color: "#38bdf8", display: "block", marginBottom: "4px" }}>Engineered System Specs:</strong>
+                        • Charge capability: 10% to 80% SOC in &le; 18 minutes<br />
+                        • Peak continuous charging current: &ge; 420 A (continuous 3.5C charge rate)<br />
+                        • Cooling system: Active liquid bottom-cooling plate to reject 12kW peak heat loss
+                      </div>
+                    </div>
+                  )}
+                  {selectedVocKey === "durability" && (
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", fontSize: "0.8rem" }}>
+                      <div style={{ padding: "10px", background: "rgba(255,255,255,0.02)", borderRadius: "4px" }}>
+                        <strong style={{ color: "#eab308", display: "block", marginBottom: "4px" }}>Customer Voice:</strong>
+                        "I want my battery to last the entire lifespan of the car, at least 10 years."
+                      </div>
+                      <div style={{ padding: "10px", background: "rgba(56,189,248,0.05)", borderRadius: "4px", borderLeft: "3px solid #38bdf8" }}>
+                        <strong style={{ color: "#38bdf8", display: "block", marginBottom: "4px" }}>Engineered System Specs:</strong>
+                        • Capacity retention: &ge; 80% initial capacity at Year 10 / 200,000 miles<br />
+                        • Calendar life targets: &ge; 3,500 equivalent full cycles under 1C rate<br />
+                        • Thermal boundaries: BMS controls cooling to maintain cells between 25°C and 35°C
+                      </div>
+                    </div>
+                  )}
+                  {selectedVocKey === "safety" && (
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", fontSize: "0.8rem" }}>
+                      <div style={{ padding: "10px", background: "rgba(255,255,255,0.02)", borderRadius: "4px" }}>
+                        <strong style={{ color: "#eab308", display: "block", marginBottom: "4px" }}>Customer Voice:</strong>
+                        "I want total peace of mind that the battery won't catch fire in a highway collision."
+                      </div>
+                      <div style={{ padding: "10px", background: "rgba(56,189,248,0.05)", borderRadius: "4px", borderLeft: "3px solid #38bdf8" }}>
+                        <strong style={{ color: "#38bdf8", display: "block", marginBottom: "4px" }}>Engineered System Specs:</strong>
+                        • Passive propagation resistance: Zero thermal runaway propagation to adjacent cells<br />
+                        • Structural integrity: Case must withstand 100 kN lateral crush load without intrusion<br />
+                        • Safety isolation: High-voltage pyrofuse cuts off load circuit within &le; 2 ms upon collision detect
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* 2.5 Vehicle/System Requirement Definition */}
+              <div id="part-2-5" style={{ scrollMarginTop: "100px", marginBottom: "3rem" }}>
+                <div className={styles.orientationSectionHeader}>
+                  <h3 className={styles.orientationSubTitle}>2.5 Vehicle/System Requirement Definition</h3>
+                  <span className={styles.orientationAnchorBadge}>P2.5</span>
+                </div>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1.25rem" }}>
+                  Once customer voices are translated, the systems engineering team establishes concrete <strong>Vehicle-to-Pack Requirements</strong>. These specifications dictate key electrical, mechanical, and thermal parameters of the final system:
+                </p>
+
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1.5rem" }}>
+                  <div className="glass-panel" style={{ padding: "1.25rem" }}>
+                    <h4 style={{ color: "#fff", fontSize: "0.85rem", marginBottom: "8px", borderBottom: "1px solid rgba(255,255,255,0.05)", paddingBottom: "4px" }}>⚡ Electrical Domain</h4>
+                    <ul style={{ color: "var(--text-secondary)", fontSize: "0.8rem", paddingLeft: "15px", lineHeight: "1.5" }}>
+                      <li><strong>Nominal Voltage:</strong> Determines drivetrain matching (e.g. 360V for commuter EVs, 720V for 800V fast-charging architectures).</li>
+                      <li><strong>Continuous Current:</strong> Max current matching vehicle continuous cruise power.</li>
+                      <li><strong>Peak Current:</strong> Max current requested under peak acceleration (e.g. 10-second boost).</li>
+                      <li><strong>Regen Limits:</strong> Maximum absorption current during regenerative braking.</li>
+                    </ul>
+                  </div>
+
+                  <div className="glass-panel" style={{ padding: "1.25rem" }}>
+                    <h4 style={{ color: "#fff", fontSize: "0.85rem", marginBottom: "8px", borderBottom: "1px solid rgba(255,255,255,0.05)", paddingBottom: "4px" }}>📐 Mechanical & Packaging</h4>
+                    <ul style={{ color: "var(--text-secondary)", fontSize: "0.8rem", paddingLeft: "15px", lineHeight: "1.5" }}>
+                      <li><strong>Pack Envelope:</strong> Total X, Y, Z dimensional volume allocated underneath the vehicle cabin chassis.</li>
+                      <li><strong>Gravimetric Budget:</strong> Maximum allowable mass allocation (e.g. &le; 450 kg) to maintain target vehicle suspension behavior.</li>
+                      <li><strong>Mounting Interface:</strong> Location of chassis hardpoints to bear mechanical stress during dynamic cornering.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* 2.6 Environmental and Thermal Requirements */}
+              <div id="part-2-6" style={{ scrollMarginTop: "100px", marginBottom: "3rem" }}>
+                <div className={styles.orientationSectionHeader}>
+                  <h3 className={styles.orientationSubTitle}>2.6 Environmental and Thermal Requirements</h3>
+                  <span className={styles.orientationAnchorBadge}>P2.6</span>
+                </div>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1.25rem" }}>
+                  EV battery packs are subjected to extreme, varying environmental stresses. Environmental requirements dictate case sealing, isolation boundaries, and thermal management architectures to ensure cell stability under all operation conditions.
+                </p>
+
+                <div className="glass-panel" style={{ padding: "1.5rem" }}>
+                  <h4 style={{ color: "#fff", fontSize: "0.9rem", marginBottom: "10px" }}>🌧️ Environmental Stress & Mitigation Mapping</h4>
+                  <div style={{ overflowX: "auto" }}>
+                    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.8rem", textAlign: "left" }}>
+                      <thead>
+                        <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.1)", color: "#fff" }}>
+                          <th style={{ padding: "8px" }}>Environmental Stress</th>
+                          <th style={{ padding: "8px" }}>Target Hazard</th>
+                          <th style={{ padding: "8px" }}>Engineering Requirement</th>
+                          <th style={{ padding: "8px" }}>Design Mitigation</th>
+                        </tr>
+                      </thead>
+                      <tbody style={{ color: "var(--text-secondary)" }}>
+                        <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                          <td style={{ padding: "8px", fontWeight: 600, color: "#fff" }}>Extreme Cold (-30°C)</td>
+                          <td>Lithium plating, severe capacity loss</td>
+                          <td>Warm cells to &gt; 0°C before charging</td>
+                          <td>Integrated PTC liquid heaters / cell heaters</td>
+                        </tr>
+                        <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                          <td style={{ padding: "8px", fontWeight: 600, color: "#fff" }}>Extreme Heat (+55°C)</td>
+                          <td>Accelerated aging, thermal runaway</td>
+                          <td>Keep cell temp below 45°C under high loads</td>
+                          <td>Active liquid cooling plates with chiller cycles</td>
+                        </tr>
+                        <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                          <td style={{ padding: "8px", fontWeight: 600, color: "#fff" }}>Water & Dust Ingress</td>
+                          <td>HV short circuits, cell/BMS corrosion</td>
+                          <td>IP67 (immersion), IP69K (high pressure wash)</td>
+                          <td>Gore-vent seals, silicone perimeter gaskets</td>
+                        </tr>
+                        <tr>
+                          <td style={{ padding: "8px", fontWeight: 600, color: "#fff" }}>Road Shock & Vibration</td>
+                          <td>Interconnect mechanical fatigue/cracks</td>
+                          <td>Withstand UN 38.3 vibration profile specs</td>
+                          <td>Epoxy cell-bonding, wire bonding, rubber isolators</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              {/* 2.7 Safety Requirements */}
+              <div id="part-2-7" style={{ scrollMarginTop: "100px", marginBottom: "3rem" }}>
+                <div className={styles.orientationSectionHeader}>
+                  <h3 className={styles.orientationSubTitle}>2.7 Safety Requirements</h3>
+                  <span className={styles.orientationAnchorBadge}>P2.7</span>
+                </div>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1.25rem" }}>
+                  Safety is the absolute primary boundary constraint for any lithium traction battery pack. High-voltage energy systems must integrate layered mechanical, electrical, and software safety boundaries to protect passengers, first responders, and technicians.
+                </p>
+
+                <SafetyWarning>
+                  <strong>High Voltage Safety Target:</strong> Traction batteries exceeding 60 VDC are classified as high voltage systems. The pack design must integrate insulation monitoring sensors to actively measure electrical resistance between high-voltage busbars and the chassis ground. Any value below 100 Ω/V must trigger an immediate BMS safety interrupt.
+                </SafetyWarning>
+
+                <div style={{ marginTop: "1.25rem" }}>
+                  <ArchitectInsight>
+                    <strong>ISO 26262 Compliance:</strong> The battery management system's overvoltage detection, overtemperature shutdown, and contactor control circuits are typical candidates for Automotive Safety Integrity Level (ASIL) D classification—the highest safety level representing safety-critical controls.
+                  </ArchitectInsight>
+                </div>
+
+                <div className="glass-panel" style={{ padding: "1.5rem", marginTop: "1.5rem" }}>
+                  <h4 style={{ color: "#fff", fontSize: "0.9rem", marginBottom: "8px" }}>🔥 Thermal Runaway Propagation Prevention (UN 38.3 / ECE R100)</h4>
+                  <p style={{ color: "var(--text-secondary)", fontSize: "0.8rem", lineHeight: "1.5", margin: 0 }}>
+                    In the event of a single cell entering thermal runaway (due to internal short circuit or defect), the pack design must prevent this failure from propagating to neighboring cells. Mechanical mitigations include Aerogel insulating pads between cells, mica sheet module separators, and dedicated cell pressure-relief vents that direct hot exhaust gas away from other cell modules.
+                  </p>
+                </div>
+              </div>
+
+              {/* 2.8 Serviceability and Maintainability */}
+              <div id="part-2-8" style={{ scrollMarginTop: "100px", marginBottom: "3rem" }}>
+                <div className={styles.orientationSectionHeader}>
+                  <h3 className={styles.orientationSubTitle}>2.8 Serviceability and Maintainability</h3>
+                  <span className={styles.orientationAnchorBadge}>P2.8</span>
+                </div>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1.25rem" }}>
+                  A battery pack must not be designed as a sealed black box that is impossible to service. Modular engineering allows technicians to troubleshoot and replace individual components safely, extending the operational life of the battery.
+                </p>
+
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem" }}>
+                  <div className="glass-panel" style={{ padding: "1.25rem" }}>
+                    <h4 style={{ color: "#fff", fontSize: "0.85rem", marginBottom: "6px" }}>🔌 Manual Service Disconnect (MSD)</h4>
+                    <p style={{ color: "var(--text-secondary)", fontSize: "0.8rem", lineHeight: "1.5", margin: 0 }}>
+                      An MSD is a physical plug accessible from outside or inside the cabin that splits the main series connection of the pack in half. Removing the MSD drops the exposed voltage levels of the pack below high-voltage safety thresholds, allowing technicians to work on internal components without hazard.
+                    </p>
+                  </div>
+
+                  <div className="glass-panel" style={{ padding: "1.25rem" }}>
+                    <h4 style={{ color: "#fff", fontSize: "0.85rem", marginBottom: "6px" }}>📦 Modular Service Strategy</h4>
+                    <p style={{ color: "var(--text-secondary)", fontSize: "0.8rem", lineHeight: "1.5", margin: 0 }}>
+                      Instead of laser-welding the entire pack envelope shut, top-cover plates are sealed with service-replaceable gaskets. If a cell module registers a sensor failure or cell defect, the module can be unbolted and swapped, avoiding costly total pack replacement.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* 2.9 Cost, Weight, Volume, and Lifecycle Trade-offs */}
+              <div id="part-2-9" style={{ scrollMarginTop: "100px", marginBottom: "3rem" }}>
+                <div className={styles.orientationSectionHeader}>
+                  <h3 className={styles.orientationSubTitle}>2.9 Cost, Weight, Volume, and Lifecycle Trade-offs</h3>
+                  <span className={styles.orientationAnchorBadge}>P2.9</span>
+                </div>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1.25rem" }}>
+                  Battery pack engineering is a continuous balance of compromises. You cannot maximize all parameters simultaneously. Elevating specific energy usually compromises safety margins or cycle lifespan; lowering costs through cheaper chemistries (like LFP) increases weight and pack volume requirements.
+                </p>
+
+                <div className="glass-panel" style={{ padding: "1.5rem" }}>
+                  <h4 style={{ color: "#fff", fontSize: "0.95rem", marginBottom: "1rem" }}>⚖️ Interactive Battery Architecture Trade-off Balance tool</h4>
+                  
+                  <div style={{ marginBottom: "1.5rem" }}>
+                    <input 
+                      type="range" 
+                      min="1" 
+                      max="5" 
+                      value={tradeoffSliderValue} 
+                      onChange={(e) => setTradeoffSliderValue(parseInt(e.target.value))} 
+                      style={{ width: "100%", accentColor: "var(--accent-primary)", marginBottom: "6px" }}
+                    />
+                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.7rem", color: "var(--text-muted)" }}>
+                      <span>1: ESS LFP (Budget/Durability)</span>
+                      <span>3: Standard Commuter EV</span>
+                      <span>5: Solid-State (Extreme Performance)</span>
+                    </div>
+                  </div>
+
+                  {(() => {
+                    let title = "";
+                    let desc = "";
+                    let energy = 0;
+                    let safety = 0;
+                    let cost = 0;
+                    let thermal = 0;
+                    let cycle = 0;
+
+                    if (tradeoffSliderValue === 1) {
+                      title = "Stationary LFP Energy Storage (ESS)";
+                      desc = "Maximized for cost efficiency and lifespan. Volumetric density is low, requiring substantial physical room. Safety is excellent due to stable LFP chemistry.";
+                      energy = 30; safety = 95; cost = 95; thermal = 20; cycle = 98;
+                    } else if (tradeoffSliderValue === 2) {
+                      title = "Commuter EV Pack (LFP/Sodium-Ion)";
+                      desc = "Balanced budget solution with high safety margin. Slower charging rates, moderate range, but highly durable and cost-effective.";
+                      energy = 50; safety = 85; cost = 80; thermal = 45; cycle = 88;
+                    } else if (tradeoffSliderValue === 3) {
+                      title = "Standard BEV (NMC Balanced)";
+                      desc = "The default modern EV configuration. Balanced energy density for 300+ miles of range, active liquid cooling thermal load support, and moderate cost.";
+                      energy = 75; safety = 65; cost = 55; thermal = 70; cycle = 70;
+                    } else if (tradeoffSliderValue === 4) {
+                      title = "Performance Track EV (NMC High C-Rate)";
+                      desc = "Maximized for peak acceleration power and fast cooling. Features thin, high-performance electrodes. Lifespan and costs are severely compromised.";
+                      energy = 85; safety = 50; cost = 30; thermal = 95; cycle = 50;
+                    } else if (tradeoffSliderValue === 5) {
+                      title = "Hypercar Solid-State (Future Concept)";
+                      desc = "Maximum specific energy and chemical stability. Costs are extremely high due to early manufacturing scaling. Demands minimal active cooling infrastructure.";
+                      energy = 98; safety = 90; cost = 10; thermal = 30; cycle = 80;
+                    }
+
+                    return (
+                      <div>
+                        <div style={{ borderBottom: "1px solid rgba(255,255,255,0.05)", paddingBottom: "8px", marginBottom: "12px" }}>
+                          <strong style={{ color: "var(--accent-primary)", fontSize: "0.85rem" }}>{title}</strong>
+                          <p style={{ color: "var(--text-secondary)", fontSize: "0.75rem", margin: "4px 0 0 0" }}>{desc}</p>
+                        </div>
+                        
+                        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                          {[
+                            { name: "Specific Energy (Wh/kg)", val: energy, color: "var(--accent-primary)" },
+                            { name: "Safety Margin (Thermal Stability)", val: safety, color: "#10b981" },
+                            { name: "Cost Efficiency (Low $/kWh)", val: cost, color: "#38bdf8" },
+                            { name: "Thermal Complexity (Liquid demand)", val: thermal, color: "#a855f7" },
+                            { name: "Cycle Lifespan (Total Cycles)", val: cycle, color: "#eab308" }
+                          ].map((item, idx) => (
+                            <div key={idx}>
+                              <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.7rem", color: "var(--text-muted)", marginBottom: "2px" }}>
+                                <span>{item.name}</span>
+                                <span style={{ color: "#fff", fontWeight: 600 }}>{item.val}%</span>
+                              </div>
+                              <div style={{ height: "6px", background: "rgba(255,255,255,0.05)", borderRadius: "3px", overflow: "hidden" }}>
+                                <div style={{ width: `${item.val}%`, height: "100%", background: item.color }} />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })()}
+                </div>
+              </div>
+
+              {/* 2.10 Battery Requirement Specification Document */}
+              <div id="part-2-10" style={{ scrollMarginTop: "100px", marginBottom: "3rem" }}>
+                <div className={styles.orientationSectionHeader}>
+                  <h3 className={styles.orientationSubTitle}>2.10 Battery Requirement Specification Document</h3>
+                  <span className={styles.orientationAnchorBadge}>P2.10</span>
+                </div>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1.25rem" }}>
+                  All technical requirements must be collected into a centralized <strong>Requirement Specification Document</strong>. This registry lists clear, unambiguous requirements, each with a unique ID, description, subsystem target, and verification method.
+                </p>
+
+                <div className="glass-panel" style={{ padding: "1.5rem" }}>
+                  <h4 style={{ color: "#fff", fontSize: "0.9rem", marginBottom: "8px" }}>📋 Sample Traceability Matrix Structure</h4>
+                  <div style={{ overflowX: "auto" }}>
+                    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.75rem", textAlign: "left" }}>
+                      <thead>
+                        <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.1)", color: "#fff" }}>
+                          <th style={{ padding: "6px" }}>Requirement ID</th>
+                          <th style={{ padding: "6px" }}>Subsystem Target</th>
+                          <th style={{ padding: "6px" }}>Specification Target Description</th>
+                          <th style={{ padding: "6px" }}>Verification Method</th>
+                        </tr>
+                      </thead>
+                      <tbody style={{ color: "var(--text-secondary)" }}>
+                        <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                          <td style={{ padding: "6px", fontWeight: 600, color: "#fff" }}>REQ-BATT-ELEC-01</td>
+                          <td>Electrical Interconnects</td>
+                          <td>Busbars must carry 350A continuously without exceeding 60°C temperature rise.</td>
+                          <td>Test (Thermal Chamber Load)</td>
+                        </tr>
+                        <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                          <td style={{ padding: "6px", fontWeight: 600, color: "#fff" }}>REQ-BATT-MECH-03</td>
+                          <td>Pack Enclosure Case</td>
+                          <td>Cover plates must prevent water ingress under 1-meter immersion for 30 minutes.</td>
+                          <td>Test (IP67 Water Chamber)</td>
+                        </tr>
+                        <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                          <td style={{ padding: "6px", fontWeight: 600, color: "#fff" }}>REQ-BATT-SAFE-05</td>
+                          <td>BMS Safety Software</td>
+                          <td>BMS must disconnect contactors within 15 ms if voltage drops below 2.0V in any cell.</td>
+                          <td>Analysis / Hardware HIL Test</td>
+                        </tr>
+                        <tr>
+                          <td style={{ padding: "6px", fontWeight: 600, color: "#fff" }}>REQ-BATT-THER-02</td>
+                          <td>Cooling Channel</td>
+                          <td>Coolant pressure drop across channels must not exceed 45 kPa at 8 L/min flow rate.</td>
+                          <td>Analysis (CFD) / Inspection</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              {/* 2.11 System Engineering Workflow */}
+              <div id="part-2-11" style={{ scrollMarginTop: "100px", marginBottom: "3rem" }}>
+                <div className={styles.orientationSectionHeader}>
+                  <h3 className={styles.orientationSubTitle}>2.11 System Engineering Workflow</h3>
+                  <span className={styles.orientationAnchorBadge}>P2.11</span>
+                </div>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1.25rem" }}>
+                  The battery engineering workflow maps directly onto the systems engineering V-model. Designing a pack isn't just about putting cells in a container; it's a structured flow from requirements definition to hardware and software verification gates:
+                </p>
+
+                <div className="glass-panel" style={{ padding: "1.5rem" }}>
+                  <h4 style={{ color: "#fff", fontSize: "0.9rem", marginBottom: "10px" }}>🔄 The V-Model Battery Engineering Gates</h4>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "10px", fontSize: "0.8rem" }}>
+                    {[
+                      { gate: "1. System Concept & Requirements Definition", detail: "Translate customer voices to REQ specification targets (electrical, thermal, mechanical constraints)." },
+                      { gate: "2. Preliminary Design Review (PDR)", detail: "Align cell selections, pack envelopes, thermal liquid maps, and simulation calculations." },
+                      { gate: "3. Detailed Design Review (DDR)", detail: "Finalize CAD prints, busbar cross-sections, BMS daisy-chain architecture, and safety mitigation layouts." },
+                      { gate: "4. Verification (V1 Testing)", detail: "Perform Hardware-in-the-Loop (HIL) BMS code runs, mechanical vibrations (UN 38.3), and IP chamber validation." },
+                      { gate: "5. Final Validation (V2 Sign-off)", detail: "Execute crash testing, vehicle-level track endurance, fast-charge testing, and regulatory certification approvals." }
+                    ].map((item, idx) => (
+                      <div key={idx} style={{ display: "flex", gap: "12px", borderLeft: "2px solid var(--accent-primary)", paddingLeft: "12px" }}>
+                        <div>
+                          <strong style={{ color: "#fff", display: "block" }}>{item.gate}</strong>
+                          <span style={{ color: "var(--text-secondary)" }}>{item.detail}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* 2.12 Beginner Engineering Exercises */}
+              <div id="part-2-12" style={{ scrollMarginTop: "100px", marginBottom: "3rem" }}>
+                <div className={styles.orientationSectionHeader}>
+                  <h3 className={styles.orientationSubTitle}>2.12 Beginner Engineering Exercises</h3>
+                  <span className={styles.orientationAnchorBadge}>P2.12</span>
+                </div>
+                
+                <div className={styles.exerciseCard}>
+                  <div className={styles.exerciseHeader}>
+                    <span className={styles.exerciseBadge}>EXERCISE 1</span>
+                    <h4 className={styles.exerciseTitle}>Delivery Vehicle Energy Sizing</h4>
+                  </div>
+                  <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", margin: "10px 0" }}>
+                    A postal delivery van requires a range of 150 miles per day. Sizing calculations estimate its energy consumption at 420 Wh/mile. Sizing margins dictate keeping a 10% lower buffer (prevent over-discharge) and a 5% upper buffer (prevent over-charge). Calculate the total nominal energy capacity required for the pack.
+                  </p>
+                  
+                  <button 
+                    className="btn btn-secondary btn-sm"
+                    onClick={() => setPart2ExerciseSolutions(prev => ({ ...prev, 1: !prev[1] }))}
+                    style={{ marginTop: "8px" }}
+                  >
+                    {part2ExerciseSolutions[1] ? "Hide Solution ▲" : "Reveal Solution ▼"}
+                  </button>
+
+                  {part2ExerciseSolutions[1] && (
+                    <div style={{ marginTop: "12px", padding: "12px", borderTop: "1px dashed rgba(255,255,255,0.1)", fontSize: "0.8rem", color: "var(--text-secondary)" }}>
+                      <strong style={{ color: "#fff", display: "block", marginBottom: "4px" }}>Step-by-Step Solution:</strong>
+                      1. Calculate Usable Energy Required:<br />
+                      &nbsp;&nbsp;&nbsp;&nbsp;Usable Energy = Range &times; Consumption Rate = 150 miles &times; 420 Wh/mile = 63,000 Wh = 63 kWh.<br /><br />
+                      2. Calculate Total Capacity Buffer Factor:<br />
+                      &nbsp;&nbsp;&nbsp;&nbsp;Usable buffer is bounded between 10% and 95% of SOC. Usable window = 95% - 10% = 85% (or 0.85).<br /><br />
+                      3. Calculate Total Nominal Capacity:<br />
+                      &nbsp;&nbsp;&nbsp;&nbsp;Nominal Energy = Usable Energy / Usable Window = 63 kWh / 0.85 &asymp; 74.12 kWh.<br /><br />
+                      <strong style={{ color: "var(--accent-primary)" }}>Nominal Capacity Target: 74.2 kWh</strong>
+                    </div>
+                  )}
+                </div>
+
+                <div className={styles.exerciseCard} style={{ marginTop: "1.25rem" }}>
+                  <div className={styles.exerciseHeader}>
+                    <span className={styles.exerciseBadge}>EXERCISE 2</span>
+                    <h4 className={styles.exerciseTitle}>Continuous C-Rate Charging Estimation</h4>
+                  </div>
+                  <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", margin: "10px 0" }}>
+                    An electric scooter has a 60V, 30Ah battery pack. The manufacturer wants to charge the battery from 20% to 80% SOC in 45 minutes using a steady current. Calculate the continuous charge current in Amperes, and the corresponding C-rate.
+                  </p>
+                  
+                  <button 
+                    className="btn btn-secondary btn-sm"
+                    onClick={() => setPart2ExerciseSolutions(prev => ({ ...prev, 2: !prev[2] }))}
+                    style={{ marginTop: "8px" }}
+                  >
+                    {part2ExerciseSolutions[2] ? "Hide Solution ▲" : "Reveal Solution ▼"}
+                  </button>
+
+                  {part2ExerciseSolutions[2] && (
+                    <div style={{ marginTop: "12px", padding: "12px", borderTop: "1px dashed rgba(255,255,255,0.1)", fontSize: "0.8rem", color: "var(--text-secondary)" }}>
+                      <strong style={{ color: "#fff", display: "block", marginBottom: "4px" }}>Step-by-Step Solution:</strong>
+                      1. Calculate capacity charge transfer required:<br />
+                      &nbsp;&nbsp;&nbsp;&nbsp;ΔSOC = 80% - 20% = 60% = 0.60.<br />
+                      &nbsp;&nbsp;&nbsp;&nbsp;Capacity charged = 30 Ah &times; 0.60 = 18 Ah.<br /><br />
+                      2. Calculate charging current needed:<br />
+                      &nbsp;&nbsp;&nbsp;&nbsp;Time = 45 minutes = 0.75 hours.<br />
+                      &nbsp;&nbsp;&nbsp;&nbsp;Current = Capacity / Time = 18 Ah / 0.75 h = 24 A.<br /><br />
+                      3. Calculate C-rate:<br />
+                      &nbsp;&nbsp;&nbsp;&nbsp;C-rate = Current / Total Nominal Capacity = 24 A / 30 Ah = 0.8C.<br /><br />
+                      <strong style={{ color: "var(--accent-primary)" }}>Current Target: 24A at 0.8C Charge Rate</strong>
+                    </div>
+                  )}
+                </div>
+
+                <div className={styles.exerciseCard} style={{ marginTop: "1.25rem" }}>
+                  <div className={styles.exerciseHeader}>
+                    <span className={styles.exerciseBadge}>EXERCISE 3</span>
+                    <h4 className={styles.exerciseTitle}>Second-Life SOH Degradation Evaluation</h4>
+                  </div>
+                  <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", margin: "10px 0" }}>
+                    A module of 12 parallel cells undergoes static testing. The original cell capacity was 5.0 Ah. Testing shows the current capacity of the module is 46.2 Ah. Calculate the current SOH of the module and classify if it is Grade A, Grade B, or must be recycled (using thresholds: Grade A &ge; 80%, Grade B &ge; 70%).
+                  </p>
+                  
+                  <button 
+                    className="btn btn-secondary btn-sm"
+                    onClick={() => setPart2ExerciseSolutions(prev => ({ ...prev, 3: !prev[3] }))}
+                    style={{ marginTop: "8px" }}
+                  >
+                    {part2ExerciseSolutions[3] ? "Hide Solution ▲" : "Reveal Solution ▼"}
+                  </button>
+
+                  {part2ExerciseSolutions[3] && (
+                    <div style={{ marginTop: "12px", padding: "12px", borderTop: "1px dashed rgba(255,255,255,0.1)", fontSize: "0.8rem", color: "var(--text-secondary)" }}>
+                      <strong style={{ color: "#fff", display: "block", marginBottom: "4px" }}>Step-by-Step Solution:</strong>
+                      1. Calculate Original Module Capacity:<br />
+                      &nbsp;&nbsp;&nbsp;&nbsp;Original Capacity = 12 cells &times; 5.0 Ah/cell = 60.0 Ah.<br /><br />
+                      2. Calculate Module State of Health (SOH):<br />
+                      &nbsp;&nbsp;&nbsp;&nbsp;SOH = (Current Capacity / Original Capacity) &times; 100 = (46.2 Ah / 60.0 Ah) &times; 100 = 77.0%.<br /><br />
+                      3. Classify module based on SOH:<br />
+                      &nbsp;&nbsp;&nbsp;&nbsp;SOH is 77%. Since 70% &le; 77% &lt; 80%, the module falls into Grade B.<br /><br />
+                      <strong style={{ color: "var(--accent-primary)" }}>SOH: 77% (Classified as Grade B for Stationary ESS)</strong>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* 2.13 Key Engineering Takeaways */}
+              <div id="part-2-13" style={{ scrollMarginTop: "100px", marginBottom: "3rem" }}>
+                <div className={styles.orientationSectionHeader}>
+                  <h3 className={styles.orientationSubTitle}>2.13 Key Engineering Takeaways</h3>
+                  <span className={styles.orientationAnchorBadge}>P2.13</span>
+                </div>
+                
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+                  <div className="glass-panel" style={{ padding: "1.25rem" }}>
+                    <strong style={{ color: "var(--accent-primary)", display: "block", marginBottom: "6px", fontSize: "0.85rem" }}>1. Requirements First</strong>
+                    <p style={{ color: "var(--text-secondary)", fontSize: "0.8rem", margin: 0, lineHeight: 1.5 }}>
+                      You cannot design a battery pack in a vacuum. Always start by capturing structural packaging boundaries, voltage demands, thermal operating bounds, and continuous charging targets.
+                    </p>
+                  </div>
+
+                  <div className="glass-panel" style={{ padding: "1.25rem" }}>
+                    <strong style={{ color: "var(--accent-primary)", display: "block", marginBottom: "6px", fontSize: "0.85rem" }}>2. Design is a Compromise</strong>
+                    <p style={{ color: "var(--text-secondary)", fontSize: "0.8rem", margin: 0, lineHeight: 1.5 }}>
+                      Every choice is a tradeoff. Maximizing range (NMC) increases costs and chemical hazards; maximizing safety and lifecycle (LFP) compromises packaging weight and cold temperature efficiency.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* 2.14 Navigation to Part 3 */}
+              <div id="part-2-14" style={{ scrollMarginTop: "100px", marginBottom: "2rem" }}>
+                <div className={styles.orientationSectionHeader}>
+                  <h3 className={styles.orientationSubTitle}>2.14 Navigation to Part 3</h3>
+                  <span className={styles.orientationAnchorBadge}>P2.14</span>
+                </div>
+                
+                <div className="glass-panel" style={{ padding: "1.5rem", borderLeft: "4px solid var(--accent-primary)" }}>
+                  <h4 style={{ color: "#fff", fontSize: "1rem", marginBottom: "8px" }}>Next: Part 3 — Cell Chemistry and Cell Selection</h4>
+                  <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", marginBottom: "1.25rem", lineHeight: 1.6 }}>
+                    Now that you understand system definitions and requirements engineering, the next architectural step is cell evaluation. In Part 3, we will analyze NMC, LFP, Sodium-Ion, and Solid-State electrochemistries, cell formats (cylindrical, prismatic, pouch), and grading procedures.
+                  </p>
+                  <a 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      scrollTo("masterIndex");
+                    }}
+                    className="btn btn-primary" 
+                    style={{ textDecoration: "none", display: "inline-block", cursor: "pointer" }}
+                  >
+                    Go to Master Index →
+                  </a>
+                </div>
+              </div>
+
+              {/* Footer navigation for Part 2 */}
+              <div className={styles.chapterNav}>
+                <div 
+                  className={styles.chapterNavLink} 
+                  style={{ cursor: "pointer" }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollTo("part1Fundamentals");
+                  }}
+                >
+                  <span className={styles.chapterNavLabel}>Previous Part</span>
+                  <span className={styles.chapterNavTitle}>Part 1: Battery Fundamentals</span>
+                </div>
+                <div 
+                  className={styles.chapterNavLink} 
+                  style={{ alignItems: "flex-end", cursor: "pointer" }}
+                  onClick={(e) => {
+                    e.preventDefault();
                     scrollTo("masterIndex");
                   }}
                 >
                   <span className={styles.chapterNavLabel}>Next Part</span>
-                  <span className={styles.chapterNavTitle}>Part 2: EV Battery Requirements</span>
+                  <span className={styles.chapterNavTitle}>Part 3: Cell Chemistry and Selection</span>
                 </div>
               </div>
 
@@ -4263,6 +5174,38 @@ export default function BatteryPackDesignContent() {
               <SafetyWarning>
                 <strong>Critical Thermal Safety Warning:</strong> Never manipulate active lithium cells without standard ground isolation, protective fire containment gear, and certified extraction vents. Thermal runaway propagation represents severe safety risks.
               </SafetyWarning>
+            </div>
+          </section>
+
+          {/* AUTHOR & ARCHITECT BLOCK */}
+          <section className={styles.pageSection} style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "4rem", paddingBottom: "2rem" }}>
+            <div className="container" style={{ maxWidth: "800px", margin: "0 auto" }}>
+              <div className="glass-panel" style={{ padding: "2rem", borderLeft: "4px solid var(--accent-primary)", textAlign: "left" }}>
+                <p style={{ fontSize: "0.75rem", color: "var(--accent-primary)", fontWeight: "700", textTransform: "uppercase", marginBottom: "4px", letterSpacing: "1px" }}>EV.ENGINEER™</p>
+                <h3 style={{ fontSize: "1.8rem", marginBottom: "8px", color: "#fff", fontWeight: 700 }}>Sudarshana Karkala</h3>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginBottom: "12px" }}>Co-Founder, Principal Architect | Thasmai Infotech Private Limited</p>
+                <div style={{
+                  display: "inline-block",
+                  fontSize: "0.85rem",
+                  padding: "8px 14px",
+                  marginBottom: "16px",
+                  borderRadius: "6px",
+                  background: "linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.08))",
+                  borderLeft: "3px solid var(--accent-primary)",
+                  color: "#fff"
+                }}>
+                  Available for strategic architectural consulting and advanced automotive R&D partnerships.
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "12px", fontSize: "0.85rem", flexWrap: "wrap" }}>
+                  <a href="tel:+919845561518" style={{ color: "var(--accent-primary)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px" }}>
+                    <span>📞</span> +91 9845561518
+                  </a>
+                  <span style={{ color: "rgba(255,255,255,0.2)" }}>|</span>
+                  <a href="https://www.linkedin.com/in/sudarshanakarkala/" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-primary)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px" }}>
+                    <span>🔗</span> LinkedIn Profile
+                  </a>
+                </div>
+              </div>
             </div>
           </section>
 
