@@ -1398,9 +1398,43 @@
   color: var(--accent-primary);
   text-align: center;
   margin: 1.5rem 0;
-  line-height: 1.5;
+  line-height: 1.6;
   overflow-x: auto;
-  white-space: nowrap;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* ─── FLOATING SIDEBAR TOGGLE (desktop, always visible while scrolling) ─── */
+.sidebarFloatingToggle {
+  position: fixed;
+  bottom: 2rem;
+  left: 1.5rem;
+  z-index: 200;
+  background: rgba(6, 16, 12, 0.85);
+  border: 1px solid rgba(76, 169, 48, 0.4);
+  color: var(--accent-primary);
+  cursor: pointer;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(16px);
+  transition: border-color 0.2s, background-color 0.2s, transform 0.15s;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(76, 169, 48, 0.08);
+}
+
+.sidebarFloatingToggle:hover {
+  border-color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.15);
+  transform: scale(1.1);
+}
+
+@media (max-width: 1024px) {
+  .sidebarFloatingToggle {
+    display: none;
+  }
 }
 
 .archFocusList {
@@ -1605,5 +1639,423 @@
     flex-shrink: 0;
     min-width: 160px;
   }
+}
+
+/* ─── HANDBOOK ORIENTATION (PART 0) STYLES ─── */
+.orientationAudienceGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+  .orientationAudienceGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .orientationAudienceGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.orientationAudienceCard {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.orientationAudienceCard:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.03);
+  box-shadow: 0 4px 20px rgba(76, 169, 48, 0.08);
+}
+
+.audienceCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 0.5rem;
+}
+
+.audienceCardIcon {
+  font-size: 1.5rem;
+}
+
+.audienceCardTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.audienceCardSection {
+  margin-bottom: 0.75rem;
+  font-size: 0.8rem;
+}
+
+.audienceCardLabel {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.2rem;
+  display: block;
+}
+
+.audienceCardVal {
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.audienceCardLearnList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.audienceCardLearnList li {
+  position: relative;
+  padding-left: 1rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.3rem;
+}
+
+.audienceCardLearnList li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent-primary);
+}
+
+/* Progression Roadmap */
+.roadmapTimeline {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin: 2rem 0;
+  position: relative;
+}
+
+.roadmapTimeline::before {
+  content: "";
+  position: absolute;
+  left: 19px;
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.05);
+  z-index: 0;
+}
+
+.roadmapStep {
+  display: flex;
+  gap: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.roadmapStepNum {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(6, 16, 12, 0.9);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: all 0.3s;
+}
+
+.roadmapStepActive {
+  composes: roadmapStepNum;
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  box-shadow: 0 0 15px rgba(76, 169, 48, 0.2);
+}
+
+.roadmapStepContent {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+  transition: all 0.3s;
+}
+
+.roadmapStepContent:hover {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.roadmapStepTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.roadmapStepGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  padding-top: 0.75rem;
+}
+
+@media (max-width: 640px) {
+  .roadmapStepGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.roadmapStepMeta {
+  font-size: 0.78rem;
+}
+
+/* Philosophy Infographic */
+.philosophyInfographic {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+@media (max-width: 768px) {
+  .philosophyInfographic {
+    grid-template-columns: 1fr;
+  }
+}
+
+.philosophyNode {
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  transition: all 0.3s;
+}
+
+.philosophyNode:hover {
+  border-color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.02);
+}
+
+.philosophyNodeHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.philosophyNodeText {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Evolution Timeline */
+.evolutionTimeline {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+@media (max-width: 768px) {
+  .evolutionTimeline {
+    grid-template-columns: 1fr;
+  }
+}
+
+.evolutionCard {
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.evolutionCard:hover {
+  border-color: var(--accent-primary);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.evolutionYear {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--accent-primary);
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.evolutionTitle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.evolutionList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.evolutionList li {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+  line-height: 1.4;
+}
+
+/* Capstone Project Cards */
+.capstoneGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
+
+@media (max-width: 640px) {
+  .capstoneGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.capstoneCard {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  transition: all 0.3s;
+}
+
+.capstoneCard:hover {
+  border-color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.02);
+  transform: translateY(-2px);
+}
+
+.capstoneCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 0.5rem;
+}
+
+.capstoneCardTitle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.capstoneCardBadge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.capstoneCardDesc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Outcome Grid */
+.outcomeGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+@media (max-width: 768px) {
+  .outcomeGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .outcomeGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.outcomeCard {
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.3s;
+}
+
+.outcomeCard:hover {
+  border-color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.02);
+}
+
+.outcomeCheck {
+  color: var(--accent-primary);
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.outcomeText {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+/* Orientation Header styling */
+.orientationSectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 0.75rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.orientationSubTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.orientationAnchorBadge {
+  font-family: monospace;
+  font-size: 0.72rem;
+  color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.08);
+  border: 1px solid rgba(76, 169, 48, 0.15);
+  padding: 2px 6px;
+  border-radius: 4px;
 }
 

@@ -41,8 +41,16 @@ const HANDBOOK_PARTS: HandbookPart[] = [
     status: "Available",
     badgeClass: styles.badgeAvailable,
     subsections: [
-      { title: "0.1 Handbook Scope & Objectives", anchor: "part-0-1" },
-      { title: "0.2 Safety Bounds & HV PPE Protocols", anchor: "part-0-2" }
+      { title: "0.1 Welcome to EV Battery Pack Engineering", anchor: "part-0-1" },
+      { title: "0.2 Who Should Read This Handbook", anchor: "part-0-2" },
+      { title: "0.3 Beginner → Engineer → Architect Learning Path", anchor: "part-0-3" },
+      { title: "0.4 How to Use This Handbook", anchor: "part-0-4" },
+      { title: "0.5 Engineering Philosophy of This Handbook", anchor: "part-0-5" },
+      { title: "0.6 The Evolution of EV Battery Systems (2026–2030)", anchor: "part-0-6" },
+      { title: "0.7 Safety Disclaimer", anchor: "part-0-7" },
+      { title: "0.8 Final Learning Outcomes", anchor: "part-0-8" },
+      { title: "0.9 Capstone Projects Overview", anchor: "part-0-9" },
+      { title: "0.10 Navigation to Part 1", anchor: "part-0-10" }
     ]
   },
   {
@@ -812,7 +820,7 @@ export default function BatteryPackDesignContent() {
     architecture: useRef<HTMLElement>(null),
     capstone: useRef<HTMLElement>(null),
     roadmap: useRef<HTMLElement>(null),
-    chapterPreview: useRef<HTMLElement>(null),
+    part0Orientation: useRef<HTMLElement>(null),
     glossary: useRef<HTMLElement>(null)
   };
 
@@ -1008,6 +1016,15 @@ export default function BatteryPackDesignContent() {
         </>
       )}
 
+      {/* ─── FLOATING SIDEBAR TOGGLE (always visible while scrolling, desktop only) ─── */}
+      <button
+        className={styles.sidebarFloatingToggle}
+        onClick={() => setSidebarHidden(!sidebarHidden)}
+        title={sidebarHidden ? "Show Index" : "Hide Index"}
+      >
+        {sidebarHidden ? <PanelLeft size={16} /> : <PanelLeftClose size={16} />}
+      </button>
+
       {/* ─── MAIN WEB CONTAINER ─── */}
       <div className={styles.docContainer}>
         
@@ -1090,10 +1107,10 @@ export default function BatteryPackDesignContent() {
             </div>
             <div className={styles.navGroup}>
               <button 
-                className={activeSection === "chapterPreview" ? styles.navGroupHeaderActive : styles.navGroupHeader}
-                onClick={() => scrollTo("chapterPreview")}
+                className={activeSection === "part0Orientation" ? styles.navGroupHeaderActive : styles.navGroupHeader}
+                onClick={() => scrollTo("part0Orientation")}
               >
-                Chapter Template Layout
+                Part 0: Orientation
               </button>
             </div>
             <div className={styles.navGroup}>
@@ -1192,16 +1209,17 @@ export default function BatteryPackDesignContent() {
           {/* BREADCRUMB LIST */}
           <div className={styles.breadcrumbs} style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              {sidebarHidden && (
-                <button 
-                  className={styles.sidebarOpenBtn} 
-                  onClick={() => setSidebarHidden(false)}
-                  title="Expand Index"
-                  style={{ marginRight: "12px" }}
-                >
-                  <PanelLeft size={14} /> Show Index
-                </button>
-              )}
+              <button 
+                className={styles.sidebarOpenBtn} 
+                onClick={() => setSidebarHidden(!sidebarHidden)}
+                title={sidebarHidden ? "Expand Index" : "Collapse Index"}
+                style={{ marginRight: "12px" }}
+              >
+                {sidebarHidden
+                  ? <><PanelLeft size={14} /> Show Index</>
+                  : <><PanelLeftClose size={14} /> Hide Index</>
+                }
+              </button>
               <Link href="/internships" className={styles.breadcrumbLink}>Internships</Link>
               <span className={styles.breadcrumbSeparator}>/</span>
               <span className={styles.breadcrumbActive}>EV Battery Pack Design Handbook</span>
@@ -1485,7 +1503,7 @@ export default function BatteryPackDesignContent() {
                           <div className={styles.subsectionsTitle}>Chapters & Subsections</div>
                           <div className={styles.subsectionsList}>
                             {part.subsections.map((sub, sIdx) => (
-                              <div key={sIdx} className={styles.subsectionItem} id={sub.anchor}>
+                              <div key={sIdx} className={styles.subsectionItem} id={`idx-${sub.anchor}`}>
                                 <span className={styles.subsectionAnchor}>{sub.anchor.replace("part-", "P")}</span>
                                 <span className={styles.subsectionText}>{sub.title}</span>
                               </div>
@@ -1498,7 +1516,11 @@ export default function BatteryPackDesignContent() {
                           <span>⏱️ {part.duration}</span>
                           <span>📶 {part.difficulty}</span>
                         </div>
-                        <a href="#chapterPreview" onClick={() => scrollTo("chapterPreview")} style={{ color: "var(--accent-primary)", fontWeight: 700, textDecoration: "none" }}>Read Schema →</a>
+                        {partIdx === 0 ? (
+                          <a href="#part0Orientation" onClick={(e) => { e.preventDefault(); scrollTo("part0Orientation"); }} style={{ color: "var(--accent-primary)", fontWeight: 700, textDecoration: "none" }}>Read Part 0 →</a>
+                        ) : (
+                          <a href="#part0Orientation" onClick={(e) => { e.preventDefault(); scrollTo("part0Orientation"); }} style={{ color: "var(--text-muted)", fontSize: "0.8rem", textDecoration: "none" }}>Preview Layout →</a>
+                        )}
                       </div>
                     </div>
                   );
@@ -1691,118 +1713,832 @@ export default function BatteryPackDesignContent() {
             </div>
           </section>
 
-          {/* ═══ REUSABLE CHAPTER LAYOUT DEMONSTRATION ═══ */}
-          <section id="chapterPreview" className={styles.pageSection} ref={sectionRefs.chapterPreview}>
+          {/* ═══ PART 0: HANDBOOK ORIENTATION ═══ */}
+          <section id="part0Orientation" className={styles.pageSection} ref={sectionRefs.part0Orientation}>
             <div className={styles.sectionHeader}>
-              <span className={styles.sectionLabel}>Layout Schema</span>
-              <h2 className={styles.sectionTitle}>Reusable Chapter Template Layout</h2>
+              <span className={styles.sectionLabel}>Core Module</span>
+              <h2 className={styles.sectionTitle}>Part 0 — Handbook Orientation</h2>
               <p className={styles.sectionSubtitle}>
-                A clear, comprehensive visual framework showcasing how future detailed chapters in this handbook are structured.
+                Prepare psychologically, technically, and architecturally before entering EV battery systems design.
               </p>
             </div>
 
             <div className={styles.chapterBox}>
-              <div className={styles.chapterTitle}>Part 5: BMS Software Algorithms & State Estimation</div>
+              <div className={styles.chapterTitle}>Part 0: Handbook Orientation Reader</div>
 
-              <h4 style={{ color: "#fff", fontSize: "1rem", marginBottom: "0.5rem" }}>1. Introduction</h4>
-              <p style={{ color: "var(--text-secondary)", fontSize: "0.88rem", lineHeight: 1.6, marginBottom: "1.25rem" }}>
-                Accurate state estimation is the brain of the battery management system. Estimating the state of charge (SOC) and state of health (SOH) non-invasively requires mathematical observers that reconcile noisy voltage and current inputs with physical models of the cell.
-              </p>
-
-              <h4 style={{ color: "#fff", fontSize: "1rem", marginBottom: "0.5rem" }}>2. Core Learning Objectives</h4>
-              <ul style={{ paddingLeft: "1.25rem", color: "var(--text-secondary)", fontSize: "0.85rem", lineHeight: 1.6, marginBottom: "1.25rem" }}>
-                <li>Implement Coulomb counting with periodic OCV-calibration overlays</li>
-                <li>Understand the dynamics of Extended Kalman Filters (EKF) in state tracking</li>
-                <li>Program cell-imbalance correction algorithms inside microcontrollers</li>
-              </ul>
-
-              <h4 style={{ color: "#fff", fontSize: "1rem", marginBottom: "0.5rem" }}>3. Architectural Visualization</h4>
-              <div style={{ border: "1px solid rgba(255,255,255,0.06)", borderRadius: "8px", padding: "1.5rem", background: "rgba(0,0,0,0.2)", margin: "1rem 0", textAlign: "center" }}>
-                <span style={{ fontSize: "0.78rem", color: "var(--accent-primary)", fontFamily: "monospace", display: "block" }}>
-                  [Voltage Sense (V) + Current Sense (I)] → [Extended Kalman Filter (EKF) State Observer] → [Corrected State of Charge (SOC)]
-                </span>
-              </div>
-
-              <h4 style={{ color: "#fff", fontSize: "1rem", marginBottom: "0.5rem" }}>4. Governing Formulas</h4>
-              <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem" }}>
-                The basic Coulomb counting integration governing State of Charge is represented as:
-              </p>
-              <div className={styles.formula}>
-                {"SOC(t) = SOC(t_0) - (1 / C_nominal) * ∫ [ I(t) / 3600 ] dt"}
-              </div>
-
-              <h4 style={{ color: "#fff", fontSize: "1rem", marginBottom: "0.5rem", marginTop: "1rem" }}>5. Code Implementation (BMS Calibrations)</h4>
-              <pre className={styles.codeBlock}>
-{`# Extended Kalman Filter State of Charge Observer Model (Python)
-import numpy as np
-
-def update_ekf_soc(prev_soc, current_i, voltage_measured, dt, c_nominal):
-    # Predict step
-    soc_predict = prev_soc - (current_i * dt) / (c_nominal * 3600.0)
-    
-    # Simple observation correction model (OCV vs SOC lookup)
-    ocv_predicted = 3.2 + 0.8 * soc_predict  # Simplified linear OCV curve
-    voltage_error = voltage_measured - ocv_predicted
-    
-    # Correction gain (simplified kalman gain)
-    k_gain = 0.05
-    corrected_soc = soc_predict + k_gain * voltage_error
-    
-    return np.clip(corrected_soc, 0.0, 1.0)`}
-              </pre>
-
-              <h4 style={{ color: "#fff", fontSize: "1rem", marginBottom: "0.5rem" }}>6. Real-world CAN Communication (CAN Bus Data Frame)</h4>
-              <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", marginBottom: "0.75rem" }}>
-                The BMS broadcasts the calculated SOC, SOH, and maximum charge current limit over CAN FD:
-              </p>
-              <div className={styles.canFrameGrid}>
-                <div className={styles.canField}>
-                  <div className={styles.canLabel}>Frame ID (HEX)</div>
-                  <div className={styles.canValAccent}>0x10A</div>
+              {/* 0.1 Welcome to EV Battery Pack Engineering */}
+              <div id="part-0-1" style={{ scrollMarginTop: "100px", marginBottom: "3rem" }}>
+                <div className={styles.orientationSectionHeader}>
+                  <h3 className={styles.orientationSubTitle}>0.1 Welcome to EV Battery Pack Engineering</h3>
+                  <span className={styles.orientationAnchorBadge}>P0.1</span>
                 </div>
-                <div className={styles.canField}>
-                  <div className={styles.canLabel}>Byte 0: State of Charge</div>
-                  <div className={styles.canVal}>0x5A (90% SOC)</div>
-                </div>
-                <div className={styles.canField}>
-                  <div className={styles.canLabel}>Byte 1: State of Health</div>
-                  <div className={styles.canVal}>0x62 (98% SOH)</div>
-                </div>
-                <div className={styles.canField}>
-                  <div className={styles.canLabel}>Byte 2-3: Peak Discharge</div>
-                  <div className={styles.canVal}>0x012C (300 Amps)</div>
-                </div>
-              </div>
-
-              <h4 style={{ color: "#fff", fontSize: "1rem", marginBottom: "0.5rem", marginTop: "1rem" }}>7. Practical Exercise</h4>
-              <PracticalExercise>
-                <span style={{ fontWeight: 700 }}>Exercise: Implement EKF in MicroPython</span>
-                <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", marginTop: "0.4rem", marginBottom: 0 }}>
-                  Take raw voltage and current data logs from a driving cycle. Program the simple MicroPython kalman observer to run on an ESP32 edge sense circuit, outputting SOC estimates with less than 2% tracking error.
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1.25rem" }}>
+                  EV battery pack design is the ultimate multidisciplinary engineering challenge in modern clean energy transition. The battery pack is not merely an electrical storage vessel; it represents the vehicle's structural core, its most critical thermal management challenge, its largest mass element, and its most complex control system loop.
                 </p>
-              </PracticalExercise>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1.25rem" }}>
+                  Traction battery systems represent the convergence of electrochemistry, mechanical design, thermodynamics, embedded firmware control, wireless cloud communications, predictive artificial intelligence, and rigorous physical safety parameters. Designing a pack requires understanding how cell chemistry reacts under thermal load, how mechanical frames disperse crash forces, how BMS circuits sense high voltages, and how cloud diagnostics anticipate cell failures.
+                </p>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1.5rem" }}>
+                  In the 2026–2030 battery lifecycle, the ecosystem has moved beyond legacy isolated systems. A unified battery design must integrate telemetry to feed digital twin diagnostics, implement secure onboard communication (SecOC) to thwart cyber attacks, and plan for disassembly and direct reuse in second-life grid stabilization schemes.
+                </p>
+                
+                <h4 style={{ color: "var(--text-primary)", fontSize: "0.95rem", marginBottom: "0.75rem", fontWeight: 700 }}>Unified Battery Systems Lifecycle</h4>
+                <p style={{ color: "var(--text-muted)", fontSize: "0.82rem", marginBottom: "1rem" }}>
+                  The roadmap below maps the flow of cells from raw electrochemistry to secondary applications:
+                </p>
 
-              <h4 style={{ color: "#fff", fontSize: "1rem", marginBottom: "0.5rem" }}>8. References</h4>
-              <ul style={{ paddingLeft: "1.25rem", color: "var(--text-muted)", fontSize: "0.78rem", lineHeight: 1.6, margin: 0 }}>
-                <li>IEEE Transactions on Power Electronics: Kalman Filter Observers for Li-Ion Packs</li>
-                <li>ISO 26262 compliance rules governing BMS safety state estimations</li>
-              </ul>
+                <div className={styles.pipelineContainer}>
+                  <div className={styles.pipelineNode}>
+                    <span className={styles.pipelineNodePart}>Stage 01</span>
+                    <span className={styles.pipelineNodeTitle}>Cell Selection</span>
+                    <span className={styles.pipelineNodeFocus}>Auditing format limits (4680, prismatic) and chemistry bounds (NMC, LFP).</span>
+                  </div>
+                  <div className={styles.pipelineConnector}>
+                    <div className={styles.pipelineConnectorLine} style={{ backgroundColor: "var(--accent-primary)" }} />
+                    <div className={styles.pipelineConnectorArrow} style={{ borderLeftColor: "var(--accent-primary)" }} />
+                  </div>
+                  <div className={styles.pipelineNode}>
+                    <span className={styles.pipelineNodePart}>Stage 02</span>
+                    <span className={styles.pipelineNodeTitle}>Pack Design</span>
+                    <span className={styles.pipelineNodeFocus}>Integrating busbars, structural compression, and liquid cooling channels.</span>
+                  </div>
+                  <div className={styles.pipelineConnector}>
+                    <div className={styles.pipelineConnectorLine} style={{ backgroundColor: "var(--accent-primary)" }} />
+                    <div className={styles.pipelineConnectorArrow} style={{ borderLeftColor: "var(--accent-primary)" }} />
+                  </div>
+                  <div className={styles.pipelineNode}>
+                    <span className={styles.pipelineNodePart}>Stage 03</span>
+                    <span className={styles.pipelineNodeTitle}>Edge BMS Control</span>
+                    <span className={styles.pipelineNodeFocus}>Running Kalman state filters and executing pyrofuse trip interrupts.</span>
+                  </div>
+                  <div className={styles.pipelineConnector}>
+                    <div className={styles.pipelineConnectorLine} style={{ backgroundColor: "var(--accent-primary)" }} />
+                    <div className={styles.pipelineConnectorArrow} style={{ borderLeftColor: "var(--accent-primary)" }} />
+                  </div>
+                  <div className={styles.pipelineNode}>
+                    <span className={styles.pipelineNodePart}>Stage 04</span>
+                    <span className={styles.pipelineNodeTitle}>Cloud Fleet IoT</span>
+                    <span className={styles.pipelineNodeFocus}>Securing MQTT telemetry using SecOC keys and building digital twins.</span>
+                  </div>
+                  <div className={styles.pipelineConnector}>
+                    <div className={styles.pipelineConnectorLine} style={{ backgroundColor: "var(--accent-primary)" }} />
+                    <div className={styles.pipelineConnectorArrow} style={{ borderLeftColor: "var(--accent-primary)" }} />
+                  </div>
+                  <div className={styles.pipelineNode}>
+                    <span className={styles.pipelineNodePart}>Stage 05</span>
+                    <span className={styles.pipelineNodeTitle}>Second-Life Reuse</span>
+                    <span className={styles.pipelineNodeFocus}>EIS diagnostics triage, module sorting, and grid stationary storage.</span>
+                  </div>
+                </div>
+              </div>
 
-              <h4 style={{ color: "#fff", fontSize: "1rem", marginBottom: "0.5rem", marginTop: "1.25rem" }}>9. Chapter Summary</h4>
-              <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", lineHeight: 1.6, margin: 0 }}>
-                Accurate state estimation ensures that the vehicle never encounters sudden power drops, coordinates cell balancing, and limits thermal degradation under heavy fast-charging profiles.
-              </p>
+              {/* 0.2 Who Should Read This Handbook */}
+              <div id="part-0-2" style={{ scrollMarginTop: "100px", marginBottom: "3rem" }}>
+                <div className={styles.orientationSectionHeader}>
+                  <h3 className={styles.orientationSubTitle}>0.2 Who Should Read This Handbook</h3>
+                  <span className={styles.orientationAnchorBadge}>P0.2</span>
+                </div>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1.25rem" }}>
+                  This handbook is engineered as a multi-domain curriculum. Choose your discipline below to locate your primary learning paths and expected outcomes:
+                </p>
+
+                <div className={styles.orientationAudienceGrid}>
+                  <div className={styles.orientationAudienceCard}>
+                    <div className={styles.audienceCardHeader}>
+                      <span className={styles.audienceCardIcon}>🎓</span>
+                      <span className={styles.audienceCardTitle}>Students</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>What you will learn</span>
+                      <span className={styles.audienceCardVal}>HV isolation bounds, standard sizing math, and thermal containment models.</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>Recommended Depth</span>
+                      <span className={styles.audienceCardVal}>Core Basics (Parts 1–5, 9).</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>Expected Outcome</span>
+                      <span className={styles.audienceCardVal}>Entry-ready automotive junior engineer capabilities.</span>
+                    </div>
+                  </div>
+
+                  <div className={styles.orientationAudienceCard}>
+                    <div className={styles.audienceCardHeader}>
+                      <span className={styles.audienceCardIcon}>🚗</span>
+                      <span className={styles.audienceCardTitle}>EV Engineers</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>What you will learn</span>
+                      <span className={styles.audienceCardVal}>Traction pack packaging density, C-rate loading profiles, and safety compliance.</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>Recommended Depth</span>
+                      <span className={styles.audienceCardVal}>System Integration (Parts 1–10).</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>Expected Outcome</span>
+                      <span className={styles.audienceCardVal}>Perform end-to-end pack sizing to WLTP drive profiles.</span>
+                    </div>
+                  </div>
+
+                  <div className={styles.orientationAudienceCard}>
+                    <div className={styles.audienceCardHeader}>
+                      <span className={styles.audienceCardIcon}>📟</span>
+                      <span className={styles.audienceCardTitle}>Embedded Engineers</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>What you will learn</span>
+                      <span className={styles.audienceCardVal}>AFE SPI interfaces, real-time safety kernels, and ADC sensor calibrations.</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>Recommended Depth</span>
+                      <span className={styles.audienceCardVal}>BMS Hardware & Software (Parts 5–6).</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>Expected Outcome</span>
+                      <span className={styles.audienceCardVal}>Program Kalman observers and cell balancing firmware.</span>
+                    </div>
+                  </div>
+
+                  <div className={styles.orientationAudienceCard}>
+                    <div className={styles.audienceCardHeader}>
+                      <span className={styles.audienceCardIcon}>⚙️</span>
+                      <span className={styles.audienceCardTitle}>Mechanical Engineers</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>What you will learn</span>
+                      <span className={styles.audienceCardVal}>Cell swelling containment, crash energy deflection, and shock absorber layouts.</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>Recommended Depth</span>
+                      <span className={styles.audienceCardVal}>Mechanical & Structural (Parts 7–9).</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>Expected Outcome</span>
+                      <span className={styles.audienceCardVal}>Model battery enclosure stress and thermal propagation barriers.</span>
+                    </div>
+                  </div>
+
+                  <div className={styles.orientationAudienceCard}>
+                    <div className={styles.audienceCardHeader}>
+                      <span className={styles.audienceCardIcon}>🔋</span>
+                      <span className={styles.audienceCardTitle}>Battery Pack Designers</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>What you will learn</span>
+                      <span className={styles.audienceCardVal}>Cell-to-Pack configurations, busbar weld resistances, and insulation creepage bounds.</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>Recommended Depth</span>
+                      <span className={styles.audienceCardVal}>HV Design & Packaging (Parts 4, 8, 9).</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>Expected Outcome</span>
+                      <span className={styles.audienceCardVal}>Design 800V class low-impedance electrical pack skeletons.</span>
+                    </div>
+                  </div>
+
+                  <div className={styles.orientationAudienceCard}>
+                    <div className={styles.audienceCardHeader}>
+                      <span className={styles.audienceCardIcon}>🛡️</span>
+                      <span className={styles.audienceCardTitle}>BMS Developers</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>What you will learn</span>
+                      <span className={styles.audienceCardVal}>State machines, CAN-FD timing maps, and ISO 26262 diagnostic codes.</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>Recommended Depth</span>
+                      <span className={styles.audienceCardVal}>ASIL Safety Systems (Parts 5, 6, 10).</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>Expected Outcome</span>
+                      <span className={styles.audienceCardVal}>Architect functional safety checks to meet ASIL-D standards.</span>
+                    </div>
+                  </div>
+
+                  <div className={styles.orientationAudienceCard}>
+                    <div className={styles.audienceCardHeader}>
+                      <span className={styles.audienceCardIcon}>🧠</span>
+                      <span className={styles.audienceCardTitle}>AI Engineers</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>What you will learn</span>
+                      <span className={styles.audienceCardVal}>Neural network degradation modeling, charge curve feature analysis, and anomaly tracking.</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>Recommended Depth</span>
+                      <span className={styles.audienceCardVal}>Data Intelligence (Parts 11–13).</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>Expected Outcome</span>
+                      <span className={styles.audienceCardVal}>Train predictive models predicting cell SOH under dynamic aging stress.</span>
+                    </div>
+                  </div>
+
+                  <div className={styles.orientationAudienceCard}>
+                    <div className={styles.audienceCardHeader}>
+                      <span className={styles.audienceCardIcon}>☁️</span>
+                      <span className={styles.audienceCardTitle}>Cloud Engineers</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>What you will learn</span>
+                      <span className={styles.audienceCardVal}>MQTT telemetry brokers, time-series streaming databases, and SecOC encryption.</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>Recommended Depth</span>
+                      <span className={styles.audienceCardVal}>IoT Telematics (Parts 13, 14).</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>Expected Outcome</span>
+                      <span className={styles.audienceCardVal}>Build low-latency pipelines ingest 100Hz pack telemetry packets.</span>
+                    </div>
+                  </div>
+
+                  <div className={styles.orientationAudienceCard}>
+                    <div className={styles.audienceCardHeader}>
+                      <span className={styles.audienceCardIcon}>🏛️</span>
+                      <span className={styles.audienceCardTitle}>EV Architects</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>What you will learn</span>
+                      <span className={styles.audienceCardVal}>Structural chassis integration, weight budgets, charging architectures, and cost.</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>Recommended Depth</span>
+                      <span className={styles.audienceCardVal}>Complete Handbook Index.</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>Expected Outcome</span>
+                      <span className={styles.audienceCardVal}>Formulate architectural constraints for next-gen vehicle lines.</span>
+                    </div>
+                  </div>
+
+                  <div className={styles.orientationAudienceCard}>
+                    <div className={styles.audienceCardHeader}>
+                      <span className={styles.audienceCardIcon}>🚀</span>
+                      <span className={styles.audienceCardTitle}>Startup Founders</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>What you will learn</span>
+                      <span className={styles.audienceCardVal}>Cell supply parameters, cost curves, solid-state roadmap, and standard testing.</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>Recommended Depth</span>
+                      <span className={styles.audienceCardVal}>System Overview & Standards.</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>Expected Outcome</span>
+                      <span className={styles.audienceCardVal}>Optimize cell selection to match price-to-performance vehicle goals.</span>
+                    </div>
+                  </div>
+
+                  <div className={styles.orientationAudienceCard}>
+                    <div className={styles.audienceCardHeader}>
+                      <span className={styles.audienceCardIcon}>🔬</span>
+                      <span className={styles.audienceCardTitle}>Researchers</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>What you will learn</span>
+                      <span className={styles.audienceCardVal}>Anode silicon limits, SEI growth dynamics under heat, and EIS sweep analysis.</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>Recommended Depth</span>
+                      <span className={styles.audienceCardVal}>Chemistry & Testing (Parts 1–3, 11).</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>Expected Outcome</span>
+                      <span className={styles.audienceCardVal}>Apply materials-level discoveries directly to vehicle pack structures.</span>
+                    </div>
+                  </div>
+
+                  <div className={styles.orientationAudienceCard}>
+                    <div className={styles.audienceCardHeader}>
+                      <span className={styles.audienceCardIcon}>🔧</span>
+                      <span className={styles.audienceCardTitle}>Service Engineers</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>What you will learn</span>
+                      <span className={styles.audienceCardVal}>Pack safety discharge, insulation tracking tests, and replacement rules.</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>Recommended Depth</span>
+                      <span className={styles.audienceCardVal}>Safety & Diagnostics (Parts 9, 11, 15).</span>
+                    </div>
+                    <div className={styles.audienceCardSection}>
+                      <span className={styles.audienceCardLabel}>Expected Outcome</span>
+                      <span className={styles.audienceCardVal}>Safely open, diagnose, repair, and balance high-voltage battery modules.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 0.3 Beginner → Engineer → Architect Learning Path */}
+              <div id="part-0-3" style={{ scrollMarginTop: "100px", marginBottom: "3rem" }}>
+                <div className={styles.orientationSectionHeader}>
+                  <h3 className={styles.orientationSubTitle}>0.3 Beginner → Engineer → Architect Learning Path</h3>
+                  <span className={styles.orientationAnchorBadge}>P0.3</span>
+                </div>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1.25rem" }}>
+                  This progression roadmap displays the career transition from basic cell sizing math to leading digital battery architectures:
+                </p>
+
+                <div className={styles.roadmapTimeline}>
+                  <div className={styles.roadmapStep}>
+                    <div className={styles.roadmapStepActive}>1</div>
+                    <div className={styles.roadmapStepContent}>
+                      <div className={styles.roadmapStepTitle}>Beginner (Cell-Level Basics)</div>
+                      <p style={{ color: "var(--text-secondary)", fontSize: "0.82rem", lineHeight: 1.5 }}>
+                        Focuses on cell chemistry fundamentals, electrochemistry limits, and standard cell format datasheets.
+                      </p>
+                      <div className={styles.roadmapStepGrid}>
+                        <div className={styles.roadmapStepMeta}>
+                          <span className={styles.audienceCardLabel}>Skills learned</span>
+                          <span style={{ color: "var(--text-primary)" }}>Energy calculations, C-rate sizing, format sorting.</span>
+                        </div>
+                        <div className={styles.roadmapStepMeta}>
+                          <span className={styles.audienceCardLabel}>Tools used</span>
+                          <span style={{ color: "var(--text-primary)" }}>Python spreadsheets, cell database auditors.</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className={styles.roadmapStep}>
+                    <div className={styles.roadmapStepActive}>2</div>
+                    <div className={styles.roadmapStepContent}>
+                      <div className={styles.roadmapStepTitle}>Engineer (Physical Integration Designer)</div>
+                      <p style={{ color: "var(--text-secondary)", fontSize: "0.82rem", lineHeight: 1.5 }}>
+                        Focuses on physical and mechanical configuration: integrating electrical circuits, custom cooling loops, and high-voltage isolation layout barriers.
+                      </p>
+                      <div className={styles.roadmapStepGrid}>
+                        <div className={styles.roadmapStepMeta}>
+                          <span className={styles.audienceCardLabel}>Skills learned</span>
+                          <span style={{ color: "var(--text-primary)" }}>CAD enclosures, busbar sizing, CFD thermal modeling.</span>
+                        </div>
+                        <div className={styles.roadmapStepMeta}>
+                          <span className={styles.audienceCardLabel}>Tools used</span>
+                          <span style={{ color: "var(--text-primary)" }}>SolidWorks, ANSYS Fluent, structural FEA simulators.</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className={styles.roadmapStep}>
+                    <div className={styles.roadmapStepActive}>3</div>
+                    <div className={styles.roadmapStepContent}>
+                      <div className={styles.roadmapStepTitle}>System Engineer (BMS Software & Control)</div>
+                      <p style={{ color: "var(--text-secondary)", fontSize: "0.82rem", lineHeight: 1.5 }}>
+                        Focuses on edge controls: developing high-precision BMS software algorithms, state of charge (SOC) observers, and real-time fault handlers.
+                      </p>
+                      <div className={styles.roadmapStepGrid}>
+                        <div className={styles.roadmapStepMeta}>
+                          <span className={styles.audienceCardLabel}>Skills learned</span>
+                          <span style={{ color: "var(--text-primary)" }}>Kalman state filter design, SPI drivers, CAN communication frames.</span>
+                        </div>
+                        <div className={styles.roadmapStepMeta}>
+                          <span className={styles.audienceCardLabel}>Tools used</span>
+                          <span style={{ color: "var(--text-primary)" }}>MATLAB/Simulink, CANoe, C/C++ microcontrollers.</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className={styles.roadmapStep}>
+                    <div className={styles.roadmapStepActive}>4</div>
+                    <div className={styles.roadmapStepTitle}>Battery Architect (Vehicle Platform Strategist)</div>
+                    <p style={{ color: "var(--text-secondary)", fontSize: "0.82rem", lineHeight: 1.5 }}>
+                      Optimizes the global platform: balancing volumetric packing bounds, solid-state updates, and regulatory safety standards.
+                    </p>
+                    <div className={styles.roadmapStepGrid}>
+                      <div className={styles.roadmapStepMeta}>
+                        <span className={styles.audienceCardLabel}>Skills learned</span>
+                        <span style={{ color: "var(--text-primary)" }}>Cell-to-Pack packaging, ISO 26262 functional safety, multi-pack architectures.</span>
+                      </div>
+                      <div className={styles.roadmapStepMeta}>
+                        <span className={styles.audienceCardLabel}>Tools used</span>
+                        <span style={{ color: "var(--text-primary)" }}>Systems safety modeling, multi-physics vehicle compilers.</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className={styles.roadmapStep}>
+                    <div className={styles.roadmapStepActive}>5</div>
+                    <div className={styles.roadmapStepContent}>
+                      <div className={styles.roadmapStepTitle}>Battery Intelligence Architect (Connected Ecosystem Lead)</div>
+                      <p style={{ color: "var(--text-secondary)", fontSize: "0.82rem", lineHeight: 1.5 }}>
+                        Focuses on lifetime asset value: setting up high-frequency IoT streaming telemetry, digital twins, AI health prognostics, and second-life triage loops.
+                      </p>
+                      <div className={styles.roadmapStepGrid}>
+                        <div className={styles.roadmapStepMeta}>
+                          <span className={styles.audienceCardLabel}>Skills learned</span>
+                          <span style={{ color: "var(--text-primary)" }}>Neural network degradation models, SecOC encryption, EIS triage analytics.</span>
+                        </div>
+                        <div className={styles.roadmapStepMeta}>
+                          <span className={styles.audienceCardLabel}>Tools used</span>
+                          <span style={{ color: "var(--text-primary)" }}>AWS/GCP IoT Core, TensorFlow/PyTorch, time-series data engines.</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 0.4 How to Use This Handbook */}
+              <div id="part-0-4" style={{ scrollMarginTop: "100px", marginBottom: "3rem" }}>
+                <div className={styles.orientationSectionHeader}>
+                  <h3 className={styles.orientationSubTitle}>0.4 How to Use This Handbook</h3>
+                  <span className={styles.orientationAnchorBadge}>P0.4</span>
+                </div>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1.25rem" }}>
+                  This handbook is structured sequentially. We suggest reading the parts in order as concepts compile directly on top of each other. Each part concludes with a hands-on practical assignment and builds toward one of the final Capstone Projects.
+                </p>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1.5rem" }}>
+                  Pay close attention to the **Safety Warnings** and **Architect Insights** scattered throughout the text. These contain critical real-world lessons from engineers who have built validation laboratories and certified production-line EV packs.
+                </p>
+
+                <h4 style={{ color: "var(--text-primary)", fontSize: "0.95rem", marginBottom: "1rem", fontWeight: 700 }}>Chapter Dependency Progression</h4>
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                  {/* Row 1 */}
+                  <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "6px" }}>
+                    {["Part 1: Fundamentals", "Part 2: Requirements", "Part 3: Cell Selection"].map((label, i, arr) => (
+                      <React.Fragment key={i}>
+                        <span style={{ background: "rgba(76,169,48,0.12)", border: "1px solid rgba(76,169,48,0.3)", borderRadius: "6px", padding: "4px 10px", fontSize: "0.75rem", color: "var(--accent-primary)", fontWeight: 600, whiteSpace: "nowrap" }}>{label}</span>
+                        {i < arr.length - 1 && <span style={{ color: "var(--accent-primary)", fontSize: "0.75rem", fontWeight: 700 }}>→</span>}
+                      </React.Fragment>
+                    ))}
+                  </div>
+                  {/* Connector down */}
+                  <div style={{ paddingLeft: "1rem", display: "flex", alignItems: "center", gap: "6px" }}>
+                    <span style={{ color: "rgba(76,169,48,0.4)", fontSize: "0.7rem" }}>└──</span>
+                    <span style={{ color: "var(--text-muted)", fontSize: "0.7rem" }}>flows into ↓</span>
+                  </div>
+                  {/* Row 2 */}
+                  <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "6px" }}>
+                    {["Part 4: Electrical Design", "Part 5: BMS Hardware", "Part 6: BMS Software"].map((label, i, arr) => (
+                      <React.Fragment key={i}>
+                        <span style={{ background: "rgba(56,189,248,0.10)", border: "1px solid rgba(56,189,248,0.25)", borderRadius: "6px", padding: "4px 10px", fontSize: "0.75rem", color: "#38bdf8", fontWeight: 600, whiteSpace: "nowrap" }}>{label}</span>
+                        {i < arr.length - 1 && <span style={{ color: "#38bdf8", fontSize: "0.75rem", fontWeight: 700 }}>→</span>}
+                      </React.Fragment>
+                    ))}
+                  </div>
+                  {/* Connector down */}
+                  <div style={{ paddingLeft: "1rem", display: "flex", alignItems: "center", gap: "6px" }}>
+                    <span style={{ color: "rgba(56,189,248,0.4)", fontSize: "0.7rem" }}>└──</span>
+                    <span style={{ color: "var(--text-muted)", fontSize: "0.7rem" }}>flows into ↓</span>
+                  </div>
+                  {/* Row 3 */}
+                  <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "6px" }}>
+                    {["Part 7: Thermal Systems", "Part 8: Mechanical Design", "Part 9: Safety Engineering"].map((label, i, arr) => (
+                      <React.Fragment key={i}>
+                        <span style={{ background: "rgba(239,68,68,0.10)", border: "1px solid rgba(239,68,68,0.25)", borderRadius: "6px", padding: "4px 10px", fontSize: "0.75rem", color: "#ef4444", fontWeight: 600, whiteSpace: "nowrap" }}>{label}</span>
+                        {i < arr.length - 1 && <span style={{ color: "#ef4444", fontSize: "0.75rem", fontWeight: 700 }}>→</span>}
+                      </React.Fragment>
+                    ))}
+                  </div>
+                  {/* Connector down */}
+                  <div style={{ paddingLeft: "1rem", display: "flex", alignItems: "center", gap: "6px" }}>
+                    <span style={{ color: "rgba(239,68,68,0.4)", fontSize: "0.7rem" }}>└──</span>
+                    <span style={{ color: "var(--text-muted)", fontSize: "0.7rem" }}>flows into ↓</span>
+                  </div>
+                  {/* Row 4 */}
+                  <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "6px" }}>
+                    {["Part 10: Standards", "Part 11/12: AI & Diagnostics", "Part 13: Cloud Telemetry"].map((label, i, arr) => (
+                      <React.Fragment key={i}>
+                        <span style={{ background: "rgba(168,85,247,0.10)", border: "1px solid rgba(168,85,247,0.25)", borderRadius: "6px", padding: "4px 10px", fontSize: "0.75rem", color: "#a855f7", fontWeight: 600, whiteSpace: "nowrap" }}>{label}</span>
+                        {i < arr.length - 1 && <span style={{ color: "#a855f7", fontSize: "0.75rem", fontWeight: 700 }}>→</span>}
+                      </React.Fragment>
+                    ))}
+                  </div>
+                  {/* Connector down */}
+                  <div style={{ paddingLeft: "1rem", display: "flex", alignItems: "center", gap: "6px" }}>
+                    <span style={{ color: "rgba(168,85,247,0.4)", fontSize: "0.7rem" }}>└──</span>
+                    <span style={{ color: "var(--text-muted)", fontSize: "0.7rem" }}>flows into ↓</span>
+                  </div>
+                  {/* Row 5 */}
+                  <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "6px" }}>
+                    {["Part 14: Cybersecurity", "Part 15: Second-Life", "Part 16: Modern Architectures"].map((label, i, arr) => (
+                      <React.Fragment key={i}>
+                        <span style={{ background: "rgba(234,179,8,0.10)", border: "1px solid rgba(234,179,8,0.25)", borderRadius: "6px", padding: "4px 10px", fontSize: "0.75rem", color: "#eab308", fontWeight: 600, whiteSpace: "nowrap" }}>{label}</span>
+                        {i < arr.length - 1 && <span style={{ color: "#eab308", fontSize: "0.75rem", fontWeight: 700 }}>→</span>}
+                      </React.Fragment>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* 0.5 Engineering Philosophy of This Handbook */}
+              <div id="part-0-5" style={{ scrollMarginTop: "100px", marginBottom: "3rem" }}>
+                <div className={styles.orientationSectionHeader}>
+                  <h3 className={styles.orientationSubTitle}>0.5 Engineering Philosophy of This Handbook</h3>
+                  <span className={styles.orientationAnchorBadge}>P0.5</span>
+                </div>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1.25rem" }}>
+                  EV battery engineering requires a unique philosophical approach. We adhere to ten core engineering principles that guide the architecture of all systems:
+                </p>
+
+                <div className={styles.philosophyInfographic}>
+                  <div className={styles.philosophyNode}>
+                    <div className={styles.philosophyNodeHeader}>
+                      <span style={{ color: "var(--accent-primary)" }}>🛡️</span>
+                      <span>Systems Thinking First</span>
+                    </div>
+                    <p className={styles.philosophyNodeText}>
+                      Never select a cell, design a busbar, or build a BMS software filter in isolation. A chemistry swap modifies cooling layout, busbar weld mass, enclosure sizing, and sensor requirements.
+                    </p>
+                  </div>
+
+                  <div className={styles.philosophyNode}>
+                    <div className={styles.philosophyNodeHeader}>
+                      <span style={{ color: "var(--accent-primary)" }}>🔥</span>
+                      <span>Safety-First (Passive Containment)</span>
+                    </div>
+                    <p className={styles.philosophyNodeText}>
+                      Design on the assumption that cells will fail. Ensure high-density packs integrate propagation barriers so a single cell thermal runaway cannot propagate to its neighbors.
+                    </p>
+                  </div>
+
+                  <div className={styles.philosophyNode}>
+                    <div className={styles.philosophyNodeHeader}>
+                      <span style={{ color: "var(--accent-primary)" }}>🛠️</span>
+                      <span>Design for Reliability & Serviceability</span>
+                    </div>
+                    <p className={styles.philosophyNodeText}>
+                      Design the system for modular repair. Serviceable contactors, removable module lids, and standard structural access reduce full pack replacement costs.
+                    </p>
+                  </div>
+
+                  <div className={styles.philosophyNode}>
+                    <div className={styles.philosophyNodeHeader}>
+                      <span style={{ color: "var(--accent-primary)" }}>📐</span>
+                      <span>Design for Manufacturability (DFM)</span>
+                    </div>
+                    <p className={styles.philosophyNodeText}>
+                      Optimize for assembly. Standardize busbar laser-welding access, minimize wire harnesses via smart modules, and reduce screw counts to enable automated robotic assembly.
+                    </p>
+                  </div>
+
+                  <div className={styles.philosophyNode}>
+                    <div className={styles.philosophyNodeHeader}>
+                      <span style={{ color: "var(--accent-primary)" }}>📊</span>
+                      <span>Diagnostics-First Architecture</span>
+                    </div>
+                    <p className={styles.philosophyNodeText}>
+                      If a state cannot be measured or estimated, it cannot be safely controlled. Build high-fidelity voltage/current sensing loops and robust state estimation routines.
+                    </p>
+                  </div>
+
+                  <div className={styles.philosophyNode}>
+                    <div className={styles.philosophyNodeHeader}>
+                      <span style={{ color: "var(--accent-primary)" }}>♻️</span>
+                      <span>Second-Life Sustainability</span>
+                    </div>
+                    <p className={styles.philosophyNodeText}>
+                      Traction packs should be planned for secondary stationary storage triage. Simple module sorting and standard EIS diagnostic pathways ensure batteries avoid premature recycling.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* 0.6 The Evolution of EV Battery Systems (2026–2030) */}
+              <div id="part-0-6" style={{ scrollMarginTop: "100px", marginBottom: "3rem" }}>
+                <div className={styles.orientationSectionHeader}>
+                  <h3 className={styles.orientationSubTitle}>0.6 The Evolution of EV Battery Systems (2026–2030)</h3>
+                  <span className={styles.orientationAnchorBadge}>P0.6</span>
+                </div>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1.25rem" }}>
+                  Battery systems are transitioning from passive physical components to intelligent, software-defined systems. The roadmap below outlines key milestones in the field:
+                </p>
+
+                <div className={styles.evolutionTimeline}>
+                  <div className={styles.evolutionCard}>
+                    <span className={styles.evolutionYear}>2026</span>
+                    <div className={styles.evolutionTitle}>Software-Defined Packs</div>
+                    <ul className={styles.evolutionList}>
+                      <li>• Dynamic parameter tuning based on charging temperature history.</li>
+                      <li>• High-fidelity digital twin tracking on cloud-connected fleets.</li>
+                      <li>• LFP chemistry scaling for standard passenger vehicle segments.</li>
+                    </ul>
+                  </div>
+
+                  <div className={styles.evolutionCard}>
+                    <span className={styles.evolutionYear}>2028</span>
+                    <div className={styles.evolutionTitle}>Structural Integration</div>
+                    <ul className={styles.evolutionList}>
+                      <li>• Cell-to-Chassis (CTC) structural pack integration.</li>
+                      <li>• Telemetry interfaces secured by post-quantum SecOC cryptography.</li>
+                      <li>• Solid-electrolyte interface sensors for aging predictions.</li>
+                    </ul>
+                  </div>
+
+                  <div className={styles.evolutionCard}>
+                    <span className={styles.evolutionYear}>2030</span>
+                    <div className={styles.evolutionTitle}>Autonomous Energy Systems</div>
+                    <ul className={styles.evolutionList}>
+                      <li>• Solid-state cell architectures scaling in premium EV lines.</li>
+                      <li>• V2G energy trade orchestration based on battery age models.</li>
+                      <li>• Standard battery passport identity profiles tracking modules.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* 0.7 Safety Disclaimer */}
+              <div id="part-0-7" style={{ scrollMarginTop: "100px", marginBottom: "3rem" }}>
+                <div className={styles.orientationSectionHeader}>
+                  <h3 className={styles.orientationSubTitle}>0.7 Safety Disclaimer</h3>
+                  <span className={styles.orientationAnchorBadge}>P0.7</span>
+                </div>
+                <SafetyWarning>
+                  <strong style={{ color: "var(--text-primary)", display: "block", marginBottom: "0.5rem" }}>
+                    CRITICAL HIGH-VOLTAGE & THERMAL WARNING:
+                  </strong>
+                  <p style={{ margin: 0, lineHeight: 1.5, fontSize: "0.85rem" }}>
+                    The content inside this engineering handbook is for educational and training purposes only. EV battery packs contain high-voltage circuits (often 400V to 800V DC) capable of delivering fatal electrical shocks. In addition, active lithium cells present severe thermal runaway, explosion, and toxic gas release risks.
+                  </p>
+                  <p style={{ margin: "0.75rem 0 0 0", lineHeight: 1.5, fontSize: "0.85rem" }}>
+                    Do not assemble, modify, or discharge high-voltage battery components without certified high-voltage isolation gear (PPE), dedicated safety isolation transformers, fire suppression systems, and qualified safety supervision. All designs must adhere strictly to local electrical standards (e.g. UL, ISO, SAE) and undergo complete laboratory certification.
+                  </p>
+                </SafetyWarning>
+              </div>
+
+              {/* 0.8 Final Learning Outcomes */}
+              <div id="part-0-8" style={{ scrollMarginTop: "100px", marginBottom: "3rem" }}>
+                <div className={styles.orientationSectionHeader}>
+                  <h3 className={styles.orientationSubTitle}>0.8 Final Learning Outcomes</h3>
+                  <span className={styles.orientationAnchorBadge}>P0.8</span>
+                </div>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1.25rem" }}>
+                  By completing the modules in this handbook, you will acquire the following core engineering capabilities:
+                </p>
+
+                <div className={styles.outcomeGrid}>
+                  <div className={styles.outcomeCard}>
+                    <span className={styles.outcomeCheck}>✓</span>
+                    <span className={styles.outcomeText}>Design and size EV battery packs for dynamic WLTP cycles</span>
+                  </div>
+                  <div className={styles.outcomeCard}>
+                    <span className={styles.outcomeCheck}>✓</span>
+                    <span className={styles.outcomeText}>Select optimal chemistry (NMC/LFP) and physical formats</span>
+                  </div>
+                  <div className={styles.outcomeCard}>
+                    <span className={styles.outcomeCheck}>✓</span>
+                    <span className={styles.outcomeText}>Develop custom BMS hardware sensing and balancing layouts</span>
+                  </div>
+                  <div className={styles.outcomeCard}>
+                    <span className={styles.outcomeCheck}>✓</span>
+                    <span className={styles.outcomeText}>Program real-time Kalman filters and SOC state estimators</span>
+                  </div>
+                  <div className={styles.outcomeCard}>
+                    <span className={styles.outcomeCheck}>✓</span>
+                    <span className={styles.outcomeText}>Architect liquid cooling circuits and heat dissipation sheets</span>
+                  </div>
+                  <div className={styles.outcomeCard}>
+                    <span className={styles.outcomeCheck}>✓</span>
+                    <span className={styles.outcomeText}>Conduct FMEA safety analysis and thermal runaway designs</span>
+                  </div>
+                  <div className={styles.outcomeCard}>
+                    <span className={styles.outcomeCheck}>✓</span>
+                    <span className={styles.outcomeText}>Build secure telemetry links using SecOC cryptographic keys</span>
+                  </div>
+                  <div className={styles.outcomeCard}>
+                    <span className={styles.outcomeCheck}>✓</span>
+                    <span className={styles.outcomeText}>Train neural network battery degradation estimators</span>
+                  </div>
+                  <div className={styles.outcomeCard}>
+                    <span className={styles.outcomeCheck}>✓</span>
+                    <span className={styles.outcomeText}>Build stationary energy storage systems from second-life triages</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* 0.9 Capstone Projects Overview */}
+              <div id="part-0-9" style={{ scrollMarginTop: "100px", marginBottom: "3rem" }}>
+                <div className={styles.orientationSectionHeader}>
+                  <h3 className={styles.orientationSubTitle}>0.9 Capstone Projects Overview</h3>
+                  <span className={styles.orientationAnchorBadge}>P0.9</span>
+                </div>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1.25rem" }}>
+                  To achieve certification, you will complete hands-on Capstone Projects. Select a path aligned with your discipline:
+                </p>
+
+                <div className={styles.capstoneGrid}>
+                  <div className={styles.capstoneCard}>
+                    <div className={styles.capstoneCardHeader}>
+                      <span className={styles.capstoneCardTitle}>48V/100Ah LFP Pack Design</span>
+                      <span className={styles.capstoneCardBadge} style={{ color: "#10b981", background: "rgba(16, 185, 129, 0.1)" }}>Hardware</span>
+                    </div>
+                    <p className={styles.capstoneCardDesc}>
+                      Model cell layouts, busbar weld resistances, structural module brackets, and cooling plate channels inside CAD. Deliver full fabrication documentation.
+                    </p>
+                  </div>
+
+                  <div className={styles.capstoneCard}>
+                    <div className={styles.capstoneCardHeader}>
+                      <span className={styles.capstoneCardTitle}>BMS Kalman SOC Estimator</span>
+                      <span className={styles.capstoneCardBadge} style={{ color: "#38bdf8", background: "rgba(56, 189, 248, 0.1)" }}>Firmware</span>
+                    </div>
+                    <p className={styles.capstoneCardDesc}>
+                      Write C/C++ observer firmware executing an Extended Kalman Filter (EKF) on an STM32 controller. Track SOC within 2% margin under dynamic drive loads.
+                    </p>
+                  </div>
+
+                  <div className={styles.capstoneCard}>
+                    <div className={styles.capstoneCardHeader}>
+                      <span className={styles.capstoneCardTitle}>AI Fleet Aging Prognostics</span>
+                      <span className={styles.capstoneCardBadge} style={{ color: "#a855f7", background: "rgba(168, 85, 247, 0.1)" }}>Data Science</span>
+                    </div>
+                    <p className={styles.capstoneCardDesc}>
+                      Train neural network estimators in Python. Analyze dynamic telemetry data to forecast cell health degradation profiles and locate weak series cells.
+                    </p>
+                  </div>
+
+                  <div className={styles.capstoneCard}>
+                    <div className={styles.capstoneCardHeader}>
+                      <span className={styles.capstoneCardTitle}>Second-Life Grid Storage Triage</span>
+                      <span className={styles.capstoneCardBadge} style={{ color: "#eab308", background: "rgba(234, 179, 8, 0.1)" }}>Systems</span>
+                    </div>
+                    <p className={styles.capstoneCardDesc}>
+                      Formulate automated scripts to parse electrochemical impedance spectroscopy (EIS) sweeps. Grade degraded packs for secondary energy storage installations.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* 0.10 Navigation to Part 1 */}
+              <div id="part-0-10" style={{ scrollMarginTop: "100px" }}>
+                <div className={styles.orientationSectionHeader}>
+                  <h3 className={styles.orientationSubTitle}>0.10 Navigation to Part 1</h3>
+                  <span className={styles.orientationAnchorBadge}>P0.10</span>
+                </div>
+                
+                <div style={{ background: "rgba(76, 169, 48, 0.04)", border: "1px solid rgba(76, 169, 48, 0.15)", borderRadius: "var(--radius-lg)", padding: "2rem", marginTop: "1rem" }}>
+                  <span className={styles.audienceCardLabel} style={{ color: "var(--accent-primary)", marginBottom: "0.25rem" }}>UP NEXT</span>
+                  <h4 style={{ color: "var(--text-primary)", fontSize: "1.2rem", fontWeight: 700, marginBottom: "0.5rem" }}>Part 1: Battery Fundamentals</h4>
+                  <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", lineHeight: 1.5, marginBottom: "1.5rem" }}>
+                    Dive into electrochemistry. Understand how Butler-Volmer kinetics dictate charge transfers at active sites, model dynamic equivalent series circuits, and analyze solid-electrolyte interface (SEI) growth triggers.
+                  </p>
+
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem", marginBottom: "1.5rem" }}>
+                    <div style={{ background: "rgba(0,0,0,0.2)", padding: "1rem", borderRadius: "var(--radius-md)", border: "1px solid rgba(255,255,255,0.05)" }}>
+                      <span className={styles.audienceCardLabel}>Teaser Concept</span>
+                      <span style={{ fontSize: "0.78rem", color: "var(--text-primary)", fontWeight: 700 }}>Butler-Volmer Equation</span>
+                      <span style={{ display: "block", fontSize: "0.7rem", color: "var(--text-muted)", fontFamily: "monospace", marginTop: "0.25rem" }}>
+                        {"j = j_0 * [ exp(α_a F η / RT) - exp(-α_c F η / RT) ]"}
+                      </span>
+                    </div>
+
+                    <div style={{ background: "rgba(0,0,0,0.2)", padding: "1rem", borderRadius: "var(--radius-md)", border: "1px solid rgba(255,255,255,0.05)" }}>
+                      <span className={styles.audienceCardLabel}>Simulation Preview</span>
+                      <span style={{ fontSize: "0.78rem", color: "var(--text-primary)", fontWeight: 700 }}>Equivalent Series Circuit</span>
+                      <span style={{ display: "block", fontSize: "0.7rem", color: "var(--text-muted)", fontFamily: "monospace", marginTop: "0.25rem" }}>
+                        {"V_cell = OCV - I*R_0 - V_rc1 - V_rc2"}
+                      </span>
+                    </div>
+                  </div>
+
+                  <a 
+                    href="#part-1" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      const el = document.getElementById("part-1");
+                      if (el) {
+                        window.scrollTo({ top: el.offsetTop - 80, behavior: "smooth" });
+                      } else {
+                        scrollTo("masterIndex");
+                      }
+                    }} 
+                    className="btn btn-primary" 
+                    style={{ textDecoration: "none", display: "inline-block" }}
+                  >
+                    Start Part 1: Battery Fundamentals →
+                  </a>
+                </div>
+              </div>
 
               <div className={styles.chapterNav}>
-                <div className={styles.chapterNavLink}>
-                  <span className={styles.chapterNavLabel}>Previous Chapter</span>
-                  <span className={styles.chapterNavTitle}>Part 4: BMS Hardware Sensing</span>
+                <div className={styles.chapterNavLink} style={{ opacity: 0.3, pointerEvents: "none" }}>
+                  <span className={styles.chapterNavLabel}>Previous Part</span>
+                  <span className={styles.chapterNavTitle}>None</span>
                 </div>
-                <div className={styles.chapterNavLink} style={{ alignItems: "flex-end" }}>
-                  <span className={styles.chapterNavLabel}>Next Chapter</span>
-                  <span className={styles.chapterNavTitle}>Part 6: Thermal Systems</span>
+                <div 
+                  className={styles.chapterNavLink} 
+                  style={{ alignItems: "flex-end", cursor: "pointer" }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const el = document.getElementById("part-1");
+                    if (el) {
+                      window.scrollTo({ top: el.offsetTop - 80, behavior: "smooth" });
+                    } else {
+                      scrollTo("masterIndex");
+                    }
+                  }}
+                >
+                  <span className={styles.chapterNavLabel}>Next Part</span>
+                  <span className={styles.chapterNavTitle}>Part 1: Battery Fundamentals</span>
                 </div>
               </div>
+
             </div>
           </section>
 
