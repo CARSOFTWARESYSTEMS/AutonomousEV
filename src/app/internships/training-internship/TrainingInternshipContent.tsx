@@ -106,6 +106,9 @@ const HeroSection = () => (
           <a href="#student-offer" className="btn btn-secondary" style={{ padding: "0.85rem 2.2rem", fontSize: "1.05rem", borderColor: "rgba(56,189,248,0.6)", color: "#38bdf8" }}>
             Student Free Offer
           </a>
+          <a href="/internships/battery-cybersecurity" className="btn btn-primary" style={{ padding: "0.85rem 2.2rem", fontSize: "1.05rem" }}>
+            Cybersecurity
+          </a>
         </div>
       </motion.div>
     </div>
@@ -346,7 +349,8 @@ const RoadmapSection = () => {
         </div>
       </div>
 
-      <style dangerouslySetInnerHTML={{ __html: `
+      <style dangerouslySetInnerHTML={{
+        __html: `
         .roadmap-node-wrap { display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 0; position: relative; z-index: 2; }
         .roadmap-card-side { flex: 0 0 calc(50% - 40px); max-width: calc(50% - 40px); display: flex; }
         .side-left { justify-content: flex-end; }
@@ -396,7 +400,8 @@ const GridSection = ({ title, items, isRoles }: { title: string, items: string[]
           </div>
         ))}
       </div>
-      <style dangerouslySetInnerHTML={{ __html: `
+      <style dangerouslySetInnerHTML={{
+        __html: `
         .hover-glow:hover { transform: translateY(-2px); border-color: var(--accent-primary); background: rgba(76,169,48,0.05); }
       `}} />
     </div>
@@ -417,12 +422,12 @@ const StudentOffer = () => (
           Limited Offer — For Students
         </span>
       </div>
-      
+
       <h2 style={{ fontSize: "2.5rem", fontWeight: 800, marginBottom: "20px", color: "var(--text-primary)" }}>
         Free Training &amp; Internship<br />
         <span style={{ color: "#38bdf8" }}>For Qualified Students</span>
       </h2>
-      
+
       <p style={{ color: "var(--text-secondary)", fontSize: "1.1rem", marginBottom: "32px", lineHeight: 1.6 }}>
         EV.ENGINEER™ believes in nurturing exceptional engineering talent. Qualified students may be
         eligible for a fully sponsored Training &amp; Internship pathway — including coaching,
@@ -436,7 +441,7 @@ const StudentOffer = () => (
           <strong style={{ color: "var(--text-primary)" }}>₹15,000</strong>
         </div>
         <p style={{ fontSize: "0.9rem", color: "var(--text-muted)", margin: 0 }}>
-          Refundable after successful completion of Phase 4, subject to program terms. 
+          Refundable after successful completion of Phase 4, subject to program terms.
           This advance payment and refund concept is <strong>only</strong> for the 'Free Training & Internship For Qualified Students'.
           Once you complete Phase 4, you will get the refund amount back.
         </p>

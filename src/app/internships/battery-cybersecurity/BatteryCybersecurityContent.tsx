@@ -679,7 +679,7 @@ export default function BatteryCybersecurityContent() {
         <div className="container">
           <div className={styles.sectionHeader}>
             <span className={styles.sectionNumber}>FEE STRUCTURE</span>
-            <h2 className={styles.sectionTitle}>Internship Plans</h2>
+            <h2 className={styles.sectionTitle}>Training & Internship Plans</h2>
             <p className={styles.sectionSubtitle}>
               Select the option that aligns with your educational path and residency status.
             </p>
