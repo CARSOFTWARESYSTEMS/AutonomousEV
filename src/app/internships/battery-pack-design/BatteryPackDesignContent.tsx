@@ -9,6 +9,7 @@ import {
   PanelLeftClose, PanelLeft
 } from "lucide-react";
 import styles from "./page.module.css";
+import { trackEvent } from "@/utils/analytics";
 
 // ─── TYPES & DATA STRUCTURES ───
 
@@ -1439,6 +1440,7 @@ export default function BatteryPackDesignContent() {
   const [selectedVocKey, setSelectedVocKey] = useState<string>("range");
   const [tradeoffSliderValue, setTradeoffSliderValue] = useState<number>(3);
   const [part2ExerciseSolutions, setPart2ExerciseSolutions] = useState<Record<number, boolean>>({});
+  const [openFaq, setOpenFaq] = useState<Record<number, boolean>>({});
 
   const sectionRefs = {
     hero: useRef<HTMLElement>(null),
@@ -1576,6 +1578,37 @@ export default function BatteryPackDesignContent() {
       setExpandedParts(autoExpanded);
     }
   }, [searchTerm]);
+
+  // GA4: page_view with content_group
+  useEffect(() => {
+    trackEvent("page_view", {
+      page_path: "/internships/battery-pack-design",
+      page_title: "EV Battery Pack Design Handbook",
+      page_location: typeof window !== "undefined" ? window.location.href : "",
+      content_group: "EV Battery Pack Design Handbook",
+    });
+  }, []);
+
+  // GA4: scroll depth milestones (25 / 50 / 75 / 100)
+  useEffect(() => {
+    const fired = { 25: false, 50: false, 75: false, 100: false };
+    const onScroll = () => {
+      const docH = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = docH > 0 ? (window.scrollY / docH) * 100 : 0;
+      ([25, 50, 75, 100] as const).forEach((depth) => {
+        if (!fired[depth] && pct >= depth) {
+          fired[depth] = true;
+          trackEvent(`scroll_${depth}`, {
+            page_path: "/internships/battery-pack-design",
+            page_title: "EV Battery Pack Design Handbook",
+            content_type: "handbook",
+          });
+        }
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const scrollTo = (sectionKey: keyof typeof sectionRefs) => {
     let targetLayer: "handbook" | "learning" | "projects" | "certification" = "handbook";
@@ -2140,9 +2173,18 @@ export default function BatteryPackDesignContent() {
               </p>
               
               <div className={styles.heroCtas}>
-                <button className="btn btn-primary" onClick={() => scrollTo("overview")}>Explore Handbook</button>
-                <button className="btn btn-secondary" onClick={() => scrollTo("progression")}>View Learning Path</button>
-                <button className="btn btn-secondary" style={{ background: "var(--glass-bg)" }} onClick={() => scrollTo("masterIndex")}>Start with Fundamentals</button>
+                <button className="btn btn-primary" onClick={() => scrollTo("overview")}
+                  data-track-event="start_handbook_click"
+                  data-track-content-type="handbook"
+                  data-track-section-id="hero">Explore Handbook</button>
+                <button className="btn btn-secondary" onClick={() => scrollTo("progression")}
+                  data-track-event="view_learning_path_click"
+                  data-track-content-type="learning_path"
+                  data-track-section-id="hero">View Learning Path</button>
+                <button className="btn btn-secondary" style={{ background: "var(--glass-bg)" }} onClick={() => scrollTo("masterIndex")}
+                  data-track-event="start_handbook_click"
+                  data-track-content-type="handbook"
+                  data-track-section-id="hero">Start with Fundamentals</button>
               </div>
             </div>
           </section>
@@ -2217,6 +2259,8 @@ export default function BatteryPackDesignContent() {
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ color: "var(--accent-primary)", textDecoration: "none", display: "flex", alignItems: "center", gap: "5px", fontWeight: 600 }}
+                  data-track-event="linkedin_profile_click"
+                  data-track-section-id="hero-architect-card"
                 >
                   <span>🔗</span> LinkedIn Profile
                 </a>
@@ -2886,10 +2930,14 @@ export default function BatteryPackDesignContent() {
               </span>
             </div>
             <div className={styles.expandCollapseBar} style={{ margin: 0 }}>
-              <button className={styles.expandCollapseBtn} onClick={expandAll}>
+              <button className={styles.expandCollapseBtn} onClick={expandAll}
+                data-track-event="expand_all_sections"
+                data-track-content-type="handbook">
                 <ChevronDown size={13} /> Expand All
               </button>
-              <button className={styles.expandCollapseBtn} onClick={collapseAll}>
+              <button className={styles.expandCollapseBtn} onClick={collapseAll}
+                data-track-event="collapse_all_sections"
+                data-track-content-type="handbook">
                 <ChevronRight size={13} /> Collapse All
               </button>
             </div>
@@ -2933,9 +2981,12 @@ export default function BatteryPackDesignContent() {
                 <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1.25rem" }}>
                   Traction battery systems represent the convergence of electrochemistry, mechanical design, thermodynamics, embedded firmware control, wireless cloud communications, predictive artificial intelligence, and rigorous physical safety parameters. Designing a pack requires understanding how cell chemistry reacts under thermal load, how mechanical frames disperse crash forces, how BMS circuits sense high voltages, and how cloud diagnostics anticipate cell failures.
                 </p>
-                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1.5rem" }}>
-                  In the 2026–2030 battery lifecycle, the ecosystem has moved beyond legacy isolated systems. A unified battery design must integrate telemetry to feed digital twin diagnostics, implement secure onboard communication (SecOC) to thwart cyber attacks, and plan for disassembly and direct reuse in second-life grid stabilization schemes.
-                </p>
+                <ArchitectInsight>
+                  <strong>2026–2030 Battery Architect Scope:</strong>
+                  <p style={{ margin: "4px 0 0 0", fontSize: "0.85rem", lineHeight: 1.5 }}>
+                    The ecosystem has moved beyond isolated systems. A unified battery design must integrate telemetry to feed digital twin diagnostics, implement secure onboard communication (SecOC) to protect against cyber attacks, and plan for safe disassembly and direct reuse in second-life grid stabilization schemes. These architect-level concerns span Parts 11–18.
+                  </p>
+                </ArchitectInsight>
                 
                 <h4 style={{ color: "var(--text-primary)", fontSize: "0.95rem", marginBottom: "0.75rem", fontWeight: 700 }}>Unified Battery Systems Lifecycle</h4>
                 <p style={{ color: "var(--text-muted)", fontSize: "0.82rem", marginBottom: "1rem" }}>
@@ -2964,7 +3015,7 @@ export default function BatteryPackDesignContent() {
                   <div className={styles.pipelineNode}>
                     <span className={styles.pipelineNodePart}>Stage 03</span>
                     <span className={styles.pipelineNodeTitle}>Edge BMS Control</span>
-                    <span className={styles.pipelineNodeFocus}>Running Kalman state filters and executing pyrofuse trip interrupts.</span>
+                    <span className={styles.pipelineNodeFocus}>Monitoring battery states and triggering automatic safety disconnects.</span>
                   </div>
                   <div className={styles.pipelineConnector}>
                     <div className={styles.pipelineConnectorLine} style={{ backgroundColor: "var(--accent-primary)" }} />
@@ -2973,7 +3024,7 @@ export default function BatteryPackDesignContent() {
                   <div className={styles.pipelineNode}>
                     <span className={styles.pipelineNodePart}>Stage 04</span>
                     <span className={styles.pipelineNodeTitle}>Cloud Fleet IoT</span>
-                    <span className={styles.pipelineNodeFocus}>Securing MQTT telemetry using SecOC keys and building digital twins.</span>
+                    <span className={styles.pipelineNodeFocus}>Sending battery health data to the cloud securely and building performance dashboards.</span>
                   </div>
                   <div className={styles.pipelineConnector}>
                     <div className={styles.pipelineConnectorLine} style={{ backgroundColor: "var(--accent-primary)" }} />
@@ -2982,7 +3033,7 @@ export default function BatteryPackDesignContent() {
                   <div className={styles.pipelineNode}>
                     <span className={styles.pipelineNodePart}>Stage 05</span>
                     <span className={styles.pipelineNodeTitle}>Second-Life Reuse</span>
-                    <span className={styles.pipelineNodeFocus}>EIS diagnostics triage, module sorting, and grid stationary storage.</span>
+                    <span className={styles.pipelineNodeFocus}>Health-testing retired packs, grading modules for reuse, and deploying in grid energy storage.</span>
                   </div>
                 </div>
               </div>
@@ -3921,7 +3972,7 @@ export default function BatteryPackDesignContent() {
                           <p style={{ margin: "0 0 10px 0", fontSize: "0.78rem", color: "var(--text-secondary)", lineHeight: 1.4 }}>
                             The integration of the battery pack with the vehicle's inverter, motor control loop, onboard charger, vehicle management unit, and cloud telematics system.
                           </p>
-                          <span style={{ fontSize: "0.72rem", color: "var(--accent-primary)" }}><strong>Key Challenge:</strong> EMI noise filtration, real-time current balancing, and SecOC encryption validation.</span>
+                          <span style={{ fontSize: "0.72rem", color: "var(--accent-primary)" }}><strong>Key Challenge:</strong> EMI noise filtration, real-time current balancing, and secure vehicle network communication.</span>
                         </>
                       )}
                     </div>
@@ -4173,7 +4224,7 @@ export default function BatteryPackDesignContent() {
                   <div style={{ border: "1px solid rgba(255,255,255,0.05)", background: "rgba(0,0,0,0.15)", padding: "12px", borderRadius: "6px" }}>
                     <span style={{ fontSize: "0.75rem", color: "var(--accent-primary)", fontWeight: 700, display: "block", marginBottom: "4px" }}>SOC (State of Charge)</span>
                     <p style={{ margin: 0, fontSize: "0.75rem", color: "var(--text-secondary)", lineHeight: 1.4 }}>
-                      The equivalent of a fuel gauge. Denotes remaining charge as a percentage of usable capacity. Estimated via Coulomb counting and Kalman filters.
+                      The equivalent of a fuel gauge. Denotes remaining charge as a percentage of usable capacity. Estimated by tracking charge flow and using state-estimation algorithms.
                     </p>
                   </div>
 
@@ -4366,7 +4417,7 @@ export default function BatteryPackDesignContent() {
                       <h4 style={{ color: "#fff", fontSize: "0.88rem", fontWeight: 700, margin: 0 }}>1. Electrochemical Layer</h4>
                     </div>
                     <p style={{ margin: 0, fontSize: "0.76rem", color: "var(--text-secondary)", lineHeight: 1.4 }}>
-                      Cell selection, active anode/cathode chemistry ratios, degradation kinetics, and electrochemical impedance spectroscopy (EIS) profile calibration.
+                      Cell selection, chemistry performance ratios, degradation behavior modeling, and cell impedance characterization (EIS).
                     </p>
                   </div>
 
@@ -4406,7 +4457,7 @@ export default function BatteryPackDesignContent() {
                       <h4 style={{ color: "#fff", fontSize: "0.88rem", fontWeight: 700, margin: 0 }}>5. Control (BMS) Layer</h4>
                     </div>
                     <p style={{ margin: 0, fontSize: "0.76rem", color: "var(--text-secondary)", lineHeight: 1.4 }}>
-                      AFE chip voltage telemetry loops, passive cell balancing logic, Extended Kalman Filter SOC code, and ASIL safety diagnostics.
+                      AFE chip voltage sensing loops, passive cell balancing logic, SOC estimation algorithms, and ISO 26262 safety diagnostics.
                     </p>
                   </div>
 
@@ -4416,7 +4467,7 @@ export default function BatteryPackDesignContent() {
                       <h4 style={{ color: "#fff", fontSize: "0.88rem", fontWeight: 700, margin: 0 }}>6. Cloud & Telemetry Layer</h4>
                     </div>
                     <p style={{ margin: 0, fontSize: "0.76rem", color: "var(--text-secondary)", lineHeight: 1.4 }}>
-                      Low-latency CAN-to-LTE routing, MQTT telematics payloads, SecOC cryptographic validation keys, and predictive fleet health digital twins.
+                      Low-latency CAN-to-LTE data routing, MQTT telematics payloads, secure message authentication, and predictive fleet health digital twins.
                     </p>
                   </div>
                 </div>

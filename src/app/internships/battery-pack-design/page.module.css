@@ -96,12 +96,12 @@
   position: sticky;
   top: 100px;
   height: calc(100vh - 130px);
-  width: 320px;
+  width: 280px;
   flex-shrink: 0;
   background: rgba(6, 16, 12, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: var(--radius-lg);
-  padding: 1.5rem;
+  padding: 1.25rem;
   display: flex;
   flex-direction: column;
   backdrop-filter: blur(16px);
@@ -231,10 +231,10 @@
   width: 100%;
   background: transparent;
   border: none;
-  padding: 0.5rem 0.75rem;
+  padding: 0.4rem 0.6rem;
   border-radius: var(--radius-md);
   color: var(--text-secondary);
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 600;
   text-align: left;
   cursor: pointer;
@@ -253,17 +253,17 @@
 }
 
 .navGroupItems {
-  padding-left: 1.5rem;
-  margin-top: 0.25rem;
+  padding-left: 1.2rem;
+  margin-top: 0.15rem;
   border-left: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .navItem {
   display: block;
-  padding: 0.35rem 0.75rem;
+  padding: 0.28rem 0.5rem;
   border-radius: var(--radius-md);
   color: var(--text-muted);
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   text-decoration: none;
   transition: color 0.2s, background 0.2s;
   white-space: nowrap;
@@ -313,7 +313,7 @@
 
 /* ─── PAGE SECTIONS ─── */
 .pageSection {
-  padding: 4rem 0;
+  padding: 3rem 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -984,13 +984,22 @@
   }
 
   .chapterBox {
-    padding: 1.5rem;
+    padding: 1.25rem;
   }
 
   .chapterNav {
     flex-direction: column;
     gap: 1.5rem;
     align-items: flex-start;
+  }
+
+  .pipelineContainer {
+    gap: 0.5rem;
+  }
+
+  .pipelineNode {
+    min-width: 130px;
+    padding: 0.75rem;
   }
 }
 
@@ -2039,7 +2048,7 @@
   justify-content: space-between;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   padding-bottom: 0.75rem;
-  margin-top: 2.5rem;
+  margin-top: 2rem;
   margin-bottom: 1.25rem;
 }
 
