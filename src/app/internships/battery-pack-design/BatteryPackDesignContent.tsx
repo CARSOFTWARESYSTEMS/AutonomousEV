@@ -2426,7 +2426,7 @@ export default function BatteryPackDesignContent() {
                     { num: "05", label: "Electrical Architecture Design", sub: "Series-parallel + busbar sizing" },
                     { num: "06", label: "BMS Hardware Integration", sub: "AFE + balancing + isolation" },
                     { num: "07", label: "Thermal Management", sub: "Cooling layout + TIM selection" },
-                    { num: "08", label: "Mechanical Enclosure & IP Rating", sub: "CTP + IP68 sealing" },
+                    { num: "08", label: "Mechanical Enclosure & IP Rating", sub: "modular enclosure + application-specific protection" },
                   ],
                 },
                 {
@@ -2443,7 +2443,7 @@ export default function BatteryPackDesignContent() {
                   phase: "Validation & Deployment",
                   phaseColor: "#10b981",
                   items: [
-                    { num: "13", label: "Cybersecurity Hardening", sub: "TARA + SecOC + secure OTA" },
+                    { num: "13", label: "Cybersecurity Hardening", sub: "threat modeling + secure communication + secure updates" },
                     { num: "14", label: "Safety Validation", sub: "UN 38.3 / ECE R100 / IEC 62619" },
                     { num: "15", label: "ESS Deployment", sub: "Grid or backup commissioning" },
                     { num: "16", label: "Lifecycle Intelligence Dashboard", sub: "Fleet SOH + exit planning" },
@@ -3240,7 +3240,7 @@ export default function BatteryPackDesignContent() {
                     </div>
                     <div className={styles.audienceCardSection}>
                       <span className={styles.audienceCardLabel}>Expected Outcome</span>
-                      <span className={styles.audienceCardVal}>Design 800V class low-impedance electrical pack skeletons.</span>
+                      <span className={styles.audienceCardVal}>Design safe electrical architectures for second-life packs and modular ESS systems.</span>
                     </div>
                   </div>
 
@@ -3563,7 +3563,7 @@ export default function BatteryPackDesignContent() {
                   </div>
                   {/* Row 5 */}
                   <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "6px" }}>
-                    {["Part 14: Cybersecurity", "Part 15: Second-Life", "Part 16: Modern Architectures"].map((label, i, arr) => (
+                    {["Part 14: Cybersecurity", "Part 15: Second-Life Systems", "Part 16: Modular Energy Systems"].map((label, i, arr) => (
                       <React.Fragment key={i}>
                         <span style={{ background: "rgba(234,179,8,0.10)", border: "1px solid rgba(234,179,8,0.25)", borderRadius: "6px", padding: "4px 10px", fontSize: "0.75rem", color: "#eab308", fontWeight: 600, whiteSpace: "nowrap" }}>{label}</span>
                         {i < arr.length - 1 && <span style={{ color: "#eab308", fontSize: "0.75rem", fontWeight: 700 }}>→</span>}
