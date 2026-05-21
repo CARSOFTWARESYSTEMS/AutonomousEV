@@ -320,6 +320,12 @@ export default function InternshipsClient() {
               secondaryLinkLabel="Fire Prevention"
             />
             <ProjectCard
+              title="EV Battery Pack Design"
+              desc="Comprehensive handbook mapping electrochemistry, structural CTP frames, BMS algorithms, and cloud telemetry."
+              link="/internships/battery-pack-design"
+              ctaLabel="Explore Handbook"
+            />
+            <ProjectCard
               title="Battery Pack Aadhaar System"
               desc="Unified identity protocols for battery life tracking and health."
               link="/internships/battery-aadhaar"
