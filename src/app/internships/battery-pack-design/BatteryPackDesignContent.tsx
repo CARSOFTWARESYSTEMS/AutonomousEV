@@ -22,7 +22,7 @@ interface HandbookPart {
   skillsGained: string[];
   domains: string[];
   futureRelevance: string;
-  status: "Available" | "Drafting" | "Researching" | "Scheduled";
+  status: "Available" | "Draft" | "Planned" | "Coming Next";
   badgeClass: string;
   subsections: { title: string; anchor: string }[];
 }
@@ -112,18 +112,32 @@ const HANDBOOK_PARTS: HandbookPart[] = [
   {
     num: "Part 3",
     title: "Cell Chemistry and Selection",
-    desc: "Deep comparative study of cylindrical, prismatic, pouch cell formats. Selection matrix for NMC, LFP, LCO, post-lithium sodium-ion, and solid-state cell specifications.",
+    desc: "Deep comparative study of cylindrical, prismatic, pouch cell formats. Selection matrix for NMC, LFP, LCO, post-lithium sodium-ion, and solid-state cell specifications. Covers datasheet reading, second-life evaluation, cell aging, safety, and the complete selection process.",
     difficulty: "Engineer",
     prerequisites: "Part 1",
     duration: "4.0 Hrs",
-    skillsGained: ["Cell Spec Auditing", "Format Selection Matrix", "Sodium-ion Analytics"],
+    skillsGained: ["Cell Spec Auditing", "Format Selection Matrix", "Sodium-ion Analytics", "Datasheet Reading", "Second-Life Evaluation"],
     domains: ["Chemical Engineering", "Manufacturing"],
     futureRelevance: "Crucial for solid-state cell characterization pipelines emerging globally by 2026-2028.",
-    status: "Available",
-    badgeClass: styles.badgeAvailable,
+    status: "Draft",
+    badgeClass: styles.badgeDraft,
     subsections: [
-      { title: "3.1 Chemistry Matrix: NMC vs LFP vs Na-Ion vs Solid-State", anchor: "part-3-1" },
-      { title: "3.2 Cylindrical Tabless cell dynamics (4680 formats)", anchor: "part-3-2" }
+      { title: "3.1 Introduction to Lithium-Ion Batteries", anchor: "part-3-1" },
+      { title: "3.2 Anatomy of a Cell", anchor: "part-3-2" },
+      { title: "3.3 LFP Chemistry", anchor: "part-3-3" },
+      { title: "3.4 NMC Chemistry", anchor: "part-3-4" },
+      { title: "3.5 Sodium-Ion Batteries", anchor: "part-3-5" },
+      { title: "3.6 Solid-State Concepts", anchor: "part-3-6" },
+      { title: "3.7 Cell Formats (Cylindrical, Prismatic, Pouch)", anchor: "part-3-7" },
+      { title: "3.8 Datasheet Reading", anchor: "part-3-8" },
+      { title: "3.9 Cell Selection Process", anchor: "part-3-9" },
+      { title: "3.10 Second-Life Cell Evaluation", anchor: "part-3-10" },
+      { title: "3.11 Cell Aging and Degradation", anchor: "part-3-11" },
+      { title: "3.12 Cell Safety Mechanisms", anchor: "part-3-12" },
+      { title: "3.13 Chemistry Comparison Matrix", anchor: "part-3-13" },
+      { title: "3.14 Exercises", anchor: "part-3-14" },
+      { title: "3.15 Key Takeaways", anchor: "part-3-15" },
+      { title: "3.16 Navigation to Part 4", anchor: "part-3-16" }
     ]
   },
   {
@@ -136,11 +150,16 @@ const HANDBOOK_PARTS: HandbookPart[] = [
     skillsGained: ["Busbar Resistive Sizing", "Contactor Selection", "HV Isolation Mapping"],
     domains: ["Electrical Design", "HV Safety"],
     futureRelevance: "Foundational for 800V fast-charging layouts and ultra-low resistance copper busbars.",
-    status: "Available",
-    badgeClass: styles.badgeAvailable,
+    status: "Draft",
+    badgeClass: styles.badgeDraft,
     subsections: [
       { title: "4.1 HV Interconnects & Wire Bond Resistance Sizing", anchor: "part-4-1" },
-      { title: "4.2 Fuse Coordination & Fast Pyrofuse BMS Interrupt Loops", anchor: "part-4-2" }
+      { title: "4.2 Fuse Coordination & Fast Pyrofuse BMS Interrupt Loops", anchor: "part-4-2" },
+      { title: "4.3 Contactor Selection & Pre-charge Circuits", anchor: "part-4-3" },
+      { title: "4.4 Insulation Monitoring Devices (IMD)", anchor: "part-4-4" },
+      { title: "4.5 HV Wiring Harness Design", anchor: "part-4-5" },
+      { title: "4.6 Exercises", anchor: "part-4-6" },
+      { title: "4.7 Navigation to Part 5", anchor: "part-4-7" }
     ]
   },
   {
@@ -153,11 +172,16 @@ const HANDBOOK_PARTS: HandbookPart[] = [
     skillsGained: ["BMS Schematic Layout", "AFE Chip Selection", "Daisy-Chain Noise Isolation"],
     domains: ["Electronics", "Hardware Engineering"],
     futureRelevance: "Required for robust multi-cell serial telemetry over extreme electromagnetic interference environments.",
-    status: "Available",
-    badgeClass: styles.badgeAvailable,
+    status: "Draft",
+    badgeClass: styles.badgeDraft,
     subsections: [
       { title: "5.1 Analog Front-Ends & Passive Cell Balancing Circuits", anchor: "part-5-1" },
-      { title: "5.2 Galvanic Isolation & Isolated SPI Ring Redundancies", anchor: "part-5-2" }
+      { title: "5.2 Galvanic Isolation & Isolated SPI Ring Redundancies", anchor: "part-5-2" },
+      { title: "5.3 Current Sensing: Hall Effect vs Shunt Resistors", anchor: "part-5-3" },
+      { title: "5.4 Master-Slave BMS Architecture", anchor: "part-5-4" },
+      { title: "5.5 PCB Layout Guidelines for BMS", anchor: "part-5-5" },
+      { title: "5.6 Exercises", anchor: "part-5-6" },
+      { title: "5.7 Navigation to Part 6", anchor: "part-5-7" }
     ]
   },
   {
@@ -170,11 +194,17 @@ const HANDBOOK_PARTS: HandbookPart[] = [
     skillsGained: ["EKF Observer Coding", "SOH Coulomb Counting Overlays", "Balancing Controls Logic"],
     domains: ["Software", "Controls Systems"],
     futureRelevance: "Transitioning to edge-AI estimation engines replacing legacy Coulomb counting models completely by 2027.",
-    status: "Available",
-    badgeClass: styles.badgeAvailable,
+    status: "Draft",
+    badgeClass: styles.badgeDraft,
     subsections: [
       { title: "6.1 Kalman Filters & State of Charge (SOC) Modeling", anchor: "part-6-1" },
-      { title: "6.2 SOH Diagnostics & Capacity Degradation Overlays", anchor: "part-6-2" }
+      { title: "6.2 SOH Diagnostics & Capacity Degradation Overlays", anchor: "part-6-2" },
+      { title: "6.3 State of Function (SOF) Algorithms", anchor: "part-6-3" },
+      { title: "6.4 Active & Passive Balancing Control Logic", anchor: "part-6-4" },
+      { title: "6.5 RTOS & Embedded Firmware Structure", anchor: "part-6-5" },
+      { title: "6.6 CAN Bus Communication Layer", anchor: "part-6-6" },
+      { title: "6.7 Exercises", anchor: "part-6-7" },
+      { title: "6.8 Navigation to Part 7", anchor: "part-6-8" }
     ]
   },
   {
@@ -187,11 +217,16 @@ const HANDBOOK_PARTS: HandbookPart[] = [
     skillsGained: ["Liquid Coolant Routing", "TIM Selection", "Thermal Flow CFD Auditing"],
     domains: ["Thermal", "Mechanical Engineering"],
     futureRelevance: "Critical for ultra-fast charging (4C+) thermal mitigation and solid-state heat management.",
-    status: "Available",
-    badgeClass: styles.badgeAvailable,
+    status: "Draft",
+    badgeClass: styles.badgeDraft,
     subsections: [
       { title: "7.1 Coolant Ribbon Plates & Single-Phase Liquid Cooling", anchor: "part-7-1" },
-      { title: "7.2 Phase Change Materials (PCM) & Structural TIM Selections", anchor: "part-7-2" }
+      { title: "7.2 Phase Change Materials (PCM) & Structural TIM Selections", anchor: "part-7-2" },
+      { title: "7.3 Thermal Resistance Modeling", anchor: "part-7-3" },
+      { title: "7.4 CFD Simulation Basics for Battery Packs", anchor: "part-7-4" },
+      { title: "7.5 Heating Systems for Cold Climate Operation", anchor: "part-7-5" },
+      { title: "7.6 Exercises", anchor: "part-7-6" },
+      { title: "7.7 Navigation to Part 8", anchor: "part-7-7" }
     ]
   },
   {
@@ -204,11 +239,16 @@ const HANDBOOK_PARTS: HandbookPart[] = [
     skillsGained: ["CTP Structural Enclosure Design", "Vibration Isolation FEA", "IP68 Enclosure Seals"],
     domains: ["Mechanical Design", "Manufacturing"],
     futureRelevance: "Essential for cell-to-chassis structural integration to optimize vehicle energy-to-weight index.",
-    status: "Available",
-    badgeClass: styles.badgeAvailable,
+    status: "Draft",
+    badgeClass: styles.badgeDraft,
     subsections: [
-      { title: "8.1 Cell-to-Pack (CTP) & Cell-to-Chassis Chassis Integration", anchor: "part-8-1" },
-      { title: "8.2 Enclosure Crashworthiness FEA & Vibration Isolation", anchor: "part-8-2" }
+      { title: "8.1 Cell-to-Pack (CTP) & Cell-to-Chassis Integration", anchor: "part-8-1" },
+      { title: "8.2 Enclosure Crashworthiness FEA & Vibration Isolation", anchor: "part-8-2" },
+      { title: "8.3 IP67/IP68 Sealing & Environmental Ingress Protection", anchor: "part-8-3" },
+      { title: "8.4 Cell Compression Systems & Mechanical Fixtures", anchor: "part-8-4" },
+      { title: "8.5 Module-to-Pack Assembly Workflow", anchor: "part-8-5" },
+      { title: "8.6 Exercises", anchor: "part-8-6" },
+      { title: "8.7 Navigation to Part 9", anchor: "part-8-7" }
     ]
   },
   {
@@ -221,11 +261,16 @@ const HANDBOOK_PARTS: HandbookPart[] = [
     skillsGained: ["Thermal Propagation Blocking", "Venting Exhaust Manifolds", "Aerogel Selection"],
     domains: ["Safety", "Thermal Management"],
     futureRelevance: "Mandatory compliance base to prevent adjacent cell chain combustion under rigorous global testing protocols.",
-    status: "Available",
-    badgeClass: styles.badgeAvailable,
+    status: "Draft",
+    badgeClass: styles.badgeDraft,
     subsections: [
-      { title: "9.1 Venting Gas Thermal Runaway & High-Temp Gas Routing", anchor: "part-9-1" },
-      { title: "9.2 Silica Aerogel & Ceramic Composite Barriers", anchor: "part-9-2" }
+      { title: "9.1 Thermal Runaway Kinetics & Trigger Mechanisms", anchor: "part-9-1" },
+      { title: "9.2 Venting Gas Routing & High-Temp Gas Manifolds", anchor: "part-9-2" },
+      { title: "9.3 Silica Aerogel & Ceramic Composite Barriers", anchor: "part-9-3" },
+      { title: "9.4 Fire Suppression Integration", anchor: "part-9-4" },
+      { title: "9.5 Propagation Testing Protocols", anchor: "part-9-5" },
+      { title: "9.6 Exercises", anchor: "part-9-6" },
+      { title: "9.7 Navigation to Part 10", anchor: "part-9-7" }
     ]
   },
   {
@@ -238,11 +283,16 @@ const HANDBOOK_PARTS: HandbookPart[] = [
     skillsGained: ["UN 38.3 Certification Auditing", "ECE R100 Rev.3 Safety Testing", "ISO 12405 Protocol Execution"],
     domains: ["Standards", "Compliance Testing"],
     futureRelevance: "Primary gating mechanism for legal entry of custom transport packs into international markets.",
-    status: "Available",
-    badgeClass: styles.badgeAvailable,
+    status: "Draft",
+    badgeClass: styles.badgeDraft,
     subsections: [
       { title: "10.1 UN 38.3 Shipping Certification Methods", anchor: "part-10-1" },
-      { title: "10.2 ECE R100 Rev.3 Cell/Pack Safety Certification", anchor: "part-10-2" }
+      { title: "10.2 ECE R100 Rev.3 Cell/Pack Safety Certification", anchor: "part-10-2" },
+      { title: "10.3 ISO 12405 Testing Standards", anchor: "part-10-3" },
+      { title: "10.4 ISO 26262 Functional Safety for EV", anchor: "part-10-4" },
+      { title: "10.5 IEC 62619 Stationary Storage Safety", anchor: "part-10-5" },
+      { title: "10.6 Exercises", anchor: "part-10-6" },
+      { title: "10.7 Navigation to Part 11", anchor: "part-10-7" }
     ]
   },
   {
@@ -255,8 +305,8 @@ const HANDBOOK_PARTS: HandbookPart[] = [
     skillsGained: ["EIS Bode Plot Interpretation", "Lithium Plating Analytics", "Capacity Retention Calculations"],
     domains: ["Diagnostics", "Electrochemistry"],
     futureRelevance: "High-throughput on-vehicle EIS hardware sensors arriving to top-tier heavy vehicles by 2027.",
-    status: "Drafting",
-    badgeClass: styles.badgeDrafting,
+    status: "Draft",
+    badgeClass: styles.badgeDraft,
     subsections: [
       { title: "11.1 EIS Spectra Bode and Nyquist Plots", anchor: "part-11-1" },
       { title: "11.2 Probing Lithium Plating and Electrolyte Consumptions", anchor: "part-11-2" }
@@ -272,8 +322,8 @@ const HANDBOOK_PARTS: HandbookPart[] = [
     skillsGained: ["TinyML Model Deployment", "LSTM RUL Predictors", "Anomaly Short Diagnostics"],
     domains: ["AI / Machine Learning", "Controls Systems"],
     futureRelevance: "Essential for proactive fleet telemetry platforms to spot battery hazards hours before thermal runaway.",
-    status: "Drafting",
-    badgeClass: styles.badgeDrafting,
+    status: "Draft",
+    badgeClass: styles.badgeDraft,
     subsections: [
       { title: "12.1 Edge AI TinyML for Lithium Dendrite Short Detection", anchor: "part-12-1" },
       { title: "12.2 Remaining Useful Life (RUL) LSTM Predictor Code", anchor: "part-12-2" }
@@ -289,8 +339,8 @@ const HANDBOOK_PARTS: HandbookPart[] = [
     skillsGained: ["Protobuf Schema Design", "MQTT Telemetry Ingestion", "Digital Twin Fleet Mapping"],
     domains: ["Cloud Telematics", "Software Systems"],
     futureRelevance: "Required for European Battery Passports compliance and vehicle-to-grid grid balancing networks.",
-    status: "Drafting",
-    badgeClass: styles.badgeDrafting,
+    status: "Draft",
+    badgeClass: styles.badgeDraft,
     subsections: [
       { title: "13.1 MQTT Over TLS & High-Rate Ingestion Pipelines", anchor: "part-13-1" },
       { title: "13.2 Battery Digital Twin Architecture & Time-Series DBs", anchor: "part-13-2" }
@@ -306,8 +356,8 @@ const HANDBOOK_PARTS: HandbookPart[] = [
     skillsGained: ["CAN-FD SecOC Message Signing", "ISO 21434 Threat Modeling", "HSM Secure Boot Mapping"],
     domains: ["Cybersecurity", "Networking"],
     futureRelevance: "Strict cybersecurity rules (UNECE R155) require complete cryptographic assurance of vehicle BMS by 2026.",
-    status: "Researching",
-    badgeClass: styles.badgeResearching,
+    status: "Planned",
+    badgeClass: styles.badgePlanned,
     subsections: [
       { title: "14.1 SecOC CAN-FD Message Authentication Overlays", anchor: "part-14-1" },
       { title: "14.2 Hardware HSM Cryptographic Key Schemes & Secure Boot", anchor: "part-14-2" }
@@ -323,8 +373,8 @@ const HANDBOOK_PARTS: HandbookPart[] = [
     skillsGained: ["Retired Pack Disassembly Triage", "EIS Grading Protocols", "Stationary Storage Sizing"],
     domains: ["Circular Economy", "Mechanical Systems"],
     futureRelevance: "Mass scale-up of retired EV packs requires highly automated triage grading stations to keep repacking viable.",
-    status: "Researching",
-    badgeClass: styles.badgeResearching,
+    status: "Planned",
+    badgeClass: styles.badgePlanned,
     subsections: [
       { title: "15.1 High-Throughput Cell Diagnostics & Grading Workflows", anchor: "part-15-1" },
       { title: "15.2 Sizing Stationary Grid Storage from Retired EV Modules", anchor: "part-15-2" }
@@ -340,11 +390,15 @@ const HANDBOOK_PARTS: HandbookPart[] = [
     skillsGained: ["800V Architecture Design", "Megawatt Charging Systems Sizing", "Multi-Voltage Switching Loops"],
     domains: ["Electrical Systems", "Systems Architecture"],
     futureRelevance: "Silicon Carbide (SiC) 800V traction systems are becoming the gold standard for charging time reductions.",
-    status: "Available",
-    badgeClass: styles.badgeAvailable,
+    status: "Draft",
+    badgeClass: styles.badgeDraft,
     subsections: [
       { title: "16.1 Dynamic 400V/800V Charging Configurations", anchor: "part-16-1" },
-      { title: "16.2 MegaWatt Charging Systems (MCS) & High-Rate Thermal Loops", anchor: "part-16-2" }
+      { title: "16.2 MegaWatt Charging Systems (MCS) & High-Rate Thermal Loops", anchor: "part-16-2" },
+      { title: "16.3 Silicon Carbide (SiC) Inverter Architecture", anchor: "part-16-3" },
+      { title: "16.4 Distributed BMS Topology", anchor: "part-16-4" },
+      { title: "16.5 Exercises", anchor: "part-16-5" },
+      { title: "16.6 Navigation to Part 17", anchor: "part-16-6" }
     ]
   },
   {
@@ -357,8 +411,8 @@ const HANDBOOK_PARTS: HandbookPart[] = [
     skillsGained: ["Reference CAD Auditing", "Electrical Schematic Mapping", "Liquid CFD Validation"],
     domains: ["Systems Engineering", "Design Validation"],
     futureRelevance: "State-of-the-art reference pack integration models ready for automotive factories.",
-    status: "Drafting",
-    badgeClass: styles.badgeDrafting,
+    status: "Planned",
+    badgeClass: styles.badgePlanned,
     subsections: [
       { title: "17.1 Unified 800V Reference Schematic Schematics", anchor: "part-17-1" },
       { title: "17.2 CFD Coolant Ribbon Flow Velocity CFD Auditing", anchor: "part-17-2" }
@@ -374,8 +428,8 @@ const HANDBOOK_PARTS: HandbookPart[] = [
     skillsGained: ["E2E Pack Prototype Design", "CAD / Simulation submissions", "Verification Checklist Auditing"],
     domains: ["Systems Integration", "Testing Validation"],
     futureRelevance: "Final capstone portfolio demonstrating verified capability to prospective automotive engineering divisions.",
-    status: "Drafting",
-    badgeClass: styles.badgeDrafting,
+    status: "Coming Next",
+    badgeClass: styles.badgeComingNext,
     subsections: [
       { title: "18.1 Traction Pack CAD and Simulation Submission Requirements", anchor: "part-18-1" },
       { title: "18.2 Industry Review Jury Evaluation Guidelines & Checklists", anchor: "part-18-2" }
@@ -1341,13 +1395,7 @@ const REVIEW_GATES: ReviewGate[] = [
 
 export default function BatteryPackDesignContent() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [expandedParts, setExpandedParts] = useState<Record<number, boolean>>({
-    0: true,
-    1: false,
-    2: false,
-    3: false,
-    4: false,
-  });
+  const [expandedParts, setExpandedParts] = useState<Record<number, boolean>>({});
   const [activeSection, setActiveSection] = useState("hero");
   const [activeLayer, setActiveLayer] = useState<"handbook" | "learning" | "projects" | "certification">("handbook");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -1361,6 +1409,12 @@ export default function BatteryPackDesignContent() {
   const [showBeginnerPath, setShowBeginnerPath] = useState(false);
   const [activeToolCategory, setActiveToolCategory] = useState<string>("all");
   const [selectedGate, setSelectedGate] = useState<number>(0);
+  const [readingProgress, setReadingProgress] = useState(0);
+  const [openPartSections, setOpenPartSections] = useState<Record<string, boolean>>({
+    part0Orientation: false,
+    part1Fundamentals: false,
+    part2Requirements: false,
+  });
   const [safetyChecklist, setSafetyChecklist] = useState<Record<string, boolean>>({
     ppe: false,
     tools: false,
@@ -1406,9 +1460,10 @@ export default function BatteryPackDesignContent() {
     readinessChecklist: useRef<HTMLElement>(null)
   };
 
-  // Scroll active section tracker (Intersection Observer)
+  // Scroll active section tracker + reading progress
   useEffect(() => {
     const handleScroll = () => {
+      // Active section tracking
       const scrollPosition = window.scrollY + 200;
       for (const [key, ref] of Object.entries(sectionRefs)) {
         if (ref.current) {
@@ -1420,14 +1475,37 @@ export default function BatteryPackDesignContent() {
           }
         }
       }
+      // Reading progress (0–100)
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? Math.min(100, (window.scrollY / docHeight) * 100) : 0;
+      setReadingProgress(progress);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const togglePartExpansion = (index: number) => {
     setExpandedParts(prev => ({ ...prev, [index]: !prev[index] }));
+  };
+
+  const expandAll = () => {
+    const all: Record<number, boolean> = {};
+    HANDBOOK_PARTS.forEach((_, idx) => { all[idx] = true; });
+    setExpandedParts(all);
+    setOpenPartSections({ part0Orientation: true, part1Fundamentals: true, part2Requirements: true });
+  };
+
+  const collapseAll = () => {
+    setExpandedParts({});
+    setOpenPartSections({ part0Orientation: false, part1Fundamentals: false, part2Requirements: false });
+  };
+
+  const expandAllCards = expandAll;
+  const collapseAllCards = collapseAll;
+
+  const togglePartSection = (key: string) => {
+    setOpenPartSections(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
   const toggleGlossary = (index: number) => {
@@ -1526,7 +1604,14 @@ export default function BatteryPackDesignContent() {
 
   return (
     <div style={{ backgroundColor: "var(--bg-dark)", minHeight: "100vh", overflowX: "hidden" }}>
-      
+
+      {/* ─── READING PROGRESS BAR ─── */}
+      <div
+        className={styles.readingProgressBar}
+        style={{ width: `${readingProgress}%` }}
+        aria-hidden="true"
+      />
+
       {/* ─── PRINT ONLY WATERMARK CSS ─── */}
       <style dangerouslySetInnerHTML={{
         __html: `
@@ -2062,6 +2147,83 @@ export default function BatteryPackDesignContent() {
             </div>
           </section>
 
+          {/* ─── ARCHITECT PROFILE CARD ─── */}
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "1.25rem",
+            padding: "1rem 1.5rem",
+            background: "rgba(6, 40, 28, 0.45)",
+            border: "1px solid rgba(0, 245, 160, 0.1)",
+            borderLeft: "4px solid var(--accent-primary)",
+            borderRadius: "var(--radius-lg)",
+            backdropFilter: "blur(12px)",
+            marginBottom: "1.25rem",
+            flexWrap: "wrap",
+          }}>
+            {/* Avatar initials */}
+            <div style={{
+              width: "48px",
+              height: "48px",
+              borderRadius: "50%",
+              background: "linear-gradient(135deg, rgba(76,169,48,0.3), rgba(56,189,248,0.2))",
+              border: "2px solid rgba(76,169,48,0.4)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: "1rem",
+              fontWeight: 800,
+              color: "var(--accent-primary)",
+              flexShrink: 0,
+              letterSpacing: "-0.02em",
+            }}>SK</div>
+
+            {/* Name + title */}
+            <div style={{ flex: 1, minWidth: "180px" }}>
+              <div style={{ fontSize: "0.62rem", fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent-primary)", marginBottom: "2px" }}>
+                EV.ENGINEER™
+              </div>
+              <div style={{ fontSize: "1rem", fontWeight: 700, color: "var(--text-primary)", lineHeight: 1.2 }}>
+                Sudarshana Karkala
+              </div>
+              <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "2px" }}>
+                Co-Founder, Principal Architect | Thasmai Infotech Private Limited
+              </div>
+            </div>
+
+            {/* Availability + contact */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "6px", alignItems: "flex-end" }}>
+              <div style={{
+                fontSize: "0.72rem",
+                padding: "4px 12px",
+                borderRadius: "999px",
+                background: "rgba(76, 169, 48, 0.08)",
+                border: "1px solid rgba(76, 169, 48, 0.25)",
+                color: "var(--text-secondary)",
+                whiteSpace: "nowrap",
+              }}>
+                Available for consulting & R&D partnerships
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "12px", fontSize: "0.8rem", flexWrap: "wrap", justifyContent: "flex-end" }}>
+                <a
+                  href="tel:+919845561518"
+                  style={{ color: "var(--accent-primary)", textDecoration: "none", display: "flex", alignItems: "center", gap: "5px", fontWeight: 600 }}
+                >
+                  <span>📞</span> +91 9845561518
+                </a>
+                <span style={{ color: "rgba(255,255,255,0.15)" }}>|</span>
+                <a
+                  href="https://www.linkedin.com/in/sudarshanakarkala/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "var(--accent-primary)", textDecoration: "none", display: "flex", alignItems: "center", gap: "5px", fontWeight: 600 }}
+                >
+                  <span>🔗</span> LinkedIn Profile
+                </a>
+              </div>
+            </div>
+          </div>
+
           {/* BREADCRUMB LIST */}
           <div className={styles.breadcrumbs} style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -2324,9 +2486,9 @@ export default function BatteryPackDesignContent() {
             </div>
 
             <div className={styles.searchBoxWrapper} style={{ maxWidth: "500px" }}>
-              <input 
-                type="text" 
-                placeholder="Filter index (e.g. 'BMS', 'Thermal', 'Part 5')..." 
+              <input
+                type="text"
+                placeholder="Filter index (e.g. 'BMS', 'Thermal', 'Part 5')..."
                 className={styles.searchBox}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -2334,15 +2496,29 @@ export default function BatteryPackDesignContent() {
               <Search className={styles.searchIcon} size={15} />
             </div>
 
+            {/* Expand / Collapse All toolbar */}
+            <div className={styles.expandCollapseBar}>
+              <button className={styles.expandCollapseBtn} onClick={expandAll}>
+                <ChevronDown size={13} /> Expand All
+              </button>
+              <button className={styles.expandCollapseBtn} onClick={collapseAll}>
+                <ChevronRight size={13} /> Collapse All
+              </button>
+              <span className={styles.expandCollapseCount}>
+                {Object.values(expandedParts).filter(Boolean).length} / {filteredParts.length} cards expanded
+              </span>
+            </div>
+
             {filteredParts.length === 0 ? (
               <div className="glass-panel" style={{ padding: "3rem", textAlign: "center", color: "var(--text-muted)" }}>
-                No parts match your filter query. Resetting search filter.
+                No parts match your filter query.
                 <button className="btn btn-secondary" style={{ marginTop: "1rem", display: "block", margin: "1rem auto 0" }} onClick={() => setSearchTerm("")}>Clear Search</button>
               </div>
             ) : (
               <div className={styles.masterIndexGrid}>
                 {filteredParts.map((part) => {
                   const partIdx = HANDBOOK_PARTS.findIndex(p => p.num === part.num);
+                  const isExpanded = !!expandedParts[partIdx];
                   return (
                     <div className={styles.indexCard} key={part.num} id={`part-${partIdx}`}>
                       <div>
@@ -2354,30 +2530,66 @@ export default function BatteryPackDesignContent() {
                         </div>
                         <h3 className={styles.indexCardTitle}>{part.title}</h3>
                         <p className={styles.indexCardDesc}>{part.desc}</p>
-                        
-                        <div className={styles.indexCardSubsections}>
-                          <div className={styles.subsectionsTitle}>Chapters & Subsections</div>
-                          <div className={styles.subsectionsList}>
-                            {part.subsections.map((sub, sIdx) => (
-                              <div key={sIdx} className={styles.subsectionItem} id={`idx-${sub.anchor}`}>
-                                <span className={styles.subsectionAnchor}>{sub.anchor.replace("part-", "P")}</span>
-                                <span className={styles.subsectionText}>{sub.title}</span>
-                              </div>
-                            ))}
+                      </div>
+
+                      {/* Collapsed summary row — always visible */}
+                      <div style={{ display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap", marginTop: "0.75rem", paddingTop: "0.75rem", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+                        <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>⏱ {part.duration}</span>
+                        <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>📶 {part.difficulty}</span>
+                        <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>⚙ {part.prerequisites !== "None" ? `Needs: ${part.prerequisites}` : "No prerequisites"}</span>
+                        <button
+                          className={styles.indexCardToggleBtn}
+                          style={{ marginLeft: "auto" }}
+                          onClick={() => togglePartExpansion(partIdx)}
+                          aria-expanded={isExpanded}
+                        >
+                          {isExpanded ? <><ChevronDown size={12} /> Hide details</> : <><ChevronRight size={12} /> Show details</>}
+                        </button>
+                      </div>
+
+                      {/* Expanded detail — accordion */}
+                      {isExpanded && (
+                        <>
+                          <div className={styles.indexCardSubsections} style={{ marginTop: "0.85rem" }}>
+                            <div className={styles.subsectionsTitle}>Chapters & Subsections</div>
+                            <div className={styles.subsectionsList}>
+                              {part.subsections.map((sub, sIdx) => (
+                                <div key={sIdx} className={styles.subsectionItem} id={`idx-${sub.anchor}`}>
+                                  <span className={styles.subsectionAnchor}>{sub.anchor.replace("part-", "P")}</span>
+                                  <span className={styles.subsectionText}>{sub.title}</span>
+                                </div>
+                              ))}
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                      <div className={styles.indexCardFooter}>
-                        <div className={styles.indexCardMeta}>
-                          <span>⏱️ {part.duration}</span>
-                          <span>📶 {part.difficulty}</span>
-                        </div>
-                        {partIdx === 0 ? (
-                          <a href="#part0Orientation" onClick={(e) => { e.preventDefault(); scrollTo("part0Orientation"); }} style={{ color: "var(--accent-primary)", fontWeight: 700, textDecoration: "none" }}>Read Part 0 →</a>
-                        ) : (
-                          <a href="#part0Orientation" onClick={(e) => { e.preventDefault(); scrollTo("part0Orientation"); }} style={{ color: "var(--text-muted)", fontSize: "0.8rem", textDecoration: "none" }}>Preview Layout →</a>
-                        )}
-                      </div>
+
+                          {part.skillsGained.length > 0 && (
+                            <div style={{ marginTop: "0.75rem" }}>
+                              <div style={{ fontSize: "0.65rem", fontWeight: 800, textTransform: "uppercase", color: "var(--text-muted)", letterSpacing: "0.04em", marginBottom: "0.4rem" }}>Skills Gained</div>
+                              <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                                {part.skillsGained.map((skill, si) => (
+                                  <span key={si} className={styles.pathwayFocusTag}>{skill}</span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          <div className={styles.indexCardFooter} style={{ marginTop: "1rem" }}>
+                            <span style={{ fontSize: "0.72rem", color: "var(--text-muted)" }}>{part.futureRelevance}</span>
+                            {partIdx <= 2 ? (
+                              <a
+                                href={`#part${partIdx === 0 ? "0Orientation" : partIdx === 1 ? "1Fundamentals" : "2Requirements"}`}
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  scrollTo(partIdx === 0 ? "part0Orientation" : partIdx === 1 ? "part1Fundamentals" : "part2Requirements");
+                                }}
+                                style={{ color: "var(--accent-primary)", fontWeight: 700, textDecoration: "none", fontSize: "0.8rem", flexShrink: 0 }}
+                              >
+                                Read →
+                              </a>
+                            ) : null}
+                          </div>
+                        </>
+                      )}
                     </div>
                   );
                 })}
@@ -2569,17 +2781,60 @@ export default function BatteryPackDesignContent() {
             </div>
           </section>
 
+          {/* ─── GLOBAL EXPAND / COLLAPSE ALL ─── */}
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: "0.75rem",
+            padding: "1rem 0",
+            borderTop: "1px solid rgba(255,255,255,0.06)",
+            borderBottom: "1px solid rgba(255,255,255,0.06)",
+            marginBottom: "1.5rem"
+          }}>
+            <div>
+              <span style={{ fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--text-muted)" }}>
+                Handbook Sections
+              </span>
+              <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", marginLeft: "0.75rem" }}>
+                {Object.values(openPartSections).filter(Boolean).length} / {Object.keys(openPartSections).length} open
+              </span>
+            </div>
+            <div className={styles.expandCollapseBar} style={{ margin: 0 }}>
+              <button className={styles.expandCollapseBtn} onClick={expandAll}>
+                <ChevronDown size={13} /> Expand All
+              </button>
+              <button className={styles.expandCollapseBtn} onClick={collapseAll}>
+                <ChevronRight size={13} /> Collapse All
+              </button>
+            </div>
+          </div>
+
           {/* ═══ PART 0: HANDBOOK ORIENTATION ═══ */}
           <section id="part0Orientation" className={styles.pageSection} ref={sectionRefs.part0Orientation}>
             <div className={styles.sectionHeader}>
-              <span className={styles.sectionLabel}>Core Module</span>
-              <h2 className={styles.sectionTitle}>Part 0 — Handbook Orientation</h2>
-              <p className={styles.sectionSubtitle}>
-                Prepare psychologically, technically, and architecturally before entering EV battery systems design.
-              </p>
+              <button
+                className={styles.partSectionAccordionHeader}
+                onClick={() => togglePartSection("part0Orientation")}
+                aria-expanded={openPartSections.part0Orientation}
+              >
+                <div>
+                  <span className={styles.sectionLabel}>Core Module · Beginner · 1.5 Hrs</span>
+                  <h2 className={styles.sectionTitle}>Part 0 — Handbook Orientation</h2>
+                  <p className={styles.sectionSubtitle}>
+                    Prepare psychologically, technically, and architecturally before entering EV battery systems design.
+                  </p>
+                </div>
+                <button className={styles.partSectionToggleBtn} tabIndex={-1}>
+                  {openPartSections.part0Orientation
+                    ? <><ChevronDown size={14} /> Collapse</>
+                    : <><ChevronRight size={14} /> Expand</>}
+                </button>
+              </button>
             </div>
 
-            <div className={styles.chapterBox}>
+            {openPartSections.part0Orientation && <div className={styles.chapterBox}>
               <div className={styles.chapterTitle}>Part 0: Handbook Orientation Reader</div>
 
               {/* 0.1 Welcome to EV Battery Pack Engineering */}
@@ -3385,20 +3640,33 @@ export default function BatteryPackDesignContent() {
                 </div>
               </div>
 
-            </div>
+            </div>}
           </section>
 
           {/* ═══ PART 1: BATTERY FUNDAMENTALS ═══ */}
           <section id="part1Fundamentals" className={styles.pageSection} ref={sectionRefs.part1Fundamentals}>
             <div className={styles.sectionHeader}>
-              <span className={styles.sectionLabel}>Core Module</span>
-              <h2 className={styles.sectionTitle}>Part 1 — Battery Fundamentals</h2>
-              <p className={styles.sectionSubtitle}>
-                Establish a deep electrochemical and electrical foundation for traction pack system engineering.
-              </p>
+              <button
+                className={styles.partSectionAccordionHeader}
+                onClick={() => togglePartSection("part1Fundamentals")}
+                aria-expanded={openPartSections.part1Fundamentals}
+              >
+                <div>
+                  <span className={styles.sectionLabel}>Core Module · Beginner · 3.5 Hrs</span>
+                  <h2 className={styles.sectionTitle}>Part 1 — Battery Fundamentals</h2>
+                  <p className={styles.sectionSubtitle}>
+                    Establish a deep electrochemical and electrical foundation for traction pack system engineering.
+                  </p>
+                </div>
+                <button className={styles.partSectionToggleBtn} tabIndex={-1}>
+                  {openPartSections.part1Fundamentals
+                    ? <><ChevronDown size={14} /> Collapse</>
+                    : <><ChevronRight size={14} /> Expand</>}
+                </button>
+              </button>
             </div>
 
-            <div className={styles.chapterBox}>
+            {openPartSections.part1Fundamentals && <div className={styles.chapterBox}>
               <div className={styles.chapterTitle}>Part 1: Battery Fundamentals Reader</div>
 
               {/* 1.1 What Is a Battery? */}
@@ -4293,20 +4561,33 @@ export default function BatteryPackDesignContent() {
                 </div>
               </div>
 
-            </div>
+            </div>}
           </section>
 
           {/* ═══ PART 2: EV BATTERY REQUIREMENTS AND SYSTEM DEFINITION ═══ */}
           <section id="part2Requirements" className={styles.pageSection} ref={sectionRefs.part2Requirements}>
             <div className={styles.sectionHeader}>
-              <span className={styles.sectionLabel}>Core Module</span>
-              <h2 className={styles.sectionTitle}>Part 2 — EV Battery Requirements and System Definition</h2>
-              <p className={styles.sectionSubtitle}>
-                Master the engineering discipline of requirements capture, system-level trade-offs, environmental constraints, and safety boundary definition.
-              </p>
+              <button
+                className={styles.partSectionAccordionHeader}
+                onClick={() => togglePartSection("part2Requirements")}
+                aria-expanded={openPartSections.part2Requirements}
+              >
+                <div>
+                  <span className={styles.sectionLabel}>Core Module · Beginner · 3.0 Hrs</span>
+                  <h2 className={styles.sectionTitle}>Part 2 — EV Battery Requirements and System Definition</h2>
+                  <p className={styles.sectionSubtitle}>
+                    Master the engineering discipline of requirements capture, system-level trade-offs, environmental constraints, and safety boundary definition.
+                  </p>
+                </div>
+                <button className={styles.partSectionToggleBtn} tabIndex={-1}>
+                  {openPartSections.part2Requirements
+                    ? <><ChevronDown size={14} /> Collapse</>
+                    : <><ChevronRight size={14} /> Expand</>}
+                </button>
+              </button>
             </div>
 
-            <div className={styles.chapterBox}>
+            {openPartSections.part2Requirements && <div className={styles.chapterBox}>
               <div className={styles.chapterTitle}>Part 2: EV Battery Requirements Reader</div>
 
               {/* 2.1 Why Requirements Matter */}
@@ -5141,6 +5422,223 @@ export default function BatteryPackDesignContent() {
                 </div>
               </div>
 
+            </div>}
+          </section>
+
+          {/* ═══ PREREQUISITE KNOWLEDGE MATRIX ═══ */}
+          <section id="prerequisiteMatrix" className={styles.pageSection} ref={sectionRefs.prerequisiteMatrix}>
+            <div className={styles.sectionHeader}>
+              <span className={styles.sectionLabel}>Learning Layer — Prerequisites</span>
+              <h2 className={styles.sectionTitle}>Prerequisite Knowledge Matrix</h2>
+              <p className={styles.sectionSubtitle}>
+                Map your existing knowledge to this handbook's learning levels. Each node below shows what to review before entering that domain.
+              </p>
+            </div>
+            <div className={styles.prereqLevelGrid}>
+              {PREREQ_MATRIX.map((node) => (
+                <div
+                  key={node.id}
+                  className={styles.prereqLevelCard}
+                  style={{ borderLeft: `3px solid ${node.level === "Foundational" ? "var(--accent-primary)" : node.level === "Core Engineering" ? "#38bdf8" : "#a855f7"}` }}
+                >
+                  <div className={`${styles.prereqLevelLabel} ${node.level === "Foundational" ? styles.prereqBeginner : node.level === "Core Engineering" ? styles.prereqCore : styles.prereqArchitect}`}>
+                    {node.level}
+                  </div>
+                  <div className={styles.prereqLevelName}>{node.name}</div>
+                  <p className={styles.prereqLevelDesc}>{node.desc}</p>
+                  {node.refresherBadge && (
+                    <span style={{ fontSize: "0.65rem", color: "var(--accent-primary)", fontWeight: 700, marginTop: "0.5rem", display: "block" }}>
+                      {node.refresherBadge}
+                    </span>
+                  )}
+                  {node.prereqs.length > 0 && (
+                    <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", marginTop: "0.5rem" }}>
+                      Needs: {node.prereqs.join(", ")}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* ═══ TOOLS AND SOFTWARE ECOSYSTEM ═══ */}
+          <section id="toolsEcosystem" className={styles.pageSection} ref={sectionRefs.toolsEcosystem}>
+            <div className={styles.sectionHeader}>
+              <span className={styles.sectionLabel}>Practical Layer — Tools</span>
+              <h2 className={styles.sectionTitle}>Tools and Software Ecosystem</h2>
+              <p className={styles.sectionSubtitle}>
+                The complete software, simulation, and hardware tool chain used across this handbook. Filter by category or requirement level.
+              </p>
+            </div>
+
+            <div className={styles.toolCategoryFilter}>
+              {["all", "electronics", "firmware", "simulation", "mechanical", "cloud", "general"].map((cat) => (
+                <button
+                  key={cat}
+                  className={activeToolCategory === cat ? styles.toolFilterBtnActive : styles.toolFilterBtn}
+                  onClick={() => setActiveToolCategory(cat)}
+                >
+                  {cat === "all" ? "All Tools" : cat}
+                </button>
+              ))}
+            </div>
+
+            <div className={styles.toolsGrid}>
+              {TOOLS_ECOSYSTEM.filter(t => activeToolCategory === "all" || t.category === activeToolCategory).map((tool) => (
+                <div key={tool.name} className={styles.toolCard}>
+                  <div className={styles.toolCardHeader}>
+                    <span className={styles.toolCardName}>{tool.name}</span>
+                    <span className={`${styles.toolCardBadge} ${tool.requirement === "Mandatory" ? styles.toolCardMandatory : tool.requirement === "Optional" ? styles.toolCardOptional : styles.toolCardAwareness}`}>
+                      {tool.requirement}
+                    </span>
+                  </div>
+                  <p className={styles.toolCardDesc}>{tool.purpose}</p>
+                  <div className={styles.toolCardMeta}>
+                    <span>📶 {tool.level}</span>
+                    <span>📄 {tool.license}</span>
+                    <span>💻 {tool.macOS}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* ═══ HARDWARE LAB SAFETY ═══ */}
+          <section id="labSafety" className={styles.pageSection} ref={sectionRefs.labSafety}>
+            <div className={styles.sectionHeader}>
+              <span className={styles.sectionLabel}>Certification Layer — Safety</span>
+              <h2 className={styles.sectionTitle}>Hardware Lab Safety and Engineering Discipline</h2>
+              <p className={styles.sectionSubtitle}>
+                Before touching any live battery hardware, complete this pre-lab safety protocol. Check every item before entering the high-voltage lab.
+              </p>
+            </div>
+
+            <div className={styles.safetyWarning}>
+              <div className={styles.blockHeader}>
+                <AlertTriangle size={16} /> Critical Safety Requirement
+              </div>
+              All high-voltage battery lab work requires completion of this checklist. Never work alone on live packs above 60V DC. Thermal runaway risk is real — treat every cell as potentially live.
+            </div>
+
+            <div className={styles.safetyCheckGrid}>
+              {[
+                { key: "ppe", label: "PPE Verified", note: "Insulated gloves (Class 0 min), face shield, arc-rated jacket, ESD wrist strap." },
+                { key: "tools", label: "Insulated Tools Only", note: "All tools rated 1000V+. No bare metal contact with positive terminal." },
+                { key: "extinguisher", label: "Fire Suppression Ready", note: "Class D or CO₂ extinguisher within reach. Water strictly prohibited near cells." },
+                { key: "extraction", label: "Ventilation Active", note: "Lab ventilation running. Thermal runaway releases toxic HF gas — extraction fan mandatory." },
+                { key: "discharging", label: "Pack Discharged to Safe SoC", note: "Pack SoC below 30% for disassembly. Measure OCV before opening enclosure." },
+                { key: "transport", label: "Safe Transport Protocol", note: "Lithium packs transported in fire-rated containment bag. Never in unsealed containers." },
+              ].map(({ key, label, note }) => (
+                <div
+                  key={key}
+                  className={safetyChecklist[key] ? styles.safetyCheckItemChecked : styles.safetyCheckItem}
+                  onClick={() => setSafetyChecklist(prev => ({ ...prev, [key]: !prev[key] }))}
+                  role="checkbox"
+                  aria-checked={safetyChecklist[key]}
+                  tabIndex={0}
+                  onKeyDown={(e) => e.key === " " && setSafetyChecklist(prev => ({ ...prev, [key]: !prev[key] }))}
+                >
+                  <div className={safetyChecklist[key] ? styles.safetyCheckBoxChecked : styles.safetyCheckBox}>
+                    {safetyChecklist[key] ? "✓" : ""}
+                  </div>
+                  <div>
+                    <div className={styles.safetyCheckLabel}>{label}</div>
+                    <div className={styles.safetyCheckNote}>{note}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ marginTop: "2rem" }}>
+              <div className={styles.engineeringNote}>
+                <div className={styles.blockHeader}><Zap size={15} /> Architect Insight</div>
+                Industry labs enforce a "buddy system" — no solo work on packs above 48V. Build this habit early. A second engineer with a clear line of sight to the work area is non-negotiable in professional environments.
+              </div>
+            </div>
+          </section>
+
+          {/* ═══ ENGINEERING REVIEW GATES ═══ */}
+          <section id="reviewGates" className={styles.pageSection} ref={sectionRefs.reviewGates}>
+            <div className={styles.sectionHeader}>
+              <span className={styles.sectionLabel}>Certification Layer — Gates</span>
+              <h2 className={styles.sectionTitle}>Engineering Review Gates</h2>
+              <p className={styles.sectionSubtitle}>
+                Each gate marks a formal engineering checkpoint before advancing to the next phase. Click a gate to see its exit criteria.
+              </p>
+            </div>
+
+            <div className={styles.gateGrid}>
+              {REVIEW_GATES.map((gate, idx) => (
+                <div
+                  key={idx}
+                  className={selectedGate === idx ? styles.gateCardActive : styles.gateCard}
+                  onClick={() => setSelectedGate(idx)}
+                >
+                  <div className={styles.gateCardNum}>Gate {gate.gateNum} — {gate.abbr}</div>
+                  <div className={styles.gateCardTitle}>{gate.name}</div>
+                  <p className={styles.gateCardDesc}>{gate.goal}</p>
+                </div>
+              ))}
+            </div>
+
+            {REVIEW_GATES[selectedGate] && (
+              <div className={styles.chapterBox} style={{ marginTop: "2rem" }}>
+                <div className={styles.chapterTitle}>Gate {REVIEW_GATES[selectedGate].gateNum} — {REVIEW_GATES[selectedGate].name}</div>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1rem", marginTop: "1rem" }}>
+                  {REVIEW_GATES[selectedGate].checksheet.map((item, ci) => (
+                    <div key={ci} style={{ display: "flex", alignItems: "flex-start", gap: "10px", padding: "0.85rem 1rem", background: "rgba(0,0,0,0.15)", border: "1px solid rgba(255,255,255,0.04)", borderRadius: "var(--radius-md)" }}>
+                      <span style={{ color: "var(--accent-primary)", fontWeight: 700, flexShrink: 0 }}>✓</span>
+                      <div>
+                        <div style={{ fontSize: "0.82rem", color: "var(--text-secondary)" }}>{item.item}</div>
+                        <div style={{ fontSize: "0.68rem", color: "var(--text-muted)", marginTop: "2px" }}>Owner: {item.owner}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                {REVIEW_GATES[selectedGate].metrics.length > 0 && (
+                  <div style={{ marginTop: "1.5rem", display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+                    <span style={{ fontSize: "0.65rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 700, width: "100%", marginBottom: "0.25rem" }}>Key Metrics</span>
+                    {REVIEW_GATES[selectedGate].metrics.map((m, mi) => (
+                      <span key={mi} className={styles.pathwayFocusTag}>{m}</span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </section>
+
+          {/* ═══ READINESS CHECKLIST / CAPSTONE OVERVIEW ═══ */}
+          <section id="readinessChecklist" className={styles.pageSection} ref={sectionRefs.readinessChecklist}>
+            <div className={styles.sectionHeader}>
+              <span className={styles.sectionLabel}>Certification Layer — Assessment</span>
+              <h2 className={styles.sectionTitle}>Capstone Output Overview and Readiness Checklist</h2>
+              <p className={styles.sectionSubtitle}>
+                The capstone project is a full end-to-end battery pack design submission evaluated by an industry jury. Here is what you will produce.
+              </p>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.25rem", marginBottom: "2.5rem" }}>
+              {[
+                { icon: "📐", title: "CAD Pack Enclosure Model", desc: "Full 3D cell-to-pack mechanical assembly with IP68 sealing, cell compression fixtures, and CTP structural integration." },
+                { icon: "⚡", title: "Electrical Schematic", desc: "Complete HV busbar layout, contactor/fuse coordination diagram, and BMS master-slave schematic in KiCad." },
+                { icon: "🌡️", title: "Thermal Analysis Report", desc: "CFD cold-plate simulation results showing temperature distribution under 2C continuous charge and 4C peak discharge." },
+                { icon: "🛡️", title: "Safety Compliance Matrix", desc: "UN 38.3, ECE R100 Rev.3, and ISO 26262 compliance checklist with evidence references for each test category." },
+                { icon: "🧠", title: "BMS Firmware Demo", desc: "Running SOC estimation (EKF or Coulomb counting) with CAN bus logging of cell voltages and temperatures." },
+                { icon: "📊", title: "Telemetry Dashboard", desc: "Grafana dashboard showing live pack telemetry from MQTT broker — voltage, temperature, SOC, and fault flags." },
+              ].map((item, i) => (
+                <div key={i} className={styles.capstoneCard}>
+                  <div className={styles.capstoneCardHeader}>
+                    <span style={{ fontSize: "1.5rem" }}>{item.icon}</span>
+                    <span className={styles.capstoneCardTitle}>{item.title}</span>
+                  </div>
+                  <p className={styles.capstoneCardDesc}>{item.desc}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className={styles.engineeringNote}>
+              <div className={styles.blockHeader}><BookOpen size={15} /> Jury Evaluation Criteria</div>
+              Submissions are scored on: technical accuracy (40%), design completeness (30%), safety analysis depth (20%), and presentation clarity (10%). All deliverables must be submitted as a GitHub repository with a structured README.
             </div>
           </section>
 

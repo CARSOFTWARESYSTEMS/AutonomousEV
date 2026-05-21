@@ -2059,3 +2059,516 @@
   border-radius: 4px;
 }
 
+/* ─── MOBILE LAYER TAB SELECTOR ─── */
+.mobileLayerSelector {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.mobileLayerTab {
+  flex: 1;
+  min-width: 70px;
+  padding: 0.45rem 0.6rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.mobileLayerTab:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+}
+
+.mobileLayerTabActive {
+  composes: mobileLayerTab;
+  background: rgba(76, 169, 48, 0.1);
+  border-color: rgba(76, 169, 48, 0.3);
+  color: var(--accent-primary);
+}
+
+/* ─── READING PROGRESS BAR ─── */
+.readingProgressBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-primary), #38bdf8);
+  z-index: 9999;
+  transition: width 0.12s linear;
+  pointer-events: none;
+  border-radius: 0 2px 2px 0;
+}
+
+/* ─── EXPAND / COLLAPSE TOOLBAR ─── */
+.expandCollapseBar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.expandCollapseCount {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+
+.expandCollapseBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.expandCollapseBtn:hover {
+  background: rgba(76, 169, 48, 0.08);
+  border-color: rgba(76, 169, 48, 0.3);
+  color: var(--accent-primary);
+}
+
+/* ─── INDEX CARD ACCORDION ─── */
+.indexCardToggleBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  transition: color 0.2s;
+}
+
+.indexCardToggleBtn:hover {
+  color: var(--accent-primary);
+}
+
+/* ─── PART SECTION ACCORDION ─── */
+.partSectionAccordionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  gap: 1rem;
+}
+
+.partSectionAccordionHeader:hover {
+  opacity: 0.85;
+}
+
+.partSectionToggleBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.4rem 1rem;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.partSectionToggleBtn:hover {
+  background: rgba(76, 169, 48, 0.06);
+  border-color: rgba(76, 169, 48, 0.2);
+  color: var(--accent-primary);
+}
+
+.partSectionSummaryBar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: var(--radius-md);
+  margin-bottom: 1.5rem;
+}
+
+.partSummaryStat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.partSummaryStatLabel {
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.partSummaryStatVal {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* ─── NEW STATUS BADGE: PLANNED / COMING NEXT ─── */
+.badgeDraft {
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.badgePlanned {
+  color: #a855f7;
+  background: rgba(168, 85, 247, 0.1);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+}
+
+.badgeComingNext {
+  color: #eab308;
+  background: rgba(234, 179, 8, 0.1);
+  border: 1px solid rgba(234, 179, 8, 0.2);
+}
+
+/* ─── PLACEHOLDER SECTION CARDS ─── */
+.placeholderSection {
+  padding: 3rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.placeholderCard {
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px dashed rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-lg);
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.placeholderCardTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.placeholderCardDesc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  max-width: 500px;
+  margin: 0 auto 1.5rem;
+  line-height: 1.6;
+}
+
+.placeholderBadge {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #eab308;
+  background: rgba(234, 179, 8, 0.08);
+  border: 1px solid rgba(234, 179, 8, 0.2);
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  margin-bottom: 1.5rem;
+}
+
+/* ─── TOOLS ECOSYSTEM TABLE ─── */
+.toolsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.toolCard {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  transition: all 0.25s;
+}
+
+.toolCard:hover {
+  border-color: rgba(76, 169, 48, 0.25);
+  background: rgba(76, 169, 48, 0.02);
+  transform: translateY(-2px);
+}
+
+.toolCardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.toolCardName {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.toolCardBadge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.toolCardMandatory {
+  color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.1);
+  border: 1px solid rgba(76, 169, 48, 0.2);
+}
+
+.toolCardOptional {
+  color: #eab308;
+  background: rgba(234, 179, 8, 0.08);
+  border: 1px solid rgba(234, 179, 8, 0.2);
+}
+
+.toolCardAwareness {
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.toolCardDesc {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+}
+
+.toolCardMeta {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  padding-top: 0.6rem;
+}
+
+.toolCategoryFilter {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.toolFilterBtn {
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: capitalize;
+}
+
+.toolFilterBtn:hover {
+  color: var(--text-primary);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.toolFilterBtnActive {
+  composes: toolFilterBtn;
+  background: rgba(76, 169, 48, 0.1);
+  border-color: rgba(76, 169, 48, 0.3);
+  color: var(--accent-primary);
+}
+
+/* ─── SAFETY CHECKLIST ─── */
+.safetyCheckGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.85rem;
+  margin-top: 1.5rem;
+}
+
+.safetyCheckItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.safetyCheckItem:hover {
+  border-color: rgba(76, 169, 48, 0.25);
+}
+
+.safetyCheckItemChecked {
+  composes: safetyCheckItem;
+  border-color: rgba(76, 169, 48, 0.3);
+  background: rgba(76, 169, 48, 0.04);
+}
+
+.safetyCheckBox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: var(--accent-primary);
+  transition: all 0.2s;
+}
+
+.safetyCheckBoxChecked {
+  composes: safetyCheckBox;
+  border-color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.15);
+}
+
+.safetyCheckLabel {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.safetyCheckNote {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin-top: 2px;
+}
+
+/* ─── REVIEW GATES ─── */
+.gateGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.gateCard {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.gateCard:hover {
+  border-color: rgba(76, 169, 48, 0.3);
+  transform: translateY(-2px);
+}
+
+.gateCardActive {
+  composes: gateCard;
+  border-color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.04);
+  box-shadow: 0 0 20px rgba(76, 169, 48, 0.06);
+}
+
+.gateCardNum {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent-primary);
+  margin-bottom: 0.35rem;
+}
+
+.gateCardTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.4rem;
+}
+
+.gateCardDesc {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ─── PREREQ MATRIX LEVEL GRID ─── */
+.prereqLevelGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.prereqLevelCard {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  transition: all 0.25s;
+}
+
+.prereqLevelCard:hover {
+  border-color: rgba(76, 169, 48, 0.2);
+}
+
+.prereqLevelLabel {
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.35rem;
+}
+
+.prereqLevelName {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.35rem;
+}
+
+.prereqLevelDesc {
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.prereqBeginner { color: var(--accent-primary); }
+.prereqCore { color: #38bdf8; }
+.prereqArchitect { color: #a855f7; }
+
