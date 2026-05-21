@@ -67,6 +67,7 @@ export default function BatteryDiagnosticsContent() {
           <div className={styles.heroCtas}>
             <Link href="#workflow" className="btn btn-primary" data-track-event="battery_diag_hero_workflow_click">View System Workflow</Link>
             <Link href="#architecture" className="btn btn-secondary" data-track-event="battery_diag_hero_architecture_click">Explore Architecture</Link>
+            <Link href="/internships/battery-cybersecurity" className="btn btn-secondary" data-track-event="battery_diag_hero_cybersecurity_click">Cybersecurity</Link>
           </div>
         </div>
       </section>

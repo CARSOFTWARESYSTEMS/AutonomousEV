@@ -204,7 +204,7 @@ export default function BatteryCybersecurityContent() {
 
   return (
     <div style={{ backgroundColor: "var(--bg-dark)", minHeight: "100vh", overflowX: "hidden" }}>
-      
+
       {/* ═══ 1. HERO SECTION ═══ */}
       <section className={styles.hero}>
         <div className={styles.heroGlow} />
@@ -223,7 +223,7 @@ export default function BatteryCybersecurityContent() {
           </p>
 
           <p className={styles.heroDesc}>
-            A rigorous 12-month industry-style internship focused on building EV Battery Cybersecurity Engineers & Researchers. 
+            A rigorous 12-month industry-style internship focused on building EV Battery Cybersecurity Engineers & Researchers.
             Design, secure, and validate an AI-driven, quantum-ready EV battery telemetry and control security architecture.
           </p>
 
@@ -348,11 +348,11 @@ export default function BatteryCybersecurityContent() {
                 <span>👤</span> Target Candidates
               </h3>
               <ul className={styles.prereqList}>
-                <li>BE/BTech 3rd & 4th Year engineering students</li>
                 <li>Cybersecurity majors eager to specialize in IoT/Automotive</li>
                 <li>Python developers interested in hardware/protocol security</li>
                 <li>Electric Vehicle enthusiasts with strong software aptitudes</li>
                 <li>Aspiring Security Researchers & Product Security Engineers</li>
+                <li><strong>Optional:</strong> BE/BTech/MTech students and freshers</li>
               </ul>
             </div>
 
@@ -407,7 +407,7 @@ export default function BatteryCybersecurityContent() {
           <div className={styles.companyCategory}>
             <h3 className={styles.companyTitle}>EV & Automotive</h3>
             <div className={styles.companyChips}>
-              {["Tesla", "Rivian", "Lucid Motors", "Bosch", "Continental", "BlackBerry QNX", "Qualcomm Automotive"].map((c, i) => (
+              {["Tesla", "BYD", "Rivian", "Lucid Motors", "Bosch", "Continental", "BlackBerry QNX", "Qualcomm Automotive"].map((c, i) => (
                 <div className={styles.companyChip} key={i}>{c}</div>
               ))}
             </div>
@@ -416,7 +416,7 @@ export default function BatteryCybersecurityContent() {
           <div className={styles.companyCategory}>
             <h3 className={styles.companyTitle}>Cybersecurity Leaders</h3>
             <div className={styles.companyChips}>
-              {["Palo Alto Networks", "CrowdStrike", "Zscaler", "VicOne", "Upstream Security"].map((c, i) => (
+              {["Fortinet", "Palo Alto Networks", "CrowdStrike", "Zscaler", "VicOne", "Upstream Security"].map((c, i) => (
                 <div className={styles.companyChip} key={i}>{c}</div>
               ))}
             </div>
@@ -717,7 +717,7 @@ export default function BatteryCybersecurityContent() {
               <div className={styles.pricingLabel}>BANGALORE HUB ONLY</div>
               <h3 className={styles.pricingTitle}>Workspace Plan</h3>
               <div className={styles.pricingPrice}>
-                ₹25,000<span>/month + GST</span>
+                ₹30,000<span>/month + GST</span>
               </div>
               <ul className={styles.pricingFeatures}>
                 <li className={styles.pricingFeatureItem}>20 days/month physical workspace access</li>
