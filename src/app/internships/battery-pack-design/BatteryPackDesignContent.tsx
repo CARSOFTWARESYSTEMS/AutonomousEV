@@ -2910,11 +2910,11 @@ export default function BatteryPackDesignContent() {
                     Prepare psychologically, technically, and architecturally before entering EV battery systems design.
                   </p>
                 </div>
-                <button className={styles.partSectionToggleBtn} tabIndex={-1}>
+                <span className={styles.partSectionToggleBtn} aria-hidden="true">
                   {openPartSections.part0Orientation
                     ? <><ChevronDown size={14} /> Collapse</>
                     : <><ChevronRight size={14} /> Expand</>}
-                </button>
+                </span>
               </button>
             </div>
 
@@ -3742,11 +3742,11 @@ export default function BatteryPackDesignContent() {
                     Establish a deep electrochemical and electrical foundation for traction pack system engineering.
                   </p>
                 </div>
-                <button className={styles.partSectionToggleBtn} tabIndex={-1}>
+                <span className={styles.partSectionToggleBtn} aria-hidden="true">
                   {openPartSections.part1Fundamentals
                     ? <><ChevronDown size={14} /> Collapse</>
                     : <><ChevronRight size={14} /> Expand</>}
-                </button>
+                </span>
               </button>
             </div>
 
@@ -4663,11 +4663,11 @@ export default function BatteryPackDesignContent() {
                     Master the engineering discipline of requirements capture, system-level trade-offs, environmental constraints, and safety boundary definition.
                   </p>
                 </div>
-                <button className={styles.partSectionToggleBtn} tabIndex={-1}>
+                <span className={styles.partSectionToggleBtn} aria-hidden="true">
                   {openPartSections.part2Requirements
                     ? <><ChevronDown size={14} /> Collapse</>
                     : <><ChevronRight size={14} /> Expand</>}
-                </button>
+                </span>
               </button>
             </div>
 
