@@ -253,7 +253,7 @@ export default function BatteryCybersecurityContent() {
               data-track-event="cybersecurity_hero_explore_click"
               data-track-location="hero"
             >
-              Explore Platform →
+              Explore →
             </a>
             <a
               href="https://genz.ev.engineer/"
@@ -263,7 +263,7 @@ export default function BatteryCybersecurityContent() {
               data-track-event="cybersecurity_hero_genz_click"
               data-track-location="hero"
             >
-              Gen Z Cybersecurity →
+              Gen Z →
             </a>
           </div>
         </div>
