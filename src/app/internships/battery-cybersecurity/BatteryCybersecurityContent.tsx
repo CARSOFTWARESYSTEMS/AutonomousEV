@@ -255,6 +255,16 @@ export default function BatteryCybersecurityContent() {
             >
               Explore Platform →
             </a>
+            <a
+              href="https://genz.ev.engineer/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-primary"
+              data-track-event="cybersecurity_hero_genz_click"
+              data-track-location="hero"
+            >
+              Gen Z Cybersecurity →
+            </a>
           </div>
         </div>
       </section>
