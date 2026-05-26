@@ -567,7 +567,7 @@ export default function Battery12WeekPlanContent() {
         <div className="container">
           <div className={styles.calloutBlock} style={{ textAlign: "left", margin: "0 auto 3rem auto", maxWidth: "900px" }}>
             <h3 style={{ fontSize: "1.5rem", fontWeight: "800", color: "#fff", marginBottom: "0.75rem" }}>
-              “Do not complicate. Simplify until the customer problem becomes obvious.”
+              “Do not complicate. <br /> Simplify until the customer problem becomes obvious.”
             </h3>
             <p style={{ color: "var(--text-secondary)", fontSize: "1rem", lineHeight: "1.7" }}>
               The goal is not to build a big platform immediately. The goal is to find one painful EV battery problem, solve it clearly, validate it with real users, and convert it into a repeatable business outcome.
