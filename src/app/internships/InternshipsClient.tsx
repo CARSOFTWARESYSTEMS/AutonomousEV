@@ -87,7 +87,7 @@ function ProjectCard({ title, desc, link, pricingLink, secondaryLink, secondaryL
               {sLabel} →
             </Link>
           )}
-          
+
           {tertiaryLink && (
             <>
               <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>·</span>
@@ -138,7 +138,7 @@ function ProjectCard({ title, desc, link, pricingLink, secondaryLink, secondaryL
         </div>
       )}
       {desc && <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', flexGrow: 1, marginBottom: '16px' }}>{desc}</p>}
-      
+
       {tags && (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '24px' }}>
           {tags.map((tag, i) => (
@@ -280,33 +280,25 @@ export default function InternshipsClient() {
             >
               Prepare for EV Jobs & Career
             </Link>
-            <a
-              href="https://topmate.io/sudarshana_karkala"
-              className="btn btn-secondary"
-              target="_blank"
-              rel="noopener noreferrer"
-              data-track-event="cta_click"
-              data-track-label="Book Discovery Call"
-            >
-              Book Discovery Call
-            </a>
-            <button
-              onClick={() => setShowPoster(true)}
-              className="btn btn-primary"
-              data-track-event="cta_click"
-              data-track-label="Upcoming Event"
-            >
-              Upcoming Event
-            </button>
+
+
             <Link
               href="/workshop-gallery"
               className="btn btn-secondary"
               data-track-event="cta_click"
-              data-track-label="Previous Events"
+              data-track-label="Workshop Gallery"
             >
-              Previous Events
+              Workshop Gallery
             </Link>
 
+            <Link
+              href="https://forms.gle/CeBqi41CMrrEd6B5A"
+              className="btn btn-primary"
+              data-track-event="cta_click"
+              data-track-label="Apply"
+            >
+              Apply
+            </Link>
 
           </div>
 
