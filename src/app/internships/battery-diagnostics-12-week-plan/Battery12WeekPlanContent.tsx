@@ -442,6 +442,19 @@ export default function Battery12WeekPlanContent() {
 
                     <div className={styles.sectionHeadingText}>Expected Result</div>
                     <div className={styles.expectedResultText}>{item.expectedResult}</div>
+                    {item.week === 2 && (
+                      <div style={{ marginTop: "1.5rem" }}>
+                        <Link
+                          href="/insights/customer-discovery-toolkit"
+                          className="btn btn-primary"
+                          id="btn-customer-discovery-toolkit"
+                          data-track-event="roadmap_week_2_toolkit_click"
+                          data-track-label="Customer Discovery Toolkit"
+                        >
+                          Customer Discovery Toolkit
+                        </Link>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

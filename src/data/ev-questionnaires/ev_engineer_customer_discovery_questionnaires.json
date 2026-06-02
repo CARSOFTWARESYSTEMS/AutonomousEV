@@ -1,0 +1,127 @@
+{
+  "metadata": {
+    "project": "EV.ENGINEER",
+    "module": "Battery Diagnostics & Health Intelligence",
+    "week": 2,
+    "pageTitle": "Customer Discovery",
+    "goal": "Talk to real people and understand actual pain.",
+    "sourceFile": "EV_ENGINEER_Core_Customer_Discovery_Questions(1).txt",
+    "editable": true,
+    "note": "Questions are copied from the uploaded txt file without changing the wording. Admin/user can add or update questions later."
+  },
+  "interviewerInstructions": [
+    "Do not sell any product during the discussion.",
+    "Ask questions slowly and in simple language.",
+    "Let the customer explain in their own words.",
+    "Record language used: English / Kannada / Hindi / Tamil / Mixed / Other.",
+    "Take photo/audio/video only with permission.",
+    "At the end, thank the participant politely.",
+    "Capture contact details separately before starting: Name, Phone number, City/location, Category, EV type: 2W / 3W / 4W / Other, Battery type if known: LFP / NMC / Lead Acid / Unknown, Vehicle brand/model if applicable"
+  ],
+  "categories": [
+    {
+      "categoryId": "ev_owner_rider",
+      "title": "EV OWNER / RIDER",
+      "questions": [
+        "Which EV do you use? Please mention brand, model, and vehicle age.",
+        "How many kilometers do you usually drive per day?",
+        "Have you faced any battery-related problem so far?\nExamples: range drop, slow charging, battery not holding charge, overheating, sudden shutdown.",
+        "What is the biggest battery problem you have faced?",
+        "When did you first notice this problem?",
+        "How do you currently know whether your battery is healthy or weak?",
+        "Did you visit a service center for this battery issue? If yes, what did they check and tell you?",
+        "How much money or time did this battery issue cost you?",
+        "Before buying or selling a used EV, would you want a trusted battery health report? Why?",
+        "How much would you be willing to pay for a trusted battery health check/report?"
+      ]
+    },
+    {
+      "categoryId": "ev_service_center",
+      "title": "EV SERVICE CENTER",
+      "questions": [
+        "How many EVs do you service in a month?",
+        "How many customers come with battery-related complaints in a month?",
+        "What are the most common battery complaints you receive?",
+        "When a customer says range has dropped or battery is weak, how do you check the battery today?",
+        "What tools, software, scanner, app, or manual method do you use for battery diagnosis?",
+        "Can you clearly tell the customer the battery health percentage or remaining life today?",
+        "What is the most difficult part of battery diagnosis for your service center?",
+        "How do you handle battery warranty or replacement claims?",
+        "Can you identify battery failure before the customer faces breakdown? If yes, how?",
+        "Would you pay for a tool/report that gives battery health, failure risk, and remaining life? How much?"
+      ]
+    },
+    {
+      "categoryId": "used_ev_dealer",
+      "title": "USED EV DEALER",
+      "questions": [
+        "How many used EVs do you buy or sell in a month?",
+        "Which EV types do you mostly handle?\n2W / 3W / 4W / Other",
+        "What is the biggest concern buyers have before buying a used EV?",
+        "How do you currently check the battery condition before buying or selling a used EV?",
+        "Do buyers ask for battery health proof or warranty details?",
+        "Does battery condition affect the resale price? If yes, how much?",
+        "Have you lost any deal because of battery trust issues?",
+        "What battery information would help you sell used EVs faster?",
+        "Would a trusted battery health certificate help your business?",
+        "How much would you pay per vehicle for a trusted battery health certificate?"
+      ]
+    },
+    {
+      "categoryId": "fleet_operator",
+      "title": "FLEET OPERATOR",
+      "questions": [
+        "How many EVs are currently running in your fleet?",
+        "Which EV types are in your fleet?\n2W / 3W / 4W / Other",
+        "What is the average daily running distance per vehicle?",
+        "What are the most common battery problems in your fleet?",
+        "How many vehicles were unavailable last month due to battery issues?",
+        "How do you currently monitor battery health across the fleet?",
+        "Can you predict which battery may fail in the next 30 to 90 days?",
+        "How much money do you lose due to battery downtime or vehicle unavailability?",
+        "What battery information would help you reduce downtime and plan replacements better?",
+        "How much would you pay per vehicle per month for battery health monitoring and failure prediction?"
+      ]
+    },
+    {
+      "categoryId": "battery_refurbisher_second_life",
+      "title": "BATTERY REFURBISHER / SECOND-LIFE BATTERY BUSINESS",
+      "questions": [
+        "How many batteries or battery packs do you inspect, repair, or refurbish in a month?",
+        "Which battery types do you mostly handle?\nLFP / NMC / Lead Acid / Unknown / Other",
+        "From which EV types do these batteries usually come?\n2W / 3W / 4W / Other",
+        "How do you currently check whether a battery can be reused or refurbished?",
+        "What tools or machines do you use for battery testing?",
+        "What is the biggest challenge in deciding battery health or remaining life?",
+        "What are the main reasons batteries are rejected or downgraded?",
+        "Do you get enough history about the battery before testing it?",
+        "Would a digital battery health and second-life grading report help your business?",
+        "How much would you pay per battery pack for trusted battery health or grading support?"
+      ]
+    },
+    {
+      "categoryId": "ev_startup_manufacturer_battery_company",
+      "title": "EV STARTUP / EV MANUFACTURER / BATTERY COMPANY",
+      "questions": [
+        "What EV or battery product are you currently building or operating?",
+        "Which EV category do you focus on?\n2W / 3W / 4W / Fleet / Battery Pack / Other",
+        "What are the biggest battery-related problems reported by your users or customers?",
+        "How do you currently collect battery data from vehicles or BMS?",
+        "How do you currently detect battery degradation, safety risk, or failure risk?",
+        "What is the hardest battery problem for your engineering or support team to solve?",
+        "How do battery problems affect warranty, customer support, or brand trust?",
+        "What battery intelligence do you wish you had but do not have today?",
+        "Would you use an external battery diagnostics, health, or failure prediction platform?",
+        "What business value would such a platform create for you?"
+      ]
+    }
+  ],
+  "commonFinalQuestions": [
+    "What is the single biggest battery problem we should solve first?",
+    "How urgent is this problem for you?\nLow / Medium / High / Critical",
+    "On a scale of 1 to 10, how painful is this problem?",
+    "Are you willing to discuss again after we prepare a solution or prototype?",
+    "Can we contact you later for follow-up?"
+  ],
+  "thankYouMessage": "Thank you for sharing your experience with us.\n\nYour feedback will help EV.ENGINEER understand real EV battery problems and build practical solutions for battery diagnostics, health intelligence, safety, and customer trust."
+}
