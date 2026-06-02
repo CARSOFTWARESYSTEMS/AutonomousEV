@@ -17,7 +17,6 @@ const displayCategoryNames: Record<string, string> = {
 
 export default function CustomerDiscoveryToolkitContent() {
   const [activeTab, setActiveTab] = useState<string>("ev_owner_rider");
-  const [copied, setCopied] = useState<boolean>(false);
 
   // Dynamic Questionnaire Data from the provided JSON
   const categories = questionnairesData.categories;
@@ -26,13 +25,6 @@ export default function CustomerDiscoveryToolkitContent() {
   const interviewerInstructions = questionnairesData.interviewerInstructions;
 
   const currentCategory = categories.find((cat) => cat.categoryId === activeTab);
-
-  // Copy JSON script helper
-  const handleCopyJSON = () => {
-    navigator.clipboard.writeText(JSON.stringify(questionnairesData, null, 2));
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   // Download JSON helper
   const handleDownloadJSON = () => {
@@ -85,6 +77,18 @@ export default function CustomerDiscoveryToolkitContent() {
             >
               Download Toolkit JSON
             </button>
+            <a
+              href="https://cage-cameo-46505268.figma.site/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-secondary"
+              style={{ background: "var(--glass-bg)" }}
+              id="btn-sample-discovery-poc"
+              data-track-event="toolkit_sample_poc_click"
+              data-track-label="Sample Discovery POC"
+            >
+              Sample Discovery POC ↗
+            </a>
           </div>
         </div>
       </section>
@@ -554,59 +558,6 @@ export default function CustomerDiscoveryToolkitContent() {
         </div>
       </section>
 
-      {/* ═══ 10 & 14. JSON CONFIGURATION & DOWNLOAD ═══ */}
-      <section className={styles.pageSectionAlt} id="json-viewer">
-        <div className="container">
-          <div className={styles.sectionHeader}>
-            <span className={styles.sectionNumber}>Configuration</span>
-            <h2 className={styles.sectionTitle}>Questionnaire JSON Configuration</h2>
-            <p className={styles.sectionSubtitle}>
-              To enable dynamic questions in subsequent sprints, all roles, rules, and closing scripts are parsed dynamically from the schema below.
-            </p>
-          </div>
-
-          <div className={styles.codeContainer}>
-            <div className={styles.codeHeader}>
-              <span className={styles.codeLang}>ev_engineer_customer_discovery_questionnaires.json</span>
-              <button
-                onClick={handleCopyJSON}
-                className={styles.copyBtn}
-                data-track-event="toolkit_copy_schema_click"
-                data-track-label="Copy JSON Schema"
-              >
-                {copied ? "✓ Copied!" : "📋 Copy JSON Schema"}
-              </button>
-            </div>
-            <div className={styles.codeBox}>
-              <pre className={styles.codePre}>
-                <code>{JSON.stringify(questionnairesData, null, 2)}</code>
-              </pre>
-            </div>
-          </div>
-
-          <div style={{ display: "flex", justifyContent: "center", marginTop: "2rem", gap: "1rem", flexWrap: "wrap" }}>
-            <button
-              onClick={handleDownloadJSON}
-              className="btn btn-primary"
-              id="btn-download-questionnaire-json"
-              data-track-event="toolkit_download_json_bottom_click"
-              data-track-label="Download Questionnaire JSON - Bottom"
-            >
-              Download Questionnaire JSON
-            </button>
-            <Link
-              href="/internships/battery-diagnostics-12-week-plan"
-              className="btn btn-secondary"
-              style={{ background: "var(--glass-bg)" }}
-              id="btn-back-to-roadmap-bottom"
-              data-track-event="toolkit_back_to_roadmap_bottom_click"
-              data-track-label="Back to 12-Week Roadmap - Bottom"
-            >
-              Back to 12-Week Roadmap
-            </Link>
-          </div>
-        </div>
-      </section>
 
       {/* ═══ 11. FUTURE VISION ═══ */}
       <section className={styles.pageSection} style={{ paddingBottom: "7rem" }}>

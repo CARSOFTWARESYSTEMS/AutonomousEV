@@ -506,8 +506,8 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: #00f5a0;
-  box-shadow: 0 0 10px #00f5a0;
+  background: var(--accent-primary);
+  box-shadow: 0 0 10px var(--accent-glow);
   animation: pulseGreen 2s infinite;
 }
 
@@ -521,9 +521,9 @@
 .dbBadge {
   font-size: 0.72rem;
   font-weight: 800;
-  color: #00f5a0;
-  background: rgba(0, 245, 160, 0.08);
-  border: 1px solid rgba(0, 245, 160, 0.25);
+  color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.08);
+  border: 1px solid rgba(76, 169, 48, 0.25);
   padding: 0.25rem 0.75rem;
   border-radius: var(--radius-pill);
   text-transform: uppercase;
@@ -620,7 +620,7 @@
 
 .barFill {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent-primary), #00f5a0);
+  background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary));
   border-radius: 99px;
   transition: width 1s ease-in-out;
 }
@@ -780,9 +780,9 @@
 }
 
 @keyframes pulseGreen {
-  0% { box-shadow: 0 0 0 0 rgba(0, 245, 160, 0.4); }
-  70% { box-shadow: 0 0 0 10px rgba(0, 245, 160, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(0, 245, 160, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(76, 169, 48, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(76, 169, 48, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(76, 169, 48, 0); }
 }
 
 .desktopBr {
