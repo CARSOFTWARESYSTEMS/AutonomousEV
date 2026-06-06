@@ -1,0 +1,205 @@
+EV.ENGINEER CUSTOMER DISCOVERY QUESTIONNAIRE
+EV Battery Diagnostics & Health Intelligence
+Plain Field Interview Version
+
+Purpose:
+Use these questions to understand real EV battery problems, current manual process, cost impact, urgency, and willingness to pay.
+
+Important Instructions for Interviewer:
+1. Do not sell any product during the discussion.
+2. Ask questions slowly and in simple language.
+3. Let the customer explain in their own words.
+4. Record language used: English / Kannada / Hindi / Tamil / Mixed / Other.
+5. Take photo/audio/video only with permission.
+6. At the end, thank the participant politely.
+7. Capture contact details separately before starting:
+   - Name
+   - Phone number
+   - City/location
+   - Category
+   - EV type: 2W / 3W / 4W / Other
+   - Battery type if known: LFP / NMC / Lead Acid / Unknown
+   - Vehicle brand/model if applicable
+
+
+============================================================
+CATEGORY 1: EV OWNER / RIDER
+============================================================
+
+1. Which EV do you use? Please mention brand, model, and vehicle age.
+
+2. How many kilometers do you usually drive per day?
+
+3. Have you faced any battery-related problem so far?
+   Examples: range drop, slow charging, battery not holding charge, overheating, sudden shutdown.
+
+4. What is the biggest battery problem you have faced?
+
+5. When did you first notice this problem?
+
+6. How do you currently know whether your battery is healthy or weak?
+
+7. Did you visit a service center for this battery issue? If yes, what did they check and tell you?
+
+8. How much money or time did this battery issue cost you?
+
+9. Before buying or selling a used EV, would you want a trusted battery health report? Why?
+
+10. How much would you be willing to pay for a trusted battery health check/report?
+
+
+============================================================
+CATEGORY 2: EV SERVICE CENTER
+============================================================
+
+1. How many EVs do you service in a month?
+
+2. How many customers come with battery-related complaints in a month?
+
+3. What are the most common battery complaints you receive?
+
+4. When a customer says range has dropped or battery is weak, how do you check the battery today?
+
+5. What tools, software, scanner, app, or manual method do you use for battery diagnosis?
+
+6. Can you clearly tell the customer the battery health percentage or remaining life today?
+
+7. What is the most difficult part of battery diagnosis for your service center?
+
+8. How do you handle battery warranty or replacement claims?
+
+9. Can you identify battery failure before the customer faces breakdown? If yes, how?
+
+10. Would you pay for a tool/report that gives battery health, failure risk, and remaining life? How much?
+
+
+============================================================
+CATEGORY 3: USED EV DEALER
+============================================================
+
+1. How many used EVs do you buy or sell in a month?
+
+2. Which EV types do you mostly handle?
+   2W / 3W / 4W / Other
+
+3. What is the biggest concern buyers have before buying a used EV?
+
+4. How do you currently check the battery condition before buying or selling a used EV?
+
+5. Do buyers ask for battery health proof or warranty details?
+
+6. Does battery condition affect the resale price? If yes, how much?
+
+7. Have you lost any deal because of battery trust issues?
+
+8. What battery information would help you sell used EVs faster?
+
+9. Would a trusted battery health certificate help your business?
+
+10. How much would you pay per vehicle for a trusted battery health certificate?
+
+
+============================================================
+CATEGORY 4: FLEET OPERATOR
+============================================================
+
+1. How many EVs are currently running in your fleet?
+
+2. Which EV types are in your fleet?
+   2W / 3W / 4W / Other
+
+3. What is the average daily running distance per vehicle?
+
+4. What are the most common battery problems in your fleet?
+
+5. How many vehicles were unavailable last month due to battery issues?
+
+6. How do you currently monitor battery health across the fleet?
+
+7. Can you predict which battery may fail in the next 30 to 90 days?
+
+8. How much money do you lose due to battery downtime or vehicle unavailability?
+
+9. What battery information would help you reduce downtime and plan replacements better?
+
+10. How much would you pay per vehicle per month for battery health monitoring and failure prediction?
+
+
+============================================================
+CATEGORY 5: BATTERY REFURBISHER / SECOND-LIFE BATTERY BUSINESS
+============================================================
+
+1. How many batteries or battery packs do you inspect, repair, or refurbish in a month?
+
+2. Which battery types do you mostly handle?
+   LFP / NMC / Lead Acid / Unknown / Other
+
+3. From which EV types do these batteries usually come?
+   2W / 3W / 4W / Other
+
+4. How do you currently check whether a battery can be reused or refurbished?
+
+5. What tools or machines do you use for battery testing?
+
+6. What is the biggest challenge in deciding battery health or remaining life?
+
+7. What are the main reasons batteries are rejected or downgraded?
+
+8. Do you get enough history about the battery before testing it?
+
+9. Would a digital battery health and second-life grading report help your business?
+
+10. How much would you pay per battery pack for trusted battery health or grading support?
+
+
+============================================================
+CATEGORY 6: EV STARTUP / EV MANUFACTURER / BATTERY COMPANY
+============================================================
+
+1. What EV or battery product are you currently building or operating?
+
+2. Which EV category do you focus on?
+   2W / 3W / 4W / Fleet / Battery Pack / Other
+
+3. What are the biggest battery-related problems reported by your users or customers?
+
+4. How do you currently collect battery data from vehicles or BMS?
+
+5. How do you currently detect battery degradation, safety risk, or failure risk?
+
+6. What is the hardest battery problem for your engineering or support team to solve?
+
+7. How do battery problems affect warranty, customer support, or brand trust?
+
+8. What battery intelligence do you wish you had but do not have today?
+
+9. Would you use an external battery diagnostics, health, or failure prediction platform?
+
+10. What business value would such a platform create for you?
+
+
+============================================================
+COMMON FINAL QUESTIONS FOR ALL CATEGORIES
+============================================================
+
+Ask these only if time allows.
+
+1. What is the single biggest battery problem we should solve first?
+
+2. How urgent is this problem for you?
+   Low / Medium / High / Critical
+
+3. On a scale of 1 to 10, how painful is this problem?
+
+4. Are you willing to discuss again after we prepare a solution or prototype?
+
+5. Can we contact you later for follow-up?
+
+
+============================================================
+THANK YOU MESSAGE
+============================================================
+
+Thank you for sharing your experience with us.
+
+Your feedback will help EV.ENGINEER understand real EV battery problems and build practical solutions for battery diagnostics, health intelligence, safety, and customer trust.

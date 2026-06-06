@@ -222,7 +222,7 @@ export default function InternshipsClient() {
           }}
         >
           <img
-            src="/sudarshana-karkala_ev-battery-workshop_poster.png"
+            src="/EV ENGINEER Sudarshana Karkala.png"
             alt="EV Battery Workshop Poster"
             style={{
               maxWidth: '100%',
