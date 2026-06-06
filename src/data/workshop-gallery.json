@@ -366,5 +366,24 @@
         "src": "/workshops/02042025.jpg"
       }
     ]
+  },
+  {
+    "sectionName": "New Initiatives",
+    "items": [
+      {
+        "filename": "EV ENGINEER Sudarshana Karkala.png",
+        "date": "2026-04-02",
+        "label": "EV ENGINEER",
+        "label2": "EV Battery Intelligence Platform",
+        "src": "/workshops/EV ENGINEER Sudarshana Karkala.png"
+      },
+      {
+        "filename": "ev engneer sk.png",
+        "date": "2026-04-02",
+        "label": "EV ENGINEER",
+        "label2": "EV Battery Intelligence Platform",
+        "src": "/workshops/ev engneer sk.png"
+      }
+    ]
   }
 ]

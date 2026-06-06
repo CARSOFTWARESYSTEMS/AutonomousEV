@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import BatteryPackDesignContent from './BatteryPackDesignContent';
 
 const PAGE_URL = 'https://autonomous.ev.engineer/internships/battery-pack-design';
-const OG_IMAGE = 'https://autonomous.ev.engineer/sudarshana-karkala_ev-battery-workshop_poster.png';
+const OG_IMAGE = 'https://autonomous.ev.engineer/EV ENGINEER Sudarshana Karkala.png';
 
 export const metadata: Metadata = {
   title: 'EV Battery Pack Design Handbook | Sudarshana Karkala | EV.ENGINEER',

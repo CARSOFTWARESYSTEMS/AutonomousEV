@@ -223,7 +223,7 @@ export default function InternshipsClient() {
         >
           <img
             src="/EV ENGINEER Sudarshana Karkala.png"
-            alt="EV Battery Workshop Poster"
+            alt="EV Battery Intelligence Platform"
             style={{
               maxWidth: '100%',
               maxHeight: 'calc(100vh - 100px)',
