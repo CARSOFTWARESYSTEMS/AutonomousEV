@@ -1,5 +1,6 @@
 import styles from "./page.module.css";
 import Link from "next/link";
+import Image from "next/image";
 import EVCareersHeroCard from "@/components/EVCareersHeroCard";
 import EVBatteryHeroCard from "@/components/EVBatteryHeroCard";
 
@@ -9,6 +10,20 @@ export default function Home() {
       {/* 1. HERO BANNER */}
       <section className={styles.hero}>
         <div className={`container`}>
+
+
+          <div className={styles.bannerWrapper}>
+            <Image
+              src="/workshops/Sudarshana Karkala EV ENGINEER.png"
+              alt="Sudarshana Karkala EV.ENGINEER"
+              width={1983}
+              height={793}
+              className={styles.bannerImage}
+              priority
+            />
+          </div>
+          <div><br></br></div>
+
           <div className={styles.heroGlow} />
           <div className={styles.heroContent}>
 
@@ -34,13 +49,14 @@ export default function Home() {
 
             {/* ── Right Column — Floating Cards ── */}
             <div className={styles.rightCol}>
-              <EVBatteryHeroCard 
+
+              <EVBatteryHeroCard
                 cardClassName={`${styles.floatingCard} ${styles.card1}`}
                 titleClassName={styles.cardTitle}
                 textClassName={styles.cardText}
               />
 
-              <EVCareersHeroCard 
+              <EVCareersHeroCard
                 cardClassName={`${styles.floatingCard} ${styles.card2}`}
                 titleClassName={styles.cardTitle}
                 textClassName={styles.cardText}
@@ -50,11 +66,14 @@ export default function Home() {
             </div>
 
           </div>
+
         </div>
-      </section>
+      </section >
+
+
 
       {/* 2. WHY EV.ENGINEER™ */}
-      <section className="section bg-surface">
+      < section className="section bg-surface" >
         <div className="container">
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>Why EV.<span className={styles.accentText}>ENGINEER™</span></h2>
@@ -77,10 +96,10 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section >
 
       {/* 3. TRAINING TRACKS */}
-      <section className="section">
+      < section className="section" >
         <div className="container">
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>Training Tracks</h2>
@@ -105,10 +124,10 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section >
 
       {/* 4. SINGAPORE AV ECOSYSTEM */}
-      <section className="section">
+      < section className="section" >
         <div className="container">
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>Navigating the Singapore AV Ecosystem</h2>
@@ -118,7 +137,7 @@ export default function Home() {
             <div className="glass-panel">
               <h3 className={styles.cardTitle}>CETRAN & LTA Alignment</h3>
               <p className={styles.cardText}>Understand the rigorous testing scenarios required for public road deployment. We cover the scenario-based testing importance and certification thinking specific to Singapore's regulatory environment.</p>
-              <br/>
+              <br />
               <Link href="/ecosystem/singapore" className="btn btn-secondary" data-track-event="home_card_btn_click" data-track-card="ecosystem">Explore Ecosystem</Link>
             </div>
             <div className="glass-panel">
@@ -127,10 +146,10 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section >
 
       {/* 5. SIMULATION PLATFORM HIGHLIGHTS */}
-      <section className="section bg-surface">
+      < section className="section bg-surface" >
         <div className="container">
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>Simulation-Driven Learning</h2>
@@ -151,10 +170,10 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section >
 
       {/* 6. USE CASES */}
-      <section className="section">
+      < section className="section" >
         <div className="container">
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>Key Use Cases</h2>
@@ -163,21 +182,21 @@ export default function Home() {
             <div className="glass-panel" style={{ borderLeft: '4px solid var(--accent-primary)' }}>
               <h3 className={styles.cardTitle}>Autonomous Air Taxi (eVTOL)</h3>
               <p className={styles.cardText}>End-to-end design lifecycle for urban air mobility. Covering passenger safety, fleet operations, airspace integration, and urban cybersecurity risks.</p>
-              <br/>
+              <br />
               <Link href="/design-development/passenger-taxi" className="btn btn-secondary" data-track-event="home_card_btn_click" data-track-card="passenger_taxi">View Lifecycle</Link>
             </div>
             <div className="glass-panel" style={{ borderLeft: '4px solid var(--accent-primary)' }}>
               <h3 className={styles.cardTitle}>Autonomous Airport Cargo EV</h3>
               <p className={styles.cardText}>Closed-loop environment architectures. Duty-cycle analysis, geofencing, cargo workflow mapping, and logistics system integrations.</p>
-              <br/>
+              <br />
               <Link href="/design-development/airport-cargo" className="btn btn-secondary" data-track-event="home_card_btn_click" data-track-card="airport_cargo">View Lifecycle</Link>
             </div>
           </div>
         </div>
-      </section>
+      </section >
 
       {/* 7. CYBERSECURITY + BATTERY INTELLIGENCE */}
-      <section className="section">
+      < section className="section" >
         <div className="container">
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>Security & Diagnostic Intelligence</h2>
@@ -186,21 +205,21 @@ export default function Home() {
             <div className="glass-panel">
               <h3 className={styles.cardTitle}>Cybersecurity in AV</h3>
               <p className={styles.cardText}>Protecting attack surfaces: in-vehicle networks, OTA updates, V2X risks, and sensor spoofing. Secure architecture principles for autonomous fleets.</p>
-              <br/>
+              <br />
               <Link href="/cybersecurity" className="btn btn-secondary" data-track-event="home_card_btn_click" data-track-card="cybersecurity">Learn More</Link>
             </div>
             <div className="glass-panel">
               <h3 className={styles.cardTitle}>Battery Health & Diagnostics</h3>
               <p className={styles.cardText}>Thermal risk, predictive maintenance, and lifecycle operations specific to non-stop AV duty cycles. Ensuring fleet availability through battery IQ.</p>
-              <br/>
+              <br />
               <Link href="/battery-diagnostics" className="btn btn-secondary" data-track-event="home_card_btn_click" data-track-card="battery_diagnostics">Learn More</Link>
             </div>
           </div>
         </div>
-      </section>
+      </section >
 
       {/* 7.5 HIRE PREMIUM EV BATTERY TALENT */}
-      <section className="section bg-surface">
+      < section className="section bg-surface" >
         <div className="container" style={{ textAlign: "center" }}>
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>Hire Premium <span className={styles.accentText}>EV Battery Talent</span></h2>
@@ -213,10 +232,10 @@ export default function Home() {
             <Link href="/ev-battery-talent-network" className="btn btn-secondary" data-track-event="home_submit_requirements_click">Submit Hiring Requirements</Link>
           </div>
         </div>
-      </section>
+      </section >
 
       {/* 8. CORPORATE OFFERINGS */}
-      <section className="section bg-surface">
+      < section className="section bg-surface" >
         <div className="container">
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>Enterprise Action Paths</h2>
@@ -240,10 +259,10 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section >
 
       {/* 9. FOUNDER PROFILE */}
-      <section className="section bg-surface">
+      < section className="section bg-surface" >
         <div className="container">
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>Meet the Architect Behind EV.<span className={styles.accentText}>ENGINEER™</span></h2>
@@ -262,10 +281,11 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section >
 
       {/* 10. CTA */}
-      <section className="section" style={{ padding: "120px 0", textAlign: "center" }}>
+      < section className="section" style={{ padding: "120px 0", textAlign: "center" }
+      }>
         <div className="container">
           <h2 className={styles.sectionTitle}>Ready to Engineer the Future?</h2>
           <p className={styles.sectionSubtitle} style={{ marginBottom: "40px" }}>
@@ -276,7 +296,7 @@ export default function Home() {
             <Link href="/consulting" className="btn btn-primary" data-track-event="bottom_cta_consulting_click">Engage Consulting</Link>
           </div>
         </div>
-      </section>
+      </section >
     </>
   );
 }

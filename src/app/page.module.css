@@ -108,6 +108,31 @@
   flex-wrap: wrap;
 }
 
+.bannerWrapper {
+  margin-top: 1.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--glass-bg);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  max-width: 100%;
+  animation: fadeInUp 0.8s ease-out 0.6s forwards;
+  opacity: 0;
+  display: block;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.bannerWrapper:hover {
+  border-color: rgba(57, 201, 49, 0.4);
+  box-shadow: 0 12px 40px rgba(57, 201, 49, 0.15);
+}
+
+.bannerImage {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 /* ─── Right Visual / Floating Cards ─── */
 .rightCol {
   display: flex;
