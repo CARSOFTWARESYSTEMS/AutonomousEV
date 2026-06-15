@@ -25,7 +25,7 @@ export default function FounderContent() {
           <h1 className={styles.heroTitle}>Sudarshana Karkala</h1>
           <p className={styles.heroSubtitle}>EV.ENGINEER™</p>
           <p className={styles.heroTagline}>
-            Architecting Intelligent Energy Systems for the Future of Electric Mobility
+            Building Battery Intelligence, Safety & Cybersecurity for eVTOL
           </p>
         </div>
       </section>
@@ -35,7 +35,7 @@ export default function FounderContent() {
         <div className={styles.glassCard}>
           <h2 className={styles.sectionTitle}>About the Founder</h2>
           <p className={styles.description}>
-            <strong>Sudarshana Karkala</strong> is a software architect and technology leader with over two decades of experience in mobile, security, cloud, and energy systems engineering.
+            <strong>Sudarshana Karkala</strong> is a software architect and technology leader with over two decades of experience in eMobility, eVTOL, AirTaxi, security, cloud, and energy systems engineering.
           </p>
           <p className={styles.description}>
             He is the founder of <a href="https://ev.engineer/" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: "bold" }}>EV.ENGINEER™</a>, a platform focused on solving critical challenges in electric mobility through intelligent, scalable, and engineering-driven solutions.
