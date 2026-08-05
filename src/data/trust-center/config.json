@@ -11,7 +11,7 @@
   "hero": {
     "eyebrow": "TRUST CENTER",
     "title": "Built on Engineering, Mentorship and Trust",
-    "description": "Explore verified feedback, professional recognition, engineering contributions and community impact connected to EV.ENGINEER™",
+    "description": "Explore verified feedback, professional recognition, engineering contributions and community impact connected to EV.ENGINEER™.",
     "primaryAction": { "label": "Explore Feedback", "target": "#trust-sources" },
     "secondaryAction": { "label": "Ask the Trust Center", "target": "#trust-search" },
     "sourceChips": [
@@ -37,7 +37,7 @@
       "displayMode": "content",
       "heading": "Google Reviews",
       "description": "General business reviews for EV.ENGINEER™ on Google.",
-      "sourceUrl": "https://www.google.com/search?q=EV.ENGINEER+%28+Electric+Vehicle+Engineering+%26+Software+Development+%29+Reviews",
+      "sourceUrl": "https://www.google.com/search?sca_esv=267af4048d96e323&sxsrf=APpeQntpdE6dJTHZlBbJdxeqz9O_yLb8Ng:1785903400846&si=APenkKm7iecQ4G6P-TsbSMFKIQtv3EFIqRAFw-i8uEbk55Z-_zyXGOMrA_nRnR_7sTZGZUdX8znKqfAwmpCeiss7L8KYcS9AJAhBwH4Jg3bj-8C4RISmmUtTBdgl790_q_YlnV9scS0VgIg4_AXogLzbbssKREXhhLvxz1vOYowqr1R9IZx2WXhdg8DQJ_lCeHHiT3WGCkwNO12ta02bwEf6VxlpkWIVqA%3D%3D&q=EV.ENGINEER+%28+Electric+Vehicle+Engineering+%26+Software+Development+%29+Reviews&sa=X&ved=2ahUKEwiMzL3O0IiWAxXlSWwGHcw1CicQ0bkNegQINRAH&biw=1440&bih=812&dpr=2",
       "sourceLabel": "Google",
       "badgeLabel": "Google",
       "staleAfterDays": 180
