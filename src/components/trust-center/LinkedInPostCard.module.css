@@ -1,0 +1,61 @@
+.postCard {
+  break-inside: avoid;
+  margin-bottom: 24px;
+}
+
+.embedWrap {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 504px;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+}
+
+.skeleton {
+  composes: glass-panel from global;
+  width: 100%;
+  max-width: 504px;
+  margin: 0 auto;
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.fallbackCard {
+  max-width: 504px;
+  margin: 0 auto;
+}
+
+.embedStack {
+  position: relative;
+  max-width: 504px;
+  margin: 0 auto;
+}
+
+.skeletonOverlay {
+  composes: glass-panel from global;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  animation: pulse 1.6s ease-in-out infinite;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}

@@ -1,0 +1,20 @@
+.grid {
+  column-count: 2;
+  column-gap: 24px;
+}
+
+@media (max-width: 1023px) {
+  .grid {
+    column-count: 1;
+  }
+}
+
+.consentGate {
+  composes: glass-panel from global;
+  text-align: center;
+  padding: 2.5rem;
+}
+
+.consentGate p {
+  margin-bottom: 16px;
+}

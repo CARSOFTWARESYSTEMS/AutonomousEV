@@ -1,0 +1,78 @@
+.hero {
+  padding-top: 120px;
+  padding-bottom: 56px;
+  text-align: center;
+}
+
+.eyebrow {
+  composes: pill from global;
+  color: var(--accent-primary);
+  border-color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.1);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.78rem;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 2.75rem;
+  font-weight: 800;
+  margin-bottom: 18px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.description {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 720px;
+  margin: 0 auto 32px;
+  line-height: 1.7;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+
+.chips {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  composes: pill from global;
+  min-height: 44px;
+  font-family: inherit;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.chip:hover,
+.chip:focus-visible {
+  color: var(--text-primary);
+  border-color: var(--accent-primary);
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .actions a {
+    text-align: center;
+  }
+}

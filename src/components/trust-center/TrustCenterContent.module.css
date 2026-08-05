@@ -1,0 +1,28 @@
+/* Used by single-summary-card sections (Google/Topmate/Glassdoor) so a lone
+   card doesn't stretch to the full container width the way the auto-fit
+   cardGrid does. */
+.narrowStack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 640px;
+}
+
+.featuredStrip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.disclaimerWrap {
+  padding: 2rem 0 0;
+}
+
+.footerMeta {
+  padding: 2rem 0 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}

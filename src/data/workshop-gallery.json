@@ -36,7 +36,27 @@
         "label": "Electric Vehicle Engineering & Development (Session 1)",
         "label2": "IIT Madras EV Lab - CODE 2025",
         "src": "/workshops/evend.jpg"
+      },
+      {
+        "filename": "evbattery_ieee_paper.png",
+        "date": "2026-07-23",
+        "label": "AI-Powered Battery Health Prediction and Failure Detection System in Electric Vehicle",
+        "label2": "IEEE ECWITE 2026",
+        "src": "/workshops/evbattery_ieee_paper.png"
       }
+    ]
+  },
+  {
+    "sectionName": "Intern's Initiatives",
+    "items": [
+      {
+        "filename": "tanujaos.jpeg",
+        "date": "2026-07-30",
+        "label": "TANUJA OS – Human Resource Operating System",
+        "label2": "Human Resource Management and Career Development in Electric Vehicle Industry",
+        "src": "/workshops/tanujaos.jpeg"
+      }
+      
     ]
   },
   {
@@ -242,12 +262,33 @@
         "label": "Constituent College of VTU",
         "label2": "EV.ENGINEER",
         "src": "/workshops/vtu1.jpg"
+      },
+    {
+        "filename": "asha_ieee.jpg",
+        "date": "2025-07-23",
+        "label": "IEEE ECWITE 2026",
+        "label2": "EV.ENGINEER",
+        "src": "/workshops/asha_ieee.jpg"
+      },
+      {
+        "filename": "shreelakshmi_ieee.jpg",
+        "date": "2025-07-23",
+        "label": "IEEE ECWITE 2026",
+        "label2": "EV.ENGINEER",
+        "src": "/workshops/shreelakshmi_ieee.jpg"
       }
     ]
   },
   {
     "sectionName": "EV Society - Workshops",
     "items": [
+      {
+        "filename": "ritesh_s_shetty_aaa.jpeg",
+        "date": "2026-07-23",
+        "label": "July 2026 Workshop",
+        "label2": "Accessibility, Availability, and Affordability in Electricity",
+        "src": "/workshops/ritesh_s_shetty_aaa.jpeg"
+      },
       {
         "filename": "30052026.png",
         "date": "2026-05-30",
@@ -364,6 +405,13 @@
         "label": "April 2025 Workshop",
         "label2": "EV Safety Protocols and Regulations",
         "src": "/workshops/02042025.jpg"
+      },
+      {
+        "filename": "indranil_roy.jpeg",
+        "date": "2025-07-18",
+        "label": "July 2026 Alumni Sessions",
+        "label2": "Interactive Career session with Indranil Roy, NIT Agartala",
+        "src": "/workshops/indranil_roy.jpeg"
       }
     ]
   },
@@ -383,6 +431,13 @@
         "label": "EV ENGINEER",
         "label2": "EV Battery Intelligence Platform",
         "src": "/workshops/ev engneer sk.png"
+      },
+      {
+        "filename": "MarcellinusNtumi.jpeg",
+        "date": "2026-07-31",
+        "label": "EV ENGINEER",
+        "label2": "EV Battery Health Diagnostics",
+        "src": "/workshops/MarcellinusNtumi.jpeg"
       }
     ]
   }

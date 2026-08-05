@@ -51,6 +51,22 @@
   color: var(--text-primary);
 }
 
+.navItemTrigger {
+  background: transparent;
+  border: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+
+.navItemTrigger:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
 /* Mega Menu Dropdown */
 .dropdown {
   position: absolute;
@@ -72,7 +88,8 @@
   gap: 32px;
 }
 
-.navItem:hover .dropdown {
+.navItem:hover .dropdown,
+.dropdownForceOpen {
   opacity: 1;
   visibility: visible;
   transform: translateX(-50%) translateY(0);

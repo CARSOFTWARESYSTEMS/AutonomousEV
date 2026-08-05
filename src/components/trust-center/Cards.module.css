@@ -1,0 +1,109 @@
+/* Shared card styling for Trust Center summary/profile/review cards. */
+
+.card {
+  composes: glass-panel from global;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  height: 100%;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cardTitle {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.cardBody {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  flex: 1;
+}
+
+.cardMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.cardFooter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.cardGridTwoCol {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .cardGridTwoCol {
+    grid-template-columns: 1fr;
+  }
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+}
+
+.authorBlock {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.authorName {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.authorRole {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.tagRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  composes: pill from global;
+  font-size: 0.72rem;
+  padding: 3px 10px;
+}
+
+.quoteIcon {
+  color: var(--accent-primary);
+  opacity: 0.5;
+  width: 22px;
+  height: 22px;
+}

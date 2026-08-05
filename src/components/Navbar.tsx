@@ -2,10 +2,39 @@
 
 import Link from "next/link";
 import styles from "./Navbar.module.css";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
+  const aboutContainerRef = useRef<HTMLDivElement>(null);
+  const aboutTriggerRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!aboutOpen) return;
+
+    const handlePointerDown = (event: MouseEvent) => {
+      if (!aboutContainerRef.current?.contains(event.target as Node)) {
+        setAboutOpen(false);
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setAboutOpen(false);
+        aboutTriggerRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [aboutOpen]);
+
+  const closeAbout = () => setAboutOpen(false);
 
   return (
     <nav className={styles.navbar}>
@@ -16,12 +45,26 @@ export default function Navbar() {
 
         <div className={styles.navLinks}>
           <Link href="/" className={styles.navItem}>Home</Link>
-          <div className={styles.navItem}>
-            About
-            <div className={styles.dropdown}>
+          <div className={styles.navItem} ref={aboutContainerRef}>
+            <button
+              type="button"
+              ref={aboutTriggerRef}
+              className={styles.navItemTrigger}
+              aria-haspopup="true"
+              aria-expanded={aboutOpen}
+              aria-controls="about-dropdown-menu"
+              onClick={() => setAboutOpen((open) => !open)}
+            >
+              About
+            </button>
+            <div
+              id="about-dropdown-menu"
+              className={`${styles.dropdown} ${aboutOpen ? styles.dropdownForceOpen : ""}`}
+            >
               <div className={styles.dropdownColumn}>
-                <Link href="/about" className={styles.dropdownLink}>About Us</Link>
-                <Link href="/about/sudarshana-karkala" className={styles.dropdownLink}>Sudarshana Karkala</Link>
+                <Link href="/about" className={styles.dropdownLink} onClick={closeAbout}>About Us</Link>
+                <Link href="/about/sudarshana-karkala" className={styles.dropdownLink} onClick={closeAbout}>Sudarshana Karkala</Link>
+                <Link href="/trust-center" className={styles.dropdownLink} onClick={closeAbout}>Trust Center</Link>
               </div>
             </div>
           </div>
@@ -73,6 +116,7 @@ export default function Navbar() {
           <div className={styles.mobileSectionTitle}>About</div>
           <Link href="/about" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>About Us</Link>
           <Link href="/about/sudarshana-karkala" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Sudarshana Karkala</Link>
+          <Link href="/trust-center" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Trust Center</Link>
 
           <div className={styles.mobileSectionTitle}>Engineering</div>
           <Link href="/" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Battery Intelligence</Link>

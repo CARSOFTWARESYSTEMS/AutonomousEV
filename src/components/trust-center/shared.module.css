@@ -1,0 +1,169 @@
+/* Shared primitives for the Trust Center: badges, notices, empty states,
+   citations. Built entirely on existing design tokens from globals.css —
+   no new color system introduced. */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.badgeIcon {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+
+.sourceBadge {
+  composes: badge;
+  color: var(--text-primary);
+}
+
+.verificationVerified {
+  composes: badge;
+  border-color: rgba(0, 245, 160, 0.4);
+  color: var(--success);
+}
+
+.verificationCurated {
+  composes: badge;
+  border-color: var(--glass-border);
+  color: var(--accent-primary);
+}
+
+.verificationPending {
+  composes: badge;
+  border-color: rgba(255, 200, 87, 0.4);
+  color: #ffc857;
+}
+
+.verificationPlaceholder {
+  composes: badge;
+  color: var(--text-muted);
+  border-style: dashed;
+}
+
+.staleBadge {
+  composes: badge;
+  border-color: rgba(255, 77, 77, 0.35);
+  color: var(--error);
+}
+
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.noticeIcon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--accent-primary);
+}
+
+.emptyState {
+  padding: 2.5rem;
+  text-align: center;
+  border-radius: var(--radius-lg);
+  border: 1px dashed var(--glass-border);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-muted);
+}
+
+.emptyStateTitle {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.citation {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.citationLink {
+  color: var(--accent-primary);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.citationLink:hover {
+  color: var(--text-primary);
+}
+
+.lastUpdated {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ratingText {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.sectionHeader {
+  margin-bottom: 32px;
+}
+
+.sectionEyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.sectionDescription {
+  color: var(--text-secondary);
+  max-width: 720px;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.externalLinkBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}

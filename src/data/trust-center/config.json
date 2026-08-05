@@ -1,0 +1,104 @@
+{
+  "version": "1.0",
+  "enabled": true,
+  "route": "/trust-center",
+  "seo": {
+    "title": "Trust Center | EV.ENGINEER™",
+    "description": "Verified feedback, professional recognition and engineering community impact connected to EV.ENGINEER™.",
+    "canonicalPath": "/trust-center",
+    "noindex": false
+  },
+  "hero": {
+    "eyebrow": "TRUST CENTER",
+    "title": "Built on Engineering, Mentorship and Trust",
+    "description": "Explore verified feedback, professional recognition, engineering contributions and community impact connected to EV.ENGINEER™",
+    "primaryAction": { "label": "Explore Feedback", "target": "#trust-sources" },
+    "secondaryAction": { "label": "Ask the Trust Center", "target": "#trust-search" },
+    "sourceChips": [
+      { "label": "Google", "source": "google" },
+      { "label": "Topmate", "source": "topmate" },
+      { "label": "LinkedIn", "source": "linkedin" },
+      { "label": "Glassdoor", "source": "glassdoor" },
+      { "label": "EV Society", "source": "ev-society" },
+      { "label": "YouTube", "source": "youtube" }
+    ]
+  },
+  "settings": {
+    "defaultMobileEmbedMode": "preview",
+    "lazyLoadEmbeds": true,
+    "externalContentConsent": false,
+    "showLastUpdated": true,
+    "showVerificationBadges": true,
+    "hideEmptySections": true
+  },
+  "sources": {
+    "google": {
+      "enabled": true,
+      "displayMode": "content",
+      "heading": "Google Reviews",
+      "description": "General business reviews for EV.ENGINEER™ on Google.",
+      "sourceUrl": "https://www.google.com/search?q=EV.ENGINEER+%28+Electric+Vehicle+Engineering+%26+Software+Development+%29+Reviews",
+      "sourceLabel": "Google",
+      "badgeLabel": "Google",
+      "staleAfterDays": 180
+    },
+    "topmate": {
+      "enabled": true,
+      "displayMode": "content",
+      "heading": "Mentorship & Professional Guidance",
+      "description": "Feedback from professionals, students and founders who received mentoring, career guidance or engineering consultation.",
+      "sourceUrl": "https://topmate.io/sudarshana_karkala",
+      "sourceLabel": "Topmate",
+      "badgeLabel": "Topmate",
+      "staleAfterDays": 180
+    },
+    "linkedin": {
+      "enabled": true,
+      "displayMode": "content",
+      "heading": "Professional Recognition on LinkedIn",
+      "description": "Public posts highlighting mentorship, learning, engineering contributions, internships and professional collaboration.",
+      "sourceUrl": "https://www.linkedin.com",
+      "sourceLabel": "LinkedIn",
+      "badgeLabel": "LinkedIn"
+    },
+    "glassdoor": {
+      "enabled": true,
+      "displayMode": "content",
+      "heading": "Workplace Feedback",
+      "description": "Employer and workplace feedback for iTelematics Software on Glassdoor.",
+      "sourceUrl": "https://www.glassdoor.co.in/Overview/Working-at-iTelematics-Software-EI_IE885424.11,31.htm",
+      "sourceLabel": "Glassdoor",
+      "badgeLabel": "Glassdoor",
+      "staleAfterDays": 180
+    },
+    "evSociety": {
+      "enabled": true,
+      "displayMode": "content",
+      "heading": "Community & Engineering Impact",
+      "description": "Candidate profiles and engineering contributions from EV Society™ community projects.",
+      "sourceUrl": "https://www.evsociety.org/projects/battery-safety-systems/candidates",
+      "sourceLabel": "EV Society",
+      "badgeLabel": "EV Society"
+    },
+    "youtube": {
+      "enabled": true,
+      "displayMode": "content",
+      "heading": "Videos, Sessions & Engineering Insights",
+      "description": "Engineering sessions, mentoring conversations and technical walkthroughs from the iTelematics YouTube channel.",
+      "sourceUrl": "https://www.youtube.com/@iTelematics",
+      "sourceLabel": "YouTube",
+      "badgeLabel": "YouTube"
+    }
+  },
+  "filters": [
+    { "id": "all", "label": "All", "sources": [] },
+    { "id": "google", "label": "Reviews", "sources": ["google"] },
+    { "id": "topmate", "label": "Mentorship", "sources": ["topmate"] },
+    { "id": "linkedin", "label": "Professional Recognition", "sources": ["linkedin"] },
+    { "id": "glassdoor", "label": "Workplace", "sources": ["glassdoor"] },
+    { "id": "ev-society", "label": "Engineering Community", "sources": ["ev-society"] },
+    { "id": "youtube", "label": "Videos", "sources": ["youtube"] },
+    { "id": "case-study", "label": "Success Stories", "sources": ["case-study"] }
+  ],
+  "lastUpdated": "2026-08-05"
+}
