@@ -1,4 +1,5 @@
 import type { FaqItem } from "../types";
+import { WIZARD_FAQ_ITEMS } from "./wizardFaq";
 
 export const FAQ_ITEMS: FaqItem[] = [
   {
@@ -62,3 +63,8 @@ export const FAQ_ITEMS: FaqItem[] = [
     answer: "Yes. The trust chain, trust questions, and threat-modelling method apply to any electric or hybrid-electric aircraft architecture with a battery, BMS, and energy management system — including electric short-take-off-and-landing aircraft and defense UAV/autonomous aircraft programmes — with the specific components, entry points, and flight phases adapted per programme.",
   },
 ];
+
+// Merged, additive: the page's original FAQ set plus the Assessment
+// Wizard's FAQ entries, consumed by both FaqSection.tsx and the FAQPage
+// JSON-LD generator in page.tsx so they never drift apart.
+export const ALL_FAQ_ITEMS: FaqItem[] = [...FAQ_ITEMS, ...WIZARD_FAQ_ITEMS];

@@ -21,6 +21,11 @@ import { DOWNLOAD_TEMPLATES } from "./data/downloadTemplates";
 import { RESEARCH_LIBRARY_ENTRIES, RESEARCH_LIBRARY_CATEGORIES } from "./data/researchLibrary";
 import { RELATED_ARTICLES } from "./data/relatedArticles";
 import sitemap from "../../app/sitemap";
+import { WIZARD_QUESTIONS, WIZARD_STEP_ORDER } from "./data/wizardQuestions";
+import { RECOMMENDATION_RULES } from "./data/recommendationRules";
+import { WIZARD_FAQ_ITEMS } from "./data/wizardFaq";
+import { ALL_FAQ_ITEMS } from "./data/faq";
+import { ALL_TRUST_DIMENSIONS } from "./wizardScoring";
 
 function assertUniqueIds(items: Array<{ id: string }>, label: string) {
   const ids = items.map((i) => i.id);
@@ -325,4 +330,95 @@ describe("related articles integrity", () => {
   });
 
   it("has unique ids", () => assertUniqueIds(RELATED_ARTICLES, "related articles"));
+});
+
+// ================================================================
+// Phase 3 — Assessment Wizard
+// ================================================================
+
+describe("wizard questions data quality", () => {
+  it("has unique ids", () => assertUniqueIds(WIZARD_QUESTIONS, "wizard questions"));
+
+  it("every question belongs to a declared step or is a valid multi-select context question", () => {
+    const stepIds = new Set<string>(WIZARD_STEP_ORDER);
+    for (const q of WIZARD_QUESTIONS) {
+      expect(stepIds.has(q.stepId), q.id).toBe(true);
+    }
+  });
+
+  it("boolean questions declare at least one dimension; multi-select questions declare none", () => {
+    for (const q of WIZARD_QUESTIONS) {
+      if (q.type === "boolean") {
+        expect(q.dimensions.length, q.id).toBeGreaterThan(0);
+      } else {
+        expect(q.dimensions.length, q.id).toBe(0);
+        expect(q.options?.length ?? 0, q.id).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it("every dimension referenced is one of the 9 valid trust dimensions", () => {
+    const validDimensions = new Set(ALL_TRUST_DIMENSIONS);
+    for (const q of WIZARD_QUESTIONS) {
+      for (const { dimension } of q.dimensions) {
+        expect(validDimensions.has(dimension), `${q.id} -> ${dimension}`).toBe(true);
+      }
+    }
+  });
+
+  it("has exactly 55 scored boolean questions (the spec's checklist count)", () => {
+    expect(WIZARD_QUESTIONS.filter((q) => q.type === "boolean")).toHaveLength(55);
+  });
+
+  it("every question text is non-empty", () => {
+    for (const q of WIZARD_QUESTIONS) {
+      expect(q.text.trim().length, q.id).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe("recommendation rules integrity", () => {
+  it("has unique ids", () => assertUniqueIds(RECOMMENDATION_RULES, "recommendation rules"));
+
+  it("every rule's questionId resolves to a real boolean wizard question", () => {
+    const booleanQuestionIds = new Set(WIZARD_QUESTIONS.filter((q) => q.type === "boolean").map((q) => q.id));
+    for (const rule of RECOMMENDATION_RULES) {
+      expect(booleanQuestionIds.has(rule.questionId), rule.id).toBe(true);
+    }
+  });
+
+  it("every rule's relatedControlId, when present, resolves to a real detection control", () => {
+    const controlIds = new Set(DETECTION_CONTROLS.map((c) => c.id));
+    for (const rule of RECOMMENDATION_RULES) {
+      if (rule.relatedControlId) {
+        expect(controlIds.has(rule.relatedControlId), rule.id).toBe(true);
+      }
+    }
+  });
+
+  it("has exactly one rule per scored boolean question (full 1:1 coverage)", () => {
+    const booleanQuestionIds = WIZARD_QUESTIONS.filter((q) => q.type === "boolean").map((q) => q.id);
+    const ruleQuestionIds = RECOMMENDATION_RULES.map((r) => r.questionId);
+    expect(new Set(ruleQuestionIds).size).toBe(booleanQuestionIds.length);
+    for (const qId of booleanQuestionIds) {
+      expect(ruleQuestionIds, qId).toContain(qId);
+    }
+  });
+
+  it("every rule has non-empty rationale, verification, and expectedBenefit", () => {
+    for (const rule of RECOMMENDATION_RULES) {
+      expect(rule.rationale.trim().length, rule.id).toBeGreaterThan(0);
+      expect(rule.verification.trim().length, rule.id).toBeGreaterThan(0);
+      expect(rule.expectedBenefit.trim().length, rule.id).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe("wizard FAQ merge integrity", () => {
+  it("has unique ids within the wizard FAQ set", () => assertUniqueIds(WIZARD_FAQ_ITEMS, "wizard FAQ items"));
+
+  it("ALL_FAQ_ITEMS is the exact concatenation of FAQ_ITEMS and WIZARD_FAQ_ITEMS with no id collisions", () => {
+    expect(ALL_FAQ_ITEMS).toHaveLength(FAQ_ITEMS.length + WIZARD_FAQ_ITEMS.length);
+    assertUniqueIds(ALL_FAQ_ITEMS, "merged FAQ items");
+  });
 });

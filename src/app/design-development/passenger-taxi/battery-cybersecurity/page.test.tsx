@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { render, screen, within } from "@testing-library/react";
 import BatteryCybersecurityPage from "./page";
 import { THREAT_CATALOGUE } from "@/lib/battery-cybersecurity/data/threatCatalogue";
-import { FAQ_ITEMS } from "@/lib/battery-cybersecurity/data/faq";
+import { ALL_FAQ_ITEMS } from "@/lib/battery-cybersecurity/data/faq";
 import { GLOSSARY_TERMS } from "@/lib/battery-cybersecurity/data/glossary";
 import { SCENARIO_PRESETS } from "@/lib/battery-cybersecurity/data/scenarioPresets";
 
@@ -34,7 +34,7 @@ describe("BatteryCybersecurityPage", () => {
   it("renders the full FAQ from data", () => {
     const { container } = render(<BatteryCybersecurityPage />);
     const faq = within(container.querySelector("#faq")!);
-    for (const item of FAQ_ITEMS) {
+    for (const item of ALL_FAQ_ITEMS) {
       expect(faq.getByText(item.question)).toBeInTheDocument();
     }
   });
@@ -62,6 +62,6 @@ describe("BatteryCybersecurityPage", () => {
     const breadcrumb = data["@graph"].find((n: { "@type": string }) => n["@type"] === "BreadcrumbList");
     expect(breadcrumb.itemListElement).toHaveLength(4);
     const faqNode = data["@graph"].find((n: { "@type": string }) => n["@type"] === "FAQPage");
-    expect(faqNode.mainEntity).toHaveLength(FAQ_ITEMS.length);
+    expect(faqNode.mainEntity).toHaveLength(ALL_FAQ_ITEMS.length);
   });
 });

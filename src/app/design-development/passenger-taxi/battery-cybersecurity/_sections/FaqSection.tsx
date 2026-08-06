@@ -1,4 +1,4 @@
-import { FAQ_ITEMS } from "@/lib/battery-cybersecurity/data/faq";
+import { ALL_FAQ_ITEMS } from "@/lib/battery-cybersecurity/data/faq";
 import { SectionHeader } from "../SectionHeader";
 import pageStyles from "../page.module.css";
 
@@ -11,7 +11,7 @@ export function FaqSection() {
         </SectionHeader>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "16px", maxWidth: "900px" }}>
-          {FAQ_ITEMS.map((item) => (
+          {ALL_FAQ_ITEMS.map((item) => (
             <div key={item.id} className={pageStyles.navyPanel} style={{ padding: "24px 28px" }}>
               <h3 style={{ fontSize: "1rem", fontWeight: 700, color: "var(--text-primary)", marginBottom: "10px", lineHeight: 1.4 }}>
                 {item.question}

@@ -369,3 +369,90 @@ export interface ExplorerNode {
   detailSections: ExplorerDetailSection[];
   badge?: ExplorerBadge;
 }
+
+// ================================================================
+// Phase 3 — Assessment Wizard
+// ================================================================
+
+// The 9 radar axes: the 7-dimension Battery Trust Framework (see
+// data/frameworks.ts) plus Detection and Verification, matching the
+// wizard spec's own scoring list.
+export type TrustDimension =
+  | "identity"
+  | "integrity"
+  | "authenticity"
+  | "availability"
+  | "safety"
+  | "evidence"
+  | "resilience"
+  | "detection"
+  | "verification";
+
+export type WizardStepId =
+  | "battery-architecture"
+  | "communication"
+  | "firmware"
+  | "charging"
+  | "maintenance"
+  | "threat-detection"
+  | "verification";
+
+export interface WizardQuestionDimensionWeight {
+  dimension: TrustDimension;
+  weight: number;
+}
+
+export interface WizardQuestion {
+  id: string;
+  stepId: WizardStepId;
+  text: string;
+  type: "boolean" | "multi-select";
+  options?: string[]; // multi-select only
+  dimensions: WizardQuestionDimensionWeight[]; // empty for multi-select context questions
+  helpText?: string;
+}
+
+export type WizardAnswerValue = boolean | string[] | null;
+
+export type WizardAnswers = Record<string, WizardAnswerValue>;
+
+export interface AssessmentScores {
+  dimensionScores: Record<TrustDimension, number>; // 0-100
+  overallTrust: number; // 0-100
+}
+
+export interface Recommendation {
+  id: string;
+  questionId: string;
+  title: string;
+  rationale: string;
+  verification: string;
+  expectedBenefit: string;
+  priority: Severity;
+  relatedControlId?: string;
+}
+
+export type RoadmapBucket = "immediate" | "30-day" | "90-day" | "future";
+
+export interface BucketedRecommendation extends Recommendation {
+  bucket: RoadmapBucket;
+}
+
+export interface RecommendationRule {
+  id: string;
+  questionId: string;
+  triggerAnswer: false; // every rule fires when the boolean question is answered "No" (or left unanswered)
+  title: string;
+  rationale: string;
+  verification: string;
+  expectedBenefit: string;
+  priority: Severity;
+  relatedControlId?: string;
+}
+
+export interface RiskMatrixCell {
+  likelihood: Likelihood;
+  impact: Severity;
+  priority: Severity;
+  recommendations: BucketedRecommendation[];
+}

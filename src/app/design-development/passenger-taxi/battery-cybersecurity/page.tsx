@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { FAQ_ITEMS } from "@/lib/battery-cybersecurity/data/faq";
+import { ALL_FAQ_ITEMS } from "@/lib/battery-cybersecurity/data/faq";
 import styles from "./page.module.css";
 import { SectionNav } from "./SectionNav";
 import { FadeInSection } from "./FadeInSection";
@@ -31,6 +31,8 @@ import { CapabilityMatrixSection } from "./_sections/CapabilityMatrixSection";
 import { DownloadsSection } from "./_sections/DownloadsSection";
 import { ResearchLibrarySection } from "./_sections/ResearchLibrarySection";
 import { RelatedArticlesSection } from "./_sections/RelatedArticlesSection";
+import { AssessmentWizardSection } from "./_sections/AssessmentWizardSection";
+import { HowAssessmentWorksSection } from "./_sections/HowAssessmentWorksSection";
 
 // ─── SEO Metadata ─────────────────────────────────────────────────────────────
 
@@ -115,6 +117,8 @@ const jsonLd = {
         "attack surface explorer",
         "battery digital twin",
         "energy trust pyramid",
+        "battery cybersecurity assessment",
+        "battery trust score",
       ],
       dateModified: "2026-08-06",
     },
@@ -146,7 +150,7 @@ const jsonLd = {
     {
       "@type": "FAQPage",
       "@id": `${PAGE_URL}#faq`,
-      mainEntity: FAQ_ITEMS.map((item) => ({
+      mainEntity: ALL_FAQ_ITEMS.map((item) => ({
         "@type": "Question",
         name: item.question,
         acceptedAnswer: { "@type": "Answer", text: item.answer },
@@ -157,6 +161,8 @@ const jsonLd = {
 
 const SECTION_NAV_ITEMS = [
   { id: "frameworks", label: "Frameworks" },
+  { id: "how-assessment-works", label: "How It Works" },
+  { id: "assessment-wizard", label: "Assessment" },
   { id: "energy-trust-chain", label: "Trust Chain" },
   { id: "attack-surface-explorer", label: "Attack Surface" },
   { id: "trust-questions", label: "Trust Questions" },
@@ -192,6 +198,8 @@ export default function BatteryCybersecurityPage() {
       <HeroSection />
       <SectionNav items={SECTION_NAV_ITEMS} />
       <FrameworksSection />
+      <HowAssessmentWorksSection />
+      <AssessmentWizardSection />
       <EnergyTrustChain />
       <AttackSurfaceExplorer />
       <TrustQuestionSection />

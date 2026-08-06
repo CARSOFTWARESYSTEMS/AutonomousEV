@@ -54,4 +54,11 @@ export const AIRCRAFT_PROFILES: AircraftProfile[] = [
     componentIds: ALL_COMPONENT_IDS,
     defaultFlightPhaseId: "cruise",
   },
+  {
+    id: "autonomous-aircraft",
+    name: "Autonomous Aircraft",
+    description: "Civilian uncrewed electric aircraft operating with a high degree of autonomy (e.g. autonomous cargo delivery or logistics), where energy-trust decisions are made without a human pilot in the loop.",
+    componentIds: ALL_COMPONENT_IDS,
+    defaultFlightPhaseId: "cruise",
+  },
 ];
