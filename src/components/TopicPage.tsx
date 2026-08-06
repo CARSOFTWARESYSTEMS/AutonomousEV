@@ -17,6 +17,7 @@ export type TopicPageProps = {
   regionRelevance?: React.ReactNode;
   caseStories?: React.ReactNode;
   simulationArchitecture?: React.ReactNode;
+  relatedResources?: React.ReactNode;
   keyTakeaways?: React.ReactNode;
 };
 
@@ -31,6 +32,7 @@ export default function TopicPage({
   regionRelevance,
   caseStories,
   simulationArchitecture,
+  relatedResources,
   keyTakeaways
 }: TopicPageProps) {
   return (
@@ -80,7 +82,7 @@ export default function TopicPage({
         </section>
 
         {/* Additional Sections */}
-        {(regionRelevance || caseStories || simulationArchitecture) && (
+        {(regionRelevance || caseStories || simulationArchitecture || relatedResources) && (
           <div style={{ borderTop: "1px solid var(--color-glass-border)", margin: "24px 0" }}></div>
         )}
 
@@ -102,6 +104,13 @@ export default function TopicPage({
           <section>
             <h2 style={{ fontSize: "1.8rem", marginBottom: "24px" }}>Simulation & Architecture</h2>
             <div style={{ color: "var(--color-text-secondary)", lineHeight: 1.6 }}>{simulationArchitecture}</div>
+          </section>
+        )}
+
+        {relatedResources && (
+          <section>
+            <h2 style={{ fontSize: "1.8rem", marginBottom: "24px" }}>Related Resources</h2>
+            <div style={{ color: "var(--color-text-secondary)", lineHeight: 1.6 }}>{relatedResources}</div>
           </section>
         )}
 

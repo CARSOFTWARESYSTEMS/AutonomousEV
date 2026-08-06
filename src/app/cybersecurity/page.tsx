@@ -1,3 +1,4 @@
+import Link from "next/link";
 import TopicPage from "@/components/TopicPage";
 
 export const metadata = {
@@ -39,6 +40,22 @@ export default function CybersecurityPage() {
           <li>• A compromised AV is a kinetic weapon; security and safety are inextricably linked.</li>
           <li>• Sensor spoofing forces AVs to rely on multi-sensor redundancy and cross-validation.</li>
           <li>• Strict PKI and identity frameworks must govern all V2X communications.</li>
+        </ul>
+      }
+      relatedResources={
+        <ul style={{ display: "flex", flexDirection: "column", gap: "14px", listStyle: "none", padding: 0 }}>
+          <li>
+            <Link href="/internships/battery-cybersecurity" style={{ color: "var(--color-accent)", fontWeight: 600 }} data-track-event="cybersecurity_related_battery_internship_click">
+              EV Battery Intelligence &amp; Cybersecurity Internship →
+            </Link>
+            <p style={{ margin: "4px 0 0", color: "var(--color-text-secondary)" }}>Battery intrusion detection, secure telemetry pipelines, and BMS threat modelling.</p>
+          </li>
+          <li>
+            <Link href="/design-development/passenger-taxi/battery-cybersecurity" style={{ color: "var(--color-accent)", fontWeight: 600 }} data-track-event="cybersecurity_related_evtol_page_click">
+              Electric Aircraft Battery Cybersecurity →
+            </Link>
+            <p style={{ margin: "4px 0 0", color: "var(--color-text-secondary)" }}>Trust chains, threat modelling, and an interactive threat-modelling studio for eVTOL energy systems.</p>
+          </li>
         </ul>
       }
     />

@@ -354,6 +354,8 @@ export default function InternshipsClient() {
               title="Autonomous Air Taxi (eVTOL)"
               desc="End-to-end design lifecycle for urban air mobility."
               link="/design-development/passenger-taxi"
+              secondaryLink="/design-development/passenger-taxi/battery-cybersecurity"
+              secondaryLinkLabel="Cybersecurity"
             />
             <ProjectCard
               title="Autonomous Airport Cargo EV"

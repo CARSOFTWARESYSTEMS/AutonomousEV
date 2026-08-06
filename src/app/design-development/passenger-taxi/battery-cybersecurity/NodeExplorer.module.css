@@ -1,0 +1,116 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.scroller {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 4px;
+}
+
+.scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.tab,
+.tabActive {
+  composes: pill from global;
+  flex-shrink: 0;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 16px;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border: 1px solid var(--glass-border);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab:hover {
+  color: var(--text-primary);
+}
+
+.tab:focus-visible,
+.tabActive:focus-visible {
+  outline: 2px solid var(--bcs-cyan, var(--accent-primary));
+  outline-offset: 2px;
+}
+
+.tabActive {
+  color: #04151a;
+  background: #22d3ee;
+  border-color: #22d3ee;
+}
+
+.panel {
+  padding: 24px;
+}
+
+.panel:focus-visible {
+  outline: 2px solid var(--bcs-cyan);
+  outline-offset: 2px;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.panelTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.panelSummary {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px 28px;
+}
+
+.detailHeading {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--bcs-cyan);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.detailBody {
+  font-size: 0.87rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.detailList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.87rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  list-style: disc;
+  padding-left: 18px;
+}

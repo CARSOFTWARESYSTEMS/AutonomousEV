@@ -16,6 +16,7 @@ const ROUTES = [
   "/design-development",
   "/design-development/airport-cargo",
   "/design-development/passenger-taxi",
+  "/design-development/passenger-taxi/battery-cybersecurity",
   "/developer-portal",
   "/ecosystem",
   "/ecosystem/singapore",

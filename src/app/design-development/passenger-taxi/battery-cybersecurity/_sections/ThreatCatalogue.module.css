@@ -1,0 +1,71 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 18px;
+}
+
+.card {
+  border-radius: var(--radius-lg);
+}
+
+.card > summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 44px;
+}
+
+.card > summary::-webkit-details-marker {
+  display: none;
+}
+
+.card > summary:focus-visible {
+  outline: 2px solid var(--bcs-cyan);
+  outline-offset: 2px;
+}
+
+.cardTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.cardTitle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.categoryPill {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--bcs-slate);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.body {
+  padding: 0 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fieldLabel {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--bcs-cyan);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.fieldValue {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-top: 3px;
+}

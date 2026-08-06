@@ -95,6 +95,21 @@ export default function Home() {
               <p className={styles.cardText}>Connecting autonomous driving stack with underlying EV battery telemetry, security, and cloud logistics.</p>
             </div>
           </div>
+
+          <div className="glass-panel" style={{ marginTop: "32px", display: "flex", flexWrap: "wrap", alignItems: "center", gap: "24px", justifyContent: "space-between" }}>
+            <div style={{ flex: "1 1 360px" }}>
+              <h3 className={styles.cardTitle}>Cybersecurity</h3>
+              <p className={styles.cardText}>Battery, BMS, and energy-system cybersecurity — from foundational research internships to eVTOL-specific threat modelling.</p>
+            </div>
+            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", flex: "0 0 auto" }}>
+              <Link href="/internships/battery-cybersecurity" className="btn btn-secondary" data-track-event="home_why_cybersecurity_internship_click">
+                Cybersecurity Internship
+              </Link>
+              <Link href="/design-development/passenger-taxi/battery-cybersecurity" className="btn btn-primary" data-track-event="home_why_cybersecurity_evtol_click">
+                eVTOL Battery Cybersecurity
+              </Link>
+            </div>
+          </div>
         </div>
       </section >
 

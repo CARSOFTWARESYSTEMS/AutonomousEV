@@ -1,0 +1,101 @@
+.presetRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.preset,
+.presetActive {
+  min-height: 44px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--glass-border);
+  background: transparent;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.preset:hover {
+  color: var(--text-primary);
+}
+
+.preset:focus-visible,
+.presetActive:focus-visible {
+  outline: 2px solid var(--bcs-cyan);
+  outline-offset: 2px;
+}
+
+.presetActive {
+  color: #04151a;
+  background: #22d3ee;
+  border-color: #22d3ee;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  position: sticky;
+  top: 140px;
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .controls {
+    position: static;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.field label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--bcs-cyan);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.field select {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--glass-border);
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  font-family: inherit;
+}
+
+.field select:focus-visible {
+  outline: 2px solid var(--bcs-cyan);
+  outline-offset: 2px;
+}
+
+.results {
+  min-height: 200px;
+  min-width: 0;
+}

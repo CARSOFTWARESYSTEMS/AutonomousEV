@@ -948,6 +948,61 @@ export default function PassengerTaxiPage() {
         </div>
       </section>
 
+      {/* ── Battery & Energy Cybersecurity Deep Dive ── */}
+      <section className="section">
+        <div className="container">
+          <div
+            className="glass-panel"
+            style={{
+              display: "flex",
+              gap: "24px",
+              alignItems: "center",
+              flexWrap: "wrap",
+              justifyContent: "space-between",
+              borderLeft: "3px solid #818CF8",
+              maxWidth: "1000px",
+              margin: "0 auto",
+            }}
+          >
+            <div style={{ flex: "1 1 420px" }}>
+              <span
+                style={{
+                  display: "inline-block",
+                  padding: "4px 14px",
+                  background: "rgba(129,140,248,0.1)",
+                  border: "1px solid rgba(129,140,248,0.3)",
+                  borderRadius: "999px",
+                  fontSize: "0.75rem",
+                  fontWeight: 700,
+                  letterSpacing: "0.1em",
+                  color: "#818CF8",
+                  textTransform: "uppercase",
+                  marginBottom: "14px",
+                }}
+              >
+                Deep Dive
+              </span>
+              <h2 style={{ fontSize: "1.4rem", marginBottom: "10px" }}>
+                Explore Battery &amp; Energy Cybersecurity in Depth
+              </h2>
+              <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem", lineHeight: 1.7 }}>
+                A dedicated deep dive into the eVTOL energy trust chain, BMS threat modelling, an interactive
+                threat-modelling studio, and a discovery workshop for electric and hybrid-electric aircraft energy
+                cybersecurity.
+              </p>
+            </div>
+            <Link
+              href="/design-development/passenger-taxi/battery-cybersecurity"
+              className="btn btn-primary"
+              style={{ flexShrink: 0 }}
+              data-track-event="passenger_taxi_battery_cybersecurity_link"
+            >
+              Battery &amp; Energy Cybersecurity
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ── Section 1: Major Components ── */}
       <section className="section" id="major-components">
         <div className="container">
