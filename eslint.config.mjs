@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Standalone Vite/Figma Make scaffold — separate toolchain, not part of this Next.js app.
+    "UFlight/**",
   ]),
 ]);
 

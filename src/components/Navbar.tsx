@@ -69,6 +69,8 @@ export default function Navbar() {
             </div>
           </div>
 
+          <Link href="/aerospace" className={styles.navItem}>Aerospace</Link>
+
           <div className={styles.navItem}>
             Engineering
             <div className={styles.dropdown}>
@@ -117,6 +119,9 @@ export default function Navbar() {
           <Link href="/about" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>About Us</Link>
           <Link href="/about/sudarshana-karkala" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Sudarshana Karkala</Link>
           <Link href="/trust-center" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Trust Center</Link>
+
+          <div className={styles.mobileSectionTitle}>Aerospace</div>
+          <Link href="/aerospace" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Aerospace</Link>
 
           <div className={styles.mobileSectionTitle}>Engineering</div>
           <Link href="/" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Battery Intelligence</Link>

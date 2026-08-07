@@ -1,0 +1,11 @@
+{
+  "title": "UFlight.in",
+  "description": "Provides a professional, user-friendly website design that enhances online presence and engages visitors effectively for businesses and individuals.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
