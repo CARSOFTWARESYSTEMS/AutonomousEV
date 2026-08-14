@@ -6,9 +6,13 @@ import Footer from "./Footer";
 
 export default function ChromeGate({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isAerospace = pathname === "/aerospace" || pathname?.startsWith("/aerospace/");
+  const isSelfContained =
+    pathname === "/aerospace" ||
+    pathname?.startsWith("/aerospace/") ||
+    pathname === "/space" ||
+    pathname?.startsWith("/space/");
 
-  if (isAerospace) {
+  if (isSelfContained) {
     return <>{children}</>;
   }
 

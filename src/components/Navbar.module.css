@@ -67,6 +67,11 @@
   border-radius: 4px;
 }
 
+.navItemActive .navItemTrigger,
+.navItemActive > a {
+  color: var(--text-primary);
+}
+
 /* Mega Menu Dropdown */
 .dropdown {
   position: absolute;
@@ -221,6 +226,31 @@
   margin: 32px 12px 12px;
   font-weight: 700;
   opacity: 0.8;
+}
+
+.mobileAccordionTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--accent-primary);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin: 32px 0 12px;
+  padding: 0 12px;
+  font-weight: 700;
+  opacity: 0.8;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.mobileAccordionTrigger:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 4px;
+  border-radius: 4px;
 }
 
 @media (max-width: 1024px) {

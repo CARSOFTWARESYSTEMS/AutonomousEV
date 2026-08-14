@@ -3,12 +3,20 @@
 import Link from "next/link";
 import styles from "./Navbar.module.css";
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
   const aboutContainerRef = useRef<HTMLDivElement>(null);
   const aboutTriggerRef = useRef<HTMLButtonElement>(null);
+  const [spaceOpen, setSpaceOpen] = useState(false);
+  const spaceContainerRef = useRef<HTMLDivElement>(null);
+  const spaceTriggerRef = useRef<HTMLButtonElement>(null);
+  const [mobileSpaceOpen, setMobileSpaceOpen] = useState(false);
+
+  const isSpaceOrAerospace = pathname === "/space" || pathname === "/aerospace";
 
   useEffect(() => {
     if (!aboutOpen) return;
@@ -34,7 +42,32 @@ export default function Navbar() {
     };
   }, [aboutOpen]);
 
+  useEffect(() => {
+    if (!spaceOpen) return;
+
+    const handlePointerDown = (event: MouseEvent) => {
+      if (!spaceContainerRef.current?.contains(event.target as Node)) {
+        setSpaceOpen(false);
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setSpaceOpen(false);
+        spaceTriggerRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [spaceOpen]);
+
   const closeAbout = () => setAboutOpen(false);
+  const closeSpace = () => setSpaceOpen(false);
 
   return (
     <nav className={styles.navbar}>
@@ -44,7 +77,6 @@ export default function Navbar() {
         </Link>
 
         <div className={styles.navLinks}>
-          <Link href="/" className={styles.navItem}>Home</Link>
           <div className={styles.navItem} ref={aboutContainerRef}>
             <button
               type="button"
@@ -69,7 +101,45 @@ export default function Navbar() {
             </div>
           </div>
 
-          <Link href="/aerospace" className={styles.navItem}>Aerospace</Link>
+          <div
+            className={`${styles.navItem} ${isSpaceOrAerospace ? styles.navItemActive : ""}`}
+            ref={spaceContainerRef}
+          >
+            <button
+              type="button"
+              ref={spaceTriggerRef}
+              className={styles.navItemTrigger}
+              aria-haspopup="true"
+              aria-expanded={spaceOpen}
+              aria-controls="space-dropdown-menu"
+              onClick={() => setSpaceOpen((open) => !open)}
+            >
+              Space &amp; Aerospace
+            </button>
+            <div
+              id="space-dropdown-menu"
+              className={`${styles.dropdown} ${spaceOpen ? styles.dropdownForceOpen : ""}`}
+            >
+              <div className={styles.dropdownColumn}>
+                <Link
+                  href="/space"
+                  className={styles.dropdownLink}
+                  onClick={closeSpace}
+                  aria-current={pathname === "/space" ? "page" : undefined}
+                >
+                  Space
+                </Link>
+                <Link
+                  href="/aerospace"
+                  className={styles.dropdownLink}
+                  onClick={closeSpace}
+                  aria-current={pathname === "/aerospace" ? "page" : undefined}
+                >
+                  Aerospace
+                </Link>
+              </div>
+            </div>
+          </div>
 
           <div className={styles.navItem}>
             Engineering
@@ -114,14 +184,39 @@ export default function Navbar() {
       {/* Mobile Menu Content */}
       <div className={`${styles.mobileMenu} ${mobileMenuOpen ? styles.mobileMenuOpen : ''}`}>
         <div className={styles.mobileMenuInner}>
-          <Link href="/" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Home</Link>
           <div className={styles.mobileSectionTitle}>About</div>
           <Link href="/about" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>About Us</Link>
           <Link href="/about/sudarshana-karkala" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Sudarshana Karkala</Link>
           <Link href="/trust-center" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Trust Center</Link>
 
-          <div className={styles.mobileSectionTitle}>Aerospace</div>
-          <Link href="/aerospace" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Aerospace</Link>
+          <button
+            type="button"
+            className={styles.mobileAccordionTrigger}
+            aria-expanded={mobileSpaceOpen}
+            aria-controls="mobile-space-panel"
+            onClick={() => setMobileSpaceOpen((open) => !open)}
+          >
+            Space &amp; Aerospace
+            <span aria-hidden="true">{mobileSpaceOpen ? "−" : "+"}</span>
+          </button>
+          {mobileSpaceOpen && (
+            <div id="mobile-space-panel">
+              <Link
+                href="/space"
+                className={styles.mobileLink}
+                onClick={() => { setMobileMenuOpen(false); setMobileSpaceOpen(false); }}
+              >
+                Space
+              </Link>
+              <Link
+                href="/aerospace"
+                className={styles.mobileLink}
+                onClick={() => { setMobileMenuOpen(false); setMobileSpaceOpen(false); }}
+              >
+                Aerospace
+              </Link>
+            </div>
+          )}
 
           <div className={styles.mobileSectionTitle}>Engineering</div>
           <Link href="/" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Battery Intelligence</Link>

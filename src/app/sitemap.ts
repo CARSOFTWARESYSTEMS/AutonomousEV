@@ -36,6 +36,7 @@ const ROUTES = [
   "/internships/roadmap",
   "/internships/training-internship",
   "/si-ems",
+  "/space",
   "/technical-concepts",
   "/workshop-gallery",
 ];

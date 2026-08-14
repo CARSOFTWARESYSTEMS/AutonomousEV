@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Manrope, Inter } from "next/font/google";
 import {
   Shield, Plane, Satellite, Cloud, Bug, Brain, Lock,
-  Network, Terminal, Database, ChevronRight, Search, Menu, X,
+  Network, Terminal, Database, ChevronRight, Menu, X,
   MessageSquare, ArrowRight, Star,
   Cpu, Radio, Wifi, Code, BookOpen, FlaskConical, Rocket,
   ChevronDown, ChevronUp, Mail, ExternalLink, Layers, Globe
@@ -47,7 +47,7 @@ const Linkedin = ({ size = 24 }: { size?: number }) => (
 // ─── Data ────────────────────────────────────────────────────────────────────
 
 const navLinks = [
-  "Home", "Learning Paths", "Research", "Labs", "Projects", "Resources", "Community", "Members"
+  "Home", "Learning Paths", "Research", "Labs", "Projects", "Resources"
 ];
 
 const learningPathCards = [
@@ -237,7 +237,6 @@ function FooterCol({ title, links }: { title: string; links: string[] }) {
 
 export default function AerospacePage() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [searchVal, setSearchVal] = useState("");
 
   return (
     <div className={`${styles.root} ${manrope.variable} ${inter.variable}`} style={{ background: "#090B1D", minHeight: "100vh", fontFamily: FONT_INTER, overflowX: "hidden" }}>
@@ -265,60 +264,42 @@ export default function AerospacePage() {
         {/* Desktop nav links */}
         <div style={{ display: "flex", alignItems: "center", gap: 2, flex: 1, justifyContent: "center" }}
           className={styles.hiddenMobile}>
-          <a href="#" style={{
-            padding: "6px 12px", borderRadius: 8, color: "#B5B8C9", fontSize: 13, fontWeight: 500,
-            textDecoration: "none", transition: "color 0.2s, background 0.2s", display: "block"
-          }}
-            onMouseEnter={e => { (e.target as HTMLElement).style.color = "#fff"; (e.target as HTMLElement).style.background = "rgba(255,255,255,0.05)"; }}
-            onMouseLeave={e => { (e.target as HTMLElement).style.color = "#B5B8C9"; (e.target as HTMLElement).style.background = "transparent"; }}
-          >Home</a>
+          {navLinks.map(link => (
+            <a key={link} href="#" style={{
+              padding: "6px 12px", borderRadius: 8, color: "#B5B8C9", fontSize: 13, fontWeight: 500,
+              textDecoration: "none", transition: "color 0.2s, background 0.2s", display: "block"
+            }}
+              onMouseEnter={e => { (e.target as HTMLElement).style.color = "#fff"; (e.target as HTMLElement).style.background = "rgba(255,255,255,0.05)"; }}
+              onMouseLeave={e => { (e.target as HTMLElement).style.color = "#B5B8C9"; (e.target as HTMLElement).style.background = "transparent"; }}
+            >{link}</a>
+          ))}
+          <a href="https://www.uflight.in/" target="_blank" rel="noopener noreferrer" style={{
+            padding: "6px 14px", borderRadius: 8, fontWeight: 600, fontSize: 13,
+            background: "linear-gradient(135deg, rgba(124,58,237,0.3), rgba(59,130,246,0.2))",
+            border: "1px solid rgba(124,58,237,0.4)", color: "#B39DDB",
+            textDecoration: "none", display: "block"
+          }}>UFlight</a>
           <Link href="/" style={{
-            padding: "6px 12px", borderRadius: 8, color: "#B5B8C9", fontSize: 13, fontWeight: 500,
-            textDecoration: "none", transition: "color 0.2s, background 0.2s", display: "block"
-          }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#fff"; (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.05)"; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "#B5B8C9"; (e.currentTarget as HTMLElement).style.background = "transparent"; }}
-          >EV.ENGINEER</Link>
-          {navLinks.filter(link => link !== "Home").map(link =>
-            link === "Members" ? (
-              <button key={link} style={{
-                padding: "6px 14px", borderRadius: 8, fontWeight: 600, fontSize: 13,
-                background: "linear-gradient(135deg, rgba(124,58,237,0.3), rgba(59,130,246,0.2))",
-                border: "1px solid rgba(124,58,237,0.4)", color: "#B39DDB", cursor: "pointer",
-                display: "flex", alignItems: "center", gap: 5
-              }}>
-                <Star size={12} fill="#B39DDB" /> {link}
-              </button>
-            ) : (
-              <a key={link} href="#" style={{
-                padding: "6px 12px", borderRadius: 8, color: "#B5B8C9", fontSize: 13, fontWeight: 500,
-                textDecoration: "none", transition: "color 0.2s, background 0.2s", display: "block"
-              }}
-                onMouseEnter={e => { (e.target as HTMLElement).style.color = "#fff"; (e.target as HTMLElement).style.background = "rgba(255,255,255,0.05)"; }}
-                onMouseLeave={e => { (e.target as HTMLElement).style.color = "#B5B8C9"; (e.target as HTMLElement).style.background = "transparent"; }}
-              >{link}</a>
-            )
-          )}
+            padding: "6px 14px", borderRadius: 8, fontWeight: 600, fontSize: 13,
+            background: "linear-gradient(135deg, rgba(124,58,237,0.3), rgba(59,130,246,0.2))",
+            border: "1px solid rgba(124,58,237,0.4)", color: "#B39DDB",
+            textDecoration: "none", display: "block", marginLeft: 8
+          }}>EV.ENGINEER</Link>
+          <a href="https://www.evsociety.org" target="_blank" rel="noopener noreferrer" style={{
+            padding: "6px 14px", borderRadius: 8, fontWeight: 600, fontSize: 13,
+            background: "linear-gradient(135deg, rgba(124,58,237,0.3), rgba(59,130,246,0.2))",
+            border: "1px solid rgba(124,58,237,0.4)", color: "#B39DDB",
+            textDecoration: "none", display: "block", marginLeft: 8
+          }}>EV Society</a>
         </div>
 
-        {/* Right: search + auth */}
+        {/* Right: auth */}
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
-          <div style={{
-            display: "flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.05)",
-            border: "1px solid rgba(255,255,255,0.08)", borderRadius: 10, padding: "7px 14px", width: 180
-          }} className={styles.hiddenMobile}>
-            <Search size={14} color="#B5B8C9" />
-            <input value={searchVal} onChange={e => setSearchVal(e.target.value)} placeholder="Search..."
-              style={{ background: "none", border: "none", outline: "none", color: "#fff", fontSize: 13, width: "100%" }} />
-          </div>
-          <a href="#" style={{
-            padding: "7px 14px", borderRadius: 10, color: "#B5B8C9", fontSize: 13, fontWeight: 500,
-            textDecoration: "none", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)"
-          }} className={styles.hiddenMobile}>Login</a>
-          <button style={{
+          <Link href="/contact" style={{
             padding: "7px 16px", borderRadius: 10, background: "linear-gradient(135deg, #7C3AED, #6D28D9)",
-            border: "none", color: "#fff", fontWeight: 600, fontSize: 13, cursor: "pointer", flexShrink: 0
-          }}>Join Community</button>
+            border: "none", color: "#fff", fontWeight: 600, fontSize: 13, cursor: "pointer", flexShrink: 0,
+            textDecoration: "none", display: "block"
+          }}>Express Interest</Link>
           <button onClick={() => setMobileOpen(!mobileOpen)}
             style={{ background: "none", border: "none", color: "#fff", cursor: "pointer", padding: 4 }}
             className={styles.showMobile}>
@@ -340,13 +321,35 @@ export default function AerospacePage() {
                 padding: "10px 0", color: "#B5B8C9", fontSize: 15, textDecoration: "none",
                 borderBottom: "1px solid rgba(255,255,255,0.05)"
               }}>{link}</a>
-              {link === "Home" && (
-                <Link href="/" onClick={() => setMobileOpen(false)} style={{
-                  padding: "10px 0", color: "#B5B8C9", fontSize: 15, textDecoration: "none",
-                  borderBottom: "1px solid rgba(255,255,255,0.05)"
-                }}>
-                  EV.ENGINEER
-                </Link>
+              {link === "Resources" && (
+                <>
+                  <a href="https://www.uflight.in/" target="_blank" rel="noopener noreferrer"
+                    onClick={() => setMobileOpen(false)} style={{
+                      marginTop: 4, padding: "10px 16px", borderRadius: 10, fontWeight: 600,
+                      background: "linear-gradient(135deg, rgba(124,58,237,0.3), rgba(59,130,246,0.2))",
+                      border: "1px solid rgba(124,58,237,0.4)", color: "#B39DDB", fontSize: 15,
+                      textDecoration: "none", textAlign: "center"
+                    }}>
+                    UFlight
+                  </a>
+                  <Link href="/" onClick={() => setMobileOpen(false)} style={{
+                    marginTop: 4, padding: "10px 16px", borderRadius: 10, fontWeight: 600,
+                    background: "linear-gradient(135deg, rgba(124,58,237,0.3), rgba(59,130,246,0.2))",
+                    border: "1px solid rgba(124,58,237,0.4)", color: "#B39DDB", fontSize: 15,
+                    textDecoration: "none", textAlign: "center"
+                  }}>
+                    EV.ENGINEER
+                  </Link>
+                  <a href="https://www.evsociety.org" target="_blank" rel="noopener noreferrer"
+                    onClick={() => setMobileOpen(false)} style={{
+                      marginTop: 4, padding: "10px 16px", borderRadius: 10, fontWeight: 600,
+                      background: "linear-gradient(135deg, rgba(124,58,237,0.3), rgba(59,130,246,0.2))",
+                      border: "1px solid rgba(124,58,237,0.4)", color: "#B39DDB", fontSize: 15,
+                      textDecoration: "none", textAlign: "center"
+                    }}>
+                    EV Society
+                  </a>
+                </>
               )}
             </Fragment>
           ))}
@@ -373,7 +376,7 @@ export default function AerospacePage() {
               borderRadius: 999, padding: "7px 16px", marginBottom: 28
             }}>
               <Shield size={14} color="#7C3AED" />
-              <span style={{ color: "#B39DDB", fontSize: 13, fontWeight: 500 }}>Aerospace Research Platform</span>
+              <span style={{ color: "#B39DDB", fontSize: 13, fontWeight: 500 }}>EV Society · Aerospace Research Platform</span>
             </div>
 
             <h1 style={{
@@ -404,10 +407,11 @@ export default function AerospacePage() {
                 padding: "13px 24px", borderRadius: 12, background: "rgba(59,130,246,0.12)",
                 border: "1px solid rgba(59,130,246,0.35)", color: "#93C5FD", fontWeight: 600, fontSize: 15, cursor: "pointer"
               }}>Research Projects</button>
-              <button style={{
+              <Link href="/contact" style={{
                 padding: "13px 24px", borderRadius: 12, background: "transparent",
-                border: "1px solid rgba(255,255,255,0.12)", color: "#B5B8C9", fontWeight: 600, fontSize: 15, cursor: "pointer"
-              }}>Join Community</button>
+                border: "1px solid rgba(255,255,255,0.12)", color: "#B5B8C9", fontWeight: 600, fontSize: 15, cursor: "pointer",
+                textDecoration: "none", display: "block"
+              }}>Join Community</Link>
             </div>
 
             {/* Stats */}
@@ -920,10 +924,11 @@ export default function AerospacePage() {
               }}>
                 Start Learning Free <ArrowRight size={18} />
               </button>
-              <button style={{
+              <Link href="/contact" style={{
                 padding: "14px 28px", borderRadius: 12, background: "transparent",
-                border: "1px solid rgba(255,255,255,0.15)", color: "#B5B8C9", fontWeight: 600, fontSize: 16, cursor: "pointer"
-              }}>Join Community</button>
+                border: "1px solid rgba(255,255,255,0.15)", color: "#B5B8C9", fontWeight: 600, fontSize: 16, cursor: "pointer",
+                textDecoration: "none", display: "block"
+              }}>Express Interest</Link>
             </div>
           </div>
         </div>
@@ -972,6 +977,11 @@ export default function AerospacePage() {
           <div style={{ borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: 24, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
             <span style={{ color: "#B5B8C9", fontSize: 13 }}>© 2026 Aerospace · Building the Future of Safe Aviation</span>
             <span style={{ color: "#B5B8C9", fontSize: 13 }}>Powered by EV.ENGINEER</span>
+          </div>
+          <div style={{ display: "flex", justifyContent: "center", gap: 20, flexWrap: "wrap", paddingTop: 16 }}>
+            <a href="https://www.uflight.in/" target="_blank" rel="noopener noreferrer" style={{ color: "#B5B8C9", fontSize: 13, textDecoration: "none" }}>UFlight</a>
+            <a href="https://www.evsociety.org/" target="_blank" rel="noopener noreferrer" style={{ color: "#B5B8C9", fontSize: 13, textDecoration: "none" }}>EV Society</a>
+            <a href="https://itelematics.com" target="_blank" rel="noopener noreferrer" style={{ color: "#B5B8C9", fontSize: 13, textDecoration: "none" }}>iTelematics</a>
           </div>
         </div>
       </footer>
