@@ -329,12 +329,15 @@ export default function SpacePage() {
                 color: "#93C5FD", fontSize: 14, fontWeight: 600,
               }}>
                 <span>Space Education (14–18)</span>
-                <ChevronRight size={14} />
-                <span>Internships &amp; Research</span>
-                <ChevronRight size={14} />
-                <span>Validated Prototypes</span>
-                <ChevronRight size={14} />
-                <span>Young Space Startups</span>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                  <ChevronRight size={14} /> Internships &amp; Research
+                </span>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                  <ChevronRight size={14} /> Validated Prototypes
+                </span>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                  <ChevronRight size={14} /> Young Space Startups
+                </span>
               </div>
 
               <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 40 }}>

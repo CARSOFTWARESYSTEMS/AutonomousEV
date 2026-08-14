@@ -102,6 +102,16 @@
   grid-template-columns: 2fr 1fr 1fr 1fr;
 }
 
+/* 1fr grid tracks default to a content-based minimum (minmax(auto, 1fr)),
+   so a child with unwrappable intrinsic width can blow the track past the
+   container's available space. Un-pin that minimum so tracks — and the
+   text inside them — actually respect the viewport. */
+.heroGrid > *,
+.aboutGrid > *,
+.footerGrid > * {
+  min-width: 0;
+}
+
 .hiddenMobile {
   display: flex;
 }

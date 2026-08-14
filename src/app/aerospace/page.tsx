@@ -498,7 +498,8 @@ export default function AerospacePage() {
         {/* Left – Cyber illustration */}
         <div style={{ position: "relative", display: "flex", justifyContent: "center" }}>
           <div style={{
-            width: 400, height: 420, borderRadius: 28, overflow: "hidden", position: "relative",
+            width: 400, maxWidth: "100%", aspectRatio: "400 / 420", height: "auto",
+            borderRadius: 28, overflow: "hidden", position: "relative",
             background: "linear-gradient(135deg, #11152E, #0D1230)",
             border: "1px solid rgba(124,58,237,0.2)",
             boxShadow: "0 40px 100px rgba(0,0,0,0.5)"
