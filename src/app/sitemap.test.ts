@@ -13,4 +13,13 @@ describe("sitemap", () => {
     const urls = entries.map((e) => e.url);
     expect(urls).toContain("https://autonomous.ev.engineer/design-development/passenger-taxi");
   });
+
+  it("lists /space exactly once, with its canonical (non-trailing-slash) URL and a real lastModified date", () => {
+    const entries = sitemap();
+    const urls = entries.map((e) => e.url);
+    const spaceEntries = entries.filter((e) => e.url === "https://autonomous.ev.engineer/space");
+    expect(spaceEntries).toHaveLength(1);
+    expect(urls).not.toContain("https://autonomous.ev.engineer/space/");
+    expect(spaceEntries[0].lastModified).toBeInstanceOf(Date);
+  });
 });

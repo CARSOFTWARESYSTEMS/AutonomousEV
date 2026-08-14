@@ -1,27 +1,52 @@
 import type { Metadata } from "next";
-
-const TITLE = "Autonomous Spacecraft Health Mission 2040 | EV Society";
-const DESCRIPTION =
-  "A long-term pathway from space education and engineering internships to research and young space startups, focused on autonomous spacecraft health management and safe recovery.";
+import { SEO_TITLE as TITLE, SEO_DESCRIPTION as DESCRIPTION, SEO_CANONICAL as CANONICAL } from "./seo";
 
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
+  keywords: [
+    "autonomous spacecraft health management",
+    "spacecraft fault detection isolation and recovery",
+    "spacecraft FDIR",
+    "spacecraft digital twin",
+    "spacecraft telemetry simulator",
+    "CubeSat health monitoring",
+    "spacecraft prognostics",
+    "verified safe recovery",
+  ],
+  authors: [{ name: "EV Society" }],
+  creator: "EV Society",
+  publisher: "EV Society",
   alternates: {
-    canonical: "https://autonomous.ev.engineer/space",
+    canonical: CANONICAL,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
-    url: "https://autonomous.ev.engineer/space",
+    url: CANONICAL,
     type: "website",
     locale: "en_US",
     siteName: "EV.ENGINEER",
+    // og:image, og:image:alt, og:image:width/height are generated automatically
+    // from ./opengraph-image.tsx (Next.js file-based metadata convention).
   },
   twitter: {
     card: "summary_large_image",
     title: TITLE,
     description: DESCRIPTION,
+    // twitter:image / twitter:image:alt are generated automatically from the
+    // same ./opengraph-image.tsx, shared across Open Graph and Twitter Card.
   },
 };
 

@@ -54,8 +54,8 @@ export const missionLoop: { step: string; icon: IconName }[] = [
 ];
 
 export const visionReferences: { label: string; href: string }[] = [
-  { label: "Union Cabinet approves India's Mission", href: "https://www.isro.gov.in/UnionCabinetApprovesIndiasMission.html" },
-  { label: "Mars Orbiter Mission (MOM)", href: "https://www.isro.gov.in/MOM.html" },
+  { label: "Union Cabinet approves India's Mission (2024)", href: "https://www.isro.gov.in/UnionCabinetApprovesIndiasMission.html" },
+  { label: "Mars Orbiter Mission, MOM (2013)", href: "https://www.isro.gov.in/MOM.html" },
   { label: "Achievements, Department of Space 2025", href: "https://www.isro.gov.in/Achievements_Department_of_Space_2025.html" },
   { label: "Indian Space Policy 2023 (PDF)", href: "https://www.isro.gov.in/media_isro/pdf/IndianSpacePolicy2023.pdf" },
 ];
@@ -122,7 +122,7 @@ export const internshipWorkAreas: string[] = [
 export const researchLayers: { title: string; icon: IconName }[] = [
   { title: "Mission & subsystem simulation", icon: "activity" },
   { title: "Digital twin & state estimation", icon: "layers" },
-  { title: "Fault detection & diagnosis", icon: "alertTriangle" },
+  { title: "Fault detection, isolation & diagnosis (FDIR)", icon: "alertTriangle" },
   { title: "Prognostics & safe recovery", icon: "lifeBuoy" },
   { title: "Verification & assurance", icon: "shield" },
 ];

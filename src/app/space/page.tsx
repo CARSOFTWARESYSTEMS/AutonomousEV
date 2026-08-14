@@ -16,6 +16,22 @@ import {
   researchThemes, roadmap, participationAudiences,
   accessModels, faqs, type IconName,
 } from "./spaceData";
+import { JsonLd } from "@/lib/structured-data/JsonLd";
+import { buildSpaceEntityGraph } from "@/lib/structured-data/spaceGraph";
+import { SEO_TITLE, SEO_DESCRIPTION } from "./seo";
+
+const spaceEntityGraph = {
+  "@context": "https://schema.org",
+  "@graph": buildSpaceEntityGraph({
+    title: SEO_TITLE,
+    description: SEO_DESCRIPTION,
+    datePublished: "2026-08-14",
+    dateModified: "2026-08-14",
+    ogImageUrl: "https://autonomous.ev.engineer/space/opengraph-image",
+    diagramImageUrl: "https://autonomous.ev.engineer/space/autonomous-spacecraft-health-management-loop.svg",
+    citationUrls: visionReferences.map((ref) => ref.href),
+  }),
+};
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -78,8 +94,8 @@ const navItems = [
   { label: "Mission Path", href: "#pathway" },
   { label: "Research", href: "#research" },
   { label: "Labs", href: "#labs" },
-  { label: "Projects", href: "#projects" },
-  { label: "Resources", href: "#vision" },
+  { label: "Research Themes", href: "#projects" },
+  { label: "Vision & References", href: "#vision" },
   { label: "Community", href: "#community" },
   { label: "UFlight", href: "https://www.uflight.in/" },
   { label: "EV.ENGINEER", href: "/" },
@@ -139,9 +155,13 @@ function FaqItem({ q, a }: { q: string; a: string }) {
         <span style={{ fontWeight: 600, fontSize: 15, color: "#fff" }}>{q}</span>
         {open ? <ChevronUp size={18} color="#7C3AED" /> : <ChevronDown size={18} color="#B5B8C9" />}
       </button>
-      {open && (
-        <p id={panelId} style={{ margin: 0, padding: "0 20px 18px", color: "#B5B8C9", fontSize: 14, lineHeight: 1.7 }}>{a}</p>
-      )}
+      <p
+        id={panelId}
+        hidden={!open}
+        style={{ margin: 0, padding: "0 20px 18px", color: "#B5B8C9", fontSize: 14, lineHeight: 1.7 }}
+      >
+        {a}
+      </p>
     </div>
   );
 }
@@ -151,6 +171,7 @@ export default function SpacePage() {
 
   return (
     <div className={`${styles.root} ${manrope.variable} ${inter.variable}`} style={{ background: "#090B1D", minHeight: "100vh", fontFamily: FONT_INTER, overflowX: "hidden" }}>
+      <JsonLd data={spaceEntityGraph} />
       <a href="#main-content" className={styles.skipLink}>Skip to content</a>
 
       {/* ── Header ── */}
@@ -316,6 +337,7 @@ export default function SpacePage() {
               }}>
                 <span style={{ color: "#fff" }}>Learn to </span>
                 <span style={{ background: "linear-gradient(135deg, #7C3AED, #3B82F6, #06B6D4)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Protect Missions.</span>
+                {" "}
                 <br />
                 <span style={{ color: "#fff" }}>Build Systems That Protect Spacecraft.</span>
               </h1>
@@ -352,7 +374,7 @@ export default function SpacePage() {
                   padding: "13px 24px", borderRadius: 12, background: "rgba(59,130,246,0.12)",
                   border: "1px solid rgba(59,130,246,0.35)", color: "#93C5FD", fontWeight: 600, fontSize: 15, textDecoration: "none",
                 }}>View the Pathway</a>
-                <a href="https://www.evsociety.org/" target="_blank" rel="noopener noreferrer" style={{
+                <a href="https://www.evsociety.org/join" target="_blank" rel="noopener noreferrer" style={{
                   padding: "13px 24px", borderRadius: 12, background: "transparent",
                   border: "1px solid rgba(255,255,255,0.12)", color: "#B5B8C9", fontWeight: 600, fontSize: 15, textDecoration: "none",
                 }}>Join Community</a>
@@ -424,8 +446,11 @@ export default function SpacePage() {
             <div style={{ maxWidth: 780, margin: "0 auto 40px", textAlign: "center" }}>
               <SectionLabel>One Mission</SectionLabel>
               <h2 style={sectionH2}>Can a spacecraft understand its own health and recover safely?</h2>
+              <p style={{ ...sectionDesc, fontWeight: 600, color: "#E4E6F5", marginBottom: 14 }}>
+                Autonomous Spacecraft Health Management is the capability to observe spacecraft telemetry, detect and isolate faults, predict mission impact, and recommend or execute verified recovery actions within bounded safety limits.
+              </p>
               <p style={sectionDesc}>
-                Future long-duration, autonomous, crewed, lunar and deep-space missions cannot depend on continuous ground intervention. A spacecraft must be able to observe its telemetry, detect anomalies, isolate likely faults, predict mission impact and recommend&mdash;or within verified limits execute&mdash;a safe recovery.
+                Future long-duration, autonomous, crewed, lunar and deep-space missions cannot depend on continuous ground intervention. A spacecraft must be able to observe its telemetry, detect anomalies, and isolate likely faults through Fault Detection, Isolation and Recovery (FDIR), predict mission impact, and recommend&mdash;or within verified limits execute&mdash;a safe recovery.
               </p>
             </div>
 
@@ -444,6 +469,19 @@ export default function SpacePage() {
                 </div>
               ))}
             </div>
+
+            <figure style={{ maxWidth: 900, margin: "0 auto 32px", textAlign: "center" }}>
+              <img
+                src="/space/autonomous-spacecraft-health-management-loop.svg"
+                width={1200}
+                height={320}
+                alt="Autonomous spacecraft health-management loop from telemetry monitoring through verified safe recovery."
+                style={{ width: "100%", height: "auto", display: "block" }}
+              />
+              <figcaption style={{ marginTop: 10, fontSize: 12.5, color: "#8B8FA3" }}>
+                The autonomous spacecraft health-management loop: telemetry monitoring flows into anomaly detection, fault isolation (FDIR), mission-impact prediction, bounded recovery and verification, which feeds back into continuous telemetry monitoring.
+              </figcaption>
+            </figure>
 
             <div style={{
               maxWidth: 780, margin: "0 auto", padding: "20px 24px", borderRadius: 18,
@@ -492,6 +530,10 @@ export default function SpacePage() {
             }}>
               <strong style={{ color: "#fff" }}>Independent initiative.</strong> References to national space goals are provided for educational context and do not imply endorsement, affiliation or partnership with ISRO, IN-SPACe, NSIL or the Department of Space.
             </div>
+
+            <p style={{ marginTop: 16, textAlign: "center", color: "#8B8FA3", fontSize: 12.5 }}>
+              Prepared by the EV Society technical team. Last reviewed: 14 August 2026.
+            </p>
           </div>
         </section>
 
@@ -774,6 +816,21 @@ export default function SpacePage() {
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {faqs.map((f) => <FaqItem key={f.q} q={f.q} a={f.a} />)}
             </div>
+          </div>
+        </section>
+
+        {/* ── Ecosystem and Responsibilities (#ecosystem) ── */}
+        <section id="ecosystem" style={{ padding: "56px 32px", background: "rgba(17,21,46,0.4)", borderTop: "1px solid rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
+          <div style={{ maxWidth: 780, margin: "0 auto", textAlign: "center" }}>
+            <SectionLabel>Ecosystem</SectionLabel>
+            <h2 style={sectionH2}>Ecosystem and Responsibilities</h2>
+            <p style={{ ...sectionDesc, textAlign: "left" }}>
+              Space is an{" "}
+              <a href="https://www.evsociety.org/" target="_blank" rel="noopener noreferrer" style={{ color: "#93C5FD", fontWeight: 600, textDecoration: "none" }}>EV Society</a> education and research initiative hosted on{" "}
+              <Link href="/" style={{ color: "#93C5FD", fontWeight: 600, textDecoration: "none" }}>EV.ENGINEER</Link>.{" "}
+              <a href="https://www.uflight.in/" target="_blank" rel="noopener noreferrer" style={{ color: "#93C5FD", fontWeight: 600, textDecoration: "none" }}>UFlight</a> focuses on health and usage monitoring technologies for aerospace and autonomous platforms. Commercial engineering products and services, where applicable, are handled separately by{" "}
+              <a href="https://itelematics.com/" target="_blank" rel="noopener noreferrer" style={{ color: "#93C5FD", fontWeight: 600, textDecoration: "none" }}>iTelematics Software Private Limited</a> under explicit agreements.
+            </p>
           </div>
         </section>
 

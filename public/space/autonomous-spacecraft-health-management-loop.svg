@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 320" width="1200" height="320" role="img" aria-labelledby="loopTitle loopDesc">
+  <title id="loopTitle">Autonomous spacecraft health-management loop</title>
+  <desc id="loopDesc">Telemetry monitoring flows into anomaly detection, then fault isolation, mission-impact prediction, bounded recovery, and verification, which feeds back into telemetry monitoring.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#7C3AED" />
+    </marker>
+  </defs>
+
+  <!-- connecting line -->
+  <line x1="90" y1="160" x2="1110" y2="160" stroke="#3B2E63" stroke-width="2" stroke-dasharray="2 6" />
+
+  <!-- feedback loop arrow (verification -> telemetry) -->
+  <path d="M 1050 210 C 1050 280, 150 280, 150 210" fill="none" stroke="#06B6D4" stroke-width="2" marker-end="url(#arrow)" />
+  <text x="600" y="300" text-anchor="middle" font-family="Manrope, Arial, sans-serif" font-size="14" fill="#67E8F9">Verified state feeds back into continuous telemetry monitoring</text>
+
+  <!-- 6 nodes -->
+  <g font-family="Manrope, Arial, sans-serif">
+    <!-- 1 Telemetry -->
+    <g transform="translate(30,60)">
+      <rect width="180" height="100" rx="16" fill="#151A34" stroke="#7C3AED" stroke-opacity="0.5" stroke-width="1.5" />
+      <circle cx="90" cy="34" r="16" fill="#7C3AED" fill-opacity="0.18" />
+      <path d="M78 34 L84 24 L90 40 L96 20 L102 34" fill="none" stroke="#B39DDB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      <text x="90" y="68" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">Telemetry</text>
+      <text x="90" y="86" text-anchor="middle" font-size="11" fill="#9092B0">Observe spacecraft state</text>
+    </g>
+
+    <!-- 2 Anomaly Detection -->
+    <g transform="translate(226,60)">
+      <rect width="180" height="100" rx="16" fill="#151A34" stroke="#7C3AED" stroke-opacity="0.5" stroke-width="1.5" />
+      <circle cx="90" cy="34" r="16" fill="#7C3AED" fill-opacity="0.18" />
+      <path d="M90 22 L98 44 L82 44 Z" fill="none" stroke="#B39DDB" stroke-width="2" stroke-linejoin="round" />
+      <line x1="90" y1="30" x2="90" y2="36" stroke="#B39DDB" stroke-width="2" stroke-linecap="round" />
+      <circle cx="90" cy="40" r="0.8" fill="#B39DDB" />
+      <text x="90" y="68" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">Anomaly Detection</text>
+      <text x="90" y="86" text-anchor="middle" font-size="11" fill="#9092B0">Flag deviations</text>
+    </g>
+
+    <!-- 3 Fault Isolation -->
+    <g transform="translate(422,60)">
+      <rect width="180" height="100" rx="16" fill="#151A34" stroke="#3B82F6" stroke-opacity="0.5" stroke-width="1.5" />
+      <circle cx="90" cy="34" r="16" fill="#3B82F6" fill-opacity="0.18" />
+      <rect x="82" y="26" width="16" height="16" rx="4" fill="none" stroke="#93C5FD" stroke-width="2" />
+      <text x="90" y="68" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">Fault Isolation</text>
+      <text x="90" y="86" text-anchor="middle" font-size="11" fill="#9092B0">FDIR diagnosis</text>
+    </g>
+
+    <!-- 4 Mission-Impact Prediction -->
+    <g transform="translate(618,60)">
+      <rect width="180" height="100" rx="16" fill="#151A34" stroke="#3B82F6" stroke-opacity="0.5" stroke-width="1.5" />
+      <circle cx="90" cy="34" r="16" fill="#3B82F6" fill-opacity="0.18" />
+      <circle cx="90" cy="34" r="9" fill="none" stroke="#93C5FD" stroke-width="2" />
+      <circle cx="90" cy="34" r="2" fill="#93C5FD" />
+      <text x="90" y="68" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Mission-Impact</text>
+      <text x="90" y="84" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Prediction</text>
+    </g>
+
+    <!-- 5 Bounded Recovery -->
+    <g transform="translate(814,60)">
+      <rect width="180" height="100" rx="16" fill="#151A34" stroke="#06B6D4" stroke-opacity="0.5" stroke-width="1.5" />
+      <circle cx="90" cy="34" r="16" fill="#06B6D4" fill-opacity="0.18" />
+      <path d="M90 22 A12 12 0 1 1 78 34" fill="none" stroke="#67E8F9" stroke-width="2" stroke-linecap="round" />
+      <path d="M78 34 L78 26 M78 34 L86 34" fill="none" stroke="#67E8F9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      <text x="90" y="68" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">Bounded Recovery</text>
+      <text x="90" y="86" text-anchor="middle" font-size="11" fill="#9092B0">Supervised action</text>
+    </g>
+
+    <!-- 6 Verification -->
+    <g transform="translate(1010,60)">
+      <rect width="180" height="100" rx="16" fill="#151A34" stroke="#10B981" stroke-opacity="0.5" stroke-width="1.5" />
+      <circle cx="90" cy="34" r="16" fill="#10B981" fill-opacity="0.18" />
+      <path d="M82 34 L88 40 L98 26" fill="none" stroke="#6EE7B7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+      <text x="90" y="68" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">Verification</text>
+      <text x="90" y="86" text-anchor="middle" font-size="11" fill="#9092B0">Confirm safe state</text>
+    </g>
+  </g>
+
+  <!-- arrows between nodes -->
+  <g stroke="#7C3AED" stroke-width="2" marker-end="url(#arrow)">
+    <line x1="210" y1="110" x2="222" y2="110" />
+    <line x1="406" y1="110" x2="418" y2="110" />
+    <line x1="602" y1="110" x2="614" y2="110" />
+    <line x1="798" y1="110" x2="810" y2="110" />
+    <line x1="994" y1="110" x2="1006" y2="110" />
+  </g>
+</svg>

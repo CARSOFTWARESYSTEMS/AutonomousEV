@@ -10,6 +10,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://autonomous.ev.engineer"),
   title: "EV.ENGINEER™ | Lithium-Ion EV Battery Intelligence Platform",
   description: "Lithium-Ion EV Battery Intelligence Platform. Building intelligent battery ecosystems through AI-driven diagnostics, thermal safety systems, battery lifecycle intelligence, second-life battery technologies, and deep-tech engineering innovation.",
   keywords: ["Lithium-Ion EV Battery Intelligence", "EV Battery Diagnostics", "Battery AI", "Battery Safety", "Battery Analytics", "Battery Lifecycle Intelligence", "Second-Life Batteries", "BMS Intelligence", "Battery Thermal Intelligence", "EV Battery Research", "Battery Intelligence Platform", "Sudarshana Karkala", "Autonomous EV training Singapore"],
