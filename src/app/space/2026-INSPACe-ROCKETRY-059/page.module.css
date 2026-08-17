@@ -34,9 +34,35 @@
 
 .pageNavInner {
   display: flex;
+  align-items: center;
   gap: 6px;
   flex-wrap: nowrap;
   white-space: nowrap;
+}
+
+.pageNavBrand {
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  padding: 6px 14px 6px 6px;
+  margin-right: 6px;
+  border-right: 1px solid var(--glass-border);
+  flex-shrink: 0;
+}
+
+.pageNavBrand:hover,
+.pageNavBrand:focus-visible {
+  color: var(--accent-primary);
+}
+
+.pageNavBrandTm {
+  font-size: 0.6em;
+  vertical-align: super;
+  margin-left: 1px;
 }
 
 .pageNavLink {

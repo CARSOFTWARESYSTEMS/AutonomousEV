@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { render, screen, within, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ModelRocketryPage, { metadata } from "./page";
+import { SEO_TITLE, SEO_CANONICAL } from "./seo";
 
 describe("Model Rocketry learning guide page", () => {
   it("renders exactly one H1 with the guide headline", () => {
@@ -12,12 +13,8 @@ describe("Model Rocketry learning guide page", () => {
   });
 
   it("has the specified metadata title, description and canonical URL", () => {
-    expect(metadata.title).toBe(
-      "Model Rocketry Workshop Learning Guide 2026 | EV.ENGINEER Space"
-    );
-    expect(metadata.alternates?.canonical).toBe(
-      "https://autonomous.ev.engineer/space/2026-INSPACe-ROCKETRY-059"
-    );
+    expect(metadata.title).toBe(SEO_TITLE);
+    expect(metadata.alternates?.canonical).toBe(SEO_CANONICAL);
     expect(typeof metadata.description).toBe("string");
   });
 

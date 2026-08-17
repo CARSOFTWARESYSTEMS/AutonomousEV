@@ -26,7 +26,6 @@ const WORKBOOK_PDF = "/workbook/model-rocketry-7-day-learning-workbook-2026.pdf"
 const COMPETITION_URL = "https://labs.ev.engineer/Internships/Rocketry/astroforge.html";
 
 const navItems = [
-  { label: "EV.ENGINEER", href: "/" },
   { label: "Learning Outcomes", href: "#outcomes" },
   { label: "Mission Flow", href: "#mission-flow" },
   { label: "Anatomy", href: "#anatomy" },
@@ -276,6 +275,9 @@ export default function RocketryContent() {
 
       <nav className={styles.pageNav} aria-label="Page section navigation">
         <div className={`container ${styles.pageNavInner}`}>
+          <Link href="/" className={styles.pageNavBrand}>
+            EV.ENGINEER<span className={styles.pageNavBrandTm}>™</span>
+          </Link>
           {navItems.map((item) => (
             <a key={item.href} href={item.href} className={styles.pageNavLink}>{item.label}</a>
           ))}
