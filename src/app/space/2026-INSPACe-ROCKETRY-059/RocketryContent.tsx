@@ -26,6 +26,7 @@ const WORKBOOK_PDF = "/workbook/model-rocketry-7-day-learning-workbook-2026.pdf"
 const COMPETITION_URL = "https://labs.ev.engineer/Internships/Rocketry/astroforge.html";
 
 const navItems = [
+  { label: "EV.ENGINEER", href: "/" },
   { label: "Learning Outcomes", href: "#outcomes" },
   { label: "Mission Flow", href: "#mission-flow" },
   { label: "Anatomy", href: "#anatomy" },
