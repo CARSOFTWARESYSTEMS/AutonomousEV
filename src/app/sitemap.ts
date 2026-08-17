@@ -37,6 +37,7 @@ const ROUTES = [
   "/internships/training-internship",
   "/si-ems",
   "/space",
+  "/space/2026-INSPACe-ROCKETRY-059",
   "/technical-concepts",
   "/workshop-gallery",
 ];

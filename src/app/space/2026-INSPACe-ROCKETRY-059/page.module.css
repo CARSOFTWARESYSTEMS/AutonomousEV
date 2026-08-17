@@ -1,0 +1,966 @@
+/* ─── Model Rocketry Learning Guide Page ─── */
+/* Mirrors the design language of /internships/battery-circular-economy:
+   same CSS custom-property tokens, same glass/card/section conventions. */
+
+.skipLink {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 200;
+  background: var(--accent-primary);
+  color: #04140E;
+  padding: 12px 20px;
+  border-radius: 0 0 8px 0;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.skipLink:focus {
+  left: 0;
+}
+
+/* ─── In-page nav ─── */
+.pageNav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(4, 20, 14, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--glass-border);
+  padding: 10px 0;
+  overflow-x: auto;
+}
+
+.pageNavInner {
+  display: flex;
+  gap: 6px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.pageNavLink {
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 999px;
+  transition: color 0.2s ease, background 0.2s ease;
+  flex-shrink: 0;
+}
+
+.pageNavLink:hover,
+.pageNavLink:focus-visible {
+  color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.1);
+}
+
+/* ─── Hero ─── */
+.hero {
+  position: relative;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.heroGlow {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 140vw;
+  height: 120vh;
+  background: radial-gradient(circle, rgba(0, 255, 163, 0.07) 0%, rgba(0, 0, 0, 0) 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.heroInner {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+.heroPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.4rem 1.25rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.08);
+  border: 1px solid rgba(76, 169, 48, 0.25);
+  margin-bottom: 1.5rem;
+}
+
+.heroTitle {
+  font-size: clamp(2.2rem, 4.6vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  color: #fff;
+  margin-bottom: 1rem;
+  letter-spacing: -0.03em;
+}
+
+.heroDesc {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 720px;
+  margin: 0 auto 1.75rem;
+  line-height: 1.7;
+}
+
+.heroMeta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 2rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.heroMetaChip {
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.heroCtas {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.independentNote {
+  max-width: 760px;
+  margin: 2rem auto 0;
+  padding: 14px 20px;
+  border-radius: var(--radius-md);
+  background: rgba(76, 169, 48, 0.06);
+  border: 1px solid rgba(76, 169, 48, 0.2);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.independentNote strong {
+  color: var(--text-primary);
+}
+
+/* ─── Sections ─── */
+.pageSection {
+  padding: 4.5rem 0;
+  position: relative;
+  scroll-margin-top: 60px;
+}
+
+.pageSectionAlt {
+  padding: 4.5rem 0;
+  position: relative;
+  background: rgba(4, 20, 14, 0.4);
+  scroll-margin-top: 60px;
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.sectionNumber {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.1);
+  border: 1px solid rgba(76, 169, 48, 0.2);
+  padding: 0.3rem 1rem;
+  border-radius: 999px;
+  margin-bottom: 1rem;
+}
+
+.sectionTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.75rem;
+}
+
+.sectionSubtitle {
+  font-size: 1.02rem;
+  color: var(--text-secondary);
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ─── Learning outcomes ─── */
+.outcomeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.outcomeCard {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 1.1rem 1.25rem;
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+}
+
+.outcomeIcon {
+  color: var(--accent-primary);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.outcomeText {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* ─── Step flow (mission sequence / flight phases / etc.) ─── */
+.stepFlow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0.5rem 0;
+}
+
+.stepFlowItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stepFlowChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(17, 21, 46, 0.4);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.stepFlowIndex {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  color: #04140E;
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.stepFlowArrow {
+  color: var(--accent-primary);
+  font-size: 1.1rem;
+}
+
+/* ─── Diagrams ─── */
+.diagramFigure {
+  margin: 1.5rem auto;
+  max-width: 640px;
+  text-align: center;
+}
+
+.diagramSvg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.diagramCaption {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  text-align: left;
+}
+
+/* Avionics block diagram (HTML/CSS grid version) */
+.avionicsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.avionicsRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.avionicsBox {
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  background: rgba(17, 21, 46, 0.5);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.avionicsArrow {
+  color: var(--accent-primary);
+  font-size: 1.1rem;
+}
+
+.avionicsArrowUp,
+.avionicsArrowDown {
+  color: var(--accent-primary);
+  font-size: 1rem;
+}
+
+.avionicsSpacer {
+  width: 60px;
+}
+
+/* ─── Day tabs (Section E) ─── */
+.dayTabList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.dayTabButton {
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  background: rgba(17, 21, 46, 0.4);
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  font-family: inherit;
+}
+
+.dayTabButton:hover {
+  border-color: var(--accent-primary);
+  color: var(--text-primary);
+}
+
+.dayTabButtonActive {
+  background: rgba(76, 169, 48, 0.14);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.dayPanel {
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px);
+}
+
+.dayPanelHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 0.5rem;
+}
+
+.dayPanelDate {
+  color: var(--accent-primary);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.dayPanelTitle {
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0.25rem 0 0.75rem;
+}
+
+.dayPanelGoal {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin-bottom: 1.25rem;
+}
+
+.dayCodes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 1.25rem;
+}
+
+.dayCodeChip {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(76, 169, 48, 0.1);
+  border: 1px solid rgba(76, 169, 48, 0.25);
+  color: var(--accent-primary);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.dayColumns {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.dayColumnTitle {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent-primary);
+  margin-bottom: 0.6rem;
+}
+
+.dayList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.dayList li {
+  padding-left: 14px;
+  position: relative;
+}
+
+.dayList li::before {
+  content: '›';
+  position: absolute;
+  left: 0;
+  color: var(--accent-primary);
+  font-weight: 700;
+}
+
+/* ─── Callouts ─── */
+.callout {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin-top: 0.9rem;
+}
+
+.calloutLabel {
+  font-weight: 700;
+  flex-shrink: 0;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding-top: 2px;
+}
+
+.calloutBody {
+  color: var(--text-secondary);
+}
+
+.calloutBeginner {
+  background: rgba(59, 130, 246, 0.06);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+.calloutBeginner .calloutLabel { color: #93C5FD; }
+
+.calloutWhy {
+  background: rgba(76, 169, 48, 0.06);
+  border: 1px solid rgba(76, 169, 48, 0.2);
+}
+.calloutWhy .calloutLabel { color: var(--accent-primary); }
+
+.calloutRemember {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.calloutRemember .calloutLabel { color: var(--text-primary); }
+
+.calloutSafety {
+  background: rgba(255, 77, 77, 0.06);
+  border: 1px solid rgba(255, 77, 77, 0.25);
+}
+.calloutSafety .calloutLabel { color: var(--error); }
+
+.calloutVerify {
+  background: rgba(245, 158, 11, 0.06);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+.calloutVerify .calloutLabel { color: #F59E0B; }
+
+.calloutCheck {
+  background: rgba(139, 92, 246, 0.06);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+}
+.calloutCheck .calloutLabel { color: #B39DDB; }
+
+/* ─── Tutorial module accordion (Section F) ─── */
+.accordionControls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+}
+
+.accordionControlBtn {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.accordionControlBtn:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.accordionList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.accordionItem {
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  overflow: hidden;
+}
+
+.accordionButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+}
+
+.accordionButtonLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.accordionCode {
+  flex-shrink: 0;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(76, 169, 48, 0.1);
+  border: 1px solid rgba(76, 169, 48, 0.25);
+  color: var(--accent-primary);
+  font-size: 0.68rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.accordionTitle {
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.98rem;
+}
+
+.accordionPanel {
+  padding: 0 20px 20px;
+}
+
+.accordionParagraph {
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  line-height: 1.7;
+  margin: 0 0 0.75rem;
+}
+
+.accordionSubhead {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin: 1rem 0 0.4rem;
+}
+
+.accordionKeyIdeas {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.accordionKeyIdeas li {
+  padding-left: 16px;
+  position: relative;
+}
+
+.accordionKeyIdeas li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--accent-primary);
+  font-size: 0.78rem;
+}
+
+.workshopConnection {
+  margin-top: 1rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ─── Workbook cards (Section G) ─── */
+.workbookGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.workbookCard {
+  padding: 1.25rem 1.4rem;
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+}
+
+.workbookCardTitle {
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
+}
+
+.workbookFieldList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.workbookField {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
+  padding-bottom: 8px;
+}
+
+/* ─── Safety and quality gate (Section H) ─── */
+.safetyGateWrap {
+  max-width: 880px;
+  margin: 0 auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 77, 77, 0.3);
+  background: linear-gradient(135deg, rgba(255, 77, 77, 0.06), rgba(6, 40, 28, 0.5));
+  padding: 2rem;
+}
+
+.safetyGateIntro {
+  color: var(--text-primary);
+  font-size: 0.98rem;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.safetyGateList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.safetyGateItem {
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 77, 77, 0.15);
+}
+
+.safetyGateItemTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.92rem;
+  margin-bottom: 0.4rem;
+}
+
+.safetyGateItemBody {
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+/* ─── Glossary (Section I) ─── */
+.glossaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.75rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.glossaryItem {
+  padding: 0.9rem 1.1rem;
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+}
+
+.glossaryTerm {
+  color: var(--accent-primary);
+  font-weight: 700;
+  font-size: 0.88rem;
+  margin-bottom: 0.3rem;
+}
+
+.glossaryDef {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+
+/* ─── Quiz ─── */
+.quizList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+}
+
+.quizItem {
+  border-radius: var(--radius-sm);
+  background: rgba(17, 21, 46, 0.35);
+  border: 1px solid var(--glass-border);
+  padding: 0;
+}
+
+.quizSummary {
+  cursor: pointer;
+  padding: 12px 16px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  list-style: none;
+}
+
+.quizSummary::-webkit-details-marker {
+  display: none;
+}
+
+.quizAnswer {
+  padding: 0 16px 14px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+/* ─── Source / disclaimer section ─── */
+.sourceBox {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+
+.sourceLinks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 1.25rem 0;
+}
+
+.sourceLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  background: rgba(76, 169, 48, 0.08);
+  border: 1px solid rgba(76, 169, 48, 0.25);
+  color: var(--accent-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.sourceLink:hover {
+  background: rgba(76, 169, 48, 0.16);
+}
+
+.freshnessLine {
+  margin-top: 1.25rem;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.printButton {
+  margin-top: 1.5rem;
+  padding: 0.6rem 1.5rem;
+  border-radius: 999px;
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.printButton:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+/* ─── Final CTA ─── */
+.finalSection {
+  padding: 5rem 0;
+  text-align: center;
+  position: relative;
+}
+
+.finalGlow {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80vw;
+  height: 300px;
+  background: radial-gradient(ellipse, rgba(76, 169, 48, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.finalTitle {
+  font-size: clamp(1.9rem, 3.6vw, 2.7rem);
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 0.75rem;
+}
+
+.finalDesc {
+  color: var(--text-secondary);
+  font-size: 1.02rem;
+  max-width: 620px;
+  margin: 0 auto 1.75rem;
+  line-height: 1.7;
+}
+
+.finalCtas {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ─── Print styles ─── */
+@media print {
+  .pageNav,
+  .heroCtas,
+  .finalCtas,
+  .accordionControls,
+  .dayTabList,
+  .printButton {
+    display: none !important;
+  }
+  .accordionPanel {
+    display: block !important;
+  }
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 900px) {
+  .dayColumns {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    min-height: auto;
+  }
+  .heroCtas,
+  .finalCtas {
+    flex-direction: column;
+    align-items: center;
+  }
+  .heroCtas > *,
+  .finalCtas > * {
+    width: 100%;
+    max-width: 300px;
+  }
+  .dayPanel {
+    padding: 1.25rem;
+  }
+  .accordionButton {
+    padding: 14px 16px;
+  }
+  .accordionPanel {
+    padding: 0 16px 16px;
+  }
+}
