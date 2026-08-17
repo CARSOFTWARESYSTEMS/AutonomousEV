@@ -3,15 +3,26 @@
 // URLs represent the *same* entity, and these four organisations/brands are
 // separate. Relationships are expressed only where they are already stated
 // elsewhere on the live site (see /contact, / and /space itself).
+//
+// The shared entity ids and node shapes (iTelematics, EV.ENGINEER brand, EV
+// Society, WebSite) are centralised in ./entities.ts, the single source of
+// truth reused by every page's entity graph — see that file's own comment.
 
-const SITE_URL = "https://autonomous.ev.engineer";
+import {
+  SITE_URL,
+  ITELEMATICS_ID,
+  EV_ENGINEER_BRAND_ID,
+  EV_SOCIETY_ID,
+  UFLIGHT_BRAND_ID,
+  WEBSITE_ID,
+  itelematicsOrgNode,
+  evEngineerBrandNode,
+  evSocietyOrgNode,
+  uflightBrandNode,
+  websiteNode,
+} from "./entities";
+
 const SPACE_URL = `${SITE_URL}/space`;
-
-const ITELEMATICS_ID = "https://itelematics.com/#organization";
-const EV_ENGINEER_BRAND_ID = `${SITE_URL}/#brand`;
-const EV_SOCIETY_ID = "https://www.evsociety.org/#organization";
-const UFLIGHT_BRAND_ID = "https://www.uflight.in/#brand";
-const WEBSITE_ID = `${SITE_URL}/#website`;
 const MISSION_ID = `${SPACE_URL}#mission`;
 const WEBPAGE_ID = `${SPACE_URL}#webpage`;
 
@@ -35,41 +46,13 @@ export function buildSpaceEntityGraph({
   citationUrls,
 }: SpaceGraphOptions): object[] {
   return [
-    {
-      "@type": "Organization",
-      "@id": ITELEMATICS_ID,
-      name: "iTelematics Software Private Limited",
-      legalName: "iTelematics Software Private Limited",
-      url: "https://itelematics.com/",
-    },
-    {
-      "@type": "Brand",
-      "@id": EV_ENGINEER_BRAND_ID,
-      name: "EV.ENGINEER",
-      url: `${SITE_URL}/`,
-    },
-    {
-      "@type": "Organization",
-      "@id": EV_SOCIETY_ID,
-      name: "EV Society",
-      url: "https://www.evsociety.org/",
-    },
-    {
-      "@type": "Brand",
-      "@id": UFLIGHT_BRAND_ID,
-      name: "UFlight",
-      url: "https://www.uflight.in/",
-    },
-    {
-      "@type": "WebSite",
-      "@id": WEBSITE_ID,
-      name: "EV.ENGINEER",
-      url: `${SITE_URL}/`,
-      brand: { "@id": EV_ENGINEER_BRAND_ID },
-      // Verified on-site: /contact and / both identify iTelematics Software
-      // Private Limited as the operator of EV.ENGINEER.
-      publisher: { "@id": ITELEMATICS_ID },
-    },
+    itelematicsOrgNode(),
+    evEngineerBrandNode(),
+    evSocietyOrgNode(),
+    uflightBrandNode(),
+    // Verified on-site: /contact and / both identify iTelematics Software
+    // Private Limited as the operator of EV.ENGINEER (see websiteNode()).
+    websiteNode(),
     {
       "@type": "ResearchProject",
       "@id": MISSION_ID,

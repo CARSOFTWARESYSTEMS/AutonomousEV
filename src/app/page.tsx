@@ -3,10 +3,22 @@ import Link from "next/link";
 import Image from "next/image";
 import EVCareersHeroCard from "@/components/EVCareersHeroCard";
 import EVBatteryHeroCard from "@/components/EVBatteryHeroCard";
+import { JsonLd } from "@/lib/structured-data/JsonLd";
+import { buildHomeGraph } from "@/lib/structured-data/homeGraph";
+
+const HOME_TITLE = "EV.ENGINEER™ | Lithium-Ion EV Battery Intelligence Platform";
+const HOME_DESCRIPTION =
+  "Lithium-Ion EV Battery Intelligence Platform. Building intelligent battery ecosystems through AI-driven diagnostics, thermal safety systems, battery lifecycle intelligence, second-life battery technologies, and deep-tech engineering innovation.";
+
+const homeGraph = {
+  "@context": "https://schema.org",
+  "@graph": buildHomeGraph({ title: HOME_TITLE, description: HOME_DESCRIPTION }),
+};
 
 export default function Home() {
   return (
     <>
+      <JsonLd data={homeGraph} />
       {/* 1. HERO BANNER */}
       <section className={styles.hero}>
         <div className={`container`}>

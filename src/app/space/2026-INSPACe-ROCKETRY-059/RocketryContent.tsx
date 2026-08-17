@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import styles from "./page.module.css";
 import { JsonLd } from "@/lib/structured-data/JsonLd";
+import { WEBSITE_ID, websiteNode } from "@/lib/structured-data/entities";
 import { SEO_TITLE, SEO_DESCRIPTION, SEO_CANONICAL, LAST_REVIEWED } from "./seo";
 import {
   days, tutorialModules, workbookCards, glossary, quiz, learningOutcomes,
@@ -40,6 +41,7 @@ const navItems = [
 const jsonLdGraph = {
   "@context": "https://schema.org",
   "@graph": [
+    websiteNode(),
     {
       "@type": "BreadcrumbList",
       itemListElement: [
@@ -49,7 +51,10 @@ const jsonLdGraph = {
       ],
     },
     {
-      "@type": "LearningResource",
+      // Both types are accurate: this is a rendered web page (WebPage) whose
+      // primary content is an educational resource (LearningResource).
+      "@type": ["WebPage", "LearningResource"],
+      "@id": `${SEO_CANONICAL}#webpage`,
       name: SEO_TITLE,
       headline: "Model Rocketry: Seven-Day Learning Guide",
       description: SEO_DESCRIPTION,
@@ -59,11 +64,21 @@ const jsonLdGraph = {
       educationalLevel: "Beginner",
       datePublished: "2026-08-17",
       dateModified: "2026-08-17",
-      isPartOf: { "@type": "WebSite", name: "EV.ENGINEER", url: "https://autonomous.ev.engineer/" },
-      about: {
-        "@type": "Course",
-        name: "Workshop on Essentials of Model Rocketry — IN-SPACe Model Rocketry / CAN-7USAT India Student Competition 2026–27",
-      },
+      isPartOf: { "@id": WEBSITE_ID },
+      // Deliberately NOT typed as `Course` here: this page is an independent
+      // educational companion, not the official workshop, and using `Course`
+      // for the official programme would risk implying EV.ENGINEER is its
+      // provider. `isBasedOn` links to the official external source instead,
+      // and `about` names the model-rocketry subject matter this page
+      // actually teaches (not the external workshop itself).
+      isBasedOn: OFFICIAL_WORKSHOP_URL,
+      about: [
+        { "@type": "Thing", name: "Model rocketry" },
+        { "@type": "Thing", name: "Rocket aerodynamics and stability" },
+        { "@type": "Thing", name: "Solid rocket motor propulsion" },
+        { "@type": "Thing", name: "Rocket recovery systems" },
+        { "@type": "Thing", name: "Rocket avionics and telemetry" },
+      ],
       citation: [OFFICIAL_WORKSHOP_URL, BROCHURE_PDF, WORKBOOK_PDF],
     },
   ],

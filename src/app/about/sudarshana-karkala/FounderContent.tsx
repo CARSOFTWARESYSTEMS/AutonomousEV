@@ -57,6 +57,82 @@ export default function FounderContent() {
         </div>
       </section>
 
+      {/* INITIATIVES & PROJECTS SECTION */}
+      <section className={styles.contentSection}>
+        <div className={styles.glassCard}>
+          <h2 className={styles.sectionTitle}>Initiatives and Projects</h2>
+          <p className={styles.description}>
+            Publicly documented initiatives and projects he leads or contributes to through the organisations and
+            brand relationships above:
+          </p>
+          <ul className={styles.focusList}>
+            <li>
+              <Link href="/internships" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: 600 }}>
+                EV.ENGINEER Internships &amp; Student Projects
+              </Link>{" "}
+              — EV battery, cybersecurity, autonomous-systems and aerospace internship and project tracks.
+            </li>
+            <li>
+              <Link href="/si-ems" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: 600 }}>
+                SI-EMS
+              </Link>{" "}
+              — AI-driven Energy Management Systems research for autonomous EVs.
+            </li>
+            <li>
+              <Link href="/space" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: 600 }}>
+                Space Initiative
+              </Link>{" "}
+              — EV Society&apos;s aerospace and space-engineering education initiative, including the{" "}
+              <Link href="/space/2026-INSPACe-ROCKETRY-059" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: 600 }}>
+                Model Rocketry Learning Guide
+              </Link>.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      {/* VERIFIED PROFILES SECTION */}
+      <section className={styles.contentSection}>
+        <div className={styles.glassCard}>
+          <h2 className={styles.sectionTitle}>Verified Profiles</h2>
+          <p className={styles.description}>
+            Public professional profiles verified and maintained by Sudarshana Karkala:
+          </p>
+          <ul className={styles.focusList}>
+            <li>
+              <a
+                href="https://www.linkedin.com/in/sudarshanakarkala/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: 600 }}
+                data-track-event="linkedin_profile_click"
+                data-track-section-id="profile-verified-links"
+              >
+                LinkedIn — Sudarshana Karkala
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://topmate.io/sudarshana_karkala"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: 600 }}
+                data-track-event="topmate_profile_click"
+                data-track-section-id="profile-verified-links"
+              >
+                Topmate — Mentorship &amp; Professional Guidance
+              </a>
+            </li>
+          </ul>
+          <p className={styles.description} style={{ marginBottom: 0, fontSize: "0.95rem" }}>
+            Verified feedback and professional recognition connected to this profile are indexed on the{" "}
+            <Link href="/trust-center" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: 600 }}>
+              Trust Center
+            </Link>.
+          </p>
+        </div>
+      </section>
+
       {/* MISSION SECTION */}
       <section className={styles.missionSection}>
         <h2 className={styles.sectionTitle}>Mission</h2>
@@ -70,16 +146,68 @@ export default function FounderContent() {
         </p>
         
         <div className={styles.connectSection}>
-          <a 
-            href="https://www.linkedin.com/in/sudarshanakarkala/" 
-            target="_blank" 
-            rel="noopener noreferrer" 
+          <a
+            href="https://www.linkedin.com/in/sudarshanakarkala/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="btn btn-primary"
             style={{ padding: '1rem 2.5rem', fontSize: '1.1rem' }}
           >
             View Profile on LinkedIn
           </a>
         </div>
+      </section>
+
+      {/* CONTACT & COLLABORATION SECTION */}
+      <section className={styles.contentSection}>
+        <div className={styles.glassCard}>
+          <h2 className={styles.sectionTitle}>Contact and Collaboration</h2>
+          <p className={styles.description}>
+            Available for strategic architectural consulting and advanced automotive R&amp;D partnerships.
+          </p>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px", fontSize: "0.95rem", flexWrap: "wrap", marginBottom: "16px" }}>
+            <a
+              href="tel:+919845561518"
+              style={{ color: "var(--accent-primary)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px", fontWeight: 600 }}
+              data-track-event="sudarshana_profile_click"
+              data-track-section-id="profile-contact-block"
+            >
+              <span>📞</span> +91 9845561518
+            </a>
+            <span style={{ color: "rgba(255,255,255,0.2)" }}>|</span>
+            <a
+              href="https://www.linkedin.com/in/sudarshanakarkala/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "var(--accent-primary)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px", fontWeight: 600 }}
+              data-track-event="linkedin_profile_click"
+              data-track-section-id="profile-contact-block"
+            >
+              <span>🔗</span> LinkedIn — Sudarshana Karkala
+            </a>
+          </div>
+          <p className={styles.description} style={{ marginBottom: 0, fontSize: "0.95rem" }}>
+            For general business enquiries — internships, partnerships or media — use the{" "}
+            <Link href="/contact" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: 600 }}>
+              EV.ENGINEER contact page
+            </Link>.
+          </p>
+        </div>
+      </section>
+
+      {/* FRESHNESS / TRUST SIGNAL */}
+      <section className={styles.contentSection}>
+        <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", textAlign: "center" }}>
+          Independent public profile page. Last reviewed: 17 August 2026. See the{" "}
+          <Link href="/trust-center" style={{ color: "var(--accent-primary)", textDecoration: "none" }}>
+            Trust Center
+          </Link>{" "}
+          for verified feedback and recognition, or{" "}
+          <Link href="/contact" style={{ color: "var(--accent-primary)", textDecoration: "none" }}>
+            contact EV.ENGINEER
+          </Link>{" "}
+          to report a correction.
+        </p>
       </section>
     </div>
   );

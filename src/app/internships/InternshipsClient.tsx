@@ -236,6 +236,116 @@ function Section({ title, children }: { title: string, children: ReactNode }) {
   );
 }
 
+type AnswerItem = { q: string; a: ReactNode };
+
+const ANSWER_ITEMS: AnswerItem[] = [
+  {
+    q: "Who can apply?",
+    a: (
+      <>
+        Students with basic programming (Python, Flutter or React Native), circuits, sensors and AI/ML
+        fundamentals who want hands-on EV, battery, cybersecurity, autonomous-systems or aerospace project
+        experience. A discovery call confirms fit before you start.
+      </>
+    ),
+  },
+  {
+    q: "What prerequisites are required?",
+    a: (
+      <>
+        Basic EV architecture and lithium-ion battery knowledge, working programming skills, and the ability to
+        break down and debug technical problems. See the Prerequisites section above for the full list.
+      </>
+    ),
+  },
+  {
+    q: "What will I learn?",
+    a: (
+      <>
+        Depending on the track: EV battery systems and BMS (cell → module → pack, SOC/SOH), automotive
+        cybersecurity, real-world data acquisition and analysis, AI/ML for battery intelligence, or — on the{" "}
+        <Link href="/space/2026-INSPACe-ROCKETRY-059" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: 600 }}>
+          model rocketry track
+        </Link>{" "}
+        — aerodynamics, propulsion, recovery, avionics and telemetry.
+      </>
+    ),
+  },
+  {
+    q: "Is this an internship, paid training, or a workshop?",
+    a: (
+      <>
+        It differs by track. The 12-month{" "}
+        <Link href="/internships/training-internship" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: 600 }}>
+          Training &amp; Internship Program
+        </Link>{" "}
+        combines 6 months of training with 6 months of internship and publishes phase-wise fees (online or
+        workspace); a separate merit-based free track exists for qualified students with a refundable security
+        deposit. The{" "}
+        <Link href="/space/2026-INSPACe-ROCKETRY-059" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: 600 }}>
+          model rocketry guide
+        </Link>{" "}
+        is an independent educational workbook, not an internship or employment offer.
+      </>
+    ),
+  },
+  {
+    q: "Is a stipend guaranteed?",
+    a: (
+      <>
+        No stipend is published or guaranteed. The standard pathway publishes phase-wise training fees, and the
+        merit-based student track requires a refundable security deposit rather than paying a stipend — see the{" "}
+        <Link href="/internships/training-internship" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: 600 }}>
+          Selection Process &amp; Fees
+        </Link>{" "}
+        page for verified details.
+      </>
+    ),
+  },
+  {
+    q: "How do I apply?",
+    a: (
+      <>
+        Use the Apply button above to fill the application form, or email your resume via the Submit Resume
+        button below. A short discovery call typically follows before a track is confirmed.
+      </>
+    ),
+  },
+  {
+    q: "How can I contact the programme team?",
+    a: (
+      <>
+        Reach the team through the{" "}
+        <Link href="/contact" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: 600 }}>
+          EV.ENGINEER contact page
+        </Link>{" "}
+        or WhatsApp above. For programme-lead background, see{" "}
+        <Link href="/about/sudarshana-karkala" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: 600 }}>
+          Sudarshana Karkala&apos;s profile
+        </Link>.
+      </>
+    ),
+  },
+];
+
+function InternshipAnswerBlocks() {
+  return (
+    <div style={{ marginBottom: '64px' }}>
+      <h2 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--accent-primary)', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+        Common Questions
+      </h2>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
+        {ANSWER_ITEMS.map((item) => (
+          <div key={item.q} className="glass-panel" style={{ padding: '1.5rem' }}>
+            <h3 style={{ fontSize: '1.05rem', color: 'var(--text-primary)', fontWeight: 600, marginBottom: '10px' }}>{item.q}</h3>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: 1.6, margin: 0 }}>{item.a}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function InternshipsClient() {
   const pathname = usePathname();
   const isWorkshop = pathname === "/workshop";
@@ -315,6 +425,7 @@ export default function InternshipsClient() {
           </p>
 
           {!isWorkshop && <PrerequisitesSection />}
+          {!isWorkshop && <InternshipAnswerBlocks />}
 
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginBottom: '64px', justifyContent: 'center' }}>
             <Link

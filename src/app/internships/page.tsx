@@ -1,11 +1,16 @@
-import Link from "next/link";
-import { ReactNode } from "react";
-import PrerequisitesSection from "@/components/PrerequisitesSection";
 import type { Metadata } from "next";
+import { JsonLd } from "@/lib/structured-data/JsonLd";
+import { buildInternshipsGraph } from "@/lib/structured-data/internshipsGraph";
+
+const PAGE_TITLE = "EV, Battery, Aerospace and Space Internships | EV.ENGINEER™";
+const PAGE_DESCRIPTION =
+  "Explore engineering internships and student projects in EV battery systems, BMS, cybersecurity, autonomous systems, aerospace, space and model rocketry.";
+const PAGE_URL = "https://autonomous.ev.engineer/internships";
+const LAST_REVIEWED = "2026-08-17";
 
 export const metadata: Metadata = {
-  title: 'AV & EV Internships | EV.ENGINEER™',
-  description: 'Practical, engineering-focused internships in EV battery health, autonomous vehicle systems, safety systems, air taxis (eVTOL), and RTOS architecture. Kickstart your career in autonomous eMobility.',
+  title: PAGE_TITLE,
+  description: PAGE_DESCRIPTION,
   keywords: [
     'EV Internships', 'AV Internships', 'Autonomous Vehicles Internship',
     'Electric Vehicle Research', 'Battery Diagnostics Internship',
@@ -15,11 +20,51 @@ export const metadata: Metadata = {
     'IN-SPACe Model Rocketry', 'Aerospace Engineering Internship',
     'Rocket Telemetry', 'Rocket Avionics', 'Student Rocket Competition',
     'Model Rocketry India', 'Flight Software Engineering', 'Aerospace Systems Engineering'
-  ]
+  ],
+  alternates: {
+    canonical: PAGE_URL,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  openGraph: {
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+    url: PAGE_URL,
+    type: "website",
+    siteName: "EV.ENGINEER",
+  },
+  twitter: {
+    card: "summary",
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+  },
+};
+
+const internshipsGraph = {
+  "@context": "https://schema.org",
+  "@graph": buildInternshipsGraph({
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+    dateModified: LAST_REVIEWED,
+  }),
 };
 
 import InternshipsClient from "./InternshipsClient";
 
 export default function InternshipsPage() {
-  return <InternshipsClient />;
+  return (
+    <>
+      <JsonLd data={internshipsGraph} />
+      <InternshipsClient />
+    </>
+  );
 }

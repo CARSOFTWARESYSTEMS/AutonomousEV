@@ -1,0 +1,60 @@
+# EV.ENGINEER
+
+> EV.ENGINEER is an engineering-education platform and brand publishing
+> content, internships and student project tracks in EV battery systems,
+> Battery Management Systems, automotive and battery cybersecurity,
+> autonomous vehicle systems, and aerospace and space engineering
+> (including a model rocketry learning guide). The site is operated by
+> iTelematics Software Private Limited. EV Society is a separate community
+> initiative that stewards the Space Initiative; EV.ENGINEER and EV Society
+> are distinct entities and are not merged here.
+
+This file is an experimental discovery aid for AI agents and language
+models. It is not a replacement for crawlable HTML, structured data
+(JSON-LD), the XML sitemap, or conventional SEO — see those first. Every
+link below points to a canonical public page already listed in
+/sitemap.xml.
+
+## Core pages
+
+- [Home](https://autonomous.ev.engineer/): Lithium-Ion EV Battery
+  Intelligence Platform — overview of EV.ENGINEER.
+- [About](https://autonomous.ev.engineer/about): What EV.ENGINEER builds
+  and its focus areas.
+- [Internships](https://autonomous.ev.engineer/internships): Canonical hub
+  for EV, battery, cybersecurity, autonomous-systems, aerospace, space and
+  model-rocketry internships and student projects.
+- [Sudarshana Karkala](https://autonomous.ev.engineer/about/sudarshana-karkala):
+  Canonical public professional profile — verified role, focus areas,
+  initiatives and contact channels.
+- [Contact](https://autonomous.ev.engineer/contact): Public business
+  contact details for iTelematics Software Private Limited.
+- [Trust Center](https://autonomous.ev.engineer/trust-center): Verified
+  feedback and professional recognition, used as the evidence destination
+  for claims made across this site.
+
+## Space and aerospace
+
+- [Space](https://autonomous.ev.engineer/space): EV Society's aerospace
+  and space-engineering education initiative.
+- [Model Rocketry Learning Guide](https://autonomous.ev.engineer/space/2026-INSPACe-ROCKETRY-059):
+  An independent, beginner-friendly seven-day model rocketry guide. Not an
+  official IN-SPACe or ISRO publication.
+
+## Entity distinctions
+
+- EV.ENGINEER: platform/brand, not a separate registered legal entity.
+- iTelematics Software Private Limited: the legal company operating
+  EV.ENGINEER, per /contact.
+- EV Society: a separate community initiative, not a registered Section 8
+  company per any evidence published on this site.
+- Sudarshana Karkala: a person — founder of EV.ENGINEER, Co-Founder of
+  Thasmai Infotech Private Limited, and a consultant to iTelematics
+  Software Private Limited.
+- IN-SPACe and ISRO: external government organisations referenced only as
+  the publisher of the model-rocketry workshop this site's learning guide
+  is based on. No endorsement, certification or partnership is implied.
+
+## Public source documentation referenced by this site
+
+- [IN-SPACe Workshop on Essentials of Model Rocketry](https://www.inspace.gov.in/inspace?id=workshop_on_essentials_of_model_rocketry)

@@ -1,17 +1,58 @@
+const PAGE_TITLE = "Contact | EV.ENGINEER™";
+const PAGE_DESCRIPTION = "Get in touch with iTelematics Software Private Limited for EV engineering platforms, AI agents, diagnostics, or training collaborations.";
+const PAGE_URL = "https://autonomous.ev.engineer/contact";
+
 export const metadata = {
-  title: "Contact | EV.ENGINEER™",
-  description: "Get in touch with iTelematics Software Private Limited for EV engineering platforms, AI agents, diagnostics, or training collaborations.",
+  title: PAGE_TITLE,
+  description: PAGE_DESCRIPTION,
+  alternates: {
+    canonical: PAGE_URL,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  openGraph: {
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+    url: PAGE_URL,
+    type: "website",
+    siteName: "EV.ENGINEER",
+  },
+  twitter: {
+    card: "summary",
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+  },
 };
 
 import styles from "./page.module.css";
+import { JsonLd } from "@/lib/structured-data/JsonLd";
+import { buildContactGraph } from "@/lib/structured-data/contactGraph";
+
+const contactGraph = {
+  "@context": "https://schema.org",
+  "@graph": buildContactGraph({
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+  }),
+};
 
 export default function ContactPage() {
   return (
     <div className="container" style={{ paddingTop: "120px", paddingBottom: "80px" }}>
+      <JsonLd data={contactGraph} />
       <div style={{ textAlign: "center", marginBottom: "64px" }}>
         <h1 style={{ fontSize: "3rem", marginBottom: "16px" }}>Contact Us</h1>
         <p style={{ fontSize: "1.2rem", color: "var(--color-text-secondary)", maxWidth: "800px", margin: "0 auto" }}>
-          Let's discuss EV engineering platforms, AI agents, diagnostics, or training collaborations.
+          Let&apos;s discuss EV engineering platforms, AI agents, diagnostics, or training collaborations.
         </p>
       </div>
 
