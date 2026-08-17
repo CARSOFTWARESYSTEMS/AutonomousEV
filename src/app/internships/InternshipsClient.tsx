@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import PrerequisitesSection from "@/components/PrerequisitesSection";
 import { Rocket } from "lucide-react";
 
-function ProjectCard({ title, desc, link, pricingLink, secondaryLink, secondaryLinkLabel, tertiaryLink, tertiaryLinkLabel, quaternaryLink, quaternaryLinkLabel, category, badge, tags, ctaLabel, icon: Icon }: { title: string, desc?: string, link: string, pricingLink?: string, secondaryLink?: string, secondaryLinkLabel?: string, tertiaryLink?: string, tertiaryLinkLabel?: string, quaternaryLink?: string, quaternaryLinkLabel?: string, category?: string, badge?: string, tags?: string[], ctaLabel?: string, icon?: any }) {
+function ProjectCard({ title, desc, link, pricingLink, secondaryLink, secondaryLinkLabel, tertiaryLink, tertiaryLinkLabel, quaternaryLink, quaternaryLinkLabel, quinaryLink, quinaryLinkLabel, category, badge, tags, ctaLabel, icon: Icon }: { title: string, desc?: string, link: string, pricingLink?: string, secondaryLink?: string, secondaryLinkLabel?: string, tertiaryLink?: string, tertiaryLinkLabel?: string, quaternaryLink?: string, quaternaryLinkLabel?: string, quinaryLink?: string, quinaryLinkLabel?: string, category?: string, badge?: string, tags?: string[], ctaLabel?: string, icon?: any }) {
   const isExternal = link.startsWith('http');
   const sLink = pricingLink || secondaryLink;
   const sLabel = pricingLink ? "Pricing" : secondaryLinkLabel;
@@ -137,6 +137,33 @@ function ProjectCard({ title, desc, link, pricingLink, secondaryLink, secondaryL
                   data-track-title={title}
                 >
                   {quaternaryLinkLabel} →
+                </Link>
+              )}
+            </>
+          )}
+
+          {quinaryLink && (
+            <>
+              <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>·</span>
+              {quinaryLink.startsWith('http') ? (
+                <a
+                  href={quinaryLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="pricing-link"
+                  data-track-event="internship_quinary_click"
+                  data-track-title={title}
+                >
+                  {quinaryLinkLabel} ↗
+                </a>
+              ) : (
+                <Link
+                  href={quinaryLink}
+                  className="pricing-link"
+                  data-track-event="internship_quinary_click"
+                  data-track-title={title}
+                >
+                  {quinaryLinkLabel} →
                 </Link>
               )}
             </>
@@ -397,12 +424,14 @@ export default function InternshipsClient() {
               desc="End-to-end mission architecture, telemetry systems, avionics, recovery mechanisms, and systems engineering for national-level student rocketry competitions."
               link="https://labs.ev.engineer/Internships/Rocketry/astroforge.html"
               ctaLabel="Student Competition 2026"
-              secondaryLink="/space/2026-INSPACe-ROCKETRY-059"
+              secondaryLink="https://inspace-rocketry-workshop-2026.carsoftwaresystems.chatgpt.site/space/2026-INSPACe-ROCKETRY-059"
               secondaryLinkLabel="7-Day Workshop Workbook"
               tertiaryLink="https://www.inspace.gov.in/inspace?id=workshop_on_essentials_of_model_rocketry"
               tertiaryLinkLabel="IN-SPACe Workshop Listing"
               quaternaryLink="/workbook/inspace-model-rocketry-workshop-brochure.pdf"
               quaternaryLinkLabel="Workshop Brochure (PDF)"
+              quinaryLink="/workbook/model-rocketry-7-day-learning-workbook-2026.pdf"
+              quinaryLinkLabel="7-Day Learning Workbook (PDF)"
             />
           </Section>
 
