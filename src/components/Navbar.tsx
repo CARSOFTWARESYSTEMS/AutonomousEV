@@ -16,7 +16,8 @@ export default function Navbar() {
   const spaceTriggerRef = useRef<HTMLButtonElement>(null);
   const [mobileSpaceOpen, setMobileSpaceOpen] = useState(false);
 
-  const isSpaceOrAerospace = pathname === "/space" || pathname === "/aerospace";
+  const isSpaceOrAerospace =
+    pathname === "/space" || pathname === "/aerospace" || pathname === "/space/2026-INSPACe-ROCKETRY-059";
 
   useEffect(() => {
     if (!aboutOpen) return;
@@ -137,6 +138,14 @@ export default function Navbar() {
                 >
                   Aerospace
                 </Link>
+                <Link
+                  href="/space/2026-INSPACe-ROCKETRY-059"
+                  className={styles.dropdownLink}
+                  onClick={closeSpace}
+                  aria-current={pathname === "/space/2026-INSPACe-ROCKETRY-059" ? "page" : undefined}
+                >
+                  Model Rocketry Guide
+                </Link>
               </div>
             </div>
           </div>
@@ -214,6 +223,13 @@ export default function Navbar() {
                 onClick={() => { setMobileMenuOpen(false); setMobileSpaceOpen(false); }}
               >
                 Aerospace
+              </Link>
+              <Link
+                href="/space/2026-INSPACe-ROCKETRY-059"
+                className={styles.mobileLink}
+                onClick={() => { setMobileMenuOpen(false); setMobileSpaceOpen(false); }}
+              >
+                Model Rocketry Guide
               </Link>
             </div>
           )}
