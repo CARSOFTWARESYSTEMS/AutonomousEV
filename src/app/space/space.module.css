@@ -55,6 +55,7 @@
 .tagPill {
   display: inline-flex;
   align-items: center;
+  max-width: 100%;
   padding: 6px 14px;
   border-radius: 999px;
   background: rgba(124, 58, 237, 0.12);
@@ -62,8 +63,10 @@
   color: #B5B8C9;
   font-size: 13px;
   font-weight: 500;
+  line-height: 1.4;
   transition: all 0.2s;
   cursor: default;
+  overflow-wrap: anywhere;
 }
 .tagPill:hover {
   background: rgba(124, 58, 237, 0.2);
@@ -144,10 +147,6 @@
   display: flex;
 }
 
-.showMobile {
-  display: none;
-}
-
 @media (max-width: 1024px) {
   .heroGrid { grid-template-columns: 1fr !important; }
   .pathwayGrid { grid-template-columns: 1fr 1fr !important; }
@@ -156,7 +155,217 @@
 
 @media (max-width: 640px) {
   .hiddenMobile { display: none !important; }
-  .showMobile { display: flex !important; }
   .pathwayGrid { grid-template-columns: 1fr !important; }
   .footerGrid { grid-template-columns: 1fr !important; }
+}
+
+/* ── Header: desktop nav / mobile toggle ──────────────────────────────────
+   Kept separate from .hiddenMobile/.showMobile (which serve unrelated
+   decorative elements like the roadmap connector) so the header's own
+   breakpoint can be tuned independently. 10 nav items overflow the header
+   well before 640px, so the mobile toggle takes over at 1024px — matching
+   the site-wide Navbar's breakpoint. */
+.headerBar {
+  padding: 0 32px;
+}
+
+.headerNavDesktop,
+.headerCtaDesktop {
+  display: flex;
+}
+
+.headerToggle {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .headerNavDesktop,
+  .headerCtaDesktop {
+    display: none !important;
+  }
+  .headerToggle {
+    display: flex !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .headerBar { padding: 0 20px; }
+}
+
+@media (max-width: 480px) {
+  .headerBar { padding: 0 16px; }
+}
+
+/* ── Mobile nav panel ── */
+.mobileMenu {
+  max-height: calc(100dvh - 60px);
+  overflow-y: auto;
+}
+
+/* ── Section rhythm ──────────────────────────────────────────────────────
+   Centralizes the vertical/horizontal section padding that was previously
+   fixed at desktop scale (56px 32px) via inline styles on every <section>,
+   so mobile density can be tuned in one place. */
+.section {
+  padding: 56px 32px;
+}
+
+@media (max-width: 768px) {
+  .section { padding: 40px 20px; }
+}
+
+@media (max-width: 480px) {
+  .section { padding: 32px 16px; }
+}
+
+.heroSection {
+  padding-top: clamp(88px, 18vw, 116px);
+  padding-bottom: clamp(40px, 8vw, 56px);
+}
+
+.heroInset {
+  padding: 0 32px;
+}
+
+@media (max-width: 768px) {
+  .heroInset { padding: 0 20px; }
+}
+
+@media (max-width: 480px) {
+  .heroInset { padding: 0 16px; }
+}
+
+/* ── Long-form paragraphs ──────────────────────────────────────────────
+   Short section intros stay centred; explanatory/disclaimer copy reads
+   better left-aligned once the viewport narrows and line count grows. */
+.proseLeft {
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .proseLeft {
+    text-align: left !important;
+  }
+}
+
+/* ── CTA button groups ── */
+.ctaGroup {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 480px) {
+  .ctaGroup {
+    flex-direction: column;
+  }
+  .ctaGroup > * {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+/* ── Mission health console rows ────────────────────────────────────────
+   Grid keeps the icon column fixed, lets the label shrink/wrap, and keeps
+   the status badge content-sized and clear of the card edge at any width.
+   Below 380px the badge drops to its own row instead of being squeezed. */
+.consoleRow {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.consoleLabel {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.consoleBadge {
+  justify-self: end;
+  white-space: nowrap;
+}
+
+@media (max-width: 380px) {
+  .consoleRow {
+    grid-template-columns: 36px minmax(0, 1fr);
+    row-gap: 6px;
+  }
+  .consoleBadge {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+
+/* ── Spacecraft health-management loop diagram ──────────────────────────
+   The SVG's internal labels are fixed in its own coordinate space, so
+   scaling the image down to phone width makes them unreadable. Below
+   769px we swap to an accessible vertical HTML/CSS flow carrying the same
+   six steps, in the same order, instead of shrinking the image further. */
+.diagramDesktop {
+  display: block;
+}
+
+.diagramMobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .diagramDesktop { display: none; }
+  .diagramMobile {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    text-align: left;
+  }
+}
+
+.diagramStepCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: rgba(17, 21, 46, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+
+.diagramStepIcon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(124, 58, 237, 0.15);
+  color: #B39DDB;
+  flex-shrink: 0;
+}
+
+.diagramStepText {
+  min-width: 0;
+}
+
+.diagramArrowDown {
+  display: flex;
+  justify-content: center;
+  padding: 2px 0;
+  color: #7C3AED;
+}
+
+.diagramLoopBack {
+  margin-top: 8px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(6, 182, 212, 0.08);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  color: #67E8F9;
+  font-size: 12.5px;
+  text-align: center;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { Manrope, Inter } from "next/font/google";
 import {
@@ -16,6 +16,7 @@ import {
   researchThemes, roadmap, participationAudiences,
   accessModels, faqs, type IconName,
 } from "./spaceData";
+import { useMobileMenuLock } from "@/hooks/useMobileMenuLock";
 import { JsonLd } from "@/lib/structured-data/JsonLd";
 import { buildSpaceEntityGraph } from "@/lib/structured-data/spaceGraph";
 import { SEO_TITLE, SEO_DESCRIPTION } from "./seo";
@@ -82,6 +83,20 @@ const statusColor: Record<string, string> = {
   Degraded: "#EF4444",
   Advisory: "#7C3AED",
 };
+
+const diagramStepDetails: Record<string, string> = {
+  "Observe telemetry": "Observe spacecraft state",
+  "Detect anomaly": "Flag deviations",
+  "Diagnose fault": "FDIR diagnosis",
+  "Predict impact": "Predict mission impact",
+  "Recover safely": "Supervised action",
+  "Verify recovery": "Confirm safe state",
+};
+
+const diagramSteps = missionLoop.map((step) => ({
+  ...step,
+  detail: diagramStepDetails[step.step] ?? "",
+}));
 
 const statusTone: Record<string, string> = {
   Planned: "#F59E0B",
@@ -168,6 +183,8 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 
 export default function SpacePage() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const mobileToggleRef = useRef<HTMLButtonElement>(null);
+  useMobileMenuLock(mobileOpen, setMobileOpen, mobileToggleRef);
 
   return (
     <div className={`${styles.root} ${manrope.variable} ${inter.variable}`} style={{ background: "#090B1D", minHeight: "100vh", fontFamily: FONT_INTER, overflowX: "hidden" }}>
@@ -175,11 +192,11 @@ export default function SpacePage() {
       <a href="#main-content" className={styles.skipLink}>Skip to content</a>
 
       {/* ── Header ── */}
-      <header style={{
+      <header className={styles.headerBar} style={{
         position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
         background: "rgba(9,11,29,0.85)", backdropFilter: "blur(20px)",
         borderBottom: "1px solid rgba(255,255,255,0.05)",
-        padding: "0 32px", height: 60, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16,
+        height: 60, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16,
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
           <div style={{
@@ -193,7 +210,7 @@ export default function SpacePage() {
           </span>
         </div>
 
-        <nav aria-label="Space section navigation" style={{ display: "flex", alignItems: "center", gap: 2, flex: 1, justifyContent: "center" }} className={styles.hiddenMobile}>
+        <nav aria-label="Space section navigation" style={{ display: "flex", alignItems: "center", gap: 2, flex: 1, justifyContent: "center" }} className={styles.headerNavDesktop}>
           {navItems.map((item) => {
             const isInternalRoute = item.href === "/";
             const isExternal = item.href.startsWith("http");
@@ -236,18 +253,19 @@ export default function SpacePage() {
         </nav>
 
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
-          <Link href={CONTACT_HREF} className={styles.hiddenMobile} style={{
+          <Link href={CONTACT_HREF} className={styles.headerCtaDesktop} style={{
             padding: "7px 16px", borderRadius: 10, background: "linear-gradient(135deg, #7C3AED, #06B6D4)",
             border: "none", color: "#fff", fontWeight: 600, fontSize: 13, textDecoration: "none",
           }}>Express Interest</Link>
           <button
             type="button"
+            ref={mobileToggleRef}
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
             aria-controls="space-mobile-menu"
             style={{ background: "none", border: "none", color: "#fff", cursor: "pointer", padding: 4 }}
-            className={styles.showMobile}
+            className={styles.headerToggle}
           >
             {mobileOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -256,7 +274,7 @@ export default function SpacePage() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div id="space-mobile-menu" style={{
+        <div id="space-mobile-menu" className={styles.mobileMenu} style={{
           position: "fixed", top: 60, left: 0, right: 0, zIndex: 99,
           background: "rgba(9,11,29,0.98)", borderBottom: "1px solid rgba(255,255,255,0.07)",
           padding: "20px 24px", display: "flex", flexDirection: "column", gap: 8,
@@ -315,12 +333,12 @@ export default function SpacePage() {
 
       <main id="main-content">
         {/* ── Hero (#home) ── */}
-        <section id="home" style={{ paddingTop: 116, paddingBottom: 56, display: "flex", alignItems: "center", position: "relative", overflow: "hidden" }} className={styles.gridBg}>
+        <section id="home" style={{ display: "flex", alignItems: "center", position: "relative", overflow: "hidden" }} className={`${styles.gridBg} ${styles.heroSection}`}>
           <div className={styles.orb} style={{ width: 600, height: 600, background: "#7C3AED", top: -100, left: -200 }} />
           <div className={styles.orb} style={{ width: 400, height: 400, background: "#06B6D4", bottom: -100, right: -100 }} />
           <div className={styles.orb} style={{ width: 300, height: 300, background: "#3B82F6", top: "40%", left: "40%" }} />
 
-          <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 32px", width: "100%", gap: 48, alignItems: "center" }} className={styles.heroGrid}>
+          <div style={{ maxWidth: 1280, margin: "0 auto", width: "100%", gap: 48, alignItems: "center" }} className={`${styles.heroGrid} ${styles.heroInset}`}>
             <div className={styles.fadeInUp}>
               <div style={{
                 display: "inline-flex", alignItems: "center", gap: 8,
@@ -362,7 +380,7 @@ export default function SpacePage() {
                 </span>
               </div>
 
-              <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 40 }}>
+              <div className={styles.ctaGroup} style={{ marginBottom: 40 }}>
                 <a href="#mission" style={{
                   padding: "13px 28px", borderRadius: 12, background: "linear-gradient(135deg, #7C3AED, #6D28D9)",
                   border: "none", color: "#fff", fontWeight: 700, fontSize: 15, cursor: "pointer",
@@ -416,18 +434,15 @@ export default function SpacePage() {
                   {missionConsole.map((row) => {
                     const c = statusColor[row.status];
                     return (
-                      <div key={row.label} style={{
-                        display: "flex", alignItems: "center", gap: 12, padding: "12px 14px", borderRadius: 12,
-                        background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)",
-                      }}>
+                      <div key={row.label} className={styles.consoleRow}>
                         <div style={{
                           width: 36, height: 36, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center",
                           background: `${c}22`, flexShrink: 0, color: c,
                         }}><Icon name={row.icon} size={18} /></div>
-                        <div style={{ flex: 1 }}>
+                        <div className={styles.consoleLabel}>
                           <div style={{ fontSize: 14, fontWeight: 600, color: "#fff", lineHeight: 1.2 }}>{row.label}</div>
                         </div>
-                        <span style={{
+                        <span className={styles.consoleBadge} style={{
                           fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 999,
                           background: `${c}18`, color: c, border: `1px solid ${c}40`, textTransform: "uppercase", letterSpacing: "0.04em",
                         }}>{row.status}</span>
@@ -441,15 +456,15 @@ export default function SpacePage() {
         </section>
 
         {/* ── One Mission (#mission) ── */}
-        <section id="mission" style={{ padding: "56px 32px", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+        <section id="mission" className={styles.section} style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}>
           <div style={{ maxWidth: 1280, margin: "0 auto" }}>
             <div style={{ maxWidth: 780, margin: "0 auto 40px", textAlign: "center" }}>
               <SectionLabel>One Mission</SectionLabel>
               <h2 style={sectionH2}>Can a spacecraft understand its own health and recover safely?</h2>
-              <p style={{ ...sectionDesc, fontWeight: 600, color: "#E4E6F5", marginBottom: 14 }}>
+              <p className={styles.proseLeft} style={{ ...sectionDesc, fontWeight: 600, color: "#E4E6F5", marginBottom: 14 }}>
                 Autonomous Spacecraft Health Management is the capability to observe spacecraft telemetry, detect and isolate faults, predict mission impact, and recommend or execute verified recovery actions within bounded safety limits.
               </p>
-              <p style={sectionDesc}>
+              <p className={styles.proseLeft} style={sectionDesc}>
                 Future long-duration, autonomous, crewed, lunar and deep-space missions cannot depend on continuous ground intervention. A spacecraft must be able to observe its telemetry, detect anomalies, and isolate likely faults through Fault Detection, Isolation and Recovery (FDIR), predict mission impact, and recommend&mdash;or within verified limits execute&mdash;a safe recovery.
               </p>
             </div>
@@ -471,13 +486,34 @@ export default function SpacePage() {
             </div>
 
             <figure style={{ maxWidth: 900, margin: "0 auto 32px", textAlign: "center" }}>
-              <img
-                src="/space/autonomous-spacecraft-health-management-loop.svg"
-                width={1200}
-                height={320}
-                alt="Autonomous spacecraft health-management loop from telemetry monitoring through verified safe recovery."
-                style={{ width: "100%", height: "auto", display: "block" }}
-              />
+              <div className={styles.diagramDesktop}>
+                <img
+                  src="/space/autonomous-spacecraft-health-management-loop.svg"
+                  width={1200}
+                  height={320}
+                  alt="Autonomous spacecraft health-management loop from telemetry monitoring through verified safe recovery."
+                  style={{ width: "100%", height: "auto", display: "block" }}
+                />
+              </div>
+              <div className={styles.diagramMobile}>
+                {diagramSteps.map((step, i) => (
+                  <div key={step.step}>
+                    <div className={styles.diagramStepCard}>
+                      <div className={styles.diagramStepIcon}><Icon name={step.icon} size={17} /></div>
+                      <div className={styles.diagramStepText}>
+                        <div style={{ fontSize: 14, fontWeight: 700, color: "#fff", lineHeight: 1.3 }}>{step.step}</div>
+                        <div style={{ fontSize: 12, color: "#9092B0", marginTop: 2 }}>{step.detail}</div>
+                      </div>
+                    </div>
+                    {i < diagramSteps.length - 1 && (
+                      <div className={styles.diagramArrowDown} aria-hidden="true"><ChevronDown size={16} /></div>
+                    )}
+                  </div>
+                ))}
+                <div className={styles.diagramLoopBack}>
+                  Verified state feeds back into continuous telemetry monitoring
+                </div>
+              </div>
               <figcaption style={{ marginTop: 10, fontSize: 12.5, color: "#8B8FA3" }}>
                 The autonomous spacecraft health-management loop: telemetry monitoring flows into anomaly detection, fault isolation (FDIR), mission-impact prediction, bounded recovery and verification, which feeds back into continuous telemetry monitoring.
               </figcaption>
@@ -488,12 +524,12 @@ export default function SpacePage() {
               background: "rgba(124,58,237,0.08)", border: "1px solid rgba(124,58,237,0.25)",
               display: "flex", flexDirection: "column", gap: 10, alignItems: "center", textAlign: "center",
             }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 10, fontFamily: FONT_MANROPE, fontWeight: 700, fontSize: 15, color: "#fff" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", justifyContent: "center", fontFamily: FONT_MANROPE, fontWeight: 700, fontSize: 15, color: "#fff" }}>
                 <span>Advisory</span><ArrowRight size={14} color="#B39DDB" />
                 <span>Supervised</span><ArrowRight size={14} color="#B39DDB" />
                 <span>Bounded Autonomy</span>
               </div>
-              <p style={{ margin: 0, color: "#B5B8C9", fontSize: 14, lineHeight: 1.7, maxWidth: 620 }}>
+              <p className={styles.proseLeft} style={{ margin: 0, color: "#B5B8C9", fontSize: 14, lineHeight: 1.7, maxWidth: 620 }}>
                 Generative AI must not directly control a safety-critical spacecraft loop. Autonomy is introduced gradually, under human supervision, and always within verified, bounded limits.
               </p>
             </div>
@@ -501,7 +537,7 @@ export default function SpacePage() {
         </section>
 
         {/* ── Alignment & Independence (#vision) ── */}
-        <section id="vision" style={{ padding: "56px 32px", background: "rgba(17,21,46,0.4)", borderTop: "1px solid rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
+        <section id="vision" className={styles.section} style={{ background: "rgba(17,21,46,0.4)", borderTop: "1px solid rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
           <div style={{ maxWidth: 900, margin: "0 auto" }}>
             <div style={{ textAlign: "center", marginBottom: 32 }}>
               <SectionLabel>Long-Term Vision</SectionLabel>
@@ -524,9 +560,9 @@ export default function SpacePage() {
               ))}
             </div>
 
-            <div style={{
+            <div className={styles.proseLeft} style={{
               padding: "16px 20px", borderRadius: 14, background: "rgba(6,182,212,0.06)",
-              border: "1px solid rgba(6,182,212,0.2)", color: "#B5B8C9", fontSize: 13, lineHeight: 1.7, textAlign: "center",
+              border: "1px solid rgba(6,182,212,0.2)", color: "#B5B8C9", fontSize: 13, lineHeight: 1.7,
             }}>
               <strong style={{ color: "#fff" }}>Independent initiative.</strong> References to national space goals are provided for educational context and do not imply endorsement, affiliation or partnership with ISRO, IN-SPACe, NSIL or the Department of Space.
             </div>
@@ -538,7 +574,7 @@ export default function SpacePage() {
         </section>
 
         {/* ── Pathway (#pathway) ── */}
-        <section id="pathway" style={{ padding: "56px 32px", maxWidth: 1280, margin: "0 auto" }}>
+        <section id="pathway" className={styles.section} style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div style={{ marginBottom: 40, textAlign: "center" }}>
             <SectionLabel>Education to Startup</SectionLabel>
             <h2 style={sectionH2}>One mission. A lifelong pathway.</h2>
@@ -575,7 +611,7 @@ export default function SpacePage() {
         </section>
 
         {/* ── Space Health Explorers (#education) ── */}
-        <section id="education" style={{ padding: "56px 32px", background: "rgba(17,21,46,0.4)", borderTop: "1px solid rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
+        <section id="education" className={styles.section} style={{ background: "rgba(17,21,46,0.4)", borderTop: "1px solid rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
           <div style={{ maxWidth: 1000, margin: "0 auto" }}>
             <div style={{ textAlign: "center", marginBottom: 32 }}>
               <SectionLabel>Ages 14&ndash;18</SectionLabel>
@@ -593,16 +629,16 @@ export default function SpacePage() {
         </section>
 
         {/* ── Engineering Internships & Research (#internships) ── */}
-        <section id="internships" style={{ padding: "56px 32px", maxWidth: 1000, margin: "0 auto" }}>
+        <section id="internships" className={styles.section} style={{ maxWidth: 1000, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 32 }}>
             <SectionLabel>Internships &amp; Research</SectionLabel>
             <h2 style={sectionH2}>One multidisciplinary mission team</h2>
             <p style={sectionDesc}>Engineering students work together as one mission team rather than on unrelated projects.</p>
           </div>
 
-          <div style={{
+          <div className={styles.proseLeft} style={{
             padding: "20px 24px", borderRadius: 16, background: "rgba(59,130,246,0.06)",
-            border: "1px solid rgba(59,130,246,0.2)", color: "#B5B8C9", fontSize: 14, lineHeight: 1.7, marginBottom: 28, textAlign: "center",
+            border: "1px solid rgba(59,130,246,0.2)", color: "#B5B8C9", fontSize: 14, lineHeight: 1.7, marginBottom: 28,
           }}>
             <strong style={{ color: "#93C5FD" }}>Reference mission: </strong>
             A 3U/6U CubeSat health-management test environment covering electrical power, thermal control, attitude control, onboard computing, communications and payload behaviour.
@@ -612,16 +648,16 @@ export default function SpacePage() {
             {internshipWorkAreas.map((t) => <span key={t} className={styles.tagPill}>{t}</span>)}
           </div>
 
-          <div style={{
+          <div className={styles.proseLeft} style={{
             padding: "16px 20px", borderRadius: 14, background: "rgba(255,255,255,0.03)",
-            border: "1px solid rgba(255,255,255,0.06)", color: "#8B8FA3", fontSize: 13, lineHeight: 1.7, textAlign: "center",
+            border: "1px solid rgba(255,255,255,0.06)", color: "#8B8FA3", fontSize: 13, lineHeight: 1.7,
           }}>
             Paid training and internships are distinct. Internships will be merit-based and governed by the published terms of each cohort; sponsored or stipended opportunities will be identified explicitly when available.
           </div>
         </section>
 
         {/* ── Research Platform (#research) ── */}
-        <section id="research" style={{ padding: "56px 32px", background: "rgba(17,21,46,0.4)", borderTop: "1px solid rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
+        <section id="research" className={styles.section} style={{ background: "rgba(17,21,46,0.4)", borderTop: "1px solid rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
           <div style={{ maxWidth: 1000, margin: "0 auto" }}>
             <div style={{ textAlign: "center", marginBottom: 32 }}>
               <SectionLabel>Research</SectionLabel>
@@ -658,7 +694,7 @@ export default function SpacePage() {
         </section>
 
         {/* ── Planned Labs (#labs) ── */}
-        <section id="labs" style={{ padding: "56px 32px", maxWidth: 1280, margin: "0 auto" }}>
+        <section id="labs" className={styles.section} style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div style={{ marginBottom: 40, textAlign: "center" }}>
             <SectionLabel>Planned Labs</SectionLabel>
             <h2 style={sectionH2}>Hands-on mission-health labs</h2>
@@ -691,7 +727,7 @@ export default function SpacePage() {
         </section>
 
         {/* ── Research Themes (#projects) ── */}
-        <section id="projects" style={{ padding: "56px 32px", background: "rgba(17,21,46,0.4)", borderTop: "1px solid rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
+        <section id="projects" className={styles.section} style={{ background: "rgba(17,21,46,0.4)", borderTop: "1px solid rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
           <div style={{ maxWidth: 1280, margin: "0 auto" }}>
             <div style={{ marginBottom: 40, textAlign: "center" }}>
               <SectionLabel>Research Themes</SectionLabel>
@@ -721,7 +757,7 @@ export default function SpacePage() {
         </section>
 
         {/* ── Roadmap (#roadmap) ── */}
-        <section id="roadmap" style={{ padding: "56px 32px", maxWidth: 1280, margin: "0 auto" }}>
+        <section id="roadmap" className={styles.section} style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div style={{ marginBottom: 40, textAlign: "center" }}>
             <SectionLabel>Five-Year Roadmap</SectionLabel>
             <h2 style={sectionH2}>Goals, not completed milestones</h2>
@@ -756,7 +792,7 @@ export default function SpacePage() {
         </section>
 
         {/* ── Participation Model (#community) ── */}
-        <section id="community" style={{ padding: "56px 32px", background: "rgba(17,21,46,0.4)", borderTop: "1px solid rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
+        <section id="community" className={styles.section} style={{ background: "rgba(17,21,46,0.4)", borderTop: "1px solid rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
           <div style={{ maxWidth: 1000, margin: "0 auto" }}>
             <div style={{ textAlign: "center", marginBottom: 32 }}>
               <SectionLabel>Participation</SectionLabel>
@@ -775,7 +811,7 @@ export default function SpacePage() {
               ))}
             </div>
 
-            <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+            <div className={styles.ctaGroup} style={{ justifyContent: "center" }}>
               <Link href={CONTACT_HREF} style={{
                 padding: "12px 24px", borderRadius: 12, background: "linear-gradient(135deg, #7C3AED, #6D28D9)",
                 color: "#fff", fontWeight: 700, fontSize: 14, textDecoration: "none",
@@ -793,11 +829,11 @@ export default function SpacePage() {
         </section>
 
         {/* ── Sustainable Access (#access) ── */}
-        <section id="access" style={{ padding: "56px 32px", background: "rgba(17,21,46,0.4)", borderTop: "1px solid rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
+        <section id="access" className={styles.section} style={{ background: "rgba(17,21,46,0.4)", borderTop: "1px solid rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
           <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center" }}>
             <SectionLabel>Sustainable Access</SectionLabel>
             <h2 style={sectionH2}>How programmes will be funded</h2>
-            <p style={{ ...sectionDesc, marginBottom: 24 }}>
+            <p className={styles.proseLeft} style={{ ...sectionDesc, marginBottom: 24 }}>
               Availability, selection, fees, sponsorship and stipend conditions will be published for each programme.
             </p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
@@ -807,7 +843,7 @@ export default function SpacePage() {
         </section>
 
         {/* ── FAQ (#faq) ── */}
-        <section id="faq" style={{ padding: "56px 32px" }}>
+        <section id="faq" className={styles.section}>
           <div style={{ maxWidth: 800, margin: "0 auto" }}>
             <div style={{ marginBottom: 40, textAlign: "center" }}>
               <SectionLabel>FAQ</SectionLabel>
@@ -820,7 +856,7 @@ export default function SpacePage() {
         </section>
 
         {/* ── Ecosystem and Responsibilities (#ecosystem) ── */}
-        <section id="ecosystem" style={{ padding: "56px 32px", background: "rgba(17,21,46,0.4)", borderTop: "1px solid rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
+        <section id="ecosystem" className={styles.section} style={{ background: "rgba(17,21,46,0.4)", borderTop: "1px solid rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
           <div style={{ maxWidth: 780, margin: "0 auto", textAlign: "center" }}>
             <SectionLabel>Ecosystem</SectionLabel>
             <h2 style={sectionH2}>Ecosystem and Responsibilities</h2>
@@ -835,7 +871,7 @@ export default function SpacePage() {
         </section>
 
         {/* ── Final CTA ── */}
-        <section style={{ padding: "56px 32px" }}>
+        <section className={styles.section}>
           <div style={{ maxWidth: 860, margin: "0 auto", textAlign: "center" }}>
             <div style={{
               background: "linear-gradient(135deg, rgba(124,58,237,0.15), rgba(6,182,212,0.1))",
@@ -851,7 +887,7 @@ export default function SpacePage() {
               <p style={{ color: "#B5B8C9", fontSize: 16, lineHeight: 1.7, maxWidth: 560, margin: "0 auto 32px" }}>
                 Join an education, research and venture pathway dedicated to trustworthy spacecraft health, autonomy and safe recovery.
               </p>
-              <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+              <div className={styles.ctaGroup} style={{ justifyContent: "center" }}>
                 <a href="#mission" style={{
                   padding: "14px 32px", borderRadius: 12, background: "linear-gradient(135deg, #7C3AED, #6D28D9)",
                   border: "none", color: "#fff", fontWeight: 700, fontSize: 16, textDecoration: "none",

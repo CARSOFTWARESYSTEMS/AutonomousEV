@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import Link from "next/link";
 import { Manrope, Inter } from "next/font/google";
 import {
@@ -11,6 +11,7 @@ import {
   ChevronDown, ChevronUp, Mail, ExternalLink, Layers, Globe
 } from "lucide-react";
 import styles from "./aerospace.module.css";
+import { useMobileMenuLock } from "@/hooks/useMobileMenuLock";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -237,16 +238,19 @@ function FooterCol({ title, links }: { title: string; links: string[] }) {
 
 export default function AerospacePage() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const mobileToggleRef = useRef<HTMLButtonElement>(null);
+  useMobileMenuLock(mobileOpen, setMobileOpen, mobileToggleRef);
 
   return (
     <div className={`${styles.root} ${manrope.variable} ${inter.variable}`} style={{ background: "#090B1D", minHeight: "100vh", fontFamily: FONT_INTER, overflowX: "hidden" }}>
+      <a href="#main-content" className={styles.skipLink}>Skip to content</a>
 
       {/* ── Navbar ── */}
-      <nav style={{
+      <header className={styles.headerBar} style={{
         position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
         background: "rgba(9,11,29,0.85)", backdropFilter: "blur(20px)",
         borderBottom: "1px solid rgba(255,255,255,0.05)",
-        padding: "0 32px", height: 60, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16
+        height: 60, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16
       }}>
         {/* Logo */}
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
@@ -262,8 +266,8 @@ export default function AerospacePage() {
         </div>
 
         {/* Desktop nav links */}
-        <div style={{ display: "flex", alignItems: "center", gap: 2, flex: 1, justifyContent: "center" }}
-          className={styles.hiddenMobile}>
+        <nav aria-label="Aerospace section navigation" style={{ display: "flex", alignItems: "center", gap: 2, flex: 1, justifyContent: "center" }}
+          className={styles.headerNavDesktop}>
           {navLinks.map(link => (
             <a key={link} href="#" style={{
               padding: "6px 12px", borderRadius: 8, color: "#B5B8C9", fontSize: 13, fontWeight: 500,
@@ -291,26 +295,32 @@ export default function AerospacePage() {
             border: "1px solid rgba(124,58,237,0.4)", color: "#B39DDB",
             textDecoration: "none", display: "block", marginLeft: 8
           }}>EV Society</a>
-        </div>
+        </nav>
 
         {/* Right: auth */}
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
-          <Link href="/contact" style={{
+          <Link href="/contact" className={styles.headerNavDesktop} style={{
             padding: "7px 16px", borderRadius: 10, background: "linear-gradient(135deg, #7C3AED, #6D28D9)",
             border: "none", color: "#fff", fontWeight: 600, fontSize: 13, cursor: "pointer", flexShrink: 0,
-            textDecoration: "none", display: "block"
+            textDecoration: "none",
           }}>Express Interest</Link>
-          <button onClick={() => setMobileOpen(!mobileOpen)}
+          <button
+            type="button"
+            ref={mobileToggleRef}
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileOpen}
+            aria-controls="aerospace-mobile-menu"
             style={{ background: "none", border: "none", color: "#fff", cursor: "pointer", padding: 4 }}
-            className={styles.showMobile}>
+            className={styles.headerToggle}>
             {mobileOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
-      </nav>
+      </header>
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div style={{
+        <div id="aerospace-mobile-menu" className={styles.mobileMenu} style={{
           position: "fixed", top: 60, left: 0, right: 0, zIndex: 99,
           background: "rgba(9,11,29,0.98)", borderBottom: "1px solid rgba(255,255,255,0.07)",
           padding: "20px 24px", display: "flex", flexDirection: "column", gap: 8
@@ -353,21 +363,25 @@ export default function AerospacePage() {
               )}
             </Fragment>
           ))}
+          <Link href="/contact" onClick={() => setMobileOpen(false)} style={{
+            marginTop: 12, padding: "12px", borderRadius: 10, textAlign: "center",
+            background: "linear-gradient(135deg, #7C3AED, #6D28D9)", color: "#fff", fontWeight: 600, fontSize: 14, textDecoration: "none",
+          }}>Express Interest</Link>
         </div>
       )}
 
+      <main id="main-content">
       {/* ── Hero ── */}
-      <section style={{
-        paddingTop: 116, paddingBottom: 56,
+      <section className={`${styles.gridBg} ${styles.heroSection}`} style={{
         display: "flex", alignItems: "center", position: "relative", overflow: "hidden"
-      }} className={styles.gridBg}>
+      }}>
         {/* Orbs */}
         <div className={styles.orb} style={{ width: 600, height: 600, background: "#7C3AED", top: -100, left: -200 }} />
         <div className={styles.orb} style={{ width: 400, height: 400, background: "#3B82F6", bottom: -100, right: -100 }} />
         <div className={styles.orb} style={{ width: 300, height: 300, background: "#06B6D4", top: "40%", left: "40%" }} />
 
-        <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 32px", width: "100%", gap: 48, alignItems: "center" }}
-          className={styles.heroGrid}>
+        <div style={{ maxWidth: 1280, margin: "0 auto", width: "100%", gap: 48, alignItems: "center" }}
+          className={`${styles.heroGrid} ${styles.heroInset}`}>
           {/* Left */}
           <div className={styles.fadeInUp}>
             <div style={{
@@ -392,7 +406,7 @@ export default function AerospacePage() {
               Protect Aircraft, Drones, Air Taxis, Airports, Satellites and Future Air Mobility Systems through practical engineering, cybersecurity research, and hands-on labs.
             </p>
 
-            <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 40 }}>
+            <div className={styles.ctaGroup} style={{ marginBottom: 40 }}>
               <button style={{
                 padding: "13px 28px", borderRadius: 12, background: "linear-gradient(135deg, #7C3AED, #6D28D9)",
                 border: "none", color: "#fff", fontWeight: 700, fontSize: 15, cursor: "pointer",
@@ -449,8 +463,9 @@ export default function AerospacePage() {
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {learningPathCards.map(card => (
                   <div key={card.title}
+                    className={styles.miniCardRow}
                     style={{
-                      display: "flex", alignItems: "center", gap: 12, padding: "12px 14px", borderRadius: 12,
+                      padding: "12px 14px", borderRadius: 12,
                       background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)",
                       cursor: "pointer", transition: "all 0.2s"
                     }}
@@ -467,7 +482,7 @@ export default function AerospacePage() {
                       width: 36, height: 36, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center",
                       background: `${card.color}22`, flexShrink: 0, color: card.color
                     }}>{card.icon}</div>
-                    <div style={{ flex: 1 }}>
+                    <div className={styles.miniCardLabel}>
                       <div style={{ fontSize: 14, fontWeight: 600, color: "#fff", lineHeight: 1.2 }}>{card.title}</div>
                       <div style={{ fontSize: 12, color: "#B5B8C9", display: "flex", alignItems: "center", gap: 4, marginTop: 2 }}>
                         <div style={{ width: 6, height: 6, borderRadius: "50%", background: card.color }} />
@@ -493,8 +508,7 @@ export default function AerospacePage() {
       </section>
 
       {/* ── About ── */}
-      <section style={{ padding: "72px 32px", maxWidth: 1280, margin: "0 auto", gap: 56, alignItems: "center" }}
-        className={styles.aboutGrid}>
+      <section className={`${styles.sectionLg} ${styles.aboutGrid}`} style={{ maxWidth: 1280, margin: "0 auto", gap: 56, alignItems: "center" }}>
         {/* Left – Cyber illustration */}
         <div style={{ position: "relative", display: "flex", justifyContent: "center" }}>
           <div style={{
@@ -613,7 +627,7 @@ export default function AerospacePage() {
       </section>
 
       {/* ── Topics ── */}
-      <section style={{ padding: "56px 32px", textAlign: "center", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+      <section className={styles.section} style={{ textAlign: "center", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
         <div style={{ maxWidth: 900, margin: "0 auto 48px", textAlign: "center" }}>
           <SectionLabel>Topics</SectionLabel>
           <h2 style={sectionH2}>Everything You Need to Know</h2>
@@ -625,7 +639,7 @@ export default function AerospacePage() {
       </section>
 
       {/* ── Learning Paths ── */}
-      <section style={{ padding: "56px 32px", maxWidth: 1280, margin: "0 auto" }}>
+      <section className={styles.section} style={{ maxWidth: 1280, margin: "0 auto" }}>
         <div style={{ marginBottom: 40, textAlign: "center" }}>
           <SectionLabel>Learning Paths</SectionLabel>
           <h2 style={sectionH2}>Structured Paths to Mastery</h2>
@@ -663,7 +677,7 @@ export default function AerospacePage() {
       </section>
 
       {/* ── Hands-on Labs ── */}
-      <section style={{ padding: "56px 32px", background: "rgba(17,21,46,0.4)", borderTop: "1px solid rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
+      <section className={styles.section} style={{ background: "rgba(17,21,46,0.4)", borderTop: "1px solid rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div style={{ marginBottom: 40, textAlign: "center" }}>
             <SectionLabel>Hands-on Labs</SectionLabel>
@@ -704,7 +718,7 @@ export default function AerospacePage() {
       </section>
 
       {/* ── Open Source Projects ── */}
-      <section style={{ padding: "56px 32px", maxWidth: 1280, margin: "0 auto" }}>
+      <section className={styles.section} style={{ maxWidth: 1280, margin: "0 auto" }}>
         <div style={{ marginBottom: 40, textAlign: "center" }}>
           <SectionLabel>Open Source</SectionLabel>
           <h2 style={sectionH2}>Build in the Open</h2>
@@ -740,7 +754,7 @@ export default function AerospacePage() {
       </section>
 
       {/* ── Research ── */}
-      <section style={{ padding: "56px 32px", background: "rgba(17,21,46,0.4)", borderTop: "1px solid rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
+      <section className={styles.section} style={{ background: "rgba(17,21,46,0.4)", borderTop: "1px solid rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div style={{ marginBottom: 40, textAlign: "center" }}>
             <SectionLabel>Research</SectionLabel>
@@ -777,7 +791,7 @@ export default function AerospacePage() {
       </section>
 
       {/* ── Certification Roadmap ── */}
-      <section style={{ padding: "56px 32px", maxWidth: 1280, margin: "0 auto" }}>
+      <section className={styles.section} style={{ maxWidth: 1280, margin: "0 auto" }}>
         <div style={{ marginBottom: 40, textAlign: "center" }}>
           <SectionLabel>Certification Roadmap</SectionLabel>
           <h2 style={sectionH2}>Your Path to Expertise</h2>
@@ -812,8 +826,8 @@ export default function AerospacePage() {
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 6, justifyContent: "center" }}>
                   {r.topics.map(t => (
                     <span key={t} style={{
-                      fontSize: 11, padding: "4px 10px", borderRadius: 999,
-                      background: `${r.color}12`, color: "#B5B8C9", border: `1px solid ${r.color}20`
+                      fontSize: 11, padding: "4px 10px", borderRadius: 999, maxWidth: "100%",
+                      background: `${r.color}12`, color: "#B5B8C9", border: `1px solid ${r.color}20`, overflowWrap: "anywhere",
                     }}>{t}</span>
                   ))}
                 </div>
@@ -824,7 +838,7 @@ export default function AerospacePage() {
       </section>
 
       {/* ── Testimonials ── */}
-      <section style={{ padding: "56px 32px", background: "rgba(17,21,46,0.4)", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+      <section className={styles.section} style={{ background: "rgba(17,21,46,0.4)", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div style={{ marginBottom: 40, textAlign: "center" }}>
             <SectionLabel>Testimonials</SectionLabel>
@@ -859,7 +873,7 @@ export default function AerospacePage() {
       </section>
 
       {/* ── Community ── */}
-      <section style={{ padding: "56px 32px", maxWidth: 1280, margin: "0 auto" }}>
+      <section className={styles.section} style={{ maxWidth: 1280, margin: "0 auto" }}>
         <div style={{ marginBottom: 40, textAlign: "center" }}>
           <SectionLabel>Community</SectionLabel>
           <h2 style={sectionH2}>Find Us Online</h2>
@@ -888,7 +902,7 @@ export default function AerospacePage() {
       </section>
 
       {/* ── FAQ ── */}
-      <section style={{ padding: "56px 32px", background: "rgba(17,21,46,0.4)", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+      <section className={styles.section} style={{ background: "rgba(17,21,46,0.4)", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
         <div style={{ maxWidth: 800, margin: "0 auto" }}>
           <div style={{ marginBottom: 48, textAlign: "center" }}>
             <SectionLabel>FAQ</SectionLabel>
@@ -901,7 +915,7 @@ export default function AerospacePage() {
       </section>
 
       {/* ── CTA Banner ── */}
-      <section style={{ padding: "56px 32px" }}>
+      <section className={styles.section}>
         <div style={{ maxWidth: 860, margin: "0 auto", textAlign: "center" }}>
           <div style={{
             background: "linear-gradient(135deg, rgba(124,58,237,0.15), rgba(59,130,246,0.1))",
@@ -917,7 +931,7 @@ export default function AerospacePage() {
             <p style={{ color: "#B5B8C9", fontSize: 16, lineHeight: 1.7, marginBottom: 32, maxWidth: 560, margin: "0 auto 32px" }}>
               Join thousands of aerospace engineers and cybersecurity professionals building the future of safe aviation.
             </p>
-            <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+            <div className={styles.ctaGroup} style={{ justifyContent: "center" }}>
               <button style={{
                 padding: "14px 32px", borderRadius: 12, background: "linear-gradient(135deg, #7C3AED, #6D28D9)",
                 border: "none", color: "#fff", fontWeight: 700, fontSize: 16, cursor: "pointer",
@@ -934,6 +948,8 @@ export default function AerospacePage() {
           </div>
         </div>
       </section>
+
+      </main>
 
       {/* ── Footer ── */}
       <footer style={{ borderTop: "1px solid rgba(255,255,255,0.06)", padding: "48px 32px 28px" }}>

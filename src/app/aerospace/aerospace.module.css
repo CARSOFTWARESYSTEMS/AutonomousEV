@@ -55,6 +55,7 @@
 .tagPill {
   display: inline-flex;
   align-items: center;
+  max-width: 100%;
   padding: 6px 14px;
   border-radius: 999px;
   background: rgba(124, 58, 237, 0.12);
@@ -62,8 +63,10 @@
   color: #B5B8C9;
   font-size: 13px;
   font-weight: 500;
+  line-height: 1.4;
   transition: all 0.2s;
   cursor: default;
+  overflow-wrap: anywhere;
 }
 .tagPill:hover {
   background: rgba(124, 58, 237, 0.2);
@@ -85,6 +88,16 @@
 }
 .fadeInUp {
   animation: uflightFadeInUp 0.7s ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floatAnim,
+  .fadeInUp {
+    animation: none !important;
+  }
+  .cardHover {
+    transition: none;
+  }
 }
 
 .heroGrid {
@@ -112,12 +125,26 @@
   min-width: 0;
 }
 
-.hiddenMobile {
-  display: flex;
+.skipLink {
+  position: absolute;
+  top: -100px;
+  left: 16px;
+  z-index: 200;
+  background: #7C3AED;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+.skipLink:focus {
+  top: 12px;
 }
 
-.showMobile {
-  display: none;
+.hiddenMobile {
+  display: flex;
 }
 
 @media (max-width: 1024px) {
@@ -128,6 +155,131 @@
 
 @media (max-width: 640px) {
   .hiddenMobile { display: none !important; }
-  .showMobile { display: flex !important; }
   .footerGrid { grid-template-columns: 1fr !important; }
+}
+
+/* ── Header: desktop nav / mobile toggle ──────────────────────────────────
+   Kept separate from .hiddenMobile/.showMobile (which serve unrelated
+   decorative elements like the roadmap connector) so the header's own
+   breakpoint can be tuned independently. The desktop nav row (6 links +
+   3 bordered pills) overflows well before 640px, so the mobile toggle
+   takes over at 1024px — matching the site-wide Navbar's breakpoint. */
+.headerBar {
+  padding: 0 32px;
+}
+
+.headerNavDesktop {
+  display: flex;
+}
+
+.headerToggle {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .headerNavDesktop {
+    display: none !important;
+  }
+  .headerToggle {
+    display: flex !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .headerBar { padding: 0 20px; }
+}
+
+@media (max-width: 480px) {
+  .headerBar { padding: 0 16px; }
+}
+
+/* ── Mobile nav panel ── */
+.mobileMenu {
+  max-height: calc(100dvh - 60px);
+  overflow-y: auto;
+}
+
+/* ── Section rhythm ──────────────────────────────────────────────────────
+   Centralizes the vertical/horizontal section padding that was previously
+   fixed at desktop scale (56px/72px 32px) via inline styles on every
+   <section>, so mobile density can be tuned in one place. */
+.section {
+  padding: 56px 32px;
+}
+
+.sectionLg {
+  padding: 72px 32px;
+}
+
+@media (max-width: 768px) {
+  .section { padding: 40px 20px; }
+  .sectionLg { padding: 48px 20px; }
+}
+
+@media (max-width: 480px) {
+  .section { padding: 32px 16px; }
+  .sectionLg { padding: 36px 16px; }
+}
+
+.heroSection {
+  padding-top: clamp(88px, 18vw, 116px);
+  padding-bottom: clamp(40px, 8vw, 56px);
+}
+
+.heroInset {
+  padding: 0 32px;
+}
+
+@media (max-width: 768px) {
+  .heroInset { padding: 0 20px; }
+}
+
+@media (max-width: 480px) {
+  .heroInset { padding: 0 16px; }
+}
+
+/* ── Long-form paragraphs ──────────────────────────────────────────────
+   Short section intros stay centred; explanatory copy reads better
+   left-aligned once the viewport narrows and line count grows. */
+.proseLeft {
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .proseLeft {
+    text-align: left !important;
+  }
+}
+
+/* ── CTA button groups ── */
+.ctaGroup {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 480px) {
+  .ctaGroup {
+    flex-direction: column;
+  }
+  .ctaGroup > * {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+/* ── Compact card rows (hero learning-path list) ─────────────────────────
+   Same containment pattern as the Space console rows: fixed icon column,
+   label allowed to shrink/wrap, trailing chevron never pushed out. */
+.miniCardRow {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) 14px;
+  align-items: center;
+  gap: 12px;
+}
+
+.miniCardLabel {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
