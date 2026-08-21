@@ -146,7 +146,7 @@ const community = [
 ];
 
 const testimonials = [
-  { name: "Arjun Mehta", role: "Avionics Engineer, ISRO", text: "Aerospace completely changed how I approach aircraft security. The labs are incredibly realistic and the research depth is unmatched.", avatar: "AM" },
+  { name: "Arjun Mehta", role: "Avionics Engineer", text: "Aerospace completely changed how I approach aircraft security. The labs are incredibly realistic and the research depth is unmatched.", avatar: "AM" },
   { name: "Sarah Mitchell", role: "Drone Security Researcher", text: "Finally, a platform that treats aerospace cybersecurity seriously. The community and open source projects are world-class.", avatar: "SM" },
   { name: "Ravi Kumar", role: "Defense Cybersecurity Lead", text: "We onboard our aerospace security team with Aerospace paths. The DO-178C and threat modeling content is industry standard.", avatar: "RK" },
 ];
