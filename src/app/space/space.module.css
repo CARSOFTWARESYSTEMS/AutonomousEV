@@ -266,6 +266,58 @@
   }
 }
 
+/* ── Expression-of-Interest mobile CTA ────────────────────────────────
+   Dedicated coral-red attention token, reserved for this single CTA —
+   not reused as a semantic danger/error color, and not shown on desktop
+   (a hidden-by-default base rule, flipped on only under 768px, keeps
+   this CSS-only rather than JS viewport detection). Contrast verified:
+   #FFFFFF on #D92D44 ≈ 4.76:1, on #B91C36 ≈ 6.4:1 — both clear AA passes
+   for 15px/700 button text. */
+.eoiCta {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .eoiCta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 44px;
+    padding: 13px 24px;
+    border-radius: 12px;
+    background: #D92D44;
+    border: none;
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 15px;
+    text-decoration: none;
+    box-shadow: 0 8px 24px rgba(217, 45, 68, 0.35);
+    transition: background-color 0.2s ease;
+  }
+
+  .eoiCta:hover {
+    background: #B91C36;
+  }
+
+  .eoiCta:focus-visible {
+    background: #B91C36;
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+  }
+
+  .eoiCta:active {
+    background: #991B2F;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eoiCta {
+    transition: none;
+  }
+}
+
 /* ── Mission health console rows ────────────────────────────────────────
    Grid keeps the icon column fixed, lets the label shrink/wrap, and keeps
    the status badge content-sized and clear of the card edge at any width.

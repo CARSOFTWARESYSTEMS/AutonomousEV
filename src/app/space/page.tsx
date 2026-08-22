@@ -17,6 +17,7 @@ import {
   accessModels, faqs, type IconName,
 } from "./spaceData";
 import { useMobileMenuLock } from "@/hooks/useMobileMenuLock";
+import { EOI_FORM_URL } from "@/lib/eoi";
 import { JsonLd } from "@/lib/structured-data/JsonLd";
 import { buildSpaceEntityGraph } from "@/lib/structured-data/spaceGraph";
 import { SEO_TITLE, SEO_DESCRIPTION } from "./seo";
@@ -253,10 +254,16 @@ export default function SpacePage() {
         </nav>
 
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
-          <Link href={CONTACT_HREF} className={styles.headerCtaDesktop} style={{
-            padding: "7px 16px", borderRadius: 10, background: "linear-gradient(135deg, #7C3AED, #06B6D4)",
-            border: "none", color: "#fff", fontWeight: 600, fontSize: 13, textDecoration: "none",
-          }}>Express Interest</Link>
+          <a
+            href={EOI_FORM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Express Interest (opens Google Form in a new tab)"
+            className={styles.headerCtaDesktop}
+            style={{
+              padding: "7px 16px", borderRadius: 10, background: "linear-gradient(135deg, #7C3AED, #06B6D4)",
+              border: "none", color: "#fff", fontWeight: 600, fontSize: 13, textDecoration: "none",
+            }}>Express Interest</a>
           <button
             type="button"
             ref={mobileToggleRef}
@@ -324,10 +331,16 @@ export default function SpacePage() {
               </a>
             );
           })}
-          <Link href={CONTACT_HREF} onClick={() => setMobileOpen(false)} style={{
-            marginTop: 12, padding: "12px", borderRadius: 10, textAlign: "center",
-            background: "linear-gradient(135deg, #7C3AED, #06B6D4)", color: "#fff", fontWeight: 600, fontSize: 14, textDecoration: "none",
-          }}>Express Interest</Link>
+          <a
+            href={EOI_FORM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Express Interest (opens Google Form in a new tab)"
+            onClick={() => setMobileOpen(false)}
+            style={{
+              marginTop: 12, padding: "12px", borderRadius: 10, textAlign: "center",
+              background: "linear-gradient(135deg, #7C3AED, #06B6D4)", color: "#fff", fontWeight: 600, fontSize: 14, textDecoration: "none",
+            }}>Express Interest</a>
         </div>
       )}
 
@@ -381,6 +394,15 @@ export default function SpacePage() {
               </div>
 
               <div className={styles.ctaGroup} style={{ marginBottom: 40 }}>
+                <a
+                  href={EOI_FORM_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Expression of Interest (opens Google Form in a new tab)"
+                  className={styles.eoiCta}
+                >
+                  Expression of Interest
+                </a>
                 <a href="#mission" style={{
                   padding: "13px 28px", borderRadius: 12, background: "linear-gradient(135deg, #7C3AED, #6D28D9)",
                   border: "none", color: "#fff", fontWeight: 700, fontSize: 15, cursor: "pointer",
@@ -718,9 +740,15 @@ export default function SpacePage() {
                   <h3 style={{ fontWeight: 600, fontSize: 15, color: "#fff", margin: "0 0 4px" }}>{lab.title}</h3>
                   <p style={{ fontSize: 13, color: "#B5B8C9", margin: 0, lineHeight: 1.6 }}>{lab.purpose}</p>
                 </div>
-                <Link href={CONTACT_HREF} style={{ marginTop: "auto", display: "flex", alignItems: "center", gap: 4, color: lab.color, fontSize: 13, fontWeight: 600, textDecoration: "none" }}>
+                <a
+                  href={EOI_FORM_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Express Interest in ${lab.title} (opens Google Form in a new tab)`}
+                  style={{ marginTop: "auto", display: "flex", alignItems: "center", gap: 4, color: lab.color, fontSize: 13, fontWeight: 600, textDecoration: "none" }}
+                >
                   Express Interest <ChevronRight size={14} />
-                </Link>
+                </a>
               </div>
             ))}
           </div>
@@ -812,10 +840,15 @@ export default function SpacePage() {
             </div>
 
             <div className={styles.ctaGroup} style={{ justifyContent: "center" }}>
-              <Link href={CONTACT_HREF} style={{
-                padding: "12px 24px", borderRadius: 12, background: "linear-gradient(135deg, #7C3AED, #6D28D9)",
-                color: "#fff", fontWeight: 700, fontSize: 14, textDecoration: "none",
-              }}>Express Interest</Link>
+              <a
+                href={EOI_FORM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Express Interest (opens Google Form in a new tab)"
+                style={{
+                  padding: "12px 24px", borderRadius: 12, background: "linear-gradient(135deg, #7C3AED, #6D28D9)",
+                  color: "#fff", fontWeight: 700, fontSize: 14, textDecoration: "none",
+                }}>Express Interest</a>
               <Link href={CONTACT_HREF} style={{
                 padding: "12px 24px", borderRadius: 12, background: "rgba(59,130,246,0.12)",
                 border: "1px solid rgba(59,130,246,0.35)", color: "#93C5FD", fontWeight: 600, fontSize: 14, textDecoration: "none",
@@ -895,10 +928,15 @@ export default function SpacePage() {
                 }}>
                   Explore the Mission <ArrowRight size={18} />
                 </a>
-                <Link href={CONTACT_HREF} style={{
-                  padding: "14px 28px", borderRadius: 12, background: "rgba(59,130,246,0.12)",
-                  border: "1px solid rgba(59,130,246,0.35)", color: "#93C5FD", fontWeight: 600, fontSize: 16, textDecoration: "none",
-                }}>Express Interest</Link>
+                <a
+                  href={EOI_FORM_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Express Interest (opens Google Form in a new tab)"
+                  style={{
+                    padding: "14px 28px", borderRadius: 12, background: "rgba(59,130,246,0.12)",
+                    border: "1px solid rgba(59,130,246,0.35)", color: "#93C5FD", fontWeight: 600, fontSize: 16, textDecoration: "none",
+                  }}>Express Interest</a>
                 <Link href="/" style={{
                   padding: "14px 28px", borderRadius: 12, background: "transparent",
                   border: "1px solid rgba(255,255,255,0.15)", color: "#B5B8C9", fontWeight: 600, fontSize: 16, textDecoration: "none",

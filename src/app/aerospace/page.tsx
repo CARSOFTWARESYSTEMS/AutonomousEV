@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import styles from "./aerospace.module.css";
 import { useMobileMenuLock } from "@/hooks/useMobileMenuLock";
+import { EOI_FORM_URL } from "@/lib/eoi";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -299,11 +300,17 @@ export default function AerospacePage() {
 
         {/* Right: auth */}
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
-          <Link href="/contact" className={styles.headerNavDesktop} style={{
-            padding: "7px 16px", borderRadius: 10, background: "linear-gradient(135deg, #7C3AED, #6D28D9)",
-            border: "none", color: "#fff", fontWeight: 600, fontSize: 13, cursor: "pointer", flexShrink: 0,
-            textDecoration: "none",
-          }}>Express Interest</Link>
+          <a
+            href={EOI_FORM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Express Interest (opens Google Form in a new tab)"
+            className={styles.headerNavDesktop}
+            style={{
+              padding: "7px 16px", borderRadius: 10, background: "linear-gradient(135deg, #7C3AED, #6D28D9)",
+              border: "none", color: "#fff", fontWeight: 600, fontSize: 13, cursor: "pointer", flexShrink: 0,
+              textDecoration: "none",
+            }}>Express Interest</a>
           <button
             type="button"
             ref={mobileToggleRef}
@@ -363,10 +370,16 @@ export default function AerospacePage() {
               )}
             </Fragment>
           ))}
-          <Link href="/contact" onClick={() => setMobileOpen(false)} style={{
-            marginTop: 12, padding: "12px", borderRadius: 10, textAlign: "center",
-            background: "linear-gradient(135deg, #7C3AED, #6D28D9)", color: "#fff", fontWeight: 600, fontSize: 14, textDecoration: "none",
-          }}>Express Interest</Link>
+          <a
+            href={EOI_FORM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Express Interest (opens Google Form in a new tab)"
+            onClick={() => setMobileOpen(false)}
+            style={{
+              marginTop: 12, padding: "12px", borderRadius: 10, textAlign: "center",
+              background: "linear-gradient(135deg, #7C3AED, #6D28D9)", color: "#fff", fontWeight: 600, fontSize: 14, textDecoration: "none",
+            }}>Express Interest</a>
         </div>
       )}
 
@@ -407,6 +420,15 @@ export default function AerospacePage() {
             </p>
 
             <div className={styles.ctaGroup} style={{ marginBottom: 40 }}>
+              <a
+                href={EOI_FORM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Expression of Interest (opens Google Form in a new tab)"
+                className={styles.eoiCta}
+              >
+                Expression of Interest
+              </a>
               <button style={{
                 padding: "13px 28px", borderRadius: 12, background: "linear-gradient(135deg, #7C3AED, #6D28D9)",
                 border: "none", color: "#fff", fontWeight: 700, fontSize: 15, cursor: "pointer",
@@ -939,11 +961,16 @@ export default function AerospacePage() {
               }}>
                 Start Learning Free <ArrowRight size={18} />
               </button>
-              <Link href="/contact" style={{
-                padding: "14px 28px", borderRadius: 12, background: "transparent",
-                border: "1px solid rgba(255,255,255,0.15)", color: "#B5B8C9", fontWeight: 600, fontSize: 16, cursor: "pointer",
-                textDecoration: "none", display: "block"
-              }}>Express Interest</Link>
+              <a
+                href={EOI_FORM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Express Interest (opens Google Form in a new tab)"
+                style={{
+                  padding: "14px 28px", borderRadius: 12, background: "transparent",
+                  border: "1px solid rgba(255,255,255,0.15)", color: "#B5B8C9", fontWeight: 600, fontSize: 16, cursor: "pointer",
+                  textDecoration: "none", display: "block"
+                }}>Express Interest</a>
             </div>
           </div>
         </div>

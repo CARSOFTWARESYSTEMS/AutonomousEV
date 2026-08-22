@@ -208,7 +208,7 @@ export const faqs: { q: string; a: string }[] = [
   },
   {
     q: "How can schools, faculty, experts and industry express interest?",
-    a: "Use the Express Interest / Partner With Us / Contact Us links on this page, which route to our existing contact channel. There is no separate form to fill out yet.",
+    a: "Use the Express Interest links on this page, which open our Expression of Interest form. Submitting the form records your interest only — it does not confirm selection, admission, internship, stipend, funding, partnership or participation. For anything else, use the Partner With Us or Contact Us links, which route to our existing contact channel.",
   },
   {
     q: "Will programmes be free?",

@@ -240,4 +240,65 @@ describe("Space page", () => {
     const { container } = render(<SpacePage />);
     expect(container.querySelectorAll('a[href="#"]').length).toBe(0);
   });
+
+  it("points every Express Interest CTA at the approved Google Form, opened safely in a new tab", () => {
+    render(<SpacePage />);
+    const links = screen.getAllByRole("link", { name: /Express Interest/ });
+    expect(links.length).toBeGreaterThanOrEqual(5);
+    links.forEach((link) => {
+      expect(link).toHaveAttribute("href", "https://forms.gle/GZbPDHd7qozGSZuJA");
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(link).toHaveAttribute("rel", "noopener noreferrer");
+      expect(link.tagName.toLowerCase()).toBe("a");
+    });
+  });
+
+  it("does not append query params or tracking identifiers to the EOI form URL", () => {
+    render(<SpacePage />);
+    const links = screen.getAllByRole("link", { name: /Express Interest/ });
+    links.forEach((link) => {
+      expect(link.getAttribute("href")).toBe("https://forms.gle/GZbPDHd7qozGSZuJA");
+    });
+  });
+
+  it("leaves Partner With Us and Contact Us pointed at the internal contact page", () => {
+    render(<SpacePage />);
+    const partner = screen.getByRole("link", { name: "Partner With Us" });
+    expect(partner).toHaveAttribute("href", "/contact");
+
+    const contactLinks = screen.getAllByRole("link", { name: /Contact Us/ });
+    contactLinks.forEach((link) => expect(link).toHaveAttribute("href", "/contact"));
+  });
+
+  it("shows exactly one mobile-only Expression of Interest hero CTA, positioned before Explore the Mission", () => {
+    const { container } = render(<SpacePage />);
+    const eoiCtas = screen.getAllByRole("link", { name: /Expression of Interest/ });
+    expect(eoiCtas).toHaveLength(1);
+    expect(eoiCtas[0]).toHaveAttribute("href", "https://forms.gle/GZbPDHd7qozGSZuJA");
+    expect(eoiCtas[0]).toHaveAttribute("target", "_blank");
+    expect(eoiCtas[0]).toHaveAttribute("rel", "noopener noreferrer");
+
+    const heroSection = document.getElementById("home") as HTMLElement;
+    const exploreMissionInHero = within(heroSection).getByRole("link", { name: /Explore the Mission/ });
+    const position = eoiCtas[0].compareDocumentPosition(exploreMissionInHero);
+    expect(position & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(eoiCtas[0].parentElement).toBe(exploreMissionInHero.parentElement);
+
+    // Rendered once in the DOM (visibility toggled by a mobile-only media query, not JS).
+    expect(container.querySelectorAll('a[aria-label*="Expression of Interest"]').length).toBe(1);
+  });
+
+  it("FAQ answer for expressing interest points to the EOI form and does not claim selection or participation", () => {
+    render(<SpacePage />);
+    const faqSection = document.getElementById("faq") as HTMLElement;
+    const question = within(faqSection).getByRole("button", {
+      name: /How can schools, faculty, experts and industry express interest\?/,
+    });
+    expect(question.textContent).not.toMatch(/no separate form/i);
+
+    const panelId = question.getAttribute("aria-controls") as string;
+    const panel = document.getElementById(panelId) as HTMLElement;
+    expect(panel.textContent).not.toMatch(/no separate form/i);
+    expect(panel.textContent).toMatch(/does not confirm selection/i);
+  });
 });
