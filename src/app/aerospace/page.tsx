@@ -278,6 +278,12 @@ export default function AerospacePage() {
               onMouseLeave={e => { (e.target as HTMLElement).style.color = "#B5B8C9"; (e.target as HTMLElement).style.background = "transparent"; }}
             >{link}</a>
           ))}
+          <a href="https://aerospace.ev.engineer/space" target="_blank" rel="noopener noreferrer" style={{
+            padding: "6px 14px", borderRadius: 8, fontWeight: 600, fontSize: 13,
+            background: "linear-gradient(135deg, rgba(124,58,237,0.3), rgba(59,130,246,0.2))",
+            border: "1px solid rgba(124,58,237,0.4)", color: "#B39DDB",
+            textDecoration: "none", display: "block"
+          }}>Space</a>
           <a href="https://www.uflight.in/" target="_blank" rel="noopener noreferrer" style={{
             padding: "6px 14px", borderRadius: 8, fontWeight: 600, fontSize: 13,
             background: "linear-gradient(135deg, rgba(124,58,237,0.3), rgba(59,130,246,0.2))",
@@ -340,6 +346,15 @@ export default function AerospacePage() {
               }}>{link}</a>
               {link === "Resources" && (
                 <>
+                  <a href="https://aerospace.ev.engineer/space" target="_blank" rel="noopener noreferrer"
+                    onClick={() => setMobileOpen(false)} style={{
+                      marginTop: 4, padding: "10px 16px", borderRadius: 10, fontWeight: 600,
+                      background: "linear-gradient(135deg, rgba(124,58,237,0.3), rgba(59,130,246,0.2))",
+                      border: "1px solid rgba(124,58,237,0.4)", color: "#B39DDB", fontSize: 15,
+                      textDecoration: "none", textAlign: "center"
+                    }}>
+                    Space
+                  </a>
                   <a href="https://www.uflight.in/" target="_blank" rel="noopener noreferrer"
                     onClick={() => setMobileOpen(false)} style={{
                       marginTop: 4, padding: "10px 16px", borderRadius: 10, fontWeight: 600,
