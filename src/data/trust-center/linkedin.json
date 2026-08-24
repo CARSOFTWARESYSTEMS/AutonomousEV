@@ -3,7 +3,7 @@
     "id": "linkedin-7490415563622469632",
     "type": "social-post",
     "title": "Professional Recognition",
-    "source": "linkedin",
+    "source": "linkedin", 
     "sourceLabel": "LinkedIn",
     "sourceUrl": "https://www.linkedin.com/feed/update/urn:li:share:7490415563622469632/",
     "embedUrl": "https://www.linkedin.com/embed/feed/update/urn:li:share:7490415563622469632?collapsed=1",
@@ -75,7 +75,7 @@
   {
     "id": "linkedin-ugcpost-7427684424483229697",
     "type": "social-post",
-    "title": "Professional Recognition",
+    "title": "Professional Recognition ",
     "source": "linkedin",
     "sourceLabel": "LinkedIn",
     "sourceUrl": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7427684424483229697/",
