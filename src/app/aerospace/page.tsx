@@ -288,7 +288,7 @@ export default function AerospacePage() {
             padding: "6px 14px", borderRadius: 8, fontWeight: 600, fontSize: 13,
             background: "linear-gradient(135deg, rgba(124,58,237,0.3), rgba(59,130,246,0.2))",
             border: "1px solid rgba(124,58,237,0.4)", color: "#B39DDB",
-            textDecoration: "none", display: "block"
+            textDecoration: "none", display: "block", marginLeft: 8
           }}>UFlight</a>
           <Link href="/" style={{
             padding: "6px 14px", borderRadius: 8, fontWeight: 600, fontSize: 13,
