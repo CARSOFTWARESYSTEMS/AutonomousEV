@@ -181,5 +181,23 @@
     "products": [],
     "domains": [],
     "search": { "indexable": true }
+  },
+  {
+    "id": "linkedin-7501187959748984832",
+    "type": "social-post",
+    "title": "Professional Recognition",
+    "source": "linkedin",
+    "sourceLabel": "LinkedIn",
+    "sourceUrl": "https://www.linkedin.com/feed/update/urn:li:activity:7501187959748984832/",
+    "embedUrl": "https://www.linkedin.com/embed/feed/update/urn:li:activity:7501187959748984832?collapsed=1",
+    "media": { "type": "iframe", "width": 504, "height": 670 },
+    "featured": false,
+    "enabled": true,
+    "verificationStatus": "externally-published",
+    "tags": ["linkedin", "professional-recognition"],
+    "audiences": [],
+    "products": [],
+    "domains": [],
+    "search": { "indexable": true }
   }
 ]
