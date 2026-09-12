@@ -43,10 +43,11 @@ const ROUTES = [
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return ROUTES.map((path) => ({
+  const existing: MetadataRoute.Sitemap = ROUTES.map((path) => ({
     url: `${BASE_URL}${path}`,
     lastModified: new Date(),
     changeFrequency: path === "/trust-center" ? "weekly" : "monthly",
     priority: path === "/" ? 1 : path === "/trust-center" ? 0.8 : 0.6,
   }));
+  return [...existing, { url: "https://aerospace.ev.engineer/space/cubesat", lastModified: "2026-09-12", changeFrequency: "monthly", priority: 0.8 }];
 }

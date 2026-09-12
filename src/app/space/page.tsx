@@ -754,6 +754,22 @@ export default function SpacePage() {
           </div>
         </section>
 
+        <section id="simulations" className={styles.section} style={{ maxWidth: 1280, margin: "0 auto" }}>
+          <div style={{ marginBottom: 32, textAlign: "center" }}>
+            <SectionLabel>Simulations &amp; R&amp;D Projects</SectionLabel>
+            <h2 style={sectionH2}>Learn by building mission-ready thinking</h2>
+            <p style={sectionDesc}>Explore guided simulation projects that turn spacecraft concepts into testable models, telemetry and engineering evidence.</p>
+          </div>
+          <div className={styles.cardHover} style={{ padding: 28, borderRadius: 18, background: "rgba(17,21,46,0.7)", border: "1px solid rgba(6,182,212,0.25)" }}>
+            <StatusPill label="Educational Prototype · 12-Week Student R&D Project" color="#06B6D4" />
+            <h3 style={{ color: "#fff", marginTop: 18, marginBottom: 12 }}>CubeTwin</h3>
+            <p style={{ ...sectionDesc, marginBottom: 12 }}>A Digital-Twin Simulation Platform for CubeSat Energy, Mission and Reliability Analysis</p>
+            <p style={{ ...sectionDesc, marginBottom: 20 }}>Model orbit sunlight, solar generation, battery state of charge, mission loads, faults and safe-mode decisions through an interactive beginner-friendly laboratory.</p>
+            <Link href="/space/cubesat" style={{ display: "inline-flex", alignItems: "center", gap: 8, minHeight: 44, padding: "10px 20px", borderRadius: 8, background: "#06B6D4", color: "#06121d", fontWeight: 700 }}>CubeTwin <ArrowRight size={16} /></Link>
+            <p style={{ fontSize: 12, color: "#B5B8C9", marginTop: 12 }}>Educational R&D prototype · Simulated data · Not flight software.</p>
+          </div>
+        </section>
+
         {/* ── Research Themes (#projects) ── */}
         <section id="projects" className={styles.section} style={{ background: "rgba(17,21,46,0.4)", borderTop: "1px solid rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
           <div style={{ maxWidth: 1280, margin: "0 auto" }}>

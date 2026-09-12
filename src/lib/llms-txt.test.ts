@@ -33,8 +33,12 @@ describe("public/llms.txt", () => {
 
   it("does not reference any private, admin or noindex-only route", () => {
     const content = fs.readFileSync(LLMS_TXT_PATH, "utf-8");
-    expect(content).not.toMatch(/\/aerospace(?!-)/); // /aerospace is deliberately noindexed
-    expect(content).not.toMatch(/\/admin|\/api\//i);
+    // Inspect URL paths: aerospace.ev.engineer is a public hostname, not /aerospace.
+    for (const url of extractUrls(content)) {
+      const pathname = new URL(url).pathname;
+      expect(pathname).not.toMatch(/^\/aerospace(?:\/|$)/);
+      expect(pathname).not.toMatch(/^\/(?:admin|api)(?:\/|$)/i);
+    }
   });
 
   it("does not contain a full private telephone or email", () => {

@@ -1,0 +1,771 @@
+{
+  "glossary": [
+    {
+      "term": "Spacecraft",
+      "definition": "A vehicle or engineered system designed to operate in space. A satellite is one type of spacecraft."
+    },
+    {
+      "term": "Launch vehicle",
+      "definition": "The rocket that carries a spacecraft from Earth toward its deployment orbit."
+    },
+    {
+      "term": "Satellite",
+      "definition": "An object orbiting another body. In this guide it means an artificial spacecraft orbiting Earth."
+    },
+    {
+      "term": "CubeSat",
+      "definition": "A small satellite built around standardized unit sizes and dispenser interfaces."
+    },
+    {
+      "term": "1U",
+      "definition": "One CubeSat unit, approximately a 10 cm cube under the current CubeSat design specification; larger formats combine units."
+    },
+    {
+      "term": "3U CubeSat",
+      "definition": "A CubeSat roughly three units long, providing more volume than a 1U spacecraft."
+    },
+    {
+      "term": "Spacecraft bus",
+      "definition": "The supporting platform\u2014power, computing, communications, structure, thermal and attitude control\u2014that enables the payload."
+    },
+    {
+      "term": "Payload",
+      "definition": "The instrument or experiment that performs the mission's main purpose."
+    },
+    {
+      "term": "Mission",
+      "definition": "The complete objective and lifecycle of the spacecraft, including design, testing, launch and operations."
+    },
+    {
+      "term": "LEO (Low Earth Orbit)",
+      "definition": "An orbit relatively close to Earth, commonly used by CubeSats."
+    },
+    {
+      "term": "Altitude",
+      "definition": "Height above a reference Earth surface."
+    },
+    {
+      "term": "Orbit",
+      "definition": "The curved path followed by a spacecraft under gravity."
+    },
+    {
+      "term": "Orbital period",
+      "definition": "Time required to complete one orbit."
+    },
+    {
+      "term": "Inclination",
+      "definition": "Angle between the orbital plane and Earth's equatorial plane."
+    },
+    {
+      "term": "Orbit plane",
+      "definition": "The geometric plane containing the spacecraft's idealized orbit."
+    },
+    {
+      "term": "Ephemeris",
+      "definition": "Time-tagged information describing where a celestial body or spacecraft is expected to be."
+    },
+    {
+      "term": "Perturbation",
+      "definition": "A force/effect that makes a real orbit differ from an ideal two-body orbit."
+    },
+    {
+      "term": "Eclipse",
+      "definition": "Interval when Earth or another body blocks direct sunlight from the spacecraft."
+    },
+    {
+      "term": "Sun vector",
+      "definition": "Direction from the spacecraft/reference frame toward the Sun."
+    },
+    {
+      "term": "Attitude",
+      "definition": "Orientation of a spacecraft in space; it is different from altitude."
+    },
+    {
+      "term": "Reference frame",
+      "definition": "Coordinate system used to describe position, velocity or attitude."
+    },
+    {
+      "term": "Ground station",
+      "definition": "Earth-based equipment that communicates with the spacecraft."
+    },
+    {
+      "term": "Pass",
+      "definition": "Period when the spacecraft is visible to a ground station and communication may be possible."
+    },
+    {
+      "term": "Telemetry",
+      "definition": "Measurements and status data transmitted from the spacecraft."
+    },
+    {
+      "term": "Telecommand",
+      "definition": "Instruction transmitted from the ground to the spacecraft."
+    },
+    {
+      "term": "EPS (Electrical Power System)",
+      "definition": "Subsystem responsible for electrical generation, storage, control and distribution."
+    },
+    {
+      "term": "PMAD",
+      "definition": "Power Management and Distribution; circuits that condition, control and deliver electrical power."
+    },
+    {
+      "term": "OBC",
+      "definition": "On-Board Computer; runs flight software and coordinates spacecraft functions."
+    },
+    {
+      "term": "C&DH",
+      "definition": "Command and Data Handling; receives commands, handles data and supports onboard processing/storage."
+    },
+    {
+      "term": "ADCS",
+      "definition": "Attitude Determination and Control System; estimates and controls orientation."
+    },
+    {
+      "term": "TT&C",
+      "definition": "Telemetry, Tracking and Command; communication functions used to monitor and operate the spacecraft."
+    },
+    {
+      "term": "Thermal control",
+      "definition": "Methods used to keep spacecraft components within required temperature ranges."
+    },
+    {
+      "term": "Reaction wheel",
+      "definition": "Motor-driven wheel that changes spacecraft attitude through angular momentum exchange."
+    },
+    {
+      "term": "Magnetorquer",
+      "definition": "Electromagnetic actuator that interacts with Earth's magnetic field to create control torque."
+    },
+    {
+      "term": "Safe mode",
+      "definition": "Predefined low-risk state that protects essential functions after a serious anomaly or low-energy condition."
+    },
+    {
+      "term": "Redundancy",
+      "definition": "Extra hardware, software or paths intended to tolerate a failure."
+    },
+    {
+      "term": "FDIR",
+      "definition": "Fault Detection, Isolation and Recovery; identify an abnormal condition, locate likely cause and perform/advise a bounded response."
+    },
+    {
+      "term": "Voltage (V)",
+      "definition": "Electrical potential difference that helps drive current."
+    },
+    {
+      "term": "Current (A)",
+      "definition": "Rate of electric-charge flow."
+    },
+    {
+      "term": "Power (W)",
+      "definition": "Instantaneous rate of energy use or generation; P=VI in a simple DC case."
+    },
+    {
+      "term": "Energy (Wh)",
+      "definition": "Power accumulated over time; 10 W for 2 hours is 20 Wh."
+    },
+    {
+      "term": "Power budget",
+      "definition": "Table comparing expected generation and consumption in each mode."
+    },
+    {
+      "term": "Energy budget",
+      "definition": "Calculation of generated and consumed energy over a period such as one orbit."
+    },
+    {
+      "term": "Solar cell",
+      "definition": "Semiconductor device converting light into electricity."
+    },
+    {
+      "term": "Solar array",
+      "definition": "Connected solar cells/panels that generate spacecraft power."
+    },
+    {
+      "term": "Incidence angle",
+      "definition": "Angle between incoming sunlight and the solar-panel normal."
+    },
+    {
+      "term": "Derating",
+      "definition": "Intentionally reducing ideal performance to account for real losses, aging, temperature and uncertainty."
+    },
+    {
+      "term": "BOL",
+      "definition": "Beginning of Life; performance near the start of the mission."
+    },
+    {
+      "term": "EOL",
+      "definition": "End of Life; expected performance near mission end after degradation."
+    },
+    {
+      "term": "Battery cell",
+      "definition": "Smallest electrochemical unit in a battery."
+    },
+    {
+      "term": "Battery pack",
+      "definition": "Connected cells plus protection, structure, sensing and often management electronics."
+    },
+    {
+      "term": "Li-ion",
+      "definition": "Lithium-ion rechargeable battery chemistry family widely used where high energy density is valuable."
+    },
+    {
+      "term": "BMS",
+      "definition": "Battery Management System; electronics/software that monitor and protect a battery within its design limits."
+    },
+    {
+      "term": "Capacity (Ah)",
+      "definition": "Amount of electric charge a battery can deliver under specified conditions."
+    },
+    {
+      "term": "Energy capacity (Wh)",
+      "definition": "Approximate stored electrical energy; depends on voltage and charge capacity."
+    },
+    {
+      "term": "SOC (State of Charge)",
+      "definition": "Estimated percentage of presently available battery charge/energy."
+    },
+    {
+      "term": "DoD (Depth of Discharge)",
+      "definition": "Percentage of capacity removed; approximately 100% minus SOC under the simplified definition."
+    },
+    {
+      "term": "SOH (State of Health)",
+      "definition": "Estimate of present battery capability relative to a defined new/reference condition."
+    },
+    {
+      "term": "RUL (Remaining Useful Life)",
+      "definition": "Estimate of time or cycles before a defined end-of-use criterion; highly dependent on data and assumptions."
+    },
+    {
+      "term": "OCV (Open-Circuit Voltage)",
+      "definition": "Battery voltage measured/estimated without load after suitable rest conditions."
+    },
+    {
+      "term": "Internal resistance",
+      "definition": "Effective opposition inside the battery that creates voltage drop and heat under current."
+    },
+    {
+      "term": "Voltage sag",
+      "definition": "Temporary terminal-voltage reduction when load current rises."
+    },
+    {
+      "term": "Charge efficiency",
+      "definition": "Fraction of charging energy stored by the battery in the model."
+    },
+    {
+      "term": "Discharge efficiency",
+      "definition": "Fraction accounting for energy lost while delivering power."
+    },
+    {
+      "term": "C-rate",
+      "definition": "Charge/discharge current normalized to battery capacity; 1C nominally corresponds to using rated capacity in about one hour under stated conditions."
+    },
+    {
+      "term": "Energy throughput",
+      "definition": "Total charged and discharged energy accumulated over time."
+    },
+    {
+      "term": "Equivalent Full Cycle (EFC)",
+      "definition": "Partial cycles combined into the energy equivalent of one full charge-discharge cycle."
+    },
+    {
+      "term": "Capacity fade",
+      "definition": "Reduction in available battery capacity with aging/use."
+    },
+    {
+      "term": "Thermal runaway",
+      "definition": "Dangerous self-heating condition in which heat-generating reactions accelerate; CubeTwin does not predict or certify this phenomenon."
+    },
+    {
+      "term": "Model",
+      "definition": "Mathematical/software representation of selected real-world behaviour."
+    },
+    {
+      "term": "Simulation",
+      "definition": "Running a model over time under defined inputs and assumptions."
+    },
+    {
+      "term": "Digital twin",
+      "definition": "A digital representation connected to the state/history of a particular physical system. CubeTwin begins as a physics-based digital-twin simulation; it becomes a calibrated twin only when linked to traceable data from a specific test article or spacecraft."
+    },
+    {
+      "term": "Time step",
+      "definition": "Simulated time between numerical updates."
+    },
+    {
+      "term": "State variable",
+      "definition": "Quantity carried from one time step to the next, such as SOC or temperature."
+    },
+    {
+      "term": "Boundary condition",
+      "definition": "Defined environmental or interface condition used by a model."
+    },
+    {
+      "term": "Scenario",
+      "definition": "Complete set of mission inputs, schedule, faults and duration."
+    },
+    {
+      "term": "Fault",
+      "definition": "Defined defect or abnormal condition that may cause an undesired effect."
+    },
+    {
+      "term": "Anomaly",
+      "definition": "Observed behaviour that differs from expectation; it does not automatically prove the root cause."
+    },
+    {
+      "term": "Failure",
+      "definition": "Inability to perform a required function within specified limits."
+    },
+    {
+      "term": "Fault injection",
+      "definition": "Deliberately adding a simulated fault to test detection and response."
+    },
+    {
+      "term": "Ground truth",
+      "definition": "Hidden, authoritative simulated physical state used to assess an observer/detector."
+    },
+    {
+      "term": "Threshold",
+      "definition": "Value that triggers a status, warning or action."
+    },
+    {
+      "term": "Hysteresis",
+      "definition": "Different entry and exit thresholds used to prevent rapid toggling."
+    },
+    {
+      "term": "Energy margin",
+      "definition": "Energy remaining beyond what is required for the planned activity/reserve."
+    },
+    {
+      "term": "Brownout",
+      "definition": "Voltage/power condition too low for correct operation of one or more loads."
+    },
+    {
+      "term": "Reliability",
+      "definition": "Probability or ability to perform required functions for a stated time under stated conditions."
+    },
+    {
+      "term": "Monte Carlo simulation",
+      "definition": "Repeated runs with sampled uncertain inputs to explore a distribution of outcomes."
+    },
+    {
+      "term": "Seed",
+      "definition": "Starting value that makes pseudo-random simulations reproducible."
+    },
+    {
+      "term": "Verification",
+      "definition": "Evidence that the software/model was implemented according to its stated requirements\u2014\u201cbuilt correctly.\u201d"
+    },
+    {
+      "term": "Validation",
+      "definition": "Evidence that the model is appropriate for the intended use\u2014\u201cthe right model for this purpose.\u201d"
+    },
+    {
+      "term": "Calibration",
+      "definition": "Adjusting model parameters using traceable observed/test data."
+    },
+    {
+      "term": "Uncertainty",
+      "definition": "Quantified lack of exact knowledge about inputs or model behaviour."
+    },
+    {
+      "term": "Tolerance",
+      "definition": "Allowed difference between expected and calculated results."
+    },
+    {
+      "term": "Digital thread",
+      "definition": "Traceable connection among requirements, parameters, models, tests, data and decisions."
+    },
+    {
+      "term": "HIL (Hardware-in-the-Loop)",
+      "definition": "Test setup where real hardware interacts with a simulated environment/system."
+    },
+    {
+      "term": "TRL (Technology Readiness Level)",
+      "definition": "Scale used to describe technology maturity; do not assign a TRL without criteria and evidence."
+    },
+    {
+      "term": "HUMS",
+      "definition": "Health and Usage Monitoring System; observes condition and usage to support diagnostics, prognostics and maintenance."
+    }
+  ],
+  "weeks": [
+    {
+      "number": 1,
+      "dates": "14\u201320 September",
+      "title": "Mission definition and CubeSat basics",
+      "groups": {
+        "Learn": [
+          "spacecraft versus launch vehicle",
+          "CubeSat units and the 3U reference mission",
+          "payload, spacecraft bus and subsystems",
+          "orbit, altitude, inclination and period",
+          "why EPS is mission-critical."
+        ],
+        "Do": [
+          "form a team of 1\u20133 active students for ISAST submission",
+          "write a one-sentence mission need",
+          "identify users: student team, faculty mentor and mission reviewer",
+          "create a system context diagram",
+          "record all example parameters with units and sources/assumption labels",
+          "calculate the 500 km circular-orbit period by hand",
+          "create the CubeTwin repository branch according to the existing workflow."
+        ],
+        "Build": [
+          "pure `calculateOrbitalPeriod()` function",
+          "reference mission configuration",
+          "first wireframe for desktop and 390 px mobile",
+          "landing-page hero and project identity draft."
+        ],
+        "Verify": [
+          "dimensional/unit check",
+          "hand result versus code within a defined tolerance",
+          "invalid altitude inputs return controlled errors",
+          "no existing `/space` content or routes regress."
+        ],
+        "Deliverables": [
+          "Mission Definition v1",
+          "assumptions register",
+          "architecture sketch",
+          "orbital-period unit tests",
+          "initial website wireframe."
+        ]
+      }
+    },
+    {
+      "number": 2,
+      "dates": "21\u201327 September",
+      "title": "Power budget, sunlight and eclipse",
+      "groups": {
+        "Learn": [
+          "watt, watt-hour, voltage, current and efficiency",
+          "sunlight/eclipse energy cycle",
+          "solar incidence angle and derating",
+          "subsystem power budget",
+          "difference between power and energy."
+        ],
+        "Do": [
+          "list all subsystem loads",
+          "calculate nominal and peak power",
+          "estimate energy required through one eclipse",
+          "calculate whether the example battery reserve is sufficient",
+          "define mission modes and schedules."
+        ],
+        "Build": [
+          "beginner eclipse-duration model",
+          "solar peak-power model",
+          "load scheduler",
+          "net-power calculation",
+          "preliminary sunlight/eclipsed orbit visual",
+          "first SOC-versus-time line chart using a temporary ideal battery."
+        ],
+        "Verify": [
+          "solar power is zero during simplified eclipse",
+          "net power equals delivered solar minus load",
+          "energy-conservation test passes for a one-hour constant-load case",
+          "chart labels and tooltips show units."
+        ],
+        "Deliverables": [
+          "power budget table",
+          "mission-mode table",
+          "working solar/load prototype",
+          "challenge problem/solution/novelty draft."
+        ]
+      }
+    },
+    {
+      "number": 3,
+      "dates": "28 September\u20134 October",
+      "title": "Battery MVP and ISAST submission",
+      "groups": {
+        "Learn": [
+          "battery cell versus pack",
+          "capacity, energy, SOC, DoD, charge/discharge efficiency",
+          "why eclipse sizing matters",
+          "why temperature and internal resistance matter",
+          "simulator versus digital twin."
+        ],
+        "Do": [
+          "create a 3\u20135 page concept paper or 5\u20138 slide pitch deck",
+          "include problem, solution, novelty, feasibility, impact and references",
+          "include active student ID cards as required by the challenge",
+          "use screenshots clearly labelled as concept/prototype",
+          "complete a submission checklist and retain the submitted PDF."
+        ],
+        "Build": [
+          "energy-integration battery model",
+          "SOC limits, reserve warning and unmet-load accounting",
+          "deterministic simulation loop",
+          "Run/Pause/Reset controls",
+          "a minimal demonstrable CubeTwin dashboard."
+        ],
+        "Verify": [
+          "SOC cannot exceed configured bounds",
+          "charge/discharge losses have correct direction",
+          "zero-load and zero-generation edge cases pass",
+          "same scenario and seed produce identical output."
+        ],
+        "Deliverables": [
+          "ISAST-ready PDF",
+          "Battery Model v1",
+          "demonstration video or screenshots",
+          "submission receipt/reference recorded by the team."
+        ]
+      }
+    },
+    {
+      "number": 4,
+      "dates": "5\u201311 October",
+      "title": "Voltage, temperature and Stage Gate 1",
+      "groups": {
+        "Learn": [
+          "OCV, terminal voltage and internal resistance",
+          "voltage sag",
+          "heat generation by \\(I^2R\\)",
+          "model fidelity and assumptions",
+          "verification versus validation."
+        ],
+        "Build": [
+          "editable OCV/SOC curve",
+          "terminal-voltage estimate",
+          "optional lumped battery-temperature model",
+          "warnings for undervoltage and temperature assumptions",
+          "input help, glossary links and validation messages."
+        ],
+        "Verify": [
+          "increasing resistance increases voltage sag under equal load",
+          "no divide-by-zero, `NaN` or infinite output",
+          "thermal model remains stable at allowed time steps",
+          "numerical functions have unit tests and explicit units."
+        ],
+        "Stage Gate 1 acceptance": [
+          "one-orbit and 24-hour deterministic scenarios complete",
+          "energy balance closes within defined numerical tolerance",
+          "all assumptions are visible",
+          "a beginner can run the default scenario without instruction."
+        ]
+      }
+    },
+    {
+      "number": 5,
+      "dates": "12\u201318 October",
+      "title": "Mission modes and energy-aware scheduling",
+      "groups": {
+        "Learn": [
+          "spacecraft operations timeline",
+          "payload/downlink scheduling",
+          "energy margin",
+          "safe mode and hysteresis."
+        ],
+        "Build": [
+          "mission state machine",
+          "schedule editor or preset schedule cards",
+          "payload and downlink activity markers on charts",
+          "automatic low-SOC safe mode",
+          "event log with reasons for every mode change."
+        ],
+        "Verify": [
+          "the state machine has no unreachable or accidental looping states",
+          "safe mode reduces the configured load",
+          "recovery requires the higher threshold and dwell time",
+          "scheduled activities complete, defer or fail deterministically."
+        ]
+      }
+    },
+    {
+      "number": 6,
+      "dates": "19\u201325 October",
+      "title": "Fault injection and diagnosis",
+      "groups": {
+        "Learn": [
+          "fault, anomaly, failure and symptom",
+          "truth state versus observed telemetry",
+          "detection threshold and false alarm",
+          "FDIR basics."
+        ],
+        "Build": [
+          "at least six power fault scenarios",
+          "truth/observed/detected separation",
+          "annotated chart events",
+          "fault comparison view: baseline versus faulty run",
+          "simple rule-based detection, not ML."
+        ],
+        "Verify": [
+          "each injected fault begins and ends at the configured time",
+          "baseline results do not change when no fault is enabled",
+          "detectors are tested for expected true/false outcomes",
+          "imported scenarios cannot inject code or unsafe markup."
+        ]
+      }
+    },
+    {
+      "number": 7,
+      "dates": "26 October\u20131 November",
+      "title": "Telemetry and reliability metrics",
+      "groups": {
+        "Learn": [
+          "telemetry, sampling interval and time series",
+          "energy throughput and equivalent full cycles",
+          "mission success criteria",
+          "margin and uncertainty."
+        ],
+        "Build": [
+          "telemetry table and charts for SOC, power, voltage and temperature",
+          "metrics summary",
+          "activity completion score",
+          "JSON/CSV export with units and metadata",
+          "accessible chart summaries for screen readers."
+        ],
+        "Verify": [
+          "sums/integrals match raw telemetry",
+          "exported row count and timestamps are correct",
+          "units appear in headers",
+          "large 24-hour runs stay within mobile memory limits."
+        ]
+      }
+    },
+    {
+      "number": 8,
+      "dates": "2\u20138 November",
+      "title": "3D mission experience and Stage Gate 2",
+      "groups": {
+        "Learn": [
+          "coordinate frame as a reference for position/orientation",
+          "visual scale versus physical scale",
+          "why 3D visuals must not be treated as analysis results",
+          "accessible alternatives to WebGL."
+        ],
+        "Build": [
+          "optimized 3D Earth, orbit path, moving CubeSat and day/night indication",
+          "synchronized simulation clock and 3D state",
+          "camera reset and pause",
+          "quality setting or automatic mobile simplification",
+          "static 2D fallback when WebGL is unavailable",
+          "reduced-motion mode."
+        ],
+        "Verify": [
+          "the 3D scene agrees with sunlight/eclipsed state from the numerical engine",
+          "no duplicated physics is implemented inside the renderer",
+          "touch controls do not block page scrolling",
+          "360, 390, 412 and 768 px layouts remain usable",
+          "keyboard and screen-reader users can obtain the same numerical information."
+        ],
+        "Stage Gate 2 acceptance": [
+          "mission modes, faults, telemetry and 3D view work together",
+          "simulation remains responsive on representative mobile hardware",
+          "the default scenario can be understood without reading source code."
+        ]
+      }
+    },
+    {
+      "number": 9,
+      "dates": "9\u201315 November",
+      "title": "Monte Carlo uncertainty",
+      "groups": {
+        "Learn": [
+          "uncertainty range versus probability distribution",
+          "random seed and reproducibility",
+          "deterministic run versus Monte Carlo run",
+          "confidence interval and failure probability."
+        ],
+        "Build": [
+          "uncertainty inputs for capacity, load, solar output and resistance",
+          "seeded batch runner in a worker",
+          "histogram or distribution summary",
+          "probability of falling below reserve and completing activities."
+        ],
+        "Verify": [
+          "fixed inputs collapse to the deterministic result",
+          "same seed reproduces the same distribution",
+          "sample count is capped for mobile safety",
+          "claims state simulated probability, not real mission probability."
+        ]
+      }
+    },
+    {
+      "number": 10,
+      "dates": "16\u201322 November",
+      "title": "Model validation and learning workbook",
+      "groups": {
+        "Learn": [
+          "requirement, verification and validation",
+          "test case, expected result and tolerance",
+          "reference data and calibration",
+          "model limitation."
+        ],
+        "Build": [
+          "validation cases with hand calculations",
+          "requirement-to-test traceability table",
+          "tutorial modules, exercises and answer guidance",
+          "print stylesheet and printable workbook cover",
+          "references and last-reviewed date."
+        ],
+        "Verify": [
+          "orbit-period result is compared to the analytical formula",
+          "constant-power battery cases match analytical energy change",
+          "energy accounting reports numerical residual",
+          "all external sources are authoritative and linked",
+          "print preview has no clipped tables, invisible text or unnecessary dark backgrounds."
+        ]
+      }
+    },
+    {
+      "number": 11,
+      "dates": "23\u201329 November",
+      "title": "SEO, AI search and production quality",
+      "groups": {
+        "Build": [
+          "canonical metadata for `/space/cubesat`",
+          "sitemap and robots policy",
+          "Open Graph/Twitter image at 1200\u00d7630",
+          "semantic headings and internal links",
+          "JSON-LD entity graph",
+          "visible FAQ with concise answers",
+          "optional `/llms.txt` summary as a supplemental discovery aid",
+          "analytics events for simulator start, scenario completion, workbook print and outbound ecosystem links, without personal data."
+        ],
+        "Verify": [
+          "no `noindex` or accidental crawler block",
+          "canonical and Open Graph URLs use the exact production path",
+          "structured data matches visible content and has no fabricated ratings, partners or awards",
+          "page is server-rendered enough for crawlers to understand without running the simulator",
+          "broken-link, metadata and sitemap tests pass",
+          "Search Console, Bing tools and schema validators are documented as post-deployment checks."
+        ]
+      }
+    },
+    {
+      "number": 12,
+      "dates": "30 November\u20136 December",
+      "title": "Release, demonstration and handover",
+      "groups": {
+        "Build": [
+          "polish the default, low-energy and fault scenarios",
+          "complete README, model assumptions, validation report and contributor guide",
+          "add version number and changelog",
+          "create a 3\u20135 minute beginner demonstration script",
+          "complete technical and mentor review",
+          "deploy through the repository's existing verified process."
+        ],
+        "Verify": [
+          "full tests, build, lint/type-check and mobile end-to-end tests pass",
+          "Lighthouse lab targets are met or documented",
+          "no console errors, hydration warnings or broken downloads",
+          "simulator output is deterministic when Monte Carlo is off",
+          "disclaimers and organization roles are accurate",
+          "rollback procedure and known limitations are documented."
+        ],
+        "Stage Gate 3 / Definition of Done": [
+          "`/space` contains the new CubeTwin card and no unrelated redesign",
+          "`/space/cubesat` is complete and mobile-first",
+          "educational simulation engine and required scenarios work",
+          "workbook prints cleanly",
+          "equations, units and glossary are understandable to beginners",
+          "automated verification passes",
+          "public claims are accurate and evidence-based",
+          "handover material enables a new student to reproduce the demo."
+        ]
+      }
+    }
+  ]
+}

@@ -58,3 +58,7 @@ link below points to a canonical public page already listed in
 ## Public source documentation referenced by this site
 
 - [IN-SPACe Workshop on Essentials of Model Rocketry](https://www.inspace.gov.in/inspace?id=workshop_on_essentials_of_model_rocketry)
+
+## CubeTwin
+
+- [CubeTwin](https://aerospace.ev.engineer/space/cubesat): EV Society educational R&D CubeSat energy simulator, 12-week guide and printable workbook. Simulated data; not flight software.
