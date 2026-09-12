@@ -76,7 +76,7 @@ export const structuredData = {
       url: `${CANONICAL}#simulator`,
       applicationCategory: "EducationalApplication",
       operatingSystem: "Web browser",
-      softwareVersion: "1.0",
+      softwareVersion: "0.01",
       description:
         "Educational R&D prototype using simulated data. Not flight software or a validated operational twin.",
       creator: { "@id": EV_SOCIETY_ID },
@@ -100,14 +100,14 @@ export const structuredData = {
         {
           "@type": "ListItem",
           position: 1,
-          name: "Aerospace",
-          item: "https://aerospace.ev.engineer/aerospace",
+          name: "Space",
+          item: "https://aerospace.ev.engineer/space",
         },
         {
           "@type": "ListItem",
           position: 2,
-          name: "Space",
-          item: "https://aerospace.ev.engineer/space",
+          name: "Simulations & R&D Projects",
+          item: "https://aerospace.ev.engineer/space#simulations",
         },
         { "@type": "ListItem", position: 3, name: "CubeTwin", item: CANONICAL },
       ],

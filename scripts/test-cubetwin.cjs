@@ -1,11 +1,10 @@
 /* Production browser acceptance checks. Start `npm run start -- --port 3100` first. */
-const assert = require('node:assert/strict');
-const fs = require('node:fs/promises');
-const path = require('node:path');
-const { chromium } = require('playwright');
 const BASE = process.env.CUBETWIN_BASE_URL || 'http://127.0.0.1:3100';
 const OUTPUT = process.env.CUBETWIN_QA_DIR || '/private/tmp/cubetwin-qa';
 async function main() {
+  const [{ default: assert }, fs, { default: path }, { chromium }] = await Promise.all([
+    import('node:assert/strict'), import('node:fs/promises'), import('node:path'), import('playwright'),
+  ]);
   await fs.mkdir(OUTPUT, { recursive: true });
   const browser = await chromium.launch({ headless: true });
   const errors = [], results = [], performance = {};
@@ -19,7 +18,7 @@ async function main() {
     await test('Production route, canonical, schema, rendered content and 3D', async () => {
       const response = await page.goto(`${BASE}/space/cubesat`);
       assert.equal(response.status(), 200);
-      await page.locator('canvas[data-ready=true]').waitFor();
+      await page.locator('canvas[data-ready=true], canvas[data-renderer=static]').waitFor();
       assert.equal(await page.title(), 'CubeTwin | CubeSat Battery & Energy Digital Twin');
       assert.equal(await page.locator('link[rel=canonical]').getAttribute('href'), 'https://aerospace.ev.engineer/space/cubesat');
       const json = JSON.parse(await page.locator('script[type="application/ld+json"]').textContent());
@@ -114,7 +113,7 @@ async function main() {
       await test(`Responsive layout ${width}×${height}`, async () => {
         await page.setViewportSize({ width, height });
         await page.goto(`${BASE}/space/cubesat`);
-        await page.locator('canvas[data-ready=true]').waitFor();
+        await page.locator('canvas[data-ready=true], canvas[data-renderer=static]').waitFor();
         assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
         const clipped = await page.locator('main input:not([type=file]):not([type=checkbox]), main select, main textarea').evaluateAll(els => els.filter(el => {const r=el.getBoundingClientRect();return r.width>0 && (r.right>innerWidth+1 || r.left<0);}).map(el=>el.outerHTML));
         assert.deepEqual(clipped, []);
@@ -150,7 +149,7 @@ async function main() {
     });
     await test('Space card, robots, sitemap and Open Graph image', async () => {
       await page.goto(`${BASE}/space`);
-      await page.locator('#simulations').getByRole('link',{name:'CubeTwin',exact:true}).click();
+      await page.locator('#simulations').getByRole('link',{name:'Explore CubeTwin',exact:true}).click();
       await page.waitForURL('**/space/cubesat');
       assert((await (await page.request.get(`${BASE}/robots.txt`)).text()).includes('OAI-SearchBot'));
       assert((await (await page.request.get(`${BASE}/sitemap.xml`)).text()).includes('https://aerospace.ev.engineer/space/cubesat'));

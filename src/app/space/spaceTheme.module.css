@@ -1,0 +1,57 @@
+/* Shared tokens extracted from the existing Space page, without changing their values. */
+.theme {
+  --space-background: #090b1d;
+  --space-surface: rgba(17, 21, 46, 0.8);
+  --space-surface-soft: rgba(17, 21, 46, 0.4);
+  --space-text: #ffffff;
+  --space-muted: #b5b8c9;
+  --space-cyan: #06b6d4;
+  --space-cyan-text: #67e8f9;
+  --space-blue: #3b82f6;
+  --space-blue-text: #93c5fd;
+  --space-amber: #f59e0b;
+  --space-border: rgba(255, 255, 255, 0.06);
+  --space-control-border: rgba(59, 130, 246, 0.35);
+  --space-button-surface: rgba(59, 130, 246, 0.12);
+  --space-radius: 16px;
+  --space-button-radius: 12px;
+  --space-content-width: 1280px;
+  --space-heading-size: clamp(24px, 3.2vw, 32px);
+  --space-hero-size: clamp(32px, 4.6vw, 54px);
+  --space-heading-tracking: -0.02em;
+  --space-section-block: 56px;
+  --space-inset: 32px;
+  font-family: var(--font-space-inter);
+}
+.card {
+  background: var(--space-surface);
+  border: 1px solid var(--space-border);
+  border-radius: var(--space-radius);
+}
+.secondaryButton {
+  padding: 13px 24px;
+  border-radius: var(--space-button-radius);
+  background: var(--space-button-surface);
+  border: 1px solid var(--space-control-border);
+  color: var(--space-blue-text);
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+}
+@media (max-width: 768px) {
+  .theme {
+    --space-section-block: 40px;
+    --space-inset: 20px;
+  }
+}
+@media (max-width: 480px) {
+  .theme {
+    --space-section-block: 32px;
+    --space-inset: 16px;
+  }
+}

@@ -1,13 +1,16 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { Manrope, Inter } from "next/font/google";
+import { manrope, inter, FONT_MANROPE, FONT_INTER } from "./fonts";
+import SpaceHeader from "./components/SpaceHeader";
+import SpaceFooter from "./components/SpaceFooter";
+import theme from "./spaceTheme.module.css";
 import {
   Shield, Satellite, Orbit, Activity, HeartPulse, Cpu, AlertTriangle,
   LifeBuoy, GraduationCap, FlaskConical, Rocket, Radio, Radar, RefreshCw,
-  Globe, Users, Layers, CheckCircle2, Menu, X, ArrowRight, ChevronRight,
-  ChevronDown, ChevronUp, ExternalLink, Mail,
+  Globe, Users, Layers, CheckCircle2, ArrowRight, ChevronRight,
+  ChevronDown, ChevronUp, ExternalLink,
 } from "lucide-react";
 import styles from "./space.module.css";
 import {
@@ -16,7 +19,6 @@ import {
   researchThemes, roadmap, participationAudiences,
   accessModels, faqs, type IconName,
 } from "./spaceData";
-import { useMobileMenuLock } from "@/hooks/useMobileMenuLock";
 import { EOI_FORM_URL } from "@/lib/eoi";
 import { JsonLd } from "@/lib/structured-data/JsonLd";
 import { buildSpaceEntityGraph } from "@/lib/structured-data/spaceGraph";
@@ -34,21 +36,6 @@ const spaceEntityGraph = {
     citationUrls: visionReferences.map((ref) => ref.href),
   }),
 };
-
-const manrope = Manrope({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-space-manrope",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-space-inter",
-});
-
-const FONT_MANROPE = "var(--font-space-manrope)";
-const FONT_INTER = "var(--font-space-inter)";
 
 const CONTACT_HREF = "/contact";
 
@@ -104,19 +91,6 @@ const statusTone: Record<string, string> = {
   Proposed: "#3B82F6",
   "Research Direction": "#06B6D4",
 };
-
-const navItems = [
-  { label: "Home", href: "#home" },
-  { label: "Mission Path", href: "#pathway" },
-  { label: "Research", href: "#research" },
-  { label: "Labs", href: "#labs" },
-  { label: "Research Themes", href: "#projects" },
-  { label: "Vision & References", href: "#vision" },
-  { label: "Community", href: "#community" },
-  { label: "UFlight", href: "https://www.uflight.in/" },
-  { label: "EV.ENGINEER", href: "/" },
-  { label: "EV Society", href: "https://www.evsociety.org" },
-];
 
 const sectionH2: React.CSSProperties = {
   fontFamily: FONT_MANROPE,
@@ -183,166 +157,13 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 }
 
 export default function SpacePage() {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const mobileToggleRef = useRef<HTMLButtonElement>(null);
-  useMobileMenuLock(mobileOpen, setMobileOpen, mobileToggleRef);
 
   return (
-    <div className={`${styles.root} ${manrope.variable} ${inter.variable}`} style={{ background: "#090B1D", minHeight: "100vh", fontFamily: FONT_INTER, overflowX: "hidden" }}>
+    <div className={`${styles.root} ${theme.theme} ${manrope.variable} ${inter.variable}`} style={{ background: "var(--space-background)", minHeight: "100vh", fontFamily: FONT_INTER, overflowX: "hidden" }}>
       <JsonLd data={spaceEntityGraph} />
       <a href="#main-content" className={styles.skipLink}>Skip to content</a>
 
-      {/* ── Header ── */}
-      <header className={styles.headerBar} style={{
-        position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-        background: "rgba(9,11,29,0.85)", backdropFilter: "blur(20px)",
-        borderBottom: "1px solid rgba(255,255,255,0.05)",
-        height: 60, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16,
-      }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
-          <div style={{
-            width: 34, height: 34, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center",
-            background: "linear-gradient(135deg, #7C3AED, #06B6D4)",
-          }}>
-            <Orbit size={18} color="#fff" />
-          </div>
-          <span style={{ fontFamily: FONT_MANROPE, fontWeight: 800, fontSize: 17, letterSpacing: "-0.02em", color: "#fff" }}>
-            Space
-          </span>
-        </div>
-
-        <nav aria-label="Space section navigation" style={{ display: "flex", alignItems: "center", gap: 2, flex: 1, justifyContent: "center" }} className={styles.headerNavDesktop}>
-          {navItems.map((item) => {
-            const isInternalRoute = item.href === "/";
-            const isExternal = item.href.startsWith("http");
-            const borderedStyle: React.CSSProperties = {
-              padding: "6px 14px", borderRadius: 8, fontWeight: 600, fontSize: 13,
-              background: "linear-gradient(135deg, rgba(124,58,237,0.3), rgba(59,130,246,0.2))",
-              border: "1px solid rgba(124,58,237,0.4)", color: "#B39DDB",
-              textDecoration: "none", display: "block", marginLeft: 10,
-            };
-            if (isInternalRoute) {
-              return (
-                <Link key={item.label} href={item.href} style={borderedStyle}>
-                  {item.label}
-                </Link>
-              );
-            }
-            if (isExternal) {
-              return (
-                <a key={item.label} href={item.href} target="_blank" rel="noopener noreferrer" style={borderedStyle}>
-                  {item.label}
-                </a>
-              );
-            }
-            const linkStyle: React.CSSProperties = {
-              padding: "6px 12px", borderRadius: 8, color: "#B5B8C9", fontSize: 13, fontWeight: 500,
-              textDecoration: "none", transition: "color 0.2s, background 0.2s", display: "block",
-            };
-            return (
-              <a
-                key={item.label}
-                href={item.href}
-                style={linkStyle}
-                onMouseEnter={(e) => { e.currentTarget.style.color = "#fff"; e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.color = "#B5B8C9"; e.currentTarget.style.background = "transparent"; }}
-              >
-                {item.label}
-              </a>
-            );
-          })}
-        </nav>
-
-        <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
-          <a
-            href={EOI_FORM_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Express Interest (opens Google Form in a new tab)"
-            className={styles.headerCtaDesktop}
-            style={{
-              padding: "7px 16px", borderRadius: 10, background: "linear-gradient(135deg, #7C3AED, #06B6D4)",
-              border: "none", color: "#fff", fontWeight: 600, fontSize: 13, textDecoration: "none",
-            }}>Express Interest</a>
-          <button
-            type="button"
-            ref={mobileToggleRef}
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label={mobileOpen ? "Close menu" : "Open menu"}
-            aria-expanded={mobileOpen}
-            aria-controls="space-mobile-menu"
-            style={{ background: "none", border: "none", color: "#fff", cursor: "pointer", padding: 4 }}
-            className={styles.headerToggle}
-          >
-            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </div>
-      </header>
-
-      {/* Mobile menu */}
-      {mobileOpen && (
-        <div id="space-mobile-menu" className={styles.mobileMenu} style={{
-          position: "fixed", top: 60, left: 0, right: 0, zIndex: 99,
-          background: "rgba(9,11,29,0.98)", borderBottom: "1px solid rgba(255,255,255,0.07)",
-          padding: "20px 24px", display: "flex", flexDirection: "column", gap: 8,
-        }}>
-          {navItems.map((item) => {
-            const isInternalRoute = item.href === "/";
-            const isExternal = item.href.startsWith("http");
-            const borderedStyle: React.CSSProperties = {
-              marginTop: 4, padding: "10px 16px", borderRadius: 10, fontWeight: 600,
-              background: "linear-gradient(135deg, rgba(124,58,237,0.3), rgba(59,130,246,0.2))",
-              border: "1px solid rgba(124,58,237,0.4)", color: "#B39DDB", fontSize: 15,
-              textDecoration: "none", textAlign: "center",
-            };
-            if (isInternalRoute) {
-              return (
-                <Link key={item.label} href={item.href} onClick={() => setMobileOpen(false)} style={borderedStyle}>
-                  {item.label}
-                </Link>
-              );
-            }
-            if (isExternal) {
-              return (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => setMobileOpen(false)}
-                  style={borderedStyle}
-                >
-                  {item.label}
-                </a>
-              );
-            }
-            const linkStyle: React.CSSProperties = {
-              padding: "10px 0", color: "#B5B8C9", fontSize: 15, textDecoration: "none",
-              borderBottom: "1px solid rgba(255,255,255,0.05)",
-            };
-            return (
-              <a
-                key={item.label}
-                href={item.href}
-                onClick={() => setMobileOpen(false)}
-                style={linkStyle}
-              >
-                {item.label}
-              </a>
-            );
-          })}
-          <a
-            href={EOI_FORM_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Express Interest (opens Google Form in a new tab)"
-            onClick={() => setMobileOpen(false)}
-            style={{
-              marginTop: 12, padding: "12px", borderRadius: 10, textAlign: "center",
-              background: "linear-gradient(135deg, #7C3AED, #06B6D4)", color: "#fff", fontWeight: 600, fontSize: 14, textDecoration: "none",
-            }}>Express Interest</a>
-        </div>
-      )}
+      <SpaceHeader />
 
       <main id="main-content">
         {/* ── Hero (#home) ── */}
@@ -410,10 +231,7 @@ export default function SpacePage() {
                 }}>
                   Explore the Mission <ArrowRight size={16} />
                 </a>
-                <a href="#pathway" style={{
-                  padding: "13px 24px", borderRadius: 12, background: "rgba(59,130,246,0.12)",
-                  border: "1px solid rgba(59,130,246,0.35)", color: "#93C5FD", fontWeight: 600, fontSize: 15, textDecoration: "none",
-                }}>View the Pathway</a>
+                <a href="#pathway" className={theme.secondaryButton}>View the Pathway</a>
                 <a href="https://www.evsociety.org/join" target="_blank" rel="noopener noreferrer" style={{
                   padding: "13px 24px", borderRadius: 12, background: "transparent",
                   border: "1px solid rgba(255,255,255,0.12)", color: "#B5B8C9", fontWeight: 600, fontSize: 15, textDecoration: "none",
@@ -725,9 +543,8 @@ export default function SpacePage() {
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 14 }}>
             {plannedLabs.map((lab) => (
-              <div key={lab.title} className={styles.cardHover} style={{
-                background: "rgba(17,21,46,0.8)", border: "1px solid rgba(255,255,255,0.06)",
-                borderRadius: 16, padding: "16px", display: "flex", flexDirection: "column", gap: 10,
+              <div key={lab.title} className={`${styles.cardHover} ${theme.card}`} style={{
+                padding: "16px", display: "flex", flexDirection: "column", gap: 10,
               }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                   <div style={{
@@ -760,12 +577,12 @@ export default function SpacePage() {
             <h2 style={sectionH2}>Learn by building mission-ready thinking</h2>
             <p style={sectionDesc}>Explore guided simulation projects that turn spacecraft concepts into testable models, telemetry and engineering evidence.</p>
           </div>
-          <div className={styles.cardHover} style={{ padding: 28, borderRadius: 18, background: "rgba(17,21,46,0.7)", border: "1px solid rgba(6,182,212,0.25)" }}>
+          <div className={`${styles.cardHover} ${theme.card}`} style={{ padding: 24 }}>
             <StatusPill label="Educational Prototype · 12-Week Student R&D Project" color="#06B6D4" />
             <h3 style={{ color: "#fff", marginTop: 18, marginBottom: 12 }}>CubeTwin</h3>
             <p style={{ ...sectionDesc, marginBottom: 12 }}>A Digital-Twin Simulation Platform for CubeSat Energy, Mission and Reliability Analysis</p>
             <p style={{ ...sectionDesc, marginBottom: 20 }}>Model orbit sunlight, solar generation, battery state of charge, mission loads, faults and safe-mode decisions through an interactive beginner-friendly laboratory.</p>
-            <Link href="/space/cubesat" style={{ display: "inline-flex", alignItems: "center", gap: 8, minHeight: 44, padding: "10px 20px", borderRadius: 8, background: "#06B6D4", color: "#06121d", fontWeight: 700 }}>CubeTwin <ArrowRight size={16} /></Link>
+            <Link href="/space/cubesat" className={theme.secondaryButton}>Explore CubeTwin <ArrowRight size={16} /></Link>
             <p style={{ fontSize: 12, color: "#B5B8C9", marginTop: 12 }}>Educational R&D prototype · Simulated data · Not flight software.</p>
           </div>
         </section>
@@ -964,55 +781,7 @@ export default function SpacePage() {
       </main>
 
       {/* ── Footer ── */}
-      <footer style={{ borderTop: "1px solid rgba(255,255,255,0.06)", padding: "48px 32px 28px" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <div style={{ gap: 40, marginBottom: 40 }} className={styles.footerGrid}>
-            <div>
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-                <div style={{ width: 32, height: 32, borderRadius: 10, background: "linear-gradient(135deg, #7C3AED, #06B6D4)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <Orbit size={16} color="#fff" />
-                </div>
-                <span style={{ fontFamily: FONT_MANROPE, fontWeight: 800, fontSize: 16, color: "#fff" }}>Space</span>
-              </div>
-              <p style={{ color: "#B5B8C9", fontSize: 14, lineHeight: 1.7, marginBottom: 4, maxWidth: 320 }}>
-                Space &middot; An EV Society initiative.
-              </p>
-              <p style={{ color: "#B5B8C9", fontSize: 14, lineHeight: 1.7, maxWidth: 320 }}>
-                Focused on Autonomous Spacecraft Health Management and Safe Recovery.
-              </p>
-            </div>
-
-            <div>
-              <div style={{ fontWeight: 700, fontSize: 14, color: "#fff", marginBottom: 16, fontFamily: FONT_MANROPE }}>Mission</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                <a href="#mission" style={{ color: "#B5B8C9", fontSize: 14, textDecoration: "none" }}>The Mission</a>
-                <a href="#pathway" style={{ color: "#B5B8C9", fontSize: 14, textDecoration: "none" }}>Mission Pathway</a>
-                <a href="#roadmap" style={{ color: "#B5B8C9", fontSize: 14, textDecoration: "none" }}>Roadmap</a>
-                <a href="#faq" style={{ color: "#B5B8C9", fontSize: 14, textDecoration: "none" }}>FAQ</a>
-              </div>
-            </div>
-
-            <div>
-              <div style={{ fontWeight: 700, fontSize: 14, color: "#fff", marginBottom: 16, fontFamily: FONT_MANROPE }}>Contact</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                <Link href={CONTACT_HREF} style={{ color: "#B5B8C9", fontSize: 14, textDecoration: "none", display: "flex", alignItems: "center", gap: 6 }}>
-                  <Mail size={13} /> Contact Us
-                </Link>
-                <Link href="/aerospace" style={{ color: "#B5B8C9", fontSize: 14, textDecoration: "none" }}>Aerospace</Link>
-                <Link href="/" style={{ color: "#B5B8C9", fontSize: 14, textDecoration: "none" }}>EV.ENGINEER</Link>
-                <a href="https://www.uflight.in/" target="_blank" rel="noopener noreferrer" style={{ color: "#B5B8C9", fontSize: 14, textDecoration: "none" }}>UFlight</a>
-                <a href="https://www.evsociety.org/" target="_blank" rel="noopener noreferrer" style={{ color: "#B5B8C9", fontSize: 14, textDecoration: "none" }}>EV Society</a>
-                <a href="https://itelematics.com" target="_blank" rel="noopener noreferrer" style={{ color: "#B5B8C9", fontSize: 14, textDecoration: "none" }}>iTelematics</a>
-              </div>
-            </div>
-          </div>
-
-          <div style={{ borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: 24, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
-            <span style={{ color: "#B5B8C9", fontSize: 13 }}>&copy; 2026 Space &middot; An EV Society initiative</span>
-            <span style={{ color: "#B5B8C9", fontSize: 13 }}>Commercial products and services, where applicable, are handled separately by iTelematics Software Private Limited under explicit agreements.</span>
-          </div>
-        </div>
-      </footer>
+      <SpaceFooter />
     </div>
   );
 }

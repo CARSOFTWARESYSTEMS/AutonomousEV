@@ -1,0 +1,27 @@
+{
+  "passed": 15,
+  "results": [
+    "Production route, canonical, schema, rendered content and 3D",
+    "Keyboard tabs and field validation preserve prior results",
+    "Worker presets, recorded playback, full history and export",
+    "Fault laboratory separates truth, readings and detector status",
+    "Seeded Monte Carlo runs in the browser worker",
+    "Scenario import rejects malformed JSON and accepts exported template",
+    "Searchable glossary, persistent checklists and local workbook notes",
+    "Desktop accessibility scan",
+    "Responsive layout 360×800",
+    "Responsive layout 390×844",
+    "Responsive layout 412×915",
+    "Responsive layout 768×1024",
+    "Reduced motion and no-WebGL fallback",
+    "Print workbook exposes all weeks and removes dark backgrounds",
+    "Space card, robots, sitemap and Open Graph image"
+  ],
+  "errors": [],
+  "performance": {
+    "lcpMs": 88,
+    "fcpMs": 88,
+    "navigationMs": 101.29999999701977,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.7922.34 Safari/537.36"
+  }
+}

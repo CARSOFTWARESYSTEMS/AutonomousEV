@@ -4,7 +4,7 @@ import { BookOpen, ChevronDown, Download, Printer, Search } from "lucide-react";
 import learning from "@/lib/cubetwin/learning.json";
 import { CALCULATIONS, WEEK_CALCULATIONS } from "@/lib/cubetwin/content";
 import { useSimulation } from "./SimulationProvider";
-import { download } from "./Simulator";
+import { download } from "@/lib/cubetwin/download";
 import styles from "../cubetwin.module.css";
 const memoryNotes = new Map<string, string>();
 const unavailableStores = new Set<string>();
@@ -19,7 +19,8 @@ function subscribeNotes(notify: () => void) {
 function useStoredText(key: string) {
   const getSnapshot = useCallback(() => {
     try {
-      if (unavailableStores.has(key)) return JSON.stringify([false, memoryNotes.get(key) ?? ""]);
+      if (unavailableStores.has(key))
+        return JSON.stringify([false, memoryNotes.get(key) ?? ""]);
       return JSON.stringify([true, localStorage.getItem(key) ?? ""]);
     } catch {
       return JSON.stringify([false, memoryNotes.get(key) ?? ""]);
@@ -153,7 +154,7 @@ export function Roadmap() {
                 <div className={styles.weekBody}>
                   {Object.entries(groups(w)).map(([group, items]) => (
                     <div key={group}>
-                      <h4>{group}</h4>
+                      <h3>{group}</h3>
                       {items.map((item, i) => {
                         const id = `${w.number}-${group}-${i}`;
                         return (
@@ -245,7 +246,9 @@ export function Workbook() {
           onChange={(e) => notes.setValue(e.target.value)}
           maxLength={12000}
         />
-        <div className={styles.printNotes}>{notes.value || "Record your observations here."}</div>
+        <div className={styles.printNotes}>
+          {notes.value || "Record your observations here."}
+        </div>
         <p className={styles.saveNote}>
           {notes.saved
             ? "Notes stay in this browser. No account or upload is needed."
@@ -297,7 +300,11 @@ export function Glossary() {
         {entries.length} of {learning.glossary.length} terms
         {entries.length === 0 ? " · No matches. Try a shorter term." : ""}
       </p>
-      <dl className={styles.glossaryGrid} tabIndex={0} aria-label="Glossary definitions">
+      <dl
+        className={styles.glossaryGrid}
+        tabIndex={0}
+        aria-label="Glossary definitions"
+      >
         {learning.glossary.map((g) => (
           <div
             className={styles.glossaryTerm}

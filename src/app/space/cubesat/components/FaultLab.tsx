@@ -168,7 +168,12 @@ export default function FaultLab() {
               <span>No faults injected · baseline active</span>
             )}
           </div>
-          <div className={styles.tableWrap} tabIndex={0} role="region" aria-label="Scrollable simulation data table">
+          <div
+            className={styles.tableWrap}
+            tabIndex={0}
+            role="region"
+            aria-label="Scrollable simulation data table"
+          >
             <table className={styles.table}>
               <thead>
                 <tr>
@@ -367,7 +372,12 @@ export default function FaultLab() {
             </div>
             <details className={styles.details} style={{ gridColumn: "1/-1" }}>
               <summary>Trial distribution: minimum SOC (%)</summary>
-              <div className={styles.tableWrap} tabIndex={0} role="region" aria-label="Scrollable simulation data table">
+              <div
+                className={styles.tableWrap}
+                tabIndex={0}
+                role="region"
+                aria-label="Scrollable simulation data table"
+              >
                 <table className={styles.table}>
                   <thead>
                     <tr>

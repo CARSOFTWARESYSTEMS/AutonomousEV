@@ -23,6 +23,11 @@ export default function OrbitVisual() {
   useEffect(() => {
     const c = canvas.current;
     if (!c) return;
+    // Keep the mobile diagram lightweight; the same engine supplies its clock and state.
+    if (window.matchMedia("(max-width: 768px)").matches) {
+      c.dataset.renderer = "static";
+      return;
+    }
     let gl: WebGLRenderingContext | null = null;
     let program: WebGLProgram | null = null;
     let buffer: WebGLBuffer | null = null;
@@ -114,7 +119,7 @@ export default function OrbitVisual() {
     <div
       className={styles.orbitVisual}
       role="img"
-      aria-label={`Illustrative 3D Earth and 3U CubeSat. Orbit ${sample.orbitNumber}, ${sample.sunlight ? "sunlight" : "eclipse"}, ${sample.mode}. Not to scale; procedural terrain is illustrative.`}
+      aria-label={`Illustrative orbital view of Earth and a 3U CubeSat. Orbit ${sample.orbitNumber}, ${sample.sunlight ? "sunlight" : "eclipse"}, ${sample.mode}. Not to scale; procedural terrain is illustrative.`}
     >
       <div className={styles.stars} />
       <div className={styles.orbitTop}>

@@ -307,7 +307,7 @@ describe("Space page", () => {
     const { container } = render(<SpacePage />);
     const simulations = container.querySelector("#simulations");
     expect(simulations).not.toBeNull();
-    expect(within(simulations as HTMLElement).getByRole("link", { name: "CubeTwin" })).toHaveAttribute("href", "/space/cubesat");
+    expect(within(simulations as HTMLElement).getByRole("link", { name: "Explore CubeTwin" })).toHaveAttribute("href", "/space/cubesat");
     const ids = Array.from(container.querySelectorAll("section[id]")).map(section => section.id);
     expect(ids.indexOf("simulations")).toBeGreaterThan(ids.indexOf("labs"));
     expect(ids.indexOf("simulations")).toBeLessThan(ids.indexOf("projects"));

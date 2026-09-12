@@ -10,8 +10,8 @@ export default function Image() {
         display: "flex",
         width: "100%",
         height: "100%",
-        background: "#080f1a",
-        color: "#edf4f8",
+        background: "#090B1D",
+        color: "#FFFFFF",
         padding: 70,
         position: "relative",
         fontFamily: "sans-serif",
@@ -28,43 +28,43 @@ export default function Image() {
         <div
           style={{
             display: "flex",
-            color: "#73e6db",
+            color: "#67E8F9",
             fontSize: 20,
             letterSpacing: 3,
           }}
         >
           EV SOCIETY™ · SPACE LEARNING LAB
         </div>
-        <div style={{ display: "flex", fontSize: 30, marginTop: 48 }}>
+        <div style={{ display: "flex", fontSize: 64, marginTop: 40 }}>
           CubeTwin
         </div>
         <div
           style={{
             display: "flex",
-            fontSize: 66,
+            fontSize: 35,
             fontWeight: 600,
-            letterSpacing: -3,
+            letterSpacing: -1,
             lineHeight: 1.1,
             marginTop: 20,
           }}
         >
-          See how a CubeSat survives every orbit.
+          CubeSat Energy, Mission and Reliability Analysis
         </div>
         <div
           style={{
             display: "flex",
             fontSize: 23,
-            color: "#9eafc3",
+            color: "#B5B8C9",
             marginTop: 28,
           }}
         >
-          Energy simulation · Fault lab · 12-week guide
+          Initial Draft · v0.01 · 12-Week Student R&D Project
         </div>
         <div
           style={{
             display: "flex",
             fontSize: 17,
-            color: "#c1ae84",
+            color: "#F59E0B",
             marginTop: 40,
           }}
         >
@@ -130,7 +130,7 @@ export default function Image() {
           right: 65,
           bottom: 80,
           fontSize: 16,
-          color: "#73e6db",
+          color: "#67E8F9",
         }}
       >
         aerospace.ev.engineer/space/cubesat

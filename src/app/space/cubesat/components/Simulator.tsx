@@ -1,5 +1,5 @@
 "use client";
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   Activity,
   ArrowRight,
@@ -23,23 +23,11 @@ import {
   type Scenario,
 } from "@/lib/cubetwin/scenario";
 import type { SimulationResult } from "@/lib/cubetwin/engine";
+import { download } from "@/lib/cubetwin/download";
+import { orbitalPeriodSeconds } from "@/lib/cubetwin/engine";
 import { exportCsv, exportJson } from "@/lib/cubetwin/export";
 import { useSimulation } from "./SimulationProvider";
 import styles from "../cubetwin.module.css";
-export function download(
-  name: string,
-  text: string,
-  type = "application/json",
-) {
-  const url = URL.createObjectURL(new Blob([text], { type }));
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = name;
-  document.body.append(a);
-  a.click();
-  a.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 3000);
-}
 export function timeLabel(seconds: number) {
   const h = Math.floor(seconds / 3600),
     m = Math.floor((seconds % 3600) / 60),
@@ -87,19 +75,34 @@ function Field({
         aria-invalid={!!error}
         aria-describedby={`${path}-help`}
       />
-      <small id={`${path}-help`}>{error || help}</small>
+      <small id={`${path}-help`}>
+        {error || (
+          <>
+            {help} Range: {min}–{max} {unit}.
+          </>
+        )}
+      </small>
     </label>
   );
 }
 export function TelemetryChart() {
   const { result, baseline, cursor } = useSimulation();
   const [kind, setKind] = useState("soc");
-  const width = 760,
-    height = 225,
-    left = 39,
-    right = 15,
-    top = 15,
-    bottom = 29,
+  const chartRef = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(760);
+  const [inspected, setInspected] = useState<number | null>(null);
+  useEffect(() => {
+    const observer = new ResizeObserver((entries) =>
+      setWidth(Math.max(270, entries[0].contentRect.width)),
+    );
+    if (chartRef.current) observer.observe(chartRef.current);
+    return () => observer.disconnect();
+  }, []);
+  const height = 270,
+    left = 44,
+    right = 18,
+    top = 32,
+    bottom = 48,
     innerH = height - top - bottom;
   const eclipseWindows: { start: number; end: number }[] = [];
   for (let i = 0; i < result.samples.length - 1; i++) {
@@ -145,6 +148,7 @@ export function TelemetryChart() {
       })
       .join(" ");
   };
+  const selected = samples[Math.min(inspected ?? cursor, samples.length - 1)];
   return (
     <div className={styles.panel}>
       <div className={styles.panelHeader}>
@@ -161,7 +165,7 @@ export function TelemetryChart() {
             onChange={(e) => setKind(e.target.value)}
             className={styles.select}
             style={{
-              fontSize: 10,
+              fontSize: 14,
               minHeight: 44,
               padding: "6px 10px",
               width: 100,
@@ -172,9 +176,31 @@ export function TelemetryChart() {
           </select>
         </label>
       </div>
-      <div className={styles.chart}>
+      <div className={styles.chart} ref={chartRef}>
         <svg
           viewBox={`0 0 ${width} ${height}`}
+          onPointerMove={(event) => {
+            if (event.pointerType !== "mouse") return;
+            const rect = event.currentTarget.getBoundingClientRect();
+            const target =
+              Math.min(
+                1,
+                Math.max(
+                  0,
+                  (((event.clientX - rect.left) * width) / rect.width - left) /
+                    (width - left - right),
+                ),
+              ) * result.scenario.durationSeconds;
+            let lo = 0,
+              hi = samples.length - 1;
+            while (lo < hi) {
+              const mid = (lo + hi) >> 1;
+              if (samples[mid].timeSeconds < target) lo = mid + 1;
+              else hi = mid;
+            }
+            setInspected(lo);
+          }}
+          onPointerLeave={() => setInspected(null)}
           role="img"
           aria-label={
             kind === "soc"
@@ -182,6 +208,18 @@ export function TelemetryChart() {
               : "Delivered solar power and requested load power over mission time. Full sample data is available in CSV."
           }
         >
+          <text x={left} y={15} fill="var(--space-muted)" fontSize="12">
+            {kind === "soc" ? "State of Charge (%)" : "Power (W)"}
+          </text>
+          <text
+            x={(left + width - right) / 2}
+            y={height - 4}
+            fill="var(--space-muted)"
+            fontSize="12"
+            textAnchor="middle"
+          >
+            Mission time (h)
+          </text>
           {eclipseWindows.map((window, i) => (
             <rect
               key={i}
@@ -189,7 +227,7 @@ export function TelemetryChart() {
               y={top}
               width={x(window.end) - x(window.start)}
               height={innerH}
-              fill="#253148"
+              fill="var(--space-blue)"
               opacity=".35"
             />
           ))}
@@ -197,16 +235,16 @@ export function TelemetryChart() {
             <g key={v}>
               <path
                 d={`M${left},${y(v * max)}H${width - right}`}
-                stroke="#263448"
+                stroke="var(--space-border)"
                 strokeWidth=".6"
               />
               <text
                 x={left - 9}
                 y={y(v * max) + 3}
                 textAnchor="end"
-                fill="#91a5ba"
-                fontSize="9"
-                fontFamily="monospace"
+                fill="var(--space-muted)"
+                fontSize="12"
+                fontFamily="var(--font-space-inter)"
               >
                 {Math.round(v * max)}
                 {kind === "soc" ? "%" : ""}
@@ -217,7 +255,7 @@ export function TelemetryChart() {
             <>
               <path
                 d={`M${left} ${y(result.scenario.battery.minimumReserveSocPercent)}H${width - right}`}
-                stroke="#caa66e"
+                stroke="var(--space-amber)"
                 strokeDasharray="4 5"
                 strokeWidth=".8"
               />
@@ -230,13 +268,13 @@ export function TelemetryChart() {
                   "socPercent",
                 )}
                 fill="none"
-                stroke="#7089a7"
+                stroke="var(--space-muted)"
                 strokeWidth="1"
                 strokeDasharray="4 4"
               />
               <path
                 d={`${path(data, "socPercent")}L${x(result.scenario.durationSeconds)},${y(0)}L${left},${y(0)}Z`}
-                fill="#61d8d0"
+                fill="var(--space-cyan-text)"
                 opacity=".06"
               />
             </>
@@ -244,13 +282,17 @@ export function TelemetryChart() {
           <path
             d={path(data, kind === "soc" ? "socPercent" : "solarW")}
             fill="none"
-            stroke={kind === "soc" ? "#73e6db" : "#e7c17b"}
+            stroke={
+              kind === "soc" ? "var(--space-cyan-text)" : "var(--space-amber)"
+            }
             strokeWidth="1.9"
           />
           <path
             d={path(data, kind === "soc" ? "observedSocPercent" : "loadW")}
             fill="none"
-            stroke={kind === "soc" ? "#afa0e9" : "#73e6db"}
+            stroke={
+              kind === "soc" ? "var(--space-blue)" : "var(--space-cyan-text)"
+            }
             strokeWidth="1.2"
             strokeDasharray={kind === "soc" ? "3 5" : undefined}
           />
@@ -258,24 +300,24 @@ export function TelemetryChart() {
             <path
               key={f.id}
               d={`M${x(f.startSecond)} ${top}V${height - bottom}`}
-              stroke="#e9a288"
+              stroke="var(--space-amber)"
               opacity=".4"
               strokeDasharray="2 4"
             />
           ))}
           <path
-            d={`M${x(samples[cursor].timeSeconds)} ${top}V${height - bottom}`}
-            stroke="#e2e8ef"
+            d={`M${x(selected.timeSeconds)} ${top}V${height - bottom}`}
+            stroke="var(--space-text)"
             opacity=".65"
           />
           {[0, 0.25, 0.5, 0.75, 1].map((v) => (
             <text
               key={v}
               x={x(v * result.scenario.durationSeconds)}
-              y={height - 9}
-              fill="#93a7bd"
-              fontSize="9"
-              fontFamily="monospace"
+              y={height - 25}
+              fill="var(--space-muted)"
+              fontSize="12"
+              fontFamily="var(--font-space-inter)"
               textAnchor={v === 0 ? "start" : v === 1 ? "end" : "middle"}
             >
               {((v * result.scenario.durationSeconds) / 3600).toFixed(0)} h
@@ -286,17 +328,17 @@ export function TelemetryChart() {
       <div className={styles.chartLegend}>
         {(kind === "soc"
           ? [
-              ["#73e6db", "True SOC"],
-              ["#afa0e9", "Observed SOC"],
-              ["#7089a7", "Baseline"],
+              ["var(--space-cyan-text)", "True SOC"],
+              ["var(--space-blue)", "Observed SOC"],
+              ["var(--space-muted)", "Baseline"],
               [
-                "#caa66e",
+                "var(--space-amber)",
                 `Reserve ${result.scenario.battery.minimumReserveSocPercent}%`,
               ],
             ]
           : [
-              ["#e7c17b", "Delivered solar"],
-              ["#73e6db", "Requested load"],
+              ["var(--space-amber)", "Delivered solar"],
+              ["var(--space-cyan-text)", "Requested load"],
             ]
         ).map(([color, label]) => (
           <span key={label}>
@@ -305,6 +347,31 @@ export function TelemetryChart() {
           </span>
         ))}
       </div>
+      <div className={styles.chartReadout} aria-label="Selected chart sample">
+        <span>
+          <b>{timeLabel(selected.timeSeconds)}</b> ·{" "}
+          {selected.sunlight ? "Sunlight" : "Eclipse"}
+        </span>
+        <span>
+          True SOC <b>{selected.socPercent.toFixed(2)}%</b>
+        </span>
+        <span>
+          Observed{" "}
+          <b>
+            {selected.observedSocPercent === null
+              ? "Missing"
+              : `${selected.observedSocPercent.toFixed(2)}%`}
+          </b>
+        </span>
+        <span>
+          Solar <b>{selected.solarW.toFixed(2)} W</b> · Load{" "}
+          <b>{selected.loadW.toFixed(2)} W</b>
+        </span>
+      </div>
+      <p className={styles.formNote} style={{ padding: "0 20px" }}>
+        Shaded regions show eclipse; unshaded regions show sunlight. Inspect
+        with the timeline or point at the chart. The full data table is below.
+      </p>
       <Playback />
     </div>
   );
@@ -562,8 +629,25 @@ export default function Simulator() {
                     help="Maximum 20,000 steps per run."
                   />
                   <p className={styles.formNote}>
-                    Circular LEO · Earth mean radius 6,371 km. Events split time
-                    steps at their boundaries.
+                    Orbital period:{" "}
+                    {Number.isFinite(draft.orbit.altitudeKm) &&
+                    draft.orbit.altitudeKm >= 0
+                      ? (
+                          orbitalPeriodSeconds(draft.orbit.altitudeKm) / 60
+                        ).toFixed(1)
+                      : "—"}{" "}
+                    min. Sunlight:{" "}
+                    {Number.isFinite(draft.orbit.altitudeKm) &&
+                    draft.orbit.altitudeKm >= 0 &&
+                    Number.isFinite(draft.orbit.eclipseDurationMinutes)
+                      ? Math.max(
+                          0,
+                          orbitalPeriodSeconds(draft.orbit.altitudeKm) / 60 -
+                            draft.orbit.eclipseDurationMinutes,
+                        ).toFixed(1)
+                      : "—"}{" "}
+                    min per orbit. Circular Low Earth Orbit (LEO); Earth mean
+                    radius 6,371 km. Event boundaries split time steps.
                   </p>
                 </>
               )}
@@ -639,12 +723,12 @@ export default function Simulator() {
                   {num(
                     "solar",
                     "pmadEfficiency",
-                    "PMAD efficiency",
+                    "Power conversion efficiency",
                     "fraction",
                     0.01,
                     1,
                     0.01,
-                    "0.90 delivers 90% of generated power.",
+                    "Power Management and Distribution (PMAD): 0.90 delivers 90% of generated power.",
                   )}
                   {num(
                     "solar",
@@ -700,7 +784,7 @@ export default function Simulator() {
                   {num(
                     "battery",
                     "initialSocPercent",
-                    "Initial SOC",
+                    "Initial State of Charge",
                     "%",
                     0,
                     100,
@@ -1155,7 +1239,11 @@ export default function Simulator() {
               </p>
             </Panel>
             <Panel title="Mission event log">
-              <ol className={styles.eventList} tabIndex={0} aria-label="Recent mission events">
+              <ol
+                className={styles.eventList}
+                tabIndex={0}
+                aria-label="Recent mission events"
+              >
                 {recent.map((event, i) => (
                   <li key={i}>
                     <time>{timeLabel(event.timeSeconds)}</time>
@@ -1299,7 +1387,12 @@ export default function Simulator() {
           <h3 style={{ fontSize: 15, margin: "20px 0 12px" }}>
             Scheduled activity outcomes
           </h3>
-          <div className={styles.tableWrap} tabIndex={0} role="region" aria-label="Scrollable simulation data table">
+          <div
+            className={styles.tableWrap}
+            tabIndex={0}
+            role="region"
+            aria-label="Scrollable simulation data table"
+          >
             <table className={styles.table}>
               <thead>
                 <tr>
@@ -1326,7 +1419,12 @@ export default function Simulator() {
           <h3 style={{ fontSize: 15, margin: "20px 0 12px" }}>
             Per-orbit energy margin
           </h3>
-          <div className={styles.tableWrap} tabIndex={0} role="region" aria-label="Scrollable simulation data table">
+          <div
+            className={styles.tableWrap}
+            tabIndex={0}
+            role="region"
+            aria-label="Scrollable simulation data table"
+          >
             <table className={styles.table}>
               <thead>
                 <tr>
@@ -1355,7 +1453,12 @@ export default function Simulator() {
             Power is sampled at the timestamp; integration advances to the next
             timestamp.
           </p>
-          <div className={styles.tableWrap} tabIndex={0} role="region" aria-label="Scrollable simulation data table">
+          <div
+            className={styles.tableWrap}
+            tabIndex={0}
+            role="region"
+            aria-label="Scrollable simulation data table"
+          >
             <table className={styles.table}>
               <thead>
                 <tr>
@@ -1394,7 +1497,12 @@ export default function Simulator() {
           <h3 style={{ fontSize: 15, margin: "20px 0 12px" }}>
             Complete event history
           </h3>
-          <div className={styles.tableWrap} tabIndex={0} role="region" aria-label="Scrollable simulation data table">
+          <div
+            className={styles.tableWrap}
+            tabIndex={0}
+            role="region"
+            aria-label="Scrollable simulation data table"
+          >
             <table className={styles.table}>
               <thead>
                 <tr>
