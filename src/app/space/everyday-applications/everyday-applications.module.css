@@ -1,0 +1,610 @@
+.portal {
+  background: var(--space-background);
+  color: var(--space-text);
+  font-family: var(--font-space-inter), sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+.portal h2 {
+  font-size: var(--space-heading-size);
+  font-weight: 800;
+  letter-spacing: var(--space-heading-tracking);
+  margin: 0 0 8px;
+}
+.portal h3 {
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.container {
+  max-width: var(--space-content-width);
+  margin: 0 auto;
+  min-width: 0;
+}
+.skipLink {
+  composes: skipLink from "../space.module.css";
+}
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-wrap: wrap;
+  padding: 84px var(--space-inset) 0;
+  color: var(--space-muted);
+  font-size: 13px;
+}
+.breadcrumb a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+.breadcrumb a:hover {
+  color: var(--space-blue-text);
+}
+
+/* ── Hero ── */
+.hero {
+  composes: heroInset from "../space.module.css";
+  padding-top: 32px;
+  padding-bottom: 40px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "eyebrow"
+    "title"
+    "subtitle"
+    "actions"
+    "level"
+    "experience";
+}
+.heroEyebrow,
+.hero h1,
+.heroSubtitle,
+.heroPrimaryActions,
+.heroControlGroup {
+  min-width: 0;
+}
+.heroEyebrow {
+  composes: eyebrow;
+  grid-area: eyebrow;
+}
+.hero h1 {
+  grid-area: title;
+  font-size: var(--space-hero-size);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin: 0 0 14px;
+}
+.heroSubtitle {
+  grid-area: subtitle;
+  font-family: var(--font-space-manrope);
+  font-size: clamp(18px, 2.1vw, 24px);
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--space-text);
+  margin-bottom: 28px;
+  max-width: 760px;
+}
+.heroPrimaryActions {
+  composes: ctaGroup from "../space.module.css";
+  grid-area: actions;
+  margin-top: 8px;
+}
+.heroControlGroup {
+  grid-area: level;
+  margin-top: 28px;
+}
+.heroControlGroup + .heroControlGroup {
+  grid-area: experience;
+  margin-top: 16px;
+}
+.heroControlLabel {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--space-muted);
+  margin-bottom: 8px;
+}
+.primaryButton {
+  composes: secondaryButton from "../spaceTheme.module.css";
+  cursor: pointer;
+}
+.textButton {
+  min-height: 44px;
+  background: transparent;
+  border: 0;
+  color: var(--space-blue-text);
+  font-weight: 500;
+  font-size: 14px;
+  padding: 9px 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+@media (min-width: 768px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 32px;
+    grid-template-areas:
+      "eyebrow    experience"
+      "title      experience"
+      "subtitle   experience"
+      "level      experience"
+      "actions    actions";
+  }
+  .heroControlGroup {
+    margin-top: 20px;
+  }
+  .heroControlGroup + .heroControlGroup {
+    margin-top: 0;
+    justify-self: end;
+    align-self: start;
+  }
+}
+
+/* ── Sections ── */
+.card {
+  composes: card from "../spaceTheme.module.css";
+}
+.section {
+  composes: section from "../space.module.css";
+  border-bottom: 1px solid var(--space-border);
+}
+.sectionHead {
+  margin-bottom: 28px;
+  max-width: 760px;
+}
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--space-blue-text);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.sectionHead p {
+  margin-top: 14px;
+  max-width: 720px;
+}
+.formNote {
+  font-size: 14px !important;
+  color: var(--space-muted) !important;
+}
+
+/* ── Level / persona / view switcher ── */
+.levelSwitcher {
+  display: inline-flex;
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--space-border);
+  border-radius: 999px;
+  padding: 4px;
+  background: var(--space-surface);
+  gap: 4px;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+.levelTab {
+  flex: 0 0 auto;
+  min-height: 40px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 0;
+  background: transparent;
+  color: var(--space-muted);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+@media (max-width: 480px) {
+  .levelTab {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+}
+.levelTab[aria-selected="true"] {
+  background: var(--space-button-surface);
+  color: var(--space-blue-text);
+  border: 1px solid var(--space-control-border);
+}
+
+/* ── On-page / anchor nav ── */
+.pageNav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  max-width: 100%;
+  padding: 12px var(--space-inset);
+  border-top: 1px solid var(--space-border);
+  border-bottom: 1px solid var(--space-border);
+  background: var(--space-surface-soft);
+  scrollbar-width: thin;
+  position: sticky;
+  top: 60px;
+  z-index: 20;
+  backdrop-filter: blur(12px);
+}
+.pageNav a {
+  font-size: 14px;
+  white-space: nowrap;
+  min-height: 44px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: var(--space-muted);
+  display: inline-flex;
+  align-items: center;
+}
+.pageNav a:hover {
+  background: var(--space-button-surface);
+  color: var(--space-blue-text);
+}
+.chapterNav {
+  display: none;
+}
+.chapterNavButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 10px 16px;
+  background: var(--space-surface);
+  border: 1px solid var(--space-control-border);
+  border-radius: 10px;
+  color: var(--space-text);
+  text-align: left;
+}
+.chapterNavCount {
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--space-blue-text);
+  white-space: nowrap;
+}
+.chapterNavTitle {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.chapterList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.chapterListItem {
+  border-radius: 12px;
+  padding: 12px 14px;
+  border: 1px solid transparent;
+}
+.chapterListItem[data-active="true"] {
+  background: var(--space-button-surface);
+  border-color: var(--space-control-border);
+}
+.chapterListHead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.chapterListNumber {
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--space-blue-text);
+}
+.chapterListTitle {
+  font-size: 15px;
+  font-weight: 700;
+}
+.chapterListLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  padding-left: 26px;
+}
+.chapterListLinks a {
+  font-size: 13.5px;
+  color: var(--space-muted);
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+}
+.chapterListLinks a:hover {
+  color: var(--space-blue-text);
+}
+
+/* ── Bottom sheet ── */
+.sheetBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 6, 20, 0.6);
+  z-index: 200;
+  display: flex;
+  align-items: flex-end;
+}
+.sheet {
+  composes: card;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  border-radius: 20px 20px 0 0;
+  padding: 20px 20px calc(20px + env(safe-area-inset-bottom));
+  position: relative;
+}
+.sheetClose {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--space-button-surface);
+  border: 1px solid var(--space-control-border);
+  color: var(--space-text);
+  display: grid;
+  place-items: center;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheet {
+    animation: sheetUp 0.22s ease-out;
+  }
+}
+@keyframes sheetUp {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ── Rail / panel (system diagram, day-in-life) ── */
+.phaseRail {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  padding-bottom: 8px;
+  scrollbar-width: thin;
+}
+.phaseChip {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--space-border);
+  background: var(--space-surface);
+  color: var(--space-muted);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.phaseChip[aria-selected="true"],
+.phaseChip[aria-pressed="true"] {
+  border-color: var(--space-control-border);
+  background: var(--space-button-surface);
+  color: var(--space-blue-text);
+}
+.phasePanel {
+  composes: card;
+  padding: 24px;
+  margin-top: 18px;
+}
+.phasePanel h3 {
+  margin-bottom: 10px;
+}
+
+/* ── Component field / disclosure (shared by application cards, day-in-life) ── */
+.componentTag {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--space-blue-text);
+  margin-bottom: 10px;
+  display: block;
+}
+.componentField {
+  margin-top: 16px;
+}
+.componentField h4 {
+  font-size: 13px;
+  color: var(--space-text);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.componentField p,
+.componentField li {
+  font-size: 14px;
+  color: var(--space-muted);
+}
+.componentDisclosure {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--space-border);
+}
+.componentDisclosure summary {
+  cursor: pointer;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  color: var(--space-text);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  list-style-position: inside;
+}
+.componentDisclosure[open] summary {
+  margin-bottom: 8px;
+}
+.componentDisclosure p,
+.componentDisclosure li {
+  font-size: 14px;
+  color: var(--space-muted);
+}
+.componentDisclosure ul {
+  margin: 0;
+  padding-left: 18px;
+}
+.componentChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.componentChip {
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--space-border);
+  color: var(--space-muted);
+}
+
+/* ── Accordion (question wall) ── */
+.accordionItem {
+  composes: card;
+  padding: 0 20px;
+  margin-bottom: 12px;
+}
+.accordionItem summary {
+  min-height: 52px;
+  padding: 15px 0;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--space-text);
+  list-style-position: inside;
+}
+.accordionItem > div {
+  padding-bottom: 20px;
+}
+.accordionItem dt {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--space-blue-text);
+  margin-top: 12px;
+}
+.accordionItem dt:first-child {
+  margin-top: 0;
+}
+.accordionItem dd {
+  margin: 4px 0 0;
+  color: var(--space-muted);
+  font-size: 14px;
+}
+.expandButton {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 8px;
+  padding: 12px 16px;
+  background: var(--space-button-surface);
+  border: 1px solid var(--space-control-border);
+  border-radius: 10px;
+  color: var(--space-blue-text);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* ── Application / benefit / systems grids ── */
+.systemsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: 16px;
+}
+.systemGroup {
+  composes: card;
+  padding: 18px;
+  min-width: 0;
+}
+.systemGroupHead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.systemDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Satellite-to-phone chain ── */
+.chainList {
+  max-width: 640px;
+}
+.chainStep {
+  composes: card;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 18px;
+  min-width: 0;
+}
+.chainStepIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--space-button-surface);
+  color: var(--space-blue-text);
+  flex-shrink: 0;
+}
+.chainArrow {
+  display: flex;
+  justify-content: center;
+  padding: 4px 0;
+  color: var(--space-blue-text);
+  font-size: 16px;
+}
+
+@media (max-width: 900px) {
+  .systemsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .pageNav {
+    display: none;
+  }
+  .chapterNav {
+    display: block;
+    position: sticky;
+    top: 60px;
+    z-index: 20;
+    padding: 12px var(--space-inset);
+    background: var(--space-background);
+    border-bottom: 1px solid var(--space-border);
+  }
+  .breadcrumb {
+    padding-top: 74px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portal * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

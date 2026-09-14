@@ -53,5 +53,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...existing,
     { url: "https://aerospace.ev.engineer/space/cubesat", lastModified: "2026-09-12", changeFrequency: "monthly", priority: 0.8 },
     { url: "https://aerospace.ev.engineer/space/model-rocketry", lastModified: "2026-09-14", changeFrequency: "monthly", priority: 0.8 },
+    { url: "https://aerospace.ev.engineer/space/everyday-applications", lastModified: "2026-09-14", changeFrequency: "monthly", priority: 0.8 },
   ];
 }

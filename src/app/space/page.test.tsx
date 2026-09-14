@@ -324,6 +324,17 @@ it("shows the Model Rocketry card before the CubeTwin card in the simulations se
     ).toBeTruthy();
   });
 
+it("shows the Space Applications card before the Model Rocketry card in the simulations section", () => {
+    const { container } = render(<SpacePage />);
+    const simulations = container.querySelector("#simulations") as HTMLElement;
+    const applicationsLink = within(simulations).getByRole("link", { name: /Explore Space Applications/ });
+    expect(applicationsLink).toHaveAttribute("href", "/space/everyday-applications");
+    const rocketryLink = within(simulations).getByRole("link", { name: /Explore Model Rocketry/ });
+    expect(
+      applicationsLink.compareDocumentPosition(rocketryLink) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+  });
+
 it("shows a researcher attribution card linking to the canonical profile", () => {
     render(<SpacePage />);
     const profileLink = screen.getByRole("link", { name: /View full profile/ });

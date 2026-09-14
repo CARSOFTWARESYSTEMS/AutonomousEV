@@ -580,6 +580,13 @@ export default function SpacePage() {
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 14 }}>
             <div className={`${styles.cardHover} ${theme.card}`} style={{ padding: 24 }}>
+              <StatusPill label="Interactive Learning Experience" color="#06B6D4" />
+              <h3 style={{ color: "#fff", marginTop: 18, marginBottom: 12 }}>Space Applications</h3>
+              <p style={{ ...sectionDesc, marginBottom: 12 }}>Discover how satellites and space data improve everyday life—from weather and mobility to agriculture, connectivity, disaster response and infrastructure.</p>
+              <Link href="/space/everyday-applications" className={theme.secondaryButton}>Explore Space Applications <ArrowRight size={16} /></Link>
+              <p style={{ fontSize: 12, color: "#B5B8C9", marginTop: 12 }}>Educational reference · No aerospace background needed.</p>
+            </div>
+            <div className={`${styles.cardHover} ${theme.card}`} style={{ padding: 24 }}>
               <StatusPill label="Interactive Learning Experience" color="#7C3AED" />
               <h3 style={{ color: "#fff", marginTop: 18, marginBottom: 12 }}>Model Rocketry</h3>
               <p style={{ ...sectionDesc, marginBottom: 12 }}>Learn aerospace engineering from first principles—mission design, aerodynamics, stability, structures, propulsion, avionics, recovery and flight analysis.</p>
