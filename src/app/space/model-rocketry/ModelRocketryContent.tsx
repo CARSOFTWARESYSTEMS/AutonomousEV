@@ -1,5 +1,7 @@
+"use client";
+import { useState } from "react";
 import Link from "next/link";
-import { ChevronRight, ShieldCheck, ArrowRight } from "lucide-react";
+import { ChevronRight, ShieldCheck, ArrowRight, Presentation } from "lucide-react";
 import { JsonLd } from "@/lib/structured-data/JsonLd";
 import ResearcherCard from "@/components/ResearcherCard";
 import { structuredData, LAST_REVIEWED } from "./seo";
@@ -10,6 +12,8 @@ import spaceTheme from "../spaceTheme.module.css";
 import styles from "./model-rocketry.module.css";
 import LearningLevelProvider from "./components/LearningLevelProvider";
 import LevelSwitcher from "./components/LevelSwitcher";
+import ExperienceModeSwitcher, { type ExperienceMode } from "./components/ExperienceModeSwitcher";
+import PresentationMode from "./components/PresentationMode";
 import AnchorNav from "./components/AnchorNav";
 import LaunchSequenceHero from "./components/LaunchSequenceHero";
 import ComparisonTable from "./components/ComparisonTable";
@@ -26,6 +30,10 @@ import Glossary from "./components/Glossary";
 import CareerMap from "./components/CareerMap";
 import Roadmap from "./components/Roadmap";
 import KnowledgeCheck from "./components/KnowledgeCheck";
+import RocketryVsCansat from "./components/RocketryVsCansat";
+import CompetitionExplorer from "./components/CompetitionExplorer";
+import CostAnatomy from "./components/CostAnatomy";
+import EnterpriseMap from "./components/EnterpriseMap";
 
 function SectionHeading({ eyebrow, title, description }: { eyebrow: string; title: string; description: string }) {
   return (
@@ -38,15 +46,20 @@ function SectionHeading({ eyebrow, title, description }: { eyebrow: string; titl
 }
 
 export default function ModelRocketryContent() {
+  const [mode, setMode] = useState<ExperienceMode>("webpage");
+
   return (
     <div className={`${spaceTheme.theme} ${manrope.variable} ${inter.variable} ${styles.portal}`}>
       <JsonLd data={structuredData} />
+      {mode === "presentation" && <PresentationMode onExit={() => setMode("webpage")} />}
       <a href="#main-content" className={styles.skipLink}>
         Skip to content
       </a>
-      <SpaceHeader basePath="/space" />
+      <div hidden={mode === "presentation"}>
+        <SpaceHeader basePath="/space" />
+      </div>
       <LearningLevelProvider>
-        <main id="main-content" className={styles.container}>
+        <main id="main-content" className={styles.container} hidden={mode === "presentation"}>
           <nav className={styles.breadcrumb} aria-label="Breadcrumb">
             <Link href="/space">Space</Link>
             <ChevronRight size={12} />
@@ -62,17 +75,18 @@ export default function ModelRocketryContent() {
             <p className={styles.heroSubtitle}>
               Learn aerospace engineering by following one rocket from mission idea to recovery.
             </p>
-            <div className={styles.heroActions}>
+            <div className={styles.heroActions} style={{ flexWrap: "wrap", gap: 12 }}>
               <LevelSwitcher />
+              <ExperienceModeSwitcher mode={mode} onChange={setMode} />
             </div>
             <LaunchSequenceHero />
-            <div style={{ marginTop: 28 }}>
-              <p style={{ maxWidth: 620, marginBottom: 16 }}>
-                Want to understand how every part made this mission possible?
-              </p>
+            <div style={{ marginTop: 28, display: "flex", flexWrap: "wrap", gap: 12, alignItems: "center" }}>
               <a href="#what-is-it" className={styles.primaryButton}>
                 Explore the Rocket <ArrowRight size={16} />
               </a>
+              <button type="button" className={styles.textButton} onClick={() => setMode("presentation")}>
+                <Presentation size={16} /> Start Workshop (Presentation Mode)
+              </button>
             </div>
           </section>
 
@@ -235,6 +249,26 @@ export default function ModelRocketryContent() {
             />
           </section>
 
+          {/* ── Model Rocketry vs CanSat ── */}
+          <section id="rocketry-vs-cansat" className={styles.section}>
+            <SectionHeading
+              eyebrow="MODEL ROCKETRY VS CANSAT"
+              title="Two competition tracks, one shared engineering discipline."
+              description="Model Rocketry competitions focus on the launch vehicle; CanSat competitions focus on the payload mission. Both teach real systems engineering."
+            />
+            <RocketryVsCansat />
+          </section>
+
+          {/* ── Competitions Explorer ── */}
+          <section id="competitions" className={styles.section}>
+            <SectionHeading
+              eyebrow="WHERE CAN STUDENTS COMPETE?"
+              title="India and international student rocketry / CanSat competitions."
+              description="A snapshot of current student competitions, each linked to its official source with a last-verified date."
+            />
+            <CompetitionExplorer />
+          </section>
+
           {/* ── Glossary ── */}
           <section id="glossary" className={styles.section}>
             <SectionHeading
@@ -253,6 +287,26 @@ export default function ModelRocketryContent() {
               description="These are illustrative career directions related to each subsystem area, not job openings."
             />
             <CareerMap />
+          </section>
+
+          {/* ── Cost Anatomy ── */}
+          <section id="cost" className={styles.section}>
+            <SectionHeading
+              eyebrow="WHAT DOES MODEL ROCKETRY COST?"
+              title="Cost depends on mission ambition, not a single number."
+              description="Explore what gets added to a project's cost anatomy as it grows from a first learning rocket to a research-grade prototype."
+            />
+            <CostAnatomy />
+          </section>
+
+          {/* ── Enterprise / Startup Map ── */}
+          <section id="enterprise" className={styles.section}>
+            <SectionHeading
+              eyebrow="FROM LEARNING TO ENTERPRISE"
+              title="Where model rocketry creates economic opportunity."
+              description="Explore a maturity pathway and illustrative startup opportunity categories that can grow out of model-rocketry skills."
+            />
+            <EnterpriseMap />
           </section>
 
           {/* ── Learning Roadmap ── */}
@@ -297,7 +351,7 @@ export default function ModelRocketryContent() {
           </section>
         </main>
       </LearningLevelProvider>
-      <SpaceFooter basePath="/space" />
+      {mode !== "presentation" && <SpaceFooter basePath="/space" />}
     </div>
   );
 }

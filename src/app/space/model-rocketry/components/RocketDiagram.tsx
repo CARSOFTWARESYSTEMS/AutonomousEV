@@ -19,7 +19,7 @@ export default function RocketDiagram({
       viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
       role="img"
       aria-label="Interactive cutaway diagram of a model rocket. Select a highlighted point to learn about that component."
-      className={styles.diagramSvg}
+      className={styles.rocketDiagramSvg}
     >
       <title>Model rocket cutaway explorer</title>
       {/* nose cone */}

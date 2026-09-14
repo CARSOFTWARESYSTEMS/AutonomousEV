@@ -13,8 +13,11 @@ export const NAV_ITEMS: [string, string][] = [
   ["#sim-tools", "Simulation"],
   ["#failure-lab", "Failure Lab"],
   ["#fmea", "FMEA"],
+  ["#competitions", "Competitions"],
   ["#glossary", "Glossary"],
   ["#careers", "Careers"],
+  ["#cost", "Cost"],
+  ["#enterprise", "Enterprise"],
   ["#roadmap", "Roadmap"],
 ];
 

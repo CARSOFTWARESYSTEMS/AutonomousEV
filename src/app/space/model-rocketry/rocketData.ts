@@ -540,3 +540,145 @@ export const SIM_TOOLS: SimToolTopic[] = [
   { name: "Data & Telemetry", learnFirst: ["Serial data logging", "Basic radio telemetry concepts"], whenComplexityRequires: ["Real-time dashboards", "Post-flight data pipelines"] },
   { name: "Advanced tools", learnFirst: ["Awareness of CFD/FEA concepts and what they're for"], whenComplexityRequires: ["CFD for detailed aerodynamic analysis", "FEA for structural margin verification", "RASAero for higher-power performance prediction", "Hardware-in-the-loop testing", "Monte Carlo / uncertainty-sensitivity analysis"] },
 ];
+
+export const MATURITY_PATHWAY: string[] = [
+  "Learn",
+  "Build",
+  "Validate",
+  "Research",
+  "Develop IP",
+  "Pilot",
+  "Customer Discovery",
+  "Product/Service",
+  "Startup",
+];
+
+export interface OpportunityCategory {
+  id: string;
+  name: string;
+  problem: string;
+  customer: string;
+  prototypeIdea: string;
+  validationNeeded: string;
+  businessModels: string[];
+}
+
+export const OPPORTUNITY_CATEGORIES: OpportunityCategory[] = [
+  {
+    id: "education",
+    name: "Education",
+    problem: "Students and educators need accessible, structured ways to learn real aerospace engineering.",
+    customer: "Schools, colleges, STEM education programmes",
+    prototypeIdea: "A structured workshop curriculum or learning kit",
+    validationNeeded: "Piloting with a real classroom or workshop cohort and measuring learning outcomes",
+    businessModels: ["Workshop delivery", "Kit sales", "Licensing curriculum content"],
+  },
+  {
+    id: "avionics",
+    name: "Avionics",
+    problem: "Hobbyist and student teams need affordable, reliable flight computers.",
+    customer: "Student rocketry teams, hobbyists, university labs",
+    prototypeIdea: "An educational flight computer with sensor logging and deployment logic",
+    validationNeeded: "Multiple successful test flights and independent reliability verification",
+    businessModels: ["Hardware sales", "Open-source hardware with paid support"],
+  },
+  {
+    id: "telemetry",
+    name: "Telemetry",
+    problem: "Teams need affordable, reliable real-time data links for student-scale rockets.",
+    customer: "Student rocketry teams, competition organisers",
+    prototypeIdea: "A low-cost telemetry radio + ground receiver kit",
+    validationNeeded: "Range testing across realistic flight conditions",
+    businessModels: ["Hardware sales", "Subscription ground-station software"],
+  },
+  {
+    id: "simulation",
+    name: "Simulation",
+    problem: "Beginners need approachable tools to predict flight performance before building.",
+    customer: "Students, educators, hobbyist teams",
+    prototypeIdea: "A simplified web-based flight simulator or teaching tool",
+    validationNeeded: "Comparing simulator predictions against real flight data",
+    businessModels: ["Freemium software", "Institutional licensing"],
+  },
+  {
+    id: "digital-twin",
+    name: "Digital Twin",
+    problem: "Teams lack an easy way to compare simulated and actual mission behaviour visually.",
+    customer: "University labs, advanced student teams",
+    prototypeIdea: "A dashboard that overlays simulated and telemetry data on one timeline",
+    validationNeeded: "Demonstrated value on multiple real missions",
+    businessModels: ["Software subscription", "Research collaboration"],
+  },
+  {
+    id: "sensors",
+    name: "Sensors",
+    problem: "Advanced student payloads need reliable, small, well-documented sensor modules.",
+    customer: "Student teams, research labs",
+    prototypeIdea: "A validated sensor breakout module with clear documentation",
+    validationNeeded: "Independent accuracy/reliability testing",
+    businessModels: ["Hardware sales", "Custom integration services"],
+  },
+  {
+    id: "testing",
+    name: "Testing",
+    problem: "Teams need affordable ways to ground-test deployment charges, structures and avionics before flight.",
+    customer: "Student teams, workshop organisers",
+    prototypeIdea: "A portable ground-test rig for deployment/continuity checks",
+    validationNeeded: "Demonstrated safety and repeatability across multiple test cycles",
+    businessModels: ["Equipment rental", "Testing-as-a-service at events"],
+  },
+  {
+    id: "ground-systems",
+    name: "Ground Systems",
+    problem: "Teams and range operators need safe, reliable launch control and ground infrastructure.",
+    customer: "Student teams, workshop and competition organisers",
+    prototypeIdea: "A safe, certified-component launch controller kit",
+    validationNeeded: "Safety review and use across multiple real launch events",
+    businessModels: ["Hardware sales", "Range-support services"],
+  },
+  {
+    id: "data-analytics",
+    name: "Data Analytics",
+    problem: "Teams collect flight data but often lack tools to analyse it meaningfully.",
+    customer: "Student teams, research labs",
+    prototypeIdea: "A post-flight analysis toolkit (plotting, filtering, comparison)",
+    validationNeeded: "Adoption and useful insight generation across multiple teams",
+    businessModels: ["Software subscription", "Open-source with paid analysis services"],
+  },
+  {
+    id: "safety-reliability",
+    name: "Safety & Reliability",
+    problem: "Teams need structured ways to apply FMEA and safety review to educational projects.",
+    customer: "Workshop organisers, university programmes",
+    prototypeIdea: "A guided FMEA/checklist toolkit for student teams",
+    validationNeeded: "Demonstrated reduction in preventable failures across teams that adopt it",
+    businessModels: ["Training workshops", "Toolkit licensing"],
+  },
+  {
+    id: "software",
+    name: "Software",
+    problem: "Teams need reliable, well-documented flight and ground software rather than ad-hoc scripts.",
+    customer: "Student teams, educational programmes",
+    prototypeIdea: "An open, documented flight-software reference implementation",
+    validationNeeded: "Adoption and successful flights across multiple independent teams",
+    businessModels: ["Support contracts", "Custom development services"],
+  },
+  {
+    id: "training-consulting",
+    name: "Training & Consulting",
+    problem: "Institutions want to run rocketry programmes but lack in-house expertise.",
+    customer: "Schools, universities, corporate STEM outreach programmes",
+    prototypeIdea: "A trainer-delivered workshop or mentorship programme",
+    validationNeeded: "Repeat engagements and measurable outcomes across institutions",
+    businessModels: ["Workshop fees", "Retainer consulting"],
+  },
+  {
+    id: "tech-transfer",
+    name: "Space/Aerospace Technology Transfer",
+    problem: "Techniques and components proven at model-rocketry scale may generalise to adjacent aerospace applications.",
+    customer: "Research institutions, early-stage aerospace ventures",
+    prototypeIdea: "A validated component or method with a clear technology-readiness narrative",
+    validationNeeded: "Independent replication and a credible path to higher technology readiness levels",
+    businessModels: ["Licensing", "Joint research and development"],
+  },
+];

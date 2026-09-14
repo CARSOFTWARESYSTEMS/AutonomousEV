@@ -292,13 +292,18 @@
 /* ── Level switcher ── */
 .levelSwitcher {
   display: inline-flex;
+  max-width: 100%;
+  overflow-x: auto;
   border: 1px solid var(--space-border);
   border-radius: 999px;
   padding: 4px;
   background: var(--space-surface);
   gap: 4px;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
 }
 .levelTab {
+  flex: 0 0 auto;
   min-height: 40px;
   padding: 8px 18px;
   border-radius: 999px;
@@ -307,6 +312,13 @@
   color: var(--space-muted);
   font-size: 14px;
   font-weight: 600;
+  white-space: nowrap;
+}
+@media (max-width: 480px) {
+  .levelTab {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
 }
 .levelTab[aria-selected="true"] {
   background: var(--space-button-surface);
@@ -385,18 +397,27 @@
 /* ── Rocket explorer ── */
 .explorerGrid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+  grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
   gap: 24px;
   align-items: start;
 }
 .diagramFrame {
   composes: card;
   padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .diagramSvg {
   width: 100%;
   height: auto;
   display: block;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.rocketDiagramSvg {
+  composes: diagramSvg;
+  max-width: 300px;
 }
 .hitTarget {
   cursor: pointer;
@@ -414,6 +435,8 @@
 .legend {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+  align-self: stretch;
   gap: 10px 16px;
   margin-top: 14px;
   padding: 0 4px;
@@ -987,5 +1010,150 @@
     scroll-behavior: auto !important;
     animation: none !important;
     transition: none !important;
+  }
+}
+
+/* ── Presentation Mode ── */
+.presentation {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: #05060f;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 24px;
+  font-family: var(--font-space-inter);
+}
+.presentationTopBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.slideCounter {
+  font-family: var(--font-space-manrope);
+  font-size: 14px;
+  color: var(--space-muted);
+  letter-spacing: 0.05em;
+  font-variant-numeric: tabular-nums;
+}
+.presentationControls {
+  display: flex;
+  gap: 8px;
+}
+.presentationIconButton {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--space-button-surface);
+  border: 1px solid var(--space-control-border);
+  color: var(--space-blue-text);
+  display: grid;
+  place-items: center;
+}
+.presentationIconButton[aria-pressed="true"] {
+  background: var(--space-cyan);
+  color: #05060f;
+  border-color: var(--space-cyan);
+}
+.presentationBody {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 0;
+  overflow-y: auto;
+}
+.presentationNavButton {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--space-surface);
+  border: 1px solid var(--space-border);
+  color: #fff;
+  display: grid;
+  place-items: center;
+}
+.presentationNavButton:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+.slide {
+  max-width: 900px;
+  text-align: center;
+  padding: 0 16px;
+  min-width: 0;
+}
+.slideTitle {
+  font-family: var(--font-space-manrope);
+  font-size: clamp(28px, 5vw, 56px);
+  font-weight: 800;
+  line-height: 1.15;
+  margin: 0 0 32px;
+  color: #fff;
+}
+.slideBullets {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.slideBullets li {
+  font-size: clamp(15px, 2.2vw, 22px);
+  color: var(--space-muted);
+  line-height: 1.5;
+}
+.speakerNotes {
+  margin-top: 32px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--space-border);
+  font-size: 14px;
+  color: var(--space-muted);
+  text-align: left;
+}
+.presentationProgress {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  padding-top: 16px;
+  flex-shrink: 0;
+}
+.presentationDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--space-border);
+}
+.presentationDot[data-active="true"] {
+  background: var(--space-cyan-text);
+  width: 22px;
+  border-radius: 4px;
+}
+@media (max-width: 600px) {
+  .presentation {
+    padding: 14px 12px;
+  }
+  .presentationNavButton {
+    width: 40px;
+    height: 40px;
+  }
+  .slideTitle {
+    margin-bottom: 20px;
+  }
+  .slideBullets {
+    gap: 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .presentation * {
+    transition: none !important;
+    animation: none !important;
   }
 }

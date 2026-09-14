@@ -143,4 +143,63 @@ describe("Model Rocketry learning page", () => {
     expect(text).not.toMatch(/propellant formulation/i);
     expect(text).toMatch(/does not cover, and will not cover, motor or propellant manufacture/i);
   });
+
+  it("enters Presentation Mode, navigates with the keyboard, and exits back to the webpage on Escape", async () => {
+    const user = userEvent.setup();
+    render(<ModelRocketryContent />);
+
+    await user.click(screen.getByRole("button", { name: /Start Workshop/ }));
+    expect(screen.getByText("01 / 16")).toBeInTheDocument();
+    expect(document.getElementById("main-content")).not.toBeVisible();
+
+    fireEvent.keyDown(window, { key: "ArrowRight" });
+    expect(screen.getByText("02 / 16")).toBeInTheDocument();
+
+    fireEvent.keyDown(window, { key: "ArrowLeft" });
+    expect(screen.getByText("01 / 16")).toBeInTheDocument();
+
+    fireEvent.keyDown(window, { key: "Escape" });
+    expect(screen.queryByText("01 / 16")).not.toBeInTheDocument();
+    expect(document.getElementById("main-content")).toBeVisible();
+  });
+
+  it("Presentation Mode speaker notes are hidden by default and toggle on", async () => {
+    const user = userEvent.setup();
+    render(<ModelRocketryContent />);
+    await user.click(screen.getByRole("button", { name: /Start Workshop/ }));
+
+    expect(screen.queryByText(/Speaker notes:/)).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: /Show speaker notes/ }));
+    expect(screen.getByText(/Speaker notes:/)).toBeInTheDocument();
+  });
+
+  it("shows the IN-SPACe/competition disclaimer and a verification date in the Competitions section", () => {
+    render(<ModelRocketryContent />);
+    const section = document.getElementById("competitions") as HTMLElement;
+    expect(within(section).getByText(/does not claim affiliation, endorsement or partnership/)).toBeInTheDocument();
+    expect(within(section).getAllByText(/Verified on:/).length).toBeGreaterThan(0);
+    const inspaceLinks = within(section).getAllByRole("link", { name: /IN-SPACe official listing/ });
+    expect(inspaceLinks.length).toBeGreaterThan(0);
+    expect(inspaceLinks[0]).toHaveAttribute("href", expect.stringContaining("inspace.gov.in"));
+  });
+
+  it("switches cost-anatomy tier content when a different tier tab is selected", async () => {
+    const user = userEvent.setup();
+    render(<ModelRocketryContent />);
+    const section = document.getElementById("cost") as HTMLElement;
+    expect(within(section).getByText(/Tier 1 — Fundamentals/)).toBeInTheDocument();
+
+    await user.click(within(section).getByRole("tab", { name: "Tier 3" }));
+    expect(within(section).getByText(/Tier 3 — Student Competition System/)).toBeInTheDocument();
+  });
+
+  it("reveals opportunity-category detail in the Enterprise map when a category is selected", async () => {
+    const user = userEvent.setup();
+    render(<ModelRocketryContent />);
+    const section = document.getElementById("enterprise") as HTMLElement;
+    expect(within(section).getByText(/Learn/)).toBeInTheDocument();
+
+    await user.click(within(section).getByRole("button", { name: "Avionics" }));
+    expect(within(section).getByText(/Hobbyist and student teams need affordable, reliable flight computers/)).toBeInTheDocument();
+  });
 });
