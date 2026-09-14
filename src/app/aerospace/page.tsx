@@ -13,6 +13,7 @@ import {
 import styles from "./aerospace.module.css";
 import { useMobileMenuLock } from "@/hooks/useMobileMenuLock";
 import { EOI_FORM_URL } from "@/lib/eoi";
+import ResearcherCard from "@/components/ResearcherCard";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -990,6 +991,10 @@ export default function AerospacePage() {
           </div>
         </div>
       </section>
+
+      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 32px 48px" }}>
+        <ResearcherCard />
+      </div>
 
       </main>
 

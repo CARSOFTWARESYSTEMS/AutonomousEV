@@ -312,3 +312,20 @@ describe("Space page", () => {
     expect(ids.indexOf("simulations")).toBeGreaterThan(ids.indexOf("labs"));
     expect(ids.indexOf("simulations")).toBeLessThan(ids.indexOf("projects"));
   });
+
+it("shows the Model Rocketry card before the CubeTwin card in the simulations section", () => {
+    const { container } = render(<SpacePage />);
+    const simulations = container.querySelector("#simulations") as HTMLElement;
+    const rocketryLink = within(simulations).getByRole("link", { name: /Explore Model Rocketry/ });
+    expect(rocketryLink).toHaveAttribute("href", "/space/model-rocketry");
+    const cubetwinLink = within(simulations).getByRole("link", { name: "Explore CubeTwin" });
+    expect(
+      rocketryLink.compareDocumentPosition(cubetwinLink) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+  });
+
+it("shows a researcher attribution card linking to the canonical profile", () => {
+    render(<SpacePage />);
+    const profileLink = screen.getByRole("link", { name: /View full profile/ });
+    expect(profileLink).toHaveAttribute("href", "/about/sudarshana-karkala");
+  });

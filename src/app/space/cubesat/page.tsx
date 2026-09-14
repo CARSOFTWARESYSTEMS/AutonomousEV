@@ -13,6 +13,7 @@ import {
   Zap,
 } from "lucide-react";
 import { JsonLd } from "@/lib/structured-data/JsonLd";
+import ResearcherCard from "@/components/ResearcherCard";
 import { ASSUMPTIONS } from "@/lib/cubetwin/engine";
 import { SCIENCE, FAQ, REFERENCES } from "@/lib/cubetwin/content";
 import { structuredData, LAST_REVIEWED } from "./seo";
@@ -533,6 +534,9 @@ export default function CubeTwinPage() {
               certification, ISRO affiliation or government approval.
             </p>
           </section>
+          <div className={styles.section} style={{ borderBottom: "none", paddingTop: 0 }}>
+            <ResearcherCard />
+          </div>
         </main>
       </SimulationProvider>
       <SpaceFooter basePath="/space" />

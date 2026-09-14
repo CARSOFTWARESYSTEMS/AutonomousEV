@@ -5,6 +5,7 @@ import Link from "next/link";
 import { manrope, inter, FONT_MANROPE, FONT_INTER } from "./fonts";
 import SpaceHeader from "./components/SpaceHeader";
 import SpaceFooter from "./components/SpaceFooter";
+import ResearcherCard from "@/components/ResearcherCard";
 import theme from "./spaceTheme.module.css";
 import {
   Shield, Satellite, Orbit, Activity, HeartPulse, Cpu, AlertTriangle,
@@ -577,13 +578,22 @@ export default function SpacePage() {
             <h2 style={sectionH2}>Learn by building mission-ready thinking</h2>
             <p style={sectionDesc}>Explore guided simulation projects that turn spacecraft concepts into testable models, telemetry and engineering evidence.</p>
           </div>
-          <div className={`${styles.cardHover} ${theme.card}`} style={{ padding: 24 }}>
-            <StatusPill label="Educational Prototype · 12-Week Student R&D Project" color="#06B6D4" />
-            <h3 style={{ color: "#fff", marginTop: 18, marginBottom: 12 }}>CubeTwin</h3>
-            <p style={{ ...sectionDesc, marginBottom: 12 }}>A Digital-Twin Simulation Platform for CubeSat Energy, Mission and Reliability Analysis</p>
-            <p style={{ ...sectionDesc, marginBottom: 20 }}>Model orbit sunlight, solar generation, battery state of charge, mission loads, faults and safe-mode decisions through an interactive beginner-friendly laboratory.</p>
-            <Link href="/space/cubesat" className={theme.secondaryButton}>Explore CubeTwin <ArrowRight size={16} /></Link>
-            <p style={{ fontSize: 12, color: "#B5B8C9", marginTop: 12 }}>Educational R&D prototype · Simulated data · Not flight software.</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 14 }}>
+            <div className={`${styles.cardHover} ${theme.card}`} style={{ padding: 24 }}>
+              <StatusPill label="Interactive Learning Experience" color="#7C3AED" />
+              <h3 style={{ color: "#fff", marginTop: 18, marginBottom: 12 }}>Model Rocketry</h3>
+              <p style={{ ...sectionDesc, marginBottom: 12 }}>Learn aerospace engineering from first principles—mission design, aerodynamics, stability, structures, propulsion, avionics, recovery and flight analysis.</p>
+              <Link href="/space/model-rocketry" className={theme.secondaryButton}>Explore Model Rocketry <ArrowRight size={16} /></Link>
+              <p style={{ fontSize: 12, color: "#B5B8C9", marginTop: 12 }}>Educational aerospace learning · Beginner to advanced.</p>
+            </div>
+            <div className={`${styles.cardHover} ${theme.card}`} style={{ padding: 24 }}>
+              <StatusPill label="Educational Prototype · 12-Week Student R&D Project" color="#06B6D4" />
+              <h3 style={{ color: "#fff", marginTop: 18, marginBottom: 12 }}>CubeTwin</h3>
+              <p style={{ ...sectionDesc, marginBottom: 12 }}>A Digital-Twin Simulation Platform for CubeSat Energy, Mission and Reliability Analysis</p>
+              <p style={{ ...sectionDesc, marginBottom: 20 }}>Model orbit sunlight, solar generation, battery state of charge, mission loads, faults and safe-mode decisions through an interactive beginner-friendly laboratory.</p>
+              <Link href="/space/cubesat" className={theme.secondaryButton}>Explore CubeTwin <ArrowRight size={16} /></Link>
+              <p style={{ fontSize: 12, color: "#B5B8C9", marginTop: 12 }}>Educational R&D prototype · Simulated data · Not flight software.</p>
+            </div>
           </div>
         </section>
 
@@ -777,6 +787,10 @@ export default function SpacePage() {
               </div>
             </div>
           </div>
+        </section>
+
+        <section className={styles.section} style={{ maxWidth: 1280, margin: "0 auto", paddingTop: 0 }}>
+          <ResearcherCard />
         </section>
       </main>
 
