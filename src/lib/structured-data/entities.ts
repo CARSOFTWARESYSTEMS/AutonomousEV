@@ -15,7 +15,6 @@ import {
   EV_ENGINEER,
   ITELEMATICS,
   EV_SOCIETY,
-  THASMAI_INFOTECH,
   SUDARSHANA_KARKALA,
   SITE_URL,
 } from "@/data/public-entities";
@@ -26,7 +25,6 @@ export const WEBSITE_ID = `${SITE_URL}/#website`;
 export const EV_ENGINEER_BRAND_ID = EV_ENGINEER.id;
 export const ITELEMATICS_ID = ITELEMATICS.id;
 export const EV_SOCIETY_ID = EV_SOCIETY.id;
-export const THASMAI_ID = THASMAI_INFOTECH.id;
 export const PERSON_ID = SUDARSHANA_KARKALA.id;
 // Not sourced from public-entities.ts (UFlight is referenced only in the
 // /space graph as a distinct external brand, not modelled as a full entity
@@ -60,16 +58,6 @@ export function evSocietyOrgNode() {
     "@id": EV_SOCIETY_ID,
     name: EV_SOCIETY.name,
     url: EV_SOCIETY.canonicalUrl,
-  };
-}
-
-export function thasmaiOrgNode() {
-  return {
-    "@type": "Organization",
-    "@id": THASMAI_ID,
-    name: THASMAI_INFOTECH.name,
-    legalName: THASMAI_INFOTECH.legalName,
-    url: THASMAI_INFOTECH.canonicalUrl,
   };
 }
 

@@ -3,13 +3,12 @@ import {
   EV_ENGINEER,
   ITELEMATICS,
   EV_SOCIETY,
-  THASMAI_INFOTECH,
   SUDARSHANA_KARKALA,
   INTERNSHIP_PROGRAM,
   PUBLIC_CONTACT,
 } from "./public-entities";
 
-const ALL_ENTITIES = [EV_ENGINEER, ITELEMATICS, EV_SOCIETY, THASMAI_INFOTECH, SUDARSHANA_KARKALA, INTERNSHIP_PROGRAM];
+const ALL_ENTITIES = [EV_ENGINEER, ITELEMATICS, EV_SOCIETY, SUDARSHANA_KARKALA, INTERNSHIP_PROGRAM];
 
 describe("public-entities registry", () => {
   it("gives every entity a distinct, absolute-https @id and canonical URL", () => {
@@ -37,10 +36,8 @@ describe("public-entities registry", () => {
     expect(serialized).not.toMatch(/\bCIN\b/i);
   });
 
-  it("keeps iTelematics and Thasmai Infotech as two distinct legal entities", () => {
-    expect(ITELEMATICS.id).not.toBe(THASMAI_INFOTECH.id);
-    expect(ITELEMATICS.legalName).toBe("iTelematics Software Private Limited");
-    expect(THASMAI_INFOTECH.legalName).toBe("Thasmai Infotech Private Limited");
+  it("does not reference Thasmai Infotech anywhere in Sudarshana Karkala's profile", () => {
+    expect(JSON.stringify(SUDARSHANA_KARKALA)).not.toMatch(/Thasmai/i);
   });
 
   it("Sudarshana Karkala's only verified telephone number matches the one reused elsewhere in the repo", () => {

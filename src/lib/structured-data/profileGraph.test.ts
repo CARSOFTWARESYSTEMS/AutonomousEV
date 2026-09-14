@@ -56,12 +56,13 @@ describe("/about/sudarshana-karkala JSON-LD entity graph", () => {
     ]);
   });
 
-  it("worksFor points at Thasmai Infotech, not iTelematics or EV.ENGINEER directly", () => {
+  it("worksFor points at the EV.ENGINEER brand, and never mentions Thasmai Infotech", () => {
     const person = findByType("Person");
-    const thasmai = graph.find(
-      (n) => (n as Record<string, unknown>).name === "Thasmai Infotech Private Limited"
+    const brand = graph.find(
+      (n) => (n as Record<string, unknown>).name === "EV.ENGINEER" && (n as Record<string, unknown>)["@type"] === "Brand"
     ) as Record<string, unknown>;
-    expect(person.worksFor).toEqual({ "@id": thasmai["@id"] });
+    expect(person.worksFor).toEqual({ "@id": brand["@id"] });
+    expect(JSON.stringify(graph)).not.toMatch(/Thasmai/i);
   });
 
   it("keeps EV.ENGINEER as a Brand node, not a legal Organization, among the affiliations", () => {

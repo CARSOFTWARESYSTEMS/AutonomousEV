@@ -2244,9 +2244,6 @@ export default function BatteryPackDesignContent() {
               <div style={{ fontSize: "1rem", fontWeight: 700, color: "var(--text-primary)", lineHeight: 1.2 }}>
                 Sudarshana Karkala
               </div>
-              <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "2px" }}>
-                Co-Founder, Principal Architect | Thasmai Infotech Private Limited
-              </div>
             </div>
 
             {/* Availability + contact */}
@@ -6083,7 +6080,6 @@ export default function BatteryPackDesignContent() {
                 <p style={{ fontSize: "0.75rem", color: "var(--accent-primary)", fontWeight: "700", textTransform: "uppercase", marginBottom: "4px", letterSpacing: "1px" }}>Created by</p>
                 <h2 style={{ fontSize: "1.8rem", marginBottom: "4px", color: "#fff", fontWeight: 700 }}>Sudarshana Karkala</h2>
                 <p style={{ fontSize: "0.7rem", color: "var(--accent-primary)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "10px" }}>EV Battery Pack Design Handbook — EV.ENGINEER</p>
-                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginBottom: "12px" }}>Co-Founder, Principal Architect | Thasmai Infotech Private Limited</p>
                 <p style={{ color: "var(--text-secondary)", fontSize: "0.88rem", lineHeight: 1.65, marginBottom: "16px" }}>
                   Sudarshana Karkala is building EV.ENGINEER as an engineering platform focused on EV battery safety, diagnostics, second-life battery systems, AI-powered battery intelligence, cloud telemetry, and EV cybersecurity. This EV Battery Pack Design Handbook is part of that mission — structured to take engineers from fundamentals to real-world production-level battery architecture.
                 </p>

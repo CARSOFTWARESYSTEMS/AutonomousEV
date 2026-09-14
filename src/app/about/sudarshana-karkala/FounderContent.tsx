@@ -41,7 +41,7 @@ export default function FounderContent() {
             He is the founder of <a href="https://ev.engineer/" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: "bold" }}>EV.ENGINEER™</a>, a platform focused on solving critical challenges in electric mobility through intelligent, scalable, and engineering-driven solutions.
           </p>
           <p className={styles.description}>
-            He is the Co-founder of <a href="https://www.thasmaiinfotech.com/team/sudarshanakarkala" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: "bold" }}>Thasmai Infotech Private Limited</a> and Consultant at <a href="https://itelematics.com" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: "bold" }}>iTelematics Software Private Limited</a>.
+            He is a Consultant at <a href="https://itelematics.com" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: "bold" }}>iTelematics Software Private Limited</a>.
           </p>
           <p className={styles.description}>
             His work is centered on building next-generation systems that improve safety, reliability, and performance of EV batteries and energy infrastructure.

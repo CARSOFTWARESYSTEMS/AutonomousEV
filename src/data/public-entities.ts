@@ -18,9 +18,6 @@
  *  - No email address is recorded for Sudarshana Karkala personally — only
  *    his published phone number and LinkedIn profile are verified-public.
  *  - EV.ENGINEER is modelled as a Brand/platform, not a legal entity.
- *  - iTelematics Software Private Limited and Thasmai Infotech Private
- *    Limited are kept as two distinct organisations — the repo does not
- *    establish that they are the same legal entity.
  */
 
 export type PublicEntity = {
@@ -94,24 +91,6 @@ export const EV_SOCIETY: PublicEntity = {
 };
 
 /**
- * Thasmai Infotech Private Limited — verified as the legal company
- * Sudarshana Karkala co-founded via /about/sudarshana-karkala (links to
- * thasmaiinfotech.com/team/sudarshanakarkala) and the "Co-Founder,
- * Principal Architect | Thasmai Infotech Private Limited" line reused
- * verbatim across multiple existing pages (si-ems, battery-fire-prevention,
- * battery-pack-design, the rocketry page's author block).
- */
-export const THASMAI_INFOTECH: PublicEntity = {
-  id: "https://www.thasmaiinfotech.com/#organization",
-  type: "Organization",
-  name: "Thasmai Infotech Private Limited",
-  legalName: "Thasmai Infotech Private Limited",
-  description:
-    "Thasmai Infotech Private Limited is the company Sudarshana Karkala co-founded, per his published profile and its own team page.",
-  canonicalUrl: "https://www.thasmaiinfotech.com/",
-};
-
-/**
  * Sudarshana Karkala — verified public professional facts only. Phone
  * number is the same +91 9845561518 already published on his behalf across
  * multiple existing pages (si-ems, battery-fire-prevention,
@@ -127,7 +106,7 @@ export const SUDARSHANA_KARKALA: PublicEntity = {
   type: "Person",
   name: "Sudarshana Karkala",
   description:
-    "Sudarshana Karkala is a software architect and technology leader with over two decades of experience in eMobility, eVTOL, AirTaxi, security, cloud and energy systems engineering. He founded the EV.ENGINEER platform, co-founded Thasmai Infotech Private Limited, and consults for iTelematics Software Private Limited.",
+    "Sudarshana Karkala is a software architect and technology leader with over two decades of experience in eMobility, eVTOL, AirTaxi, security, cloud and energy systems engineering. He founded the EV.ENGINEER platform and consults for iTelematics Software Private Limited.",
   canonicalUrl: `${SITE_URL}/about/sudarshana-karkala`,
   publicTelephone: "+91 9845561518",
   imageUrl: `${SITE_URL}/SudarshanaKarkala.jpg`,
@@ -140,7 +119,7 @@ export const SUDARSHANA_KARKALA: PublicEntity = {
     "cloud and energy systems architecture",
     "autonomous energy management systems",
   ],
-  affiliations: [EV_ENGINEER.canonicalUrl, THASMAI_INFOTECH.canonicalUrl, ITELEMATICS.canonicalUrl],
+  affiliations: [EV_ENGINEER.canonicalUrl, ITELEMATICS.canonicalUrl],
 };
 
 /**

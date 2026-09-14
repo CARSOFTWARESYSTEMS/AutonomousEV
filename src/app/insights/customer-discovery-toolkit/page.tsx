@@ -14,7 +14,6 @@ export const metadata: Metadata = {
     "Battery Pack Aadhaar",
     "Battery Diagnostics Interview",
     "EV Battery Lifecycle",
-    "Thasmai Infotech",
     "Sudarshana Karkala"
   ],
   openGraph: {

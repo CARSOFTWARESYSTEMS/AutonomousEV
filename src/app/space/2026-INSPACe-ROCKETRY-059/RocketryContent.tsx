@@ -590,9 +590,6 @@ export default function RocketryContent() {
               <p style={{ fontSize: "0.7rem", color: "var(--accent-primary)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "10px" }}>
                 Model Rocketry Learning Guide — EV Society / EV.ENGINEER
               </p>
-              <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginBottom: "12px" }}>
-                Co-Founder, Principal Architect | Thasmai Infotech Private Limited
-              </p>
               <p style={{ color: "var(--text-secondary)", fontSize: "0.88rem", lineHeight: 1.65, marginBottom: "16px" }}>
                 Sudarshana Karkala leads the EV Society / EV.ENGINEER engineering-education initiative, which spans
                 EV battery systems, autonomous vehicles, and aerospace and space engineering. This beginner-friendly

@@ -18,9 +18,7 @@ export default function ResearcherCard() {
         <div className={styles.text}>
           <p className={styles.eyebrow}>Prepared by</p>
           <h3 className={styles.name}>{SUDARSHANA_KARKALA.name}</h3>
-          <p className={styles.role}>
-            Founder, EV.ENGINEER · Co-Founder, Principal Architect, Thasmai Infotech Private Limited
-          </p>
+          <p className={styles.role}>EV.ENGINEER™</p>
         </div>
       </div>
       <Link href="/about/sudarshana-karkala" className={styles.cta}>

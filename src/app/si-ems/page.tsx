@@ -17,7 +17,6 @@ export const metadata: Metadata = {
     "Sudarshana Karkala Principal Architect",
     "Sudarshana Karkala Autonomous EV",
     "Sudarshana Karkala SI-EMS Research",
-    "Sudarshana Karkala Thasmai Infotech Private Limited",
     "Sudarshana Karkala EV Consultant",
     "iTelematics",
     "Deep Reinforcement Learning EMS",

@@ -31,18 +31,18 @@ Karkala, the internship programme and the public contact point live in
 | EV.ENGINEER | `https://autonomous.ev.engineer/#brand` | `Brand` | Home page, `/space` nav, layout metadata |
 | iTelematics Software Private Limited | `https://itelematics.com/#organization` | `Organization` | `/contact`, home page badge |
 | EV Society | `https://www.evsociety.org/#organization` | `Organization` | `/space` footer/nav, rocketry page attribution |
-| Thasmai Infotech Private Limited | `https://www.thasmaiinfotech.com/#organization` | `Organization` | `/about/sudarshana-karkala` |
 | Sudarshana Karkala | `https://autonomous.ev.engineer/about/sudarshana-karkala#person` | `Person` | `/about/sudarshana-karkala`, reused author blocks |
 | Internship programme | `https://autonomous.ev.engineer/internships#internship-program` | (CollectionPage) | `/internships` |
 | Public contact point | `https://autonomous.ev.engineer/contact#contact` | (ContactPage/ContactPoint) | `/contact` |
 | Website | `https://autonomous.ev.engineer/#website` | `WebSite` | Site-wide |
 
-**These four are deliberately never merged**: EV.ENGINEER (brand/platform), iTelematics Software
-Private Limited (legal operator of EV.ENGINEER, verified via `/contact`), EV Society (a separate
-community initiative — not described as a registered Section 8 company anywhere on this site),
-and Thasmai Infotech Private Limited (the separate legal company Sudarshana Karkala co-founded).
-The repository does not establish that iTelematics and Thasmai Infotech are the same legal entity,
-so they are kept distinct.
+**These three are deliberately never merged**: EV.ENGINEER (brand/platform), iTelematics Software
+Private Limited (legal operator of EV.ENGINEER, verified via `/contact`), and EV Society (a separate
+community initiative — not described as a registered Section 8 company anywhere on this site).
+
+Sudarshana Karkala's public profile (`worksFor`) points at the EV.ENGINEER brand node. Thasmai
+Infotech Private Limited is no longer modelled as an entity in this registry or referenced in his
+profile — it was removed site-wide at the request of the profile owner.
 
 `/space/2026-INSPACe-ROCKETRY-059` (the rocketry learning guide) is modelled as an independent
 `LearningResource`/`WebPage` with `isBasedOn` pointing at the official IN-SPACe workshop listing —

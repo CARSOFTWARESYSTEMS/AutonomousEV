@@ -5,7 +5,7 @@ import { buildProfileGraph } from "@/lib/structured-data/profileGraph";
 
 const PAGE_TITLE = "Sudarshana Karkala | Profile, Projects and Contact | EV.ENGINEER™";
 const PAGE_DESCRIPTION =
-  "Public professional profile of Sudarshana Karkala: verified role, focus areas, initiatives and contact channels. Founder of EV.ENGINEER, Co-Founder of Thasmai Infotech Private Limited.";
+  "Public professional profile of Sudarshana Karkala: verified role, focus areas, initiatives and contact channels. Founder of EV.ENGINEER™.";
 const PAGE_URL = "https://autonomous.ev.engineer/about/sudarshana-karkala";
 const LAST_REVIEWED = "2026-08-17";
 

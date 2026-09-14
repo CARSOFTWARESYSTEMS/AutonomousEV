@@ -676,7 +676,6 @@ export default function EVHelpAgentContent() {
           <div className="glass-panel" style={{ padding: "2rem", borderLeft: "4px solid var(--accent-primary)", textAlign: "left" }}>
             <p style={{ fontSize: "0.75rem", color: "var(--accent-primary)", fontWeight: "700", textTransform: "uppercase", marginBottom: "4px", letterSpacing: "1px" }}>EV.ENGINEER™</p>
             <h3 style={{ fontSize: "1.8rem", marginBottom: "8px", color: "#fff", fontWeight: 700 }}>Sudarshana Karkala</h3>
-            <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginBottom: "12px" }}>Co-Founder, Principal Architect | Thasmai Infotech Private Limited</p>
             <div style={{
               display: "inline-block",
               fontSize: "0.85rem",

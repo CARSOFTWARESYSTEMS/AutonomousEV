@@ -14,11 +14,9 @@
 import { SUDARSHANA_KARKALA, SITE_URL } from "@/data/public-entities";
 import {
   PERSON_ID,
-  THASMAI_ID,
   ITELEMATICS_ID,
   EV_ENGINEER_BRAND_ID,
   WEBSITE_ID,
-  thasmaiOrgNode,
   itelematicsOrgNode,
   evEngineerBrandNode,
   websiteNode,
@@ -37,7 +35,6 @@ export function buildProfileGraph({ title, description, dateModified }: ProfileG
   return [
     websiteNode(),
     evEngineerBrandNode(),
-    thasmaiOrgNode(),
     itelematicsOrgNode(),
     {
       "@type": "Person",
@@ -46,12 +43,11 @@ export function buildProfileGraph({ title, description, dateModified }: ProfileG
       url: PROFILE_URL,
       image: SUDARSHANA_KARKALA.imageUrl,
       description: SUDARSHANA_KARKALA.description,
-      jobTitle: "Co-Founder, Principal Architect",
-      // Verified: FounderContent.tsx states he is Co-founder of Thasmai
-      // Infotech, Consultant at iTelematics, and founder of the EV.ENGINEER
-      // platform/brand.
-      worksFor: { "@id": THASMAI_ID },
-      affiliation: [{ "@id": ITELEMATICS_ID }, { "@id": EV_ENGINEER_BRAND_ID }],
+      jobTitle: "Founder",
+      // Verified: FounderContent.tsx states he is founder of the
+      // EV.ENGINEER platform/brand and a Consultant at iTelematics.
+      worksFor: { "@id": EV_ENGINEER_BRAND_ID },
+      affiliation: [{ "@id": ITELEMATICS_ID }],
       knowsAbout: SUDARSHANA_KARKALA.knowsAbout,
       sameAs: SUDARSHANA_KARKALA.sameAs,
       contactPoint: {
