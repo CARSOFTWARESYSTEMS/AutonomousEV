@@ -15,6 +15,17 @@ const nextConfig: NextConfig = {
         destination: "/aerospace",
         permanent: true,
       },
+      {
+        source: "/",
+        has: [
+          {
+            type: "host",
+            value: "cybersecurity\\.uflight\\.in",
+          },
+        ],
+        destination: "/aerospace",
+        permanent: true,
+      },
     ];
   },
 
