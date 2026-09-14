@@ -682,3 +682,73 @@ export const OPPORTUNITY_CATEGORIES: OpportunityCategory[] = [
     businessModels: ["Licensing", "Joint research and development"],
   },
 ];
+
+export interface ChapterSection {
+  href: string;
+  label: string;
+}
+
+export interface Chapter {
+  id: string;
+  title: string;
+  sections: ChapterSection[];
+}
+
+// Groups every anchor in AnchorNav.NAV_ITEMS into the six mobile learning
+// chapters — every existing href must appear here exactly once.
+export const CHAPTERS: Chapter[] = [
+  {
+    id: "understand",
+    title: "Understand",
+    sections: [
+      { href: "#what-is-it", label: "What is it?" },
+      { href: "#model-vs-real", label: "Model vs Real" },
+    ],
+  },
+  {
+    id: "explore-the-rocket",
+    title: "Explore the Rocket",
+    sections: [
+      { href: "#explorer", label: "Rocket Explorer" },
+      { href: "#systems", label: "Systems" },
+    ],
+  },
+  {
+    id: "understand-flight",
+    title: "Understand Flight",
+    sections: [
+      { href: "#flight-physics", label: "Flight & Stability" },
+      { href: "#propulsion", label: "Propulsion" },
+    ],
+  },
+  {
+    id: "engineer-the-mission",
+    title: "Engineer the Mission",
+    sections: [
+      { href: "#workflow", label: "Build Path" },
+      { href: "#design-reviews", label: "Design Reviews" },
+      { href: "#sim-tools", label: "Simulation" },
+    ],
+  },
+  {
+    id: "learn-from-failure",
+    title: "Learn from Failure",
+    sections: [
+      { href: "#failure-lab", label: "Failure Lab" },
+      { href: "#fmea", label: "FMEA" },
+    ],
+  },
+  {
+    id: "explore-your-future",
+    title: "Explore Your Future",
+    sections: [
+      { href: "#rocketry-vs-cansat", label: "Model vs CanSat" },
+      { href: "#competitions", label: "Competitions" },
+      { href: "#glossary", label: "Glossary" },
+      { href: "#careers", label: "Careers" },
+      { href: "#cost", label: "Cost" },
+      { href: "#enterprise", label: "Enterprise" },
+      { href: "#roadmap", label: "Roadmap" },
+    ],
+  },
+];

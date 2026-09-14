@@ -18,35 +18,35 @@ export default function ComponentDetailBody({ component }: { component: RocketCo
         <p>{explanation}</p>
       </div>
 
-      <div className={styles.componentField}>
-        <h4>Interfaces with</h4>
+      <details className={styles.componentDisclosure}>
+        <summary>Interfaces with</summary>
         <ul>
           {component.interfaces.map((i) => (
             <li key={i}>{i}</li>
           ))}
         </ul>
-      </div>
+      </details>
 
-      <div className={styles.componentField}>
-        <h4>Common failure modes</h4>
+      <details className={styles.componentDisclosure}>
+        <summary>Common failure modes</summary>
         <ul>
           {component.failures.map((f) => (
             <li key={f}>{f}</li>
           ))}
         </ul>
-      </div>
+      </details>
 
-      <div className={styles.componentField}>
-        <h4>Practical checks</h4>
+      <details className={styles.componentDisclosure}>
+        <summary>Practical checks</summary>
         <ul>
           {component.checks.map((c) => (
             <li key={c}>{c}</li>
           ))}
         </ul>
-      </div>
+      </details>
 
-      <div className={styles.componentField}>
-        <h4>Related careers</h4>
+      <details className={styles.componentDisclosure}>
+        <summary>Related careers</summary>
         <div className={styles.componentChips}>
           {component.careers.map((c) => (
             <span key={c} className={styles.componentChip}>
@@ -54,7 +54,7 @@ export default function ComponentDetailBody({ component }: { component: RocketCo
             </span>
           ))}
         </div>
-      </div>
+      </details>
     </div>
   );
 }

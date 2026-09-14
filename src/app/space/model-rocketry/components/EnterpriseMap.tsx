@@ -1,11 +1,15 @@
 "use client";
 import { useState } from "react";
 import { MATURITY_PATHWAY, OPPORTUNITY_CATEGORIES } from "../rocketData";
+import { useMediaQuery } from "./useMediaQuery";
 import styles from "../model-rocketry.module.css";
 
 export default function EnterpriseMap() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [categoriesRevealed, setCategoriesRevealed] = useState(false);
+  const isDesktop = useMediaQuery("(min-width: 768px)");
   const selected = OPPORTUNITY_CATEGORIES.find((c) => c.id === selectedId) ?? null;
+  const showCategories = isDesktop || categoriesRevealed;
 
   return (
     <div>
@@ -23,26 +27,32 @@ export default function EnterpriseMap() {
         Select a category to see an illustrative problem, potential customer, prototype idea and validation step.
         These are directional examples, not guarantees of revenue or market fit.
       </p>
-      <div className={styles.careerGrid}>
-        {OPPORTUNITY_CATEGORIES.map((cat) => (
-          <button
-            key={cat.id}
-            type="button"
-            className={styles.systemMemberButton}
-            style={{
-              textAlign: "left",
-              border: "1px solid var(--space-border)",
-              borderRadius: 12,
-              padding: 14,
-              background: cat.id === selectedId ? "var(--space-button-surface)" : "var(--space-surface)",
-            }}
-            aria-pressed={cat.id === selectedId}
-            onClick={() => setSelectedId(cat.id === selectedId ? null : cat.id)}
-          >
-            {cat.name}
-          </button>
-        ))}
-      </div>
+      {showCategories ? (
+        <div className={styles.careerGrid}>
+          {OPPORTUNITY_CATEGORIES.map((cat) => (
+            <button
+              key={cat.id}
+              type="button"
+              className={styles.systemMemberButton}
+              style={{
+                textAlign: "left",
+                border: "1px solid var(--space-border)",
+                borderRadius: 12,
+                padding: 14,
+                background: cat.id === selectedId ? "var(--space-button-surface)" : "var(--space-surface)",
+              }}
+              aria-pressed={cat.id === selectedId}
+              onClick={() => setSelectedId(cat.id === selectedId ? null : cat.id)}
+            >
+              {cat.name}
+            </button>
+          ))}
+        </div>
+      ) : (
+        <button type="button" className={styles.expandButton} onClick={() => setCategoriesRevealed(true)}>
+          Explore opportunity areas ({OPPORTUNITY_CATEGORIES.length})
+        </button>
+      )}
 
       <div className={styles.componentPanel} style={{ marginTop: 16 }} aria-live="polite">
         {selected ? (

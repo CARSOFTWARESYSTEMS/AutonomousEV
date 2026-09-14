@@ -199,7 +199,59 @@ describe("Model Rocketry learning page", () => {
     const section = document.getElementById("enterprise") as HTMLElement;
     expect(within(section).getByText(/Learn/)).toBeInTheDocument();
 
+    await user.click(within(section).getByRole("button", { name: /Explore opportunity areas/ }));
     await user.click(within(section).getByRole("button", { name: "Avionics" }));
     expect(within(section).getByText(/Hobbyist and student teams need affordable, reliable flight computers/)).toBeInTheDocument();
+  });
+
+  it("caps Failure Lab, FMEA and Competitions to a short preview on mobile with a working expand control", async () => {
+    const user = userEvent.setup();
+    render(<ModelRocketryContent />);
+
+    const failureSection = document.getElementById("failure-lab") as HTMLElement;
+    const failureCountBefore = within(failureSection).getAllByRole("group").length;
+    const failureExpand = within(failureSection).getByRole("button", { name: /Explore all failure modes/ });
+    await user.click(failureExpand);
+    expect(within(failureSection).queryByRole("button", { name: /Explore all failure modes/ })).not.toBeInTheDocument();
+    expect(within(failureSection).getAllByRole("group").length).toBeGreaterThan(failureCountBefore);
+
+    const fmeaSection = document.getElementById("fmea") as HTMLElement;
+    const fmeaExpand = within(fmeaSection).getByRole("button", { name: /Open full FMEA/ });
+    await user.click(fmeaExpand);
+    expect(within(fmeaSection).queryByRole("button", { name: /Open full FMEA/ })).not.toBeInTheDocument();
+
+    const competitionsSection = document.getElementById("competitions") as HTMLElement;
+    const competitionsExpand = within(competitionsSection).getByRole("button", { name: /Explore all competitions/ });
+    await user.click(competitionsExpand);
+    expect(within(competitionsSection).queryByRole("button", { name: /Explore all competitions/ })).not.toBeInTheDocument();
+  });
+
+  it("shows a six-chapter mobile navigation control that opens a chapter sheet", async () => {
+    const user = userEvent.setup();
+    render(<ModelRocketryContent />);
+
+    const navButton = screen.getByRole("button", { name: /01 \/ 06.*Understand/ });
+    expect(navButton).toBeInTheDocument();
+
+    await user.click(navButton);
+    const dialog = screen.getByRole("dialog", { name: /Jump to a chapter/ });
+    expect(within(dialog).getByText("Explore the Rocket")).toBeInTheDocument();
+    expect(within(dialog).getByText("Explore Your Future")).toBeInTheDocument();
+
+    await user.click(within(dialog).getByRole("link", { name: "Rocket Explorer" }));
+    expect(screen.queryByRole("dialog", { name: /Jump to a chapter/ })).not.toBeInTheDocument();
+  });
+
+  it("Rocket Explorer mobile sheet supports Previous/Next component navigation", async () => {
+    const user = userEvent.setup();
+    render(<ModelRocketryContent />);
+    const explorer = document.getElementById("explorer") as HTMLElement;
+    await user.click(within(explorer).getByRole("button", { name: "Nose cone" }));
+
+    const dialog = screen.getByRole("dialog", { name: "Nose cone" });
+    expect(within(dialog).getByRole("button", { name: /Previous component/ })).toBeDisabled();
+
+    await user.click(within(dialog).getByRole("button", { name: /Next component/ }));
+    expect(screen.getByRole("dialog", { name: "Payload / experiment section" })).toBeInTheDocument();
   });
 });

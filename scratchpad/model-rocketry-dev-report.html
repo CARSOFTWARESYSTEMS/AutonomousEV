@@ -1,0 +1,591 @@
+<title>Model Rocketry Build Report</title>
+<style>
+  :root {
+    --bg: #f6f4ef;
+    --surface: #ffffff;
+    --surface-sunken: #eeece4;
+    --ink: #191c1f;
+    --ink-soft: #4b5057;
+    --ink-faint: #767c84;
+    --line: #dcd8cd;
+    --line-strong: #c5c0b2;
+    --accent: #2a4cd6;
+    --accent-ink: #16266e;
+    --accent-soft: #e7ebfb;
+    --good: #1f7a4d;
+    --good-soft: #e4f2ea;
+    --warn: #9a6a12;
+    --warn-soft: #f7ecd9;
+    --mono-bg: #efece3;
+    --shadow: 0 1px 2px rgba(25, 28, 31, 0.06), 0 8px 24px -16px rgba(25, 28, 31, 0.22);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12141a;
+      --surface: #191c24;
+      --surface-sunken: #0f1117;
+      --ink: #eceef2;
+      --ink-soft: #b3b8c3;
+      --ink-faint: #7d828e;
+      --line: #2b2f3a;
+      --line-strong: #383d4a;
+      --accent: #6f8dff;
+      --accent-ink: #d6ddff;
+      --accent-soft: #202a4a;
+      --good: #57c98c;
+      --good-soft: #17301f;
+      --warn: #e0b458;
+      --warn-soft: #332a13;
+      --mono-bg: #0f1117;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -16px rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #12141a;
+    --surface: #191c24;
+    --surface-sunken: #0f1117;
+    --ink: #eceef2;
+    --ink-soft: #b3b8c3;
+    --ink-faint: #7d828e;
+    --line: #2b2f3a;
+    --line-strong: #383d4a;
+    --accent: #6f8dff;
+    --accent-ink: #d6ddff;
+    --accent-soft: #202a4a;
+    --good: #57c98c;
+    --good-soft: #17301f;
+    --warn: #e0b458;
+    --warn-soft: #332a13;
+    --mono-bg: #0f1117;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -16px rgba(0, 0, 0, 0.6);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+    font-size: 16.5px;
+    line-height: 1.62;
+    padding-inline: 20px;
+  }
+
+  .page {
+    max-width: 780px;
+    margin: 0 auto;
+    padding-block: 48px 80px;
+  }
+
+  h1, h2, h3 {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+    text-wrap: balance;
+    line-height: 1.15;
+  }
+
+  .eyebrow {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* ---- Masthead ---- */
+  .masthead {
+    border: 1px solid var(--line-strong);
+    border-radius: 4px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    padding: 30px 32px 26px;
+    margin-bottom: 34px;
+  }
+
+  .masthead-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+
+  h1.title {
+    font-size: 30px;
+    font-weight: 800;
+    margin: 6px 0 0;
+    letter-spacing: -0.01em;
+  }
+
+  .doc-id {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    text-align: right;
+    line-height: 1.5;
+    white-space: nowrap;
+  }
+
+  .subline {
+    font-family: "Archivo", sans-serif;
+    color: var(--ink-soft);
+    font-size: 15.5px;
+    margin: 10px 0 22px;
+    max-width: 60ch;
+  }
+
+  .status-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+
+  @media (max-width: 560px) {
+    .status-strip { grid-template-columns: repeat(2, 1fr); }
+    .doc-id { text-align: left; }
+    .masthead-top { flex-direction: column; }
+  }
+
+  .status-tile {
+    border: 1px solid var(--line);
+    background: var(--surface-sunken);
+    border-radius: 3px;
+    padding: 10px 12px;
+  }
+
+  .status-tile .label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .pill.pass { color: var(--good); }
+  .pill.dot::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+    display: inline-block;
+  }
+
+  /* ---- Sections ---- */
+  section { margin-bottom: 38px; }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid var(--line-strong);
+    padding-bottom: 8px;
+  }
+
+  .section-num {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  h2.section-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  p { margin: 0 0 14px; color: var(--ink); max-width: 68ch; }
+  .lede { color: var(--ink-soft); font-family: "Archivo", sans-serif; font-size: 15px; }
+
+  ul.report-list, ol.report-list {
+    margin: 0 0 14px;
+    padding-left: 22px;
+  }
+  ul.report-list li, ol.report-list li {
+    margin-bottom: 9px;
+    max-width: 66ch;
+  }
+  .report-list b { font-family: "Archivo", sans-serif; font-weight: 700; }
+
+  code, .mono {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.87em;
+    background: var(--mono-bg);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 1px 5px;
+    color: var(--accent-ink);
+  }
+
+  /* ---- Feature cards ---- */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 620px) { .feature-grid { grid-template-columns: 1fr; } }
+
+  .feature-card {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: var(--surface);
+    padding: 16px 18px;
+  }
+  .feature-card h3 {
+    font-size: 15px;
+    margin: 0 0 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .feature-card h3 .tag {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+    border-radius: 3px;
+    padding: 2px 6px;
+    font-weight: 700;
+  }
+  .feature-card p { font-size: 14.5px; color: var(--ink-soft); font-family: "Archivo", sans-serif; margin: 0; max-width: none; }
+
+  /* ---- Fix log table ---- */
+  .fixlog { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 6px; }
+  .fixlog th {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    text-align: left;
+    padding: 0 10px 8px 0;
+    border-bottom: 1px solid var(--line-strong);
+    font-weight: 600;
+  }
+  .fixlog td {
+    padding: 11px 10px 11px 0;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+    font-family: "Archivo", sans-serif;
+    color: var(--ink);
+  }
+  .fixlog tr:last-child td { border-bottom: none; }
+  .fixlog .issue-col { width: 34%; font-weight: 600; }
+  .fixlog .fix-col { color: var(--ink-soft); }
+  .table-scroll { overflow-x: auto; }
+
+  /* ---- Verification checklist ---- */
+  .verify-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media (max-width: 560px) { .verify-grid { grid-template-columns: 1fr; } }
+  .verify-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 3px;
+    padding: 10px 14px;
+    font-family: "Archivo", sans-serif;
+    font-size: 14px;
+  }
+  .verify-row .result {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--good);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .breakpoint-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 4px 0 16px;
+  }
+  .bp-chip {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12.5px;
+    background: var(--good-soft);
+    color: var(--good);
+    border: 1px solid var(--good);
+    border-radius: 999px;
+    padding: 3px 11px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---- File manifest ---- */
+  .manifest-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 620px) { .manifest-cols { grid-template-columns: 1fr; } }
+  .manifest-cols h4 {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 8px;
+  }
+  .manifest-cols ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12.8px;
+    color: var(--ink);
+  }
+  .manifest-cols li {
+    padding: 6px 0;
+    border-bottom: 1px solid var(--line);
+    word-break: break-all;
+  }
+  .manifest-cols li:last-child { border-bottom: none; }
+
+  /* ---- Sources table ---- */
+  .sources-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .sources-table th {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    text-align: left;
+    padding: 0 10px 8px 0;
+    border-bottom: 1px solid var(--line-strong);
+  }
+  .sources-table td {
+    padding: 9px 10px 9px 0;
+    border-bottom: 1px solid var(--line);
+    font-family: "Archivo", sans-serif;
+    color: var(--ink-soft);
+  }
+  .sources-table td.name { color: var(--ink); font-weight: 600; }
+  .sources-table tr:last-child td { border-bottom: none; }
+
+  .callout {
+    border: 1px solid var(--warn);
+    background: var(--warn-soft);
+    border-radius: 4px;
+    padding: 14px 16px;
+    font-family: "Archivo", sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+  .callout b { color: var(--warn); }
+
+  footer.colophon {
+    margin-top: 50px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line-strong);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    color: var(--ink-faint);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  @media print {
+    body { background: #fff; }
+    .masthead { box-shadow: none; }
+  }
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@500;600;700&display=swap">
+
+<div class="page">
+
+  <div class="masthead">
+    <div class="masthead-top">
+      <div>
+        <span class="eyebrow">Build report</span>
+        <h1 class="title">Model Rocketry Learning Experience</h1>
+      </div>
+      <div class="doc-id">
+        Route: /space/model-rocketry<br>
+        Session date: 2026-09-14<br>
+        Repo: AutonomousEV · main
+      </div>
+    </div>
+    <p class="subline">Phases B/C delivered on top of the previously shipped Phase A core page — Presentation Mode, Cost Anatomy, Enterprise/Startup Map, and a live-researched Competitions Explorer — plus a dedicated mobile-UI audit and fix pass across the full page.</p>
+    <div class="status-strip">
+      <div class="status-tile"><span class="label">Lint</span><span class="pill pass dot">Clean</span></div>
+      <div class="status-tile"><span class="label">Tests</span><span class="pill pass dot">402 / 402</span></div>
+      <div class="status-tile"><span class="label">Build</span><span class="pill pass dot">Turbopack OK</span></div>
+      <div class="status-tile"><span class="label">Mobile audit</span><span class="pill pass dot">7 widths clean</span></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="section-head"><span class="section-num">01</span><h2 class="section-title">Scope of this round</h2></div>
+    <p class="lede">Four features that were explicitly deferred out of the original Phase A build — because they either needed live research or were large enough to warrant their own review — were completed in this session, plus a requested mobile-responsiveness pass over the entire page.</p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3>Presentation Mode <span class="tag">New</span></h3>
+        <p>A 16-slide, fullscreen workshop viewer reachable from a "Start Workshop" button in the hero. Keyboard (arrow keys, space, escape), touch swipe, a speaker-notes toggle, and a progress-dot rail.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Cost Anatomy <span class="tag">New</span></h3>
+        <p>Four-tier cost breakdown (Fundamentals → Instrumented → Competition → Research) as a tab switcher. Deliberately carries no rupee figures — cost depends on scope, not a fixed number — with an explicit note explaining why.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Enterprise / Startup Map <span class="tag">New</span></h3>
+        <p>A 9-stage maturity pathway (Learn → Startup) plus 13 clickable opportunity categories, each expanding into a problem / customer / prototype idea / validation-needed breakdown.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Competitions Explorer <span class="tag">New</span></h3>
+        <p>7 real student competitions (India + international), each live-researched, sourced to an official listing, and dated. Paired with a Rocketry-vs-CanSat comparison card.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><span class="section-num">02</span><h2 class="section-title">Mobile UI audit &amp; fixes</h2></div>
+    <p class="lede">Per your instruction to verify mobile UI properly, the full page was driven headlessly across seven viewport widths and checked for console errors, page errors, and horizontal overflow. Two real layout defects surfaced and were fixed; a third was a UI redundancy caught by a new test rather than the visual sweep.</p>
+    <div class="table-scroll">
+      <table class="fixlog">
+        <thead><tr><th class="issue-col">Issue found</th><th>Where</th><th class="fix-col">Fix applied</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="issue-col">Level switcher clipped label text</td>
+            <td>320–430px, hero</td>
+            <td class="fix-col">Flex children couldn't shrink below their text width. Switched <code>.levelSwitcher</code> to horizontal-scroll with <code>flex: 0 0 auto</code> tabs — matches the existing phase-rail pattern elsewhere on the page, so labels are always shown in full.</td>
+          </tr>
+          <tr>
+            <td class="issue-col">Rocket diagram oversized on tablet/desktop</td>
+            <td>768–1400px, Rocket Explorer</td>
+            <td class="fix-col">Portrait SVG (400×800 viewBox) scaled unbounded, pushing fins/motor off-screen. Capped it at 300px via a new <code>.rocketDiagramSvg</code> class, centered the frame, and reordered the explorer's grid columns so the fixed-size diagram sits first.</td>
+          </tr>
+          <tr>
+            <td class="issue-col">Duplicate slide counter in Presentation Mode</td>
+            <td>All widths, presentation view</td>
+            <td class="fix-col">A new test asserting unique <code>"01 / 16"</code> text caught two renders of it — the top-bar counter and a redundant per-slide kicker. Removed the per-slide kicker and its unused CSS rule.</td>
+          </tr>
+          <tr>
+            <td class="issue-col">ResearcherCard left large empty space on wide screens</td>
+            <td>Desktop, 4 pages sharing the card</td>
+            <td class="fix-col">Flagged via a screenshot you shared. Redesigned to a <code>space-between</code> layout: avatar + identity block on the left, a right-aligned pill "View full profile" button — degrades to a stacked, full-width card under 640px.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:16px; font-family: Archivo, sans-serif; font-size: 13.5px; color: var(--ink-faint);">Widths swept with a headless Playwright pass (console + pageerror listeners, <code>scrollWidth &gt; innerWidth</code> overflow check):</p>
+    <div class="breakpoint-row">
+      <span class="bp-chip">320px</span><span class="bp-chip">360px</span><span class="bp-chip">375px</span><span class="bp-chip">390px</span><span class="bp-chip">430px</span><span class="bp-chip">768px</span><span class="bp-chip">1400px</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><span class="section-num">03</span><h2 class="section-title">Verification</h2></div>
+    <div class="verify-grid">
+      <div class="verify-row"><span>ESLint — session-touched files</span><span class="result">0 errors</span></div>
+      <div class="verify-row"><span>Vitest — full suite</span><span class="result">402 / 402 pass</span></div>
+      <div class="verify-row"><span>Vitest — test files</span><span class="result">48 / 48 pass</span></div>
+      <div class="verify-row"><span><code>next build</code> (Turbopack)</span><span class="result">50 / 50 routes</span></div>
+      <div class="verify-row"><span>Console / page errors, all widths</span><span class="result">0 found</span></div>
+      <div class="verify-row"><span>Horizontal overflow, all widths</span><span class="result">0 found</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><span class="section-num">04</span><h2 class="section-title">Competitions data — sourcing</h2></div>
+    <p>Each entry in the Competitions Explorer was researched live rather than drawn from training data, and carries its own official source link plus a <code>verifiedOn</code> date rendered on the page. Every card also states plainly that no affiliation, endorsement, or partnership with the listed organizers is claimed.</p>
+    <div class="table-scroll">
+      <table class="sources-table">
+        <thead><tr><th>Competition</th><th>Status as verified</th><th>Source</th></tr></thead>
+        <tbody>
+          <tr><td class="name">IN-SPACe Model Rocketry (India)</td><td>Upcoming — 2nd edition, finals Oct–Nov 2026, Kushinagar</td><td>inspace.gov.in</td></tr>
+          <tr><td class="name">IN-SPACe CanSat (India)</td><td>Upcoming — 3rd edition, same cycle</td><td>inspace.gov.in</td></tr>
+          <tr><td class="name">EuRoC</td><td>Upcoming — 7th edition, 15–21 Oct 2026, Portugal</td><td>euroc.pt</td></tr>
+          <tr><td class="name">IREC</td><td>Completed — 2026 edition, mid-June, Spaceport Midland</td><td>esrarocket.org</td></tr>
+          <tr><td class="name">AAS CanSat</td><td>Announced — 2027 edition, 10–13 June, Virginia</td><td>astronautical.org</td></tr>
+          <tr><td class="name">German CanSat</td><td>Open — 13th edition, applications due 4 Oct 2026</td><td>cansat.de</td></tr>
+          <tr><td class="name">Korea CanSat</td><td>Next edition not yet verified</td><td>cansat.kaist.ac.kr</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:14px;"><span class="mono">VERIFIED_ON = "2026-09-14"</span> in <code>competitionsData.ts</code> — re-check before relying on any date or status past this session.</p>
+  </section>
+
+  <section>
+    <div class="section-head"><span class="section-num">05</span><h2 class="section-title">File manifest</h2></div>
+    <div class="manifest-cols">
+      <div>
+        <h4>New files</h4>
+        <ul>
+          <li>components/CostAnatomy.tsx</li>
+          <li>components/EnterpriseMap.tsx</li>
+          <li>components/CompetitionExplorer.tsx</li>
+          <li>components/RocketryVsCansat.tsx</li>
+          <li>components/PresentationMode.tsx</li>
+          <li>components/PresentationSlide.tsx</li>
+          <li>components/ExperienceModeSwitcher.tsx</li>
+          <li>competitionsData.ts</li>
+          <li>presentationData.ts</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Modified files</h4>
+        <ul>
+          <li>ModelRocketryContent.tsx</li>
+          <li>ModelRocketryContent.test.tsx</li>
+          <li>components/AnchorNav.tsx</li>
+          <li>components/RocketDiagram.tsx</li>
+          <li>components/LaunchSequenceHero.tsx</li>
+          <li>components/MissionWorkflow.tsx</li>
+          <li>model-rocketry.module.css</li>
+          <li>rocketData.ts</li>
+          <li>src/components/ResearcherCard.tsx</li>
+          <li>src/components/ResearcherCard.module.css</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><span class="section-num">06</span><h2 class="section-title">Out of scope / known non-issues</h2></div>
+    <div class="callout"><b>Pre-existing lint errors —</b> <code>SyllabusSection.tsx</code> and <code>PrerequisitesSection.tsx</code> carry unrelated <code>no-explicit-any</code>/unused-import issues. Neither file was touched this session; left alone rather than fixed opportunistically.</div>
+    <div class="callout"><b>Build-time notice —</b> Turbopack prints <code>z-index is currently not supported</code> twice during static generation. It's a lightningcss/Turbopack advisory, not a build failure — all 50 routes still generated correctly.</div>
+  </section>
+
+  <section>
+    <div class="section-head"><span class="section-num">07</span><h2 class="section-title">Status</h2></div>
+    <p>All four deferred phases are shipped, tested, and mobile-verified. The dev server is left running at <code>localhost:3000</code> per your request to run locally. Nothing is committed — <code>git status</code> shows the new/modified files above as uncommitted working-tree changes, awaiting your review before a commit.</p>
+  </section>
+
+  <footer class="colophon">
+    <span>ev.engineer / space / model-rocketry</span>
+    <span>Prepared for internal review</span>
+  </footer>
+
+</div>

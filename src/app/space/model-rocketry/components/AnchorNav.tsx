@@ -1,4 +1,5 @@
 "use client";
+import MobileChapterNav from "./MobileChapterNav";
 import styles from "../model-rocketry.module.css";
 
 export const NAV_ITEMS: [string, string][] = [
@@ -13,6 +14,7 @@ export const NAV_ITEMS: [string, string][] = [
   ["#sim-tools", "Simulation"],
   ["#failure-lab", "Failure Lab"],
   ["#fmea", "FMEA"],
+  ["#rocketry-vs-cansat", "Model vs CanSat"],
   ["#competitions", "Competitions"],
   ["#glossary", "Glossary"],
   ["#careers", "Careers"],
@@ -31,27 +33,7 @@ export default function AnchorNav() {
           </a>
         ))}
       </nav>
-      <div className={styles.mobileNavSelect}>
-        <label htmlFor="model-rocketry-nav" style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0,0,0,0)" }}>
-          Jump to section
-        </label>
-        <select
-          id="model-rocketry-nav"
-          defaultValue=""
-          onChange={(e) => {
-            if (e.target.value) window.location.hash = e.target.value;
-          }}
-        >
-          <option value="" disabled>
-            Jump to section…
-          </option>
-          {NAV_ITEMS.map(([href, label]) => (
-            <option key={href} value={href}>
-              {label}
-            </option>
-          ))}
-        </select>
-      </div>
+      <MobileChapterNav />
     </>
   );
 }

@@ -1,10 +1,20 @@
+"use client";
+import { useState } from "react";
 import { FAILURE_MODES, SYSTEM_LABELS } from "../rocketData";
+import { useMediaQuery } from "./useMediaQuery";
 import styles from "../model-rocketry.module.css";
 
+const MOBILE_PREVIEW_COUNT = 4;
+
 export default function FailureLab() {
+  const [expanded, setExpanded] = useState(false);
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const showExpandControl = !isDesktop && !expanded && FAILURE_MODES.length > MOBILE_PREVIEW_COUNT;
+  const visible = showExpandControl ? FAILURE_MODES.slice(0, MOBILE_PREVIEW_COUNT) : FAILURE_MODES;
+
   return (
     <div>
-      {FAILURE_MODES.map((f) => (
+      {visible.map((f) => (
         <details key={f.id} className={styles.accordionItem}>
           <summary>{f.title}</summary>
           <div>
@@ -31,6 +41,11 @@ export default function FailureLab() {
           </div>
         </details>
       ))}
+      {showExpandControl && (
+        <button type="button" className={styles.expandButton} onClick={() => setExpanded(true)}>
+          Explore all failure modes ({FAILURE_MODES.length})
+        </button>
+      )}
     </div>
   );
 }

@@ -61,10 +61,15 @@ html, body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
 }
 
+/* overflow-x lives on body only (not html): mixing a non-"visible" overflow-x
+   with the default "visible" overflow-y on BOTH html and body forces the
+   browser to compute overflow-y as "auto" on both independently, which
+   breaks the standard body->viewport overflow-propagation shortcut and
+   silently disables `position: sticky` for every element on the page. */
 body {
+  overflow-x: hidden;
   background: radial-gradient(circle at 50% 0%, var(--bg-deep), var(--bg-dark), var(--bg-darker));
   background-attachment: fixed;
   color: var(--text-primary);

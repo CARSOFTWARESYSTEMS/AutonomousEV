@@ -4,10 +4,12 @@ import {
   EV_ENGINEER_BRAND_ID,
   EV_SOCIETY_ID,
   ITELEMATICS_ID,
+  UFLIGHT_BRAND_ID,
   PERSON_ID,
   evSocietyOrgNode,
   evEngineerBrandNode,
   itelematicsOrgNode,
+  uflightBrandNode,
   websiteNode,
 } from "@/lib/structured-data/entities";
 
@@ -56,6 +58,7 @@ export const structuredData = {
     evSocietyOrgNode(),
     evEngineerBrandNode(),
     itelematicsOrgNode(),
+    uflightBrandNode(),
     {
       "@type": ["WebPage", "LearningResource"],
       "@id": `${CANONICAL}#webpage`,
@@ -85,6 +88,7 @@ export const structuredData = {
         { "@id": PERSON_ID },
         { "@id": EV_ENGINEER_BRAND_ID },
         { "@id": ITELEMATICS_ID },
+        { "@id": UFLIGHT_BRAND_ID },
       ],
       breadcrumb: { "@id": `${CANONICAL}#breadcrumb` },
     },

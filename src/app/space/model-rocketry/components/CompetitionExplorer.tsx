@@ -1,6 +1,11 @@
+"use client";
+import { useState } from "react";
 import { ExternalLink } from "lucide-react";
 import { COMPETITIONS, VERIFIED_ON, type CompetitionStatus } from "../competitionsData";
+import { useMediaQuery } from "./useMediaQuery";
 import styles from "../model-rocketry.module.css";
+
+const MOBILE_PREVIEW_COUNT_PER_REGION = 2;
 
 const STATUS_COLOR: Record<CompetitionStatus, string> = {
   Open: "#34d399",
@@ -11,8 +16,13 @@ const STATUS_COLOR: Record<CompetitionStatus, string> = {
 };
 
 export default function CompetitionExplorer() {
+  const [expanded, setExpanded] = useState(false);
+  const isDesktop = useMediaQuery("(min-width: 768px)");
   const india = COMPETITIONS.filter((c) => c.region === "India");
   const international = COMPETITIONS.filter((c) => c.region === "International");
+  const showExpandControl = !isDesktop && !expanded && COMPETITIONS.length > MOBILE_PREVIEW_COUNT_PER_REGION * 2;
+  const visibleIndia = showExpandControl ? india.slice(0, MOBILE_PREVIEW_COUNT_PER_REGION) : india;
+  const visibleInternational = showExpandControl ? international.slice(0, MOBILE_PREVIEW_COUNT_PER_REGION) : international;
 
   return (
     <div>
@@ -26,17 +36,28 @@ export default function CompetitionExplorer() {
 
       <h4 style={{ marginBottom: 14 }}>India</h4>
       <div className={styles.systemsGrid} style={{ marginBottom: 32 }}>
-        {india.map((c) => (
+        {visibleIndia.map((c) => (
           <CompetitionCard key={c.id} competition={c} />
         ))}
       </div>
 
       <h4 style={{ marginBottom: 14 }}>International</h4>
       <div className={styles.systemsGrid}>
-        {international.map((c) => (
+        {visibleInternational.map((c) => (
           <CompetitionCard key={c.id} competition={c} />
         ))}
       </div>
+
+      {showExpandControl && (
+        <button
+          type="button"
+          className={styles.expandButton}
+          style={{ marginTop: 24 }}
+          onClick={() => setExpanded(true)}
+        >
+          Explore all competitions ({COMPETITIONS.length})
+        </button>
+      )}
 
       <div className={styles.card} style={{ padding: 20, marginTop: 28, borderLeft: "3px solid var(--space-amber)" }}>
         <p style={{ margin: 0 }}>

@@ -113,7 +113,7 @@ export default function Home() {
               <h3 className={styles.cardTitle}>Cybersecurity</h3>
               <p className={styles.cardText}>Battery, BMS, and energy-system cybersecurity — from foundational research internships to eVTOL-specific threat modelling.</p>
             </div>
-            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", flex: "0 0 auto" }}>
+            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", flex: "1 1 auto", minWidth: 0 }}>
               <Link href="/internships/battery-cybersecurity" className="btn btn-secondary" data-track-event="home_why_cybersecurity_internship_click">
                 Cybersecurity Internship
               </Link>

@@ -38,11 +38,12 @@ export default function RocketDiagram({
       {/* launch lug */}
       <rect x="240" y="380" width="8" height="30" fill="var(--space-border)" />
 
-      {components.map((c) => {
+      {components.map((c, i) => {
         const cx = c.location.x * VIEW_W;
         const cy = c.location.y * VIEW_H;
         const selected = c.id === selectedId;
         const color = SYSTEM_COLORS[c.system];
+        const radius = selected ? 13 : 11;
         return (
           <g
             key={c.id}
@@ -59,7 +60,20 @@ export default function RocketDiagram({
               }
             }}
           >
-            <circle cx={cx} cy={cy} r={selected ? 10 : 8} fill={color} fillOpacity={selected ? 1 : 0.85} stroke="var(--space-background)" strokeWidth="2" />
+            <circle cx={cx} cy={cy} r={radius} fill={color} fillOpacity={selected ? 1 : 0.85} stroke="var(--space-background)" strokeWidth="2" />
+            <text
+              x={cx}
+              y={cy}
+              aria-hidden="true"
+              textAnchor="middle"
+              dominantBaseline="central"
+              fontSize={11}
+              fontWeight={700}
+              fill="var(--space-background)"
+              pointerEvents="none"
+            >
+              {i + 1}
+            </text>
           </g>
         );
       })}

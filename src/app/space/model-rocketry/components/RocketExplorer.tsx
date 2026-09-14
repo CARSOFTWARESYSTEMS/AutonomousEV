@@ -29,7 +29,14 @@ export default function RocketExplorer() {
         </div>
         {isDesktop && <ComponentPanel component={selected} />}
       </div>
-      {!isDesktop && <ComponentSheet component={selected} onClose={() => setSelectedId(null)} />}
+      {!isDesktop && (
+        <ComponentSheet
+          component={selected}
+          components={ROCKET_COMPONENTS}
+          onSelect={setSelectedId}
+          onClose={() => setSelectedId(null)}
+        />
+      )}
     </div>
   );
 }

@@ -75,18 +75,24 @@ export default function ModelRocketryContent() {
             <p className={styles.heroSubtitle}>
               Learn aerospace engineering by following one rocket from mission idea to recovery.
             </p>
-            <div className={styles.heroActions} style={{ flexWrap: "wrap", gap: 12 }}>
-              <LevelSwitcher />
-              <ExperienceModeSwitcher mode={mode} onChange={setMode} />
+            <div className={styles.heroVisual}>
+              <LaunchSequenceHero />
             </div>
-            <LaunchSequenceHero />
-            <div style={{ marginTop: 28, display: "flex", flexWrap: "wrap", gap: 12, alignItems: "center" }}>
+            <div className={styles.heroPrimaryActions}>
               <a href="#what-is-it" className={styles.primaryButton}>
                 Explore the Rocket <ArrowRight size={16} />
               </a>
               <button type="button" className={styles.textButton} onClick={() => setMode("presentation")}>
                 <Presentation size={16} /> Start Workshop (Presentation Mode)
               </button>
+            </div>
+            <div className={styles.heroControlGroup}>
+              <span className={styles.heroControlLabel}>Learning Level</span>
+              <LevelSwitcher />
+            </div>
+            <div className={styles.heroControlGroup}>
+              <span className={styles.heroControlLabel}>Experience</span>
+              <ExperienceModeSwitcher mode={mode} onChange={setMode} />
             </div>
           </section>
 

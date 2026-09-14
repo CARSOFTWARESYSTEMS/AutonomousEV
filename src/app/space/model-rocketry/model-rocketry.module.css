@@ -116,16 +116,33 @@
   color: var(--space-blue-text);
 }
 
-/* ── Hero ── */
+/* ── Hero ──
+   Mobile-first single-column grid; reflowed to a two-column layout at
+   ≥768px purely via grid-template-areas so the experience-mode switch can
+   sit in a top-right "toolbar" corner on desktop without competing with
+   the primary CTAs, while staying a normal, later-in-flow control on
+   mobile. No JS branching — same DOM on every viewport. */
 .hero {
   composes: heroInset from "../space.module.css";
   padding-top: 32px;
   padding-bottom: 40px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "eyebrow"
+    "title"
+    "subtitle"
+    "visual"
+    "actions"
+    "level"
+    "experience";
 }
 .heroEyebrow {
   composes: eyebrow;
+  grid-area: eyebrow;
 }
 .hero h1 {
+  grid-area: title;
   font-size: var(--space-hero-size);
   font-weight: 800;
   line-height: 1.12;
@@ -133,6 +150,7 @@
   margin: 0 0 14px;
 }
 .heroSubtitle {
+  grid-area: subtitle;
   font-family: var(--font-space-manrope);
   font-size: clamp(18px, 2.1vw, 24px);
   font-weight: 600;
@@ -141,9 +159,30 @@
   margin-bottom: 28px;
   max-width: 760px;
 }
-.heroActions {
+.heroVisual {
+  grid-area: visual;
+}
+.heroPrimaryActions {
   composes: ctaGroup from "../space.module.css";
+  grid-area: actions;
   margin-top: 8px;
+}
+.heroControlGroup {
+  grid-area: level;
+  margin-top: 28px;
+}
+.heroControlGroup + .heroControlGroup {
+  grid-area: experience;
+  margin-top: 16px;
+}
+.heroControlLabel {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--space-muted);
+  margin-bottom: 8px;
 }
 .primaryButton {
   composes: secondaryButton from "../spaceTheme.module.css";
@@ -160,6 +199,39 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
+}
+.expandButton {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 8px;
+  padding: 12px 16px;
+  background: var(--space-button-surface);
+  border: 1px solid var(--space-control-border);
+  border-radius: 10px;
+  color: var(--space-blue-text);
+  font-weight: 600;
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  .hero {
+    grid-template-columns: 1fr auto;
+    column-gap: 32px;
+    grid-template-areas:
+      "eyebrow    experience"
+      "title      experience"
+      "subtitle   experience"
+      "level      experience"
+      "visual     visual"
+      "actions    actions";
+  }
+  .heroControlGroup {
+    margin-top: 20px;
+  }
+  .heroControlGroup + .heroControlGroup {
+    margin-top: 0;
+    justify-self: end;
+    align-self: start;
+  }
 }
 
 /* ── Launch sequence ── */
@@ -285,8 +357,85 @@
   background: var(--space-button-surface);
   color: var(--space-blue-text);
 }
-.mobileNavSelect {
+.chapterNav {
   display: none;
+}
+.chapterNavButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 10px 16px;
+  background: var(--space-surface);
+  border: 1px solid var(--space-control-border);
+  border-radius: 10px;
+  color: var(--space-text);
+  text-align: left;
+}
+.chapterNavCount {
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--space-blue-text);
+  white-space: nowrap;
+}
+.chapterNavTitle {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.chapterList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.chapterListItem {
+  border-radius: 12px;
+  padding: 12px 14px;
+  border: 1px solid transparent;
+}
+.chapterListItem[data-active="true"] {
+  background: var(--space-button-surface);
+  border-color: var(--space-control-border);
+}
+.chapterListHead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.chapterListNumber {
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--space-blue-text);
+}
+.chapterListTitle {
+  font-size: 15px;
+  font-weight: 700;
+}
+.chapterListLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  padding-left: 26px;
+}
+.chapterListLinks a {
+  font-size: 13.5px;
+  color: var(--space-muted);
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+}
+.chapterListLinks a:hover {
+  color: var(--space-blue-text);
 }
 
 /* ── Level switcher ── */
@@ -397,7 +546,7 @@
 /* ── Rocket explorer ── */
 .explorerGrid {
   display: grid;
-  grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+  grid-template-columns: minmax(300px, 420px) minmax(0, 1fr);
   gap: 24px;
   align-items: start;
 }
@@ -417,7 +566,17 @@
 }
 .rocketDiagramSvg {
   composes: diagramSvg;
-  max-width: 300px;
+  max-width: min(380px, 85vw);
+}
+@media (min-width: 768px) {
+  .rocketDiagramSvg {
+    max-width: 320px;
+  }
+}
+@media (min-width: 1024px) {
+  .rocketDiagramSvg {
+    max-width: 400px;
+  }
 }
 .hitTarget {
   cursor: pointer;
@@ -494,6 +653,34 @@
   margin: 0;
   padding-left: 18px;
 }
+.componentDisclosure {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--space-border);
+}
+.componentDisclosure summary {
+  cursor: pointer;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  color: var(--space-text);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  list-style-position: inside;
+}
+.componentDisclosure[open] summary {
+  margin-bottom: 8px;
+}
+.componentDisclosure p,
+.componentDisclosure li {
+  font-size: 14px;
+  color: var(--space-muted);
+}
+.componentDisclosure ul {
+  margin: 0;
+  padding-left: 18px;
+}
 .componentChips {
   display: flex;
   flex-wrap: wrap;
@@ -537,6 +724,38 @@
   color: var(--space-text);
   display: grid;
   place-items: center;
+}
+.sheetHandle {
+  width: 40px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--space-border);
+  margin: 0 auto 14px;
+}
+.sheetPrevNext {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--space-border);
+}
+.sheetPrevNextButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: var(--space-surface);
+  border: 1px solid var(--space-border);
+  color: var(--space-blue-text);
+  font-size: 13.5px;
+  font-weight: 600;
+}
+.sheetPrevNextButton:disabled {
+  opacity: 0.4;
+  color: var(--space-muted);
 }
 @media (prefers-reduced-motion: no-preference) {
   .sheet {
@@ -971,19 +1190,14 @@
   .pageNav {
     display: none;
   }
-  .mobileNavSelect {
+  .chapterNav {
     display: block;
-    margin: 12px var(--space-inset);
-  }
-  .mobileNavSelect select {
-    width: 100%;
-    min-height: 48px;
-    background: var(--space-surface);
-    border: 1px solid var(--space-control-border);
-    border-radius: 10px;
-    color: var(--space-text);
-    padding: 10px 14px;
-    font-size: 16px;
+    position: sticky;
+    top: 60px;
+    z-index: 20;
+    padding: 12px var(--space-inset);
+    background: var(--space-background);
+    border-bottom: 1px solid var(--space-border);
   }
   .comparisonWrap {
     display: none;

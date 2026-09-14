@@ -1,7 +1,11 @@
 "use client";
+import { useState } from "react";
 import { FMEA_ROWS } from "../rocketData";
 import { useLearningLevel } from "./LearningLevelProvider";
+import { useMediaQuery } from "./useMediaQuery";
 import styles from "../model-rocketry.module.css";
+
+const MOBILE_PREVIEW_COUNT = 3;
 
 function rpn(row: (typeof FMEA_ROWS)[number]) {
   return row.severity * row.occurrence * row.detectability;
@@ -11,6 +15,10 @@ export default function FmeaTable() {
   const { isAtLeast } = useLearningLevel();
   const showScores = isAtLeast("intermediate");
   const showRpn = isAtLeast("advanced");
+  const [expanded, setExpanded] = useState(false);
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const showExpandControl = !isDesktop && !expanded && FMEA_ROWS.length > MOBILE_PREVIEW_COUNT;
+  const visibleCardRows = showExpandControl ? FMEA_ROWS.slice(0, MOBILE_PREVIEW_COUNT) : FMEA_ROWS;
 
   return (
     <div>
@@ -57,7 +65,7 @@ export default function FmeaTable() {
         </table>
       </div>
       <div className={styles.fmeaCards}>
-        {FMEA_ROWS.map((row) => (
+        {visibleCardRows.map((row) => (
           <dl key={row.id} className={styles.fmeaCard}>
             <dt>System</dt>
             <dd>{row.system}</dd>
@@ -88,6 +96,11 @@ export default function FmeaTable() {
           </dl>
         ))}
       </div>
+      {showExpandControl && (
+        <button type="button" className={styles.expandButton} onClick={() => setExpanded(true)}>
+          Open full FMEA ({FMEA_ROWS.length} rows)
+        </button>
+      )}
       {showRpn && (
         <p className={styles.formNote} style={{ marginTop: 14 }}>
           Risk Priority Number (severity × occurrence × detectability) is one common way to prioritize risks — it is
