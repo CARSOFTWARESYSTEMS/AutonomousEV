@@ -21,6 +21,7 @@ import DayInLife from "./components/DayInLife";
 import BenefitsSplit from "./components/BenefitsSplit";
 import SpaceSystemsSources from "./components/SpaceSystemsSources";
 import SatelliteToPhone from "./components/SatelliteToPhone";
+import ClosernessStrip from "./components/ClosernessStrip";
 import type { Persona } from "./applicationsData";
 
 function SectionHeading({ eyebrow, title, description }: { eyebrow: string; title: string; description: string }) {
@@ -65,6 +66,12 @@ export default function EverydayApplicationsContent() {
               <a href="#system-diagram" className={styles.primaryButton}>
                 See How Space Helps Me <ArrowRight size={16} />
               </a>
+              <a href="#applications" className={styles.textButton}>
+                Start Exploring
+              </a>
+            </div>
+            <div className={styles.heroStrip}>
+              <ClosernessStrip />
             </div>
             <div className={styles.heroControlGroup}>
               <span className={styles.heroControlLabel}>Who are you?</span>

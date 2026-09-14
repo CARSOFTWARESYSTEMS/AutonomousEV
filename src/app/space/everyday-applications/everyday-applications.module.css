@@ -55,6 +55,7 @@
     "title"
     "subtitle"
     "actions"
+    "strip"
     "level"
     "experience";
 }
@@ -62,8 +63,12 @@
 .hero h1,
 .heroSubtitle,
 .heroPrimaryActions,
-.heroControlGroup {
+.heroControlGroup,
+.heroStrip {
   min-width: 0;
+}
+.heroStrip {
+  grid-area: strip;
 }
 .heroEyebrow {
   composes: eyebrow;
@@ -134,7 +139,8 @@
       "title      experience"
       "subtitle   experience"
       "level      experience"
-      "actions    actions";
+      "actions    actions"
+      "strip      strip";
   }
   .heroControlGroup {
     margin-top: 20px;
@@ -210,10 +216,121 @@
     font-size: 13px;
   }
 }
+@media (max-width: 360px) {
+  .levelTab {
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+}
 .levelTab[aria-selected="true"] {
   background: var(--space-button-surface);
   color: var(--space-blue-text);
   border: 1px solid var(--space-control-border);
+}
+.fullLabel {
+  display: inline;
+}
+.shortLabel {
+  display: none;
+}
+@media (max-width: 360px) {
+  .fullLabel {
+    display: none;
+  }
+  .shortLabel {
+    display: inline;
+  }
+}
+
+/* ── Space Is Closer Than You Think strip ── */
+.closernessStrip {
+  margin-top: 4px;
+}
+.closernessLabel {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--space-muted);
+  margin-bottom: 10px;
+}
+.closernessRow {
+  display: flex;
+  overflow-x: auto;
+  gap: 8px;
+  scrollbar-width: thin;
+}
+.closernessChip {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--space-border);
+  background: var(--space-surface);
+  color: var(--space-muted);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ── Persona mobile sheet ── */
+.personaOptionList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.personaOption {
+  width: 100%;
+  text-align: left;
+  min-height: 48px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--space-text);
+  font-size: 15px;
+  font-weight: 600;
+}
+.personaOption[data-active="true"] {
+  background: var(--space-button-surface);
+  border-color: var(--space-control-border);
+  color: var(--space-blue-text);
+}
+
+/* ── Vertical stage accordion (mobile system diagram / day-in-life) ── */
+.stageAccordion {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.stageAccordionItem {
+  composes: card;
+  padding: 0 16px;
+}
+.stageAccordionItem summary {
+  min-height: 52px;
+  padding: 14px 0;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--space-text);
+  list-style-position: inside;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.stageAccordionItem > div {
+  padding-bottom: 18px;
+}
+.stageAccordionNumber {
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--space-blue-text);
+  flex-shrink: 0;
 }
 
 /* ── On-page / anchor nav ── */

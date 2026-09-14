@@ -82,21 +82,19 @@ function ApplicationCard({ app, view }: { app: Application; view: "simple" | "en
         <p>{app.citizenReceives}</p>
       </div>
 
-      <div className={styles.componentField}>
-        <h4>Who benefits · {BENEFIT_LABEL[app.benefitType]}</h4>
-        <p>{app.whoBenefits}</p>
-      </div>
-
       <details className={styles.componentDisclosure}>
-        <summary>How space helps</summary>
+        <summary>See how space helps</summary>
         <p>{app.spaceCapability}</p>
         <p>{app.behindTheScenes}</p>
-      </details>
-
-      <details className={styles.componentDisclosure}>
-        <summary>India example &amp; what&apos;s next</summary>
-        <p>{app.indiaExample}</p>
-        <p>{app.futureOpportunity}</p>
+        <p style={{ marginTop: 10 }}>
+          <strong>Who benefits · {BENEFIT_LABEL[app.benefitType]}:</strong> {app.whoBenefits}
+        </p>
+        <p style={{ marginTop: 10 }}>
+          <strong>India example:</strong> {app.indiaExample}
+        </p>
+        <p style={{ marginTop: 10 }}>
+          <strong>Future opportunity:</strong> {app.futureOpportunity}
+        </p>
       </details>
 
       {view === "engineering" && (

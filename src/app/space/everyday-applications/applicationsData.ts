@@ -12,21 +12,19 @@ export const PERSONAS: { id: Persona; label: string }[] = [
 
 export type ApplicationCategory =
   | "everyday-life"
-  | "agriculture"
+  | "food-water"
   | "safety"
   | "mobility"
   | "connectivity"
-  | "public-services"
-  | "business";
+  | "public-services";
 
 export const CATEGORIES: { id: ApplicationCategory; label: string }[] = [
   { id: "everyday-life", label: "Everyday Life" },
-  { id: "agriculture", label: "Agriculture" },
+  { id: "food-water", label: "Food & Water" },
   { id: "safety", label: "Safety" },
   { id: "mobility", label: "Mobility" },
   { id: "connectivity", label: "Connectivity" },
   { id: "public-services", label: "Public Services" },
-  { id: "business", label: "Business" },
 ];
 
 export interface Application {
@@ -60,7 +58,7 @@ export const APPLICATIONS: Application[] = [
     whoBenefits: "Everyone planning a day, a farmer deciding when to sow or harvest, a city preparing for extreme heat.",
     benefitType: "both",
     indiaExample:
-      "India's meteorological satellites and IMD's forecasting together give advance warning of cyclones approaching the coast, giving days of lead time for evacuation.",
+      "India's meteorological satellites contribute to IMD's weather forecasting and can provide valuable advance warning of approaching cyclones, supporting preparedness and evacuation decisions.",
     futureOpportunity: "More frequent, hyperlocal forecasts (down to a neighbourhood or a single farm) as satellite revisit rates and AI forecasting models improve.",
     engineering: {
       capabilities: ["Geostationary and polar-orbiting meteorological imaging", "Atmospheric sounding", "Numerical weather prediction assimilation"],
@@ -129,12 +127,12 @@ export const APPLICATIONS: Application[] = [
   {
     id: "agriculture",
     name: "Agriculture",
-    category: "agriculture",
+    category: "food-water",
     relevantPersonas: ["farmer", "government", "business"],
     problem: "Is my crop stressed or diseased? How much water does my field actually have, and when should I plant or harvest?",
     spaceCapability: "Watching how land and crops change colour and health over a growing season.",
     behindTheScenes:
-      "Satellites measure how plants reflect light, which changes as crops grow, get stressed, or ripen — this is combined with weather and soil-moisture data.",
+      "Satellite observations can sometimes reveal changes in how plants reflect light, associated with crop stress across large areas — helping identify locations where closer field inspection may be needed. This is combined with weather and soil-moisture data.",
     citizenReceives: "A crop-health advisory, an irrigation recommendation, or an estimate of expected yield.",
     whoBenefits: "Individual farmers, agricultural extension officers, crop insurers, government food-security planning.",
     benefitType: "indirect",
@@ -234,7 +232,7 @@ export const APPLICATIONS: Application[] = [
   {
     id: "water-resources",
     name: "Water Resources",
-    category: "public-services",
+    category: "food-water",
     relevantPersonas: ["farmer", "government", "family"],
     problem: "Is there enough water in our reservoirs and groundwater for the season ahead?",
     spaceCapability: "Measuring how much water is visible on the surface and how land moisture changes over time.",
@@ -284,7 +282,7 @@ export const APPLICATIONS: Application[] = [
   {
     id: "land-property",
     name: "Land, Property & Geospatial Services",
-    category: "business",
+    category: "public-services",
     relevantPersonas: ["business", "professional", "government"],
     problem: "Where exactly are a property's boundaries, and how has land use around it changed?",
     spaceCapability: "Producing accurate, up-to-date maps of land parcels and land-use change.",
@@ -370,14 +368,14 @@ export interface EverydayQuestion {
 
 export const QUESTIONS: EverydayQuestion[] = [
   { id: "rain-tomorrow", question: "Will it rain heavily tomorrow?", problem: "Planning a day, a journey or a harvest depends on knowing what the weather will do.", howSpaceHelps: "Meteorological satellites track clouds and moisture, feeding forecast models.", whatYouReceive: "A daily forecast and heavy-rain warning.", whoUsesIt: "Everyone — families, farmers, event planners, transport operators.", futureOpportunity: "More hyperlocal, neighbourhood-level forecasts." },
-  { id: "cyclone-coming", question: "Is a cyclone coming?", problem: "Coastal communities need advance warning to evacuate and prepare.", howSpaceHelps: "Satellites track cyclone formation and path over the ocean where ground sensors can't reach.", whatYouReceive: "A cyclone track, intensity estimate and landfall warning.", whoUsesIt: "Coastal residents, fishing communities, disaster-management authorities.", futureOpportunity: "Earlier, more precise landfall and intensity predictions." },
   { id: "which-route", question: "Which route should I take?", problem: "Choosing the fastest or safest way to get somewhere.", howSpaceHelps: "Navigation satellites provide the precise positioning that routing apps rely on.", whatYouReceive: "A recommended route and arrival time.", whoUsesIt: "Commuters, travellers, delivery riders.", futureOpportunity: "Weather- and disruption-aware routing." },
+  { id: "cyclone-coming", question: "Is a cyclone coming?", problem: "Coastal communities need advance warning to prepare and, if necessary, evacuate.", howSpaceHelps: "Satellites track cyclone formation and path over the ocean, contributing to forecasts that can provide valuable advance warning.", whatYouReceive: "A cyclone track, intensity estimate and landfall warning.", whoUsesIt: "Coastal residents, fishing communities, disaster-management authorities.", futureOpportunity: "Earlier, more precise landfall and intensity predictions." },
+  { id: "crop-stress", question: "Can a farmer detect crop stress?", problem: "Crop problems are not always easy to notice from the ground until they've already spread.", howSpaceHelps: "Satellite observations can sometimes reveal changes associated with crop stress across large areas, helping identify locations where closer field inspection may be needed.", whatYouReceive: "A crop-health advisory.", whoUsesIt: "Farmers, agricultural extension officers.", futureOpportunity: "Field-level advisories sent directly to a farmer's phone." },
+  { id: "remote-connectivity", question: "Can remote villages stay connected?", problem: "Ground network infrastructure doesn't reach every remote area economically.", howSpaceHelps: "Communication satellites relay signals across wide, remote footprints.", whatYouReceive: "Phone, broadcast or broadband access.", whoUsesIt: "Remote and rural communities.", futureOpportunity: "Direct-to-device satellite connectivity for ordinary phones." },
   { id: "delivery-location", question: "Where is my delivery?", problem: "Knowing when a package or ride will actually arrive.", howSpaceHelps: "Satellite positioning tracks the vehicle carrying it in real time.", whatYouReceive: "A live tracking map and estimated arrival time.", whoUsesIt: "Online shoppers, logistics companies.", futureOpportunity: "Tighter, more reliable delivery-time predictions." },
-  { id: "crop-stress", question: "Can a farmer detect crop stress?", problem: "Crop problems are often invisible from the ground until it's too late to act.", howSpaceHelps: "Satellites detect changes in how crops reflect light, signalling stress before it's visible to the eye.", whatYouReceive: "A crop-health advisory.", whoUsesIt: "Farmers, agricultural extension officers.", futureOpportunity: "Field-level advisories sent directly to a farmer's phone." },
   { id: "enough-water", question: "Is there enough water?", problem: "Communities and farms need to plan around available water in reservoirs and groundwater.", howSpaceHelps: "Satellites monitor surface-water extent and land moisture over time.", whatYouReceive: "Drought advisories and reservoir-level updates.", whoUsesIt: "Water utilities, farmers, local governments.", futureOpportunity: "Near-real-time, local-scale water monitoring." },
   { id: "where-infrastructure", question: "Where should new infrastructure be built?", problem: "Planners need accurate, current maps of land use to decide where to build.", howSpaceHelps: "High-resolution imagery maps land use and terrain in detail.", whatYouReceive: "Better-informed infrastructure and urban plans.", whoUsesIt: "Urban planners, infrastructure developers.", futureOpportunity: "Continuous monitoring of infrastructure health, not just one-time planning." },
   { id: "ocean-conditions", question: "Can fishermen know dangerous ocean conditions?", problem: "Going to sea in rough or unpredictable conditions is dangerous.", howSpaceHelps: "Ocean-observing satellites track waves, currents and sea-surface temperature.", whatYouReceive: "Ocean State Forecasts and fishing-zone advisories.", whoUsesIt: "Fishing communities, coast guard.", futureOpportunity: "More frequent, localized ocean-safety alerts." },
-  { id: "remote-connectivity", question: "Can remote villages stay connected?", problem: "Ground network infrastructure doesn't reach every remote area economically.", howSpaceHelps: "Communication satellites relay signals across wide, remote footprints.", whatYouReceive: "Phone, broadcast or broadband access.", whoUsesIt: "Remote and rural communities.", futureOpportunity: "Direct-to-device satellite connectivity for ordinary phones." },
   { id: "flooding-mapped", question: "Can authorities see where flooding occurred?", problem: "Disaster responders need to know exactly which areas are affected, fast.", howSpaceHelps: "Before/after satellite imagery reveals the exact flooded extent.", whatYouReceive: "A flood-extent map guiding relief and response.", whoUsesIt: "Disaster-management authorities, relief agencies.", futureOpportunity: "Near real-time flood mapping using more frequent satellite revisits." },
   { id: "forest-fires", question: "Can we detect forest fires sooner?", problem: "Fires spread fast; early detection saves forest and lives.", howSpaceHelps: "Satellites detect heat signatures and smoke from fires as they start.", whatYouReceive: "Early fire alerts for forest and disaster-management teams.", whoUsesIt: "Forest departments, disaster responders.", futureOpportunity: "Faster alerting as more satellites revisit fire-prone areas more often." },
   { id: "insurance-assessment", question: "Can satellite information improve insurance assessment?", problem: "Verifying crop or property damage claims manually is slow and inconsistent.", howSpaceHelps: "Before/after imagery objectively shows the extent of damage.", whatYouReceive: "Faster, more consistent claim assessment.", whoUsesIt: "Insurers, policyholders.", futureOpportunity: "Automated, near-instant claim verification for large-scale disasters." },
@@ -406,8 +404,19 @@ export const DAY_IN_LIFE: DayStage[] = [
   { id: "emergency", time: "Emergency", activity: "A flood, cyclone or other disaster strikes", spaceCapability: "Earth observation, weather satellites and satellite communication", service: "Warnings, damage-extent maps and emergency communication links", benefit: "Faster warning, faster response, and communication even where ground networks fail." },
 ];
 
+export type SpaceSystemGroup = "navigation" | "communication" | "earth-observation" | "ocean-weather" | "institutions";
+
+export const SPACE_SYSTEM_GROUPS: { id: SpaceSystemGroup; label: string }[] = [
+  { id: "navigation", label: "Navigation" },
+  { id: "communication", label: "Communication" },
+  { id: "earth-observation", label: "Earth Observation" },
+  { id: "ocean-weather", label: "Ocean & Weather" },
+  { id: "institutions", label: "Public Platforms & Institutions" },
+];
+
 export interface SpaceSystemSource {
   id: string;
+  group: SpaceSystemGroup;
   question: string;
   name: string;
   explanation: string;
@@ -421,6 +430,7 @@ export const VERIFIED_ON = "2026-09-14";
 export const SPACE_SYSTEMS: SpaceSystemSource[] = [
   {
     id: "navic",
+    group: "navigation",
     question: "Where am I, and what time is it — precisely?",
     name: "NavIC",
     explanation: "India's own regional satellite navigation system, providing position, velocity and timing information across India and the surrounding region, alongside global systems like GPS.",
@@ -430,6 +440,7 @@ export const SPACE_SYSTEMS: SpaceSystemSource[] = [
   },
   {
     id: "insat-gsat",
+    group: "communication",
     question: "How can information reach large or remote regions at once?",
     name: "INSAT / GSAT",
     explanation: "India's series of geostationary communication satellites, supporting broadcasting, telecommunications and distance-education relay across the country.",
@@ -439,6 +450,7 @@ export const SPACE_SYSTEMS: SpaceSystemSource[] = [
   },
   {
     id: "cartosat",
+    group: "earth-observation",
     question: "What does a place look like from above, in detail?",
     name: "Cartosat",
     explanation: "A series of Indian Earth-observation satellites providing high-resolution imagery for mapping, urban planning and infrastructure applications.",
@@ -448,6 +460,7 @@ export const SPACE_SYSTEMS: SpaceSystemSource[] = [
   },
   {
     id: "resourcesat",
+    group: "earth-observation",
     question: "What is changing across land, crops and resources?",
     name: "Resourcesat",
     explanation: "Indian Earth-observation satellites (Resourcesat-2 and 2A) providing data for agriculture, land use, forestry and water-resource monitoring.",
@@ -456,16 +469,8 @@ export const SPACE_SYSTEMS: SpaceSystemSource[] = [
     verifiedOn: VERIFIED_ON,
   },
   {
-    id: "oceansat",
-    question: "What is happening in the ocean?",
-    name: "Oceansat",
-    explanation: "An Indian satellite (Oceansat-3) tracking ocean colour, winds and waves — directly supporting fisheries advisories and monsoon-related ocean monitoring.",
-    officialSourceLabel: "ISRO — Ocean Observation",
-    officialSourceUrl: "https://www.isro.gov.in/",
-    verifiedOn: VERIFIED_ON,
-  },
-  {
     id: "risat",
+    group: "earth-observation",
     question: "What can we see through clouds, rain or at night?",
     name: "RISAT",
     explanation: "Indian radar Earth-observation satellites that image the ground regardless of weather or daylight, supporting flood mapping and crop and soil monitoring.",
@@ -474,7 +479,18 @@ export const SPACE_SYSTEMS: SpaceSystemSource[] = [
     verifiedOn: VERIFIED_ON,
   },
   {
+    id: "oceansat",
+    group: "ocean-weather",
+    question: "What is happening in the ocean?",
+    name: "Oceansat",
+    explanation: "An Indian satellite (Oceansat-3) tracking ocean colour, winds and waves — directly supporting fisheries advisories and monsoon-related ocean monitoring.",
+    officialSourceLabel: "ISRO — Ocean Observation",
+    officialSourceUrl: "https://www.isro.gov.in/",
+    verifiedOn: VERIFIED_ON,
+  },
+  {
     id: "mosdac",
+    group: "ocean-weather",
     question: "Where does weather and ocean satellite data actually go?",
     name: "MOSDAC",
     explanation: "The Meteorological & Oceanographic Satellite Data Archival Centre — ISRO's data centre for receiving, processing and distributing weather and ocean satellite data.",
@@ -483,16 +499,8 @@ export const SPACE_SYSTEMS: SpaceSystemSource[] = [
     verifiedOn: VERIFIED_ON,
   },
   {
-    id: "bhuvan",
-    question: "How can I explore India's satellite maps myself?",
-    name: "Bhuvan",
-    explanation: "ISRO's public geoportal for exploring thematic maps — disaster mapping, agriculture, water resources, land cover — built from Indian satellite data.",
-    officialSourceLabel: "Bhuvan geoportal",
-    officialSourceUrl: "https://bhuvan.nrsc.gov.in/",
-    verifiedOn: VERIFIED_ON,
-  },
-  {
     id: "incois",
+    group: "ocean-weather",
     question: "How do fishing communities get ocean safety advisories?",
     name: "INCOIS",
     explanation: "The Indian National Centre for Ocean Information Services issues Potential Fishing Zone advisories and Ocean State Forecasts to fisherfolk, using satellite ocean data.",
@@ -501,19 +509,31 @@ export const SPACE_SYSTEMS: SpaceSystemSource[] = [
     verifiedOn: VERIFIED_ON,
   },
   {
+    id: "bhuvan",
+    group: "institutions",
+    question: "How can I explore India's satellite maps myself?",
+    name: "Bhuvan",
+    explanation: "ISRO's public geoportal (an institution, not a satellite) for exploring thematic maps — disaster mapping, agriculture, water resources, land cover — built from Indian satellite data.",
+    officialSourceLabel: "Bhuvan geoportal",
+    officialSourceUrl: "https://bhuvan.nrsc.gov.in/",
+    verifiedOn: VERIFIED_ON,
+  },
+  {
     id: "inspace",
+    group: "institutions",
     question: "Who enables private companies to build space-based services in India?",
     name: "IN-SPACe",
-    explanation: "The Indian National Space Promotion and Authorisation Centre — a single-window government agency that promotes, permits and oversees space activities by non-government entities.",
+    explanation: "The Indian National Space Promotion and Authorisation Centre (a government agency, not a satellite) — a single-window body that promotes, permits and oversees space activities by non-government entities.",
     officialSourceLabel: "IN-SPACe official site",
     officialSourceUrl: "https://www.inspace.gov.in/",
     verifiedOn: VERIFIED_ON,
   },
   {
     id: "ndma",
+    group: "institutions",
     question: "Who coordinates India's disaster response using this data?",
     name: "NDMA",
-    explanation: "The National Disaster Management Authority — India's apex disaster-management body, coordinating policy, planning and response including geospatial disaster information.",
+    explanation: "The National Disaster Management Authority (India's apex disaster-management body, not a satellite) — coordinating policy, planning and response including geospatial disaster information.",
     officialSourceLabel: "NDMA official site",
     officialSourceUrl: "https://ndma.gov.in/",
     verifiedOn: VERIFIED_ON,
@@ -537,6 +557,73 @@ export const SYSTEM_DIAGRAM_STAGES: DiagramStage[] = [
   { id: "service", plainLabel: "Service", technicalLabel: "Application / Data Product", description: "That understanding is packaged into a service — a weather app, a navigation system, a farming advisory, a disaster alert." },
   { id: "citizen", plainLabel: "Citizen, Farmer, Business or Government", technicalLabel: "End User", description: "The service reaches the person or organisation who needs it — a family, a farmer, a business, or a government agency." },
   { id: "benefit", plainLabel: "Everyday Benefit", technicalLabel: "Outcome", description: "The end result is a better everyday decision — safer travel, better warnings, better planning, reduced uncertainty." },
+];
+
+export interface SatellitePhoneStep {
+  id: string;
+  label: string;
+  text: string;
+  engineeringNote?: string;
+  businessNote?: string;
+}
+
+export const SATELLITE_TO_PHONE: SatellitePhoneStep[] = [
+  {
+    id: "satellite",
+    label: "Satellite",
+    text: "A satellite instrument observes weather, land, ocean or broadcasts a signal.",
+    engineeringNote: "The instrument is a sensor payload — an imager, radar or transponder — carried on an orbiting or geostationary platform.",
+    businessNote: "Raw satellite capacity is typically operated by a government space agency or a commercial satellite operator, not sold directly to consumers.",
+  },
+  {
+    id: "ground-station",
+    label: "Ground Station",
+    text: "A ground station receives the raw signal or imagery from the satellite.",
+    engineeringNote: "Ground stations use large dish antennas and receivers tuned to the satellite's downlink frequency.",
+    businessNote: "Ground-station access and data-licensing agreements are often where the first commercial relationship in the chain exists.",
+  },
+  {
+    id: "processing",
+    label: "Processing",
+    text: "Raw data is calibrated and processed into a usable form.",
+    engineeringNote: "This includes radiometric and geometric correction, so pixels or signals correspond to accurate real-world locations and values.",
+    businessNote: "Data-processing pipelines are a common place for a specialised company to add value on top of raw government or commercial satellite data.",
+  },
+  {
+    id: "system",
+    label: "Scientific / Government / Commercial System",
+    text: "A weather service, government agency or company turns processed data into a data product.",
+    engineeringNote: "This stage typically involves domain-specific models — numerical weather prediction, hydrology or agronomy models, for example.",
+    businessNote: "This is usually where a government agency (like IMD or ISRO) or a licensed commercial partner operates — direct satellite access is rare at the consumer level.",
+  },
+  {
+    id: "data-product",
+    label: "Data Product",
+    text: "A forecast, map, advisory or dataset is produced.",
+    engineeringNote: "Data products are typically published in standard formats (grids, map layers, APIs) that downstream applications can consume.",
+    businessNote: "Licensing or subscribing to these data products is a common entry point for a startup building a downstream service.",
+  },
+  {
+    id: "analytics",
+    label: "Analytics / AI",
+    text: "Analytics or AI models turn the data product into a specific recommendation or alert.",
+    engineeringNote: "This can range from simple threshold rules (e.g. rainfall above X mm) to machine-learning models trained on historical data.",
+    businessNote: "The analytics layer is often the most defensible part of a space-data business, since it's where domain expertise gets encoded.",
+  },
+  {
+    id: "application",
+    label: "Application",
+    text: "An app, broadcast or advisory service delivers this to you.",
+    engineeringNote: "This is the user-facing layer — a mobile app, SMS system, broadcast channel or dashboard.",
+    businessNote: "This is usually the layer with direct customers — consumers, farmers, businesses or government departments.",
+  },
+  {
+    id: "you",
+    label: "You",
+    text: "You see a forecast, a route, an alert, or an advisory — and make a better decision.",
+    engineeringNote: "From your perspective, everything upstream is invisible — you only see the final, simplified output.",
+    businessNote: "The value a customer will pay for is measured here — the quality of the decision the service helped them make, not the data itself.",
+  },
 ];
 
 export interface Chapter {

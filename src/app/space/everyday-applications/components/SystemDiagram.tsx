@@ -2,12 +2,33 @@
 import { useState } from "react";
 import { SYSTEM_DIAGRAM_STAGES } from "../applicationsData";
 import { useViewMode } from "./ViewProvider";
+import { useMediaQuery } from "./useMediaQuery";
+import StageAccordion, { type Stage } from "./StageAccordion";
 import styles from "../everyday-applications.module.css";
 
 export default function SystemDiagram() {
   const [activeIndex, setActiveIndex] = useState(0);
   const { view } = useViewMode();
+  const isDesktop = useMediaQuery("(min-width: 768px)");
   const active = SYSTEM_DIAGRAM_STAGES[activeIndex];
+
+  if (!isDesktop) {
+    const stages: Stage[] = SYSTEM_DIAGRAM_STAGES.map((stage) => ({
+      id: stage.id,
+      label: stage.plainLabel,
+      sublabel: view === "engineering" ? stage.technicalLabel : undefined,
+      body: <p>{stage.description}</p>,
+    }));
+    return (
+      <div>
+        <StageAccordion stages={stages} groupName="system-diagram" />
+        <p className={styles.formNote} style={{ marginTop: 16 }}>
+          Rockets provide access to space. Satellites create services from space. Data becomes valuable only when it
+          improves a decision.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div>

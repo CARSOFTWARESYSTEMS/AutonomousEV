@@ -1,11 +1,47 @@
 "use client";
 import { useState } from "react";
 import { DAY_IN_LIFE } from "../applicationsData";
+import { useMediaQuery } from "./useMediaQuery";
+import StageAccordion, { type Stage } from "./StageAccordion";
 import styles from "../everyday-applications.module.css";
 
 export default function DayInLife() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const isDesktop = useMediaQuery("(min-width: 768px)");
   const active = DAY_IN_LIFE[activeIndex];
+
+  if (!isDesktop) {
+    const stages: Stage[] = DAY_IN_LIFE.map((stage) => ({
+      id: stage.id,
+      label: stage.time,
+      sublabel: stage.activity,
+      body: (
+        <>
+          <div className={styles.componentField}>
+            <h4>Space capability</h4>
+            <p>{stage.spaceCapability}</p>
+          </div>
+          <div className={styles.componentField}>
+            <h4>Service you use</h4>
+            <p>{stage.service}</p>
+          </div>
+          <div className={styles.componentField}>
+            <h4>Everyday benefit</h4>
+            <p>{stage.benefit}</p>
+          </div>
+        </>
+      ),
+    }));
+    return (
+      <div>
+        <StageAccordion stages={stages} groupName="day-in-life" />
+        <p className={styles.formNote} style={{ marginTop: 16 }}>
+          Not every app on your phone talks to a satellite directly — often a satellite feeds data to a government or
+          commercial system, which then powers the app or service you actually use.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div>

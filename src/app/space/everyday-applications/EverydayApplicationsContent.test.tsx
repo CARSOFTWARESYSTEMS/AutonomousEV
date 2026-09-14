@@ -74,7 +74,8 @@ describe("Everyday Applications learning page", () => {
     expect(within(applications).getAllByText(/Validation needed/).length).toBeGreaterThan(0);
   });
 
-  it("selecting a persona highlights the tab as selected", async () => {
+  it("desktop: selecting a persona highlights the tab as selected", async () => {
+    mockMatchMedia(true);
     const user = userEvent.setup();
     render(<EverydayApplicationsContent />);
     const farmerTab = screen.getByRole("tab", { name: "Farmer" });
@@ -83,13 +84,28 @@ describe("Everyday Applications learning page", () => {
     expect(farmerTab).toHaveAttribute("aria-selected", "true");
   });
 
-  it("filters applications by category", async () => {
+  it("mobile: persona selector is a compact trigger that opens a sheet of options", async () => {
+    const user = userEvent.setup();
+    render(<EverydayApplicationsContent />);
+    expect(screen.queryByRole("tab", { name: "Farmer" })).not.toBeInTheDocument();
+
+    const trigger = screen.getByRole("button", { name: /Everyone/ });
+    await user.click(trigger);
+    const dialog = screen.getByRole("dialog", { name: "Who are you?" });
+    await user.click(within(dialog).getByRole("button", { name: "Farmer" }));
+    expect(screen.queryByRole("dialog", { name: "Who are you?" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Farmer" })).toBeInTheDocument();
+  });
+
+  it("filters applications by category using friendlier category labels", async () => {
     const user = userEvent.setup();
     render(<EverydayApplicationsContent />);
     const applications = document.getElementById("applications") as HTMLElement;
     expect(within(applications).getByText("Weather & Extreme Weather")).toBeInTheDocument();
+    expect(within(applications).queryByRole("button", { name: "Agriculture" })).not.toBeInTheDocument();
+    expect(within(applications).queryByRole("button", { name: "Business" })).not.toBeInTheDocument();
 
-    await user.click(within(applications).getByRole("button", { name: "Agriculture" }));
+    await user.click(within(applications).getByRole("button", { name: "Food & Water" }));
     expect(within(applications).queryByText("Weather & Extreme Weather")).not.toBeInTheDocument();
     expect(within(applications).getByText(/Is my crop stressed or diseased/)).toBeInTheDocument();
   });
@@ -122,11 +138,43 @@ describe("Everyday Applications learning page", () => {
     expect(screen.queryByRole("dialog", { name: /Jump to a chapter/ })).not.toBeInTheDocument();
   });
 
-  it("the central system diagram advances between stages", () => {
+  it("desktop: the central system diagram advances between stages", () => {
+    mockMatchMedia(true);
     render(<EverydayApplicationsContent />);
     const section = document.getElementById("system-diagram") as HTMLElement;
     fireEvent.click(within(section).getByRole("tab", { name: "Satellite" }));
     expect(within(section).getByRole("tab", { name: "Satellite" })).toHaveAttribute("aria-selected", "true");
+  });
+
+  it("mobile: the central system diagram and day-in-life render as an exclusive vertical accordion", () => {
+    render(<EverydayApplicationsContent />);
+    const diagramSection = document.getElementById("system-diagram") as HTMLElement;
+    expect(within(diagramSection).queryByRole("tab")).not.toBeInTheDocument();
+    const diagramDetails = diagramSection.querySelectorAll("details[name='system-diagram']");
+    expect(diagramDetails.length).toBeGreaterThan(1);
+
+    const daySection = document.getElementById("day-in-life") as HTMLElement;
+    const dayDetails = daySection.querySelectorAll("details[name='day-in-life']");
+    expect(dayDetails.length).toBeGreaterThan(1);
+  });
+
+  it("India's Space Systems entries render as a grouped, exclusive accordion", () => {
+    render(<EverydayApplicationsContent />);
+    const section = document.getElementById("space-systems") as HTMLElement;
+    expect(within(section).getByText("Navigation")).toBeInTheDocument();
+    expect(within(section).getByText("Public Platforms & Institutions")).toBeInTheDocument();
+    const details = section.querySelectorAll("details[name='space-systems']");
+    expect(details.length).toBeGreaterThan(5);
+  });
+
+  it("Satellite-to-Phone shows extra detail only in the matching view", async () => {
+    const user = userEvent.setup();
+    render(<EverydayApplicationsContent />);
+    const section = document.getElementById("satellite-to-phone") as HTMLElement;
+    expect(within(section).queryByText(/large dish antennas/)).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole("tab", { name: "Engineering View" }));
+    expect(within(section).getByText(/large dish antennas/)).toBeInTheDocument();
   });
 
   it("shows the India's Space Systems disclaimer, verified dates and an official source link", () => {
