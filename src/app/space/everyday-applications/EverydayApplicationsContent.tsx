@@ -22,6 +22,7 @@ import BenefitsSplit from "./components/BenefitsSplit";
 import SpaceSystemsSources from "./components/SpaceSystemsSources";
 import SatelliteToPhone from "./components/SatelliteToPhone";
 import ClosernessStrip from "./components/ClosernessStrip";
+import HeroVisual from "./components/HeroVisual";
 import type { Persona } from "./applicationsData";
 
 function SectionHeading({ eyebrow, title, description }: { eyebrow: string; title: string; description: string }) {
@@ -80,6 +81,7 @@ export default function EverydayApplicationsContent() {
             <div className={styles.heroControlGroup}>
               <span className={styles.heroControlLabel}>View</span>
               <ViewSwitcher />
+              <HeroVisual />
             </div>
           </section>
 

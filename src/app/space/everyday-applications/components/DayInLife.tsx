@@ -1,20 +1,35 @@
 "use client";
 import { useState } from "react";
+import { CloudSun, Navigation, Package, UtensilsCrossed, Wifi, Tv, MapPin, AlertTriangle } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { DAY_IN_LIFE } from "../applicationsData";
 import { useMediaQuery } from "./useMediaQuery";
 import StageAccordion, { type Stage } from "./StageAccordion";
 import styles from "../everyday-applications.module.css";
 
+const STAGE_ICONS: Record<string, LucideIcon> = {
+  "morning-weather": CloudSun,
+  commute: Navigation,
+  delivery: Package,
+  "food-supply": UtensilsCrossed,
+  connectivity: Wifi,
+  broadcast: Tv,
+  "evening-navigation": MapPin,
+  emergency: AlertTriangle,
+};
+
 export default function DayInLife() {
   const [activeIndex, setActiveIndex] = useState(0);
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const active = DAY_IN_LIFE[activeIndex];
+  const ActiveIcon = STAGE_ICONS[active.id] ?? CloudSun;
 
   if (!isDesktop) {
     const stages: Stage[] = DAY_IN_LIFE.map((stage) => ({
       id: stage.id,
       label: stage.time,
       sublabel: stage.activity,
+      icon: STAGE_ICONS[stage.id] ?? CloudSun,
       body: (
         <>
           <div className={styles.componentField}>
@@ -46,21 +61,33 @@ export default function DayInLife() {
   return (
     <div>
       <div className={styles.phaseRail} role="tablist" aria-label="Times of day">
-        {DAY_IN_LIFE.map((stage, i) => (
-          <button
-            key={stage.id}
-            type="button"
-            role="tab"
-            aria-selected={i === activeIndex}
-            className={styles.phaseChip}
-            onClick={() => setActiveIndex(i)}
-          >
-            {stage.time}
-          </button>
-        ))}
+        {DAY_IN_LIFE.map((stage, i) => {
+          const Icon = STAGE_ICONS[stage.id] ?? CloudSun;
+          return (
+            <button
+              key={stage.id}
+              type="button"
+              role="tab"
+              aria-selected={i === activeIndex}
+              className={styles.phaseChip}
+              onClick={() => setActiveIndex(i)}
+            >
+              <Icon size={14} aria-hidden="true" />
+              {stage.time}
+            </button>
+          );
+        })}
+      </div>
+      <div className={styles.progressTrack} aria-hidden="true">
+        <div className={styles.progressFill} style={{ width: `${((activeIndex + 1) / DAY_IN_LIFE.length) * 100}%` }} />
       </div>
       <div className={styles.phasePanel} role="tabpanel" aria-live="polite">
-        <h3>{active.activity}</h3>
+        <div className={styles.phasePanelHead}>
+          <span className={styles.phasePanelIcon}>
+            <ActiveIcon size={20} aria-hidden="true" />
+          </span>
+          <h3 style={{ margin: 0 }}>{active.activity}</h3>
+        </div>
         <div className={styles.componentField}>
           <h4>Space capability</h4>
           <p>{active.spaceCapability}</p>

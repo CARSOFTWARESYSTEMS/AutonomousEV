@@ -1,6 +1,15 @@
-import { ExternalLink } from "lucide-react";
-import { SPACE_SYSTEMS, SPACE_SYSTEM_GROUPS, VERIFIED_ON } from "../applicationsData";
+import { ExternalLink, Compass, Radio, Satellite, Waves, Building2 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import { SPACE_SYSTEMS, SPACE_SYSTEM_GROUPS, VERIFIED_ON, type SpaceSystemGroup } from "../applicationsData";
 import styles from "../everyday-applications.module.css";
+
+const GROUP_ICONS: Record<SpaceSystemGroup, LucideIcon> = {
+  navigation: Compass,
+  communication: Radio,
+  "earth-observation": Satellite,
+  "ocean-weather": Waves,
+  institutions: Building2,
+};
 
 export default function SpaceSystemsSources() {
   return (
@@ -17,9 +26,15 @@ export default function SpaceSystemsSources() {
       {SPACE_SYSTEM_GROUPS.map((group) => {
         const entries = SPACE_SYSTEMS.filter((s) => s.group === group.id);
         if (entries.length === 0) return null;
+        const GroupIcon = GROUP_ICONS[group.id];
         return (
           <div key={group.id} style={{ marginBottom: 24 }}>
-            <h4 style={{ marginBottom: 12 }}>{group.label}</h4>
+            <div className={styles.systemGroupHead} style={{ marginBottom: 12 }}>
+              <span className={styles.appCardIcon}>
+                <GroupIcon size={15} aria-hidden="true" />
+              </span>
+              <h4 style={{ margin: 0 }}>{group.label}</h4>
+            </div>
             {entries.map((s) => (
               <details key={s.id} name="space-systems" className={styles.accordionItem}>
                 <summary>{s.question}</summary>

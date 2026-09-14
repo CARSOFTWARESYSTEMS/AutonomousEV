@@ -1,5 +1,20 @@
 "use client";
 import { useMemo, useState } from "react";
+import {
+  CloudRain,
+  Navigation,
+  AlertTriangle,
+  Wheat,
+  Fish,
+  Radio,
+  Truck,
+  Droplet,
+  Building2,
+  MapPinned,
+  HeartPulse,
+  GraduationCap,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { APPLICATIONS, CATEGORIES, type Application, type ApplicationCategory, type Persona } from "../applicationsData";
 import { useViewMode } from "./ViewProvider";
 import { useMediaQuery } from "./useMediaQuery";
@@ -11,6 +26,21 @@ const BENEFIT_LABEL: Record<Application["benefitType"], string> = {
   direct: "Direct benefit",
   indirect: "Indirect benefit",
   both: "Direct & indirect",
+};
+
+const APP_ICONS: Record<string, LucideIcon> = {
+  weather: CloudRain,
+  navigation: Navigation,
+  "disaster-preparedness": AlertTriangle,
+  agriculture: Wheat,
+  fisheries: Fish,
+  connectivity: Radio,
+  logistics: Truck,
+  "water-resources": Droplet,
+  "infrastructure-cities": Building2,
+  "land-property": MapPinned,
+  healthcare: HeartPulse,
+  education: GraduationCap,
 };
 
 export default function ApplicationExplorer({ persona }: { persona: Persona | null }) {
@@ -72,12 +102,22 @@ export default function ApplicationExplorer({ persona }: { persona: Persona | nu
 }
 
 function ApplicationCard({ app, view }: { app: Application; view: "simple" | "engineering" | "business" }) {
+  const Icon = APP_ICONS[app.id];
   return (
     <article className={styles.systemGroup}>
-      <span className={styles.componentTag}>{app.name}</span>
-      <p style={{ marginTop: 6 }}>{app.problem}</p>
+      <div className={styles.systemGroupHead}>
+        {Icon && (
+          <span className={styles.appCardIcon}>
+            <Icon size={16} aria-hidden="true" />
+          </span>
+        )}
+        <span className={styles.componentTag} style={{ marginBottom: 0 }}>
+          {app.name}
+        </span>
+      </div>
+      <p style={{ marginTop: 10 }}>{app.problem}</p>
 
-      <div className={styles.componentField}>
+      <div className={styles.receiveCallout}>
         <h4>What you receive</h4>
         <p>{app.citizenReceives}</p>
       </div>

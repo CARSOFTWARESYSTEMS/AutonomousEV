@@ -130,6 +130,55 @@
   align-items: center;
   gap: 6px;
 }
+
+/* ── Hero decorative visual (desktop only) ── */
+.heroVisualWrap {
+  display: none;
+}
+@media (min-width: 768px) {
+  .heroVisualWrap {
+    display: block;
+    margin-top: 32px;
+    width: 100%;
+    max-width: 320px;
+  }
+}
+.heroVisualSvg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.heroVisualSatellite {
+  offset-distance: 0%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .heroVisualSatellite {
+    animation: heroOrbit 18s linear infinite;
+  }
+  .heroVisualPulse {
+    animation: heroPulse 2.4s ease-in-out infinite;
+    transform-origin: 195px 150px;
+  }
+}
+@keyframes heroOrbit {
+  from {
+    offset-distance: 0%;
+  }
+  to {
+    offset-distance: 100%;
+  }
+}
+@keyframes heroPulse {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.6);
+  }
+}
 @media (min-width: 768px) {
   .hero {
     grid-template-columns: minmax(0, 1fr) auto;
@@ -274,6 +323,14 @@
   font-size: 13px;
   font-weight: 600;
   white-space: nowrap;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+@media (hover: hover) {
+  .closernessChip:hover {
+    border-color: var(--space-control-border);
+    background: var(--space-button-surface);
+    color: var(--space-blue-text);
+  }
 }
 
 /* ── Persona mobile sheet ── */
@@ -501,6 +558,9 @@
   scrollbar-width: thin;
 }
 .phaseChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   flex: 0 0 auto;
   min-height: 44px;
   padding: 9px 16px;
@@ -511,6 +571,7 @@
   font-size: 13px;
   font-weight: 600;
   white-space: nowrap;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
 }
 .phaseChip[aria-selected="true"],
 .phaseChip[aria-pressed="true"] {
@@ -518,13 +579,53 @@
   background: var(--space-button-surface);
   color: var(--space-blue-text);
 }
+.progressTrack {
+  height: 3px;
+  border-radius: 999px;
+  background: var(--space-border);
+  margin-top: 12px;
+  overflow: hidden;
+}
+.progressFill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--space-cyan), var(--space-blue));
+  transition: width 0.3s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .progressFill {
+    transition: none;
+  }
+}
 .phasePanel {
   composes: card;
   padding: 24px;
   margin-top: 18px;
 }
+.phasePanelHead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.phasePanelIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--space-button-surface);
+  color: var(--space-blue-text);
+  flex-shrink: 0;
+}
 .phasePanel h3 {
   margin-bottom: 10px;
+}
+.stageAccordionIcon {
+  display: inline-flex;
+  align-items: center;
+  color: var(--space-blue-text);
+  flex-shrink: 0;
 }
 
 /* ── Component field / disclosure (shared by application cards, day-in-life) ── */
@@ -551,6 +652,38 @@
 .componentField li {
   font-size: 14px;
   color: var(--space-muted);
+}
+.receiveCallout {
+  margin-top: 14px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--space-button-surface);
+  border: 1px solid var(--space-control-border);
+}
+.receiveCallout h4 {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--space-blue-text);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.receiveCallout p {
+  font-size: 15px;
+  color: var(--space-text);
+  font-weight: 500;
+  margin: 0;
+}
+.appCardIcon {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--space-button-surface);
+  color: var(--space-blue-text);
+  flex-shrink: 0;
 }
 .componentDisclosure {
   margin-top: 14px;
