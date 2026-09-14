@@ -674,7 +674,7 @@ function RoadmapMissionCard({
           Requirements
         </p>
         <div
-          style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "6px" }}
+          style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(200px, 100%), 1fr))", gap: "6px" }}
         >
           {requirements.map((req, i) => (
             <div
@@ -1015,7 +1015,7 @@ export default function PassengerTaxiPage() {
             </p>
           </div>
           <div
-            style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "24px" }}
+            style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(320px, 100%), 1fr))", gap: "24px" }}
           >
             {COMPONENTS.map((c) => (
               <ComponentCard key={c.number} {...c} />
@@ -1037,7 +1037,7 @@ export default function PassengerTaxiPage() {
             </p>
           </div>
           <div
-            style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(360px, 1fr))", gap: "28px" }}
+            style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(360px, 100%), 1fr))", gap: "28px" }}
           >
             {CHARTS.map((chart, i) => (
               <PriorityPieChart key={i} {...chart} />
@@ -1096,7 +1096,7 @@ export default function PassengerTaxiPage() {
             </p>
           </div>
           <div
-            style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "24px" }}
+            style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(280px, 100%), 1fr))", gap: "24px" }}
           >
             {[
               {

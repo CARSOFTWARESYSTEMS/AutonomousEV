@@ -345,6 +345,7 @@
   margin: 3rem 0;
   position: relative;
   padding: 2rem 0;
+  overflow-x: auto;
 }
 .timelineTrack {
   position: absolute;
@@ -488,4 +489,5 @@
   .useCaseHeader { padding: 1.25rem 1.5rem; }
   .layer { padding: 1.25rem; }
   .heatmapGrid { grid-template-columns: repeat(6,1fr); }
+  .comparisonGrid { grid-template-columns: 1fr; }
 }
