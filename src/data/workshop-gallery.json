@@ -346,6 +346,20 @@
     "sectionName": "EV Society - Workshops",
     "items": [
       {
+        "filename": "ms-tanuja-jadhav_hr-operating-system_poster.png",
+        "date": "2026-09-09",
+        "label": "September 2026 Workshop",
+        "label2": "Tanuja Jadhav – HR Operating System Poster Presentation",
+        "src": "/workshops/ms-tanuja-jadhav_hr-operating-system_poster.png"
+      },
+      {
+        "filename": "prateek-dangwal_battery-pack-simulator_poster.png",
+        "date": "2026-08-19",
+        "label": "August 2026 Workshop",
+        "label2": "Prateek Dangwal – Battery Pack Simulator Poster Presentation",
+        "src": "/workshops/prateek-dangwal_battery-pack-simulator_poster.png"
+      },
+      {
         "filename": "ritesh_s_shetty_aaa.jpeg",
         "date": "2026-07-23",
         "label": "July 2026 Workshop",
