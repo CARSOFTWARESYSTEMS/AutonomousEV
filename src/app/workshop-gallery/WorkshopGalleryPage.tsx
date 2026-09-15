@@ -66,7 +66,7 @@ export default function WorkshopGalleryPage() {
           {/* Header */}
           <div style={{ marginBottom: "48px", textAlign: "center" }}>
             <h1 style={{ fontSize: "clamp(1.6rem, 5vw, 2.5rem)", fontWeight: 600, marginBottom: "12px" }}>
-              <span style={{ color: "var(--accent-primary)" }}>EV Battery</span> Workshop Gallery
+              <span style={{ color: "var(--accent-primary)" }}>EV Battery</span> &amp; CanSat Model Rocketry Workshop Gallery
             </h1>
             <p style={{ fontSize: "1.1rem", color: "var(--text-secondary)", marginBottom: "28px" }}>
               A visual record of our hands-on EV Battery &amp; Autonomous Vehicle workshops.
