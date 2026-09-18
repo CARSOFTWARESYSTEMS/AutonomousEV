@@ -203,7 +203,7 @@ export const ROCKET_COMPONENTS: RocketComponent[] = [
     id: "flight-computer",
     name: "Flight computer",
     system: "avionics",
-    location: { x: 0.5, y: 0.24 },
+    location: { x: 0.62, y: 0.22 },
     purpose: "Reads sensor data, decides when to trigger recovery deployment, and often logs the flight.",
     beginner: "A small onboard computer that watches the flight and decides when to open the parachute.",
     intermediate:
