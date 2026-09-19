@@ -9,6 +9,17 @@ const nextConfig: NextConfig = {
         has: [
           {
             type: "host",
+            value: "aerospace\\.ishavasyam\\.org",
+          },
+        ],
+        destination: "/space",
+        permanent: true,
+      },
+      {
+        source: "/",
+        has: [
+          {
+            type: "host",
             value: "aerospace\\.ev\\.engineer",
           },
         ],
@@ -30,12 +41,29 @@ const nextConfig: NextConfig = {
   },
 
   async rewrites() {
-    return [
-      {
-        source: '/workshop',
-        destination: '/internships',
-      },
-    ];
+    return {
+      // /space exists on the filesystem, so overriding it per host has to run
+      // before the filesystem check.
+      beforeFiles: [
+        {
+          source: '/space',
+          has: [
+            {
+              type: 'host',
+              value: 'aerospace\\.ishavasyam\\.org',
+            },
+          ],
+          destination: '/ishavasyam-space',
+        },
+      ],
+      afterFiles: [
+        {
+          source: '/workshop',
+          destination: '/internships',
+        },
+      ],
+      fallback: [],
+    };
   },
 };
 

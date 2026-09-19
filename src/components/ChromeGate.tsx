@@ -10,7 +10,8 @@ export default function ChromeGate({ children }: { children: React.ReactNode }) 
     pathname === "/aerospace" ||
     pathname?.startsWith("/aerospace/") ||
     pathname === "/space" ||
-    pathname?.startsWith("/space/");
+    pathname?.startsWith("/space/") ||
+    pathname === "/ishavasyam-space";
 
   if (isSelfContained) {
     return <>{children}</>;
