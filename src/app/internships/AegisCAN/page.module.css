@@ -1546,7 +1546,7 @@
 /* ─── Research & Project Leadership ─── */
 .researcherGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
 }
 
@@ -1742,11 +1742,8 @@
   .dashboardRowGrid {
     grid-template-columns: repeat(2, 1fr);
   }
-  /* 3 researcher cards read better as a single column on tablet than an
-     uneven 2+1 wrap, so this grid skips the 2-column tablet step. */
-  .researcherGrid {
-    grid-template-columns: 1fr;
-  }
+  /* 4 researcher cards stay a balanced 2×2 grid through tablet; it only
+     drops to a single column at the mobile breakpoint below. */
   .jsonGrid,
   .useCaseGrid,
   .refColumns,
@@ -1785,7 +1782,8 @@
   .milestoneGrid,
   .dashboardRowGrid,
   .dashboardDetailGrid,
-  .submissionChecklist {
+  .submissionChecklist,
+  .researcherGrid {
     grid-template-columns: 1fr;
   }
   .accordionBody {

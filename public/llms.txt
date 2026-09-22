@@ -28,8 +28,10 @@ link below points to a canonical public page already listed in
   educational R&D mini-project on Battery, BMS, BESS, CAN communication,
   validation, fault injection and CAN cybersecurity. Initiated and led by
   Tanuja Jadhav (Lead Researcher · EV.ENGINEER™), with Bhavya Naga Sai
-  Parvathi Kshatri (Cybersecurity Researcher · EV.ENGINEER™) and Sudarshana
-  Karkala (Co-Researcher · EV.ENGINEER™).
+  Parvathi Kshatri (Cybersecurity Researcher · EV.ENGINEER™), Harsh Yadav
+  (Co-Researcher · EV.ENGINEER™, aerospace cybersecurity research and
+  AS9102 First Article Inspection engineering focus) and Sudarshana Karkala
+  (Co-Researcher · EV.ENGINEER™).
 - [Sudarshana Karkala](https://autonomous.ev.engineer/about/sudarshana-karkala):
   Canonical public professional profile — verified role, focus areas,
   initiatives and contact channels.

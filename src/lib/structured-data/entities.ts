@@ -18,6 +18,7 @@ import {
   SUDARSHANA_KARKALA,
   TANUJA_JADHAV,
   BHAVYA_KSHATRI,
+  HARSH_YADAV,
   SITE_URL,
 } from "@/data/public-entities";
 
@@ -30,6 +31,7 @@ export const EV_SOCIETY_ID = EV_SOCIETY.id;
 export const PERSON_ID = SUDARSHANA_KARKALA.id;
 export const TANUJA_JADHAV_ID = TANUJA_JADHAV.id;
 export const BHAVYA_KSHATRI_ID = BHAVYA_KSHATRI.id;
+export const HARSH_YADAV_ID = HARSH_YADAV.id;
 // Not sourced from public-entities.ts (UFlight is referenced only in the
 // /space graph as a distinct external brand, not modelled as a full entity
 // with verified contact facts), but kept here so every page importing
@@ -106,6 +108,19 @@ export function bhavyaKshatriPersonNode() {
     url: BHAVYA_KSHATRI.canonicalUrl,
     description: BHAVYA_KSHATRI.description,
     sameAs: BHAVYA_KSHATRI.sameAs,
+    affiliation: { "@id": EV_ENGINEER_BRAND_ID },
+  };
+}
+
+export function harshYadavPersonNode() {
+  return {
+    "@type": "Person",
+    "@id": HARSH_YADAV_ID,
+    name: HARSH_YADAV.name,
+    url: HARSH_YADAV.canonicalUrl,
+    description: HARSH_YADAV.description,
+    sameAs: HARSH_YADAV.sameAs,
+    knowsAbout: HARSH_YADAV.knowsAbout,
     affiliation: { "@id": EV_ENGINEER_BRAND_ID },
   };
 }

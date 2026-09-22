@@ -13,6 +13,11 @@ export const AEGISCAN_FAQ: FaqEntry[] = [
       "AegisCAN is a 12-week educational R&D mini-project for E&C/ECE/EEE/EE students. Students build a simulation-based CAN monitoring and anomaly-detection prototype while learning Battery, BMS, BESS, CAN communication, validation engineering and embedded cybersecurity.",
   },
   {
+    question: "Who are the researchers working on AegisCAN?",
+    answer:
+      "AegisCAN is initiated and led by Tanuja Jadhav, Lead Researcher · EV.ENGINEER™. Bhavya Naga Sai Parvathi Kshatri contributes as Cybersecurity Researcher · EV.ENGINEER™, while Harsh Yadav and Sudarshana Karkala contribute as Co-Researchers · EV.ENGINEER™. Harsh's research focus includes aerospace cybersecurity, with current project work in aerospace quality management and AS9102 First Article Inspection (FAI).",
+  },
+  {
     question: "Who initiated and leads AegisCAN?",
     answer: "AegisCAN was initiated and is led by Tanuja Jadhav, Lead Researcher · EV.ENGINEER™.",
   },
@@ -21,7 +26,12 @@ export const AEGISCAN_FAQ: FaqEntry[] = [
     answer: "Bhavya Naga Sai Parvathi Kshatri contributes as Cybersecurity Researcher · EV.ENGINEER™.",
   },
   {
-    question: "Who is the Co-Researcher for AegisCAN?",
+    question: "What is Harsh Yadav's role in AegisCAN?",
+    answer:
+      "Harsh Yadav contributes as Co-Researcher · EV.ENGINEER™, with a research focus on aerospace cybersecurity. His current engineering project work also includes aerospace quality management and AS9102 First Article Inspection (FAI).",
+  },
+  {
+    question: "What is Sudarshana Karkala's role in AegisCAN?",
     answer: "Sudarshana Karkala contributes as Co-Researcher · EV.ENGINEER™.",
   },
   {

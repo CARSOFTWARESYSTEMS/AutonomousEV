@@ -166,6 +166,27 @@ export const BHAVYA_KSHATRI: PublicEntity = {
 };
 
 /**
+ * Harsh Yadav — Co-Researcher · EV.ENGINEER™ for AegisCAN, with a research
+ * specialization in aerospace cybersecurity and current engineering project
+ * work in aerospace quality management / AS9102 First Article Inspection.
+ * Role, specialization and profile link are sourced from the approved
+ * AegisCAN researcher-attribution brief. No internal profile page exists for
+ * him on this site, so `id`/`canonicalUrl` follow the same pattern as the
+ * other AegisCAN researchers above.
+ */
+export const HARSH_YADAV: PublicEntity = {
+  id: "https://www.linkedin.com/in/harsh-yadav-871a0a26b/#person",
+  type: "Person",
+  name: "Harsh Yadav",
+  description:
+    "Harsh Yadav contributes to AegisCAN research with a focus on aerospace cybersecurity and engineering practices relevant to safety-critical and mission-critical systems. His current project work also includes aerospace quality-management workflows and AS9102 First Article Inspection (FAI).",
+  canonicalUrl: `${SITE_URL}/internships/AegisCAN#research-team`,
+  sameAs: ["https://www.linkedin.com/in/harsh-yadav-871a0a26b/"],
+  knowsAbout: ["Aerospace cybersecurity", "Aerospace quality management", "AS9102 First Article Inspection (FAI)"],
+  affiliations: [EV_ENGINEER.canonicalUrl],
+};
+
+/**
  * The internship programme hub at /internships. Modelled as a "Program" in
  * this registry (a descriptive, non-schema.org-specific category); the
  * corresponding JSON-LD uses CollectionPage + ItemList (see

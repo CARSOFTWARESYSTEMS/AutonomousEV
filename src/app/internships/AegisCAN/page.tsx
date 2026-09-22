@@ -12,10 +12,12 @@ import {
   sudarshanaKarkalaPersonNode,
   tanujaJadhavPersonNode,
   bhavyaKshatriPersonNode,
+  harshYadavPersonNode,
   roleNode,
   PERSON_ID,
   TANUJA_JADHAV_ID,
   BHAVYA_KSHATRI_ID,
+  HARSH_YADAV_ID,
 } from "@/lib/structured-data/entities";
 
 const PAGE_URL = `${SITE_URL}/internships/AegisCAN`;
@@ -74,6 +76,7 @@ const jsonLd = {
     itelematicsOrgNode(),
     tanujaJadhavPersonNode(),
     bhavyaKshatriPersonNode(),
+    harshYadavPersonNode(),
     sudarshanaKarkalaPersonNode(),
     {
       "@type": "WebPage",
@@ -108,6 +111,7 @@ const jsonLd = {
       creator: roleNode("creator", TANUJA_JADHAV_ID, "Lead Researcher · EV.ENGINEER™"),
       contributor: [
         roleNode("contributor", BHAVYA_KSHATRI_ID, "Cybersecurity Researcher · EV.ENGINEER™"),
+        roleNode("contributor", HARSH_YADAV_ID, "Co-Researcher · EV.ENGINEER™"),
         roleNode("contributor", PERSON_ID, "Co-Researcher · EV.ENGINEER™"),
       ],
       inLanguage: "en-US",

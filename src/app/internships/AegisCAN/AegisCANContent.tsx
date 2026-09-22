@@ -515,6 +515,13 @@ const RESEARCHERS: Researcher[] = [
   },
   {
     role: "Co-Researcher · EV.ENGINEER™",
+    name: "Harsh Yadav",
+    focus: "Aerospace Cybersecurity Researcher · Aerospace Quality Management · AS9102 FAI",
+    body: "Contributes to AegisCAN research with a focus on aerospace cybersecurity and engineering practices relevant to safety-critical and mission-critical systems. His current project work also includes aerospace quality-management workflows and AS9102 First Article Inspection (FAI).",
+    links: [{ label: "Harsh Yadav on LinkedIn", href: "https://www.linkedin.com/in/harsh-yadav-871a0a26b/" }],
+  },
+  {
+    role: "Co-Researcher · EV.ENGINEER™",
     name: "Sudarshana Karkala",
     body: "Contributes to AegisCAN research direction, engineering architecture, Battery/BMS/BESS/CAN integration and the broader EV.ENGINEER™ engineering research framework.",
     links: [
