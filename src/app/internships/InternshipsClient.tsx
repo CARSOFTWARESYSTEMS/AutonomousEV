@@ -223,13 +223,16 @@ function ProjectCard({ title, desc, link, pricingLink, secondaryLink, secondaryL
   );
 }
 
-function Section({ title, children }: { title: string, children: ReactNode }) {
+function Section({ title, children, gridClassName }: { title: string, children: ReactNode, gridClassName?: string }) {
   return (
     <div style={{ marginBottom: '48px' }}>
       <h2 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--accent-primary)', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
         {title}
       </h2>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
+      <div
+        className={gridClassName}
+        style={gridClassName ? undefined : { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}
+      >
         {children}
       </div>
     </div>
@@ -467,7 +470,7 @@ export default function InternshipsClient() {
 
           </div>
 
-          <Section title="Design & Development">
+          <Section title="Design & Development" gridClassName="grid-2">
             <ProjectCard
               title="EV Battery Intelligence Platform"
               desc="Risk analysis and advanced thermal runaway prevention implementations."
@@ -486,6 +489,12 @@ export default function InternshipsClient() {
               title="Battery Pack Aadhaar System"
               desc="Unified identity protocols for battery life tracking and health."
               link="/internships/battery-aadhaar"
+            />
+            <ProjectCard
+              title="AegisCAN — Intelligent CAN Cybersecurity"
+              desc="Learn Battery, BMS, BESS, CAN communication, system validation and embedded cybersecurity by building an intelligent CAN monitoring and anomaly-detection prototype."
+              link="/internships/AegisCAN"
+              ctaLabel="Explore AegisCAN"
             />
           </Section>
 

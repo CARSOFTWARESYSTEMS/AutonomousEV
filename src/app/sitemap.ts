@@ -24,6 +24,7 @@ const ROUTES = [
   "/ev-career",
   "/insights/customer-discovery-toolkit",
   "/internships",
+  "/internships/AegisCAN",
   "/internships/battery-aadhaar",
   "/internships/battery-circular-economy",
   "/internships/battery-cybersecurity",

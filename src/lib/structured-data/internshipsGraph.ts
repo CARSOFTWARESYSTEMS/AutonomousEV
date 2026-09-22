@@ -40,6 +40,11 @@ const PROGRAMME_TRACKS: { name: string; url: string; description: string }[] = [
     description: "Unified identity protocols for battery life tracking and health.",
   },
   {
+    name: "AegisCAN — Intelligent CAN Cybersecurity",
+    url: `${SITE_URL}/internships/AegisCAN`,
+    description: "Learn Battery, BMS, BESS, CAN communication, system validation and embedded cybersecurity by building an intelligent CAN monitoring and anomaly-detection prototype.",
+  },
+  {
     name: "EV Help Agent",
     url: "https://help.ev.engineer/",
     description: "AI voice agent design and real-world dialog projects for EV support.",
