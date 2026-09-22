@@ -235,5 +235,43 @@
     "products": [],
     "domains": [],
     "search": { "indexable": true }
+  },
+  {
+    "id": "linkedin-7507996806480531456",
+    "type": "social-post",
+    "title": "Internship Completion",
+    "source": "linkedin",
+    "sourceLabel": "LinkedIn",
+    "sourceUrl": "https://www.linkedin.com/posts/tanuja-jadhav-049431398_internshipcompletion-humanresources-hrmanagement-share-7507996806480531456-GwBn/",
+    "embedUrl": "https://www.linkedin.com/embed/feed/update/urn:li:share:7507996806480531456?collapsed=1",
+    "media": { "type": "iframe", "width": 504, "height": 670 },
+    "author": { "name": "Tanuja Jadhav" },
+    "featured": false,
+    "enabled": true,
+    "verificationStatus": "externally-published",
+    "tags": ["linkedin", "professional-recognition", "internship"],
+    "audiences": [],
+    "products": [],
+    "domains": [],
+    "search": { "indexable": true }
+  },
+  {
+    "id": "linkedin-7507999701821136896",
+    "type": "social-post",
+    "title": "Letter of Recommendation",
+    "source": "linkedin",
+    "sourceLabel": "LinkedIn",
+    "sourceUrl": "https://www.linkedin.com/posts/tanuja-jadhav-049431398_letterofrecommendation-lor-humanresources-share-7507999701821136896-_jPh/",
+    "embedUrl": "https://www.linkedin.com/embed/feed/update/urn:li:share:7507999701821136896?collapsed=1",
+    "media": { "type": "iframe", "width": 504, "height": 670 },
+    "author": { "name": "Tanuja Jadhav" },
+    "featured": false,
+    "enabled": true,
+    "verificationStatus": "externally-published",
+    "tags": ["linkedin", "professional-recognition", "internship"],
+    "audiences": [],
+    "products": [],
+    "domains": [],
+    "search": { "indexable": true }
   }
 ]
