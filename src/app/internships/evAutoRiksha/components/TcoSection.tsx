@@ -1,7 +1,7 @@
 "use client";
 
 import { runSimulation } from "@/lib/evAutoRickshaw/engine";
-import { computeFuelComparison, computeTco } from "@/lib/evAutoRickshaw/tco";
+import { computeFuelComparison, computeIncrementalPaybackMonths, computeTco } from "@/lib/evAutoRickshaw/tco";
 import { useMemo, useState } from "react";
 import styles from "../page.module.css";
 import { Badge } from "./Badge";
@@ -39,8 +39,24 @@ const DEFAULT_TCO_INPUTS: TcoLocalInputs = {
 type FuelTab = "ev" | "cng" | "petrol";
 
 const FUEL_DEFAULTS = {
-  cng: { fuelEconomyKmPerUnit: 28, fuelPriceInrPerUnit: 85, annualMaintenanceInr: 16000, annualInsuranceInr: 9000, purchasePriceInr: 280000 },
-  petrol: { fuelEconomyKmPerUnit: 35, fuelPriceInrPerUnit: 105, annualMaintenanceInr: 18000, annualInsuranceInr: 9000, purchasePriceInr: 260000 },
+  cng: {
+    fuelEconomyKmPerUnit: 28,
+    fuelPriceInrPerUnit: 85,
+    annualMaintenanceInr: 16000,
+    annualInsuranceInr: 9000,
+    purchasePriceInr: 280000,
+    tyreSetCostInr: 6000,
+    tyreLifeKm: 18000,
+  },
+  petrol: {
+    fuelEconomyKmPerUnit: 35,
+    fuelPriceInrPerUnit: 105,
+    annualMaintenanceInr: 18000,
+    annualInsuranceInr: 9000,
+    purchasePriceInr: 260000,
+    tyreSetCostInr: 6000,
+    tyreLifeKm: 18000,
+  },
 };
 
 export function TcoSection({ sim }: { sim: EvSimulator }) {
@@ -79,6 +95,8 @@ export function TcoSection({ sim }: { sim: EvSimulator }) {
         fuelPriceInrPerUnit: fuelAssumptions.cng.fuelPriceInrPerUnit,
         annualMaintenanceInr: fuelAssumptions.cng.annualMaintenanceInr,
         annualInsuranceInr: fuelAssumptions.cng.annualInsuranceInr,
+        tyreSetCostInr: fuelAssumptions.cng.tyreSetCostInr,
+        tyreLifeKm: fuelAssumptions.cng.tyreLifeKm,
       }),
     [fuelAssumptions, requirement.dailyDistanceKm, inputs.workingDaysPerMonth],
   );
@@ -93,13 +111,19 @@ export function TcoSection({ sim }: { sim: EvSimulator }) {
         fuelPriceInrPerUnit: fuelAssumptions.petrol.fuelPriceInrPerUnit,
         annualMaintenanceInr: fuelAssumptions.petrol.annualMaintenanceInr,
         annualInsuranceInr: fuelAssumptions.petrol.annualInsuranceInr,
+        tyreSetCostInr: fuelAssumptions.petrol.tyreSetCostInr,
+        tyreLifeKm: fuelAssumptions.petrol.tyreLifeKm,
       }),
     [fuelAssumptions, requirement.dailyDistanceKm, inputs.workingDaysPerMonth],
   );
 
-  // TCO = full purchase price (not just the financed part) + non-EMI operating costs over the horizon.
-  const evTcoYears = (years: number) =>
-    outputs.cost.sellingPriceInr + (tco.monthlyOperatingCostInr - tco.emi.monthlyEmiInr) * 12 * years;
+  const monthlyKm = requirement.dailyDistanceKm * inputs.workingDaysPerMonth;
+  const incrementalPaybackVsCngMonths = computeIncrementalPaybackMonths(
+    outputs.cost.sellingPriceInr,
+    fuelAssumptions.cng.purchasePriceInr,
+    tco.costPerKm.runningPerKm * monthlyKm,
+    cngComparison.costPerKm.runningPerKm * monthlyKm,
+  );
 
   const warrantyComparison = useMemo(() => {
     const base = runSimulation(requirement, overrides, assumptions);
@@ -136,17 +160,45 @@ export function TcoSection({ sim }: { sim: EvSimulator }) {
         <Stat label="Daily Electricity" value={`₹${formatInr(tco.dailyElectricityCostInr)}`} />
         <Stat label="Monthly Operating Cost" value={`₹${formatInr(tco.monthlyOperatingCostInr)}`} />
         <Stat label="Monthly Revenue" value={`₹${formatInr(tco.monthlyRevenueInr)}`} />
+        <Stat label="Monthly Operating Surplus" value={`₹${formatInr(tco.monthlyOperatingSurplusInr)}`} />
+        <Stat label="₹ / passenger-km (ownership)" value={`₹${tco.ownershipCostPerPassengerKmInr.toFixed(2)}`} />
+      </div>
+
+      <p className={styles.fieldHint} style={{ margin: "1rem 0" }}>
+        <strong>What is included?</strong> Energy ₹/km is energy cost only. Running ₹/km adds maintenance and
+        tyres. Ownership ₹/km adds insurance and EMI. A number is never labelled &quot;₹/km&quot; alone without saying which
+        of these three it is.
+      </p>
+      <div className={styles.resultGrid}>
+        <Stat label="Energy ₹/km" value={`₹${tco.costPerKm.energyFuelPerKm.toFixed(2)}`} />
+        <Stat label="Running ₹/km" value={`₹${tco.costPerKm.runningPerKm.toFixed(2)}`} />
+        <Stat label="Ownership ₹/km" value={`₹${tco.costPerKm.ownershipPerKm.toFixed(2)}`} />
+        <Stat label="Lifetime TCO ₹/km (5 yr)" value={`₹${tco.lifetimeTco.year5.perKm.toFixed(2)}`} />
+      </div>
+
+      <div className={styles.resultGrid} style={{ marginTop: "1rem" }}>
         <Stat
-          label="Monthly Operating Surplus"
-          value={`₹${formatInr(tco.monthlyOperatingSurplusInr)}`}
+          label="Down-Payment Recovery Period"
+          value={tco.downPaymentRecoveryMonths ? `${Math.ceil(tco.downPaymentRecoveryMonths)} months` : "Not within surplus"}
         />
-        <Stat label="₹ / km" value={`₹${tco.costPerKmInr.toFixed(2)}`} />
-        <Stat label="₹ / passenger-km" value={`₹${tco.costPerPassengerKmInr.toFixed(2)}`} />
         <Stat
-          label="Down-Payment Payback"
-          value={tco.paybackMonths ? `${Math.ceil(tco.paybackMonths)} months` : "Not within surplus"}
+          label="Incremental EV Payback vs CNG"
+          value={
+            incrementalPaybackVsCngMonths === null
+              ? "No running-cost payback vs CNG"
+              : incrementalPaybackVsCngMonths === 0
+                ? "No premium to recover"
+                : `${Math.ceil(incrementalPaybackVsCngMonths)} months`
+          }
         />
       </div>
+      <p className={styles.fieldHint} style={{ marginTop: "0.5rem" }}>
+        <strong>Down-Payment Recovery Period</strong> is how long the down payment takes to recover from monthly
+        operating surplus (revenue minus full operating cost including EMI) — not a vehicle-investment payback.{" "}
+        <strong>Incremental EV Payback vs CNG</strong> is the EV&apos;s acquisition premium over a CNG auto divided
+        by the monthly running-cost savings (energy/fuel + maintenance + tyres) — a more direct answer to &quot;how long
+        until the extra upfront cost pays for itself.&quot;
+      </p>
 
       <h3 className={styles.sectionTitle} style={{ fontSize: "1.25rem", textAlign: "left", marginTop: "2.5rem" }}>
         EV vs CNG vs Petrol Auto
@@ -192,6 +244,18 @@ export function TcoSection({ sim }: { sim: EvSimulator }) {
             step={1000}
             onChange={(v) => setFuelField(tab, "annualMaintenanceInr", v)}
           />
+          <NumField
+            label="Tyre Set Cost (₹)"
+            value={fuelAssumptions[tab].tyreSetCostInr}
+            step={500}
+            onChange={(v) => setFuelField(tab, "tyreSetCostInr", v)}
+          />
+          <NumField
+            label="Tyre Life (km)"
+            value={fuelAssumptions[tab].tyreLifeKm}
+            step={1000}
+            onChange={(v) => setFuelField(tab, "tyreLifeKm", v)}
+          />
         </div>
       ) : null}
 
@@ -219,35 +283,48 @@ export function TcoSection({ sim }: { sim: EvSimulator }) {
               <td>₹{formatInr(petrolComparison.dailyFuelCostInr)}</td>
             </tr>
             <tr>
-              <td>₹ / km (operating)</td>
-              <td>₹{tco.costPerKmInr.toFixed(2)}</td>
-              <td>₹{cngComparison.costPerKmInr.toFixed(2)}</td>
-              <td>₹{petrolComparison.costPerKmInr.toFixed(2)}</td>
+              <td>Energy / Fuel ₹/km</td>
+              <td>₹{tco.costPerKm.energyFuelPerKm.toFixed(2)}</td>
+              <td>₹{cngComparison.costPerKm.energyFuelPerKm.toFixed(2)}</td>
+              <td>₹{petrolComparison.costPerKm.energyFuelPerKm.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td>Running ₹/km (+ maintenance, tyres)</td>
+              <td>₹{tco.costPerKm.runningPerKm.toFixed(2)}</td>
+              <td>₹{cngComparison.costPerKm.runningPerKm.toFixed(2)}</td>
+              <td>₹{petrolComparison.costPerKm.runningPerKm.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td>Ownership ₹/km (+ insurance, EMI)</td>
+              <td>₹{tco.costPerKm.ownershipPerKm.toFixed(2)}</td>
+              <td>₹{cngComparison.costPerKm.ownershipPerKm.toFixed(2)}</td>
+              <td>₹{petrolComparison.costPerKm.ownershipPerKm.toFixed(2)}</td>
             </tr>
             <tr>
               <td>3-Year TCO</td>
-              <td>{formatInrLakh(evTcoYears(3))}</td>
-              <td>{formatInrLakh(cngComparison.tcoYear3Inr)}</td>
-              <td>{formatInrLakh(petrolComparison.tcoYear3Inr)}</td>
+              <td>{formatInrLakh(tco.lifetimeTco.year3.totalCostInr)}</td>
+              <td>{formatInrLakh(cngComparison.lifetimeTco.year3.totalCostInr)}</td>
+              <td>{formatInrLakh(petrolComparison.lifetimeTco.year3.totalCostInr)}</td>
             </tr>
             <tr>
               <td>5-Year TCO</td>
-              <td>{formatInrLakh(evTcoYears(5))}</td>
-              <td>{formatInrLakh(cngComparison.tcoYear5Inr)}</td>
-              <td>{formatInrLakh(petrolComparison.tcoYear5Inr)}</td>
+              <td>{formatInrLakh(tco.lifetimeTco.year5.totalCostInr)}</td>
+              <td>{formatInrLakh(cngComparison.lifetimeTco.year5.totalCostInr)}</td>
+              <td>{formatInrLakh(petrolComparison.lifetimeTco.year5.totalCostInr)}</td>
             </tr>
             <tr>
               <td>10-Year TCO</td>
-              <td>{formatInrLakh(evTcoYears(10))}</td>
-              <td>{formatInrLakh(cngComparison.tcoYear10Inr)}</td>
-              <td>{formatInrLakh(petrolComparison.tcoYear10Inr)}</td>
+              <td>{formatInrLakh(tco.lifetimeTco.year10.totalCostInr)}</td>
+              <td>{formatInrLakh(cngComparison.lifetimeTco.year10.totalCostInr)}</td>
+              <td>{formatInrLakh(petrolComparison.lifetimeTco.year10.totalCostInr)}</td>
             </tr>
           </tbody>
         </table>
       </div>
       <p className={styles.fieldHint}>
-        CNG/petrol fuel economy and price are editable planning assumptions, not sourced live fuel prices — adjust
-        them to match your local market before drawing conclusions.
+        All three vehicles use the same Energy/Running/Ownership definitions (see &quot;What is included?&quot; above).
+        CNG/petrol fuel economy, price and tyre assumptions are editable planning assumptions, not sourced live
+        fuel prices — adjust them to match your local market before drawing conclusions.
       </p>
 
       <h3 className={styles.sectionTitle} style={{ fontSize: "1.25rem", textAlign: "left", marginTop: "2.5rem" }}>

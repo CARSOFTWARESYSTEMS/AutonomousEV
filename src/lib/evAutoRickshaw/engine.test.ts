@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { DEFAULT_ASSUMPTIONS, DEFAULT_REQUIREMENT, EMPTY_OVERRIDES } from "./defaults";
+import { DEFAULT_ASSUMPTIONS, DEFAULT_REQUIREMENT, EMPTY_OVERRIDES, PRESETS } from "./defaults";
 import { runSimulation } from "./engine";
 
 describe("runSimulation — default configuration", () => {
@@ -79,5 +79,102 @@ describe("runSimulation — reset to defaults", () => {
     const first = runSimulation(DEFAULT_REQUIREMENT, EMPTY_OVERRIDES, DEFAULT_ASSUMPTIONS);
     const second = runSimulation(DEFAULT_REQUIREMENT, EMPTY_OVERRIDES, DEFAULT_ASSUMPTIONS);
     expect(second).toEqual(first);
+  });
+});
+
+describe("runSimulation — optimization priority", () => {
+  it("recommends a smaller or equal battery for Lowest Price than Balanced, and Balanced <= Maximum Uptime", () => {
+    const lowestPrice = runSimulation({ ...DEFAULT_REQUIREMENT, optimizationPriority: "lowest-price" }, EMPTY_OVERRIDES, DEFAULT_ASSUMPTIONS);
+    const balanced = runSimulation({ ...DEFAULT_REQUIREMENT, optimizationPriority: "balanced" }, EMPTY_OVERRIDES, DEFAULT_ASSUMPTIONS);
+    const maxUptime = runSimulation({ ...DEFAULT_REQUIREMENT, optimizationPriority: "max-uptime" }, EMPTY_OVERRIDES, DEFAULT_ASSUMPTIONS);
+    expect(lowestPrice.battery.capacityKWh).toBeLessThanOrEqual(balanced.battery.capacityKWh);
+    expect(balanced.battery.capacityKWh).toBeLessThanOrEqual(maxUptime.battery.capacityKWh);
+  });
+
+  it("never recommends a battery below what daily distance actually requires, even for Lowest Price", () => {
+    const result = runSimulation({ ...DEFAULT_REQUIREMENT, optimizationPriority: "lowest-price" }, EMPTY_OVERRIDES, DEFAULT_ASSUMPTIONS);
+    expect(result.battery.usableEnergyWh).toBeGreaterThanOrEqual(result.battery.requiredDailyEnergyWh);
+  });
+
+  it("lets an explicit engineering override for reserve/degradation win over the optimization priority preset", () => {
+    const priorityOnly = runSimulation({ ...DEFAULT_REQUIREMENT, optimizationPriority: "max-uptime" }, EMPTY_OVERRIDES, DEFAULT_ASSUMPTIONS);
+    const explicitOverride = runSimulation(
+      { ...DEFAULT_REQUIREMENT, optimizationPriority: "max-uptime" },
+      { reserveFraction: 0.03, degradationAllowance: 0.05 },
+      DEFAULT_ASSUMPTIONS,
+    );
+    expect(explicitOverride.battery.capacityKWh).toBeLessThanOrEqual(priorityOnly.battery.capacityKWh);
+  });
+});
+
+describe("runSimulation — battery trade-off uses equal charger assumptions", () => {
+  it("does not change the recommended charger power between two fixed battery capacities compared at the same charger", () => {
+    const small = runSimulation(DEFAULT_REQUIREMENT, { batteryCapacityKWh: 11, chargerPowerKw: 3.3 }, DEFAULT_ASSUMPTIONS);
+    const large = runSimulation(DEFAULT_REQUIREMENT, { batteryCapacityKWh: 16, chargerPowerKw: 3.3 }, DEFAULT_ASSUMPTIONS);
+    // Both were forced to the same charger power, so a charging-time comparison between them is apples-to-apples.
+    expect(small.charging.recommendedCharger).toBe("3.3kW");
+    expect(large.charging.recommendedCharger).toBe("3.3kW");
+    expect(large.charging.hoursToTarget).toBeGreaterThan(small.charging.hoursToTarget);
+  });
+});
+
+describe("runSimulation — existing presets remain functional", () => {
+  it.each(PRESETS)("preset '%s' runs without throwing and returns a valid configuration", (preset) => {
+    const result = runSimulation({ ...DEFAULT_REQUIREMENT, ...preset.requirement }, preset.overrides, DEFAULT_ASSUMPTIONS);
+    expect(result.battery.capacityKWh).toBeGreaterThanOrEqual(8);
+    expect(result.cost.sellingPriceInr).toBeGreaterThan(0);
+  });
+});
+
+describe("runSimulation — gradeability model", () => {
+  it("does not report an invented hill-start figure when no motor torque assumption is supplied", () => {
+    const result = runSimulation(DEFAULT_REQUIREMENT, EMPTY_OVERRIDES, DEFAULT_ASSUMPTIONS);
+    expect(result.powertrain.hillStartGradeabilityPct).toBeNull();
+  });
+
+  it("computes a hill-start figure once a motor peak torque assumption is supplied", () => {
+    const result = runSimulation(DEFAULT_REQUIREMENT, { motorPeakTorqueNm: 45 }, DEFAULT_ASSUMPTIONS);
+    expect(result.powertrain.hillStartGradeabilityPct).not.toBeNull();
+    expect(result.powertrain.hillStartGradeabilityPct as number).toBeGreaterThanOrEqual(0);
+  });
+
+  it("reports sustained gradeability alongside the speed it was evaluated at", () => {
+    const result = runSimulation(DEFAULT_REQUIREMENT, EMPTY_OVERRIDES, DEFAULT_ASSUMPTIONS);
+    expect(result.powertrain.gradeSpeedKmh).toBeGreaterThan(0);
+    expect(result.powertrain.sustainedGradeabilityPct).toBeGreaterThanOrEqual(0);
+  });
+
+  it("warns about hill-start torque for a fully-loaded D+6 hilly configuration with insufficient torque", () => {
+    const result = runSimulation(
+      { ...DEFAULT_REQUIREMENT, terrain: "hilly", passengerCapacity: 6 },
+      { motorPeakTorqueNm: 20, finalDriveRatio: 5 },
+      DEFAULT_ASSUMPTIONS,
+    );
+    expect(result.powertrain.warning).toMatch(/hill-start/i);
+  });
+});
+
+describe("runSimulation — charging window", () => {
+  it("keeps 3.3 kW for overnight-only charging when the duty cycle fits an 8-hour window", () => {
+    const result = runSimulation({ ...DEFAULT_REQUIREMENT, chargingAvailability: "overnight" }, EMPTY_OVERRIDES, DEFAULT_ASSUMPTIONS);
+    expect(result.charging.availableWindowHours).toBe(8);
+  });
+
+  it("extends the available window when overnight + opportunity charging is selected", () => {
+    const result = runSimulation(
+      { ...DEFAULT_REQUIREMENT, chargingAvailability: "overnight-opportunity", opportunityChargingHours: 3 },
+      EMPTY_OVERRIDES,
+      DEFAULT_ASSUMPTIONS,
+    );
+    expect(result.charging.availableWindowHours).toBe(11);
+  });
+
+  it("does not select 6.6 kW purely because daily distance is close to practical range, if the charging window is generous", () => {
+    const result = runSimulation(
+      { ...DEFAULT_REQUIREMENT, dailyDistanceKm: 130, chargingAvailability: "overnight-opportunity", opportunityChargingHours: 3 },
+      EMPTY_OVERRIDES,
+      DEFAULT_ASSUMPTIONS,
+    );
+    expect(result.charging.hoursNeededAt3_3kW).toBeLessThanOrEqual(result.charging.availableWindowHours);
   });
 });

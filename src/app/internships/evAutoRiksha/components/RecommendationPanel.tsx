@@ -1,9 +1,18 @@
 "use client";
 
+import { useState } from "react";
 import styles from "../page.module.css";
 import { Badge } from "./Badge";
-import { formatHours, formatInrLakh, formatKWh, formatKg, formatKm } from "./format";
+import { formatHours, formatInr, formatInrLakh, formatKWh, formatKg, formatKm } from "./format";
 import type { EvSimulator } from "./useSimulator";
+
+/** Simple daily energy-cost estimate shown as a primary result — same tariff/efficiency inputs as the TCO section. */
+function estimateDailyEnergyCostInr(sim: EvSimulator): number {
+  const { requirement, outputs, assumptions, overrides } = sim;
+  const chargerEfficiency = overrides.chargerEfficiency ?? assumptions.chargerEfficiency;
+  const dailyEnergyKWh = (requirement.dailyDistanceKm * outputs.energy.typical.whPerKm) / 1000 / chargerEfficiency;
+  return dailyEnergyKWh * assumptions.electricityTariffInrPerKWh;
+}
 
 const MASS_COLORS = {
   glider: "#3D8C26",
@@ -54,6 +63,8 @@ export function MassBreakdownBar({ sim }: { sim: EvSimulator }) {
 export function RecommendationPanel({ sim }: { sim: EvSimulator }) {
   const { outputs, requirement } = sim;
   const isWithinBudget = outputs.budgetStatus === "within-budget";
+  const [showDetails, setShowDetails] = useState(false);
+  const dailyEnergyCostInr = estimateDailyEnergyCostInr(sim);
 
   return (
     <div className={styles.resultPanel}>
@@ -64,28 +75,43 @@ export function RecommendationPanel({ sim }: { sim: EvSimulator }) {
         <div className={styles.resultHeading}>Recommended Configuration</div>
         <div className={styles.resultTitle}>EV Auto City — D+{requirement.passengerCapacity}</div>
 
-        <div className={styles.resultGrid}>
-          <Stat label="Battery" value={formatKWh(outputs.battery.capacityKWh)} />
-          <Stat label="System Voltage" value={requirement.voltageClass} />
-          <Stat label="Motor (Peak)" value={`${outputs.powertrain.peakPowerKw.toFixed(1)} kW`} />
-          <Stat label="Practical Range" value={formatKm(outputs.range.typicalKm)} testId="result-range" />
-          <Stat label="Battery Mass" value={formatKg(outputs.battery.massKg)} />
-          <Stat label="Loaded Mass" value={formatKg(outputs.mass.loadedMassKg)} />
-          <Stat label="Recommended Charger" value={outputs.charging.recommendedCharger} />
-          <Stat label="Full Charge (0–100%)" value={formatHours(outputs.charging.hoursToTarget)} />
-          <Stat label="Estimated BOM" value={formatInrLakh(outputs.cost.manufacturingCostInr)} />
-          <Stat
-            label="Estimated Selling Price"
-            value={formatInrLakh(outputs.cost.sellingPriceInr)}
-            testId="result-selling-price"
-          />
-          <Stat label="Energy Cost" value={`${outputs.energy.typical.whPerKm.toFixed(0)} Wh/km`} />
-          <Stat label="Target Budget" value={formatInrLakh(requirement.targetPriceInr)} />
+        <div className={styles.primaryStatGrid}>
+          <PrimaryStat label="Estimated Vehicle Price" value={formatInrLakh(outputs.cost.sellingPriceInr)} testId="result-selling-price" />
+          <PrimaryStat label="Estimated Practical Range" value={formatKm(outputs.range.typicalKm)} testId="result-range" />
+          <PrimaryStat label="Battery" value={formatKWh(outputs.battery.capacityKWh)} />
+          <PrimaryStat label="Energy Cost / Day" value={`₹${formatInr(dailyEnergyCostInr)}`} />
         </div>
 
         <span className={isWithinBudget ? styles.statusWithin : styles.statusAbove}>
           {isWithinBudget ? "Within Budget" : "Above Target Budget"}
         </span>
+
+        <button
+          type="button"
+          className={styles.secondaryStatToggle}
+          onClick={() => setShowDetails((v) => !v)}
+          aria-expanded={showDetails}
+        >
+          {showDetails ? "Hide" : "Show"} secondary details {showDetails ? "▴" : "▾"}
+        </button>
+
+        {showDetails ? (
+          <div className={styles.resultGrid} style={{ marginTop: "0.75rem" }}>
+            <Stat label="System Voltage" value={requirement.voltageClass} />
+            <Stat label="Motor (Peak)" value={`${outputs.powertrain.peakPowerKw.toFixed(1)} kW`} />
+            <Stat label="Battery Mass" value={formatKg(outputs.battery.massKg)} />
+            <Stat label="Loaded Mass" value={formatKg(outputs.mass.loadedMassKg)} />
+            <Stat label="Recommended Charger" value={outputs.charging.recommendedCharger} />
+            <Stat label="Full Charge (0–100%)" value={formatHours(outputs.charging.hoursToTarget)} />
+            <Stat label="Estimated BOM" value={formatInrLakh(outputs.cost.manufacturingCostInr)} />
+            <Stat label="Energy Cost" value={`${outputs.energy.typical.whPerKm.toFixed(0)} Wh/km`} />
+            <Stat label="Target Budget" value={formatInrLakh(requirement.targetPriceInr)} />
+          </div>
+        ) : null}
+
+        <a href="#vehicle" className={styles.linkButton} style={{ marginTop: "1rem" }}>
+          View Full Engineering Specification
+        </a>
       </div>
 
       <div className={styles.resultCard}>
@@ -94,6 +120,17 @@ export function RecommendationPanel({ sim }: { sim: EvSimulator }) {
       </div>
 
       <ConfigurationAssessment sim={sim} />
+    </div>
+  );
+}
+
+function PrimaryStat({ label, value, testId }: { label: string; value: string; testId?: string }) {
+  return (
+    <div className={styles.primaryStat}>
+      <span className={styles.primaryStatLabel}>{label}</span>
+      <span className={styles.primaryStatValue} data-testid={testId}>
+        {value}
+      </span>
     </div>
   );
 }

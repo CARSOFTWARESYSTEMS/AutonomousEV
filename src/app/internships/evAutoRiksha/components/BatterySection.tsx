@@ -1,9 +1,23 @@
-import { CHEMISTRY_RATIONALE } from "@/lib/evAutoRickshaw/battery";
+import { CHEMISTRY_RATIONALE, estimateBatteryMassBreakdown, packSpecificEnergyTier } from "@/lib/evAutoRickshaw/battery";
 import Link from "next/link";
 import styles from "../page.module.css";
 import { Badge } from "./Badge";
 import { formatKWh, formatKg } from "./format";
 import type { EvSimulator } from "./useSimulator";
+
+const MASS_BREAKDOWN_COLORS: Record<string, string> = {
+  cellsKg: "#4CA930",
+  enclosureKg: "#7dd3fc",
+  bmsContactorsBusbarsKg: "#fcd34d",
+  thermalStructuralKg: "#d8b4fe",
+};
+
+const MASS_BREAKDOWN_LABELS: Record<string, string> = {
+  cellsKg: "Cells",
+  enclosureKg: "Enclosure",
+  bmsContactorsBusbarsKg: "BMS / Contactors / Busbars",
+  thermalStructuralKg: "Thermal / Structural",
+};
 
 const BMS_GROUPS: { title: string; items: string[] }[] = [
   {
@@ -41,7 +55,13 @@ const BMS_GROUPS: { title: string; items: string[] }[] = [
 ];
 
 export function BatterySection({ sim }: { sim: EvSimulator }) {
-  const { requirement, outputs, updateRequirement } = sim;
+  const { requirement, overrides, assumptions, outputs, updateRequirement } = sim;
+  const specificEnergyWhPerKg = overrides.packSpecificEnergyWhPerKg ?? assumptions.packSpecificEnergyWhPerKg;
+  const specificEnergyTier = packSpecificEnergyTier(specificEnergyWhPerKg);
+  const massBreakdown = estimateBatteryMassBreakdown(outputs.battery.massKg);
+  const massBreakdownEntries = (["cellsKg", "enclosureKg", "bmsContactorsBusbarsKg", "thermalStructuralKg"] as const).map(
+    (key) => ({ key, value: massBreakdown[key] }),
+  );
 
   return (
     <>
@@ -95,11 +115,37 @@ export function BatterySection({ sim }: { sim: EvSimulator }) {
       </div>
 
       <div className={styles.card} style={{ marginTop: "1.5rem" }}>
+        <div className={styles.tagRow}>
+          <Badge kind="target" label={`${specificEnergyTier} Pack-Level Specific Energy`} />
+        </div>
         <div className={styles.cardTitle}>Estimated Pack Weight — {formatKg(outputs.battery.massKg)}</div>
-        <p className={styles.cardBody}>
-          Derived from a configurable pack-level specific energy assumption (Wh/kg) covering cells, enclosure,
-          cooling, busbars, BMS and contactors. Final weight depends on the cell supplier, enclosure design,
-          cooling approach and structural protection chosen during detailed engineering.
+        <p className={styles.cardBody} style={{ marginBottom: "1rem" }}>
+          Pack-Level Specific Energy: <strong>{specificEnergyWhPerKg.toFixed(0)} Wh/kg</strong>. Pack-level specific
+          energy includes more than cells — final pack weight must be confirmed after cell selection and mechanical
+          design. This is a configurable engineering assumption (see Engineering mode), not a claim about a
+          specific supplier or cell chemistry.
+        </p>
+        <div className={styles.stackBar}>
+          {massBreakdownEntries.map(({ key, value }) => (
+            <div
+              key={key}
+              className={styles.stackSegment}
+              style={{ width: `${(value / massBreakdown.totalKg) * 100}%`, background: MASS_BREAKDOWN_COLORS[key] }}
+              title={`${MASS_BREAKDOWN_LABELS[key]}: ${formatKg(value)}`}
+            />
+          ))}
+        </div>
+        <div className={styles.stackLegend}>
+          {massBreakdownEntries.map(({ key, value }) => (
+            <div className={styles.legendItem} key={key}>
+              <span className={styles.legendDot} style={{ background: MASS_BREAKDOWN_COLORS[key] }} />
+              {MASS_BREAKDOWN_LABELS[key]}: {formatKg(value)}
+            </div>
+          ))}
+        </div>
+        <p className={styles.fieldHint} style={{ marginTop: "1rem" }}>
+          This split is an illustrative concept-level breakdown, not a specific supplier&apos;s bill of materials —
+          final proportions depend on cell format, enclosure design and cooling approach.
         </p>
       </div>
 

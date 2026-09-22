@@ -49,10 +49,23 @@ const ROW_LABELS: Record<string, string> = {
   swapReadyInr: "Swap-readiness hardware",
 };
 
+const COST_REDUCTION_PRIORITY = [
+  "Excess battery capacity",
+  "Excess motor capacity",
+  "Premium software tier",
+  "Premium display / trim",
+  "Air conditioning",
+  "6.6 kW charger",
+  "Swap-readiness hardware",
+];
+
 export function CostSection({ sim }: { sim: EvSimulator }) {
   const { outputs, requirement } = sim;
   const { cost } = outputs;
   const componentRows = rows(cost);
+
+  const marginInr = requirement.targetPriceInr - cost.sellingPriceInr;
+  const isOverBudget = marginInr < 0;
 
   return (
     <>
@@ -60,65 +73,20 @@ export function CostSection({ sim }: { sim: EvSimulator }) {
         <Badge kind="cost" />
       </div>
 
+      {/* Lead with the answer a non-engineer actually wants. */}
+      <div className={styles.resultCard} style={{ maxWidth: 420, marginBottom: "2rem" }}>
+        <div className={styles.resultHeading}>Estimated Selling Price</div>
+        <div className={styles.resultTitle} style={{ fontSize: "2rem", color: "var(--accent-primary)" }}>
+          {formatInrLakh(cost.sellingPriceInr)}
+        </div>
+        <p className={styles.fieldHint}>
+          Manufacturing cost {formatInrLakh(cost.manufacturingCostInr)} + dealer/OEM margin{" "}
+          {formatInrLakh(cost.distributionMarginInr)}.
+        </p>
+      </div>
+
       <h3 className={styles.sectionTitle} style={{ fontSize: "1.25rem", textAlign: "left" }}>
-        Component BOM
-      </h3>
-      <div className={styles.tableWrapper}>
-        <table className={styles.dataTable}>
-          <thead>
-            <tr>
-              <th>Component</th>
-              <th>Estimated Cost</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Object.entries(componentRows)
-              .filter(([, v]) => v > 0)
-              .map(([key, value]) => (
-                <tr key={key}>
-                  <td>{ROW_LABELS[key]}</td>
-                  <td>₹{formatInr(value)}</td>
-                </tr>
-              ))}
-            <tr>
-              <td>Subtotal — components</td>
-              <td>₹{formatInr(cost.subtotalComponentsInr)}</td>
-            </tr>
-            <tr>
-              <td>Assembly + overhead</td>
-              <td>₹{formatInr(cost.assemblyOverheadInr)}</td>
-            </tr>
-            <tr>
-              <td>Warranty reserve</td>
-              <td>₹{formatInr(cost.warrantyReserveInr)}</td>
-            </tr>
-            <tr>
-              <td>Logistics</td>
-              <td>₹{formatInr(cost.logisticsInr)}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div className={styles.cardGrid3} style={{ margin: "1.5rem 0" }}>
-        <div className={styles.card}>
-          <div className={styles.resultStatLabel}>Manufacturing Cost</div>
-          <div className={styles.resultTitle} style={{ marginBottom: 0 }}>{formatInrLakh(cost.manufacturingCostInr)}</div>
-        </div>
-        <div className={styles.card}>
-          <div className={styles.resultStatLabel}>Dealer + OEM Margin</div>
-          <div className={styles.resultTitle} style={{ marginBottom: 0 }}>{formatInrLakh(cost.distributionMarginInr)}</div>
-        </div>
-        <div className={styles.card}>
-          <div className={styles.resultStatLabel}>Indicative Selling Price</div>
-          <div className={styles.resultTitle} style={{ marginBottom: 0, color: "var(--accent-primary)" }}>
-            {formatInrLakh(cost.sellingPriceInr)}
-          </div>
-        </div>
-      </div>
-
-      <h3 className={styles.sectionTitle} style={{ fontSize: "1.25rem", textAlign: "left", marginTop: "2.5rem" }}>
-        Cost Contribution by Group
+        Where Does the Money Go?
       </h3>
       <div className={styles.allocBar}>
         {Object.entries(cost.shareByGroup).map(([key, share]) => (
@@ -138,22 +106,108 @@ export function CostSection({ sim }: { sim: EvSimulator }) {
       <h3 className={styles.sectionTitle} style={{ fontSize: "1.25rem", textAlign: "left", marginTop: "2.5rem" }}>
         Design to My Budget
       </h3>
-      <p className={styles.bodyText}>
-        Target purchase price: <strong>{formatInrLakh(requirement.targetPriceInr)}</strong>. Estimated selling
-        price at the current configuration: <strong>{formatInrLakh(cost.sellingPriceInr)}</strong>.{" "}
-        {outputs.budgetStatus === "within-budget"
-          ? "This configuration is within the target budget."
-          : "This configuration exceeds the target budget — see the cost-reduction priority order below."}
-      </p>
+      <div className={styles.cardGrid3} style={{ marginBottom: "1.5rem" }}>
+        <div className={styles.card}>
+          <div className={styles.resultStatLabel}>Target Price</div>
+          <div className={styles.resultTitle} style={{ marginBottom: 0 }}>{formatInrLakh(requirement.targetPriceInr)}</div>
+        </div>
+        <div className={styles.card}>
+          <div className={styles.resultStatLabel}>Current Estimate</div>
+          <div className={styles.resultTitle} style={{ marginBottom: 0 }}>{formatInrLakh(cost.sellingPriceInr)}</div>
+        </div>
+        <div className={styles.card}>
+          <div className={styles.resultStatLabel}>{isOverBudget ? "Over Budget" : "Remaining Margin"}</div>
+          <div
+            className={styles.resultTitle}
+            style={{ marginBottom: 0, color: isOverBudget ? "#fca5a5" : "var(--accent-primary)" }}
+          >
+            {isOverBudget ? "+" : ""}
+            {formatInrLakh(Math.abs(marginInr))}
+          </div>
+        </div>
+      </div>
+
+      {isOverBudget ? (
+        <div className={styles.warningCardCaution} style={{ marginBottom: "1.5rem" }}>
+          <div>
+            <div className={styles.warningTitle}>Cost-Optimization Opportunities, In Order</div>
+            <div className={styles.warningMessage}>
+              <ol style={{ paddingLeft: "1.25rem", margin: 0 }}>
+                {COST_REDUCTION_PRIORITY.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ol>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <p className={styles.bodyText}>This configuration is within the target budget.</p>
+      )}
+
       <div className={styles.disclaimer}>
         <p className={styles.disclaimerText}>
-          <strong>Safety-critical systems are never an optimization variable.</strong> When a configuration exceeds
-          budget, reduce cost in this order: excess battery capacity, excess motor capacity, premium display,
-          advanced telematics/software tier, premium trim, AC, 6.6 kW charger, swapping hardware — never braking
-          safety, structural safety, BMS/HV protection, battery enclosure safety, required lighting or connector
-          safety.
+          <strong>Safety-critical systems are never an optimization variable.</strong> Braking safety, structural
+          safety, BMS/HV protection, battery enclosure safety, required lighting and connector safety are never
+          reduced to hit a target price.
         </p>
       </div>
+
+      <details className={styles.accordionItem} style={{ marginTop: "2.5rem" }}>
+        <summary className={styles.faqSummary}>
+          <span className={styles.accordionSummaryTitle}>Detailed BOM</span>
+          <span className={styles.accordionChevron}>▾</span>
+        </summary>
+        <div className={styles.faqBody}>
+          <div className={styles.tableWrapper} style={{ marginTop: "0.5rem" }}>
+            <table className={styles.dataTable}>
+              <thead>
+                <tr>
+                  <th>Component</th>
+                  <th>Estimated Cost</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Object.entries(componentRows)
+                  .filter(([, v]) => v > 0)
+                  .map(([key, value]) => (
+                    <tr key={key}>
+                      <td>{ROW_LABELS[key]}</td>
+                      <td>₹{formatInr(value)}</td>
+                    </tr>
+                  ))}
+                <tr>
+                  <td>Subtotal — components</td>
+                  <td>₹{formatInr(cost.subtotalComponentsInr)}</td>
+                </tr>
+                <tr>
+                  <td>Assembly + overhead</td>
+                  <td>₹{formatInr(cost.assemblyOverheadInr)}</td>
+                </tr>
+                <tr>
+                  <td>Warranty reserve</td>
+                  <td>₹{formatInr(cost.warrantyReserveInr)}</td>
+                </tr>
+                <tr>
+                  <td>Logistics</td>
+                  <td>₹{formatInr(cost.logisticsInr)}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong>Manufacturing Cost</strong>
+                  </td>
+                  <td>
+                    <strong>₹{formatInr(cost.manufacturingCostInr)}</strong>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Dealer + OEM Margin</td>
+                  <td>₹{formatInr(cost.distributionMarginInr)}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </details>
     </>
   );
 }

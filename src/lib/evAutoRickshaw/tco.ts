@@ -1,4 +1,4 @@
-import type { EmiResult, TcoInputs, TcoResult } from "./types";
+import type { CostPerKmBreakdown, EmiResult, LifetimeTco, LifetimeTcoByYear, TcoInputs, TcoResult } from "./types";
 
 /** Standard amortizing-loan EMI calculation. */
 export function computeEmi(
@@ -22,6 +22,54 @@ export function computeEmi(
   return { loanAmountInr, monthlyEmiInr, totalInterestInr, totalPayableInr };
 }
 
+/**
+ * Same three ₹/km scopes used for EV, CNG and petrol (see CostPerKmBreakdown)
+ * so none of them are ever compared on inconsistent bases.
+ */
+export function buildCostPerKmBreakdown(
+  energyFuelPerMonthInr: number,
+  maintenancePerMonthInr: number,
+  tyresPerMonthInr: number,
+  insurancePerMonthInr: number,
+  emiPerMonthInr: number,
+  monthlyKm: number,
+): CostPerKmBreakdown {
+  const energyFuelPerKm = monthlyKm > 0 ? energyFuelPerMonthInr / monthlyKm : 0;
+  const runningPerMonthInr = energyFuelPerMonthInr + maintenancePerMonthInr + tyresPerMonthInr;
+  const runningPerKm = monthlyKm > 0 ? runningPerMonthInr / monthlyKm : 0;
+  const ownershipPerMonthInr = runningPerMonthInr + insurancePerMonthInr + emiPerMonthInr;
+  const ownershipPerKm = monthlyKm > 0 ? ownershipPerMonthInr / monthlyKm : 0;
+  return { energyFuelPerKm, runningPerKm, ownershipPerKm };
+}
+
+/**
+ * Lifetime TCO ₹/km uses the full purchase price (financing-neutral — EMI is
+ * just a cash-flow timing mechanism for the same price, so adding both would
+ * double-count) plus running + insurance costs over the selected horizon.
+ */
+export function buildLifetimeTco(
+  purchasePriceInr: number,
+  nonFinanceMonthlyCostInr: number,
+  monthlyKm: number,
+  years: number,
+): LifetimeTco {
+  const totalCostInr = purchasePriceInr + nonFinanceMonthlyCostInr * 12 * years;
+  const totalKm = monthlyKm * 12 * years;
+  return { totalCostInr, totalKm, perKm: totalKm > 0 ? totalCostInr / totalKm : 0 };
+}
+
+function buildLifetimeTcoByYear(
+  purchasePriceInr: number,
+  nonFinanceMonthlyCostInr: number,
+  monthlyKm: number,
+): LifetimeTcoByYear {
+  return {
+    year3: buildLifetimeTco(purchasePriceInr, nonFinanceMonthlyCostInr, monthlyKm, 3),
+    year5: buildLifetimeTco(purchasePriceInr, nonFinanceMonthlyCostInr, monthlyKm, 5),
+    year10: buildLifetimeTco(purchasePriceInr, nonFinanceMonthlyCostInr, monthlyKm, 10),
+  };
+}
+
 export function computeTco(inputs: TcoInputs, whPerKm: number, chargerEfficiency: number): TcoResult {
   const loanAmountInr = Math.max(0, inputs.purchasePriceInr - inputs.downPaymentInr);
   const emi = computeEmi(loanAmountInr, inputs.loanInterestRatePct, inputs.loanTenureMonths);
@@ -37,23 +85,29 @@ export function computeTco(inputs: TcoInputs, whPerKm: number, chargerEfficiency
   const monthlyTyreProvisionInr =
     inputs.tyreLifeKm > 0 ? (inputs.tyreSetCostInr / inputs.tyreLifeKm) * monthlyKm : 0;
 
-  const monthlyOperatingCostInr =
-    emi.monthlyEmiInr +
-    monthlyElectricityCostInr +
-    monthlyMaintenanceInr +
-    monthlyInsuranceInr +
-    monthlyTyreProvisionInr;
+  const nonFinanceMonthlyCostInr =
+    monthlyElectricityCostInr + monthlyMaintenanceInr + monthlyInsuranceInr + monthlyTyreProvisionInr;
+  const monthlyOperatingCostInr = emi.monthlyEmiInr + nonFinanceMonthlyCostInr;
 
   const monthlyRevenueInr =
     inputs.avgPassengersPerTrip * inputs.avgFarePerPassengerInr * inputs.tripsPerDay * inputs.workingDaysPerMonth;
 
   const monthlyOperatingSurplusInr = monthlyRevenueInr - monthlyOperatingCostInr;
 
-  const costPerKmInr = monthlyKm > 0 ? monthlyOperatingCostInr / monthlyKm : 0;
-  const costPerPassengerKmInr =
-    inputs.avgPassengersPerTrip > 0 ? costPerKmInr / inputs.avgPassengersPerTrip : costPerKmInr;
+  const costPerKm = buildCostPerKmBreakdown(
+    monthlyElectricityCostInr,
+    monthlyMaintenanceInr,
+    monthlyTyreProvisionInr,
+    monthlyInsuranceInr,
+    emi.monthlyEmiInr,
+    monthlyKm,
+  );
+  const ownershipCostPerPassengerKmInr =
+    inputs.avgPassengersPerTrip > 0 ? costPerKm.ownershipPerKm / inputs.avgPassengersPerTrip : costPerKm.ownershipPerKm;
 
-  const paybackMonths =
+  const lifetimeTco = buildLifetimeTcoByYear(inputs.purchasePriceInr, nonFinanceMonthlyCostInr, monthlyKm);
+
+  const downPaymentRecoveryMonths =
     monthlyOperatingSurplusInr > 0 ? inputs.downPaymentInr / monthlyOperatingSurplusInr : null;
 
   return {
@@ -66,9 +120,10 @@ export function computeTco(inputs: TcoInputs, whPerKm: number, chargerEfficiency
     monthlyOperatingCostInr,
     monthlyRevenueInr,
     monthlyOperatingSurplusInr,
-    costPerKmInr,
-    costPerPassengerKmInr,
-    paybackMonths,
+    costPerKm,
+    ownershipCostPerPassengerKmInr,
+    lifetimeTco,
+    downPaymentRecoveryMonths,
   };
 }
 
@@ -80,16 +135,17 @@ export interface FuelComparisonInputs {
   fuelPriceInrPerUnit: number;
   annualMaintenanceInr: number;
   annualInsuranceInr: number;
+  tyreSetCostInr: number;
+  tyreLifeKm: number;
 }
 
 export interface FuelComparisonResult {
   dailyFuelCostInr: number;
   monthlyFuelCostInr: number;
+  /** Non-finance monthly cost (fuel + maintenance + insurance + tyres) — no EMI is modelled for these cash-purchase comparison vehicles. */
   monthlyOperatingCostInr: number;
-  costPerKmInr: number;
-  tcoYear3Inr: number;
-  tcoYear5Inr: number;
-  tcoYear10Inr: number;
+  costPerKm: CostPerKmBreakdown;
+  lifetimeTco: LifetimeTcoByYear;
 }
 
 export function computeFuelComparison(inputs: FuelComparisonInputs): FuelComparisonResult {
@@ -97,28 +153,51 @@ export function computeFuelComparison(inputs: FuelComparisonInputs): FuelCompari
   const monthlyFuelCostInr = dailyFuelCostInr * inputs.workingDaysPerMonth;
   const monthlyMaintenanceInr = inputs.annualMaintenanceInr / 12;
   const monthlyInsuranceInr = inputs.annualInsuranceInr / 12;
-  const monthlyOperatingCostInr = monthlyFuelCostInr + monthlyMaintenanceInr + monthlyInsuranceInr;
 
   const monthlyKm = inputs.dailyDistanceKm * inputs.workingDaysPerMonth;
-  const costPerKmInr = monthlyKm > 0 ? monthlyOperatingCostInr / monthlyKm : 0;
+  const monthlyTyreProvisionInr =
+    inputs.tyreLifeKm > 0 ? (inputs.tyreSetCostInr / inputs.tyreLifeKm) * monthlyKm : 0;
 
-  const tco = (years: number) => inputs.purchasePriceInr + monthlyOperatingCostInr * 12 * years;
+  const monthlyOperatingCostInr = monthlyFuelCostInr + monthlyMaintenanceInr + monthlyInsuranceInr + monthlyTyreProvisionInr;
+
+  const costPerKm = buildCostPerKmBreakdown(
+    monthlyFuelCostInr,
+    monthlyMaintenanceInr,
+    monthlyTyreProvisionInr,
+    monthlyInsuranceInr,
+    0, // no financing modelled for the comparison fuel vehicles (assumed cash purchase)
+    monthlyKm,
+  );
+
+  const lifetimeTco = buildLifetimeTcoByYear(inputs.purchasePriceInr, monthlyOperatingCostInr, monthlyKm);
 
   return {
     dailyFuelCostInr,
     monthlyFuelCostInr,
     monthlyOperatingCostInr,
-    costPerKmInr,
-    tcoYear3Inr: tco(3),
-    tcoYear5Inr: tco(5),
-    tcoYear10Inr: tco(10),
+    costPerKm,
+    lifetimeTco,
   };
 }
 
-export function computeEvTco(
-  purchasePriceInr: number,
-  monthlyOperatingCostExEmiInr: number,
-  years: number,
-): number {
-  return purchasePriceInr + monthlyOperatingCostExEmiInr * 12 * years;
+/**
+ * Incremental EV Payback vs an alternative (e.g. CNG): how long the EV's
+ * higher acquisition price takes to recover from lower monthly running
+ * costs. Uses "running" cost (energy/fuel + maintenance + tyres) on both
+ * sides — the direct operating costs a driver actually feels — not
+ * ownership cost, so it isn't distorted by different financing structures.
+ * Returns null when there is no acquisition premium to recover, or when the
+ * EV does not actually run cheaper (no payback occurs).
+ */
+export function computeIncrementalPaybackMonths(
+  evPriceInr: number,
+  alternativePriceInr: number,
+  evMonthlyRunningInr: number,
+  alternativeMonthlyRunningInr: number,
+): number | null {
+  const acquisitionPremiumInr = evPriceInr - alternativePriceInr;
+  if (acquisitionPremiumInr <= 0) return 0;
+  const monthlySavingsInr = alternativeMonthlyRunningInr - evMonthlyRunningInr;
+  if (monthlySavingsInr <= 0) return null;
+  return acquisitionPremiumInr / monthlySavingsInr;
 }

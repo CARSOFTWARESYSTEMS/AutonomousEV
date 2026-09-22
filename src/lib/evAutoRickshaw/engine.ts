@@ -1,11 +1,16 @@
 import { estimateBatteryMassKg, recommendBatteryCapacityKWh, usableEnergyWh } from "./battery";
-import { estimateChargingTime, recommendCharger } from "./charging";
+import { computeAvailableChargingWindowHours, estimateChargingTime, recommendCharger } from "./charging";
 import { computeCostBreakdown } from "./cost";
+import { OPTIMIZATION_PRIORITY_SETTINGS } from "./defaults";
 import {
-  achievableGradeabilityPct,
+  DEFAULT_FINAL_DRIVE_RATIO,
+  DEFAULT_GRADE_SPEED_KMH,
+  DEFAULT_WHEEL_RADIUS_M,
   estimatePeakBatteryCurrentA,
+  hillStartGradeabilityPct,
   powertrainWarning,
   recommendPowertrain,
+  sustainedGradeabilityPct,
 } from "./powertrain";
 import type {
   CustomerRequirement,
@@ -42,12 +47,21 @@ export function runSimulation(
 ): SimulatorOutputs {
   const requirement = sanitizeRequirement(rawRequirement);
 
-  let capacityKWh = overrides.batteryCapacityKWh ?? INITIAL_CAPACITY_GUESS_KWH;
+  // Optimization Priority sets the default reserve/degradation margin used to
+  // size the battery; explicit Engineering-mode overrides always win over it.
+  const prioritySetting = OPTIMIZATION_PRIORITY_SETTINGS[requirement.optimizationPriority];
+  const effectiveOverrides: EngineeringOverrides = {
+    reserveFraction: prioritySetting.reserveFraction,
+    degradationAllowance: prioritySetting.degradationAllowance,
+    ...overrides,
+  };
+
+  let capacityKWh = effectiveOverrides.batteryCapacityKWh ?? INITIAL_CAPACITY_GUESS_KWH;
   let requiredDailyEnergyWh = 0;
 
   for (let i = 0; i < CONVERGENCE_ITERATIONS; i++) {
-    const batteryMassKg = estimateBatteryMassKg(capacityKWh, assumptions, overrides);
-    const mass = computeMassBreakdown(requirement, overrides, batteryMassKg);
+    const batteryMassKg = estimateBatteryMassKg(capacityKWh, assumptions, effectiveOverrides);
+    const mass = computeMassBreakdown(requirement, effectiveOverrides, batteryMassKg);
     const typicalEnergy = estimateEnergyConsumption(
       mass.loadedMassKg,
       requirement.maxSpeedKmh,
@@ -55,17 +69,17 @@ export function runSimulation(
       requirement.traffic,
       requirement.acEnabled,
       assumptions,
-      overrides,
+      effectiveOverrides,
     );
     requiredDailyEnergyWh = requirement.dailyDistanceKm * typicalEnergy.whPerKm;
 
-    if (overrides.batteryCapacityKWh !== undefined) break;
-    capacityKWh = recommendBatteryCapacityKWh(requiredDailyEnergyWh, assumptions, overrides);
+    if (effectiveOverrides.batteryCapacityKWh !== undefined) break;
+    capacityKWh = recommendBatteryCapacityKWh(requiredDailyEnergyWh, assumptions, effectiveOverrides);
   }
 
-  const batteryMassKg = estimateBatteryMassKg(capacityKWh, assumptions, overrides);
-  const mass = computeMassBreakdown(requirement, overrides, batteryMassKg);
-  const usableEnergy = usableEnergyWh(capacityKWh, assumptions, overrides);
+  const batteryMassKg = estimateBatteryMassKg(capacityKWh, assumptions, effectiveOverrides);
+  const mass = computeMassBreakdown(requirement, effectiveOverrides, batteryMassKg);
+  const usableEnergy = usableEnergyWh(capacityKWh, assumptions, effectiveOverrides);
   const gliderPlusBattery = mass.gliderMassKg + mass.batteryMassKg;
 
   const { band: range, energyByCondition } = estimateRangeBand(
@@ -74,47 +88,64 @@ export function runSimulation(
     gliderPlusBattery,
     requirement,
     assumptions,
-    overrides,
+    effectiveOverrides,
   );
 
   const fullMassKg = fullLoadMassKg(gliderPlusBattery, requirement);
+  const gradeSpeedKmh = effectiveOverrides.gradeSpeedKmh ?? DEFAULT_GRADE_SPEED_KMH;
   const sizing = recommendPowertrain(
     mass.loadedMassKg,
     fullMassKg,
     requirement.maxSpeedKmh,
     requirement.terrain,
+    gradeSpeedKmh,
     assumptions,
-    overrides,
+    effectiveOverrides,
   );
 
-  const selectedPeakKw = overrides.peakPowerKw ?? sizing.recommendedPeakKw;
-  const selectedContinuousKw = overrides.continuousPowerKw ?? sizing.recommendedContinuousKw;
-  const maxGradeAbilityPct = achievableGradeabilityPct(selectedPeakKw, fullMassKg, assumptions, overrides);
-  const peakBatteryCurrentA = estimatePeakBatteryCurrentA(selectedPeakKw, requirement.voltageClass, overrides);
+  const selectedPeakKw = effectiveOverrides.peakPowerKw ?? sizing.recommendedPeakKw;
+  const selectedContinuousKw = effectiveOverrides.continuousPowerKw ?? sizing.recommendedContinuousKw;
+
+  const sustainedGrade = sustainedGradeabilityPct(selectedPeakKw, fullMassKg, gradeSpeedKmh, assumptions, effectiveOverrides);
+  const hillStartGrade =
+    effectiveOverrides.motorPeakTorqueNm !== undefined
+      ? hillStartGradeabilityPct(
+          effectiveOverrides.motorPeakTorqueNm,
+          effectiveOverrides.finalDriveRatio ?? DEFAULT_FINAL_DRIVE_RATIO,
+          effectiveOverrides.wheelRadiusM ?? DEFAULT_WHEEL_RADIUS_M,
+          fullMassKg,
+          assumptions,
+          effectiveOverrides,
+        )
+      : null;
+
+  const peakBatteryCurrentA = estimatePeakBatteryCurrentA(selectedPeakKw, requirement.voltageClass, effectiveOverrides);
   const powertrainWarningMsg = powertrainWarning(
     selectedPeakKw,
     sizing.recommendedPeakKw,
     requirement.terrain,
     requirement.traffic,
+    requirement.passengerCapacity,
+    hillStartGrade,
   );
 
+  const chargerEfficiency = effectiveOverrides.chargerEfficiency ?? assumptions.chargerEfficiency;
+  const availableWindowHours = computeAvailableChargingWindowHours(
+    requirement.chargingAvailability,
+    requirement.opportunityChargingHours,
+    effectiveOverrides,
+  );
   const chargerRecommendation = recommendCharger(
     requirement.chargingAvailability,
-    requirement.dailyDistanceKm,
-    range.typicalKm,
+    requiredDailyEnergyWh,
+    availableWindowHours,
+    chargerEfficiency,
   );
   const chargerPowerKw =
-    overrides.chargerPowerKw ?? (chargerRecommendation.recommendedCharger === "6.6kW" ? 6.6 : 3.3);
-  const startSocPct = overrides.startSocPct ?? 10;
-  const targetSocPct = overrides.targetSocPct ?? 100;
-  const chargingTime = estimateChargingTime(
-    capacityKWh,
-    startSocPct,
-    targetSocPct,
-    chargerPowerKw,
-    assumptions,
-    overrides.chargerEfficiency,
-  );
+    effectiveOverrides.chargerPowerKw ?? (chargerRecommendation.recommendedCharger === "6.6kW" ? 6.6 : 3.3);
+  const startSocPct = effectiveOverrides.startSocPct ?? 10;
+  const targetSocPct = effectiveOverrides.targetSocPct ?? 100;
+  const chargingTime = estimateChargingTime(capacityKWh, startSocPct, targetSocPct, chargerPowerKw, chargerEfficiency);
 
   const cost = computeCostBreakdown(
     requirement,
@@ -122,7 +153,7 @@ export function runSimulation(
     selectedPeakKw,
     chargerRecommendation.recommendedCharger,
     assumptions,
-    overrides,
+    effectiveOverrides,
   );
 
   const warnings = buildConfigurationWarnings(requirement, range, cost.sellingPriceInr, powertrainWarningMsg);
@@ -146,7 +177,9 @@ export function runSimulation(
     powertrain: {
       continuousPowerKw: selectedContinuousKw,
       peakPowerKw: selectedPeakKw,
-      maxGradeAbilityPct,
+      sustainedGradeabilityPct: sustainedGrade,
+      gradeSpeedKmh,
+      hillStartGradeabilityPct: hillStartGrade,
       peakBatteryCurrentA,
       warning: powertrainWarningMsg,
     },
@@ -156,6 +189,9 @@ export function runSimulation(
       hoursToTarget: chargingTime.hoursToTarget,
       recommendedCharger: chargerRecommendation.recommendedCharger,
       recommendationNote: chargerRecommendation.recommendationNote,
+      availableWindowHours,
+      hoursNeededAt3_3kW: chargerRecommendation.hoursNeededAt3_3kW,
+      hoursNeededAt6_6kW: chargerRecommendation.hoursNeededAt6_6kW,
     },
     cost,
     warnings,

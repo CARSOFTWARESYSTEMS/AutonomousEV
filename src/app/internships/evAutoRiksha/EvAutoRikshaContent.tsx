@@ -109,6 +109,17 @@ export default function EvAutoRikshaContent() {
             </p>
           </div>
 
+          <div className={styles.flowWrap} style={{ justifyContent: "center", marginBottom: "2rem" }}>
+            {["1. Tell Us Your Requirement", "2. Recommended EV", "3. What Will It Cost?", "4. Explore Engineering"].map(
+              (step, i, arr) => (
+                <div className={styles.flowWrapPair} key={step}>
+                  <div className={styles.flowWrapStep} style={{ minWidth: "auto", fontSize: "0.78rem" }}>{step}</div>
+                  {i < arr.length - 1 ? <span className={styles.flowWrapArrow}>→</span> : null}
+                </div>
+              ),
+            )}
+          </div>
+
           <div className={styles.utilityRow} style={{ justifyContent: "center", marginBottom: "1.5rem" }}>
             <div className={styles.segmented} role="group" aria-label="Configurator mode">
               <button

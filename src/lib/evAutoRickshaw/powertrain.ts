@@ -11,6 +11,10 @@ export function terrainGradeTargetPct(terrain: Terrain): number {
   return targets[terrain];
 }
 
+export const DEFAULT_GRADE_SPEED_KMH = 25;
+export const DEFAULT_WHEEL_RADIUS_M = 0.25;
+export const DEFAULT_FINAL_DRIVE_RATIO = 9;
+
 function tractiveForceN(
   massKg: number,
   speedMs: number,
@@ -45,16 +49,15 @@ export function continuousPowerRequirementKw(
   return (watts / 1000) * 1.1;
 }
 
-const CLIMB_SPEED_KMH = 25;
-
-/** Peak power to sustain the terrain-based gradeability target at full load and crawl speed. */
+/** Peak power to sustain the terrain-based gradeability target at full load and the specified grade speed. */
 export function hillClimbPowerRequirementKw(
   fullLoadMassKg: number,
   gradePct: number,
+  gradeSpeedKmh: number,
   assumptions: SimulatorAssumptions,
   overrides: EngineeringOverrides,
 ): number {
-  const v = CLIMB_SPEED_KMH / 3.6;
+  const v = gradeSpeedKmh / 3.6;
   const eta = overrides.drivetrainEfficiency ?? assumptions.drivetrainEfficiency;
   const force = tractiveForceN(fullLoadMassKg, v, gradePct, assumptions, overrides);
   const watts = (force * v) / eta;
@@ -71,12 +74,13 @@ export function recommendPowertrain(
   fullLoadMassKg: number,
   maxSpeedKmh: number,
   terrain: Terrain,
+  gradeSpeedKmh: number,
   assumptions: SimulatorAssumptions,
   overrides: EngineeringOverrides,
 ): PowertrainSizing {
   const continuousKw = continuousPowerRequirementKw(loadedMassKg, maxSpeedKmh, assumptions, overrides);
   const gradeTarget = terrainGradeTargetPct(terrain);
-  const hillKw = hillClimbPowerRequirementKw(fullLoadMassKg, gradeTarget, assumptions, overrides);
+  const hillKw = hillClimbPowerRequirementKw(fullLoadMassKg, gradeTarget, gradeSpeedKmh, assumptions, overrides);
 
   const peakKw = Math.max(continuousKw * 1.4, hillKw * 1.05);
   const recommendedPeakKw = clampPeakPower(roundHalf(peakKw));
@@ -93,14 +97,21 @@ function roundHalf(value: number): number {
   return Math.round(value * 2) / 2;
 }
 
-/** Max sustainable grade (%) for a selected peak power at full load and crawl speed. */
-export function achievableGradeabilityPct(
+/**
+ * Sustained Gradeability @ specified speed — power-limited, always
+ * computable from peak power alone: at a steady non-zero speed, P = F*v is
+ * valid physics regardless of the motor's torque curve, as long as the
+ * motor can sustain that power at that speed (a fair concept-level
+ * assumption). This is NOT a hill-start / very-low-speed figure.
+ */
+export function sustainedGradeabilityPct(
   selectedPeakKw: number,
   fullLoadMassKg: number,
+  gradeSpeedKmh: number,
   assumptions: SimulatorAssumptions,
   overrides: EngineeringOverrides,
 ): number {
-  const v = CLIMB_SPEED_KMH / 3.6;
+  const v = gradeSpeedKmh / 3.6;
   const eta = overrides.drivetrainEfficiency ?? assumptions.drivetrainEfficiency;
   const availableForce = (selectedPeakKw * 1000 * eta) / v;
 
@@ -117,6 +128,38 @@ export function achievableGradeabilityPct(
   const clampedSin = Math.min(sinTheta, 0.98);
   const theta = Math.asin(clampedSin);
   return Math.max(0, Math.tan(theta) * 100);
+}
+
+/**
+ * Hill-Start / Very-Low-Speed Gradeability — torque-limited, not
+ * power-limited (as speed -> 0, P = F*v breaks down since it implies
+ * unbounded force for any finite power). This requires an actual motor
+ * peak-torque assumption to be meaningful: available wheel force is
+ * torque * finalDriveRatio * drivetrainEfficiency / wheelRadius, capped by
+ * whatever the controller's current limit and the motor's torque curve
+ * actually allow — figures this simulator cannot invent responsibly.
+ * Callers should only invoke this when `motorPeakTorqueNm` has been
+ * explicitly supplied (see engine.ts) and otherwise report that hill-start
+ * capability requires torque-curve + controller current-limit validation.
+ */
+export function hillStartGradeabilityPct(
+  motorPeakTorqueNm: number,
+  finalDriveRatio: number,
+  wheelRadiusM: number,
+  fullLoadMassKg: number,
+  assumptions: SimulatorAssumptions,
+  overrides: EngineeringOverrides,
+): number {
+  const eta = overrides.drivetrainEfficiency ?? assumptions.drivetrainEfficiency;
+  const wheelForceN = (motorPeakTorqueNm * finalDriveRatio * eta) / wheelRadiusM;
+
+  const g = assumptions.gravityMS2;
+  const crr = overrides.rollingResistanceCoefficient ?? assumptions.rollingResistanceCoefficient;
+  // Aero and cos(theta) correction are negligible at near-zero hill-start speed.
+  const sinTheta = (wheelForceN - crr * fullLoadMassKg * g) / (fullLoadMassKg * g);
+  if (sinTheta <= 0) return 0;
+  const clampedSin = Math.min(sinTheta, 0.98);
+  return Math.max(0, Math.tan(Math.asin(clampedSin)) * 100);
 }
 
 const NOMINAL_VOLTAGE_MAP: Record<VoltageClass, number> = {
@@ -141,9 +184,19 @@ export function powertrainWarning(
   recommendedPeakKw: number,
   terrain: Terrain,
   traffic: string,
+  passengerCapacity: number,
+  hillStartGradeAbilityPct: number | null,
 ): string | null {
   if (selectedPeakKw < recommendedPeakKw * 0.85) {
     return "Powertrain may be undersized for the selected load and terrain.";
+  }
+  if (
+    terrain === "hilly" &&
+    passengerCapacity === 6 &&
+    hillStartGradeAbilityPct !== null &&
+    hillStartGradeAbilityPct < terrainGradeTargetPct("hilly")
+  ) {
+    return "Hill-start torque may be insufficient for a fully loaded D+6 vehicle on hilly terrain — validate motor peak torque, final-drive ratio and controller current limit.";
   }
   if (selectedPeakKw > recommendedPeakKw * 1.4 && terrain === "flat" && traffic !== "heavy") {
     return "Cost optimization opportunity: selected motor may exceed the duty-cycle requirement.";

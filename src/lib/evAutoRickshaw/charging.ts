@@ -1,4 +1,4 @@
-import type { ChargingAvailability, ChargingResult, SimulatorAssumptions } from "./types";
+import type { ChargingAvailability, EngineeringOverrides } from "./types";
 
 /** Extra time multiplier applied to the portion of charging above 80% SOC (CC-CV taper allowance). */
 const TAPER_MULTIPLIER = 1.6;
@@ -14,11 +14,9 @@ export function estimateChargingTime(
   startSocPct: number,
   targetSocPct: number,
   chargerPowerKw: number,
-  assumptions: SimulatorAssumptions,
-  chargerEfficiencyOverride?: number,
+  chargerEfficiency: number,
 ): { energyRequiredWh: number; hoursTo80: number; hoursToTarget: number } {
-  const efficiency = chargerEfficiencyOverride ?? assumptions.chargerEfficiency;
-  const effectivePowerW = chargerPowerKw * 1000 * efficiency;
+  const effectivePowerW = chargerPowerKw * 1000 * chargerEfficiency;
   const clampedStart = Math.max(0, Math.min(100, startSocPct));
   const clampedTarget = Math.max(clampedStart, Math.min(100, targetSocPct));
 
@@ -40,34 +38,94 @@ export function estimateChargingTime(
   };
 }
 
+const DEFAULT_WINDOW_HOURS: Record<ChargingAvailability, number> = {
+  overnight: 8,
+  "overnight-opportunity": 8, // + opportunityChargingHours, added by the caller
+  "fleet-depot": 6,
+  "battery-swap": 0,
+};
+
+/**
+ * Available Charging Time — Simple mode derives this from the charging
+ * availability selection (overnight = 8h; overnight + opportunity = 8h plus
+ * a configurable 1-3h opportunity window); Engineering mode can override it
+ * directly.
+ */
+export function computeAvailableChargingWindowHours(
+  chargingAvailability: ChargingAvailability,
+  opportunityChargingHours: number,
+  overrides: EngineeringOverrides,
+): number {
+  if (overrides.chargingWindowHours !== undefined) return overrides.chargingWindowHours;
+  if (chargingAvailability === "overnight-opportunity") {
+    return DEFAULT_WINDOW_HOURS[chargingAvailability] + opportunityChargingHours;
+  }
+  return DEFAULT_WINDOW_HOURS[chargingAvailability];
+}
+
+export interface ChargerRecommendation {
+  recommendedCharger: "3.3kW" | "6.6kW";
+  recommendationNote: string;
+  hoursNeededAt3_3kW: number;
+  hoursNeededAt6_6kW: number;
+}
+
+/** Leave headroom rather than assuming the full window is usable (BMS taper, real-world variance). */
+const WINDOW_SAFETY_FACTOR = 0.9;
+
+/**
+ * Charging Power Sufficiency — evaluated independently of single-charge
+ * range. A vehicle does not need a bigger charger just because its daily
+ * distance approaches its practical range; it needs a bigger charger only
+ * if the *actual daily energy consumed* cannot be replenished within the
+ * *available charging window*. (Whether the battery can physically cover
+ * the distance between charges — Energy Capacity Sufficiency — is a
+ * separate question, handled by validation.ts's range-vs-distance check.)
+ */
 export function recommendCharger(
   chargingAvailability: ChargingAvailability,
-  dailyDistanceKm: number,
-  rangeTypicalKm: number,
-): ChargingResult {
-  const utilizationRatio = rangeTypicalKm > 0 ? dailyDistanceKm / rangeTypicalKm : Infinity;
-
-  let recommendedCharger: "3.3kW" | "6.6kW" = "3.3kW";
-  let recommendationNote =
-    "Overnight 3.3 kW home/depot charging comfortably covers this daily distance within the practical range margin.";
+  requiredDailyEnergyWh: number,
+  availableWindowHours: number,
+  chargerEfficiency: number,
+): ChargerRecommendation {
+  const energyKWh = requiredDailyEnergyWh / 1000;
+  const hoursNeededAt3_3kW = requiredDailyEnergyWh / (3300 * chargerEfficiency);
+  const hoursNeededAt6_6kW = requiredDailyEnergyWh / (6600 * chargerEfficiency);
 
   if (chargingAvailability === "battery-swap") {
-    recommendationNote =
-      "Battery swapping selected as the charging strategy — evaluate swap-station economics separately from fixed-charger costs.";
-  } else if (utilizationRatio > 0.85 || chargingAvailability === "fleet-depot") {
-    recommendedCharger = "6.6kW";
-    recommendationNote =
-      "Daily distance is close to the practical range margin — a 6.6 kW charger or opportunity charging window is recommended.";
-  } else if (utilizationRatio > 1.1) {
-    recommendationNote =
-      "Selected duty cycle exceeds comfortable single-charge coverage — evaluate opportunity charging, swapping or a larger battery.";
+    return {
+      recommendedCharger: "3.3kW",
+      recommendationNote:
+        "Battery swapping selected as the charging strategy — evaluate swap-station economics separately from fixed-charger costs.",
+      hoursNeededAt3_3kW,
+      hoursNeededAt6_6kW,
+    };
+  }
+
+  const usableWindowHours = availableWindowHours * WINDOW_SAFETY_FACTOR;
+
+  if (hoursNeededAt3_3kW <= usableWindowHours) {
+    return {
+      recommendedCharger: "3.3kW",
+      recommendationNote: `3.3 kW is sufficient because approximately ${energyKWh.toFixed(1)} kWh must be replenished and a ${availableWindowHours}-hour charging window provides adequate time (~${hoursNeededAt3_3kW.toFixed(1)} h required).`,
+      hoursNeededAt3_3kW,
+      hoursNeededAt6_6kW,
+    };
+  }
+
+  if (hoursNeededAt6_6kW <= usableWindowHours) {
+    return {
+      recommendedCharger: "6.6kW",
+      recommendationNote: `6.6 kW is recommended because 3.3 kW would need approximately ${hoursNeededAt3_3kW.toFixed(1)} h to replenish ${energyKWh.toFixed(1)} kWh, exceeding the ${availableWindowHours}-hour window — 6.6 kW does it in ~${hoursNeededAt6_6kW.toFixed(1)} h.`,
+      hoursNeededAt3_3kW,
+      hoursNeededAt6_6kW,
+    };
   }
 
   return {
-    energyRequiredWh: 0,
-    hoursTo80: 0,
-    hoursToTarget: 0,
-    recommendedCharger,
-    recommendationNote,
+    recommendedCharger: "6.6kW",
+    recommendationNote: `Even a 6.6 kW charger needs approximately ${hoursNeededAt6_6kW.toFixed(1)} h to replenish ${energyKWh.toFixed(1)} kWh, which does not comfortably fit the ${availableWindowHours}-hour window — consider opportunity charging, fleet-depot charging or battery swapping.`,
+    hoursNeededAt3_3kW,
+    hoursNeededAt6_6kW,
   };
 }

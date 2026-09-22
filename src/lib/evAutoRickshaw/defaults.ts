@@ -1,6 +1,7 @@
 import type {
   CustomerRequirement,
   EngineeringOverrides,
+  OptimizationPriority,
   PresetId,
   SimulatorAssumptions,
 } from "./types";
@@ -61,9 +62,48 @@ export const DEFAULT_REQUIREMENT: CustomerRequirement = {
   voltageClass: "76.8V",
   vehicleWarrantyYears: 3,
   batteryWarrantyYears: 3,
+  optimizationPriority: "balanced",
+  opportunityChargingHours: 2,
 };
 
 export const EMPTY_OVERRIDES: EngineeringOverrides = {};
+
+export interface OptimizationPrioritySetting {
+  label: string;
+  description: string;
+  /** Fraction of usable daily energy held back as an operational buffer, on top of actual consumption. */
+  reserveFraction: number;
+  /** Fraction of nameplate capacity reserved for end-of-life degradation. */
+  degradationAllowance: number;
+}
+
+/**
+ * Optimization Priority controls how much energy margin is sized into the
+ * battery on top of the actual duty-cycle requirement — it does not change
+ * the underlying road-load physics. "Balanced" is the default and is
+ * deliberately less conservative than treating every duty cycle as
+ * worst-case (which is what "Maximum Uptime" is for).
+ */
+export const OPTIMIZATION_PRIORITY_SETTINGS: Record<OptimizationPriority, OptimizationPrioritySetting> = {
+  "lowest-price": {
+    label: "Lowest Purchase Price",
+    description: "Smallest configuration that satisfies the duty cycle with acceptable reserve.",
+    reserveFraction: 0.03,
+    degradationAllowance: 0.05,
+  },
+  balanced: {
+    label: "Balanced / Cost Optimized",
+    description: "Balances battery reserve, price and charging flexibility.",
+    reserveFraction: 0.05,
+    degradationAllowance: 0.06,
+  },
+  "max-uptime": {
+    label: "Maximum Uptime",
+    description: "Adds extra energy reserve to avoid mid-day charging where possible.",
+    reserveFraction: 0.1,
+    degradationAllowance: 0.1,
+  },
+};
 
 export interface PresetDefinition {
   id: PresetId;

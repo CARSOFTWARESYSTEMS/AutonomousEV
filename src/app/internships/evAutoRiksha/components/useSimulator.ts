@@ -7,6 +7,7 @@ import type {
   ChargingAvailability,
   CustomerRequirement,
   EngineeringOverrides,
+  OptimizationPriority,
   PresetId,
   SimulatorAssumptions,
   SimulatorOutputs,
@@ -18,7 +19,7 @@ import { sanitizeRequirement } from "@/lib/evAutoRickshaw/validation";
 
 export type ConfiguratorMode = "simple" | "engineering";
 
-function parseQueryRequirement(params: URLSearchParams): Partial<CustomerRequirement> {
+export function parseQueryRequirement(params: URLSearchParams): Partial<CustomerRequirement> {
   const out: Partial<CustomerRequirement> = {};
   const num = (key: string) => {
     const v = params.get(key);
@@ -60,10 +61,18 @@ function parseQueryRequirement(params: URLSearchParams): Partial<CustomerRequire
     out.chargingAvailability = charging as ChargingAvailability;
   }
 
+  const priority = params.get("priority");
+  if (priority === "lowest-price" || priority === "balanced" || priority === "max-uptime") {
+    out.optimizationPriority = priority as OptimizationPriority;
+  }
+
+  const opportunityHours = num("oppHours");
+  if (opportunityHours !== undefined) out.opportunityChargingHours = opportunityHours;
+
   return out;
 }
 
-function parseQueryOverrides(params: URLSearchParams): EngineeringOverrides {
+export function parseQueryOverrides(params: URLSearchParams): EngineeringOverrides {
   const out: EngineeringOverrides = {};
   const battery = params.get("battery");
   if (battery && !Number.isNaN(Number(battery))) out.batteryCapacityKWh = Number(battery);
@@ -83,6 +92,10 @@ export function buildShareQuery(requirement: CustomerRequirement, overrides: Eng
   params.set("budget", String(Math.round(requirement.targetPriceInr)));
   params.set("software", requirement.softwareTier);
   params.set("charging", requirement.chargingAvailability);
+  params.set("priority", requirement.optimizationPriority);
+  if (requirement.chargingAvailability === "overnight-opportunity") {
+    params.set("oppHours", String(requirement.opportunityChargingHours));
+  }
   if (overrides.batteryCapacityKWh !== undefined) params.set("battery", String(overrides.batteryCapacityKWh));
   if (overrides.peakPowerKw !== undefined) params.set("motor", String(overrides.peakPowerKw));
   return params.toString();

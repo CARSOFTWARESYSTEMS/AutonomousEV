@@ -19,8 +19,8 @@ export function CompetitorSection({ sim }: { sim: EvSimulator }) {
         they are labeled separately below rather than compared as if they were the same metric.
       </p>
 
-      {/* Desktop table */}
-      <div className={styles.tableWrapper} style={{ display: "block" }}>
+      {/* Desktop: normal table. Below 700px: each row becomes its own card via .responsiveTable (data-label driven) — see spec: mobile must not force the full table into a tiny viewport. */}
+      <div className={`${styles.tableWrapper} ${styles.responsiveTable}`}>
         <table className={styles.dataTable}>
           <thead>
             <tr>
@@ -38,37 +38,37 @@ export function CompetitorSection({ sim }: { sim: EvSimulator }) {
           </thead>
           <tbody>
             <tr>
-              <td><strong>Our EV (Configured)</strong></td>
-              <td>D+{requirement.passengerCapacity}</td>
-              <td>{formatKWh(outputs.battery.capacityKWh)} {requirement.chemistry}</td>
-              <td>{outputs.powertrain.peakPowerKw.toFixed(1)} kW peak</td>
-              <td>{formatKm(outputs.range.typicalKm)} (simulated practical)</td>
-              <td>{requirement.maxSpeedKmh} km/h</td>
-              <td>{outputs.charging.recommendedCharger}</td>
-              <td>{formatKg(outputs.mass.kerbMassKg)}</td>
-              <td>{requirement.vehicleWarrantyYears} yr</td>
-              <td>{formatInrLakh(outputs.cost.sellingPriceInr)}</td>
+              <td data-label="Vehicle"><strong>Our EV (Configured)</strong></td>
+              <td data-label="Seating">D+{requirement.passengerCapacity}</td>
+              <td data-label="Battery">{formatKWh(outputs.battery.capacityKWh)} {requirement.chemistry}</td>
+              <td data-label="Motor">{outputs.powertrain.peakPowerKw.toFixed(1)} kW peak</td>
+              <td data-label="Range">{formatKm(outputs.range.typicalKm)} (simulated practical)</td>
+              <td data-label="Top Speed">{requirement.maxSpeedKmh} km/h</td>
+              <td data-label="Charging">{outputs.charging.recommendedCharger}</td>
+              <td data-label="Kerb Weight">{formatKg(outputs.mass.kerbMassKg)}</td>
+              <td data-label="Warranty">{requirement.vehicleWarrantyYears} yr</td>
+              <td data-label="Approx. Price">{formatInrLakh(outputs.cost.sellingPriceInr)}</td>
             </tr>
             {COMPETITORS.map((c) => (
               <tr key={c.id}>
-                <td>
+                <td data-label="Vehicle">
                   <strong>{c.name}</strong>
                   <div className={styles.fieldHint}>{c.manufacturer}</div>
                 </td>
-                <td>{c.seating}</td>
-                <td>{c.batteryCapacityKWh !== null ? `${c.batteryCapacityKWh} kWh ${c.batteryChemistry ?? ""}` : "Not found"}</td>
-                <td>{c.motorPowerKw !== null ? `${c.motorPowerKw} kW` : "Not found"}</td>
-                <td>
+                <td data-label="Seating">{c.seating}</td>
+                <td data-label="Battery">{c.batteryCapacityKWh !== null ? `${c.batteryCapacityKWh} kWh ${c.batteryChemistry ?? ""}` : "Not found"}</td>
+                <td data-label="Motor">{c.motorPowerKw !== null ? `${c.motorPowerKw} kW` : "Not found"}</td>
+                <td data-label="Range">
                   {c.certifiedRangeKm !== null ? `${c.certifiedRangeKm} km (certified)` : ""}
                   {c.certifiedRangeKm !== null && c.publishedTypicalRangeKm !== null ? " · " : ""}
                   {c.publishedTypicalRangeKm !== null ? `${c.publishedTypicalRangeKm} km (typical)` : ""}
                   {c.certifiedRangeKm === null && c.publishedTypicalRangeKm === null ? "Not found" : ""}
                 </td>
-                <td>{c.topSpeedKmh !== null ? `${c.topSpeedKmh} km/h` : "Not found"}</td>
-                <td>{c.chargingTimeHours !== null ? `~${c.chargingTimeHours} h` : "Not found"}</td>
-                <td>{c.kerbWeightKg !== null ? `${c.kerbWeightKg} kg` : "Not found"}</td>
-                <td>{c.vehicleWarranty ?? "Not found"}</td>
-                <td>{c.approxPriceInr !== null ? formatInrLakh(c.approxPriceInr) : "Not found"}</td>
+                <td data-label="Top Speed">{c.topSpeedKmh !== null ? `${c.topSpeedKmh} km/h` : "Not found"}</td>
+                <td data-label="Charging">{c.chargingTimeHours !== null ? `~${c.chargingTimeHours} h` : "Not found"}</td>
+                <td data-label="Kerb Weight">{c.kerbWeightKg !== null ? `${c.kerbWeightKg} kg` : "Not found"}</td>
+                <td data-label="Warranty">{c.vehicleWarranty ?? "Not found"}</td>
+                <td data-label="Approx. Price">{c.approxPriceInr !== null ? formatInrLakh(c.approxPriceInr) : "Not found"}</td>
               </tr>
             ))}
           </tbody>

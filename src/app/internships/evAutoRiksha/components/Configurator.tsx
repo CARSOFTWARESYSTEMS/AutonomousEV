@@ -1,9 +1,10 @@
 "use client";
 
-import { PRESETS } from "@/lib/evAutoRickshaw/defaults";
+import { OPTIMIZATION_PRIORITY_SETTINGS, PRESETS } from "@/lib/evAutoRickshaw/defaults";
 import type {
   ChargingAvailability,
   CustomerRequirement,
+  OptimizationPriority,
   PresetId,
   SoftwareTier,
   Terrain,
@@ -155,6 +156,10 @@ const SOFTWARE_OPTIONS: { value: SoftwareTier; label: string }[] = [
   { value: "intelligence", label: "Intelligence" },
 ];
 
+const OPTIMIZATION_PRIORITY_OPTIONS: { value: OptimizationPriority; label: string }[] = (
+  ["lowest-price", "balanced", "max-uptime"] as const
+).map((value) => ({ value, label: OPTIMIZATION_PRIORITY_SETTINGS[value].label }));
+
 export function Presets({ sim }: { sim: EvSimulator }) {
   return (
     <div className={styles.presetGrid}>
@@ -252,6 +257,29 @@ export function RequirementInputs({ sim }: { sim: EvSimulator }) {
         value={requirement.chargingAvailability}
         onChange={(v) => updateRequirement("chargingAvailability", v)}
       />
+
+      {requirement.chargingAvailability === "overnight-opportunity" ? (
+        <SliderField
+          label="Opportunity Charging Window"
+          value={requirement.opportunityChargingHours}
+          min={1}
+          max={3}
+          step={1}
+          unit=" h"
+          hint="Added on top of an 8-hour overnight window."
+          onChange={(v) => updateRequirement("opportunityChargingHours", v)}
+        />
+      ) : null}
+
+      <SegmentedField
+        label="Optimization Priority"
+        options={OPTIMIZATION_PRIORITY_OPTIONS}
+        value={requirement.optimizationPriority}
+        onChange={(v) => updateRequirement("optimizationPriority", v)}
+      />
+      <p className={styles.fieldHint} style={{ marginTop: "-0.75rem" }}>
+        {OPTIMIZATION_PRIORITY_SETTINGS[requirement.optimizationPriority].description}
+      </p>
 
       <SegmentedField
         label="Software Tier"
@@ -444,6 +472,45 @@ export function EngineeringControls({ sim }: { sim: EvSimulator }) {
                       unit="%"
                       onChange={(v) => updateOverride("controllerEfficiency", v / 100)}
                     />
+                    <SliderField
+                      label="Grade Evaluation Speed"
+                      value={overrides.gradeSpeedKmh ?? 25}
+                      min={10}
+                      max={40}
+                      step={1}
+                      unit=" km/h"
+                      hint="Speed at which sustained (power-limited) gradeability is evaluated."
+                      onChange={(v) => updateOverride("gradeSpeedKmh", v)}
+                    />
+                    <SliderField
+                      label="Final-Drive Ratio"
+                      value={overrides.finalDriveRatio ?? 9}
+                      min={5}
+                      max={14}
+                      step={0.5}
+                      unit=":1"
+                      hint="Only affects hill-start capability below, once a motor peak torque is supplied — sustained gradeability is power-limited, not affected by drive ratio."
+                      onChange={(v) => updateOverride("finalDriveRatio", v)}
+                    />
+                    <SliderField
+                      label="Wheel Rolling Radius"
+                      value={overrides.wheelRadiusM ?? 0.25}
+                      min={0.18}
+                      max={0.32}
+                      step={0.01}
+                      unit=" m"
+                      onChange={(v) => updateOverride("wheelRadiusM", v)}
+                    />
+                    <SliderField
+                      label="Motor Peak Torque"
+                      value={overrides.motorPeakTorqueNm ?? 0}
+                      min={0}
+                      max={80}
+                      step={1}
+                      unit=" Nm"
+                      hint="0 = not specified — hill-start capability will be reported as requiring torque-curve validation rather than a guessed number."
+                      onChange={(v) => updateOverride("motorPeakTorqueNm", v === 0 ? undefined : v)}
+                    />
                   </>
                 ) : null}
 
@@ -458,6 +525,16 @@ export function EngineeringControls({ sim }: { sim: EvSimulator }) {
                       unit=" kW"
                       hint="0 = let the simulator recommend from charging availability. Above 6.6 kW is a research/future option only."
                       onChange={(v) => updateOverride("chargerPowerKw", v === 0 ? undefined : v)}
+                    />
+                    <SliderField
+                      label="Charging Window Override"
+                      value={overrides.chargingWindowHours ?? 0}
+                      min={0}
+                      max={16}
+                      step={0.5}
+                      unit=" h"
+                      hint="0 = derive from Charging Availability (overnight = 8h, + opportunity window if selected)."
+                      onChange={(v) => updateOverride("chargingWindowHours", v === 0 ? undefined : v)}
                     />
                     <SliderField
                       label="Charger Efficiency"

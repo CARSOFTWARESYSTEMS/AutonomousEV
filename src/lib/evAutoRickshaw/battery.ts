@@ -72,3 +72,41 @@ export function recommendVoltageClass(capacityKWh: number, requestedFleet: boole
   if (capacityKWh <= 9) return "72V";
   return "76.8V";
 }
+
+export type SpecificEnergyTier = "Conservative" | "Target" | "Advanced";
+
+/**
+ * Labels a pack-level specific energy assumption without claiming a specific
+ * supplier or cell chemistry — purely a planning-context label for the
+ * configurable Wh/kg assumption already used elsewhere.
+ */
+export function packSpecificEnergyTier(whPerKg: number): SpecificEnergyTier {
+  if (whPerKg < 90) return "Conservative";
+  if (whPerKg <= 115) return "Target";
+  return "Advanced";
+}
+
+export interface BatteryMassBreakdown {
+  cellsKg: number;
+  enclosureKg: number;
+  bmsContactorsBusbarsKg: number;
+  thermalStructuralKg: number;
+  totalKg: number;
+}
+
+/**
+ * Illustrative decomposition of the total pack mass into the component
+ * groups that make up "pack-level specific energy" (it is never just
+ * cells). These percentages are a concept-level planning illustration, not
+ * a specific supplier's bill of materials — final split depends on cell
+ * format, enclosure design and cooling approach.
+ */
+export function estimateBatteryMassBreakdown(totalMassKg: number): BatteryMassBreakdown {
+  return {
+    cellsKg: totalMassKg * 0.7,
+    enclosureKg: totalMassKg * 0.12,
+    bmsContactorsBusbarsKg: totalMassKg * 0.1,
+    thermalStructuralKg: totalMassKg * 0.08,
+    totalKg: totalMassKg,
+  };
+}

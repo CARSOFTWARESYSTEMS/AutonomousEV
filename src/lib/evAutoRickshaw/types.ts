@@ -25,6 +25,14 @@ export type SoftwareTier = "standard" | "connected" | "fleet" | "intelligence";
 
 export type PresetId = "value" | "city" | "long-range" | "fleet-plus";
 
+/**
+ * How the recommendation engine trades off battery/reserve margin against
+ * acquisition price and charging flexibility. This does not change the
+ * underlying physics — only how much energy reserve is sized in on top of
+ * the actual duty-cycle requirement.
+ */
+export type OptimizationPriority = "lowest-price" | "balanced" | "max-uptime";
+
 /** Customer-facing duty-cycle requirement — the "Simple" configurator inputs. */
 export interface CustomerRequirement {
   passengerCapacity: PassengerCapacity;
@@ -45,6 +53,9 @@ export interface CustomerRequirement {
   /** Vehicle + battery warranty selection feeds the cost model's warranty reserve. */
   vehicleWarrantyYears: 3 | 5 | 6;
   batteryWarrantyYears: 3 | 5 | 6;
+  optimizationPriority: OptimizationPriority;
+  /** Only meaningful when chargingAvailability === "overnight-opportunity". */
+  opportunityChargingHours: number;
 }
 
 /** Engineering-mode overrides. Any field left undefined falls back to a derived default. */
@@ -71,6 +82,10 @@ export interface EngineeringOverrides {
   controllerEfficiency?: number;
   drivetrainEfficiency?: number;
   finalDriveRatio?: number;
+  /** Motor peak torque at the shaft. Left unset unless an engineer supplies it — hill-start gradeability is only computed when this is present; otherwise the UI states it requires torque-curve validation rather than inventing a number. */
+  motorPeakTorqueNm?: number;
+  /** Speed at which "sustained gradeability" is evaluated (power-limited, not torque-limited). */
+  gradeSpeedKmh?: number;
   regenRecoveryFraction?: number;
 
   // Charging
@@ -78,6 +93,8 @@ export interface EngineeringOverrides {
   chargerEfficiency?: number;
   startSocPct?: number;
   targetSocPct?: number;
+  /** Explicit override for the daily charging window. Unset = derived from chargingAvailability. */
+  chargingWindowHours?: number;
 
   // Economics
   motorControllerCostPerKwInr?: number;
@@ -163,7 +180,16 @@ export interface BatteryRecommendation {
 export interface PowertrainRecommendation {
   continuousPowerKw: number;
   peakPowerKw: number;
-  maxGradeAbilityPct: number;
+  /** Power-limited grade the vehicle can sustain at gradeSpeedKmh — always computable. */
+  sustainedGradeabilityPct: number;
+  gradeSpeedKmh: number;
+  /**
+   * Torque-limited hill-start/very-low-speed capability. This is only
+   * computable when an engineer has supplied a motor peak torque — a
+   * power-based estimate breaks down as speed approaches zero, so this is
+   * `null` (never a guessed number) until that assumption is provided.
+   */
+  hillStartGradeabilityPct: number | null;
   peakBatteryCurrentA: number;
   warning: string | null;
 }
@@ -174,6 +200,11 @@ export interface ChargingResult {
   hoursToTarget: number;
   recommendedCharger: "3.3kW" | "6.6kW";
   recommendationNote: string;
+  /** Daily charging window this recommendation was evaluated against (hours). */
+  availableWindowHours: number;
+  /** Hours needed to replenish the day's actual energy consumption at each charger power — independent of single-charge range. */
+  hoursNeededAt3_3kW: number;
+  hoursNeededAt6_6kW: number;
 }
 
 export interface CostBreakdown {
@@ -228,6 +259,31 @@ export interface TcoInputs {
   tyreLifeKm: number;
 }
 
+/**
+ * Same three ₹/km scopes for EV, CNG and petrol so they are never compared
+ * on inconsistent bases:
+ *   energyFuelPerKm  — energy/fuel only
+ *   runningPerKm     — + maintenance + tyres
+ *   ownershipPerKm   — + insurance + EMI/finance (0 for cash-purchase fuel vehicles)
+ */
+export interface CostPerKmBreakdown {
+  energyFuelPerKm: number;
+  runningPerKm: number;
+  ownershipPerKm: number;
+}
+
+export interface LifetimeTco {
+  totalCostInr: number;
+  totalKm: number;
+  perKm: number;
+}
+
+export interface LifetimeTcoByYear {
+  year3: LifetimeTco;
+  year5: LifetimeTco;
+  year10: LifetimeTco;
+}
+
 export interface TcoResult {
   emi: EmiResult;
   dailyElectricityCostInr: number;
@@ -238,9 +294,11 @@ export interface TcoResult {
   monthlyOperatingCostInr: number;
   monthlyRevenueInr: number;
   monthlyOperatingSurplusInr: number;
-  costPerKmInr: number;
-  costPerPassengerKmInr: number;
-  paybackMonths: number | null;
+  costPerKm: CostPerKmBreakdown;
+  ownershipCostPerPassengerKmInr: number;
+  lifetimeTco: LifetimeTcoByYear;
+  /** Time to recover the down payment from monthly operating surplus (revenue - full operating cost including EMI). Not a vehicle-investment payback. */
+  downPaymentRecoveryMonths: number | null;
 }
 
 export interface ConfigurationWarning {

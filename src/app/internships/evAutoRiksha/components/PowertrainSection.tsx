@@ -19,8 +19,28 @@ export function PowertrainSection({ sim }: { sim: EvSimulator }) {
       <div className={styles.resultGrid} style={{ marginBottom: "1.5rem" }}>
         <Stat label="Continuous Power" value={`${powertrain.continuousPowerKw.toFixed(1)} kW`} />
         <Stat label="Peak Power" value={`${powertrain.peakPowerKw.toFixed(1)} kW`} />
-        <Stat label="Max Gradeability (indicative)" value={`${powertrain.maxGradeAbilityPct.toFixed(1)}%`} />
+        <Stat
+          label="Indicative Gradeability"
+          value={`${powertrain.sustainedGradeabilityPct.toFixed(1)}% @ ${powertrain.gradeSpeedKmh} km/h`}
+        />
         <Stat label="Peak Battery Current (indicative)" value={`${powertrain.peakBatteryCurrentA.toFixed(0)} A`} />
+      </div>
+
+      <div className={styles.card} style={{ marginBottom: "1.5rem", maxWidth: 640 }}>
+        <div className={styles.cardTitle}>Hill-Start / Very-Low-Speed Capability</div>
+        {powertrain.hillStartGradeabilityPct !== null ? (
+          <p className={styles.cardBody}>
+            Approximately <strong>{powertrain.hillStartGradeabilityPct.toFixed(1)}%</strong> at near-zero speed,
+            from the supplied motor peak-torque, final-drive ratio and wheel-radius assumptions (Engineering mode).
+          </p>
+        ) : (
+          <p className={styles.cardBody}>
+            Requires motor torque curve + controller current limit validation — supply a motor peak-torque
+            assumption in Engineering mode to estimate this. Sustained gradeability above is power-limited and
+            always computable, but hill-start capability is torque-limited and cannot be inferred from peak power
+            alone.
+          </p>
+        )}
       </div>
 
       <div className={styles.field} style={{ maxWidth: 480, marginBottom: "1.5rem" }}>
@@ -72,20 +92,64 @@ function Stat({ label, value }: { label: string; value: string }) {
   );
 }
 
+/**
+ * Battery capacity trade-off comparison. Charger power, chemistry, SOC
+ * window and vehicle configuration are held constant across both capacity
+ * points (only batteryCapacityKWh and chargerPowerKw are overridden) so the
+ * charging-time comparison is apples-to-apples — comparing capacities under
+ * two different, silently-auto-selected chargers would be misleading.
+ */
 function BatteryTradeoff({ sim }: { sim: EvSimulator }) {
   const { requirement, overrides, assumptions } = sim;
   const smallKWh = 11;
   const largeKWh = 16;
 
-  const { small, large } = useMemo(() => {
-    const small = runSimulation(requirement, { ...overrides, batteryCapacityKWh: smallKWh }, assumptions);
-    const large = runSimulation(requirement, { ...overrides, batteryCapacityKWh: largeKWh }, assumptions);
-    return { small, large };
+  const results = useMemo(() => {
+    const at = (chargerPowerKw: 3.3 | 6.6) => ({
+      small: runSimulation(requirement, { ...overrides, batteryCapacityKWh: smallKWh, chargerPowerKw }, assumptions),
+      large: runSimulation(requirement, { ...overrides, batteryCapacityKWh: largeKWh, chargerPowerKw }, assumptions),
+    });
+    return { at3_3: at(3.3), at6_6: at(6.6) };
   }, [requirement, overrides, assumptions]);
 
   return (
     <div className={styles.card} style={{ marginTop: "2rem" }}>
       <div className={styles.cardTitle}>What Changes When I Change the Battery?</div>
+      <p className={styles.fieldHint} style={{ marginBottom: "1rem" }}>
+        Charger power, chemistry, SOC window and vehicle configuration are held constant in each comparison below —
+        only battery capacity changes — so the charging-time comparison is not distorted by a different charger
+        being auto-selected for the larger pack.
+      </p>
+
+      <BatteryTradeoffAtCharger label="With 3.3 kW Charger" smallKWh={smallKWh} largeKWh={largeKWh} small={results.at3_3.small} large={results.at3_3.large} />
+      <div style={{ marginTop: "1.5rem" }}>
+        <BatteryTradeoffAtCharger label="With 6.6 kW Charger" smallKWh={smallKWh} largeKWh={largeKWh} small={results.at6_6.small} large={results.at6_6.large} />
+      </div>
+
+      <p className={styles.fieldHint} style={{ marginTop: "1rem" }}>
+        Range, mass and price rise together with capacity regardless of charger. Payload margin may fall as pack
+        mass grows. Does your duty cycle actually require the additional battery?
+      </p>
+    </div>
+  );
+}
+
+function BatteryTradeoffAtCharger({
+  label,
+  smallKWh,
+  largeKWh,
+  small,
+  large,
+}: {
+  label: string;
+  smallKWh: number;
+  largeKWh: number;
+  small: ReturnType<typeof runSimulation>;
+  large: ReturnType<typeof runSimulation>;
+}) {
+  return (
+    <div>
+      <div className={styles.diagramCaption} style={{ marginBottom: "0.5rem" }}>{label}</div>
       <div className={styles.tradeoffGrid}>
         <div className={styles.tradeoffCol}>
           <div className={styles.tradeoffVs}>{smallKWh} kWh</div>
@@ -103,10 +167,6 @@ function BatteryTradeoff({ sim }: { sim: EvSimulator }) {
           <Row label="Charge Time" value={formatHours(large.charging.hoursToTarget)} up />
         </div>
       </div>
-      <p className={styles.fieldHint} style={{ marginTop: "1rem" }}>
-        Range, mass, price and charging time all rise together with capacity. Payload margin may fall as pack mass
-        grows. Does your duty cycle actually require the additional battery?
-      </p>
     </div>
   );
 }
@@ -128,14 +188,14 @@ function MotorTradeoff({ sim }: { sim: EvSimulator }) {
       <div className={styles.tradeoffGrid}>
         <div className={styles.tradeoffCol}>
           <div className={styles.tradeoffVs}>{smallKw} kW peak</div>
-          <Row label="Max Gradeability" value={`${small.powertrain.maxGradeAbilityPct.toFixed(1)}%`} />
+          <Row label="Sustained Gradeability" value={`${small.powertrain.sustainedGradeabilityPct.toFixed(1)}%`} />
           <Row label="Peak Battery Current" value={`${small.powertrain.peakBatteryCurrentA.toFixed(0)} A`} />
           <Row label="Selling Price" value={formatInrLakh(small.cost.sellingPriceInr)} />
         </div>
         <div className={styles.tradeoffVs}>vs</div>
         <div className={styles.tradeoffCol}>
           <div className={styles.tradeoffVs}>{largeKw} kW peak</div>
-          <Row label="Max Gradeability" value={`${large.powertrain.maxGradeAbilityPct.toFixed(1)}%`} up />
+          <Row label="Sustained Gradeability" value={`${large.powertrain.sustainedGradeabilityPct.toFixed(1)}%`} up />
           <Row label="Peak Battery Current" value={`${large.powertrain.peakBatteryCurrentA.toFixed(0)} A`} up />
           <Row label="Selling Price" value={formatInrLakh(large.cost.sellingPriceInr)} up />
         </div>

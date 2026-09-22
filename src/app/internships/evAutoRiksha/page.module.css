@@ -23,7 +23,11 @@
 .hero {
   position: relative;
   overflow: hidden;
-  padding-top: 2.5rem;
+  /* The global Navbar is fixed at 80px tall (see src/components/Navbar.module.css).
+     AegisCAN clears it via a .breadcrumb element before its hero; this page has
+     no breadcrumb, so the hero itself must account for the offset or its top
+     content (the eyebrow pill) renders underneath the fixed navbar. */
+  padding-top: calc(80px + 2.5rem);
   padding-bottom: 4rem;
 }
 
@@ -1690,10 +1694,18 @@
   position: sticky;
   top: 80px;
   z-index: 20;
-  background: rgba(4, 20, 14, 0.92);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  /*
+   * Root cause of the "ghost text" artifact: a translucent background
+   * (rgba alpha < 1) combined with backdrop-filter: blur() intentionally
+   * shows a blurred impression of whatever scrolls underneath. That reads
+   * fine over AegisCAN's sparser hero, but on this page's much denser
+   * stream of headings it looks like duplicated/ghosted text. Fixed by
+   * making the surface fully opaque — blur then has nothing left to
+   * reveal — and using shadow/border for depth instead of translucency.
+   */
+  background: var(--bg-dark);
   border-bottom: 1px solid var(--glass-border);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
 }
 
 .sectionNavInner {
@@ -1755,7 +1767,7 @@
 
 @media (max-width: 768px) {
   .hero {
-    padding-top: 1.5rem;
+    padding-top: calc(80px + 1.5rem);
   }
   .breadcrumb {
     padding-top: calc(80px + 1rem);
@@ -2208,6 +2220,52 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.9rem 1.25rem;
+}
+
+/* ─── Primary vs secondary result hierarchy ─── */
+.primaryStatGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.primaryStat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.primaryStatLabel {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.primaryStatValue {
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.secondaryStatToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  padding: 0.4rem 0;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.secondaryStatToggle:hover {
+  color: var(--accent-primary);
 }
 
 .resultStat {

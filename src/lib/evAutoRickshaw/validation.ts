@@ -15,6 +15,7 @@ export function sanitizeRequirement(requirement: CustomerRequirement): CustomerR
     maxSpeedKmh: clamp(requirement.maxSpeedKmh, 30, 65),
     luggageKg: clamp(requirement.luggageKg, 0, 100),
     targetPriceInr: clamp(requirement.targetPriceInr, 250000, 700000),
+    opportunityChargingHours: clamp(requirement.opportunityChargingHours, 1, 3),
   };
 }
 
