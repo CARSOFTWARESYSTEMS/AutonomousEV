@@ -597,7 +597,6 @@ export default function AegisCANContent() {
 
           {/* ═══════ DISCLAIMER ═══════ */}
           <div className={styles.disclaimer} id="disclaimer">
-            <span className={styles.disclaimerIcon} aria-hidden="true">ℹ️</span>
             <p className={styles.disclaimerText}>
               <strong>AegisCAN is an educational and research prototype.</strong> Not a production BMS,
               commercial IDS, certified automotive/aerospace cybersecurity product, or safety-certified BESS
