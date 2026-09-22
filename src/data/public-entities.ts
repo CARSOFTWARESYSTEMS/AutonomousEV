@@ -123,6 +123,49 @@ export const SUDARSHANA_KARKALA: PublicEntity = {
 };
 
 /**
+ * Tanuja Jadhav — Lead Researcher · EV.ENGINEER™ for the AegisCAN internship
+ * project (/internships/AegisCAN). She initiated and leads AegisCAN. Role,
+ * affiliation and profile links are sourced from the approved AegisCAN
+ * researcher-attribution brief; this site has no separate internal profile
+ * page for her, so `canonicalUrl` points at the AegisCAN research-team
+ * section, and `id` uses her EV Society research profile as the stable
+ * external identity anchor.
+ */
+export const TANUJA_JADHAV: PublicEntity = {
+  id: "https://www.evsociety.org/projects/battery-safety-systems/candidates/tanujajadhav#person",
+  type: "Person",
+  name: "Tanuja Jadhav",
+  description:
+    "Tanuja Jadhav leads the AegisCAN initiative on EV.ENGINEER, including project direction, student research coordination and development of the Battery–BMS–BESS–CAN engineering learning framework.",
+  canonicalUrl: `${SITE_URL}/internships/AegisCAN#research-team`,
+  sameAs: [
+    "https://www.linkedin.com/in/tanuja-jadhav-049431398/",
+    "https://www.evsociety.org/projects/battery-safety-systems/candidates/tanujajadhav",
+  ],
+  knowsAbout: ["AegisCAN project research direction", "Battery/BMS/BESS/CAN engineering education"],
+  affiliations: [EV_ENGINEER.canonicalUrl],
+};
+
+/**
+ * Bhavya Naga Sai Parvathi Kshatri — Cybersecurity Researcher · EV.ENGINEER™
+ * for AegisCAN. Role, professional focus and profile link are sourced from
+ * the approved AegisCAN researcher-attribution brief. No internal profile
+ * page exists for her on this site, so `id`/`canonicalUrl` follow the same
+ * pattern as Tanuja Jadhav above.
+ */
+export const BHAVYA_KSHATRI: PublicEntity = {
+  id: "https://www.linkedin.com/in/bhavya-naga-sai-parvathi-kshatri-3140251a2/#person",
+  type: "Person",
+  name: "Bhavya Naga Sai Parvathi Kshatri",
+  description:
+    "Bhavya Naga Sai Parvathi Kshatri contributes to the AegisCAN cybersecurity research track on EV.ENGINEER, including threat analysis, security monitoring, anomaly investigation and defensive cybersecurity concepts relevant to CAN-based systems.",
+  canonicalUrl: `${SITE_URL}/internships/AegisCAN#research-team`,
+  sameAs: ["https://www.linkedin.com/in/bhavya-naga-sai-parvathi-kshatri-3140251a2/"],
+  knowsAbout: ["Cybersecurity", "AI SOC analysis", "Threat detection and alert investigation"],
+  affiliations: [EV_ENGINEER.canonicalUrl],
+};
+
+/**
  * The internship programme hub at /internships. Modelled as a "Program" in
  * this registry (a descriptive, non-schema.org-specific category); the
  * corresponding JSON-LD uses CollectionPage + ItemList (see

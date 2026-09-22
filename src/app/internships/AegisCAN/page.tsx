@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import AegisCANContent from "./AegisCANContent";
 import { JsonLd } from "@/lib/structured-data/JsonLd";
+import { AEGISCAN_FAQ } from "./faq";
 import {
   SITE_URL,
   WEBSITE_ID,
@@ -8,12 +9,19 @@ import {
   websiteNode,
   evEngineerBrandNode,
   itelematicsOrgNode,
+  sudarshanaKarkalaPersonNode,
+  tanujaJadhavPersonNode,
+  bhavyaKshatriPersonNode,
+  roleNode,
+  PERSON_ID,
+  TANUJA_JADHAV_ID,
+  BHAVYA_KSHATRI_ID,
 } from "@/lib/structured-data/entities";
 
 const PAGE_URL = `${SITE_URL}/internships/AegisCAN`;
-const PAGE_TITLE = "AegisCAN | CAN Cybersecurity, BMS & BESS Student Project | EV.ENGINEER™";
+const PAGE_TITLE = "AegisCAN — CAN Cybersecurity for EV, BMS & BESS | EV.ENGINEER™";
 const PAGE_DESCRIPTION =
-  "12-week E&C/EEE engineering project covering Battery, BMS, BESS, CAN communication, validation, fault injection, cybersecurity, Python and anomaly detection.";
+  "AegisCAN is a 12-week E&C/EEE engineering research project covering Battery, BMS, BESS, CAN communication, validation, fault injection and cybersecurity.";
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
@@ -52,39 +60,11 @@ export const metadata: Metadata = {
     siteName: "EV.ENGINEER",
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
   },
 };
-
-const FAQ_ENTRIES = [
-  {
-    question: "What is AegisCAN?",
-    answer:
-      "AegisCAN is a 12-week educational R&D mini-project for 5th-semester E&C/ECE/EEE/EE students. Students build a simulation-based CAN monitoring and anomaly-detection prototype while learning Battery, BMS, BESS, CAN communication, validation engineering and embedded cybersecurity fundamentals.",
-  },
-  {
-    question: "Is AegisCAN a production cybersecurity product?",
-    answer:
-      "No. AegisCAN is an educational and research prototype — not a production BMS, commercial intrusion-detection system, certified automotive cybersecurity product, flight-qualified aerospace system or safety-certified BESS controller. All exercises run in controlled simulation/lab environments.",
-  },
-  {
-    question: "Do students need physical CAN hardware or a real battery pack?",
-    answer:
-      "No. The project is simulation-first — no high-voltage battery/BESS setup and no mandatory CAN hardware are required to complete the 12 weeks. A basic Python environment is enough.",
-  },
-  {
-    question: "Is AI/ML required for AegisCAN?",
-    answer:
-      "No. Rule-based and statistical anomaly detection are mandatory. Machine learning (Week 10) and the PyBaMM battery-modelling track are both explicitly optional advanced exercises.",
-  },
-  {
-    question: "How much time does AegisCAN take per week?",
-    answer:
-      "The project is scoped for roughly 4–6 hours per student per week alongside regular semester subjects, over 12 weeks from 21 September 2026 to 21 December 2026.",
-  },
-];
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -92,6 +72,9 @@ const jsonLd = {
     websiteNode(),
     evEngineerBrandNode(),
     itelematicsOrgNode(),
+    tanujaJadhavPersonNode(),
+    bhavyaKshatriPersonNode(),
+    sudarshanaKarkalaPersonNode(),
     {
       "@type": "WebPage",
       "@id": `${PAGE_URL}#webpage`,
@@ -112,12 +95,21 @@ const jsonLd = {
       },
     },
     {
+      // AegisCAN's primary project representation. Course extends
+      // schema.org's CreativeWork, so `creator`/`contributor` (each wrapped
+      // in a Role to carry the approved project-specific role name) is
+      // valid here without inventing non-standard properties.
       "@type": "Course",
       "@id": `${PAGE_URL}#course`,
       name: "AegisCAN — Intelligent CAN Cybersecurity for EV, BMS, BESS, Aerospace & UAV Systems",
       description: PAGE_DESCRIPTION,
       url: PAGE_URL,
       provider: { "@id": EV_ENGINEER_BRAND_ID },
+      creator: roleNode("creator", TANUJA_JADHAV_ID, "Lead Researcher · EV.ENGINEER™"),
+      contributor: [
+        roleNode("contributor", BHAVYA_KSHATRI_ID, "Cybersecurity Researcher · EV.ENGINEER™"),
+        roleNode("contributor", PERSON_ID, "Co-Researcher · EV.ENGINEER™"),
+      ],
       inLanguage: "en-US",
       educationalLevel: "Beginner (5th-semester undergraduate)",
       teaches: [
@@ -145,7 +137,7 @@ const jsonLd = {
     {
       "@type": "FAQPage",
       "@id": `${PAGE_URL}#faq`,
-      mainEntity: FAQ_ENTRIES.map((item) => ({
+      mainEntity: AEGISCAN_FAQ.map((item) => ({
         "@type": "Question",
         name: item.question,
         acceptedAnswer: {

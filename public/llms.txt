@@ -24,6 +24,12 @@ link below points to a canonical public page already listed in
 - [Internships](https://autonomous.ev.engineer/internships): Canonical hub
   for EV, battery, cybersecurity, autonomous-systems, aerospace, space and
   model-rocketry internships and student projects.
+- [AegisCAN](https://autonomous.ev.engineer/internships/AegisCAN): 12-week
+  educational R&D mini-project on Battery, BMS, BESS, CAN communication,
+  validation, fault injection and CAN cybersecurity. Initiated and led by
+  Tanuja Jadhav (Lead Researcher · EV.ENGINEER™), with Bhavya Naga Sai
+  Parvathi Kshatri (Cybersecurity Researcher · EV.ENGINEER™) and Sudarshana
+  Karkala (Co-Researcher · EV.ENGINEER™).
 - [Sudarshana Karkala](https://autonomous.ev.engineer/about/sudarshana-karkala):
   Canonical public professional profile — verified role, focus areas,
   initiatives and contact channels.

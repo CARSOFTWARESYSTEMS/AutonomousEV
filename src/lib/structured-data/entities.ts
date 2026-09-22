@@ -16,6 +16,8 @@ import {
   ITELEMATICS,
   EV_SOCIETY,
   SUDARSHANA_KARKALA,
+  TANUJA_JADHAV,
+  BHAVYA_KSHATRI,
   SITE_URL,
 } from "@/data/public-entities";
 
@@ -26,6 +28,8 @@ export const EV_ENGINEER_BRAND_ID = EV_ENGINEER.id;
 export const ITELEMATICS_ID = ITELEMATICS.id;
 export const EV_SOCIETY_ID = EV_SOCIETY.id;
 export const PERSON_ID = SUDARSHANA_KARKALA.id;
+export const TANUJA_JADHAV_ID = TANUJA_JADHAV.id;
+export const BHAVYA_KSHATRI_ID = BHAVYA_KSHATRI.id;
 // Not sourced from public-entities.ts (UFlight is referenced only in the
 // /space graph as a distinct external brand, not modelled as a full entity
 // with verified contact facts), but kept here so every page importing
@@ -67,6 +71,58 @@ export function uflightBrandNode() {
     "@id": UFLIGHT_BRAND_ID,
     name: "UFlight",
     url: "https://www.uflight.in/",
+  };
+}
+
+export function sudarshanaKarkalaPersonNode() {
+  return {
+    "@type": "Person",
+    "@id": PERSON_ID,
+    name: SUDARSHANA_KARKALA.name,
+    url: SUDARSHANA_KARKALA.canonicalUrl,
+    description: SUDARSHANA_KARKALA.description,
+    sameAs: SUDARSHANA_KARKALA.sameAs,
+    affiliation: { "@id": EV_ENGINEER_BRAND_ID },
+  };
+}
+
+export function tanujaJadhavPersonNode() {
+  return {
+    "@type": "Person",
+    "@id": TANUJA_JADHAV_ID,
+    name: TANUJA_JADHAV.name,
+    url: TANUJA_JADHAV.canonicalUrl,
+    description: TANUJA_JADHAV.description,
+    sameAs: TANUJA_JADHAV.sameAs,
+    affiliation: { "@id": EV_ENGINEER_BRAND_ID },
+  };
+}
+
+export function bhavyaKshatriPersonNode() {
+  return {
+    "@type": "Person",
+    "@id": BHAVYA_KSHATRI_ID,
+    name: BHAVYA_KSHATRI.name,
+    url: BHAVYA_KSHATRI.canonicalUrl,
+    description: BHAVYA_KSHATRI.description,
+    sameAs: BHAVYA_KSHATRI.sameAs,
+    affiliation: { "@id": EV_ENGINEER_BRAND_ID },
+  };
+}
+
+/**
+ * Wraps a Person `@id` reference in a Schema.org `Role`, so a property like
+ * `creator` or `contributor` can carry a project-specific role name without
+ * inventing a non-standard property (e.g. a made-up `leadResearcher` field).
+ * `property` is the same property name the Role is nested under (`creator`,
+ * `contributor`, …) — the documented Schema.org pattern for "this agent held
+ * this role on this work". See https://schema.org/Role.
+ */
+export function roleNode(property: "creator" | "contributor", personId: string, roleName: string) {
+  return {
+    "@type": "Role",
+    roleName,
+    [property]: { "@id": personId },
   };
 }
 

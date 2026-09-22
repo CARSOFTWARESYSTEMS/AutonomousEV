@@ -491,9 +491,10 @@ export default function InternshipsClient() {
               link="/internships/battery-aadhaar"
             />
             <ProjectCard
-              title="AegisCAN — Intelligent CAN Cybersecurity"
-              desc="Learn Battery, BMS, BESS, CAN communication, system validation and embedded cybersecurity by building an intelligent CAN monitoring and anomaly-detection prototype."
+              title="AegisCAN — CAN & BMS Cybersecurity"
+              desc="Learn Battery, BMS, BESS, CAN, validation and embedded cybersecurity through a hands-on engineering prototype."
               link="/internships/AegisCAN"
+              badge="12-Week E&C / EEE Mini Project"
               ctaLabel="Explore AegisCAN"
             />
           </Section>

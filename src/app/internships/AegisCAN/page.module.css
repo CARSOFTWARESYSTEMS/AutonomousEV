@@ -104,7 +104,41 @@
   gap: 1rem;
   justify-content: center;
   flex-wrap: wrap;
-  margin-top: 2rem;
+  margin-top: 1.75rem;
+}
+
+/* Compact project metrics strip — answers "how long / what do I get"
+   in one glance instead of another paragraph. */
+.heroMetrics {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.heroMetric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 0.5rem 1.1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+  min-width: 100px;
+}
+
+.heroMetricValue {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--accent-primary);
+}
+
+.heroMetricLabel {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 /* ─── Disclaimer ─── */
@@ -309,89 +343,23 @@
   margin-bottom: 0.9rem;
 }
 
-/* ─── Vertical Flow / Pipeline ─── */
-.flowVertical {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
-  max-width: 480px;
-  margin: 0 auto;
-}
-
-.flowVerticalStep {
-  width: 100%;
-  padding: 0.9rem 1.5rem;
-  border-radius: var(--radius-md);
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  text-align: center;
-  font-size: 0.92rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  transition: border-color 0.25s ease, transform 0.25s ease;
-}
-
-.flowVerticalStep:hover {
-  border-color: var(--accent-primary);
-  transform: translateX(4px);
-}
-
-.flowVerticalStepMuted {
-  composes: flowVerticalStep;
-  font-weight: 500;
-  color: var(--text-secondary);
-  font-size: 0.85rem;
-}
-
-.flowVerticalArrow {
-  color: var(--accent-primary);
-  font-size: 1.1rem;
-  padding: 0.35rem 0;
-  line-height: 1;
-}
-
-.flowVerticalBox {
-  width: 100%;
-  padding: 1rem 1.25rem;
-  border-radius: var(--radius-md);
-  background: linear-gradient(135deg, rgba(76, 169, 48, 0.1), rgba(6, 40, 28, 0.6));
-  border: 1px solid rgba(76, 169, 48, 0.35);
-}
-
-.flowVerticalBoxTitle {
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--accent-primary);
-  margin-bottom: 0.5rem;
-  text-align: center;
-}
-
-.flowVerticalBoxList {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-.flowVerticalBoxItem {
-  font-size: 0.82rem;
-  color: var(--text-secondary);
-  text-align: center;
-  padding: 0.35rem 0;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.03);
-}
-
-/* Horizontal wrap flow (BESS chain) */
+/* ─── Horizontal Flow / Pipeline ───
+   Desktop: wraps into rows so a long chain never forces a tall single
+   column. Mobile: collapses to one step per row with a vertical arrow
+   (see the "Responsive" block) so the sequence still reads top-to-bottom
+   without a very long scroll. */
 .flowWrap {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0;
+  gap: 0.5rem 0;
   flex-wrap: wrap;
   padding: 1.5rem 0;
+}
+
+.flowWrapPair {
+  display: inline-flex;
+  align-items: center;
 }
 
 .flowWrapStep {
@@ -406,6 +374,17 @@
   font-weight: 600;
   color: var(--text-primary);
   text-align: center;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.flowWrapStep:hover {
+  border-color: var(--accent-primary);
+}
+
+.flowWrapStepCurrent {
+  composes: flowWrapStep;
+  border-color: var(--accent-primary);
+  background: linear-gradient(135deg, rgba(76, 169, 48, 0.14), var(--glass-bg));
 }
 
 .flowWrapArrow {
@@ -413,6 +392,41 @@
   color: var(--accent-primary);
   padding: 0 0.5rem;
   flex-shrink: 0;
+}
+
+/* A wider "grouped" step (e.g. the AegisCAN detection layer) that still
+   participates in the wrap flow as a single unit. */
+.flowVerticalBox {
+  padding: 0.85rem 1.1rem;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, rgba(76, 169, 48, 0.1), rgba(6, 40, 28, 0.6));
+  border: 1px solid rgba(76, 169, 48, 0.35);
+  min-width: 200px;
+}
+
+.flowVerticalBoxTitle {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  margin-bottom: 0.45rem;
+  text-align: center;
+}
+
+.flowVerticalBoxList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.flowVerticalBoxItem {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 0.3rem 0;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.03);
 }
 
 /* ─── Tables ─── */
@@ -807,22 +821,14 @@
   color: var(--accent-primary);
 }
 
-/* ─── What's Next roadmap ─── */
-.roadmapFlow {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 520px;
-  margin: 0 auto;
-}
-
+/* ─── What's Next roadmap (uses .flowWrap for the chain) ─── */
 .roadmapStep {
-  width: 100%;
-  padding: 1.1rem 1.5rem;
+  padding: 0.85rem 1.25rem;
   border-radius: var(--radius-lg);
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   text-align: center;
+  min-width: 190px;
 }
 
 .roadmapStepCurrent {
@@ -832,20 +838,20 @@
 }
 
 .roadmapStepTitle {
-  font-size: 0.98rem;
+  font-size: 0.92rem;
   font-weight: 700;
   color: var(--text-primary);
 }
 
 .roadmapStepDesc {
-  font-size: 0.82rem;
+  font-size: 0.76rem;
   color: var(--text-secondary);
-  margin-top: 0.25rem;
+  margin-top: 0.2rem;
 }
 
 .roadmapStepBadge {
   display: inline-block;
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -853,13 +859,7 @@
   background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
   padding: 2px 10px;
   border-radius: 999px;
-  margin-top: 0.5rem;
-}
-
-.roadmapArrow {
-  color: var(--accent-primary);
-  font-size: 1.1rem;
-  padding: 0.3rem 0;
+  margin-top: 0.4rem;
 }
 
 /* ─── PyBaMM Optional Track ─── */
@@ -951,6 +951,695 @@
   text-decoration: underline;
 }
 
+/* ─── Your Mission (compact, understandable in <10s) ─── */
+.missionSentence {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 0.5rem;
+  line-height: 1.7;
+}
+
+/* ─── 3 Project Phases ─── */
+.phaseGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.phaseCard {
+  composes: card;
+  border-top: 3px solid var(--accent-primary);
+  display: flex;
+  flex-direction: column;
+}
+
+.phaseNum {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  margin-bottom: 0.4rem;
+}
+
+.phaseTitle {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.2rem;
+}
+
+.phaseWeeks {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.phaseFlow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem;
+  margin-bottom: 1.1rem;
+}
+
+.phaseFlowStep {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-border);
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+}
+
+.phaseFlowArrow {
+  color: var(--accent-primary);
+  font-size: 0.85rem;
+}
+
+.phaseOutcome {
+  margin-top: auto;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  background: rgba(76, 169, 48, 0.08);
+  border: 1px solid rgba(76, 169, 48, 0.22);
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  line-height: 1.55;
+}
+
+.phaseOutcome strong {
+  display: block;
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  margin-bottom: 0.3rem;
+}
+
+/* ─── Engineering Milestone Reviews ─── */
+.milestoneGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.milestoneCard {
+  composes: card;
+  display: flex;
+  flex-direction: column;
+}
+
+.milestoneWeekBadge {
+  align-self: flex-start;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  padding: 3px 12px;
+  border-radius: 999px;
+  margin-bottom: 0.75rem;
+}
+
+.milestoneTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.milestoneBlock {
+  margin-bottom: 1rem;
+}
+
+.milestoneBlock h4 {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  margin-bottom: 0.5rem;
+}
+
+.milestoneBlock ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.milestoneBlock li {
+  position: relative;
+  padding-left: 14px;
+}
+
+.milestoneBlock li::before {
+  content: '›';
+  position: absolute;
+  left: 0;
+  color: var(--accent-primary);
+}
+
+/* ─── Final Demo: conceptual dashboard mockup ─── */
+.dashboardMockup {
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--glass-border);
+  background: rgba(2, 12, 8, 0.75);
+  overflow: hidden;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.dashboardTitleBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.25rem;
+  background: rgba(76, 169, 48, 0.1);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.dashboardTitleBar strong {
+  font-size: 0.85rem;
+  color: var(--text-primary);
+}
+
+.dashboardStatusOk {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.15);
+  border: 1px solid rgba(76, 169, 48, 0.35);
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+
+.dashboardBody {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.dashboardPanelTitle {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.dashboardRowGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.dashboardRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0.6rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 6px;
+  font-size: 0.8rem;
+}
+
+.dashboardLabel {
+  color: var(--text-muted);
+}
+
+.dashboardValue {
+  color: var(--text-primary);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.dashboardIdChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+.dashboardIdChip {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: 'SF Mono', 'Fira Code', Menlo, Consolas, monospace;
+}
+
+.dashboardEventList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.dashboardEventRow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.6rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 6px;
+  font-size: 0.76rem;
+  flex-wrap: wrap;
+}
+
+.dashboardEventTime {
+  color: var(--text-muted);
+  font-family: 'SF Mono', 'Fira Code', Menlo, Consolas, monospace;
+  flex-shrink: 0;
+}
+
+.dashboardEventLabel {
+  color: var(--text-secondary);
+  flex: 1;
+  min-width: 140px;
+}
+
+.dashboardEventBadge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.dashboardEventBadgeOk {
+  composes: dashboardEventBadge;
+  color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.12);
+  border: 1px solid rgba(76, 169, 48, 0.3);
+}
+
+.dashboardEventBadgeMedium {
+  composes: dashboardEventBadge;
+  color: #ffc107;
+  background: rgba(255, 193, 7, 0.12);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.dashboardEventBadgeHigh {
+  composes: dashboardEventBadge;
+  color: #ff8a8a;
+  background: rgba(255, 77, 77, 0.12);
+  border: 1px solid rgba(255, 77, 77, 0.3);
+}
+
+.dashboardDetailGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  padding: 0.9rem;
+  border-radius: var(--radius-md);
+  background: rgba(76, 169, 48, 0.05);
+  border: 1px dashed rgba(76, 169, 48, 0.3);
+}
+
+.dashboardDetailItem {
+  font-size: 0.78rem;
+}
+
+.dashboardDetailItem strong {
+  display: block;
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+  font-weight: 700;
+}
+
+.dashboardDetailFull {
+  grid-column: 1 / -1;
+}
+
+/* ─── Final Demo Scenarios ─── */
+.scenarioList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.scenarioItem {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+}
+
+.scenarioNum {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(76, 169, 48, 0.12);
+  border: 1px solid rgba(76, 169, 48, 0.35);
+  color: var(--accent-primary);
+  font-weight: 700;
+  font-size: 0.82rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scenarioBody {
+  flex: 1;
+}
+
+.scenarioTitle {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.scenarioDesc {
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.scenarioFlag {
+  display: inline-block;
+  margin-top: 0.4rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #ffc107;
+  background: rgba(255, 193, 7, 0.1);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+
+/* ─── Document Submission (8 packages) ─── */
+.packageCard {
+  composes: card;
+  display: flex;
+  flex-direction: column;
+}
+
+.packageNum {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  margin-bottom: 0.4rem;
+}
+
+.submissionChecklist {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  max-width: 760px;
+  margin: 2rem auto 0;
+}
+
+.submissionChecklistItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  font-size: 0.82rem;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.submissionChecklistBox {
+  color: var(--text-muted);
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+/* ─── Career: grouped role chips ─── */
+.careerGroup {
+  margin-bottom: 1.5rem;
+}
+
+.careerGroup:last-child {
+  margin-bottom: 0;
+}
+
+.careerGroupTitle {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.6rem;
+}
+
+/* Compact scannable chip list ("Industry-Ready Skills") */
+.skillChipGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  justify-content: center;
+}
+
+.skillChip {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.08);
+  border: 1px solid rgba(76, 169, 48, 0.22);
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+}
+
+/* ─── Accordion controls (Expand All / Collapse All) ─── */
+.accordionControls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.accordionControlBtn {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+  font-family: inherit;
+}
+
+.accordionControlBtn:hover,
+.accordionControlBtn:focus-visible {
+  color: var(--accent-primary);
+  border-color: var(--accent-primary);
+}
+
+.accordionControlBtn:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.phaseBadgeOnAccordion {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ─── Responsive tables that become cards on narrow screens ───
+   Desktop: a normal <table>. Below 700px: each row becomes its own
+   card and column headers move inline via `data-label`, so a 9-column
+   test-case table never forces sideways scrolling to read one row. */
+.responsiveTable thead {
+  background: rgba(76, 169, 48, 0.08);
+}
+
+@media (max-width: 700px) {
+  .responsiveTable {
+    border: none;
+  }
+  .responsiveTable table,
+  .responsiveTable thead,
+  .responsiveTable tbody,
+  .responsiveTable th,
+  .responsiveTable td,
+  .responsiveTable tr {
+    display: block;
+    width: 100%;
+  }
+  .responsiveTable thead {
+    position: absolute;
+    left: -9999px;
+  }
+  .responsiveTable tr {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid var(--glass-border);
+  }
+  .responsiveTable tr:last-child {
+    border-bottom: none;
+  }
+  .responsiveTable td {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: flex-start;
+    text-align: right;
+    padding: 0.35rem 0;
+    border-bottom: none;
+  }
+  .responsiveTable td::before {
+    content: attr(data-label);
+    flex-shrink: 0;
+    text-align: left;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--accent-primary);
+    max-width: 40%;
+  }
+}
+
+/* ─── Project leadership attribution (small, under hero — must not
+   compete visually with the hero itself) ─── */
+.attribution {
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-top: 1.5rem;
+}
+
+.attribution a {
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.attribution a:hover {
+  color: var(--accent-primary);
+}
+
+/* ─── Research & Project Leadership ─── */
+.researcherGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.researcherCard {
+  composes: card;
+  display: flex;
+  flex-direction: column;
+}
+
+.researcherRole {
+  align-self: flex-start;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  padding: 3px 12px;
+  border-radius: 999px;
+  margin-bottom: 0.9rem;
+}
+
+.researcherName {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+  overflow-wrap: break-word;
+}
+
+.researcherAffiliation {
+  font-size: 0.82rem;
+  color: var(--accent-primary);
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.researcherFocus {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 0.9rem;
+}
+
+.researcherBody {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+  flex-grow: 1;
+}
+
+.researcherLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.researcherLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid rgba(76, 169, 48, 0.3);
+  background: rgba(76, 169, 48, 0.06);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.researcherLink:hover,
+.researcherLink:focus-visible {
+  border-color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.14);
+}
+
+.researcherLink:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+/* ─── Related programme links (internal linking) ─── */
+.relatedLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
 /* ─── Final CTA ─── */
 .finalSection {
   padding: 5.5rem 0;
@@ -992,35 +1681,71 @@
   z-index: 1;
 }
 
-/* ─── Quick jump nav ─── */
-.quickNav {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 2.5rem;
+/* ─── Long-page section navigation ───
+   Sticky strip under the site header so a student can jump between the
+   major zones of a long page without scrolling back to the hero. Pure
+   CSS position:sticky + anchor links — no scroll-spy JS. */
+.sectionNav {
+  position: sticky;
+  top: 80px;
+  z-index: 20;
+  background: rgba(4, 20, 14, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--glass-border);
 }
 
-.quickNavLink {
+.sectionNavInner {
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  padding: 0.65rem 0;
+  scrollbar-width: none;
+}
+
+.sectionNavInner::-webkit-scrollbar {
+  display: none;
+}
+
+.sectionNavLink {
+  flex-shrink: 0;
   font-size: 0.78rem;
+  font-weight: 600;
   color: var(--text-muted);
   padding: 0.4rem 0.85rem;
   border-radius: 999px;
-  border: 1px solid var(--glass-border);
-  transition: color 0.2s ease, border-color 0.2s ease;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
 
-.quickNavLink:hover {
+.sectionNavLink:hover {
   color: var(--accent-primary);
-  border-color: var(--accent-primary);
+  border-color: rgba(76, 169, 48, 0.3);
+  background: rgba(76, 169, 48, 0.08);
+}
+
+/* Anchor targets sit under the sticky nav + site header, so jumping to
+   a section doesn't tuck its heading underneath either bar. */
+.pageSection,
+.pageSectionAlt {
+  scroll-margin-top: 130px;
 }
 
 /* ─── Responsive ─── */
 @media (max-width: 1024px) {
   .cardGrid3,
   .cardGrid4,
-  .evidenceGrid {
+  .evidenceGrid,
+  .phaseGrid,
+  .milestoneGrid,
+  .dashboardRowGrid {
     grid-template-columns: repeat(2, 1fr);
+  }
+  /* 3 researcher cards read better as a single column on tablet than an
+     uneven 2+1 wrap, so this grid skips the 2-column tablet step. */
+  .researcherGrid {
+    grid-template-columns: 1fr;
   }
   .jsonGrid,
   .useCaseGrid,
@@ -1037,15 +1762,30 @@
   .breadcrumb {
     padding-top: calc(80px + 1rem);
   }
+  .heroCtas {
+    gap: 0.75rem;
+  }
   .heroCtas > * {
     width: 100%;
     max-width: 320px;
+  }
+  .heroMetrics {
+    gap: 0.4rem;
+  }
+  .heroMetric {
+    min-width: 86px;
+    padding: 0.4rem 0.8rem;
   }
   .cardGrid2,
   .cardGrid3,
   .cardGrid4,
   .evidenceGrid,
-  .checklistGrid {
+  .checklistGrid,
+  .phaseGrid,
+  .milestoneGrid,
+  .dashboardRowGrid,
+  .dashboardDetailGrid,
+  .submissionChecklist {
     grid-template-columns: 1fr;
   }
   .accordionBody {
@@ -1057,9 +1797,31 @@
   .accordionSummaryTitle {
     font-size: 0.88rem;
   }
-  .flowWrapStep {
-    font-size: 0.78rem;
-    padding: 0.55rem 0.85rem;
+  .accordionControls {
+    justify-content: center;
+  }
+  /* Flow chains become a single vertical column with a down-arrow
+     between every step, instead of wrapping chips, once the viewport
+     is too narrow for more than one chip per row anyway. */
+  .flowWrap {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .flowWrapPair {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .flowWrapStep,
+  .flowWrapStepCurrent,
+  .flowVerticalBox {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.82rem;
+  }
+  .flowWrapArrow {
+    align-self: center;
+    padding: 0.2rem 0;
+    transform: rotate(90deg);
   }
   .dataTable {
     font-size: 0.78rem;
@@ -1070,5 +1832,8 @@
   .disclaimer {
     flex-direction: column;
     text-align: left;
+  }
+  .sectionNavInner {
+    justify-content: flex-start;
   }
 }
