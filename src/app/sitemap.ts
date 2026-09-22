@@ -33,6 +33,7 @@ const ROUTES = [
   "/internships/battery-pack-design",
   "/internships/ev-help-agent",
   "/internships/ev-help-agent/usecases",
+  "/internships/evAutoRickshaw",
   "/internships/miscellaneous/startup",
   "/internships/roadmap",
   "/internships/training-internship",

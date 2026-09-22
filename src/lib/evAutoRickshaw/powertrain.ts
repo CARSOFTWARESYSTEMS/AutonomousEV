@@ -97,6 +97,28 @@ function roundHalf(value: number): number {
   return Math.round(value * 2) / 2;
 }
 
+/** Solves the max grade (%) sustainable given an available tractive force at a given speed. Shared by every gradeability calculation below so they stay consistent. */
+function gradeFromAvailableForce(
+  availableForceN: number,
+  speedMs: number,
+  massKg: number,
+  assumptions: SimulatorAssumptions,
+  overrides: EngineeringOverrides,
+): number {
+  const g = assumptions.gravityMS2;
+  const crr = overrides.rollingResistanceCoefficient ?? assumptions.rollingResistanceCoefficient;
+  const cd = overrides.dragCoefficient ?? assumptions.dragCoefficient;
+  const area = overrides.frontalAreaM2 ?? assumptions.frontalAreaM2;
+  const rho = assumptions.airDensityKgM3;
+  const fAero = 0.5 * rho * cd * area * speedMs * speedMs;
+
+  // Small-angle approximation: Frr ~= Crr * m * g (cos(theta) ~ 1 at these grades).
+  const sinTheta = (availableForceN - crr * massKg * g - fAero) / (massKg * g);
+  if (sinTheta <= 0) return 0;
+  const clampedSin = Math.min(sinTheta, 0.98);
+  return Math.max(0, Math.tan(Math.asin(clampedSin)) * 100);
+}
+
 /**
  * Sustained Gradeability @ specified speed — power-limited, always
  * computable from peak power alone: at a steady non-zero speed, P = F*v is
@@ -114,20 +136,30 @@ export function sustainedGradeabilityPct(
   const v = gradeSpeedKmh / 3.6;
   const eta = overrides.drivetrainEfficiency ?? assumptions.drivetrainEfficiency;
   const availableForce = (selectedPeakKw * 1000 * eta) / v;
+  return gradeFromAvailableForce(availableForce, v, fullLoadMassKg, assumptions, overrides);
+}
 
-  const g = assumptions.gravityMS2;
-  const crr = overrides.rollingResistanceCoefficient ?? assumptions.rollingResistanceCoefficient;
-  const cd = overrides.dragCoefficient ?? assumptions.dragCoefficient;
-  const area = overrides.frontalAreaM2 ?? assumptions.frontalAreaM2;
-  const rho = assumptions.airDensityKgM3;
-  const fAero = 0.5 * rho * cd * area * v * v;
+/** wheelTorque = motorTorque × finalDriveRatio × drivetrainEfficiency */
+export function computeWheelTorqueNm(motorTorqueNm: number, finalDriveRatio: number, drivetrainEfficiency: number): number {
+  return motorTorqueNm * finalDriveRatio * drivetrainEfficiency;
+}
 
-  // Small-angle approximation: Frr ~= Crr * m * g (cos(theta) ~ 1 at these grades).
-  const sinTheta = (availableForce - crr * fullLoadMassKg * g - fAero) / (fullLoadMassKg * g);
-  if (sinTheta <= 0) return 0;
-  const clampedSin = Math.min(sinTheta, 0.98);
-  const theta = Math.asin(clampedSin);
-  return Math.max(0, Math.tan(theta) * 100);
+/** tractiveForce = wheelTorque / wheelRadius */
+export function computeTractiveForceN(wheelTorqueNm: number, wheelRadiusM: number): number {
+  return wheelTorqueNm / wheelRadiusM;
+}
+
+/**
+ * Vehicle road speed at the motor's base (rated) RPM — the torque/power
+ * crossover. Below this speed a PMSM delivers roughly constant torque
+ * (torque-limited region); above it, roughly constant power in field
+ * weakening (power-limited region).
+ */
+export function computeBaseSpeedKmh(baseMotorRpm: number, finalDriveRatio: number, wheelRadiusM: number): number {
+  const wheelRpm = baseMotorRpm / finalDriveRatio;
+  const wheelAngularVelocityRadS = (wheelRpm * 2 * Math.PI) / 60;
+  const speedMs = wheelAngularVelocityRadS * wheelRadiusM;
+  return speedMs * 3.6;
 }
 
 /**
@@ -151,15 +183,101 @@ export function hillStartGradeabilityPct(
   overrides: EngineeringOverrides,
 ): number {
   const eta = overrides.drivetrainEfficiency ?? assumptions.drivetrainEfficiency;
-  const wheelForceN = (motorPeakTorqueNm * finalDriveRatio * eta) / wheelRadiusM;
+  const wheelTorqueNm = computeWheelTorqueNm(motorPeakTorqueNm, finalDriveRatio, eta);
+  const wheelForceN = computeTractiveForceN(wheelTorqueNm, wheelRadiusM);
+  // Aero is negligible at near-zero hill-start speed.
+  return gradeFromAvailableForce(wheelForceN, 0, fullLoadMassKg, assumptions, overrides);
+}
 
-  const g = assumptions.gravityMS2;
-  const crr = overrides.rollingResistanceCoefficient ?? assumptions.rollingResistanceCoefficient;
-  // Aero and cos(theta) correction are negligible at near-zero hill-start speed.
-  const sinTheta = (wheelForceN - crr * fullLoadMassKg * g) / (fullLoadMassKg * g);
-  if (sinTheta <= 0) return 0;
-  const clampedSin = Math.min(sinTheta, 0.98);
-  return Math.max(0, Math.tan(Math.asin(clampedSin)) * 100);
+export type GradeabilityRegion = "torque-limited" | "power-limited";
+
+export interface GradeabilityAtSpeed {
+  pct: number;
+  region: GradeabilityRegion;
+  /** Present when the region assignment is a conservative estimate rather than a confirmed crossover (e.g. base RPM not supplied). */
+  note: string | null;
+}
+
+/**
+ * Hill Performance at an arbitrary road speed — reports whichever region
+ * actually governs at that speed. Power-limited gradeability is always
+ * computable from peak power. Torque-limited gradeability additionally
+ * needs motor peak torque, final-drive ratio and wheel radius; without a
+ * base-motor-RPM assumption to place the torque/power crossover, the more
+ * conservative (lower) of the two figures is reported rather than guessing
+ * which region applies.
+ */
+export function gradeabilityAtSpeedKmh(
+  speedKmh: number,
+  selectedPeakKw: number,
+  fullLoadMassKg: number,
+  assumptions: SimulatorAssumptions,
+  overrides: EngineeringOverrides,
+): GradeabilityAtSpeed {
+  const powerLimitedPct = sustainedGradeabilityPct(selectedPeakKw, fullLoadMassKg, speedKmh, assumptions, overrides);
+
+  const { motorPeakTorqueNm, finalDriveRatio, wheelRadiusM, baseMotorRpm } = overrides;
+  if (motorPeakTorqueNm === undefined || finalDriveRatio === undefined || wheelRadiusM === undefined) {
+    return { pct: powerLimitedPct, region: "power-limited", note: null };
+  }
+
+  const eta = overrides.drivetrainEfficiency ?? assumptions.drivetrainEfficiency;
+  const wheelTorqueNm = computeWheelTorqueNm(motorPeakTorqueNm, finalDriveRatio, eta);
+  const torqueForceN = computeTractiveForceN(wheelTorqueNm, wheelRadiusM);
+  const torqueLimitedPct = gradeFromAvailableForce(torqueForceN, speedKmh / 3.6, fullLoadMassKg, assumptions, overrides);
+
+  if (baseMotorRpm === undefined) {
+    const conservativeNote = "Base motor RPM not supplied — reporting the more conservative estimate rather than assuming which region applies.";
+    return torqueLimitedPct <= powerLimitedPct
+      ? { pct: torqueLimitedPct, region: "torque-limited", note: conservativeNote }
+      : { pct: powerLimitedPct, region: "power-limited", note: conservativeNote };
+  }
+
+  const baseSpeedKmh = computeBaseSpeedKmh(baseMotorRpm, finalDriveRatio, wheelRadiusM);
+  return speedKmh <= baseSpeedKmh
+    ? { pct: torqueLimitedPct, region: "torque-limited", note: null }
+    : { pct: powerLimitedPct, region: "power-limited", note: null };
+}
+
+export interface SustainedClimbCheck {
+  gradePct: number;
+  speedKmh: number;
+  requiredWheelPowerKw: number;
+  requiredMotorPowerKw: number;
+  /** Positive = margin below the continuous rating; negative = exceeds it and would rely on the (time-limited) peak rating. */
+  continuousRatingMarginKw: number;
+  thermalValidationRequired: true;
+}
+
+/**
+ * Motor Thermal Duty — Sustained Climb Check. Compares the power required
+ * to hold a given grade/speed/duration against the motor's *continuous*
+ * rating (not peak), since a loaded commercial vehicle climbing for minutes
+ * at a time cares about thermal duty, not just instantaneous torque. This
+ * does not simulate winding temperature — it only flags whether the
+ * continuous rating covers the requirement, and always reports that
+ * detailed thermal validation is still required.
+ */
+export function computeSustainedClimbCheck(
+  gradePct: number,
+  speedKmh: number,
+  fullLoadMassKg: number,
+  continuousPowerKw: number,
+  assumptions: SimulatorAssumptions,
+  overrides: EngineeringOverrides,
+): SustainedClimbCheck {
+  const requiredMotorPowerKw = hillClimbPowerRequirementKw(fullLoadMassKg, gradePct, speedKmh, assumptions, overrides);
+  const eta = overrides.drivetrainEfficiency ?? assumptions.drivetrainEfficiency;
+  const requiredWheelPowerKw = requiredMotorPowerKw * eta;
+
+  return {
+    gradePct,
+    speedKmh,
+    requiredWheelPowerKw,
+    requiredMotorPowerKw,
+    continuousRatingMarginKw: continuousPowerKw - requiredMotorPowerKw,
+    thermalValidationRequired: true,
+  };
 }
 
 const NOMINAL_VOLTAGE_MAP: Record<VoltageClass, number> = {

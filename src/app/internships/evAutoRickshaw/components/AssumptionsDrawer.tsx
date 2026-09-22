@@ -13,8 +13,6 @@ const ASSUMPTION_FIELDS: { key: keyof SimulatorAssumptions; label: string; step:
   { key: "drivetrainEfficiency", label: "Drivetrain efficiency", step: 0.01 },
   { key: "chargerEfficiency", label: "Charger efficiency", step: 0.01 },
   { key: "usableSocWindow", label: "Usable SOC window", step: 0.01 },
-  { key: "reserveFraction", label: "Reserve fraction", step: 0.01 },
-  { key: "degradationAllowance", label: "Degradation allowance", step: 0.01 },
   { key: "packSpecificEnergyWhPerKg", label: "Pack specific energy (Wh/kg)", step: 1 },
   { key: "batteryCostPerKWhInr", label: "Battery cost (₹/kWh)", step: 100 },
   { key: "electricityTariffInrPerKWh", label: "Electricity tariff (₹/kWh)", step: 0.5 },
@@ -36,7 +34,8 @@ export function AssumptionsDrawer({ sim, onClose }: { sim: EvSimulator; onClose:
 
         <p className={styles.fieldHint} style={{ marginBottom: "1rem" }}>
           These are concept-level planning assumptions, editable here for exploration. They are not supplier
-          quotations, test results or homologated values.
+          quotations, test results or homologated values. Battery reserve and degradation margin are controlled by
+          Optimization Priority (Simple mode) or the Battery group in Engineering mode, not here.
         </p>
 
         {ASSUMPTION_FIELDS.map((field) => (

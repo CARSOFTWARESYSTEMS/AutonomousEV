@@ -30,7 +30,19 @@ export interface CompetitorSpec {
   gradeabilityPct: number | null;
   chargingTimeHours: number | null;
   chargingNote: string | null;
+  /**
+   * Unladen kerb weight ONLY — never GVW (gross/laden weight) or "dry
+   * weight". These are frequently confused in secondary automotive listings
+   * (a real example: a secondary source mislabeled Bajaj RE E-TEC 9.0's 708
+   * kg GVW/dry-weight figure as "kerb weight", when its actual kerb weight
+   * is 362 kg per the OEM's own financing arm and a second independent
+   * secondary source). Verify against at least two sources before setting
+   * this field, and use gvwKg for the gross figure instead of overloading
+   * this one.
+   */
   kerbWeightKg: number | null;
+  /** Gross Vehicle Weight (laden) — kept separate from kerbWeightKg, never substituted for it. */
+  gvwKg: number | null;
   vehicleWarranty: string | null;
   approxPriceInr: number | null;
   priceNote: string | null;
@@ -55,6 +67,7 @@ export const COMPETITORS: CompetitorSpec[] = [
     chargingTimeHours: 3.5,
     chargingNote: "3 kW off-board charger; 0-80% in ~2h15m, 0-100% in ~3h30m.",
     kerbWeightKg: 457,
+    gvwKg: null,
     vehicleWarranty: "6 years / 150,000 km",
     approxPriceInr: 328000,
     priceNote: "No OEM price published; two secondary figures found (₹2.95L and ₹3.28L) — shown here is the better-corroborated figure, state/variant-dependent.",
@@ -79,13 +92,19 @@ export const COMPETITORS: CompetitorSpec[] = [
     gradeabilityPct: 29,
     chargingTimeHours: 4.5,
     chargingNote: "3-pin 16A on-board charger; full charge ~4h30m, under 3h to 80%.",
-    kerbWeightKg: 708,
+    // Verified 2026-09-22: an earlier version of this dataset listed 708 kg as kerb weight,
+    // sourced from 91trucks.com — but that figure is actually GVW/dry weight. Bajaj's own
+    // financing arm (bajajautocredit.com) and CarDekho both independently list 708 kg as
+    // "GVW/Dry Weight" and separately give 362 kg as kerb weight. Corrected accordingly.
+    kerbWeightKg: 362,
+    gvwKg: 708,
     vehicleWarranty: "36 months / 80,000 km",
     approxPriceInr: 376000,
     priceNote: "Ex-showroom Delhi per secondary sources (₹3.27L–3.76L across states/variants); no OEM price published.",
     sources: [
       { label: "Bajaj RE E-TEC 9.0 — OEM brochure (PDF)", url: "https://www.bajajauto.com/-/media/assets/bajajauto/three-wheelers/ev/bajaj-re-etec-90.pdf", kind: "OEM" },
-      { label: "91Trucks — Bajaj RE E-TEC 9.0", url: "https://www.91trucks.com/auto-rickshaws/bajaj/re-e-tec-90", kind: "secondary" },
+      { label: "Bajaj Auto Credit — RE E-TEC 9.0 (weight specs)", url: "https://www.bajajautocredit.com/three-wheeler-loan/bajaj-ev-re-e-tech-9.0", kind: "secondary" },
+      { label: "CarDekho Trucks — Bajaj RE E-TEC 9.0 specifications", url: "https://trucks.cardekho.com/en/trucks/bajaj/re-e-tec-9-0/specifications", kind: "secondary" },
     ],
   },
   {
@@ -105,6 +124,7 @@ export const COMPETITORS: CompetitorSpec[] = [
     chargingTimeHours: 4.5,
     chargingNote: "Full charge in ~4h30m per OEM; charger type/power not confirmed on the OEM page.",
     kerbWeightKg: null,
+    gvwKg: null,
     vehicleWarranty: "5 years / 120,000 km",
     approxPriceInr: 373500,
     priceNote: "₹3.69L–3.78L ex-showroom Delhi across two variants; no OEM price published.",
@@ -130,6 +150,7 @@ export const COMPETITORS: CompetitorSpec[] = [
     chargingTimeHours: 3.75,
     chargingNote: "~3h45m full charge; charger type/power not published by OEM or secondary sources.",
     kerbWeightKg: 448,
+    gvwKg: null,
     vehicleWarranty: "5 years",
     approxPriceInr: 388000,
     priceNote: "₹3.88L ex-showroom per secondary source; effective price may be lower after state EV subsidies. No OEM price published.",

@@ -14,6 +14,13 @@ describe("sitemap", () => {
     expect(urls).toContain("https://autonomous.ev.engineer/design-development/passenger-taxi");
   });
 
+  it("includes the renamed EV Auto Rickshaw route and not the old misspelled one", () => {
+    const entries = sitemap();
+    const urls = entries.map((e) => e.url);
+    expect(urls).toContain("https://autonomous.ev.engineer/internships/evAutoRickshaw");
+    expect(urls).not.toContain("https://autonomous.ev.engineer/internships/evAutoRiksha");
+  });
+
   it("lists /space exactly once, with its canonical (non-trailing-slash) URL and a real lastModified date", () => {
     const entries = sitemap();
     const urls = entries.map((e) => e.url);

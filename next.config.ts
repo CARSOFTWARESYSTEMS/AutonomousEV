@@ -37,6 +37,13 @@ const nextConfig: NextConfig = {
         destination: "/aerospace",
         permanent: true,
       },
+      {
+        // Corrected route spelling (evAutoRiksha -> evAutoRickshaw). Query
+        // parameters on the incoming request are passed through automatically.
+        source: "/internships/evAutoRiksha",
+        destination: "/internships/evAutoRickshaw",
+        permanent: true,
+      },
     ];
   },
 

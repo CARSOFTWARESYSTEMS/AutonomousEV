@@ -1,10 +1,10 @@
-import { EV_AUTO_RIKSHA_FAQ } from "../faq";
+import { EV_AUTO_RICKSHAW_FAQ } from "../faq";
 import styles from "../page.module.css";
 
 export function FaqSection() {
   return (
     <div className={styles.accordionList}>
-      {EV_AUTO_RIKSHA_FAQ.map((entry) => (
+      {EV_AUTO_RICKSHAW_FAQ.map((entry) => (
         <details className={styles.accordionItem} key={entry.question}>
           <summary className={styles.faqSummary}>
             <span className={styles.accordionSummaryTitle}>{entry.question}</span>

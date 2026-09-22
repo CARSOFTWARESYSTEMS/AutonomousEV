@@ -1,5 +1,6 @@
 "use client";
 
+import { computeHeroTargets } from "@/lib/evAutoRickshaw/heroTargets";
 import { useState } from "react";
 import styles from "./page.module.css";
 import { AssumptionsDrawer } from "./components/AssumptionsDrawer";
@@ -19,6 +20,11 @@ import { TcoSection } from "./components/TcoSection";
 import { useEvSimulator } from "./components/useSimulator";
 import { VehicleSection } from "./components/VehicleSection";
 
+// Computed once from the same runSimulation() every other consumer calls —
+// never a hand-typed number, so it cannot drift out of sync with the engine
+// the way a hardcoded hero chip previously did.
+const heroTargets = computeHeroTargets();
+
 const SECTION_NAV = [
   { id: "configure", label: "Configure" },
   { id: "vehicle", label: "Vehicle" },
@@ -33,7 +39,7 @@ const SECTION_NAV = [
   { id: "roadmap", label: "Roadmap" },
 ];
 
-export default function EvAutoRikshaContent() {
+export default function EvAutoRickshawContent() {
   const sim = useEvSimulator();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [mobileResultOpen, setMobileResultOpen] = useState(false);
@@ -74,10 +80,16 @@ export default function EvAutoRikshaContent() {
 
             <div className={styles.targetStrip}>
               <span className={styles.targetChip}>D+6</span>
-              <span className={styles.targetChip}>10–11.5 kWh Base Target</span>
-              <span className={styles.targetChip}>120–140 km Practical Range Target</span>
+              <span className={styles.targetChip}>
+                {heroTargets.batteryKWhLow.toFixed(1)}–{heroTargets.batteryKWhHigh.toFixed(1)} kWh Base Target
+              </span>
+              <span className={styles.targetChip}>
+                {Math.round(heroTargets.rangeKmLow)}–{Math.round(heroTargets.rangeKmHigh)} km Practical Range Target
+              </span>
               <span className={styles.targetChip}>50 km/h</span>
-              <span className={styles.targetChip}>₹4.0–4.5 L Target Price</span>
+              <span className={styles.targetChip}>
+                ₹{(heroTargets.priceInrLow / 100000).toFixed(1)}–{(heroTargets.priceInrHigh / 100000).toFixed(1)} L Target Price
+              </span>
             </div>
           </div>
 

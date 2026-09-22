@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import EvAutoRikshaContent from "../EvAutoRikshaContent";
+import EvAutoRickshawContent from "../EvAutoRickshawContent";
 
 describe("EV Auto Rickshaw configurator interactivity", () => {
   it("updates the recommendation panel when the daily distance slider changes", () => {
@@ -9,7 +9,7 @@ describe("EV Auto Rickshaw configurator interactivity", () => {
     // input[type=range] (a documented jsdom gap, not a browser limitation),
     // so this exercises the same onChange path a real drag/arrow-key
     // interaction would trigger via fireEvent.change instead.
-    render(<EvAutoRikshaContent />);
+    render(<EvAutoRickshawContent />);
 
     const before = screen.getByTestId("result-range").textContent;
 
@@ -22,7 +22,7 @@ describe("EV Auto Rickshaw configurator interactivity", () => {
 
   it("updates the recommendation panel when passenger capacity changes", async () => {
     const user = userEvent.setup();
-    render(<EvAutoRikshaContent />);
+    render(<EvAutoRickshawContent />);
 
     const beforePrice = screen.getByTestId("result-selling-price").textContent;
 
@@ -34,7 +34,7 @@ describe("EV Auto Rickshaw configurator interactivity", () => {
 
   it("updates configuration when a preset is applied", async () => {
     const user = userEvent.setup();
-    render(<EvAutoRikshaContent />);
+    render(<EvAutoRickshawContent />);
 
     const beforePrice = screen.getByTestId("result-selling-price").textContent;
 
@@ -46,7 +46,7 @@ describe("EV Auto Rickshaw configurator interactivity", () => {
 
   it("switches to Engineering mode and shows the Reset to Recommended control", async () => {
     const user = userEvent.setup();
-    render(<EvAutoRikshaContent />);
+    render(<EvAutoRickshawContent />);
 
     await user.click(screen.getByRole("button", { name: "Engineering" }));
 

@@ -189,7 +189,7 @@ export const HARSH_YADAV: PublicEntity = {
 /**
  * Dr. Shilajit Das — battery degradation researcher, National Institute of
  * Technology Karnataka (NITK), Surathkal. Contributes research perspective
- * to the EV Auto Rickshaw simulator (/internships/evAutoRiksha) via the
+ * to the EV Auto Rickshaw simulator (/internships/evAutoRickshaw) via the
  * page's "About the Researchers" section. No internal profile page exists
  * for him on this site, so `id`/`canonicalUrl` follow the same
  * LinkedIn-anchored pattern as the other externally-affiliated researchers
@@ -203,7 +203,7 @@ export const SHILAJIT_DAS: PublicEntity = {
   name: "Dr. Shilajit Das",
   description:
     "Dr. Shilajit Das researches degradation of lithium-ion batteries — battery ageing, battery health, and battery life and reliability — at the National Institute of Technology Karnataka, Surathkal.",
-  canonicalUrl: `${SITE_URL}/internships/evAutoRiksha#about-researchers`,
+  canonicalUrl: `${SITE_URL}/internships/evAutoRickshaw#about-researchers`,
   sameAs: ["https://www.linkedin.com/in/shilajit-das-66978b228/"],
   knowsAbout: [
     "Lithium-ion battery degradation",

@@ -4,7 +4,7 @@ export type FaqEntry = { question: string; answer: string };
  * Single source of truth for the visible FAQ accordion and the FAQPage
  * JSON-LD in page.tsx — keeps both in sync.
  */
-export const EV_AUTO_RIKSHA_FAQ: FaqEntry[] = [
+export const EV_AUTO_RICKSHAW_FAQ: FaqEntry[] = [
   {
     question: "How large should an electric auto battery be?",
     answer:

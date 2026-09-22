@@ -528,7 +528,7 @@ export default function InternshipsClient() {
             <ProjectCard
               title="EV Auto Rickshaw"
               desc="D+6 electric three-wheeler configurator, engineering simulator and business-plan platform for Tier-2/Tier-3 South India."
-              link="/internships/evAutoRiksha"
+              link="/internships/evAutoRickshaw"
               badge="EV Engineering R&D Simulator"
               ctaLabel="Configure the EV"
             />

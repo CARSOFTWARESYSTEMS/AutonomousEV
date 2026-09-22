@@ -315,7 +315,7 @@ const GROUP_LABELS: Record<EngGroup, string> = {
 
 export function EngineeringControls({ sim }: { sim: EvSimulator }) {
   const [openGroup, setOpenGroup] = useState<EngGroup | null>("battery");
-  const { overrides, updateOverride, resetToRecommended } = sim;
+  const { requirement, overrides, updateOverride, resetToRecommended } = sim;
 
   return (
     <div className={styles.configuratorPanel}>
@@ -413,12 +413,23 @@ export function EngineeringControls({ sim }: { sim: EvSimulator }) {
                       onChange={(v) => updateOverride("usableSocWindow", v / 100)}
                     />
                     <SliderField
-                      label="Degradation Allowance"
-                      value={(overrides.degradationAllowance ?? 0.08) * 100}
+                      label="Reserve Fraction"
+                      value={(overrides.reserveFraction ?? OPTIMIZATION_PRIORITY_SETTINGS[requirement.optimizationPriority].reserveFraction) * 100}
                       min={0}
                       max={20}
                       step={1}
                       unit="%"
+                      hint="Defaults from Optimization Priority; overriding here takes precedence."
+                      onChange={(v) => updateOverride("reserveFraction", v / 100)}
+                    />
+                    <SliderField
+                      label="Degradation Allowance"
+                      value={(overrides.degradationAllowance ?? OPTIMIZATION_PRIORITY_SETTINGS[requirement.optimizationPriority].degradationAllowance) * 100}
+                      min={0}
+                      max={20}
+                      step={1}
+                      unit="%"
+                      hint="Defaults from Optimization Priority; overriding here takes precedence."
                       onChange={(v) => updateOverride("degradationAllowance", v / 100)}
                     />
                     <SliderField

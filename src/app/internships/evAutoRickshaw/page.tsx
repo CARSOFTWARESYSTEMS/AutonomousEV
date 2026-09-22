@@ -13,10 +13,10 @@ import {
   shilajitDasPersonNode,
   roleNode,
 } from "@/lib/structured-data/entities";
-import EvAutoRikshaContent from "./EvAutoRikshaContent";
-import { EV_AUTO_RIKSHA_FAQ } from "./faq";
+import EvAutoRickshawContent from "./EvAutoRickshawContent";
+import { EV_AUTO_RICKSHAW_FAQ } from "./faq";
 
-const PAGE_URL = `${SITE_URL}/internships/evAutoRiksha`;
+const PAGE_URL = `${SITE_URL}/internships/evAutoRickshaw`;
 const PAGE_TITLE = "Electric Auto Rickshaw Design Simulator | D+6 EV Engineering & Cost Model | EV.ENGINEER™";
 const PAGE_DESCRIPTION =
   "Configure and simulate a D+6 electric auto rickshaw for Indian Tier-2 and Tier-3 cities. Explore battery sizing, BMS, motor, charging, range, cost, TCO, maintenance, fleet charging and business models.";
@@ -124,7 +124,7 @@ const jsonLd = {
     {
       "@type": "FAQPage",
       "@id": `${PAGE_URL}#faq`,
-      mainEntity: EV_AUTO_RIKSHA_FAQ.map((item) => ({
+      mainEntity: EV_AUTO_RICKSHAW_FAQ.map((item) => ({
         "@type": "Question",
         name: item.question,
         acceptedAnswer: {
@@ -136,11 +136,11 @@ const jsonLd = {
   ],
 };
 
-export default function EvAutoRikshaPage() {
+export default function EvAutoRickshawPage() {
   return (
     <div style={{ minHeight: "100vh" }}>
       <JsonLd data={jsonLd} />
-      <EvAutoRikshaContent />
+      <EvAutoRickshawContent />
     </div>
   );
 }

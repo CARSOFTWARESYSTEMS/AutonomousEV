@@ -5,6 +5,8 @@
  * be unit tested in isolation and reused by any UI surface.
  */
 
+import type { DailyDutyScenario } from "./dailyDuty";
+
 export type PassengerCapacity = 3 | 4 | 5 | 6;
 
 export type Terrain = "flat" | "mixed" | "hilly";
@@ -82,8 +84,18 @@ export interface EngineeringOverrides {
   controllerEfficiency?: number;
   drivetrainEfficiency?: number;
   finalDriveRatio?: number;
-  /** Motor peak torque at the shaft. Left unset unless an engineer supplies it — hill-start gradeability is only computed when this is present; otherwise the UI states it requires torque-curve validation rather than inventing a number. */
+  /** Motor peak torque at the shaft. Left unset unless an engineer supplies it — hill-start/torque-limited gradeability is only computed when this is present; otherwise the UI states it requires torque-curve validation rather than inventing a number. Engineering Assumption. */
   motorPeakTorqueNm?: number;
+  /** Motor continuous (thermally sustainable) torque at the shaft. Feeds the Sustained Climb Check's continuous-rating margin when supplied. Engineering Assumption. */
+  motorContinuousTorqueNm?: number;
+  /** Motor RPM at which it transitions from constant-torque to constant-power (field weakening). Needed to know which region governs gradeability at a given road speed. Engineering Assumption. */
+  baseMotorRpm?: number;
+  /** Motor's maximum RPM — cross-checked against the max-speed requirement via final-drive ratio and wheel radius when supplied. Engineering Assumption. */
+  maxMotorRpm?: number;
+  /** Controller continuous current rating — informational; not yet load-bearing in a calculation. Engineering Assumption. */
+  controllerContinuousCurrentA?: number;
+  /** Controller peak current rating — cross-checked against the estimated peak battery current when supplied. Engineering Assumption. */
+  controllerPeakCurrentA?: number;
   /** Speed at which "sustained gradeability" is evaluated (power-limited, not torque-limited). */
   gradeSpeedKmh?: number;
   regenRecoveryFraction?: number;
@@ -177,6 +189,13 @@ export interface BatteryRecommendation {
   requiredDailyEnergyWh: number;
 }
 
+export interface HillPerformancePoint {
+  speedKmh: number;
+  pct: number;
+  region: "torque-limited" | "power-limited";
+  note: string | null;
+}
+
 export interface PowertrainRecommendation {
   continuousPowerKw: number;
   peakPowerKw: number;
@@ -190,6 +209,16 @@ export interface PowertrainRecommendation {
    * `null` (never a guessed number) until that assumption is provided.
    */
   hillStartGradeabilityPct: number | null;
+  /** Hill Performance at 10/20/25/30 km/h, each labeled torque- or power-limited. */
+  hillPerformance: HillPerformancePoint[];
+  sustainedClimbCheck: {
+    gradePct: number;
+    speedKmh: number;
+    requiredWheelPowerKw: number;
+    requiredMotorPowerKw: number;
+    continuousRatingMarginKw: number;
+    thermalValidationRequired: true;
+  };
   peakBatteryCurrentA: number;
   warning: string | null;
 }
@@ -325,6 +354,7 @@ export interface SimulatorOutputs {
   powertrain: PowertrainRecommendation;
   charging: ChargingResult;
   cost: CostBreakdown;
+  dailyDuty: DailyDutyScenario[];
   warnings: ConfigurationWarning[];
   budgetStatus: "within-budget" | "above-budget";
 }
