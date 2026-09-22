@@ -19,6 +19,7 @@ import {
   TANUJA_JADHAV,
   BHAVYA_KSHATRI,
   HARSH_YADAV,
+  SHILAJIT_DAS,
   SITE_URL,
 } from "@/data/public-entities";
 
@@ -32,6 +33,7 @@ export const PERSON_ID = SUDARSHANA_KARKALA.id;
 export const TANUJA_JADHAV_ID = TANUJA_JADHAV.id;
 export const BHAVYA_KSHATRI_ID = BHAVYA_KSHATRI.id;
 export const HARSH_YADAV_ID = HARSH_YADAV.id;
+export const SHILAJIT_DAS_ID = SHILAJIT_DAS.id;
 // Not sourced from public-entities.ts (UFlight is referenced only in the
 // /space graph as a distinct external brand, not modelled as a full entity
 // with verified contact facts), but kept here so every page importing
@@ -122,6 +124,25 @@ export function harshYadavPersonNode() {
     sameAs: HARSH_YADAV.sameAs,
     knowsAbout: HARSH_YADAV.knowsAbout,
     affiliation: { "@id": EV_ENGINEER_BRAND_ID },
+  };
+}
+
+/**
+ * Dr. Shilajit Das is independently affiliated with NITK Surathkal, not with
+ * EV.ENGINEER, so — unlike the AegisCAN researcher nodes above — this node
+ * does not set `affiliation` to the EV.ENGINEER brand. His institution is
+ * given as an inline Organization node (name only, no fabricated URL/id).
+ */
+export function shilajitDasPersonNode() {
+  return {
+    "@type": "Person",
+    "@id": SHILAJIT_DAS_ID,
+    name: SHILAJIT_DAS.name,
+    url: SHILAJIT_DAS.canonicalUrl,
+    description: SHILAJIT_DAS.description,
+    sameAs: SHILAJIT_DAS.sameAs,
+    knowsAbout: SHILAJIT_DAS.knowsAbout,
+    affiliation: { "@type": "Organization", name: "National Institute of Technology Karnataka, Surathkal" },
   };
 }
 

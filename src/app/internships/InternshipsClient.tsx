@@ -526,6 +526,13 @@ export default function InternshipsClient() {
 
           <Section title="Proof of Concept">
             <ProjectCard
+              title="EV Auto Rickshaw"
+              desc="D+6 electric three-wheeler configurator, engineering simulator and business-plan platform for Tier-2/Tier-3 South India."
+              link="/internships/evAutoRiksha"
+              badge="EV Engineering R&D Simulator"
+              ctaLabel="Configure the EV"
+            />
+            <ProjectCard
               title="Autonomous Air Taxi (eVTOL)"
               desc="End-to-end design lifecycle for urban air mobility."
               link="/design-development/passenger-taxi"

@@ -1,0 +1,2757 @@
+/* ─── AegisCAN Page ─── */
+
+/* Breadcrumb */
+.breadcrumb {
+  padding-top: calc(80px + 1.25rem);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.breadcrumb a {
+  color: var(--text-muted);
+}
+
+.breadcrumb a:hover {
+  color: var(--accent-primary);
+}
+
+.breadcrumb span[aria-current] {
+  color: var(--text-secondary);
+}
+
+/* Hero */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding-top: 2.5rem;
+  padding-bottom: 4rem;
+}
+
+.heroGlow {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 140vw;
+  height: 120vh;
+  background: radial-gradient(circle, rgba(76, 169, 48, 0.08) 0%, rgba(0, 0, 0, 0) 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.heroInner {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.heroPillRow {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 1.75rem;
+}
+
+.heroPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.4rem 1.1rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.08);
+  border: 1px solid rgba(76, 169, 48, 0.25);
+}
+
+.heroTitle {
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  font-weight: 800;
+  line-height: 1.05;
+  color: #fff;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.03em;
+}
+
+.heroSubtitle {
+  font-size: clamp(1.1rem, 2.4vw, 1.5rem);
+  font-weight: 600;
+  color: var(--accent-primary);
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+
+.heroDesc {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  max-width: 720px;
+  margin: 0 auto 1rem;
+  line-height: 1.7;
+}
+
+.heroDesc + .heroDesc {
+  margin-top: -0.25rem;
+}
+
+.heroCtas {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1.75rem;
+}
+
+/* Compact project metrics strip — answers "how long / what do I get"
+   in one glance instead of another paragraph. */
+.heroMetrics {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.heroMetric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 0.5rem 1.1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+  min-width: 100px;
+}
+
+.heroMetricValue {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--accent-primary);
+}
+
+.heroMetricLabel {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ─── Disclaimer ─── */
+.disclaimer {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1.5rem 1.75rem;
+  border-radius: var(--radius-lg);
+  background: rgba(76, 169, 48, 0.06);
+  border: 1px solid rgba(76, 169, 48, 0.28);
+  max-width: 880px;
+  margin: 2.5rem auto 0;
+}
+
+.disclaimerIcon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.disclaimerText {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.disclaimerText strong {
+  color: var(--text-primary);
+}
+
+/* ─── Sections ─── */
+.pageSection {
+  padding: 4.5rem 0;
+  position: relative;
+}
+
+.pageSectionAlt {
+  padding: 4.5rem 0;
+  position: relative;
+  background: rgba(4, 20, 14, 0.4);
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.sectionHeaderLeft {
+  text-align: left;
+  margin-bottom: 2.5rem;
+}
+
+.sectionNumber {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.1);
+  border: 1px solid rgba(76, 169, 48, 0.2);
+  padding: 0.3rem 1rem;
+  border-radius: 999px;
+  margin-bottom: 1rem;
+}
+
+.sectionTitle {
+  font-size: clamp(1.6rem, 3.4vw, 2.1rem);
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.6rem;
+}
+
+.sectionSubtitle {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.sectionHeaderLeft .sectionSubtitle {
+  margin: 0;
+}
+
+.bodyText {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  max-width: 820px;
+}
+
+.bodyText + .bodyText {
+  margin-top: 1rem;
+}
+
+.bodyTextCenter {
+  composes: bodyText;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* ─── Generic Card Grids ─── */
+.cardGrid2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.cardGrid3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.cardGrid4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+
+.card {
+  padding: 1.75rem;
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-primary);
+}
+
+.cardIcon {
+  font-size: 1.6rem;
+  margin-bottom: 0.75rem;
+}
+
+.cardTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.cardBody {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+.cardList {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.cardList li {
+  position: relative;
+  padding-left: 16px;
+}
+
+.cardList li::before {
+  content: '›';
+  position: absolute;
+  left: 0;
+  color: var(--accent-primary);
+  font-weight: 700;
+}
+
+.cardEyebrow {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  margin-bottom: 0.6rem;
+}
+
+/* Persona cards get a footer "needs" list */
+.personaCard {
+  composes: card;
+  display: flex;
+  flex-direction: column;
+}
+
+.personaBadge {
+  align-self: flex-start;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  padding: 3px 12px;
+  border-radius: 999px;
+  margin-bottom: 0.9rem;
+}
+
+/* ─── Horizontal Flow / Pipeline ───
+   Desktop: wraps into rows so a long chain never forces a tall single
+   column. Mobile: collapses to one step per row with a vertical arrow
+   (see the "Responsive" block) so the sequence still reads top-to-bottom
+   without a very long scroll. */
+.flowWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem 0;
+  flex-wrap: wrap;
+  padding: 1.5rem 0;
+}
+
+.flowWrapPair {
+  display: inline-flex;
+  align-items: center;
+}
+
+.flowWrapStep {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.7rem 1.1rem;
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: center;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.flowWrapStep:hover {
+  border-color: var(--accent-primary);
+}
+
+.flowWrapStepCurrent {
+  composes: flowWrapStep;
+  border-color: var(--accent-primary);
+  background: linear-gradient(135deg, rgba(76, 169, 48, 0.14), var(--glass-bg));
+}
+
+.flowWrapArrow {
+  font-size: 1.2rem;
+  color: var(--accent-primary);
+  padding: 0 0.5rem;
+  flex-shrink: 0;
+}
+
+/* A wider "grouped" step (e.g. the AegisCAN detection layer) that still
+   participates in the wrap flow as a single unit. */
+.flowVerticalBox {
+  padding: 0.85rem 1.1rem;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, rgba(76, 169, 48, 0.1), rgba(6, 40, 28, 0.6));
+  border: 1px solid rgba(76, 169, 48, 0.35);
+  min-width: 200px;
+}
+
+.flowVerticalBoxTitle {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  margin-bottom: 0.45rem;
+  text-align: center;
+}
+
+.flowVerticalBoxList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.flowVerticalBoxItem {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 0.3rem 0;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* ─── Tables ─── */
+.tableWrapper {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  margin-bottom: 1.5rem;
+}
+
+.dataTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.dataTable thead {
+  background: rgba(76, 169, 48, 0.08);
+}
+
+.dataTable th {
+  padding: 12px 14px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent-primary);
+  border-bottom: 1px solid var(--glass-border);
+  white-space: nowrap;
+}
+
+.dataTable td {
+  padding: 11px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  color: var(--text-secondary);
+  vertical-align: top;
+}
+
+.dataTable tbody tr:hover {
+  background: rgba(76, 169, 48, 0.04);
+}
+
+.dataTable tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.dataTable code {
+  font-size: 0.78rem;
+  color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.1);
+  padding: 1px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/* ─── Code Block (JSON samples) ─── */
+.codeBlockWrapper {
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--glass-border);
+  background: rgba(2, 12, 8, 0.75);
+  overflow: hidden;
+}
+
+.codeBlockHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1.1rem;
+  background: rgba(76, 169, 48, 0.08);
+  border-bottom: 1px solid var(--glass-border);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+}
+
+.codeBlock {
+  margin: 0;
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+  font-family: 'SF Mono', 'Fira Code', Menlo, Consolas, monospace;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: #cdeccb;
+  white-space: pre;
+}
+
+.jsonGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+/* ─── Use Case Lists ─── */
+.useCaseGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.useCasePanel {
+  padding: 1.75rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+}
+
+.useCasePanelPositive {
+  composes: useCasePanel;
+  border-color: rgba(76, 169, 48, 0.3);
+}
+
+.useCasePanelNegative {
+  composes: useCasePanel;
+  border-color: rgba(255, 77, 77, 0.25);
+}
+
+.useCasePanelTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.useCasePanelTitlePositive {
+  composes: useCasePanelTitle;
+  color: var(--accent-primary);
+}
+
+.useCasePanelTitleNegative {
+  composes: useCasePanelTitle;
+  color: #ff8a8a;
+}
+
+.useCaseList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.useCaseList li {
+  position: relative;
+  padding-left: 18px;
+}
+
+.useCasePanelPositive .useCaseList li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--accent-primary);
+  font-weight: 700;
+}
+
+.useCasePanelNegative .useCaseList li::before {
+  content: '✕';
+  position: absolute;
+  left: 0;
+  color: #ff8a8a;
+  font-weight: 700;
+}
+
+/* ─── Accordion (Weekly Plan / FAQ) using <details> ─── */
+.accordionList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.accordionItem {
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  overflow: hidden;
+}
+
+.accordionItem[open] {
+  border-color: rgba(76, 169, 48, 0.35);
+}
+
+.accordionSummary {
+  cursor: pointer;
+  list-style: none;
+  padding: 1.1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.accordionSummary::-webkit-details-marker {
+  display: none;
+}
+
+.accordionSummary:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: -2px;
+}
+
+.accordionSummaryLeft {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.accordionWeekNum {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.1);
+  border: 1px solid rgba(76, 169, 48, 0.2);
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.accordionSummaryTitle {
+  font-size: 0.95rem;
+}
+
+.accordionChevron {
+  color: var(--accent-primary);
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+
+.accordionItem[open] .accordionChevron {
+  transform: rotate(180deg);
+}
+
+.accordionBody {
+  padding: 0 1.5rem 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.accordionBodyBlock h4 {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  margin-bottom: 0.5rem;
+}
+
+.accordionBodyBlock ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.accordionBodyBlock li {
+  position: relative;
+  padding-left: 14px;
+}
+
+.accordionBodyBlock li::before {
+  content: '›';
+  position: absolute;
+  left: 0;
+  color: var(--accent-primary);
+}
+
+.accordionBodyFull {
+  grid-column: 1 / -1;
+}
+
+/* FAQ-style accordion (simpler, single column) */
+.faqSummary {
+  composes: accordionSummary;
+  font-size: 0.94rem;
+}
+
+.faqBody {
+  padding: 0 1.5rem 1.25rem;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* ─── Checklists ─── */
+.checklistGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem 1.5rem;
+}
+
+.checklistItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  padding: 0.5rem 0;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+}
+
+.checklistCheck {
+  color: var(--accent-primary);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.evidenceGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+.evidenceItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.7rem 0.9rem;
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.evidenceNum {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  flex-shrink: 0;
+}
+
+/* ─── Status / Gate Cards ─── */
+.gateGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.gateCard {
+  composes: card;
+}
+
+.gateStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(255, 193, 7, 0.12);
+  border: 1px solid rgba(255, 193, 7, 0.35);
+  color: #ffc107;
+  margin-bottom: 1rem;
+}
+
+/* ─── Career / Skills ─── */
+.pillGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.rolePill {
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-border);
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.rolePill:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+/* ─── What's Next roadmap (uses .flowWrap for the chain) ─── */
+.roadmapStep {
+  padding: 0.85rem 1.25rem;
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  text-align: center;
+  min-width: 190px;
+}
+
+.roadmapStepCurrent {
+  composes: roadmapStep;
+  border-color: var(--accent-primary);
+  background: linear-gradient(135deg, rgba(76, 169, 48, 0.12), var(--glass-bg));
+}
+
+.roadmapStepTitle {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.roadmapStepDesc {
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  margin-top: 0.2rem;
+}
+
+.roadmapStepBadge {
+  display: inline-block;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  padding: 2px 10px;
+  border-radius: 999px;
+  margin-top: 0.4rem;
+}
+
+/* ─── PyBaMM Optional Track ─── */
+.optionalBanner {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bg-dark);
+  background: var(--accent-primary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  margin-bottom: 0.9rem;
+}
+
+.optionalCard {
+  composes: card;
+  border-style: dashed;
+  border-color: rgba(76, 169, 48, 0.4);
+}
+
+.discrepancyRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  margin: 1.5rem 0;
+}
+
+.discrepancyBox {
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  text-align: center;
+  min-width: 180px;
+}
+
+.discrepancyLabel {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.3rem;
+}
+
+.discrepancyValue {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.discrepancyValueAlert {
+  composes: discrepancyValue;
+  color: #ff8a8a;
+}
+
+/* ─── References ─── */
+.refColumns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.refList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.refItem {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  padding-bottom: 0.85rem;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+}
+
+.refItem a {
+  color: var(--accent-primary);
+  font-weight: 600;
+}
+
+.refItem a:hover {
+  text-decoration: underline;
+}
+
+/* ─── Your Mission (compact, understandable in <10s) ─── */
+.missionSentence {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 0.5rem;
+  line-height: 1.7;
+}
+
+/* ─── 3 Project Phases ─── */
+.phaseGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.phaseCard {
+  composes: card;
+  border-top: 3px solid var(--accent-primary);
+  display: flex;
+  flex-direction: column;
+}
+
+.phaseNum {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  margin-bottom: 0.4rem;
+}
+
+.phaseTitle {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.2rem;
+}
+
+.phaseWeeks {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.phaseFlow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem;
+  margin-bottom: 1.1rem;
+}
+
+.phaseFlowStep {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-border);
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+}
+
+.phaseFlowArrow {
+  color: var(--accent-primary);
+  font-size: 0.85rem;
+}
+
+.phaseOutcome {
+  margin-top: auto;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  background: rgba(76, 169, 48, 0.08);
+  border: 1px solid rgba(76, 169, 48, 0.22);
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  line-height: 1.55;
+}
+
+.phaseOutcome strong {
+  display: block;
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  margin-bottom: 0.3rem;
+}
+
+/* ─── Engineering Milestone Reviews ─── */
+.milestoneGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.milestoneCard {
+  composes: card;
+  display: flex;
+  flex-direction: column;
+}
+
+.milestoneWeekBadge {
+  align-self: flex-start;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  padding: 3px 12px;
+  border-radius: 999px;
+  margin-bottom: 0.75rem;
+}
+
+.milestoneTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.milestoneBlock {
+  margin-bottom: 1rem;
+}
+
+.milestoneBlock h4 {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  margin-bottom: 0.5rem;
+}
+
+.milestoneBlock ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.milestoneBlock li {
+  position: relative;
+  padding-left: 14px;
+}
+
+.milestoneBlock li::before {
+  content: '›';
+  position: absolute;
+  left: 0;
+  color: var(--accent-primary);
+}
+
+/* ─── Final Demo: conceptual dashboard mockup ─── */
+.dashboardMockup {
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--glass-border);
+  background: rgba(2, 12, 8, 0.75);
+  overflow: hidden;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.dashboardTitleBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.25rem;
+  background: rgba(76, 169, 48, 0.1);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.dashboardTitleBar strong {
+  font-size: 0.85rem;
+  color: var(--text-primary);
+}
+
+.dashboardStatusOk {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.15);
+  border: 1px solid rgba(76, 169, 48, 0.35);
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+
+.dashboardBody {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.dashboardPanelTitle {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.dashboardRowGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.dashboardRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0.6rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 6px;
+  font-size: 0.8rem;
+}
+
+.dashboardLabel {
+  color: var(--text-muted);
+}
+
+.dashboardValue {
+  color: var(--text-primary);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.dashboardIdChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+.dashboardIdChip {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: 'SF Mono', 'Fira Code', Menlo, Consolas, monospace;
+}
+
+.dashboardEventList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.dashboardEventRow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.6rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 6px;
+  font-size: 0.76rem;
+  flex-wrap: wrap;
+}
+
+.dashboardEventTime {
+  color: var(--text-muted);
+  font-family: 'SF Mono', 'Fira Code', Menlo, Consolas, monospace;
+  flex-shrink: 0;
+}
+
+.dashboardEventLabel {
+  color: var(--text-secondary);
+  flex: 1;
+  min-width: 140px;
+}
+
+.dashboardEventBadge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.dashboardEventBadgeOk {
+  composes: dashboardEventBadge;
+  color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.12);
+  border: 1px solid rgba(76, 169, 48, 0.3);
+}
+
+.dashboardEventBadgeMedium {
+  composes: dashboardEventBadge;
+  color: #ffc107;
+  background: rgba(255, 193, 7, 0.12);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.dashboardEventBadgeHigh {
+  composes: dashboardEventBadge;
+  color: #ff8a8a;
+  background: rgba(255, 77, 77, 0.12);
+  border: 1px solid rgba(255, 77, 77, 0.3);
+}
+
+.dashboardDetailGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  padding: 0.9rem;
+  border-radius: var(--radius-md);
+  background: rgba(76, 169, 48, 0.05);
+  border: 1px dashed rgba(76, 169, 48, 0.3);
+}
+
+.dashboardDetailItem {
+  font-size: 0.78rem;
+}
+
+.dashboardDetailItem strong {
+  display: block;
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+  font-weight: 700;
+}
+
+.dashboardDetailFull {
+  grid-column: 1 / -1;
+}
+
+/* ─── Final Demo Scenarios ─── */
+.scenarioList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.scenarioItem {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+}
+
+.scenarioNum {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(76, 169, 48, 0.12);
+  border: 1px solid rgba(76, 169, 48, 0.35);
+  color: var(--accent-primary);
+  font-weight: 700;
+  font-size: 0.82rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scenarioBody {
+  flex: 1;
+}
+
+.scenarioTitle {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.scenarioDesc {
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.scenarioFlag {
+  display: inline-block;
+  margin-top: 0.4rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #ffc107;
+  background: rgba(255, 193, 7, 0.1);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+
+/* ─── Document Submission (8 packages) ─── */
+.packageCard {
+  composes: card;
+  display: flex;
+  flex-direction: column;
+}
+
+.packageNum {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  margin-bottom: 0.4rem;
+}
+
+.submissionChecklist {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  max-width: 760px;
+  margin: 2rem auto 0;
+}
+
+.submissionChecklistItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  font-size: 0.82rem;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.submissionChecklistBox {
+  color: var(--text-muted);
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+/* ─── Career: grouped role chips ─── */
+.careerGroup {
+  margin-bottom: 1.5rem;
+}
+
+.careerGroup:last-child {
+  margin-bottom: 0;
+}
+
+.careerGroupTitle {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.6rem;
+}
+
+/* Compact scannable chip list ("Industry-Ready Skills") */
+.skillChipGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  justify-content: center;
+}
+
+.skillChip {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.08);
+  border: 1px solid rgba(76, 169, 48, 0.22);
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+}
+
+/* ─── Accordion controls (Expand All / Collapse All) ─── */
+.accordionControls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.accordionControlBtn {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+  font-family: inherit;
+}
+
+.accordionControlBtn:hover,
+.accordionControlBtn:focus-visible {
+  color: var(--accent-primary);
+  border-color: var(--accent-primary);
+}
+
+.accordionControlBtn:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.phaseBadgeOnAccordion {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ─── Responsive tables that become cards on narrow screens ───
+   Desktop: a normal <table>. Below 700px: each row becomes its own
+   card and column headers move inline via `data-label`, so a 9-column
+   test-case table never forces sideways scrolling to read one row. */
+.responsiveTable thead {
+  background: rgba(76, 169, 48, 0.08);
+}
+
+@media (max-width: 700px) {
+  .responsiveTable {
+    border: none;
+  }
+  .responsiveTable table,
+  .responsiveTable thead,
+  .responsiveTable tbody,
+  .responsiveTable th,
+  .responsiveTable td,
+  .responsiveTable tr {
+    display: block;
+    width: 100%;
+  }
+  .responsiveTable thead {
+    position: absolute;
+    left: -9999px;
+  }
+  .responsiveTable tr {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid var(--glass-border);
+  }
+  .responsiveTable tr:last-child {
+    border-bottom: none;
+  }
+  .responsiveTable td {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: flex-start;
+    text-align: right;
+    padding: 0.35rem 0;
+    border-bottom: none;
+  }
+  .responsiveTable td::before {
+    content: attr(data-label);
+    flex-shrink: 0;
+    text-align: left;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--accent-primary);
+    max-width: 40%;
+  }
+}
+
+/* ─── Project leadership attribution (small, under hero — must not
+   compete visually with the hero itself) ─── */
+.attribution {
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-top: 1.5rem;
+}
+
+.attribution a {
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.attribution a:hover {
+  color: var(--accent-primary);
+}
+
+/* ─── Research & Project Leadership ─── */
+.researcherGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.researcherCard {
+  composes: card;
+  display: flex;
+  flex-direction: column;
+}
+
+.researcherRole {
+  align-self: flex-start;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  padding: 3px 12px;
+  border-radius: 999px;
+  margin-bottom: 0.9rem;
+}
+
+.researcherName {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+  overflow-wrap: break-word;
+}
+
+.researcherAffiliation {
+  font-size: 0.82rem;
+  color: var(--accent-primary);
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.researcherFocus {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 0.9rem;
+}
+
+.researcherBody {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+  flex-grow: 1;
+}
+
+.researcherLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.researcherLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid rgba(76, 169, 48, 0.3);
+  background: rgba(76, 169, 48, 0.06);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.researcherLink:hover,
+.researcherLink:focus-visible {
+  border-color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.14);
+}
+
+.researcherLink:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+/* ─── Related programme links (internal linking) ─── */
+.relatedLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+/* ─── Final CTA ─── */
+.finalSection {
+  padding: 5.5rem 0;
+  text-align: center;
+  position: relative;
+}
+
+.finalGlow {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80vw;
+  height: 300px;
+  background: radial-gradient(ellipse, rgba(76, 169, 48, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.finalTitle {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 0.75rem;
+}
+
+.finalDesc {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  max-width: 620px;
+  margin: 0 auto 2rem;
+}
+
+.finalCtas {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+
+/* ─── Long-page section navigation ───
+   Sticky strip under the site header so a student can jump between the
+   major zones of a long page without scrolling back to the hero. Pure
+   CSS position:sticky + anchor links — no scroll-spy JS. */
+.sectionNav {
+  position: sticky;
+  top: 80px;
+  z-index: 20;
+  background: rgba(4, 20, 14, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.sectionNavInner {
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  padding: 0.65rem 0;
+  scrollbar-width: none;
+}
+
+.sectionNavInner::-webkit-scrollbar {
+  display: none;
+}
+
+.sectionNavLink {
+  flex-shrink: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.sectionNavLink:hover {
+  color: var(--accent-primary);
+  border-color: rgba(76, 169, 48, 0.3);
+  background: rgba(76, 169, 48, 0.08);
+}
+
+/* Anchor targets sit under the sticky nav + site header, so jumping to
+   a section doesn't tuck its heading underneath either bar. */
+.pageSection,
+.pageSectionAlt {
+  scroll-margin-top: 130px;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 1024px) {
+  .cardGrid3,
+  .cardGrid4,
+  .evidenceGrid,
+  .phaseGrid,
+  .milestoneGrid,
+  .dashboardRowGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  /* 4 researcher cards stay a balanced 2×2 grid through tablet; it only
+     drops to a single column at the mobile breakpoint below. */
+  .jsonGrid,
+  .useCaseGrid,
+  .refColumns,
+  .gateGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding-top: 1.5rem;
+  }
+  .breadcrumb {
+    padding-top: calc(80px + 1rem);
+  }
+  .heroCtas {
+    gap: 0.75rem;
+  }
+  .heroCtas > * {
+    width: 100%;
+    max-width: 320px;
+  }
+  .heroMetrics {
+    gap: 0.4rem;
+  }
+  .heroMetric {
+    min-width: 86px;
+    padding: 0.4rem 0.8rem;
+  }
+  .cardGrid2,
+  .cardGrid3,
+  .cardGrid4,
+  .evidenceGrid,
+  .checklistGrid,
+  .phaseGrid,
+  .milestoneGrid,
+  .dashboardRowGrid,
+  .dashboardDetailGrid,
+  .submissionChecklist,
+  .researcherGrid {
+    grid-template-columns: 1fr;
+  }
+  .accordionBody {
+    grid-template-columns: 1fr;
+  }
+  .accordionSummary {
+    padding: 1rem;
+  }
+  .accordionSummaryTitle {
+    font-size: 0.88rem;
+  }
+  .accordionControls {
+    justify-content: center;
+  }
+  /* Flow chains become a single vertical column with a down-arrow
+     between every step, instead of wrapping chips, once the viewport
+     is too narrow for more than one chip per row anyway. */
+  .flowWrap {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .flowWrapPair {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .flowWrapStep,
+  .flowWrapStepCurrent,
+  .flowVerticalBox {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.82rem;
+  }
+  .flowWrapArrow {
+    align-self: center;
+    padding: 0.2rem 0;
+    transform: rotate(90deg);
+  }
+  .dataTable {
+    font-size: 0.78rem;
+  }
+  .codeBlock {
+    font-size: 0.74rem;
+  }
+  .disclaimer {
+    flex-direction: column;
+    text-align: left;
+  }
+  .sectionNavInner {
+    justify-content: flex-start;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   EV Auto Rickshaw Configurator — additions on top of the shared
+   AegisCAN section/card/table primitives above.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Data classification badges (spec: subtle, not aggressive) ─── */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.tagTarget {
+  composes: tag;
+  color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.1);
+  border-color: rgba(76, 169, 48, 0.25);
+}
+
+.tagSimulated {
+  composes: tag;
+  color: #7dd3fc;
+  background: rgba(56, 189, 248, 0.1);
+  border-color: rgba(56, 189, 248, 0.25);
+}
+
+.tagCompetitor {
+  composes: tag;
+  color: #d8b4fe;
+  background: rgba(168, 85, 247, 0.1);
+  border-color: rgba(168, 85, 247, 0.25);
+}
+
+.tagCost {
+  composes: tag;
+  color: #fcd34d;
+  background: rgba(252, 211, 77, 0.1);
+  border-color: rgba(252, 211, 77, 0.25);
+}
+
+.tagValidate {
+  composes: tag;
+  color: #fca5a5;
+  background: rgba(252, 165, 165, 0.1);
+  border-color: rgba(252, 165, 165, 0.25);
+}
+
+.tagRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+}
+
+/* ─── Concept target strip (hero) ─── */
+.targetStrip {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.75rem;
+}
+
+.targetChip {
+  padding: 0.55rem 1.1rem;
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* ─── Configurator layout ─── */
+.configuratorLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 2rem;
+  align-items: start;
+}
+
+.configuratorPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.resultPanel {
+  position: sticky;
+  top: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* ─── Mode toggle / segmented control ─── */
+.segmented {
+  display: inline-flex;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-border);
+  gap: 4px;
+}
+
+.segmentedOption {
+  padding: 0.5rem 1.15rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+  min-height: 40px;
+}
+
+.segmentedOptionActive {
+  composes: segmentedOption;
+  background: var(--accent-primary);
+  color: var(--bg-dark);
+}
+
+/* ─── Preset cards ─── */
+.presetGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.9rem;
+}
+
+.presetCard {
+  text-align: left;
+  padding: 1rem 1.1rem;
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+  min-height: 44px;
+}
+
+.presetCard:hover {
+  transform: translateY(-2px);
+}
+
+.presetCardActive {
+  composes: presetCard;
+  border-color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.08);
+}
+
+.presetTitle {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.3rem;
+}
+
+.presetDesc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ─── Field / control primitives ─── */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.fieldRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.fieldLabel {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.fieldValue {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.fieldHint {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 44px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.slider::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.slider::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  margin-top: -8px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  border: 3px solid var(--bg-dark);
+  box-shadow: 0 0 0 1px rgba(76, 169, 48, 0.5);
+}
+
+.slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  border: 3px solid var(--bg-dark);
+  box-shadow: 0 0 0 1px rgba(76, 169, 48, 0.5);
+}
+
+.segmentGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.segmentChip {
+  padding: 0.6rem 1rem;
+  min-height: 44px;
+  min-width: 44px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.segmentChipActive {
+  composes: segmentChip;
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.1);
+}
+
+.toggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.toggle {
+  position: relative;
+  width: 48px;
+  height: 28px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--glass-border);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s ease;
+}
+
+.toggleOn {
+  composes: toggle;
+  background: var(--accent-primary);
+}
+
+.toggleKnob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.2s ease;
+}
+
+.toggleOn .toggleKnob {
+  transform: translateX(20px);
+}
+
+/* ─── Engineering mode collapsible groups ─── */
+.engGroup {
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  overflow: hidden;
+}
+
+.engGroupSummary {
+  composes: accordionSummary;
+  /* accordionSummary was designed for a <summary> element, which has no UA
+     background/border/sizing to reset. This is a <button> instead (so
+     Engineering-mode groups can be controlled from React state alongside
+     "Reset to Recommended"), so the native button appearance must be reset
+     explicitly or the browser's default button chrome shows through. */
+  appearance: none;
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  text-align: left;
+  font: inherit;
+}
+
+.engGroupBody {
+  padding: 0 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+/* ─── Recommendation summary card ─── */
+.resultCard {
+  composes: card;
+  padding: 1.5rem;
+}
+
+.resultHeading {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.3rem;
+}
+
+.resultTitle {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.resultGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem 1.25rem;
+}
+
+.resultStat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.resultStatLabel {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.resultStatValue {
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.statusPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  margin-top: 0.5rem;
+}
+
+.statusWithin {
+  composes: statusPill;
+  color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.12);
+  border: 1px solid rgba(76, 169, 48, 0.3);
+}
+
+.statusAbove {
+  composes: statusPill;
+  color: #fcd34d;
+  background: rgba(252, 211, 77, 0.1);
+  border: 1px solid rgba(252, 211, 77, 0.3);
+}
+
+/* ─── Mass / cost stacked bar ─── */
+.stackBar {
+  display: flex;
+  width: 100%;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+}
+
+.stackSegment {
+  height: 100%;
+}
+
+.stackLegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  margin-top: 0.9rem;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.legendDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+/* ─── Warnings / assessment list ─── */
+.warningList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.warningCard {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.9rem 1.1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.warningCardCaution {
+  composes: warningCard;
+  border-color: rgba(252, 211, 77, 0.3);
+  background: rgba(252, 211, 77, 0.05);
+}
+
+.warningTitle {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.2rem;
+}
+
+.warningMessage {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.assessmentSuitable {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.9rem 1.1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(76, 169, 48, 0.3);
+  background: rgba(76, 169, 48, 0.06);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+/* ─── Mobile sticky result bar ─── */
+.mobileBar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
+  background: rgba(4, 20, 14, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid var(--glass-border);
+}
+
+.mobileBarStats {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.mobileBarSub {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* ─── Budget allocation bars ─── */
+.allocBar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.allocRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.allocLabel {
+  width: 150px;
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.allocTrack {
+  flex: 1;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.allocFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary));
+  border-radius: 999px;
+}
+
+.allocValue {
+  width: 76px;
+  flex-shrink: 0;
+  text-align: right;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Architecture diagram ─── */
+.diagram {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.diagramRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.diagramBox {
+  padding: 0.85rem 1.25rem;
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: center;
+  min-width: 150px;
+}
+
+.diagramBoxAccent {
+  composes: diagramBox;
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.diagramArrowDown {
+  color: var(--accent-primary);
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0.25rem 0;
+}
+
+.diagramBranch {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.diagramBranchCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.diagramCaption {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.canBusRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--glass-border);
+}
+
+/* ─── Trade-off comparison ─── */
+.tradeoffGrid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+
+.tradeoffCol {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.tradeoffRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.tradeoffArrowUp {
+  color: #fca5a5;
+  font-weight: 700;
+}
+
+.tradeoffArrowDown {
+  color: var(--accent-primary);
+  font-weight: 700;
+}
+
+.tradeoffVs {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+/* ─── Assumptions drawer ─── */
+.drawerOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 90;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.drawerPanel {
+  width: min(480px, 100%);
+  height: 100%;
+  background: var(--bg-deep);
+  border-left: 1px solid var(--glass-border);
+  overflow-y: auto;
+  padding: 1.75rem;
+}
+
+.drawerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.drawerCloseBtn {
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.assumptionRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+}
+
+.assumptionLabel {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+.assumptionInput {
+  width: 96px;
+  padding: 0.4rem 0.6rem;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Business Model Canvas ─── */
+.canvasGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: auto auto;
+  gap: 1rem;
+}
+
+.canvasCell {
+  composes: card;
+  padding: 1.1rem;
+}
+
+/* Chained `composes` (canvasCellWide -> canvasCell -> card) does not reliably
+   resolve through this project's CSS Modules pipeline, so compose `card`
+   directly here rather than through canvasCell. */
+.canvasCellWide {
+  composes: card;
+  padding: 1.1rem;
+  grid-column: span 2;
+}
+
+/* ─── Comparison tabs (EV / CNG / Petrol) ─── */
+.tabRow {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.tab {
+  padding: 0.6rem 1.2rem;
+  min-height: 44px;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  border: 1px solid var(--glass-border);
+  border-bottom: none;
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tabActive {
+  composes: tab;
+  background: var(--glass-bg);
+  color: var(--accent-primary);
+  border-color: var(--accent-primary);
+}
+
+/* ─── Copy link / print controls ─── */
+.utilityRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.linkButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.55rem 1.1rem;
+  min-height: 44px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.linkButton:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+/* ─── Competitor cards (mobile) ─── */
+.competitorCardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.competitorSourceRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.competitorSourceLink {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+}
+
+.competitorSourceLink:hover {
+  color: var(--accent-primary);
+}
+
+/* ─── Print / report view ─── */
+@media print {
+  .mobileBar,
+  .sectionNav,
+  .drawerOverlay,
+  .printHide {
+    display: none !important;
+  }
+  .pageSectionAlt {
+    background: none;
+  }
+}
+
+/* ─── Responsive: EV Auto Rickshaw configurator ─── */
+@media (max-width: 1024px) {
+  .configuratorLayout {
+    grid-template-columns: 1fr;
+  }
+  .resultPanel {
+    position: static;
+  }
+  .presetGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .canvasGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .canvasCellWide {
+    grid-column: span 2;
+  }
+  .tradeoffGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .resultGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .presetGrid {
+    grid-template-columns: 1fr;
+  }
+  .mobileBar {
+    display: flex;
+  }
+  .configuratorPanel {
+    padding-bottom: 4.5rem;
+  }
+  .allocLabel {
+    width: 100px;
+    font-size: 0.72rem;
+  }
+  .diagramBranch {
+    flex-direction: column;
+    align-items: center;
+  }
+  .canvasGrid {
+    grid-template-columns: 1fr;
+  }
+  .canvasCellWide {
+    grid-column: span 1;
+  }
+  .drawerPanel {
+    width: 100%;
+  }
+}
