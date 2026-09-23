@@ -17,16 +17,21 @@ export default function FounderContent() {
               src="/SudarshanaKarkala.jpg"
               alt="Sudarshana Karkala"
               fill
-              sizes="200px"
+              sizes="120px"
               className={styles.profileImage}
               priority
             />
           </div>
-          <h1 className={styles.heroTitle}>Sudarshana Karkala</h1>
-          <p className={styles.heroSubtitle}>EV.ENGINEER™</p>
-          <p className={styles.heroTagline}>
-            Building Battery Intelligence, Safety & Cybersecurity for eVTOL
-          </p>
+          <div className={styles.heroText}>
+            <h1 className={styles.heroTitle}>Sudarshana Karkala</h1>
+            <p className={styles.heroSubtitle}>EV.ENGINEER™</p>
+            <p className={styles.heroTagline}>
+              Building Battery Intelligence, Safety & Cybersecurity for eVTOL
+            </p>
+            <p className={styles.heroAreas}>
+              EV &amp; Battery Intelligence · Cybersecurity · Space Research · CanSat Model Rocketry
+            </p>
+          </div>
         </div>
       </section>
 
@@ -46,13 +51,18 @@ export default function FounderContent() {
           <p className={styles.description}>
             His work is centered on building next-generation systems that improve safety, reliability, and performance of EV batteries and energy infrastructure.
           </p>
-          
+          <p className={styles.description}>
+            His current areas of interest also include Space Research, CanSat Model Rocketry, aerospace engineering education and simulation-driven student R&amp;D.
+          </p>
+
           <h3 className={styles.sectionTitle} style={{ marginTop: '2rem' }}>Core Focus Areas</h3>
           <ul className={styles.focusList}>
             <li>Battery lifecycle intelligence and diagnostics</li>
             <li>AI-powered EV battery safety systems</li>
             <li>Autonomous energy management (SI-EMS)</li>
             <li>EV ecosystem platforms for India and global markets</li>
+            <li>Space Research &amp; CanSat Model Rocketry</li>
+            <li>Engineering Education &amp; Student R&amp;D</li>
           </ul>
         </div>
       </section>
@@ -82,12 +92,80 @@ export default function FounderContent() {
               <Link href="/space" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: 600 }}>
                 Space Initiative
               </Link>{" "}
-              — EV Society&apos;s aerospace and space-engineering education initiative, including the{" "}
+              — EV Society&apos;s Space Research, CanSat Model Rocketry, workshops, competitions and aerospace
+              engineering education initiative, including the{" "}
               <Link href="/space/2026-INSPACe-ROCKETRY-059" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: 600 }}>
                 Model Rocketry Learning Guide
               </Link>.
             </li>
           </ul>
+
+          <h3 className={styles.sectionTitle} style={{ marginTop: "2rem" }}>Explore</h3>
+          <div className={styles.exploreLinks}>
+            <a href="https://autonomous.ev.engineer/space" className={styles.exploreLink}>
+              Space Research →
+            </a>
+            <a href="https://autonomous.ev.engineer/workshop-gallery" className={styles.exploreLink}>
+              Workshop Gallery →
+            </a>
+            <a href="https://labs.ev.engineer/" target="_blank" rel="noopener noreferrer" className={styles.exploreLink}>
+              EV.ENGINEER Labs →
+            </a>
+            <a href="https://carsoftwaresystems.com/" target="_blank" rel="noopener noreferrer" className={styles.exploreLink}>
+              CAR Software Systems →
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* EDUCATION & PROFESSIONAL DEVELOPMENT SECTION */}
+      <section className={styles.contentSection}>
+        <div className={styles.glassCard}>
+          <h2 className={styles.sectionTitle}>Education &amp; Professional Development</h2>
+          <div className={styles.eduGrid}>
+            <div className={styles.eduCard}>
+              <p className={`${styles.eduInstitution} ${styles.eduHighlight}`}>
+                National Institute of Technology Karnataka, Surathkal
+              </p>
+              <p className={styles.eduProgram}>B.E. — Information Technology</p>
+              <p className={styles.eduMeta}>Education</p>
+            </div>
+
+            <div className={styles.eduCard}>
+              <p className={`${styles.eduInstitution} ${styles.eduHighlight}`}>IIT Madras — CODE</p>
+              <p className={styles.eduProgram}>Electric Vehicle Engineering &amp; Development</p>
+              <p className={styles.eduMeta}>
+                Certification Program · Centre for Outreach and Digital Education (CODE)
+              </p>
+            </div>
+
+            <div className={styles.eduCard}>
+              <p className={`${styles.eduInstitution} ${styles.eduHighlight}`}>
+                IN-SPACe — Department of Space, Government of India
+              </p>
+              <p className={styles.eduProgram}>Essentials of Model Rocketry</p>
+              <p className={styles.eduMeta}>Workshop · Aug 2026 · GNEC IIT Roorkee, Greater Noida</p>
+              <p className={styles.eduNote}>
+                Skill-development workshop conducted under IN-SPACe, in association with ISRO.
+              </p>
+              <Link href="/workshop-gallery" className={styles.eduLink}>
+                View Workshop Gallery →
+              </Link>
+            </div>
+
+            <div className={styles.eduCard}>
+              <p className={styles.eduInstitution}>Business P.A.C.E.</p>
+              <p className={styles.eduProgram}>Rajiv Talreja / QuantumLeap</p>
+              <p className={styles.eduMeta}>Business &amp; Entrepreneurship Development</p>
+            </div>
+
+            <div className={styles.eduCard}>
+              <p className={`${styles.eduInstitution} ${styles.eduHighlight}`}>EV Society™</p>
+              <p className={styles.eduProgram}>Certified EV Technology Officer (EVTO™) — In Progress</p>
+              <p className={styles.eduMeta}>Professional Certification</p>
+              <span className={styles.eduStatusOngoing}>Ongoing · Expected Mar 2028</span>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -163,7 +241,7 @@ export default function FounderContent() {
         <div className={styles.glassCard}>
           <h2 className={styles.sectionTitle}>Contact and Collaboration</h2>
           <p className={styles.description}>
-            Available for strategic architectural consulting and advanced automotive R&amp;D partnerships.
+            Available for <strong>strategic architecture consulting, EV battery technology, and Space R&amp;D partnerships</strong>.
           </p>
           <div style={{ display: "flex", alignItems: "center", gap: "12px", fontSize: "0.95rem", flexWrap: "wrap", marginBottom: "16px" }}>
             <a
@@ -174,18 +252,33 @@ export default function FounderContent() {
             >
               <span>📞</span> +91 9845561518
             </a>
-            <span style={{ color: "rgba(255,255,255,0.2)" }}>|</span>
+          </div>
+
+          <div className={styles.exploreLinks} style={{ marginTop: 0, marginBottom: "1.25rem" }}>
             <a
               href="https://www.linkedin.com/in/sudarshanakarkala/"
               target="_blank"
               rel="noopener noreferrer"
-              style={{ color: "var(--accent-primary)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px", fontWeight: 600 }}
+              className={styles.exploreLink}
+              aria-label="Sudarshana Karkala on LinkedIn"
               data-track-event="linkedin_profile_click"
-              data-track-section-id="profile-contact-block"
+              data-track-section-id="profile-contact-cta"
             >
-              <span>🔗</span> LinkedIn — Sudarshana Karkala
+              LinkedIn →
+            </a>
+            <a
+              href="https://carsoftwaresystems.com/public/sudarshanakarkala.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.exploreLink}
+              aria-label="View Sudarshana Karkala Resume (PDF)"
+              data-track-event="resume_view_click"
+              data-track-section-id="profile-contact-cta"
+            >
+              📄 View Resume →
             </a>
           </div>
+
           <p className={styles.description} style={{ marginBottom: 0, fontSize: "0.95rem" }}>
             For general business enquiries — internships, partnerships or media — use the{" "}
             <Link href="/contact" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: 600 }}>
@@ -198,7 +291,7 @@ export default function FounderContent() {
       {/* FRESHNESS / TRUST SIGNAL */}
       <section className={styles.contentSection}>
         <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", textAlign: "center" }}>
-          Independent public profile page. Last reviewed: 17 August 2026. See the{" "}
+          Independent public profile page. Last reviewed: 23 September 2026. See the{" "}
           <Link href="/trust-center" style={{ color: "var(--accent-primary)", textDecoration: "none" }}>
             Trust Center
           </Link>{" "}

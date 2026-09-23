@@ -48,6 +48,13 @@ export function buildProfileGraph({ title, description, dateModified }: ProfileG
       // EV.ENGINEER platform/brand and a Consultant at iTelematics.
       worksFor: { "@id": EV_ENGINEER_BRAND_ID },
       affiliation: [{ "@id": ITELEMATICS_ID }],
+      // NITK Surathkal is his degree-granting alma mater (B.E. Information
+      // Technology). Deliberately NOT modelled as a full node with its own
+      // @id since this site has no verified canonical URL for NITK; an
+      // inline Organization avoids fabricating one. IIT Madras (CODE) is a
+      // certification program, not a degree, so it is intentionally left
+      // out of alumniOf — see FounderContent.tsx's Education section.
+      alumniOf: { "@type": "CollegeOrUniversity", name: "National Institute of Technology Karnataka, Surathkal" },
       knowsAbout: SUDARSHANA_KARKALA.knowsAbout,
       sameAs: SUDARSHANA_KARKALA.sameAs,
       contactPoint: {

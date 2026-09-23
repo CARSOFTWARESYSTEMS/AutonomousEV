@@ -73,6 +73,28 @@ describe("/about/sudarshana-karkala JSON-LD entity graph", () => {
     expect(brand["@type"]).toBe("Brand");
   });
 
+  it("sets alumniOf to NITK Surathkal, not IN-SPACe, ISRO or IIT Madras", () => {
+    const person = findByType("Person");
+    expect(person.alumniOf).toEqual({
+      "@type": "CollegeOrUniversity",
+      name: "National Institute of Technology Karnataka, Surathkal",
+    });
+    expect(JSON.stringify(graph)).not.toMatch(/"alumniOf":\{[^}]*IN-SPACe/);
+    expect(JSON.stringify(graph)).not.toMatch(/"alumniOf":\{[^}]*ISRO/);
+    expect(JSON.stringify(graph)).not.toMatch(/"alumniOf":\{[^}]*IIT Madras/);
+  });
+
+  it("includes Space Research and CanSat Model Rocketry in knowsAbout", () => {
+    const person = findByType("Person");
+    expect(person.knowsAbout).toContain("Space Research");
+    expect(person.knowsAbout).toContain("CanSat Model Rocketry");
+  });
+
+  it("never sets worksFor to IN-SPACe or ISRO", () => {
+    const person = findByType("Person");
+    expect(JSON.stringify(person.worksFor)).not.toMatch(/IN-SPACe|ISRO/i);
+  });
+
   it("includes a three-item breadcrumb: Home, About, Sudarshana Karkala", () => {
     const profilePage = findByType("ProfilePage");
     const breadcrumb = profilePage.breadcrumb as Record<string, unknown>;

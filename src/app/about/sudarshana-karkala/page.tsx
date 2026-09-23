@@ -3,15 +3,27 @@ import type { Metadata } from "next";
 import { JsonLd } from "@/lib/structured-data/JsonLd";
 import { buildProfileGraph } from "@/lib/structured-data/profileGraph";
 
-const PAGE_TITLE = "Sudarshana Karkala | Profile, Projects and Contact | EV.ENGINEER™";
+const PAGE_TITLE = "Sudarshana Karkala | EV.ENGINEER™ | EV, Battery & Space Research";
 const PAGE_DESCRIPTION =
-  "Public professional profile of Sudarshana Karkala: verified role, focus areas, initiatives and contact channels. Founder of EV.ENGINEER™.";
+  "Sudarshana Karkala, EV.ENGINEER™, works across EV engineering, battery intelligence, cybersecurity, space research and CanSat model rocketry.";
 const PAGE_URL = "https://autonomous.ev.engineer/about/sudarshana-karkala";
-const LAST_REVIEWED = "2026-08-17";
+const LAST_REVIEWED = "2026-09-23";
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
   description: PAGE_DESCRIPTION,
+  keywords: [
+    "Sudarshana Karkala",
+    "EV.ENGINEER",
+    "EV battery intelligence",
+    "electric vehicle engineering",
+    "automotive cybersecurity",
+    "space research",
+    "CanSat model rocketry",
+    "National Institute of Technology Karnataka",
+    "IIT Madras",
+    "IN-SPACe",
+  ],
   alternates: {
     canonical: PAGE_URL,
   },
@@ -34,7 +46,7 @@ export const metadata: Metadata = {
     siteName: "EV.ENGINEER",
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
   },
