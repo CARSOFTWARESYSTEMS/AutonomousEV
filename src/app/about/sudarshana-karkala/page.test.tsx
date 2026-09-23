@@ -80,10 +80,11 @@ describe("/about/sudarshana-karkala canonical profile page", () => {
     expect(screen.getByText("B.E. — Information Technology")).toBeInTheDocument();
   });
 
-  it("shows the IIT Madras program name only, with no certification-program meta line, and never as a degree", () => {
+  it("shows the IIT Madras program as a Professional Certification, with no CODE meta line, and never as a degree", () => {
     render(<FounderPage />);
     expect(screen.getByText("IIT Madras — CODE")).toBeInTheDocument();
     expect(screen.getByText("Electric Vehicle Engineering & Development")).toBeInTheDocument();
+    expect(screen.getAllByText("Professional Certification").length).toBeGreaterThan(0);
     expect(document.body.textContent).not.toMatch(/Certification Program · Centre for Outreach and Digital Education/);
     expect(document.body.textContent).not.toMatch(/IIT Madras.*(degree|B\.Tech|M\.Tech)/i);
   });

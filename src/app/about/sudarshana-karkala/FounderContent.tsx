@@ -174,6 +174,7 @@ export default function FounderContent() {
             <div className={styles.eduCard}>
               <p className={`${styles.eduInstitution} ${styles.eduHighlight}`}>IIT Madras — CODE</p>
               <p className={styles.eduProgram}>Electric Vehicle Engineering &amp; Development</p>
+              <p className={styles.eduMeta}>Professional Certification</p>
             </div>
 
             <div className={styles.eduCard}>
