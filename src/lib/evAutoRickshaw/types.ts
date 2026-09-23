@@ -70,6 +70,15 @@ export interface EngineeringOverrides {
   rollingResistanceCoefficient?: number;
   auxiliaryLoadW?: number;
 
+  // Vehicle dimensions (General Arrangement drawing — see dimensions.ts). Engineering Assumption / Concept Target.
+  overallLengthMm?: number;
+  overallWidthMm?: number;
+  overallHeightMm?: number;
+  wheelbaseMm?: number;
+  frontTrackMm?: number;
+  rearTrackMm?: number;
+  groundClearanceMm?: number;
+
   // Battery
   batteryCapacityKWh?: number;
   usableSocWindow?: number; // fraction, e.g. 0.90

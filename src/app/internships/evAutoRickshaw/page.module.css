@@ -2813,3 +2813,135 @@
     width: 100%;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   Concept General Arrangement engineering drawing
+   ═══════════════════════════════════════════════════════════════ */
+.drawingSheet {
+  background: #04140E;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  /* SVG presentation-attribute colors (stroke="var(--drawing-body)") read these,
+     so the drawing's structural lines flip to dark-on-white in print instead of
+     rendering near-invisible light strokes on a white page. */
+  --drawing-body: #EAF7F1;
+  --drawing-ground: rgba(234, 247, 241, 0.5);
+  --drawing-hint: rgba(234, 247, 241, 0.4);
+}
+
+.drawingGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.drawingGridFull {
+  grid-column: 1 / -1;
+}
+
+.drawingPanel {
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.015);
+  padding: 0.75rem;
+}
+
+.drawingPanelLabel {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  margin-bottom: 0.5rem;
+}
+
+.drawingSvg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.drawingLegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.25rem;
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  margin-top: 0.75rem;
+}
+
+.drawingLegendItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.drawingTabs {
+  display: none;
+  gap: 0.4rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+  padding-bottom: 2px;
+}
+
+.drawingTab {
+  padding: 0.55rem 1rem;
+  min-height: 44px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.drawingTabActive {
+  composes: drawingTab;
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  background: rgba(76, 169, 48, 0.1);
+}
+
+@media (max-width: 1024px) {
+  .drawingGrid {
+    grid-template-columns: 1fr;
+  }
+  .drawingTabs {
+    display: flex;
+  }
+  .drawingPanel.drawingPanelHiddenMobile {
+    display: none;
+  }
+}
+
+@media print {
+  .drawingSheet {
+    background: #fff;
+    border-color: #ccc;
+    --drawing-body: #111;
+    --drawing-ground: rgba(0, 0, 0, 0.6);
+    --drawing-hint: rgba(0, 0, 0, 0.45);
+  }
+  .drawingPanel {
+    background: #fff;
+    border-color: #ccc;
+    break-inside: avoid;
+  }
+  .drawingPanelLabel {
+    color: #000;
+  }
+  .drawingTabs {
+    display: none !important;
+  }
+  .drawingGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .drawingPanel.drawingPanelHiddenMobile {
+    display: block !important;
+  }
+}

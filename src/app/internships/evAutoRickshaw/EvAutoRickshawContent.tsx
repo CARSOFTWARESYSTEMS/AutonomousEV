@@ -10,6 +10,7 @@ import { ChargingSection } from "./components/ChargingSection";
 import { CompetitorSection } from "./components/CompetitorSection";
 import { EngineeringControls, Presets, RequirementInputs } from "./components/Configurator";
 import { CostSection } from "./components/CostSection";
+import { EngineeringDrawingSection } from "./components/drawing/EngineeringDrawingSection";
 import { FaqSection, ReferencesSection, VersionFooter } from "./components/FaqSection";
 import { MobileResultBar, RecommendationPanel } from "./components/RecommendationPanel";
 import { ResearchersSection } from "./components/ResearchersSection";
@@ -296,8 +297,21 @@ export default function EvAutoRickshawContent() {
         </div>
       </section>
 
+      {/* ═══════ CONCEPT ENGINEERING DRAWING ═══════ */}
+      <section className={styles.pageSection} id="engineering-drawing">
+        <div className="container">
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Concept Engineering Drawing</h2>
+            <p className={styles.sectionSubtitle}>
+              EV Auto Rickshaw — Concept General Arrangement · D+6 Electric Passenger Three-Wheeler
+            </p>
+          </div>
+          <EngineeringDrawingSection sim={sim} />
+        </div>
+      </section>
+
       {/* ═══════ REFERENCES ═══════ */}
-      <section className={styles.pageSection} id="references">
+      <section className={styles.pageSectionAlt} id="references">
         <div className="container">
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>References</h2>
@@ -307,7 +321,7 @@ export default function EvAutoRickshawContent() {
       </section>
 
       {/* ═══════ FAQ ═══════ */}
-      <section className={styles.pageSectionAlt} id="faq">
+      <section className={styles.pageSection} id="faq">
         <div className="container">
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>Frequently Asked Questions</h2>

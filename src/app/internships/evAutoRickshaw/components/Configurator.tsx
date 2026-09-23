@@ -1,6 +1,7 @@
 "use client";
 
 import { OPTIMIZATION_PRIORITY_SETTINGS, PRESETS } from "@/lib/evAutoRickshaw/defaults";
+import { CONCEPT_TARGET_DIMENSIONS } from "@/lib/evAutoRickshaw/dimensions";
 import type {
   ChargingAvailability,
   CustomerRequirement,
@@ -387,6 +388,83 @@ export function EngineeringControls({ sim }: { sim: EvSimulator }) {
                       step={10}
                       unit=" W"
                       onChange={(v) => updateOverride("auxiliaryLoadW", v)}
+                    />
+
+                    <div className={styles.fieldLabel} style={{ marginTop: "0.5rem" }}>
+                      Vehicle Dimensions (Concept General Arrangement)
+                    </div>
+                    <SliderField
+                      label="Overall Length"
+                      value={overrides.overallLengthMm ?? CONCEPT_TARGET_DIMENSIONS.overallLengthMm}
+                      min={2900}
+                      max={3600}
+                      step={10}
+                      unit=" mm"
+                      onChange={(v) => updateOverride("overallLengthMm", v)}
+                    />
+                    <SliderField
+                      label="Overall Width"
+                      value={overrides.overallWidthMm ?? CONCEPT_TARGET_DIMENSIONS.overallWidthMm}
+                      min={1300}
+                      max={1700}
+                      step={10}
+                      unit=" mm"
+                      onChange={(v) => updateOverride("overallWidthMm", v)}
+                    />
+                    <SliderField
+                      label="Overall Height"
+                      value={overrides.overallHeightMm ?? CONCEPT_TARGET_DIMENSIONS.overallHeightMm}
+                      min={1600}
+                      max={2100}
+                      step={10}
+                      unit=" mm"
+                      onChange={(v) => updateOverride("overallHeightMm", v)}
+                    />
+                    <SliderField
+                      label="Wheelbase"
+                      value={overrides.wheelbaseMm ?? CONCEPT_TARGET_DIMENSIONS.wheelbaseMm}
+                      min={1900}
+                      max={2500}
+                      step={10}
+                      unit=" mm"
+                      onChange={(v) => updateOverride("wheelbaseMm", v)}
+                    />
+                    <SliderField
+                      label="Front Track"
+                      value={overrides.frontTrackMm ?? CONCEPT_TARGET_DIMENSIONS.frontTrackMm}
+                      min={1000}
+                      max={1500}
+                      step={10}
+                      unit=" mm"
+                      onChange={(v) => updateOverride("frontTrackMm", v)}
+                    />
+                    <SliderField
+                      label="Rear Track"
+                      value={overrides.rearTrackMm ?? CONCEPT_TARGET_DIMENSIONS.rearTrackMm}
+                      min={1000}
+                      max={1500}
+                      step={10}
+                      unit=" mm"
+                      onChange={(v) => updateOverride("rearTrackMm", v)}
+                    />
+                    <SliderField
+                      label="Ground Clearance"
+                      value={overrides.groundClearanceMm ?? CONCEPT_TARGET_DIMENSIONS.groundClearanceMm}
+                      min={140}
+                      max={230}
+                      step={5}
+                      unit=" mm"
+                      onChange={(v) => updateOverride("groundClearanceMm", v)}
+                    />
+                    <SliderField
+                      label="Wheel Radius"
+                      value={overrides.wheelRadiusM ?? 0.25}
+                      min={0.2}
+                      max={0.32}
+                      step={0.01}
+                      unit=" m"
+                      hint="Shared with the powertrain model — also drives wheel diameter in the drawing."
+                      onChange={(v) => updateOverride("wheelRadiusM", v)}
                     />
                   </>
                 ) : null}
