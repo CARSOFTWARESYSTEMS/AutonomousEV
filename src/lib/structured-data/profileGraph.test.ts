@@ -90,6 +90,21 @@ describe("/about/sudarshana-karkala JSON-LD entity graph", () => {
     expect(person.knowsAbout).toContain("CanSat Model Rocketry");
   });
 
+  it("includes the 2026 Space Systems, Avionics and Aerospace Cybersecurity focus areas in knowsAbout", () => {
+    const person = findByType("Person");
+    expect(person.knowsAbout).toContain("Space Systems & Applications");
+    expect(person.knowsAbout).toContain("Avionics & Telemetry");
+    expect(person.knowsAbout).toContain("Digital Twins");
+    expect(person.knowsAbout).toContain("Aerospace Cybersecurity");
+  });
+
+  it("sets jobTitle to the 2026 Director of Engineering positioning without claiming 20+ years of aerospace experience", () => {
+    const person = findByType("Person");
+    expect(person.jobTitle).toBe("Director of Engineering | Technology & R&D Consultant");
+    expect(JSON.stringify(person)).not.toMatch(/20\+? years?[^"]*aerospace/i);
+    expect(JSON.stringify(person)).not.toMatch(/two decades[^"]*aerospace/i);
+  });
+
   it("never sets worksFor to IN-SPACe or ISRO", () => {
     const person = findByType("Person");
     expect(JSON.stringify(person.worksFor)).not.toMatch(/IN-SPACe|ISRO/i);

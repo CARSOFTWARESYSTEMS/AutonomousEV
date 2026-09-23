@@ -106,7 +106,7 @@ export const SUDARSHANA_KARKALA: PublicEntity = {
   type: "Person",
   name: "Sudarshana Karkala",
   description:
-    "Sudarshana Karkala is a software architect and technology leader with over two decades of experience in eMobility, eVTOL, AirTaxi, security, cloud and energy systems engineering. He founded the EV.ENGINEER platform and consults for iTelematics Software Private Limited. His current areas of interest also include space research and CanSat model rocketry.",
+    "Sudarshana Karkala is an engineering and technology leader with over two decades of experience across software architecture, cybersecurity, connected systems and energy platforms. He founded the EV.ENGINEER platform and consults for iTelematics Software Private Limited. His current technology and R&D focus spans Space Systems & Applications, Avionics & Telemetry, EV Battery & Energy Intelligence, AI and Cybersecurity.",
   canonicalUrl: `${SITE_URL}/about/sudarshana-karkala`,
   publicTelephone: "+91 9845561518",
   imageUrl: `${SITE_URL}/SudarshanaKarkala.jpg`,
@@ -120,6 +120,10 @@ export const SUDARSHANA_KARKALA: PublicEntity = {
     "autonomous energy management systems",
     "Space Research",
     "CanSat Model Rocketry",
+    "Space Systems & Applications",
+    "Avionics & Telemetry",
+    "Digital Twins",
+    "Aerospace Cybersecurity",
   ],
   affiliations: [EV_ENGINEER.canonicalUrl, ITELEMATICS.canonicalUrl],
 };

@@ -60,16 +60,16 @@ export default async function OpengraphImage() {
           <div style={{ display: "flex", fontSize: 30, fontWeight: 700, color: ACCENT, marginBottom: 10, letterSpacing: 1 }}>
             EV.ENGINEER™
           </div>
-          <div style={{ display: "flex", fontSize: 66, fontWeight: 800, color: "#fff", letterSpacing: -1 }}>
+          <div style={{ display: "flex", fontSize: 60, fontWeight: 800, color: "#fff", letterSpacing: -1 }}>
             Sudarshana Karkala
           </div>
-          <div style={{ display: "flex", fontSize: 30, fontWeight: 600, color: TEXT_PRIMARY, marginTop: 24, maxWidth: 720 }}>
-            EV &amp; Battery Intelligence · Cybersecurity
+          <div style={{ display: "flex", fontSize: 27, fontWeight: 600, color: TEXT_PRIMARY, marginTop: 22, maxWidth: 740 }}>
+            Director of Engineering | Technology &amp; R&amp;D Consultant
           </div>
-          <div style={{ display: "flex", fontSize: 30, fontWeight: 600, color: TEXT_PRIMARY, marginTop: 8, maxWidth: 720 }}>
-            Space Research · CanSat Model Rocketry
+          <div style={{ display: "flex", fontSize: 24, fontWeight: 500, color: TEXT_SECONDARY, marginTop: 12, maxWidth: 740 }}>
+            Space Systems &amp; Applications · Avionics &amp; Telemetry · EV Battery Intelligence
           </div>
-          <div style={{ display: "flex", fontSize: 24, color: TEXT_SECONDARY, marginTop: 32 }}>
+          <div style={{ display: "flex", fontSize: 24, color: TEXT_SECONDARY, marginTop: 28 }}>
             autonomous.ev.engineer
           </div>
         </div>

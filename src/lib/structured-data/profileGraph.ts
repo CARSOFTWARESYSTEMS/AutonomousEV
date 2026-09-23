@@ -43,7 +43,11 @@ export function buildProfileGraph({ title, description, dateModified }: ProfileG
       url: PROFILE_URL,
       image: SUDARSHANA_KARKALA.imageUrl,
       description: SUDARSHANA_KARKALA.description,
-      jobTitle: "Founder",
+      // Matches the hero's primary positioning in FounderContent.tsx. He
+      // remains Founder of EV.ENGINEER (see worksFor/description below);
+      // jobTitle reflects the current professional headline rather than
+      // duplicating that relationship.
+      jobTitle: "Director of Engineering | Technology & R&D Consultant",
       // Verified: FounderContent.tsx states he is founder of the
       // EV.ENGINEER platform/brand and a Consultant at iTelematics.
       worksFor: { "@id": EV_ENGINEER_BRAND_ID },

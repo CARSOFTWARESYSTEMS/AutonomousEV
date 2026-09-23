@@ -26,10 +26,17 @@ export default function FounderContent() {
             <h1 className={styles.heroTitle}>Sudarshana Karkala</h1>
             <p className={styles.heroSubtitle}>EV.ENGINEER™</p>
             <p className={styles.heroTagline}>
-              Building Battery Intelligence, Safety & Cybersecurity for eVTOL
+              Director of Engineering | Technology &amp; R&amp;D Consultant
             </p>
             <p className={styles.heroAreas}>
-              EV &amp; Battery Intelligence · Cybersecurity · Space Research · CanSat Model Rocketry
+              Space Systems &amp; Applications · Avionics &amp; Telemetry · EV Battery &amp; Energy Intelligence
+            </p>
+            <p className={styles.heroSupporting}>
+              AI · Cybersecurity · Digital Twins · CanSat Model Rocketry
+            </p>
+            <p className={styles.heroExploring}>
+              Exploring Director of Engineering, Technology Consulting, Systems Architecture and R&amp;D
+              collaboration opportunities across Space, Aerospace and mission-critical EV/Energy systems.
             </p>
           </div>
         </div>
@@ -40,7 +47,19 @@ export default function FounderContent() {
         <div className={styles.glassCard}>
           <h2 className={styles.sectionTitle}>About the Founder</h2>
           <p className={styles.description}>
-            <strong>Sudarshana Karkala</strong> is a software architect and technology leader with over two decades of experience in eMobility, eVTOL, AirTaxi, security, cloud, and energy systems engineering.
+            <strong>Sudarshana Karkala</strong> is an engineering and technology leader with over two decades of
+            experience across software architecture, cybersecurity, connected systems, IoT, telematics, AI,
+            mobility, EV and energy platforms.
+          </p>
+          <p className={styles.description}>
+            His current technology and R&amp;D focus spans <strong>Space Systems &amp; Applications</strong>,{" "}
+            <strong>Avionics &amp; Telemetry</strong>, <strong>EV Battery &amp; Energy Intelligence</strong>, AI
+            and Cybersecurity.
+          </p>
+          <p className={styles.description}>
+            Through <strong>EV.ENGINEER™</strong>, he is exploring the convergence of space technology,
+            intelligent energy systems, digital twins, telemetry and cybersecurity, while mentoring engineering
+            R&amp;D initiatives in EV Battery, CanSat Model Rocketry and Space Technology.
           </p>
           <p className={styles.description}>
             He is the founder of <a href="https://ev.engineer/" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: "bold" }}>EV.ENGINEER™</a>, a platform focused on solving critical challenges in electric mobility through intelligent, scalable, and engineering-driven solutions.
@@ -48,22 +67,34 @@ export default function FounderContent() {
           <p className={styles.description}>
             He is a Consultant at <a href="https://itelematics.com" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: "bold" }}>iTelematics Software Private Limited</a>.
           </p>
-          <p className={styles.description}>
-            His work is centered on building next-generation systems that improve safety, reliability, and performance of EV batteries and energy infrastructure.
-          </p>
-          <p className={styles.description}>
-            His current areas of interest also include Space Research, CanSat Model Rocketry, aerospace engineering education and simulation-driven student R&amp;D.
-          </p>
 
           <h3 className={styles.sectionTitle} style={{ marginTop: '2rem' }}>Core Focus Areas</h3>
-          <ul className={styles.focusList}>
-            <li>Battery lifecycle intelligence and diagnostics</li>
-            <li>AI-powered EV battery safety systems</li>
-            <li>Autonomous energy management (SI-EMS)</li>
-            <li>EV ecosystem platforms for India and global markets</li>
-            <li>Space Research &amp; CanSat Model Rocketry</li>
-            <li>Engineering Education &amp; Student R&amp;D</li>
-          </ul>
+          <div className={styles.focusGrid}>
+            <div className={styles.focusCard}>
+              <p className={styles.focusCardTitle}>Space Systems &amp; Applications</p>
+              <p className={styles.focusCardDesc}>
+                Space technology R&amp;D · Space applications · Mission/Ground Systems concepts · AI/Data applications
+              </p>
+            </div>
+            <div className={styles.focusCard}>
+              <p className={styles.focusCardTitle}>Avionics &amp; Telemetry</p>
+              <p className={styles.focusCardDesc}>
+                CanSat avionics · Sensors · Telemetry · Connected systems · Secure communications
+              </p>
+            </div>
+            <div className={styles.focusCard}>
+              <p className={styles.focusCardTitle}>EV Battery &amp; Energy Intelligence</p>
+              <p className={styles.focusCardDesc}>
+                BMS · Battery Safety · Diagnostics · Digital Twin · Predictive Maintenance · Battery Cybersecurity
+              </p>
+            </div>
+            <div className={styles.focusCard}>
+              <p className={styles.focusCardTitle}>AI &amp; Cybersecurity</p>
+              <p className={styles.focusCardDesc}>
+                AI/ML · Agentic AI · Digital Twins · Connected-System Security · Aerospace/Automotive Cybersecurity
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -77,26 +108,32 @@ export default function FounderContent() {
           </p>
           <ul className={styles.focusList}>
             <li>
-              <Link href="/internships" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: 600 }}>
-                EV.ENGINEER Internships &amp; Student Projects
-              </Link>{" "}
-              — EV battery, cybersecurity, autonomous-systems and aerospace internship and project tracks.
-            </li>
-            <li>
               <Link href="/si-ems" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: 600 }}>
-                SI-EMS
+                EV Battery Intelligence
               </Link>{" "}
-              — AI-driven Energy Management Systems research for autonomous EVs.
+              — Battery diagnostics, lifecycle intelligence, safety, digital twins and cybersecurity.
             </li>
             <li>
               <Link href="/space" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: 600 }}>
-                Space Initiative
+                Space &amp; Aerospace R&amp;D
               </Link>{" "}
-              — EV Society&apos;s Space Research, CanSat Model Rocketry, workshops, competitions and aerospace
-              engineering education initiative, including the{" "}
+              — Space Systems &amp; Applications, CanSat Model Rocketry, avionics, telemetry and aerospace
+              cybersecurity, including the{" "}
               <Link href="/space/2026-INSPACe-ROCKETRY-059" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: 600 }}>
                 Model Rocketry Learning Guide
               </Link>.
+            </li>
+            <li>
+              <Link href="/space/cubesat" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: 600 }}>
+                CubeTwin — CubeSat Battery &amp; Energy Digital Twin
+              </Link>{" "}
+              — Educational R&amp;D exploring spacecraft health management, energy intelligence and safe recovery.
+            </li>
+            <li>
+              <Link href="/internships" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: 600 }}>
+                Engineering Education &amp; Research
+              </Link>{" "}
+              — Mentoring student R&amp;D through Requirements → Design → Simulation → Build → Test → Review.
             </li>
           </ul>
 
@@ -104,6 +141,9 @@ export default function FounderContent() {
           <div className={styles.exploreLinks}>
             <a href="https://autonomous.ev.engineer/space" className={styles.exploreLink}>
               Space Research →
+            </a>
+            <a href="https://autonomous.ev.engineer/space/cubesat" className={styles.exploreLink}>
+              CubeTwin →
             </a>
             <a href="https://autonomous.ev.engineer/workshop-gallery" className={styles.exploreLink}>
               Workshop Gallery →
@@ -134,9 +174,6 @@ export default function FounderContent() {
             <div className={styles.eduCard}>
               <p className={`${styles.eduInstitution} ${styles.eduHighlight}`}>IIT Madras — CODE</p>
               <p className={styles.eduProgram}>Electric Vehicle Engineering &amp; Development</p>
-              <p className={styles.eduMeta}>
-                Certification Program · Centre for Outreach and Digital Education (CODE)
-              </p>
             </div>
 
             <div className={styles.eduCard}>
@@ -162,6 +199,7 @@ export default function FounderContent() {
             <div className={styles.eduCard}>
               <p className={`${styles.eduInstitution} ${styles.eduHighlight}`}>EV Society™</p>
               <p className={styles.eduProgram}>Certified EV Technology Officer (EVTO™) — In Progress</p>
+              <p className={styles.eduNote}>Specialisation in Energy &amp; EV Battery Technologies in Aerospace</p>
               <p className={styles.eduMeta}>Professional Certification</p>
               <span className={styles.eduStatusOngoing}>Ongoing · Expected Mar 2028</span>
             </div>
@@ -241,8 +279,17 @@ export default function FounderContent() {
         <div className={styles.glassCard}>
           <h2 className={styles.sectionTitle}>Contact and Collaboration</h2>
           <p className={styles.description}>
-            Available for <strong>strategic architecture consulting, EV battery technology, and Space R&amp;D partnerships</strong>.
+            Available for <strong>Director of Engineering, Technology Consulting, Systems Architecture, R&amp;D
+            and strategic collaboration opportunities across Space, Aerospace and EV Battery technologies</strong>.
           </p>
+
+          <div className={styles.tagRow}>
+            <span className={styles.tag}>Space Systems &amp; Applications</span>
+            <span className={styles.tag}>Avionics &amp; Telemetry</span>
+            <span className={styles.tag}>EV Battery &amp; Energy Intelligence</span>
+            <span className={styles.tag}>Aerospace Cybersecurity</span>
+          </div>
+
           <div style={{ display: "flex", alignItems: "center", gap: "12px", fontSize: "0.95rem", flexWrap: "wrap", marginBottom: "16px" }}>
             <a
               href="tel:+919845561518"
@@ -277,6 +324,14 @@ export default function FounderContent() {
             >
               📄 View Resume →
             </a>
+            <Link
+              href="/consulting"
+              className={styles.exploreLink}
+              data-track-event="consulting_click"
+              data-track-section-id="profile-contact-cta"
+            >
+              Consulting →
+            </Link>
           </div>
 
           <p className={styles.description} style={{ marginBottom: 0, fontSize: "0.95rem" }}>

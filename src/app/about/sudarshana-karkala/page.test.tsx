@@ -22,10 +22,14 @@ describe("/about/sudarshana-karkala canonical profile page", () => {
     expect(document.body.textContent).not.toMatch(/[\w.+-]+@[\w-]+\.[a-z]{2,}/i);
   });
 
-  it("links to Internships, Space, the rocketry guide, Trust Center and Contact", () => {
+  it("links to Internships, Space, CubeTwin, the rocketry guide, Trust Center and Contact", () => {
     render(<FounderPage />);
-    expect(screen.getByRole("link", { name: /EV\.ENGINEER Internships/i })).toHaveAttribute("href", "/internships");
-    expect(screen.getByRole("link", { name: /Space Initiative/i })).toHaveAttribute("href", "/space");
+    expect(screen.getByRole("link", { name: /Engineering Education & Research/i })).toHaveAttribute("href", "/internships");
+    expect(screen.getByRole("link", { name: /^Space & Aerospace R&D$/i })).toHaveAttribute("href", "/space");
+    expect(screen.getByRole("link", { name: /CubeTwin — CubeSat Battery & Energy Digital Twin/i })).toHaveAttribute(
+      "href",
+      "/space/cubesat"
+    );
     expect(screen.getByRole("link", { name: /Model Rocketry Learning Guide/i })).toHaveAttribute(
       "href",
       "/space/2026-INSPACe-ROCKETRY-059"
@@ -45,10 +49,29 @@ describe("/about/sudarshana-karkala canonical profile page", () => {
     expect(types).toContain("ProfilePage");
   });
 
-  it("shows the broader multidisciplinary areas in the hero without overcrowding the existing tagline", () => {
+  it("leads the hero with the Director of Engineering positioning and Space/Avionics/EV Battery focus", () => {
     render(<FounderPage />);
-    expect(screen.getByText(/EV & Battery Intelligence · Cybersecurity · Space Research · CanSat Model Rocketry/)).toBeInTheDocument();
-    expect(screen.getByText(/Building Battery Intelligence, Safety & Cybersecurity for eVTOL/)).toBeInTheDocument();
+    expect(screen.getByText(/Director of Engineering \| Technology & R&D Consultant/)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Space Systems & Applications · Avionics & Telemetry · EV Battery & Energy Intelligence/)
+    ).toBeInTheDocument();
+    expect(screen.getByText(/AI · Cybersecurity · Digital Twins · CanSat Model Rocketry/)).toBeInTheDocument();
+    expect(screen.getByText(/Exploring Director of Engineering, Technology Consulting/)).toBeInTheDocument();
+  });
+
+  it("never implies 20+ years of aerospace experience — establishes it for engineering/software/security/EV/energy instead", () => {
+    render(<FounderPage />);
+    expect(screen.getByText(/over two decades of\s*experience across software architecture, cybersecurity, connected systems/)).toBeInTheDocument();
+    expect(document.body.textContent).not.toMatch(/two decades[^.]*aerospace/i);
+    expect(document.body.textContent).not.toMatch(/20\+? years[^.]*aerospace/i);
+  });
+
+  it("shows the four Core Focus Area cards", () => {
+    render(<FounderPage />);
+    expect(screen.getByText("Space Systems & Applications", { selector: "p" })).toBeInTheDocument();
+    expect(screen.getByText("Avionics & Telemetry", { selector: "p" })).toBeInTheDocument();
+    expect(screen.getByText("EV Battery & Energy Intelligence", { selector: "p" })).toBeInTheDocument();
+    expect(screen.getByText("AI & Cybersecurity")).toBeInTheDocument();
   });
 
   it("lists NITK as an Education credential, distinct from the certification programs", () => {
@@ -57,10 +80,11 @@ describe("/about/sudarshana-karkala canonical profile page", () => {
     expect(screen.getByText("B.E. — Information Technology")).toBeInTheDocument();
   });
 
-  it("identifies the IIT Madras program as a certification program, never as a degree", () => {
+  it("shows the IIT Madras program name only, with no certification-program meta line, and never as a degree", () => {
     render(<FounderPage />);
     expect(screen.getByText("IIT Madras — CODE")).toBeInTheDocument();
-    expect(screen.getByText(/Certification Program · Centre for Outreach and Digital Education/)).toBeInTheDocument();
+    expect(screen.getByText("Electric Vehicle Engineering & Development")).toBeInTheDocument();
+    expect(document.body.textContent).not.toMatch(/Certification Program · Centre for Outreach and Digital Education/);
     expect(document.body.textContent).not.toMatch(/IIT Madras.*(degree|B\.Tech|M\.Tech)/i);
   });
 
@@ -72,15 +96,17 @@ describe("/about/sudarshana-karkala canonical profile page", () => {
     expect(document.body.textContent).not.toMatch(/ISRO Certified|IN-SPACe Certified Scientist|Rocket Scientist|Aerospace Engineer certification/i);
   });
 
-  it("makes the EVTO certification's in-progress status visually and textually unambiguous", () => {
+  it("makes the EVTO certification's in-progress status visually and textually unambiguous, with its Aerospace specialisation attributed only to EV Society", () => {
     render(<FounderPage />);
     expect(screen.getByText(/Certified EV Technology Officer \(EVTO™\) — In Progress/)).toBeInTheDocument();
     expect(screen.getByText(/Ongoing · Expected Mar 2028/)).toBeInTheDocument();
+    expect(screen.getByText("Specialisation in Energy & EV Battery Technologies in Aerospace")).toBeInTheDocument();
   });
 
-  it("links Explore Space Research, Workshop Gallery, EV.ENGINEER Labs and CAR Software Systems", () => {
+  it("links Explore Space Research, CubeTwin, Workshop Gallery, EV.ENGINEER Labs and CAR Software Systems", () => {
     render(<FounderPage />);
     expect(screen.getByRole("link", { name: /^Space Research →$/ })).toHaveAttribute("href", "https://autonomous.ev.engineer/space");
+    expect(screen.getByRole("link", { name: /^CubeTwin →$/ })).toHaveAttribute("href", "https://autonomous.ev.engineer/space/cubesat");
     expect(screen.getByRole("link", { name: /^Workshop Gallery →$/ })).toHaveAttribute(
       "href",
       "https://autonomous.ev.engineer/workshop-gallery"
@@ -99,10 +125,20 @@ describe("/about/sudarshana-karkala canonical profile page", () => {
     expect(resumeLink).toHaveTextContent(/View Resume/);
   });
 
-  it("updates the Contact and Collaboration positioning to consulting, battery technology and Space R&D", () => {
+  it("updates the Contact and Collaboration positioning to Director of Engineering, Consulting and Space/Aerospace/EV Battery", () => {
     render(<FounderPage />);
     expect(
-      screen.getByText(/strategic architecture consulting, EV battery technology, and Space R&D partnerships/)
+      screen.getByText(
+        /Director of Engineering, Technology Consulting, Systems Architecture, R&D\s*and strategic collaboration opportunities across Space, Aerospace and EV Battery technologies/
+      )
     ).toBeInTheDocument();
+    expect(screen.getByText("Space Systems & Applications", { selector: "span" })).toBeInTheDocument();
+    expect(screen.getByText("Avionics & Telemetry", { selector: "span" })).toBeInTheDocument();
+    expect(screen.getByText("Aerospace Cybersecurity")).toBeInTheDocument();
+  });
+
+  it("adds a Consulting CTA in Contact and Collaboration pointing at the internal consulting page", () => {
+    render(<FounderPage />);
+    expect(screen.getByRole("link", { name: /^Consulting →$/ })).toHaveAttribute("href", "/consulting");
   });
 });
