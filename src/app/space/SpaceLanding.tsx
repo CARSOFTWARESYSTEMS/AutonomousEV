@@ -101,6 +101,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 function StatusPill({ label, color }: { label: string; color: string }) {
   return (
     <span style={{
+      display: "inline-block", maxWidth: "100%", lineHeight: 1.5,
       fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 999,
       background: `${color}18`, color, border: `1px solid ${color}40`,
       textTransform: "uppercase", letterSpacing: "0.06em",
@@ -566,34 +567,34 @@ export default function SpaceLanding({ entityGraph }: { entityGraph: object }) {
             <p style={sectionDesc}>Explore guided simulation projects that turn spacecraft concepts into testable models, telemetry and engineering evidence.</p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 14 }}>
-            <div className={`${styles.cardHover} ${theme.card}`} style={{ padding: 24 }}>
+            <div className={`${styles.cardHover} ${theme.card} ${styles.projectCard}`}>
               <StatusPill label="Interactive Learning Experience" color="#06B6D4" />
-              <h3 style={{ color: "#fff", marginTop: 18, marginBottom: 12 }}>Space Applications</h3>
-              <p style={{ ...sectionDesc, marginBottom: 12 }}>Discover how satellites and space data improve everyday life—from weather and mobility to agriculture, connectivity, disaster response and infrastructure.</p>
-              <Link href="/space/everyday-applications" className={theme.secondaryButton}>Explore Space Applications <ArrowRight size={16} /></Link>
-              <p style={{ fontSize: 12, color: "#B5B8C9", marginTop: 12 }}>Educational reference · No aerospace background needed.</p>
+              <h3 className={styles.projectTitle}>Space Applications</h3>
+              <p className={styles.projectDesc}>Discover how satellites and space data improve everyday life—from weather and mobility to agriculture, connectivity, disaster response and infrastructure.</p>
+              <Link href="/space/everyday-applications" className={`${theme.secondaryButton} ${styles.projectCta}`}>Explore Space Applications <ArrowRight size={16} /></Link>
+              <p className={styles.projectNote}>Educational reference · No aerospace background needed.</p>
             </div>
-            <div className={`${styles.cardHover} ${theme.card}`} style={{ padding: 24 }}>
+            <div className={`${styles.cardHover} ${theme.card} ${styles.projectCard}`}>
               <StatusPill label="Interactive Learning Experience" color="#7C3AED" />
-              <h3 style={{ color: "#fff", marginTop: 18, marginBottom: 12 }}>Model Rocketry</h3>
-              <p style={{ ...sectionDesc, marginBottom: 12 }}>Learn aerospace engineering from first principles—mission design, aerodynamics, stability, structures, propulsion, avionics, recovery and flight analysis.</p>
-              <Link href="/space/model-rocketry" className={theme.secondaryButton}>Explore Model Rocketry <ArrowRight size={16} /></Link>
-              <p style={{ fontSize: 12, color: "#B5B8C9", marginTop: 12 }}>Educational aerospace learning · Beginner to advanced.</p>
+              <h3 className={styles.projectTitle}>Model Rocketry</h3>
+              <p className={styles.projectDesc}>Learn aerospace engineering from first principles—mission design, aerodynamics, stability, structures, propulsion, avionics, recovery and flight analysis.</p>
+              <Link href="/space/model-rocketry" className={`${theme.secondaryButton} ${styles.projectCta}`}>Explore Model Rocketry <ArrowRight size={16} /></Link>
+              <p className={styles.projectNote}>Educational aerospace learning · Beginner to advanced.</p>
             </div>
-            <div className={`${styles.cardHover} ${theme.card}`} style={{ padding: 24 }}>
+            <div className={`${styles.cardHover} ${theme.card} ${styles.projectCard}`}>
               <StatusPill label="Educational Prototype · 12-Week Student R&D Project" color="#06B6D4" />
-              <h3 style={{ color: "#fff", marginTop: 18, marginBottom: 12 }}>CubeTwin</h3>
-              <p style={{ ...sectionDesc, marginBottom: 12 }}>A Digital-Twin Simulation Platform for CubeSat Energy, Mission and Reliability Analysis</p>
-              <p style={{ ...sectionDesc, marginBottom: 20 }}>Model orbit sunlight, solar generation, battery state of charge, mission loads, faults and safe-mode decisions through an interactive beginner-friendly laboratory.</p>
-              <Link href="/space/cubesat" className={theme.secondaryButton}>Explore CubeTwin <ArrowRight size={16} /></Link>
-              <p style={{ fontSize: 12, color: "#B5B8C9", marginTop: 12 }}>Educational R&D prototype · Simulated data · Not flight software.</p>
+              <h3 className={styles.projectTitle}>CubeTwin</h3>
+              <p className={styles.projectDesc}>A Digital-Twin Simulation Platform for CubeSat Energy, Mission and Reliability Analysis</p>
+              <p className={styles.projectDesc}>Model orbit sunlight, solar generation, battery state of charge, mission loads, faults and safe-mode decisions through an interactive beginner-friendly laboratory.</p>
+              <Link href="/space/cubesat" className={`${theme.secondaryButton} ${styles.projectCta}`}>Explore CubeTwin <ArrowRight size={16} /></Link>
+              <p className={styles.projectNote}>Educational R&D prototype · Simulated data · Not flight software.</p>
             </div>
-            <div className={`${styles.cardHover} ${theme.card}`} style={{ padding: 24 }}>
+            <div className={`${styles.cardHover} ${theme.card} ${styles.projectCard}`}>
               <StatusPill label="Interactive Research Platform" color="#3B82F6" />
-              <h3 style={{ color: "#fff", marginTop: 18, marginBottom: 12 }}>Space Station</h3>
-              <p style={{ ...sectionDesc, marginBottom: 12 }}>Explore how orbital research stations are designed, powered, controlled and operated—from life support and microgravity laboratories to docking, robotics and future lunar stations.</p>
-              <Link href="/space/space-station" className={theme.secondaryButton}>Explore Space Station <ArrowRight size={16} /></Link>
-              <p style={{ fontSize: 12, color: "#B5B8C9", marginTop: 12 }}>Educational models · Sourced programme facts · Not mission design data.</p>
+              <h3 className={styles.projectTitle}>Space Station</h3>
+              <p className={styles.projectDesc}>Explore how orbital research stations are designed, powered, controlled and operated—from life support and microgravity laboratories to docking, robotics and future lunar stations.</p>
+              <Link href="/space/space-station" className={`${theme.secondaryButton} ${styles.projectCta}`}>Explore Space Station <ArrowRight size={16} /></Link>
+              <p className={styles.projectNote}>Educational models · Sourced programme facts · Not mission design data.</p>
             </div>
           </div>
         </section>

@@ -421,3 +421,44 @@
   font-size: 12.5px;
   text-align: center;
 }
+
+/* ── Simulations & R&D project cards ──
+   Column layout so every card's call to action sits on the same baseline,
+   left-aligned text to match the titles, and full-width buttons whose labels
+   fit on one line in the four-column layout. */
+.projectCard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 24px;
+  height: 100%;
+}
+.projectTitle {
+  color: #fff;
+  margin: 16px 0 10px;
+  font-size: 22px;
+  line-height: 1.25;
+}
+.projectDesc {
+  color: #B5B8C9;
+  font-size: 15px;
+  line-height: 1.65;
+  margin: 0 0 12px;
+  text-align: left;
+}
+.projectCta {
+  margin-top: auto;
+  width: 100%;
+  justify-content: space-between !important;
+  padding: 12px 16px !important;
+  font-size: 14px !important;
+  text-align: left;
+}
+.projectCta svg { flex-shrink: 0; }
+.projectNote {
+  font-size: 12px;
+  line-height: 1.6;
+  color: #B5B8C9;
+  margin: 12px 0 0;
+  min-height: 3.2em;
+}
