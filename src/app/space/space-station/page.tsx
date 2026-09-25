@@ -194,8 +194,11 @@ export default function SpaceStationPage() {
           <section id="world" className={styles.section} data-kind="knowledge" aria-labelledby="world-h">
             <SectionHead eyebrow="Global" title="World space stations" id="world-h">
               <p>
-                Status labels are strict: <Badge label="Operational" /> <Badge label="Under construction" /> <Badge label="Development" /> <Badge label="Planned" />{" "}
-                <Badge label="Retired" />. Plans are never presented as facts.
+                Status labels are strict<span className={styles.desktopOnly}>
+                  : <Badge label="Operational" /> <Badge label="Under construction" /> <Badge label="Development" /> <Badge label="Planned" />{" "}
+                  <Badge label="Retired" />
+                </span>
+                . Plans are never presented as facts.
               </p>
             </SectionHead>
             <GlobalStationExplorer />

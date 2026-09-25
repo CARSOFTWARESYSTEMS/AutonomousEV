@@ -44,11 +44,11 @@ export function CyberThreatModel() {
                 <text x="101" y={105 + i * 56} textAnchor="middle">{t}</text>
               </g>
             ))}
-            <rect x="222" y="120" width="120" height="60" rx="10" fill="rgba(59,130,246,0.1)" stroke="#3b82f6" />
-            <text x="282" y="145" textAnchor="middle" fontWeight="700" fill="#93c5fd">Space link</text>
-            <text x="282" y="164" textAnchor="middle" fontSize="11">Authenticated · encrypted</text>
-            <line x1="186" y1="150" x2="222" y2="150" stroke="#93c5fd" strokeWidth="2" />
-            <line x1="342" y1="150" x2="378" y2="150" stroke="#93c5fd" strokeWidth="2" />
+            <rect x="196" y="116" width="168" height="68" rx="10" fill="rgba(59,130,246,0.1)" stroke="#3b82f6" />
+            <text x="280" y="143" textAnchor="middle" fontWeight="700" fill="#93c5fd">Space link</text>
+            <text x="280" y="163" textAnchor="middle" fontSize="11">Authenticated · encrypted</text>
+            <line x1="186" y1="150" x2="196" y2="150" stroke="#93c5fd" strokeWidth="2" />
+            <line x1="364" y1="150" x2="378" y2="150" stroke="#93c5fd" strokeWidth="2" />
             <rect x="378" y="20" width="326" height="260" rx="12" fill="rgba(124,58,237,0.07)" stroke="#8b5cf6" strokeDasharray="5 4" />
             <text x="392" y="42" fontWeight="700" fill="#c4b5fd">Station</text>
             <rect x="396" y="56" width="290" height="62" rx="8" fill="rgba(239,68,68,0.08)" stroke="#ef4444" />

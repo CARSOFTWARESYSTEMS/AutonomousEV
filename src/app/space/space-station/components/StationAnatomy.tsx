@@ -389,7 +389,7 @@ function FlowOverlay({ flow }: { flow: Flow }) {
         {marker(1, 670, 308)}
         {marker(2, 620, 176)}
         {marker(3, 480, 414)}
-        {marker(4, 556, 128)}
+        {marker(4, 542, 124)}
         {marker(5, 548, 18)}
       </g>
     );

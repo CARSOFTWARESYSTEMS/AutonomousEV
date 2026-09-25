@@ -833,11 +833,11 @@
    Percent padding resolves against the viewport width without the scrollbar. */
 @media (min-width: 1025px) {
   .portal header { padding-left: max(32px, calc((100% - 1280px) / 2 + 32px)); padding-right: max(32px, calc((100% - 1280px) / 2 + 32px)); }
-  .portal footer > div { max-width: calc(1280px - 64px); }
+  .portal footer > div { max-width: calc(1280px - 64px) !important; }
 }
 @media (min-width: 1600px) {
   .portal header { padding-left: calc((100% - 1440px) / 2 + 32px); padding-right: calc((100% - 1440px) / 2 + 32px); }
-  .portal footer > div { max-width: calc(1440px - 64px); }
+  .portal footer > div { max-width: calc(1440px - 64px) !important; }
 }
 @media (max-width: 1024px) {
   .portal footer { padding-left: var(--space-inset) !important; padding-right: var(--space-inset) !important; }
@@ -848,7 +848,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 40px;
+  min-height: 44px;
   padding: 0 18px !important;
   border-radius: 10px !important;
   font-size: 14px !important;
@@ -858,3 +858,13 @@
 }
 .portal header a[aria-label^="Express Interest"]:hover { filter: brightness(1.08); }
 .portal header a[aria-label^="Express Interest"]:focus-visible { outline: 2px solid #67e8f9; outline-offset: 3px; }
+
+/* Header nav on this page: single-line labels, compact spacing so the wider
+   content-aligned gutters never force labels onto two lines. */
+@media (min-width: 1025px) {
+  .portal header nav a { white-space: nowrap; padding-left: 8px !important; padding-right: 8px !important; font-size: 13px !important; }
+  .portal header nav a[target="_blank"] { margin-left: 6px !important; padding-left: 12px !important; padding-right: 12px !important; }
+}
+
+/* Wrapper for portalled overlays: theme tokens and base styles without page layout. */
+.overlayScope { min-height: 0 !important; padding: 0 !important; background: transparent !important; overflow: visible !important; }

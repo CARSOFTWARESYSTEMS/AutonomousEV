@@ -91,10 +91,6 @@ export default function GlobalStationExplorer() {
           </button>
         ))}
       </div>
-      <p className={ws.context}>
-        <b>Commercial LEO stations</b> are a separate category: {CLD_CONTEXT} None of the commercial stations is operational; status reflects the cited
-        operator or NASA statements.
-      </p>
 
       <div className={ws.carouselBar} aria-hidden={cards.length < 2}>
         <button type="button" className={ws.navButton} onClick={() => go(index - 1)} disabled={index === 0} aria-label="Previous station">
@@ -162,6 +158,10 @@ export default function GlobalStationExplorer() {
           </li>
         ))}
       </ul>
+      <p className={ws.context} style={{ marginTop: 16 }}>
+        <b>Commercial LEO stations</b> are a separate category: {CLD_CONTEXT} None of the commercial stations is operational; status reflects the cited
+        operator or NASA statements.
+      </p>
       {cards.length === 0 && <p>No stations match this status.</p>}
     </>
   );

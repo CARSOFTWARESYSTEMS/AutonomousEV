@@ -1,4 +1,10 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
+// Overlays import the page fonts; next/font is not available under Vitest.
+vi.mock("next/font/google", () => ({
+  Manrope: () => ({ variable: "--font-space-manrope" }),
+  Inter: () => ({ variable: "--font-space-inter" }),
+}));
 import { render, screen, within, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ModeProvider } from "./components/ModeProvider";

@@ -6,6 +6,13 @@ import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react"
 import { createPortal } from "react-dom";
 import { X, ArrowLeft, Compass, MapPin, Gauge, BookOpen, MessageCircleQuestion } from "lucide-react";
 import m from "./mobile.module.css";
+import spaceTheme from "../../spaceTheme.module.css";
+import stationStyles from "../station.module.css";
+import { manrope, inter } from "../../fonts";
+
+// Overlays are portalled to <body>, outside the page wrapper, so they carry the
+// same theme tokens, fonts and base styles themselves.
+const SCOPE = `${spaceTheme.theme} ${manrope.variable} ${inter.variable} ${stationStyles.portal} ${stationStyles.overlayScope}`;
 
 const MOBILE_QUERY = "(max-width: 768px)";
 
@@ -75,6 +82,7 @@ export function BottomSheet({ open, onClose, title, children }: { open: boolean;
   useOverlay(open, onClose, panel, closeBtn);
   if (!open || typeof document === "undefined") return null;
   return createPortal(
+    <div className={SCOPE}>
     <div className={m.backdrop} onClick={onClose}>
       <div
         ref={panel}
@@ -112,6 +120,7 @@ export function BottomSheet({ open, onClose, title, children }: { open: boolean;
         </div>
         <div className={m.sheetBody}>{children}</div>
       </div>
+    </div>
     </div>,
     document.body,
   );
@@ -125,6 +134,7 @@ export function FullScreenShell({ open, onClose, title, purpose, backLabel, chil
   useOverlay(open, onClose, panel, back);
   if (!open || typeof document === "undefined") return null;
   return createPortal(
+    <div className={SCOPE}>
     <div ref={panel} role="dialog" aria-modal="true" aria-labelledby={titleId} className={m.shell}>
       <div className={m.shellBar}>
         <button ref={back} type="button" className={m.backButton} onClick={onClose}>
@@ -138,6 +148,7 @@ export function FullScreenShell({ open, onClose, title, purpose, backLabel, chil
         {purpose && <p className={m.shellPurpose}>{purpose}</p>}
         {children}
       </div>
+    </div>
     </div>,
     document.body,
   );
@@ -185,10 +196,16 @@ export function MobileSectionNav() {
     const sections = Object.keys(SECTION_CATEGORY)
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => !!el);
+    // Track every section currently inside the middle band; highlight the topmost, or nothing.
+    const inBand = new Map<string, number>();
     const io = new IntersectionObserver(
       (entries) => {
-        const visible = entries.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
-        if (visible) setActive(SECTION_CATEGORY[visible.target.id]);
+        for (const e of entries) {
+          if (e.isIntersecting) inBand.set(e.target.id, e.boundingClientRect.top);
+          else inBand.delete(e.target.id);
+        }
+        const top = [...inBand.entries()].sort((a, b) => a[1] - b[1])[0];
+        setActive(top ? SECTION_CATEGORY[top[0]] : null);
       },
       { rootMargin: "-45% 0px -50% 0px" },
     );
