@@ -118,7 +118,12 @@ describe("/space/space-station page", () => {
   it("replaces EV.ENGINEER and UFlight with Ishavasyam.org and iTelematics in header, footer and page", async () => {
     const user = userEvent.setup();
     const { container } = render(<SpaceStationPage />);
-    expect(container.innerHTML).not.toMatch(/EV\.ENGINEER|UFlight|uflight\.in/);
+    // EV.ENGINEER™ appears only as the attribution under the profile name — never in navigation.
+    expect(container.innerHTML).not.toMatch(/UFlight|uflight\.in/);
+    expect((container.querySelector("header") as HTMLElement).textContent).not.toMatch(/EV\.ENGINEER/);
+    expect((container.querySelector("footer") as HTMLElement).textContent).not.toMatch(/EV\.ENGINEER/);
+    expect(container.querySelector("main")?.textContent?.match(/EV\.ENGINEER/g)).toHaveLength(1);
+    expect(within(container.querySelector("#direction") as HTMLElement).getByText("EV.ENGINEER™")).toBeInTheDocument();
     const header = container.querySelector("header") as HTMLElement;
     expect(within(header).getByRole("link", { name: "Ishavasyam.org" })).toHaveAttribute("href", "https://ishavasyam.org/");
     expect(within(header).getByRole("link", { name: "iTelematics" })).toHaveAttribute("href", "https://itelematics.com/");
@@ -134,9 +139,9 @@ describe("/space/space-station page", () => {
     expect(within(menu).getByRole("link", { name: "Ishavasyam.org" })).toBeInTheDocument();
   });
 
-  it("server-rendered markup contains no EV Society, EV.ENGINEER or UFlight string", async () => {
+  it("server-rendered markup contains no EV Society or UFlight string", async () => {
     const { renderToString } = await import("react-dom/server");
-    expect(renderToString(<SpaceStationPage />)).not.toMatch(/EV Society|evsociety|EV\.ENGINEER|UFlight/);
+    expect(renderToString(<SpaceStationPage />)).not.toMatch(/EV Society|evsociety|UFlight/);
   });
 
   it("opens every external link safely", () => {

@@ -217,9 +217,10 @@ export function ResearchProfile() {
   const focus = ["Space Systems & Applications", "Avionics & Telemetry", "Digital Twins", "Aerospace Cybersecurity"];
   return (
     <div className={styles.profile}>
-      <Image src="/SudarshanaKarkala.jpg" alt="Portrait of Sudarshana Karkala" width={72} height={72} />
+      <Image src="/SudarshanaKarkala.jpg" alt="Portrait of Sudarshana Karkala" width={176} height={176} className={styles.profilePhoto} />
       <div>
         <h3>{SUDARSHANA_KARKALA.name}</h3>
+        <p className={styles.profileRole}>EV.ENGINEER™</p>
         <p style={{ marginTop: 6 }}>
           Research and project direction for this simulator. Current technology and R&amp;D focus areas include:
         </p>

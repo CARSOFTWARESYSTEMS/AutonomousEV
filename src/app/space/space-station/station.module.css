@@ -527,8 +527,19 @@
 .libItem p { font-size: 14px !important; margin: 0 !important; }
 
 /* ── Profile ── */
-.profile { composes: card from "../spaceTheme.module.css"; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 20px; padding: 24px; align-items: start; max-width: 860px; }
-.profile img { border-radius: 50%; }
+.profile { composes: card from "../spaceTheme.module.css"; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 24px; padding: 24px; align-items: center; max-width: 860px; }
+/* The source photo is landscape: crop to a centred square instead of squashing it. */
+.profilePhoto {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 30%;
+  border: 2px solid var(--space-control-border);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.08);
+  flex-shrink: 0;
+}
+.profileRole { margin: 2px 0 0 !important; font-size: 14px !important; font-weight: 600; color: var(--space-blue-text) !important; letter-spacing: 0.02em; }
 
 .mobileOnly { display: none; }
 /* .desktopOnly keeps its own display on desktop and is hidden at ≤768px. */
