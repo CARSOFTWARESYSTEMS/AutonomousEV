@@ -69,3 +69,10 @@ export const IMEX = {
   ],
   sources: ["isro-imex-2026", "isro-imex-2026-ao"] as SourceId[],
 };
+
+/** Headline figures for the BAS section — each is a stated government target. */
+export const BAS_KEY_METRICS: { value: string; label: string; sources: SourceId[] }[] = [
+  { value: "BAS-01", label: "First module · 2028 target", sources: ["pib-bas-cabinet-2024", "pib-bas-benefits-2026"] },
+  { value: "5", label: "Modules in the planned configuration", sources: ["pib-bas-benefits-2026"] },
+  { value: "2035", label: "Fully operational BAS · target", sources: ["pib-bas-benefits-2026", "pib-gaganyaan-bas-2026"] },
+];

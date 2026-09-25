@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { FlaskConical } from "lucide-react";
 import { planExperiment, EXPERIMENT_DEFAULTS, EXPERIMENT_DOMAINS, LIFECYCLE_STAGES, type ExperimentDomain, type ExperimentInput } from "@/lib/space-station/experiment";
 import { SimFrame, Slider, Select, Check } from "./SimFrame";
+import Wizard from "./Wizard";
 import styles from "../station.module.css";
 
 export default function ExperimentDesigner() {
@@ -27,31 +28,61 @@ export default function ExperimentDesigner() {
       }}
     >
       {() => (
-        <div className={styles.simBody}>
-          <div className={styles.simControls}>
-            <Select
-              label="Research domain"
-              value={e.domain}
-              options={(Object.keys(EXPERIMENT_DOMAINS) as ExperimentDomain[]).map((k) => ({ value: k, label: EXPERIMENT_DOMAINS[k].label }))}
-              onChange={set("domain")}
-            />
-            <Slider label="Duration" value={e.durationDays} min={1} max={180} step={1} unit="days" onChange={set("durationDays")} />
-            <Select label="Crew interaction" value={e.crewInteraction} options={[{ value: "none", label: "None (automated)" }, { value: "low", label: "Low" }, { value: "high", label: "High" }]} onChange={set("crewInteraction")} />
-            <Slider label="Power" value={e.powerW} min={0} max={2000} step={10} unit="W" onChange={set("powerW")} />
-            <Slider label="Mass" value={e.massKg} min={1} max={500} step={1} unit="kg" onChange={set("massKg")} />
-            <Slider label="Volume" value={e.volumeL} min={1} max={1000} step={1} unit="L" onChange={set("volumeL")} />
-            <Slider label="Data" value={e.dataGBPerDay} min={0} max={100} step={1} unit="GB/day" onChange={set("dataGBPerDay")} />
-            <Select
-              label="Temperature requirement"
-              value={e.temperature}
-              options={[{ value: "ambient", label: "Cabin ambient" }, { value: "controlled", label: "Controlled" }, { value: "cold", label: "Cold / frozen" }, { value: "hot", label: "High temperature" }]}
-              onChange={set("temperature")}
-            />
-            <Select label="Containment" value={e.containment} options={[{ value: "none", label: "None" }, { value: "single", label: "Single level" }, { value: "multiple", label: "Multiple levels" }]} onChange={set("containment")} />
-            <Check label="Sample return required" checked={e.sampleReturn} onChange={set("sampleReturn")} />
-            <Check label="External exposure required" checked={e.externalExposure} onChange={set("externalExposure")} />
-          </div>
-          <div className={styles.simOutput} aria-live="polite">
+        <Wizard
+          label="Experiment designer"
+          summaryTitle="Concept summary"
+          steps={[
+            {
+              title: "Research area",
+              content: (
+                <Select
+                  label="Research domain"
+                  value={e.domain}
+                  options={(Object.keys(EXPERIMENT_DOMAINS) as ExperimentDomain[]).map((k) => ({ value: k, label: EXPERIMENT_DOMAINS[k].label }))}
+                  onChange={set("domain")}
+                />
+              ),
+            },
+            {
+              title: "Experiment requirements",
+              content: (
+                <>
+                  <Slider label="Duration" value={e.durationDays} min={1} max={180} step={1} unit="days" onChange={set("durationDays")} />
+                  <Select label="Crew interaction" value={e.crewInteraction} options={[{ value: "none", label: "None (automated)" }, { value: "low", label: "Low" }, { value: "high", label: "High" }]} onChange={set("crewInteraction")} />
+                  <Select
+                    label="Temperature requirement"
+                    value={e.temperature}
+                    options={[{ value: "ambient", label: "Cabin ambient" }, { value: "controlled", label: "Controlled" }, { value: "cold", label: "Cold / frozen" }, { value: "hot", label: "High temperature" }]}
+                    onChange={set("temperature")}
+                  />
+                </>
+              ),
+            },
+            {
+              title: "Station resources",
+              content: (
+                <>
+                  <Slider label="Power" value={e.powerW} min={0} max={2000} step={10} unit="W" onChange={set("powerW")} />
+                  <Slider label="Mass" value={e.massKg} min={1} max={500} step={1} unit="kg" onChange={set("massKg")} />
+                  <Slider label="Volume" value={e.volumeL} min={1} max={1000} step={1} unit="L" onChange={set("volumeL")} />
+                  <Slider label="Data" value={e.dataGBPerDay} min={0} max={100} step={1} unit="GB/day" onChange={set("dataGBPerDay")} />
+                </>
+              ),
+            },
+            {
+              title: "Safety & controls",
+              content: (
+                <>
+                  <Select label="Containment" value={e.containment} options={[{ value: "none", label: "None" }, { value: "single", label: "Single level" }, { value: "multiple", label: "Multiple levels" }]} onChange={set("containment")} />
+                  <Check label="Sample return required" checked={e.sampleReturn} onChange={set("sampleReturn")} />
+                  <Check label="External exposure required" checked={e.externalExposure} onChange={set("externalExposure")} />
+                </>
+              ),
+            },
+          ]}
+          summary={
+            <>
+              <p className={styles.simLabel}>Conceptual educational experiment design — not flight qualification.</p>
             <h4>Experimental concept</h4>
             <p>{plan.summary}</p>
             <p><b style={{ color: "var(--space-text)" }}>Likely platform: </b>{plan.platformClass}</p>
@@ -90,8 +121,9 @@ export default function ExperimentDesigner() {
                 </li>
               ))}
             </ol>
-          </div>
-        </div>
+            </>
+          }
+        />
       )}
     </SimFrame>
   );

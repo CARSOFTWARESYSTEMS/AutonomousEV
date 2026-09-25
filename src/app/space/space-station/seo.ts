@@ -1,7 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { FAQ } from "./data/faq";
 import { LAST_REVIEWED } from "./data/sources";
-import { PERSON_ID, EV_ENGINEER_BRAND_ID, sudarshanaKarkalaPersonNode, evEngineerBrandNode } from "@/lib/structured-data/entities";
+import { PERSON_ID, ITELEMATICS_ID, itelematicsOrgNode } from "@/lib/structured-data/entities";
+import { SUDARSHANA_KARKALA } from "@/data/public-entities";
+import { ISHAVASYAM, ORGANISATION_LINE } from "./data/organisations";
 
 export const CANONICAL = "https://aerospace.ev.engineer/space/space-station";
 export const TITLE = "Space Station Research & Engineering Simulator | Space Systems";
@@ -13,6 +15,10 @@ const OG_ALT = "Space Station Research & Engineering Simulator — generic modul
 
 // Every authorship/branding field inherited from the /space layout is
 // overridden here so this page carries only the attribution it states itself.
+// viewport-fit=cover lets env(safe-area-inset-*) keep overlays and the bottom
+// navigation clear of the iPhone home indicator and rounded corners.
+export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover" };
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://aerospace.ev.engineer"),
   title: TITLE,
@@ -35,7 +41,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Sudarshana Karkala", url: "https://autonomous.ev.engineer/about/sudarshana-karkala" }],
   creator: "Sudarshana Karkala",
-  publisher: "EV.ENGINEER",
+  publisher: ISHAVASYAM.name,
   alternates: { canonical: CANONICAL },
   robots: {
     index: true,
@@ -48,7 +54,7 @@ export const metadata: Metadata = {
     url: CANONICAL,
     type: "website",
     locale: "en_US",
-    siteName: "EV.ENGINEER",
+    siteName: ORGANISATION_LINE,
     images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: OG_ALT }],
   },
   twitter: {
@@ -60,13 +66,17 @@ export const metadata: Metadata = {
 };
 
 const ISRO_ORG = { "@type": "Organization", "@id": "https://www.isro.gov.in/#organization", name: "Indian Space Research Organisation", alternateName: "ISRO", url: "https://www.isro.gov.in/" };
+const ISHAVASYAM_ORG = { "@type": "Organization", "@id": `${ISHAVASYAM.url}#organization`, name: ISHAVASYAM.name, description: ISHAVASYAM.descriptor, url: ISHAVASYAM.url };
+// Person node limited to name, profile URL and verified profiles for this page.
+const PERSON_NODE = { "@type": "Person", "@id": PERSON_ID, name: SUDARSHANA_KARKALA.name, url: SUDARSHANA_KARKALA.canonicalUrl, sameAs: SUDARSHANA_KARKALA.sameAs };
 const NASA_ORG = { "@type": "Organization", "@id": "https://www.nasa.gov/#organization", name: "National Aeronautics and Space Administration", alternateName: "NASA", url: "https://www.nasa.gov/" };
 
 export const structuredData = {
   "@context": "https://schema.org",
   "@graph": [
-    evEngineerBrandNode(),
-    sudarshanaKarkalaPersonNode(),
+    ISHAVASYAM_ORG,
+    itelematicsOrgNode(),
+    PERSON_NODE,
     ISRO_ORG,
     NASA_ORG,
     {
@@ -79,6 +89,7 @@ export const structuredData = {
       datePublished: DATE_PUBLISHED,
       dateModified: LAST_REVIEWED,
       author: { "@id": PERSON_ID },
+      publisher: { "@id": ISHAVASYAM_ORG["@id"] },
       breadcrumb: { "@id": `${CANONICAL}#breadcrumb` },
       primaryImageOfPage: { "@type": "ImageObject", url: OG_IMAGE, caption: OG_ALT },
       about: [
@@ -87,7 +98,7 @@ export const structuredData = {
         { "@type": "Thing", name: "International Space Station" },
         { "@type": "Thing", name: "Microgravity research" },
       ],
-      mentions: [{ "@id": ISRO_ORG["@id"] }, { "@id": NASA_ORG["@id"] }, { "@id": EV_ENGINEER_BRAND_ID }],
+      mentions: [{ "@id": ISRO_ORG["@id"] }, { "@id": NASA_ORG["@id"] }, { "@id": ITELEMATICS_ID }],
       mainEntity: { "@id": `${CANONICAL}#learning` },
     },
     {

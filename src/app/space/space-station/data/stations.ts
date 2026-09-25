@@ -10,6 +10,8 @@ export interface StationProfile {
   operator: string;
   category: "Government" | "International" | "Commercial";
   lifecycle: Lifecycle;
+  /** Programme formally paused by its operator (shown as "<lifecycle> · Paused"). */
+  paused?: boolean;
   statusNote: string;
   location: string;
   summary: string;
@@ -76,6 +78,7 @@ export const STATIONS: StationProfile[] = [
     operator: "NASA-led with international partners",
     category: "International",
     lifecycle: "Development",
+    paused: true,
     statusNote:
       "Paused: on 24 March 2026 NASA stated it intends to pause Gateway in its current form and shift focus to lunar-surface infrastructure; Gateway's Power and Propulsion Element was realigned to the SR-1 Freedom mission. Covered here for its engineering lessons.",
     location: "Near-rectilinear halo orbit (NRHO) around the Moon (as designed)",

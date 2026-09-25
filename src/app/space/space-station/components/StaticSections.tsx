@@ -5,7 +5,9 @@ import { ArrowRight } from "lucide-react";
 import { CYBER_TOPICS, CYBER_SOURCES, ECONOMY } from "../data/operations";
 import { MOON_PROGRESSION, ENV_COMPARISON, type EnvKey } from "../data/stations";
 import { SUDARSHANA_KARKALA } from "@/data/public-entities";
+import { ISHAVASYAM, ITELEMATICS_ORG } from "../data/organisations";
 import { Badge, SourceList } from "./ui";
+import { FactorCompare, CyberAreas } from "./MobilePickers";
 import styles from "../station.module.css";
 
 const THREATS: { threat: string; control: string }[] = [
@@ -20,7 +22,12 @@ const THREATS: { threat: string; control: string }[] = [
 export function CyberThreatModel() {
   return (
     <>
-      <figure className={styles.archDiagram} style={{ margin: "0 0 20px" }}>
+      <ol className={`${styles.zoneStack} ${styles.mobileOnly}`} aria-label="Trust zones from station to ground">
+        {["Station — vehicle control network (critical)", "Station — crew and payload networks, behind gateways", "Space segment interfaces", "Communication link — authenticated and encrypted", "Ground segment — control centres and payload operators"].map((z) => (
+          <li key={z}>{z}</li>
+        ))}
+      </ol>
+      <figure className={`${styles.archDiagram} ${styles.desktopOnly}`} style={{ margin: "0 0 20px" }}>
         <svg viewBox="0 0 720 330" role="img" aria-labelledby="tm-t tm-d" style={{ background: "#0b1733", borderRadius: 12 }}>
           <title id="tm-t">Defensive threat model of an orbital research station</title>
           <desc id="tm-d">
@@ -66,7 +73,15 @@ export function CyberThreatModel() {
           </g>
         </svg>
       </figure>
-      <div className={styles.scrollX}>
+      <dl className={`${styles.defList} ${styles.mobileOnly}`} aria-label="Threats and defensive controls">
+        {THREATS.map((t) => (
+          <div key={t.threat}>
+            <dt>{t.threat}</dt>
+            <dd>{t.control}</dd>
+          </div>
+        ))}
+      </dl>
+      <div className={`${styles.scrollX} ${styles.desktopOnly}`}>
         <table className={styles.table}>
           <caption className={styles.srOnly}>Threats and defensive controls</caption>
           <thead>
@@ -85,11 +100,14 @@ export function CyberThreatModel() {
           </tbody>
         </table>
       </div>
-      <div className={styles.gridAuto} style={{ marginTop: 20 }}>
+      <div className={styles.mobileOnly} style={{ marginTop: 20 }}>
+        <CyberAreas />
+      </div>
+      <div className={`${styles.ruleGrid} ${styles.desktopOnly}`} style={{ marginTop: 24 }}>
         {CYBER_TOPICS.map((c) => (
-          <article key={c.name} className={styles.card} style={{ padding: 16 }}>
+          <article key={c.name}>
             <h4>{c.name}</h4>
-            <p style={{ fontSize: 14, marginTop: 6 }}>{c.text}</p>
+            <p>{c.text}</p>
           </article>
         ))}
       </div>
@@ -102,7 +120,7 @@ export function Economy() {
   return (
     <>
       <div className={styles.split}>
-        <div className={styles.card}>
+        <div>
           <h3>NASA&apos;s transition in low Earth orbit</h3>
           <ol className={styles.flow} style={{ margin: "12px 0" }}>
             {["ISS (government-owned)", "Commercial LEO destinations", "NASA as one customer among many"].map((s, i, a) => (
@@ -187,20 +205,8 @@ export function EarthToMoon() {
           </tbody>
         </table>
       </div>
-      <div className={`${styles.stack} ${styles.mobileOnly}`}>
-        {ENV_COMPARISON.map((row) => (
-          <details key={row.variable} className={styles.details}>
-            <summary>{row.variable}</summary>
-            <dl className={styles.kv}>
-              {keys.map((k) => (
-                <div key={k}>
-                  <dt>{ENV_LABEL[k]}</dt>
-                  <dd>{row.values[k]}</dd>
-                </div>
-              ))}
-            </dl>
-          </details>
-        ))}
+      <div className={styles.mobileOnly}>
+        <FactorCompare />
       </div>
       <SourceList ids={["nasa-gateway-faq", "nasa-leo-2026", "nasa-hrp", "nasa-iss-facts"]} />
     </>
@@ -228,6 +234,32 @@ export function ResearchProfile() {
           View profile <ArrowRight size={16} aria-hidden="true" />
         </Link>
       </div>
+    </div>
+  );
+}
+
+export function Organisations() {
+  return (
+    <div className={styles.grid2} style={{ marginTop: 16, maxWidth: 860 }}>
+      <article className={styles.card}>
+        <div className={styles.eyebrow}>{ISHAVASYAM.descriptor}</div>
+        <h3>{ISHAVASYAM.name}</h3>
+        <a className={styles.inlineLink} style={{ display: "inline-block", marginTop: 10 }} href={ISHAVASYAM.url} target="_blank" rel="noopener noreferrer">
+          Visit {ISHAVASYAM.name}
+          <span className={styles.srOnly}> (opens in a new tab)</span>
+        </a>
+      </article>
+      <article className={styles.card}>
+        <div className={styles.eyebrow}>Commercial enquiries</div>
+        <h3>{ITELEMATICS_ORG.name}</h3>
+        <p style={{ marginTop: 6 }}>
+          Commercial products and services, where applicable, are handled separately by {ITELEMATICS_ORG.name} under explicit agreements.
+        </p>
+        <a className={styles.inlineLink} href={ITELEMATICS_ORG.url} target="_blank" rel="noopener noreferrer">
+          Visit {ITELEMATICS_ORG.shortName}
+          <span className={styles.srOnly}> (opens in a new tab)</span>
+        </a>
+      </article>
     </div>
   );
 }

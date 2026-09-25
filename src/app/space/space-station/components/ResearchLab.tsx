@@ -6,8 +6,12 @@ import { source } from "../data/sources";
 import { useMode, atLeast } from "./ModeProvider";
 import styles from "../station.module.css";
 
+// Shown first on phones; the remaining domains are one tap away.
+const FEATURED = ["physiology", "biology", "fluids", "materials", "combustion", "manufacturing"];
+
 export default function ResearchLab() {
   const [id, setId] = useState(LAB_TOPICS[0].id);
+  const [showAll, setShowAll] = useState(false);
   const { mode } = useMode();
   const t = LAB_TOPICS.find((x) => x.id === id)!;
   const q = encodeURIComponent(t.search);
@@ -33,7 +37,7 @@ export default function ResearchLab() {
             aria-selected={x.id === id}
             aria-controls="lab-panel"
             tabIndex={x.id === id ? 0 : -1}
-            className={styles.treeNode}
+            className={`${styles.treeNode} ${!showAll && !FEATURED.includes(x.id) && x.id !== id ? styles.mobileCollapsed : ""}`}
             style={{ width: "100%", flexWrap: "wrap" }}
             onClick={() => setId(x.id)}
             onKeyDown={(e) => {
@@ -50,6 +54,11 @@ export default function ResearchLab() {
             <small>· {x.subtopics.join(", ")}</small>
           </button>
         ))}
+        {!showAll && (
+          <button type="button" className={`${styles.button} ${styles.mobileOnly}`} onClick={() => setShowAll(true)}>
+            Explore all {LAB_TOPICS.length} research domains
+          </button>
+        )}
       </div>
       <article id="lab-panel" role="tabpanel" aria-labelledby={`lab-tab-${t.id}`} className={styles.card}>
         <h3>{t.name}</h3>

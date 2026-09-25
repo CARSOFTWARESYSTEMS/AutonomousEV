@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
-import { Pause, Play, Orbit, SunMoon, Link2, Zap, Radio, FlaskConical } from "lucide-react";
+import { Pause, Play, Orbit, SunMoon, Link2, Zap, Radio, FlaskConical, SlidersHorizontal } from "lucide-react";
+import { BottomSheet } from "./mobile";
 import { circularOrbit, eclipseFraction } from "@/lib/space-station/orbit";
 import { simulatePowerOrbit, POWER_DEFAULTS } from "@/lib/space-station/power";
 import styles from "../station.module.css";
@@ -76,6 +77,7 @@ export default function SpaceStationHero() {
   const running = userRunning ?? !reducedMotion;
   const [layers, setLayers] = useState<Record<Layer, boolean>>({ orbit: true, daynight: true, power: false, comms: true, research: false });
   const [docking, setDocking] = useState(false);
+  const [sheet, setSheet] = useState(false);
   const [tele, setTele] = useState({ theta: 0.6, dock: -1 });
   const theta = useRef(0.6);
   const dockT = useRef(-1);
@@ -179,6 +181,42 @@ export default function SpaceStationHero() {
   const toggle = (k: Layer) => setLayers((l) => ({ ...l, [k]: !l[k] }));
   const minutes = tFrac * (orbit.periodS / 60);
 
+  const controls = (afterAction?: () => void) => (
+    <>
+        <button type="button" className={styles.button} onClick={() => setUserRunning(!running)}>
+          {running ? <Pause size={15} aria-hidden="true" /> : <Play size={15} aria-hidden="true" />} {running ? "Pause" : "Play"}
+        </button>
+        {(
+          [
+            ["orbit", "Orbit", Orbit],
+            ["daynight", "Day/Night", SunMoon],
+            ["power", "Power Flow", Zap],
+            ["comms", "Communications", Radio],
+            ["research", "Research Mode", FlaskConical],
+          ] as const
+        ).map(([k, label, Icon]) => (
+          <button key={k} type="button" className={styles.button} aria-pressed={layers[k]} onClick={() => toggle(k)}>
+            <Icon size={15} aria-hidden="true" /> {label}
+          </button>
+        ))}
+        <button
+          type="button"
+          className={styles.button}
+          aria-pressed={docking}
+          onClick={() => {
+            const next = !docking;
+            setDocking(next);
+            dockT.current = next ? 0 : -1;
+            dirty.current = true;
+            if (next) setUserRunning(true);
+            if (next) afterAction?.();
+          }}
+        >
+          <Link2 size={15} aria-hidden="true" /> Docking Demo
+        </button>
+    </>
+  );
+
   return (
     <div className={styles.scene} ref={scene}>
       <figure className={styles.sceneFrame} style={{ margin: 0 }}>
@@ -258,10 +296,10 @@ export default function SpaceStationHero() {
           <text x="14" y="405" fill="#b5b8c9" fontSize="11">Schematic · not to scale</text>
         </svg>
         <div className={styles.telemetry} aria-live="off">
-          <div>Orbit time<b>{Math.floor(minutes)}:{String(Math.floor((minutes % 1) * 60)).padStart(2, "0")} / {(orbit.periodS / 60).toFixed(1)} min</b></div>
+          <div>Orbit<b>{Math.floor(minutes)}:{String(Math.floor((minutes % 1) * 60)).padStart(2, "0")} / {(orbit.periodS / 60).toFixed(1)} min</b></div>
           <div>Environment<b>{ecl ? "◐ Eclipse" : "☀ Sunlight"}</b></div>
-          <div>Arrays / load<b>{sample.generationKW.toFixed(0)} / {sample.loadKW.toFixed(0)} kW</b></div>
-          <div>Battery SOC<b>{Math.round(sample.soc * 100)}% {sample.batteryKW >= 0 ? "▲" : "▼"}</b></div>
+          <div>Power (arrays / load)<b>{sample.generationKW.toFixed(0)} / {sample.loadKW.toFixed(0)} kW</b></div>
+          <div>Battery<b>{Math.round(sample.soc * 100)}% {sample.batteryKW >= 0 ? "▲ charging" : "▼ discharging"}</b></div>
         </div>
         <figcaption className={styles.sceneCaption}>
           <span>
@@ -326,38 +364,17 @@ export default function SpaceStationHero() {
         </text>
       </svg>
 
-      <div className={styles.sceneControls} role="toolbar" aria-label="Scene controls">
-        <button type="button" className={styles.button} onClick={() => setUserRunning(!running)}>
-          {running ? <Pause size={15} aria-hidden="true" /> : <Play size={15} aria-hidden="true" />} {running ? "Pause" : "Play"}
-        </button>
-        {(
-          [
-            ["orbit", "Orbit", Orbit],
-            ["daynight", "Day/Night", SunMoon],
-            ["power", "Power Flow", Zap],
-            ["comms", "Communications", Radio],
-            ["research", "Research Mode", FlaskConical],
-          ] as const
-        ).map(([k, label, Icon]) => (
-          <button key={k} type="button" className={styles.button} aria-pressed={layers[k]} onClick={() => toggle(k)}>
-            <Icon size={15} aria-hidden="true" /> {label}
-          </button>
-        ))}
-        <button
-          type="button"
-          className={styles.button}
-          aria-pressed={docking}
-          onClick={() => {
-            const next = !docking;
-            setDocking(next);
-            dockT.current = next ? 0 : -1;
-            dirty.current = true;
-            if (next) setUserRunning(true);
-          }}
-        >
-          <Link2 size={15} aria-hidden="true" /> Docking Demo
+      <div className={`${styles.sceneControls} ${styles.desktopOnly}`} role="toolbar" aria-label="Scene controls">
+        {controls()}
+      </div>
+      <div className={styles.mobileOnly}>
+        <button type="button" className={styles.primaryButton} style={{ width: "100%", marginTop: 12 }} onClick={() => setSheet(true)}>
+          <SlidersHorizontal size={16} aria-hidden="true" /> Simulation controls
         </button>
       </div>
+      <BottomSheet open={sheet} onClose={() => setSheet(false)} title="Simulation controls">
+        <div className={styles.sheetControls}>{controls(() => setSheet(false))}</div>
+      </BottomSheet>
       <p className={styles.srOnly} aria-live="polite">
         {dockStage ? `Docking stage: ${dockStage}` : ""}
       </p>

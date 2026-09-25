@@ -5,7 +5,7 @@ import { simulatePowerOrbit, POWER_DEFAULTS, POWER_ASSUMPTIONS, type PowerInput,
 import { SimFrame, Slider, Metric, fmt } from "./SimFrame";
 import styles from "../station.module.css";
 
-const W = 640, H = 240, PAD = { l: 44, r: 44, t: 14, b: 30 };
+const W = 640, H = 260, PAD = { l: 44, r: 48, t: 30, b: 30 };
 
 function PowerChart({ r, period }: { r: PowerResult; period: number }) {
   const maxKW = Math.max(10, ...r.samples.map((s) => Math.max(s.generationKW, s.loadKW))) * 1.1;
@@ -25,8 +25,8 @@ function PowerChart({ r, period }: { r: PowerResult; period: number }) {
           from its maximum to a minimum of {fmt(r.minSoc * 100)}% during the {fmt(r.eclipseMin)} minute eclipse.
         </desc>
         <rect x={eclStart} y={PAD.t} width={W - PAD.r - eclStart} height={H - PAD.t - PAD.b} fill="rgba(139,92,246,0.12)" />
-        <text x={eclStart + 6} y={PAD.t + 14} fontSize="11" fill="#c4b5fd">Eclipse</text>
-        <text x={PAD.l + 6} y={PAD.t + 14} fontSize="11" fill="#fcd34d">Sunlight</text>
+        <text x={eclStart + 6} y={H - PAD.b - 8} fontSize="11" fill="#c4b5fd">Eclipse</text>
+        <text x={PAD.l + 6} y={H - PAD.b - 8} fontSize="11" fill="#fcd34d">Sunlight</text>
         {ticks.map((t) => (
           <g key={t}>
             <line x1={PAD.l} x2={W - PAD.r} y1={yS(t)} y2={yS(t)} stroke="rgba(255,255,255,0.06)" />
@@ -34,8 +34,8 @@ function PowerChart({ r, period }: { r: PowerResult; period: number }) {
             <text x={W - PAD.r + 6} y={yS(t) + 4} fontSize="10" fill="#b5b8c9">{t * 100}%</text>
           </g>
         ))}
-        <text x={8} y={PAD.t + 4} fontSize="10" fill="#b5b8c9">kW</text>
-        <text x={W - 30} y={PAD.t + 4} fontSize="10" fill="#b5b8c9">SOC</text>
+        <text x={PAD.l - 6} y={12} fontSize="10" fill="#b5b8c9" textAnchor="end">kW</text>
+        <text x={W - PAD.r + 6} y={12} fontSize="10" fill="#b5b8c9">SOC</text>
         {[0, 0.25, 0.5, 0.75, 1].map((f) => (
           <text key={f} x={x(period * f)} y={H - 10} fontSize="10" fill="#b5b8c9" textAnchor="middle">{fmt(period * f)} min</text>
         ))}

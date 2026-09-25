@@ -1,65 +1,156 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { STATIONS, COMMERCIAL_STATIONS, CLD_CONTEXT, type Lifecycle } from "../data/stations";
-import { source } from "../data/sources";
+import { source, type SourceId } from "../data/sources";
 import { Badge } from "./ui";
 import styles from "../station.module.css";
+import ws from "./world.module.css";
 
-const FILTERS: { id: "all" | Lifecycle; label: string }[] = [
+interface Card {
+  id: string;
+  name: string;
+  operator: string;
+  lifecycle: Lifecycle;
+  statusLabel: string;
+  commercial: boolean;
+  lede: string;
+  status: string;
+  highlights: { title: string; text: string }[];
+  sources: SourceId[];
+}
+
+const firstSentence = (t: string) => (t.match(/^.*?[.!?](\s|$)/)?.[0] ?? t).trim();
+
+// Status labels come from the data; "· Paused" is added only where the data says so.
+const CARDS: Card[] = [
+  ...STATIONS.map((s) => ({
+    id: s.id,
+    name: s.name,
+    operator: s.operator,
+    lifecycle: s.lifecycle,
+    statusLabel: s.paused ? `${s.lifecycle} · Paused` : s.lifecycle,
+    commercial: false,
+    lede: firstSentence(s.summary),
+    status: s.statusNote,
+    highlights: s.highlights,
+    sources: s.sources,
+  })),
+  ...COMMERCIAL_STATIONS.map((c) => ({
+    id: c.name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+    name: c.name,
+    operator: c.developer,
+    lifecycle: c.lifecycle,
+    statusLabel: c.lifecycle,
+    commercial: true,
+    lede: firstSentence(c.status),
+    status: c.status,
+    highlights: [],
+    sources: c.sources,
+  })),
+];
+
+const FILTERS: { id: "all" | "commercial" | Lifecycle; label: string }[] = [
   { id: "all", label: "All" },
   { id: "Operational", label: "Operational" },
   { id: "Under construction", label: "Under construction" },
   { id: "Development", label: "Development" },
   { id: "Planned", label: "Planned" },
+  { id: "commercial", label: "Commercial LEO" },
 ];
 
 export default function GlobalStationExplorer() {
   const [filter, setFilter] = useState<(typeof FILTERS)[number]["id"]>("all");
-  const show = (l: Lifecycle) => filter === "all" || filter === l;
-  const stations = STATIONS.filter((s) => show(s.lifecycle));
-  const commercial = COMMERCIAL_STATIONS.filter((s) => show(s.lifecycle));
+  const [index, setIndex] = useState(0);
+  const track = useRef<HTMLUListElement>(null);
+  const cards = CARDS.filter((c) => filter === "all" || (filter === "commercial" ? c.commercial : c.lifecycle === filter));
+
+  const go = (i: number) => {
+    const n = Math.max(0, Math.min(cards.length - 1, i));
+    setIndex(n);
+    const el = track.current?.children[n] as HTMLElement | undefined;
+    el?.scrollIntoView?.({ behavior: "smooth", block: "nearest", inline: "start" });
+  };
+
   return (
     <>
       <div className={styles.chips} role="group" aria-label="Filter by lifecycle status" style={{ marginBottom: 16 }}>
         {FILTERS.map((f) => (
-          <button key={f.id} type="button" className={styles.chip} aria-pressed={filter === f.id} onClick={() => setFilter(f.id)}>
+          <button
+            key={f.id}
+            type="button"
+            className={styles.chip}
+            aria-pressed={filter === f.id}
+            onClick={() => {
+              setFilter(f.id);
+              setIndex(0);
+              track.current?.scrollTo({ left: 0 });
+            }}
+          >
             {f.label}
           </button>
         ))}
       </div>
-      <p className={styles.srOnly} aria-live="polite">
-        Showing {stations.length + commercial.length} stations
+      <p className={ws.context}>
+        <b>Commercial LEO stations</b> are a separate category: {CLD_CONTEXT} None of the commercial stations is operational; status reflects the cited
+        operator or NASA statements.
       </p>
-      <div className={styles.grid2}>
-        {stations.map((s) => (
-          <article key={s.id} className={styles.card} id={`station-${s.id}`}>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center", marginBottom: 8 }}>
-              <Badge label={s.lifecycle} />
-              {s.id === "gateway" && <Badge label="Paused" />}
-              <span style={{ fontSize: 13, color: "var(--space-muted)" }}>{s.operator}</span>
+
+      <div className={ws.carouselBar} aria-hidden={cards.length < 2}>
+        <button type="button" className={ws.navButton} onClick={() => go(index - 1)} disabled={index === 0} aria-label="Previous station">
+          <ChevronLeft size={20} aria-hidden="true" />
+        </button>
+        <span className={ws.counter} aria-live="polite">
+          {cards.length ? `${index + 1} of ${cards.length} · ${cards[index]?.name}` : "No stations"}
+        </span>
+        <button type="button" className={ws.navButton} onClick={() => go(index + 1)} disabled={index >= cards.length - 1} aria-label="Next station">
+          <ChevronRight size={20} aria-hidden="true" />
+        </button>
+      </div>
+
+      <ul
+        ref={track}
+        className={ws.track}
+        aria-label="Space stations"
+        onScroll={(e) => {
+          const el = e.currentTarget;
+          const first = el.children[0] as HTMLElement | undefined;
+          if (!first) return;
+          const i = Math.round(el.scrollLeft / (first.offsetWidth + 12));
+          if (i !== index) setIndex(Math.max(0, Math.min(cards.length - 1, i)));
+        }}
+      >
+        {cards.map((c, i) => (
+          <li key={c.id} className={ws.card} id={`station-${c.id}`} aria-label={`${i + 1} of ${cards.length}: ${c.name}`}>
+            <div className={ws.badges}>
+              <Badge label={c.statusLabel} />
+              {c.commercial && <span className={ws.category}>Commercial LEO</span>}
             </div>
-            <h3>{s.name}</h3>
-            <p style={{ fontSize: 14, marginTop: 6 }}>
-              <b style={{ color: "var(--space-text)" }}>Status: </b>
-              {s.statusNote}
-            </p>
-            <p style={{ fontSize: 15 }}>{s.summary}</p>
-            <details className={styles.details} style={{ marginTop: 8 }}>
-              <summary>Engineering highlights ({s.highlights.length})</summary>
+            <h3>{c.name}</h3>
+            <p className={ws.operator}>{c.operator}</p>
+            <p className={ws.lede}>{c.lede}</p>
+            <details className={ws.more}>
+              <summary>Explore {c.name}</summary>
               <div>
-                <dl className={styles.kv}>
-                  {s.highlights.map((h) => (
-                    <div key={h.title}>
-                      <dt>{h.title}</dt>
-                      <dd>{h.text}</dd>
-                    </div>
-                  ))}
-                </dl>
-                <p style={{ fontSize: 13, marginTop: 10 }}>
+                <p>
+                  <b>Status: </b>
+                  {c.status}
+                </p>
+                {c.highlights.length > 0 && (
+                  <dl className={styles.kv}>
+                    {c.highlights.map((h) => (
+                      <div key={h.title}>
+                        <dt>{h.title}</dt>
+                        <dd>{h.text}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                )}
+                <p className={ws.sources}>
                   Sources:{" "}
-                  {s.sources.map((id, i) => (
+                  {c.sources.map((id, k) => (
                     <span key={id}>
-                      {i > 0 && " · "}
+                      {k > 0 && " · "}
                       <a className={styles.inlineLink} href={source(id).url} target="_blank" rel="noopener noreferrer">
                         {source(id).title}
                       </a>
@@ -68,53 +159,10 @@ export default function GlobalStationExplorer() {
                 </p>
               </div>
             </details>
-          </article>
+          </li>
         ))}
-      </div>
-
-      {commercial.length > 0 && (
-        <>
-          <h3 className={styles.subhead}>Commercial LEO stations — a separate category</h3>
-          <p>{CLD_CONTEXT}</p>
-          <p style={{ fontSize: 14 }}>None of the commercial stations below is operational. Status reflects the cited operator or NASA statements.</p>
-          <div className={styles.scrollX}>
-            <table className={styles.table}>
-              <caption className={styles.srOnly}>Commercial LEO stations and their lifecycle status</caption>
-              <thead>
-                <tr>
-                  <th scope="col">Station</th>
-                  <th scope="col">Developer</th>
-                  <th scope="col">Lifecycle</th>
-                  <th scope="col">Status (cited)</th>
-                </tr>
-              </thead>
-              <tbody>
-                {commercial.map((c) => (
-                  <tr key={c.name}>
-                    <th scope="row">{c.name}</th>
-                    <td>{c.developer}</td>
-                    <td>
-                      <Badge label={c.lifecycle} />
-                    </td>
-                    <td>
-                      {c.status}{" "}
-                      {c.sources.map((id, i) => (
-                        <span key={id}>
-                          {i > 0 && " · "}
-                          <a className={styles.inlineLink} href={source(id).url} target="_blank" rel="noopener noreferrer">
-                            {source(id).org}
-                          </a>
-                        </span>
-                      ))}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </>
-      )}
-      {stations.length + commercial.length === 0 && <p>No stations match this status.</p>}
+      </ul>
+      {cards.length === 0 && <p>No stations match this status.</p>}
     </>
   );
 }

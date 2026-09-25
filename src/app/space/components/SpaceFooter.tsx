@@ -1,16 +1,21 @@
 import Link from "next/link";
 import { Orbit, Mail } from "lucide-react";
 import { FONT_MANROPE } from "../fonts";
+import type { BrandLink } from "./SpaceHeader";
 import styles from "../space.module.css";
 const CONTACT_HREF = "/contact";
 export default function SpaceFooter({
   basePath = "",
-  showCommunityBranding = true,
+  brandLinks,
+  organisationLine,
 }: {
   basePath?: string;
-  /** Pages that must not carry EV Society branding pass false. */
-  showCommunityBranding?: boolean;
+  /** Replaces the default EV.ENGINEER / UFlight / EV Society / iTelematics links. */
+  brandLinks?: BrandLink[];
+  /** Replaces the default "An EV Society initiative" credit line. */
+  organisationLine?: string;
 }) {
+  const custom = brandLinks !== undefined;
   return (
     <footer
       style={{
@@ -65,7 +70,7 @@ export default function SpaceFooter({
                 maxWidth: 320,
               }}
             >
-              {showCommunityBranding ? <>Space &middot; An EV Society initiative.</> : <>Space &middot; EV.ENGINEER</>}
+              {organisationLine ?? <>Space &middot; An EV Society initiative.</>}
             </p>
             <p
               style={{
@@ -172,54 +177,67 @@ export default function SpaceFooter({
               >
                 Aerospace
               </Link>
-              <Link
-                href="/"
-                style={{
-                  color: "#B5B8C9",
-                  fontSize: 14,
-                  textDecoration: "none",
-                }}
-              >
-                EV.ENGINEER
-              </Link>
-              <a
-                href="https://www.uflight.in/"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  color: "#B5B8C9",
-                  fontSize: 14,
-                  textDecoration: "none",
-                }}
-              >
-                UFlight
-              </a>
-              {showCommunityBranding && (
+              {!custom && (
+                <>
+                  <Link
+                    href="/"
+                    style={{
+                      color: "#B5B8C9",
+                      fontSize: 14,
+                      textDecoration: "none",
+                    }}
+                  >
+                    EV.ENGINEER
+                  </Link>
+                  <a
+                    href="https://www.uflight.in/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      color: "#B5B8C9",
+                      fontSize: 14,
+                      textDecoration: "none",
+                    }}
+                  >
+                    UFlight
+                  </a>
+                  <a
+                    href="https://www.evsociety.org/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      color: "#B5B8C9",
+                      fontSize: 14,
+                      textDecoration: "none",
+                    }}
+                  >
+                    EV Society
+                  </a>
+                  <a
+                    href="https://itelematics.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      color: "#B5B8C9",
+                      fontSize: 14,
+                      textDecoration: "none",
+                    }}
+                  >
+                    iTelematics
+                  </a>
+                </>
+              )}
+              {brandLinks?.map((b) => (
                 <a
-                  href="https://www.evsociety.org/"
+                  key={b.href}
+                  href={b.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{
-                    color: "#B5B8C9",
-                    fontSize: 14,
-                    textDecoration: "none",
-                  }}
+                  style={{ color: "#B5B8C9", fontSize: 14, textDecoration: "none" }}
                 >
-                  EV Society
+                  {b.label}
                 </a>
-              )}
-              <a
-                href="https://itelematics.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  color: "#B5B8C9",
-                  fontSize: 14,
-                  textDecoration: "none",
-                }}
-              >
-                iTelematics
-              </a>
+              ))}
             </div>
           </div>
         </div>
@@ -235,7 +253,7 @@ export default function SpaceFooter({
           }}
         >
           <span style={{ color: "#B5B8C9", fontSize: 13 }}>
-            &copy; 2026 Space{showCommunityBranding ? <> &middot; An EV Society initiative</> : null}
+            &copy; 2026 Space &middot; {organisationLine ?? "An EV Society initiative"}
           </span>
           <span style={{ color: "#B5B8C9", fontSize: 13 }}>
             Commercial products and services, where applicable, are handled

@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { PencilRuler, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { designStation, DESIGN_DEFAULTS, DESIGN_HEURISTICS, type DesignInput, type DesignOutput } from "@/lib/space-station/designer";
 import { SimFrame, Slider, Select, Check, Metric, fmt } from "./SimFrame";
+import Wizard from "./Wizard";
 import styles from "../station.module.css";
 
 function Architecture({ d, input }: { d: DesignOutput; input: DesignInput }) {
@@ -66,22 +67,67 @@ export default function StationDesigner() {
       }}
     >
       {() => (
-        <div className={styles.simBody}>
-          <div className={styles.simControls}>
-            <Select label="Mission" value={i.mission} options={[{ value: "research", label: "Research" }, { value: "commercial", label: "Commercial" }, { value: "exploration", label: "Exploration" }, { value: "lunar", label: "Lunar" }, { value: "mixed", label: "Mixed" }]} onChange={set("mission")} />
-            <Select label="Orbit" value={i.orbit} options={[{ value: "leo", label: "Low Earth orbit" }, { value: "lunar-orbit", label: "Lunar orbit" }, { value: "deep-space", label: "Conceptual deep space" }]} onChange={set("orbit")} />
-            <Slider label="Crew" value={i.crew} min={0} max={12} step={1} onChange={set("crew")} help="Educational range 0–12." />
-            <Slider label="Mission duration" value={i.durationDays} min={7} max={1500} step={1} unit="days" onChange={set("durationDays")} />
-            <Slider label="Modules" value={i.modules} min={1} max={10} step={1} onChange={set("modules")} />
-            <Select label="Research demand" value={i.researchDemand} options={[{ value: "low", label: "Low" }, { value: "medium", label: "Medium" }, { value: "high", label: "High" }]} onChange={set("researchDemand")} />
-            <Slider label="Power requirement" value={i.powerRequirementKW} min={0} max={300} step={5} onChange={set("powerRequirementKW")} format={(v) => (v === 0 ? "Auto-estimate" : `${v} kW`)} />
-            <Select label="Autonomy level" value={i.autonomy} options={[{ value: "crew-tended", label: "Crew-tended / ground-led" }, { value: "supervised", label: "Supervised autonomy" }, { value: "high", label: "High autonomy" }]} onChange={set("autonomy")} />
-            <Slider label="Docking ports" value={i.dockingPorts} min={1} max={8} step={1} onChange={set("dockingPorts")} />
-            <Check label="Robotics" checked={i.robotics} onChange={set("robotics")} />
-            <Select label="Radiation protection" value={i.radiation} options={[{ value: "baseline", label: "Baseline" }, { value: "enhanced", label: "Enhanced shielding" }, { value: "storm-shelter", label: "Storm shelter" }]} onChange={set("radiation")} />
-            <Slider label="Resupply interval" value={i.resupplyDays} min={14} max={720} step={1} unit="days" onChange={set("resupplyDays")} />
-          </div>
-          <div className={styles.simOutput} aria-live="polite">
+        <Wizard
+          label="Station designer"
+          summaryTitle="Architecture"
+          steps={[
+            {
+              title: "Mission",
+              content: (
+                <>
+                  <Select label="Mission" value={i.mission} options={[{ value: "research", label: "Research" }, { value: "commercial", label: "Commercial" }, { value: "exploration", label: "Exploration" }, { value: "lunar", label: "Lunar" }, { value: "mixed", label: "Mixed" }]} onChange={set("mission")} />
+                </>
+              ),
+            },
+            {
+              title: "Orbit",
+              content: (
+                <>
+                  <Select label="Orbit" value={i.orbit} options={[{ value: "leo", label: "Low Earth orbit" }, { value: "lunar-orbit", label: "Lunar orbit" }, { value: "deep-space", label: "Conceptual deep space" }]} onChange={set("orbit")} />
+                  <Select label="Radiation protection" value={i.radiation} options={[{ value: "baseline", label: "Baseline" }, { value: "enhanced", label: "Enhanced shielding" }, { value: "storm-shelter", label: "Storm shelter" }]} onChange={set("radiation")} />
+                </>
+              ),
+            },
+            {
+              title: "Crew",
+              content: (
+                <>
+                  <Slider label="Crew" value={i.crew} min={0} max={12} step={1} onChange={set("crew")} help="Educational range 0–12." />
+                  <Slider label="Mission duration" value={i.durationDays} min={7} max={1500} step={1} unit="days" onChange={set("durationDays")} />
+                  <Slider label="Resupply interval" value={i.resupplyDays} min={14} max={720} step={1} unit="days" onChange={set("resupplyDays")} />
+                </>
+              ),
+            },
+            {
+              title: "Research",
+              content: (
+                <>
+                  <Slider label="Modules" value={i.modules} min={1} max={10} step={1} onChange={set("modules")} />
+                  <Select label="Research demand" value={i.researchDemand} options={[{ value: "low", label: "Low" }, { value: "medium", label: "Medium" }, { value: "high", label: "High" }]} onChange={set("researchDemand")} />
+                </>
+              ),
+            },
+            {
+              title: "Power & autonomy",
+              content: (
+                <>
+                  <Slider label="Power requirement" value={i.powerRequirementKW} min={0} max={300} step={5} onChange={set("powerRequirementKW")} format={(v) => (v === 0 ? "Auto-estimate" : `${v} kW`)} />
+                  <Select label="Autonomy level" value={i.autonomy} options={[{ value: "crew-tended", label: "Crew-tended / ground-led" }, { value: "supervised", label: "Supervised autonomy" }, { value: "high", label: "High autonomy" }]} onChange={set("autonomy")} />
+                </>
+              ),
+            },
+            {
+              title: "Docking & robotics",
+              content: (
+                <>
+                  <Slider label="Docking ports" value={i.dockingPorts} min={1} max={8} step={1} onChange={set("dockingPorts")} />
+                  <Check label="Robotics" checked={i.robotics} onChange={set("robotics")} />
+                </>
+              ),
+            },
+          ]}
+          summary={
+            <>
             <p className={styles.simLabel}>Conceptual educational system model — not a certified spacecraft design.</p>
             <Architecture d={d} input={i} />
             <div className={styles.metrics} style={{ marginTop: 14 }}>
@@ -113,8 +159,9 @@ export default function StationDesigner() {
                 <ul>{d.technologyGaps.length ? d.technologyGaps.map((g) => <li key={g}>{g}</li>) : <li>None flagged for these inputs.</li>}</ul>
               </div>
             </div>
-          </div>
-        </div>
+            </>
+          }
+        />
       )}
     </SimFrame>
   );

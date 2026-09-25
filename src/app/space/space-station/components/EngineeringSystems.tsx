@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useId, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { SYSTEMS } from "../data/systems";
 import { useMode, atLeast } from "./ModeProvider";
 import styles from "../station.module.css";
@@ -7,10 +8,15 @@ import styles from "../station.module.css";
 export default function EngineeringSystems() {
   const [id, setId] = useState(SYSTEMS[0].id);
   const { mode } = useMode();
-  const s = SYSTEMS.find((x) => x.id === id)!;
+  const selectId = useId();
+  const i = SYSTEMS.findIndex((x) => x.id === id);
+  const s = SYSTEMS[i];
+  const prev = SYSTEMS[(i - 1 + SYSTEMS.length) % SYSTEMS.length];
+  const next = SYSTEMS[(i + 1) % SYSTEMS.length];
   return (
     <div>
-      <div className={styles.chips} role="tablist" aria-label="Station systems">
+      {/* Desktop: tabs. */}
+      <div className={`${styles.chips} ${styles.desktopOnly}`} role="tablist" aria-label="Station systems">
         {SYSTEMS.map((x) => (
           <button
             key={x.id}
@@ -23,44 +29,64 @@ export default function EngineeringSystems() {
             className={styles.chip}
             onClick={() => setId(x.id)}
             onKeyDown={(e) => {
-              const i = SYSTEMS.findIndex((q) => q.id === id);
               const d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
               if (!d) return;
               e.preventDefault();
-              const next = SYSTEMS[(i + d + SYSTEMS.length) % SYSTEMS.length].id;
-              setId(next);
-              document.getElementById(`sys-tab-${next}`)?.focus();
+              const n = SYSTEMS[(i + d + SYSTEMS.length) % SYSTEMS.length].id;
+              setId(n);
+              document.getElementById(`sys-tab-${n}`)?.focus();
             }}
           >
             {x.name}
           </button>
         ))}
       </div>
-      <div id="sys-panel" role="tabpanel" aria-labelledby={`sys-tab-${s.id}`} className={styles.card} style={{ marginTop: 14 }}>
+      {/* Phones: one picker instead of a wall of chips. */}
+      <div className={`${styles.field} ${styles.mobileOnly}`}>
+        <span>
+          <label htmlFor={selectId}>
+            System {i + 1} of {SYSTEMS.length}
+          </label>
+        </span>
+        <select id={selectId} value={id} onChange={(e) => setId(e.target.value)}>
+          {SYSTEMS.map((x) => (
+            <option key={x.id} value={x.id}>
+              {x.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div id="sys-panel" role="tabpanel" aria-labelledby={`sys-tab-${s.id}`} className={styles.systemPanel}>
         <h3>{s.name}</h3>
-        <ul className={styles.chips} style={{ listStyle: "none", padding: 0, margin: "10px 0" }} aria-label="Topics">
+        <p className={styles.systemLede}>{s.learn}</p>
+        <ul className={styles.tagList} aria-label="Topics">
           {s.topics.map((t) => (
-            <li key={t} className={styles.tag} style={{ margin: 0 }}>
-              {t}
-            </li>
+            <li key={t}>{t}</li>
           ))}
         </ul>
-        <h4>Concept</h4>
-        <p>{s.learn}</p>
         {atLeast(mode, "engineering") ? (
-          <>
-            <h4>Engineering</h4>
+          <details className={styles.row} open>
+            <summary>How it works — engineering</summary>
             <p>{s.engineering}</p>
-          </>
+          </details>
         ) : (
-          <p style={{ fontSize: 13 }}>Switch to Engineering mode for equations, architecture and trade-offs.</p>
+          <p style={{ fontSize: 14 }}>Switch to Engineering mode for equations, architecture and trade-offs.</p>
         )}
         {atLeast(mode, "research") && (
-          <>
-            <h4>Research directions</h4>
+          <details className={styles.row} open>
+            <summary>Research directions</summary>
             <p>{s.research}</p>
-          </>
+          </details>
         )}
+        <div className={`${styles.pager} ${styles.mobileOnly}`}>
+          <button type="button" className={styles.button} onClick={() => setId(prev.id)}>
+            <ChevronLeft size={16} aria-hidden="true" /> {prev.name}
+          </button>
+          <button type="button" className={styles.button} onClick={() => setId(next.id)}>
+            {next.name} <ChevronRight size={16} aria-hidden="true" />
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -1,0 +1,148 @@
+/* Station anatomy: technical-illustration styling. Motion only in flow views,
+   where dash movement shows direction of energy, heat or mass transport. */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.85fr) minmax(300px, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+.stage { min-width: 0; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
+.svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  background: radial-gradient(ellipse at 50% 40%, #0f1a36 0%, #080b1c 75%);
+  border: 1px solid var(--space-border);
+}
+.part { cursor: pointer; transition: opacity 0.2s; }
+.part:hover { filter: brightness(1.12); }
+.selected :is(rect, path, circle, ellipse, polyline, line) {
+  stroke: #67e8f9;
+  stroke-width: 2;
+}
+.selected { filter: drop-shadow(0 0 3px rgba(103, 232, 249, 0.45)); }
+.dim { opacity: 0.22; pointer-events: none; }
+
+.spot { cursor: pointer; outline: none; }
+.spot circle { fill: rgba(9, 11, 29, 0.85); stroke: #93c5fd; stroke-width: 1.5; }
+.spot text { fill: #e2e8f0; font-size: 13px; font-weight: 700; font-family: var(--font-space-inter); }
+.spot:hover circle,
+.spot:focus-visible circle { stroke: #67e8f9; stroke-width: 2.5; }
+.spot:focus-visible circle { stroke-width: 3.5; }
+.spotOn circle { fill: #0e7490; stroke: #67e8f9; }
+
+.tip rect { fill: rgba(9, 11, 29, 0.94); stroke: rgba(103, 232, 249, 0.6); }
+.tip text { fill: #f8fafc; font-size: 13px; font-weight: 600; font-family: var(--font-space-inter); }
+.disclaimer { fill: #94a3b8; font-size: 13px; font-family: var(--font-space-inter); }
+.caption { fill: #b5b8c9; font-size: 14px; font-family: var(--font-space-inter); }
+.inner { fill: #94a3b8; font-size: 12px; font-family: var(--font-space-inter); }
+
+.index {
+  list-style: none;
+  padding: 0 !important;
+  margin: 12px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.index li { margin: 0; }
+.index button {
+  min-height: 36px;
+  padding: 5px 12px 5px 6px;
+  border-radius: 999px;
+  border: 1px solid var(--space-border);
+  background: transparent;
+  color: var(--space-muted);
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.index button span {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid var(--space-control-border);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--space-blue-text);
+}
+.index button[aria-pressed="true"] { border-color: var(--space-cyan); color: var(--space-text); }
+.index button[aria-pressed="true"] span { background: #0e7490; color: #fff; border-color: #67e8f9; }
+
+.inspector {
+  position: sticky;
+  top: 140px;
+  border-left: 1px solid var(--space-border);
+  padding-left: 24px;
+  min-width: 0;
+}
+.inspector h3 { font-size: 22px; margin-bottom: 12px; }
+.tabs { display: flex; border-bottom: 1px solid var(--space-border); margin-bottom: 14px; }
+.tabs button {
+  min-height: 44px;
+  padding: 8px 14px;
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  color: var(--space-muted);
+  font-size: 14px;
+  font-weight: 600;
+}
+.tabs button[aria-selected="true"] { color: var(--space-blue-text); border-bottom-color: var(--space-blue); }
+.detail { margin: 0; }
+.detail dt { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--space-blue-text); font-weight: 600; margin-top: 14px; }
+.detail dt:first-child { margin-top: 0; }
+.detail dd { margin: 4px 0 0; color: var(--space-text); font-size: 15px; line-height: 1.65; }
+
+.flowList { list-style: none; padding: 0 !important; margin: 0; display: grid; gap: 12px; }
+.flowList li { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 10px; margin: 0; }
+.flowList b { color: var(--space-text); font-size: 15px; }
+.flowList p { font-size: 14px !important; margin: 2px 0 0 !important; }
+.flowNum { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 700; background: #0e7490; color: #fff; }
+.note { font-size: 13px !important; margin-top: 14px !important; border-top: 1px solid var(--space-border); padding-top: 10px; }
+
+.step circle { fill: #0e7490; stroke: #e0f2fe; stroke-width: 1.5; }
+.step text { fill: #fff; font-size: 13px; font-weight: 700; font-family: var(--font-space-inter); }
+
+.flowPower path, .flowThermal path, .flowData path, .flowLife path { fill: none; stroke-width: 4; stroke-linecap: round; }
+.flowPower path { stroke: #fbbf24; }
+.flowThermal path { stroke: #22d3ee; }
+.flowThermal .movingHot { stroke: #fb923c; }
+.flowData path { stroke: #a78bfa; stroke-width: 3; stroke-dasharray: 2 6; }
+.flowLife path { stroke: #f472b6; }
+.flowLife .movingO2 { stroke: #34d399; }
+.flowLife .out { stroke: #94a3b8; stroke-dasharray: 4 5; }
+.ir path { stroke: #f87171 !important; stroke-width: 2 !important; }
+.env path { stroke: #fcd34d !important; stroke-width: 2 !important; stroke-dasharray: 4 4; }
+.env text { fill: #fcd34d; font-size: 14px; font-weight: 700; font-family: var(--font-space-inter); }
+.boundary { fill: none; stroke: #ef4444; stroke-width: 2; stroke-dasharray: 6 5; }
+.gateway rect { fill: #422006; stroke: #fcd34d; stroke-width: 1.5; }
+.gateway text { fill: #fcd34d; font-size: 11px; font-weight: 700; font-family: var(--font-space-inter); }
+
+.moving, .movingHot, .movingO2 { stroke-dasharray: 10 8; animation: flow 1.2s linear infinite; }
+@keyframes flow { to { stroke-dashoffset: -36; } }
+@media (prefers-reduced-motion: reduce) {
+  .moving, .movingHot, .movingO2 { animation: none; }
+  .part { transition: none; }
+}
+
+@media (max-width: 1100px) {
+  .layout { grid-template-columns: 1fr; }
+  .inspector { position: static; border-left: 0; padding-left: 0; border-top: 1px solid var(--space-border); padding-top: 18px; }
+}
+
+/* Phones: the component index is one horizontally scrolling selector row. */
+@media (max-width: 768px) {
+  .index { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; }
+  .index::-webkit-scrollbar { display: none; }
+  .index li { flex-shrink: 0; }
+  .index button { min-height: 44px; }
+  .toolbar > div { width: 100%; }
+  .toolbar button { flex: 1; }
+  .inspector h3 { font-size: 20px; }
+}

@@ -1,100 +1,619 @@
 "use client";
-import { useId, useState } from "react";
+import { useState } from "react";
 import { ANATOMY } from "../data/systems";
+import { useMode } from "./ModeProvider";
 import styles from "../station.module.css";
+import an from "./anatomy.module.css";
 
-// `onLight` marks labels drawn on top of light-coloured modules (dark text for contrast).
-type Shape = { id: string; el: React.ReactNode; label?: [number, number, string]; onLight?: boolean };
+// Generic teaching architecture, drawn for this page. It deliberately does
+// not follow the layout of ISS, BAS, Tiangong, Gateway or any commercial station.
 
-const MOD = { fill: "#cbd5e1", stroke: "#475569" };
+type View = "exterior" | "interior" | "flow";
+type Flow = "power" | "thermal" | "data" | "life";
+type Tab = "overview" | "engineering" | "research";
 
-// A generic layout invented for teaching — deliberately not any real station.
-const SHAPES: Shape[] = [
-  { id: "arrays", el: <>{[50, 118, 462, 530].flatMap((x) => [<rect key={`${x}a`} x={x} y={18} width={60} height={64} fill="#1d4ed8" stroke="#93c5fd" />, <rect key={`${x}b`} x={x} y={98} width={60} height={64} fill="#1d4ed8" stroke="#93c5fd" />])}</>, label: [80, 12, "Solar arrays"] },
-  { id: "truss", el: <rect x={40} y={84} width={560} height={12} fill="#94a3b8" stroke="#475569" />, label: [300, 108, ""] },
-  { id: "radiators", el: <>{[248, 352].map((x) => <rect key={x} x={x} y={22} width={40} height={60} fill="#e2e8f0" stroke="#94a3b8" />)}</>, label: [268, 16, "Radiators"] },
-  { id: "batteries", el: <>{[186, 420].map((x) => <rect key={x} x={x} y={70} width={28} height={14} fill="#f59e0b" stroke="#92400e" />)}</>, label: [200, 64, "Batteries"] },
-  { id: "antennas", el: <><line x1={320} y1={84} x2={320} y2={50} stroke="#e2e8f0" strokeWidth={2} /><circle cx={320} cy={44} r={10} fill="#e2e8f0" stroke="#64748b" /></>, label: [336, 40, "Antenna"] },
-  { id: "robotics", el: <polyline points="560,84 560,60 590,40 610,52" fill="none" stroke="#fcd34d" strokeWidth={5} strokeLinecap="round" strokeLinejoin="round" />, label: [566, 32, "Robotic arm"] },
-  { id: "external", el: <>{[548, 574].map((x) => <rect key={x} x={x} y={100} width={20} height={14} fill="#a78bfa" stroke="#5b21b6" />)}</>, label: [556, 128, "External payloads"] },
-  { id: "loops", el: <path d="M268 84 V150 H300 V206 M372 84 V150 H340 V206" fill="none" stroke="#22d3ee" strokeWidth={3} strokeDasharray="6 4" />, label: [376, 146, "Thermal loops"] },
-  { id: "hab", el: <rect x={120} y={206} width={82} height={42} rx={14} {...MOD} />, label: [161, 231, "Habitation"], onLight: true },
-  { id: "command", el: <rect x={240} y={206} width={90} height={42} rx={14} {...MOD} />, label: [285, 231, "Command"], onLight: true },
-  { id: "lab", el: <rect x={330} y={206} width={104} height={42} rx={14} {...MOD} />, label: [360, 222, "Laboratory"], onLight: true },
-  { id: "racks", el: <>{[392, 404, 416].map((x) => <rect key={x} x={x} y={226} width={9} height={16} fill="#3b82f6" />)}</>, label: [404, 262, ""] },
-  { id: "storage", el: <rect x={434} y={210} width={52} height={34} rx={10} {...MOD} />, label: [460, 231, "Storage"], onLight: true },
-  { id: "airlock", el: <rect x={204} y={248} width={32} height={40} rx={8} {...MOD} />, label: [220, 304, "Airlock"] },
-  { id: "docking", el: <>{[[106, 219], [486, 219], [212, 196]].map(([x, y]) => <rect key={`${x}${y}`} x={x} y={y} width={14} height={16} fill="#fcd34d" stroke="#92400e" />)}</>, label: [494, 212, "Docking"] },
-  { id: "crv", el: <path d="M50 214 h44 l12 13 l-12 13 h-44 z" fill="#f8fafc" stroke="#475569" />, label: [72, 262, "Crew return"] },
-  { id: "propulsion", el: <>{[[330, 250], [310, 250]].map(([x, y]) => <path key={x} d={`M${x} ${y} l6 12 h-12 z`} fill="#ef4444" />)}</>, label: [290, 276, "Thrusters"] },
+const EXTERIOR_SPOTS: { id: string; x: number; y: number }[] = [
+  { id: "arrays", x: 125, y: 14 },
+  { id: "truss", x: 700, y: 160 },
+  { id: "radiators", x: 380, y: 40 },
+  { id: "batteries", x: 270, y: 202 },
+  { id: "antennas", x: 552, y: 84 },
+  { id: "robotics", x: 492, y: 60 },
+  { id: "external", x: 628, y: 112 },
+  { id: "docking", x: 806, y: 334 },
+  { id: "propulsion", x: 420, y: 414 },
+  { id: "crv", x: 96, y: 318 },
 ];
 
-export default function StationAnatomy() {
-  const [sel, setSel] = useState("lab");
-  const pickId = useId();
-  const c = ANATOMY.find((a) => a.id === sel)!;
-  const node = (id: string) => ANATOMY.find((a) => a.id === id)?.name ?? id;
+const INTERIOR_SPOTS: { id: string; x: number; y: number }[] = [
+  { id: "hab", x: 64, y: 150 },
+  { id: "node", x: 350, y: 150 },
+  { id: "command", x: 424, y: 150 },
+  { id: "lab", x: 624, y: 150 },
+  { id: "racks", x: 780, y: 196 },
+  { id: "airlock", x: 392, y: 470 },
+  { id: "storage", x: 868, y: 446 },
+  { id: "loops", x: 560, y: 402 },
+];
+
+const MODULE_IDS = ["hab", "node", "command", "lab", "airlock", "storage"];
+
+const FLOW_RELEVANT: Record<Flow, string[]> = {
+  power: ["arrays", "batteries", "truss", "command", "lab", "hab"],
+  thermal: ["radiators", "truss", "command", "lab", "hab"],
+  data: ["lab", "external", "command", "antennas", "truss"],
+  life: ["hab", "node", "command", "docking", "lab"],
+};
+
+export const FLOW_STEPS: Record<Flow, { title: string; steps: { label: string; text: string }[]; note: string }> = {
+  power: {
+    title: "Power flow",
+    steps: [
+      { label: "Solar arrays", text: "Photovoltaic wings, turned by rotary joints to face the Sun, generate direct current in sunlight." },
+      { label: "Power conditioning", text: "Regulators hold the bus voltage steady and shunt excess array current when loads and batteries are satisfied." },
+      { label: "Main distribution", text: "Independent power channels run along the truss; switches isolate faults so one failure does not black out the station." },
+      { label: "Batteries", text: "Charged in sunlight, discharged through every eclipse — power flows both ways." },
+      { label: "Station loads", text: "Life support, avionics, laboratory racks, communications, thermal pumps and crew systems, fed in priority order." },
+    ],
+    note: "Conceptual teaching view. Real stations have several independent channels and many conversion stages.",
+  },
+  thermal: {
+    title: "Thermal flow",
+    steps: [
+      { label: "Heat sources", text: "Crew metabolism, avionics and experiments generate heat inside the modules; nearly all electrical power becomes heat." },
+      { label: "Internal collection", text: "Cold plates and heat exchangers transfer heat into an internal water loop that is safe to run inside the cabin." },
+      { label: "Interface heat exchanger", text: "Heat passes from the internal loop to a separate, freeze-tolerant external loop without the fluids mixing." },
+      { label: "External transport", text: "Pumps carry the external coolant out along the truss to the radiators." },
+      { label: "Radiators", text: "Large panels at a controlled temperature emit infrared. They also absorb some sunlight, reflected sunlight and Earth's infrared (E), which reduces their net capacity." },
+      { label: "Rejection to space", text: "Heat leaves only as radiation — there is no air to carry it away." },
+    ],
+    note: "Conceptual teaching view: two-loop architecture, orbit-average environment.",
+  },
+  data: {
+    title: "Data & communication flow",
+    steps: [
+      { label: "Payloads", text: "Laboratory racks and external payloads produce science data and receive commands." },
+      { label: "Station data network", text: "Payload traffic runs on a network segmented from vehicle control; gateways (G) enforce the boundary." },
+      { label: "Flight computers", text: "Redundant computers inside the critical control boundary manage the station and its telemetry." },
+      { label: "Communications", text: "Antennas link to relay satellites and ground stations for telemetry, commands, voice, video and science data." },
+      { label: "Ground", text: "Control centres and payload operators receive data and send authenticated commands." },
+    ],
+    note: "All links are two-way. The dashed outline marks the critical vehicle-control network.",
+  },
+  life: {
+    title: "Life-support flow",
+    steps: [
+      { label: "Crew outputs", text: "Crew exhale CO₂ and humidity and produce urine and other waste." },
+      { label: "ECLSS processing", text: "CO₂ is removed, humidity condensed, water processed and oxygen generated by electrolysis." },
+      { label: "Returned to crew", text: "Oxygen, clean air and recovered water return to the cabin." },
+      { label: "Resupply", text: "Make-up water, gases, food and spares still arrive on visiting vehicles." },
+      { label: "Losses & waste out", text: "Some CO₂ products, brine and trash leave the loop — the cycle is only partly closed." },
+    ],
+    note: "Not a perfect closed loop. See the Life-Support Simulator for the numbers behind each architecture.",
+  },
+};
+
+const name = (id: string) => ANATOMY.find((a) => a.id === id)?.name ?? id;
+
+/** Cylindrical module: shaded body, segment rings and a specular line. */
+function Cyl({ x, y, w, h, rings = 3 }: { x: number; y: number; w: number; h: number; rings?: number }) {
   return (
-    <div className={styles.anatomy}>
-      <div>
-        <svg viewBox="0 0 640 320" role="group" aria-label="Generic station diagram. Select a component to learn about it.">
-          <rect x={200} y={196} width={40} height={52} rx={10} {...MOD} />
-          <text x={220} y={186} fontSize="10" fill="#b5b8c9" textAnchor="middle">Node</text>
-          <line x1={300} y1={96} x2={300} y2={206} stroke="#94a3b8" strokeWidth={4} />
-          {SHAPES.map((s) => {
-            const on = s.id === sel;
-            return (
-              <g
-                key={s.id}
-                role="button"
-                tabIndex={0}
-                aria-label={node(s.id)}
-                aria-pressed={on}
-                onClick={() => setSel(s.id)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    setSel(s.id);
-                  }
-                }}
-                style={{ opacity: on ? 1 : 0.82, filter: on ? "drop-shadow(0 0 6px rgba(103,232,249,0.9))" : undefined }}
-              >
-                <g>{s.el}</g>
-                {s.label && s.label[2] && (
-                  <text x={s.label[0]} y={s.label[1]} fontSize="11" fill={s.onLight ? (on ? "#0e7490" : "#0f172a") : on ? "#67e8f9" : "#e2e8f0"} textAnchor="middle" fontWeight={on ? 700 : 500} pointerEvents="none">
-                    {s.label[2]}
-                  </text>
-                )}
-              </g>
-            );
-          })}
-          <text x={10} y={314} fontSize="11" fill="#b5b8c9">Generic teaching layout · not a model of any real station</text>
-        </svg>
-        <div className={`${styles.field} ${styles.anatomyPicker}`}>
-          <span>
-            <label htmlFor={pickId}>Component</label>
-          </span>
-          <select id={pickId} value={sel} onChange={(e) => setSel(e.target.value)}>
-            {ANATOMY.map((a) => (
-              <option key={a.id} value={a.id}>
-                {a.name}
-              </option>
+    <g>
+      <rect x={x} y={y} width={w} height={h} rx={h / 5} fill="url(#hull)" stroke="#475569" strokeWidth="1.2" />
+      {Array.from({ length: rings }).map((_, i) => {
+        const rx = x + ((i + 1) * w) / (rings + 1);
+        return <line key={i} x1={rx} x2={rx} y1={y + 2} y2={y + h - 2} stroke="#64748b" strokeWidth="0.8" opacity="0.7" />;
+      })}
+      <line x1={x + 6} x2={x + w - 6} y1={y + h * 0.28} y2={y + h * 0.28} stroke="#f8fafc" strokeWidth="1" opacity="0.45" />
+    </g>
+  );
+}
+
+function Wing({ cx, top }: { cx: number; top: boolean }) {
+  const y = top ? 18 : 178;
+  return (
+    <g>
+      <rect x={cx - 24} y={y} width={48} height={124} fill="url(#cells)" stroke="#60a5fa" strokeWidth="0.8" />
+      <line x1={cx} x2={cx} y1={y} y2={y + 124} stroke="#cbd5e1" strokeWidth="1.2" />
+      <rect x={cx - 26} y={top ? y - 4 : y + 124} width={52} height={4} fill="#94a3b8" />
+    </g>
+  );
+}
+
+function Defs() {
+  return (
+    <defs>
+      <linearGradient id="hull" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0" stopColor="#e2e8f0" />
+        <stop offset="0.55" stopColor="#b8c2d0" />
+        <stop offset="1" stopColor="#7c889a" />
+      </linearGradient>
+      <linearGradient id="hullWarm" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0" stopColor="#f1f5f9" />
+        <stop offset="1" stopColor="#a3aebd" />
+      </linearGradient>
+      <pattern id="cells" width="8" height="8" patternUnits="userSpaceOnUse">
+        <rect width="8" height="8" fill="#1e3a8a" />
+        <path d="M8 0H0V8" fill="none" stroke="#3b82f6" strokeWidth="0.5" opacity="0.7" />
+      </pattern>
+      <pattern id="lattice" width="20" height="20" patternUnits="userSpaceOnUse">
+        <rect width="20" height="20" fill="#475569" />
+        <path d="M0 0L20 20M20 0L0 20" stroke="#94a3b8" strokeWidth="1" />
+      </pattern>
+      <pattern id="ribs" width="6" height="6" patternUnits="userSpaceOnUse">
+        <rect width="6" height="6" fill="#e5e7eb" />
+        <path d="M0 5.5H6" stroke="#9ca3af" strokeWidth="0.6" />
+      </pattern>
+      <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+        <path d="M40 0H0V40" fill="none" stroke="rgba(148,163,184,0.06)" strokeWidth="1" />
+      </pattern>
+      <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M0 0L10 5L0 10z" fill="context-stroke" />
+      </marker>
+    </defs>
+  );
+}
+
+type PartFn = (id: string, children: React.ReactNode) => React.ReactNode;
+
+function ExteriorParts({ part }: { part: PartFn }) {
+  return (
+    <>
+      {part("arrays", <>{[125, 195, 805, 875].flatMap((cx) => [<Wing key={`${cx}t`} cx={cx} top />, <Wing key={`${cx}b`} cx={cx} top={false} />])}</>)}
+      {part("radiators", <>{[351, 649].map((cx) => <rect key={cx} x={cx - 21} y={38} width={42} height={110} fill="url(#ribs)" stroke="#94a3b8" />)}</>)}
+      {part(
+        "truss",
+        <>
+          <rect x={90} y={150} width={820} height={20} fill="url(#lattice)" stroke="#334155" />
+          {[240, 760].map((x) => (
+            <circle key={x} cx={x} cy={160} r={13} fill="#334155" stroke="#94a3b8" strokeWidth="2" />
+          ))}
+          <rect x={472} y={170} width={16} height={160} fill="url(#lattice)" stroke="#334155" />
+        </>,
+      )}
+      {part("batteries", <>{[250, 710].map((x) => <rect key={x} x={x} y={172} width={40} height={16} rx={2} fill="#b45309" stroke="#f59e0b" />)}</>)}
+      {part(
+        "antennas",
+        <>
+          <line x1={520} y1={150} x2={520} y2={110} stroke="#cbd5e1" strokeWidth="3" />
+          <ellipse cx={520} cy={100} rx={22} ry={8} fill="#e2e8f0" stroke="#64748b" transform="rotate(-18 520 100)" />
+          <line x1={520} y1={100} x2={530} y2={84} stroke="#94a3b8" strokeWidth="1.5" />
+        </>,
+      )}
+      {part(
+        "robotics",
+        <>
+          <polyline points="440,150 412,98 470,72 486,80" fill="none" stroke="#e5e7eb" strokeWidth="6" strokeLinejoin="round" strokeLinecap="round" />
+          {[
+            [440, 150],
+            [412, 98],
+            [470, 72],
+          ].map(([x, y]) => (
+            <circle key={x} cx={x} cy={y} r={5} fill="#475569" stroke="#e5e7eb" strokeWidth="1.5" />
+          ))}
+          <rect x={482} y={74} width={12} height={12} rx={2} fill="#f59e0b" />
+        </>,
+      )}
+      {part("external", <>{[566, 592, 618].map((x) => <rect key={x} x={x - 10} y={126} width={22} height={24} rx={2} fill="#6d28d9" stroke="#c4b5fd" />)}</>)}
+      {part(
+        "crv",
+        <>
+          <path d="M70 344 L128 338 L140 346 L140 370 L128 378 L70 372 Q60 358 70 344Z" fill="url(#hullWarm)" stroke="#475569" />
+          <line x1={84} x2={84} y1={342} y2={374} stroke="#64748b" />
+        </>,
+      )}
+      {part(
+        "docking",
+        <>
+          <rect x={140} y={346} width={12} height={24} fill="#fbbf24" stroke="#92400e" />
+          <rect x={782} y={346} width={12} height={24} fill="#fbbf24" stroke="#92400e" />
+        </>,
+      )}
+      {part("hab", <Cyl x={152} y={330} w={178} h={56} rings={4} />)}
+      {part("node", <rect x={330} y={324} width={70} height={68} rx={22} fill="url(#hull)" stroke="#475569" strokeWidth="1.2" />)}
+      {part("command", <Cyl x={400} y={330} w={160} h={56} rings={3} />)}
+      {part("lab", <Cyl x={560} y={330} w={222} h={56} rings={5} />)}
+      {part("airlock", <rect x={345} y={392} width={40} height={66} rx={14} fill="url(#hull)" stroke="#475569" strokeWidth="1.2" />)}
+      {part("storage", <Cyl x={622} y={386} w={80} h={44} rings={1} />)}
+      {part(
+        "propulsion",
+        <>
+          {[420, 540].map((x) => (
+            <g key={x}>
+              <rect x={x - 9} y={386} width={18} height={8} fill="#64748b" />
+              <path d={`M${x - 6} 394 L${x + 6} 394 L${x + 9} 404 L${x - 9} 404Z`} fill="#94a3b8" stroke="#334155" />
+            </g>
+          ))}
+        </>,
+      )}
+    </>
+  );
+}
+
+function InteriorParts({ part }: { part: PartFn }) {
+  const hull = { fill: "#0f1b33", stroke: "#94a3b8", strokeWidth: 3 };
+  const box = { rx: 4, fill: "#1e293b", stroke: "#64748b" };
+  return (
+    <>
+      <text x={500} y={112} textAnchor="middle" className={an.caption}>
+        Schematic section through the pressurised modules
+      </text>
+      {part(
+        "hab",
+        <>
+          <rect x={40} y={170} width={260} height={210} rx={34} {...hull} />
+          {[0, 1, 2, 3].map((i) => (
+            <rect key={i} x={62 + i * 54} y={188} width={44} height={62} {...box} />
+          ))}
+          <rect x={62} y={300} width={80} height={56} {...box} />
+          <rect x={156} y={300} width={60} height={56} {...box} />
+          <rect x={230} y={300} width={50} height={56} {...box} />
+          <text x={170} y={278} textAnchor="middle" className={an.inner}>
+            crew quarters · galley · hygiene · exercise
+          </text>
+        </>,
+      )}
+      {part(
+        "node",
+        <>
+          <rect x={300} y={190} width={100} height={170} rx={30} {...hull} />
+          {[205, 345].map((y) => (
+            <circle key={y} cx={350} cy={y} r={9} fill="none" stroke="#64748b" strokeWidth="2" />
+          ))}
+          <text x={350} y={278} textAnchor="middle" className={an.inner}>
+            hatches
+          </text>
+        </>,
+      )}
+      {part(
+        "command",
+        <>
+          <rect x={400} y={170} width={200} height={210} rx={34} {...hull} />
+          <rect x={424} y={192} width={70} height={46} {...box} />
+          <rect x={432} y={200} width={54} height={24} fill="#0e7490" opacity="0.6" />
+          {[0, 1, 2].map((i) => (
+            <rect key={i} x={510 + i * 26} y={192} width={20} height={70} {...box} rx={2} />
+          ))}
+          {[0, 1, 2].map((i) => (
+            <rect key={i} x={424 + i * 56} y={300} width={46} height={56} rx={4} fill="#14322d" stroke="#10b981" strokeOpacity="0.5" />
+          ))}
+          <text x={500} y={284} textAnchor="middle" className={an.inner}>
+            workstation · avionics · life support
+          </text>
+        </>,
+      )}
+      {part("lab", <rect x={600} y={170} width={360} height={210} rx={34} {...hull} />)}
+      {part(
+        "racks",
+        <>
+          {Array.from({ length: 7 }).map((_, i) => (
+            <g key={i}>
+              <rect x={622 + i * 46} y={188} width={38} height={70} rx={3} fill="#172554" stroke="#3b82f6" />
+              <rect x={622 + i * 46} y={292} width={38} height={70} rx={3} fill="#172554" stroke="#3b82f6" />
+            </g>
+          ))}
+          <text x={780} y={280} textAnchor="middle" className={an.inner}>
+            experiment racks · central aisle
+          </text>
+        </>,
+      )}
+      {part(
+        "airlock",
+        <>
+          <rect x={310} y={360} width={80} height={110} rx={20} {...hull} />
+          <line x1={312} x2={388} y1={412} y2={412} stroke="#64748b" strokeWidth="2" />
+          <text x={350} y={396} textAnchor="middle" className={an.inner}>
+            equipment
+          </text>
+          <text x={350} y={444} textAnchor="middle" className={an.inner}>
+            crew lock
+          </text>
+        </>,
+      )}
+      {part(
+        "storage",
+        <>
+          <rect x={700} y={380} width={160} height={80} rx={20} {...hull} />
+          {Array.from({ length: 8 }).map((_, i) => (
+            <rect key={i} x={716 + (i % 4) * 34} y={392 + Math.floor(i / 4) * 30} width={28} height={24} rx={4} fill="#3f3f46" stroke="#a1a1aa" strokeOpacity="0.6" />
+          ))}
+        </>,
+      )}
+      {part("loops", <path d="M70 372 H940" fill="none" stroke="#22d3ee" strokeWidth="3" strokeDasharray="8 5" />)}
+    </>
+  );
+}
+
+function FlowOverlay({ flow }: { flow: Flow }) {
+  const marker = (n: number, x: number, y: number) => (
+    <g key={n} className={an.step}>
+      <circle cx={x} cy={y} r={12} />
+      <text x={x} y={y + 4} textAnchor="middle">
+        {n}
+      </text>
+    </g>
+  );
+  if (flow === "power")
+    return (
+      <g className={an.flowPower}>
+        <path className={an.moving} d="M160 160 H472 M840 160 H488 M480 170 V330 M480 358 H240 M480 358 H700" markerEnd="url(#arrow)" />
+        <path d="M270 170 V174 M730 170 V174" />
+        {marker(1, 160, 100)}
+        {marker(2, 262, 132)}
+        {marker(3, 480, 132)}
+        {marker(4, 730, 208)}
+        {marker(5, 620, 408)}
+      </g>
+    );
+  if (flow === "thermal")
+    return (
+      <g className={an.flowThermal}>
+        <path className={an.moving} d="M200 378 H470" markerEnd="url(#arrow)" />
+        <path className={an.moving} d="M740 378 H490" markerEnd="url(#arrow)" />
+        <path className={an.movingHot} d="M494 330 V168 M494 160 H351 V150 M494 160 H649 V150" />
+        <g className={an.ir}>
+          {[330, 351, 372, 628, 649, 670].map((x) => (
+            <path key={x} d={`M${x} 34 q4 -6 0 -12 q-4 -6 0 -12`} markerEnd="url(#arrow)" />
+          ))}
+        </g>
+        <g className={an.env}>
+          <path d="M730 60 L680 80" markerEnd="url(#arrow)" />
+          <text x={736} y={58}>
+            E
+          </text>
+        </g>
+        {marker(1, 260, 408)}
+        {marker(2, 620, 408)}
+        {marker(3, 510, 318)}
+        {marker(4, 520, 216)}
+        {marker(5, 610, 94)}
+        {marker(6, 400, 18)}
+      </g>
+    );
+  if (flow === "data")
+    return (
+      <g className={an.flowData}>
+        <rect x={398} y={316} width={166} height={84} rx={10} className={an.boundary} />
+        <path d="M600 350 H568 M592 150 V160 H480" markerEnd="url(#arrow)" markerStart="url(#arrow)" />
+        <path d="M480 330 V170 M520 150 V116" markerEnd="url(#arrow)" markerStart="url(#arrow)" />
+        <path d="M532 86 L560 26" markerEnd="url(#arrow)" markerStart="url(#arrow)" />
+        <g className={an.gateway}>
+          <rect x={560} y={342} width={16} height={16} rx={3} />
+          <text x={568} y={354} textAnchor="middle">
+            G
+          </text>
+        </g>
+        <text x={574} y={24} className={an.caption}>
+          Ground (via relay satellites)
+        </text>
+        {marker(1, 670, 308)}
+        {marker(2, 620, 176)}
+        {marker(3, 480, 414)}
+        {marker(4, 556, 128)}
+        {marker(5, 548, 18)}
+      </g>
+    );
+  return (
+    <g className={an.flowLife}>
+      <path className={an.moving} d="M200 348 H420" markerEnd="url(#arrow)" />
+      <path className={an.movingO2} d="M420 372 H200" markerEnd="url(#arrow)" />
+      <path className={an.movingO2} d="M780 358 H570" markerEnd="url(#arrow)" />
+      <path className={an.out} d="M365 392 V480" markerEnd="url(#arrow)" />
+      {marker(1, 240, 318)}
+      {marker(2, 440, 318)}
+      {marker(3, 240, 408)}
+      {marker(4, 740, 318)}
+      {marker(5, 400, 474)}
+    </g>
+  );
+}
+
+export default function StationAnatomy() {
+  const { mode } = useMode();
+  const [view, setView] = useState<View>("exterior");
+  const [flow, setFlow] = useState<Flow>("power");
+  const [sel, setSel] = useState("lab");
+  const [hover, setHover] = useState<string | null>(null);
+  const [tabOverride, setTab] = useState<Tab | null>(null);
+  const tab: Tab = tabOverride ?? (mode === "learn" ? "overview" : mode === "engineering" ? "engineering" : "research");
+  const spots = view === "interior" ? INTERIOR_SPOTS : EXTERIOR_SPOTS;
+  const relevant = view === "flow" ? FLOW_RELEVANT[flow] : null;
+  const c = ANATOMY.find((a) => a.id === sel)!;
+
+  const part: PartFn = (id, children) => (
+    <g
+      key={id}
+      data-part={id}
+      className={`${an.part} ${sel === id && view !== "flow" ? an.selected : ""} ${relevant && !relevant.includes(id) ? an.dim : ""}`}
+      onClick={() => view !== "flow" && setSel(id)}
+      onMouseEnter={() => view !== "flow" && setHover(id)}
+      onMouseLeave={() => setHover(null)}
+    >
+      {children}
+    </g>
+  );
+
+  // The tooltip anchors to a hotspot; modules without one in this view anchor to the selected module's centre.
+  const labelFor = hover ?? sel;
+  const labelSpot = spots.find((s) => s.id === labelFor);
+  const labelW = name(labelFor).length * 7.4 + 14;
+  const labelX = labelSpot ? Math.min(labelSpot.x + 18, 1000 - 8 - labelW) : 0;
+
+  const switchView = (v: View) => {
+    setView(v);
+    if (v === "interior" && !INTERIOR_SPOTS.some((s) => s.id === sel)) setSel("lab");
+    if (v === "exterior" && !EXTERIOR_SPOTS.some((s) => s.id === sel) && !MODULE_IDS.includes(sel)) setSel("arrays");
+  };
+
+  return (
+    <div className={an.layout}>
+      <div className={an.stage}>
+        <div className={an.toolbar}>
+          <div className={styles.segmented} role="group" aria-label="Anatomy view">
+            {(
+              [
+                ["exterior", "Exterior"],
+                ["interior", "Interior"],
+                ["flow", "System flow"],
+              ] as const
+            ).map(([v, l]) => (
+              <button key={v} type="button" aria-pressed={view === v} onClick={() => switchView(v)}>
+                {l}
+              </button>
             ))}
-          </select>
+          </div>
+          {view === "flow" && (
+            <div className={styles.segmented} role="group" aria-label="System flow">
+              {(
+                [
+                  ["power", "Power"],
+                  ["thermal", "Thermal"],
+                  ["data", "Data"],
+                  ["life", "Life support"],
+                ] as const
+              ).map(([f, l]) => (
+                <button key={f} type="button" aria-pressed={flow === f} onClick={() => setFlow(f)}>
+                  {l}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
+        <svg
+          viewBox="0 0 1000 540"
+          className={an.svg}
+          role="group"
+          aria-label={
+            view === "flow"
+              ? `${FLOW_STEPS[flow].title} through a generic station: ${FLOW_STEPS[flow].steps.map((s) => s.label).join(", then ")}.`
+              : `${view === "interior" ? "Interior section" : "Exterior view"} of a generic modular research station. Use the numbered hotspots to select components.`
+          }
+        >
+          <Defs />
+          <rect width="1000" height="540" fill="url(#grid)" />
+          {view === "interior" ? <InteriorParts part={part} /> : <ExteriorParts part={part} />}
+          {view === "flow" && <FlowOverlay flow={flow} />}
+          {view !== "flow" &&
+            spots.map((s, i) => {
+              const on = s.id === sel;
+              return (
+                <g
+                  key={s.id}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`${i + 1}. ${name(s.id)}`}
+                  aria-pressed={on}
+                  className={`${an.spot} ${on ? an.spotOn : ""}`}
+                  onClick={() => setSel(s.id)}
+                  onFocus={() => setHover(s.id)}
+                  onBlur={() => setHover(null)}
+                  onMouseEnter={() => setHover(s.id)}
+                  onMouseLeave={() => setHover(null)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setSel(s.id);
+                    }
+                  }}
+                >
+                  <circle cx={s.x} cy={s.y} r={13} />
+                  <text x={s.x} y={s.y + 4} textAnchor="middle">
+                    {i + 1}
+                  </text>
+                </g>
+              );
+            })}
+          {view !== "flow" && labelSpot && (
+            <g className={an.tip} pointerEvents="none">
+              <rect x={labelX} y={labelSpot.y - 13} width={labelW} height={26} rx={6} />
+              <text x={labelX + 7} y={labelSpot.y + 5}>
+                {name(labelFor)}
+              </text>
+            </g>
+          )}
+          <text x={16} y={528} className={an.disclaimer}>
+            Generic teaching architecture — not a model of any real station.
+          </text>
+        </svg>
+        {view !== "flow" && (
+          <ol className={an.index} aria-label="Components">
+            {spots.map((s, i) => (
+              <li key={s.id}>
+                <button type="button" aria-pressed={s.id === sel} onClick={() => setSel(s.id)}>
+                  <span>{i + 1}</span> {name(s.id)}
+                </button>
+              </li>
+            ))}
+          </ol>
+        )}
       </div>
-      <article className={styles.card} aria-live="polite">
-        <h3>{c.name}</h3>
-        <dl className={styles.kv} style={{ marginTop: 10 }}>
-          <div><dt>Purpose</dt><dd>{c.purpose}</dd></div>
-          <div><dt>How it works</dt><dd>{c.how}</dd></div>
-          <div><dt>Major engineering challenges</dt><dd>{c.challenges}</dd></div>
-          <div><dt>Typical sensors</dt><dd>{c.sensors}</dd></div>
-          <div><dt>Failure modes</dt><dd>{c.failures}</dd></div>
-          <div><dt>Redundancy philosophy</dt><dd>{c.redundancy}</dd></div>
-          <div><dt>Research questions</dt><dd>{c.research}</dd></div>
-        </dl>
-      </article>
+
+      <aside className={an.inspector} aria-live="polite">
+        {view === "flow" ? (
+          <>
+            <div className={styles.eyebrow}>System flow</div>
+            <h3>{FLOW_STEPS[flow].title}</h3>
+            <ol className={an.flowList}>
+              {FLOW_STEPS[flow].steps.map((s, i) => (
+                <li key={s.label}>
+                  <span className={an.flowNum}>{i + 1}</span>
+                  <div>
+                    <b>{s.label}</b>
+                    <p>{s.text}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <p className={an.note}>{FLOW_STEPS[flow].note}</p>
+          </>
+        ) : (
+          <>
+            <div className={styles.eyebrow}>{view === "interior" ? "Interior" : "Exterior"} · selected component</div>
+            <h3>{c.name}</h3>
+            <div className={an.tabs} role="tablist" aria-label="Component detail">
+              {(
+                [
+                  ["overview", "Overview"],
+                  ["engineering", "Engineering"],
+                  ["research", "Research"],
+                ] as const
+              ).map(([t, l]) => (
+                <button key={t} type="button" role="tab" aria-selected={tab === t} onClick={() => setTab(t)}>
+                  {l}
+                </button>
+              ))}
+            </div>
+            <dl className={an.detail} role="tabpanel">
+              {tab === "overview" && (
+                <>
+                  <dt>Purpose</dt>
+                  <dd>{c.purpose}</dd>
+                  <dt>How it works</dt>
+                  <dd>{c.how}</dd>
+                </>
+              )}
+              {tab === "engineering" && (
+                <>
+                  <dt>Engineering challenges</dt>
+                  <dd>{c.challenges}</dd>
+                  <dt>Typical sensors</dt>
+                  <dd>{c.sensors}</dd>
+                  <dt>Failure modes</dt>
+                  <dd>{c.failures}</dd>
+                  <dt>Redundancy philosophy</dt>
+                  <dd>{c.redundancy}</dd>
+                </>
+              )}
+              {tab === "research" && (
+                <>
+                  <dt>Open research questions</dt>
+                  <dd>{c.research}</dd>
+                </>
+              )}
+            </dl>
+          </>
+        )}
+      </aside>
     </div>
   );
 }

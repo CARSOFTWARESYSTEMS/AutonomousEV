@@ -58,15 +58,17 @@ export default function SpacecraftHierarchy() {
           <ChevronRight size={14} aria-hidden="true" /> {selected}: {DETAIL[selected]}
         </p>
       </div>
-      <div className={styles.stack}>
+      <dl className={styles.defList} aria-label="Vehicle types">
         {VEHICLE_TYPES.map((v) => (
-          <article key={v.name} className={styles.card} style={{ padding: 16 }}>
-            <h3 style={{ fontSize: 16 }}>{v.name}</h3>
-            <p style={{ fontSize: 15, marginBottom: 4 }}>{v.definition}</p>
-            <small style={{ color: "var(--space-muted)" }}>Example: {v.example}</small>
-          </article>
+          <div key={v.name}>
+            <dt>{v.name}</dt>
+            <dd>
+              {v.definition}
+              <small>Example: {v.example}</small>
+            </dd>
+          </div>
         ))}
-      </div>
+      </dl>
     </div>
   );
 }

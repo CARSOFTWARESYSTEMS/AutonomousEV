@@ -23,7 +23,7 @@ function GroundTrack({ inc, alt }: { inc: number; alt: number }) {
         {[-60, -30, 0, 30, 60].map((lat) => (
           <g key={lat}>
             <line x1={0} x2={GW} y1={y(lat)} y2={y(lat)} stroke={lat === 0 ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.08)"} />
-            <text x={4} y={y(lat) - 3} fontSize="10" fill="#b5b8c9">{lat}°</text>
+            <text x={4} y={y(lat) - 3} fontSize="10" fill="#b5b8c9" stroke="#0b1733" strokeWidth={3} paintOrder="stroke">{lat}°</text>
           </g>
         ))}
         {[-120, -60, 0, 60, 120].map((lon) => (
@@ -123,7 +123,7 @@ export default function OrbitSimulator() {
             <h4>Day / night cycle — one orbit</h4>
             <div className={styles.dayBar} role="img" aria-label={`Sunlight ${fmt((1 - f) * periodMin, 1)} minutes, eclipse ${fmt(f * periodMin, 1)} minutes`} style={{ height: 28, margin: "8px 0 4px" }}>
               <span style={{ flex: 1 - f, background: "#f59e0b", display: "grid", placeItems: "center", color: "#0f172a", fontSize: 12, fontWeight: 700 }}>☀ {fmt((1 - f) * periodMin)} min</span>
-              {f > 0 && <span style={{ flex: f, background: "#4c1d95", display: "grid", placeItems: "center", color: "#fff", fontSize: 12, fontWeight: 700 }}>◐ {fmt(f * periodMin)}</span>}
+              {f > 0 && <span style={{ flex: f, background: "#4c1d95", display: "grid", placeItems: "center", color: "#fff", fontSize: 12, fontWeight: 700 }}>◐ {fmt(f * periodMin)} min</span>}
             </div>
             <p style={{ fontSize: 13 }}>
               About {fmt(o.orbitsPerDay)} sunrises and sunsets every day. {beta > 0 ? "Higher β shortens the eclipse — at high enough β there is none." : "Increase β in Engineering view to see eclipses shorten."}

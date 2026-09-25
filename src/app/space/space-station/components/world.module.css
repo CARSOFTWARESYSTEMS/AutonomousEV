@@ -1,0 +1,45 @@
+/* World stations: a two-column grid on larger screens, a snap carousel on phones. */
+.context { max-width: 78ch; font-size: 15px !important; margin-bottom: 18px !important; }
+.context b { color: var(--space-text); }
+.carouselBar { display: none; }
+.track { list-style: none; padding: 0 !important; margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.card {
+  margin: 0 !important;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 20px;
+  border-radius: var(--space-radius);
+  border: 1px solid var(--space-border);
+  background: var(--space-surface);
+}
+.card h3 { font-size: 20px; }
+.badges { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 6px; }
+.category { font-size: 12px; font-weight: 600; color: var(--space-muted); letter-spacing: 0.04em; }
+.operator { font-size: 14px !important; margin: 0 !important; }
+.lede { font-size: 15px !important; color: var(--space-text) !important; margin: 6px 0 4px !important; }
+.more { margin-top: auto; border-top: 1px solid var(--space-border); }
+.more summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; color: var(--space-blue-text); font-weight: 600; font-size: 14px; }
+.more > div { padding-bottom: 6px; }
+.more p { font-size: 14px !important; }
+.sources { font-size: 13px !important; }
+
+@media (max-width: 768px) {
+  .carouselBar { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .navButton { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 12px; border: 1px solid var(--space-control-border); background: var(--space-button-surface); color: var(--space-blue-text); }
+  .navButton:disabled { opacity: 0.35; }
+  .counter { text-align: center; font-size: 14px; color: var(--space-text); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .track {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 0;
+    padding-bottom: 6px !important;
+    scrollbar-width: none;
+  }
+  .track::-webkit-scrollbar { display: none; }
+  .card { flex: 0 0 88%; scroll-snap-align: start; padding: 16px; }
+  .context { font-size: 14px !important; }
+}

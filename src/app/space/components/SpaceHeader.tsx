@@ -19,15 +19,17 @@ const navItems = [
   { label: "EV Society", href: "https://www.evsociety.org" },
 ];
 
+export type BrandLink = { label: string; href: string };
+
 export default function SpaceHeader({
   basePath = "",
-  showCommunityBranding = true,
+  brandLinks,
 }: {
   basePath?: string;
-  /** Pages that must not carry EV Society branding pass false. */
-  showCommunityBranding?: boolean;
+  /** Replaces the default brand links (UFlight, EV.ENGINEER, EV Society) for pages with their own attribution. */
+  brandLinks?: BrandLink[];
 }) {
-  const items = showCommunityBranding ? navItems : navItems.filter((item) => item.label !== "EV Society");
+  const items = brandLinks ? [...navItems.filter((item) => item.href.startsWith("#")), ...brandLinks] : navItems;
   const [mobileOpen, setMobileOpen] = useState(false);
   const mobileToggleRef = useRef<HTMLButtonElement>(null);
   useMobileMenuLock(mobileOpen, setMobileOpen, mobileToggleRef);

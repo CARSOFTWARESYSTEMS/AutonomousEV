@@ -68,6 +68,7 @@ export interface Component {
 
 export const ANATOMY: Component[] = [
   { id: "lab", name: "Pressurised laboratory", purpose: "Houses experiments in a shirt-sleeve environment.", how: "Standard racks draw power, data, cooling water, vacuum and nitrogen from station utilities.", challenges: "Vibration isolation, contamination control, containment and crew access.", sensors: "Rack temperature, flow, power, smoke, cabin pressure.", failures: "Loss of cooling or power to a rack; contamination leak.", redundancy: "Rack-level isolation so one experiment cannot endanger the cabin.", research: "How can racks become more autonomous to save crew time?" },
+  { id: "node", name: "Node", purpose: "Joins modules and routes people, air, power, data and coolant between them.", how: "A short pressurised module with several hatches; utilities pass through feed-throughs at each interface.", challenges: "Many interfaces in a small volume; each hatch seal is a potential leak path.", sensors: "Hatch position, pressure, air flow, smoke.", failures: "Stuck hatch, seal leak, blocked ventilation between modules.", redundancy: "Hatches allow any module to be isolated; more than one path between critical modules.", research: "Standard, reconfigurable interfaces for stations assembled by different partners." },
   { id: "hab", name: "Habitation module", purpose: "Sleep, hygiene, food preparation and private space.", how: "Crew quarters, galley and hygiene stations served by life support and ventilation.", challenges: "Noise, CO₂ pockets from poor airflow, privacy, radiation shielding.", sensors: "CO₂, humidity, temperature, noise, radiation dose.", failures: "Ventilation fan failure leaving CO₂ pockets around sleeping crew.", redundancy: "Multiple fans and portable sensors; crew can relocate.", research: "Minimum habitable volume and layout for long missions." },
   { id: "command", name: "Command & control", purpose: "Flight computers, crew displays and station management.", how: "Redundant computers run guidance, fault management and communications, commanded by crew and ground.", challenges: "Radiation-induced upsets, software complexity, cybersecurity.", sensors: "Computer health, bus traffic, memory errors.", failures: "Computer lockup or corrupted software.", redundancy: "Multiple computers with voting or hot backup.", research: "Verified autonomous fault management." },
   { id: "docking", name: "Docking ports", purpose: "Join visiting vehicles and new modules.", how: "Soft-capture then hard-capture mechanisms form a structural, pressure-tight seal.", challenges: "Precise alignment, loads at contact, seal integrity.", sensors: "Contact sensors, latch position, pressure between hatches.", failures: "Latch not closing, seal leak.", redundancy: "More ports than routinely needed; berthing by robotic arm as an alternative.", research: "Standardised interfaces across nations and companies." },
@@ -108,3 +109,97 @@ export const SYSTEMS: SystemArea[] = [
   { id: "crew", name: "Crew Systems", topics: ["Habitation", "Sleep", "Food", "Hygiene", "Exercise", "Workstations", "Lighting", "Human factors"], learn: "Everything that keeps people healthy, rested and productive.", engineering: "Crew quarters, galleys, hygiene, exercise devices and lighting follow human-integration design guidance on volume, noise and circadian lighting.", research: "Behavioural health, circadian lighting, countermeasure effectiveness." },
   { id: "safety", name: "Safety", topics: ["Fire", "Depressurisation", "Toxic release", "Collision", "Radiation", "Medical emergencies", "Safe haven", "Crew evacuation"], learn: "Stations are designed so that credible emergencies can be detected and survived.", engineering: "Hazards are analysed and controlled with detection, isolation, redundancy and safe havens; debris avoidance manoeuvres and lifeboat vehicles protect the crew.", research: "Quantitative risk assessment, fire behaviour in microgravity, radiation storm shelters." },
 ];
+
+// ── Purpose domains ──
+// Six parent domains group the sixteen detailed purposes above. Each purpose
+// has exactly one parent; `related` records cross-domain links shown in the
+// detail panel instead of duplicating wheel labels.
+
+export type DomainId = "microgravity" | "human" | "technology" | "earth-space" | "industry" | "exploration";
+
+export interface PurposeDomain {
+  id: DomainId;
+  name: string;
+  short: string;
+  whyStation: string;
+  applications: string;
+  facility: string;
+  purposes: string[];
+  cta: { href: string; label: string };
+}
+
+export const PURPOSE_DOMAINS: PurposeDomain[] = [
+  {
+    id: "microgravity",
+    name: "Microgravity Science",
+    short: "Physics, chemistry and biology with gravity-driven effects removed.",
+    whyStation: "Only a station offers weeks to months of continuous free fall, with crew and laboratory utilities to run, adjust and repeat experiments.",
+    applications: "Better models of flames, fluids, solidification and crystal growth used in industry, energy and medicine.",
+    facility: "Pressurised laboratory racks, furnaces, fluid and combustion chambers, incubators and centrifuges.",
+    purposes: ["microgravity", "biology", "materials", "fluids", "combustion", "pharma"],
+    cta: { href: "#lab", label: "Open the Microgravity Lab" },
+  },
+  {
+    id: "human",
+    name: "Human Health & Human Spaceflight",
+    short: "How people adapt to, and stay healthy in, long-duration spaceflight.",
+    whyStation: "Weightlessness, radiation, isolation and confinement act together only in real spaceflight, and crews stay long enough for the changes to develop.",
+    applications: "Insight into bone loss, muscle wasting, cardiovascular health, remote diagnostics and care in isolated settings.",
+    facility: "Human-research hardware, exercise devices, medical instruments and crew quarters.",
+    purposes: ["human", "medicine"],
+    cta: { href: "#lab", label: "Explore human physiology research" },
+  },
+  {
+    id: "technology",
+    name: "Technology & Robotics",
+    short: "Proving hardware and autonomy in the real space environment.",
+    whyStation: "New systems can be tested for months with power, data and crew nearby to observe, adjust and repair them.",
+    applications: "Higher technology readiness before costly missions; advances in teleoperation, autonomy and servicing.",
+    facility: "External platforms, airlocks, robotic arms and free-flying robots.",
+    purposes: ["tech-demo", "robotics"],
+    cta: { href: "#frontier", label: "See robotics and autonomy frontiers" },
+  },
+  {
+    id: "earth-space",
+    name: "Earth & Space Science",
+    short: "Using the orbital vantage point to observe Earth and the universe.",
+    whyStation: "A station provides power, data links and servicing for instruments that can be installed, upgraded and returned.",
+    applications: "Disaster response, climate records, space-weather monitoring and astrophysics.",
+    facility: "External payload sites, Earth-facing windows and cameras.",
+    purposes: ["earth-obs", "astronomy"],
+    cta: { href: "#lab", label: "Explore observation research" },
+  },
+  {
+    id: "industry",
+    name: "Orbital Industry & Commercial Research",
+    short: "Turning microgravity research into products, services and markets.",
+    whyStation: "Companies need repeatable access, standard interfaces and sample return to test whether orbital production pays off.",
+    applications: "Potential high-value materials, fibres, crystals and tissues — most still at demonstration stage.",
+    facility: "Commercial racks, manufacturing payloads, national-laboratory allocations and commercial stations.",
+    purposes: ["commercial", "manufacturing"],
+    cta: { href: "#economy", label: "Read about the station economy" },
+  },
+  {
+    id: "exploration",
+    name: "Exploration & Long-duration Habitation",
+    short: "Learning to live and work far from Earth for years.",
+    whyStation: "Low Earth orbit is the proving ground where life support, habitats and operations can fail safely and be fixed.",
+    applications: "Reliable life support, habitat design and operations for lunar and deep-space missions.",
+    facility: "Crew quarters, life-support testbeds and long-duration operations.",
+    purposes: ["habitation", "deep-space"],
+    cta: { href: "#moon", label: "From Earth orbit to the Moon" },
+  },
+];
+
+/** Cross-domain relationships for purposes that span more than one domain. */
+export const PURPOSE_RELATED: Record<string, DomainId[]> = {
+  biology: ["human"],
+  pharma: ["industry"],
+  manufacturing: ["microgravity"],
+  medicine: ["microgravity"],
+  robotics: ["exploration"],
+  "tech-demo": ["exploration", "industry"],
+  "deep-space": ["human", "technology"],
+  commercial: ["microgravity"],
+  "earth-obs": ["technology"],
+};

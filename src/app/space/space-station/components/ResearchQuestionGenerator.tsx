@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { Lightbulb } from "lucide-react";
 import { generateQuestion, DISCIPLINES, SUBSYSTEMS, ENVIRONMENTS, TRLS, LEVELS, type QuestionInput } from "@/lib/space-station/questions";
 import { Select } from "./SimFrame";
+import Wizard from "./Wizard";
 import styles from "../station.module.css";
 
 export default function ResearchQuestionGenerator() {
@@ -19,15 +20,18 @@ export default function ResearchQuestionGenerator() {
           <span className={styles.simLabel}>A structured starting point — no citations are generated; follow the search links to real literature.</span>
         </div>
       </div>
-      <div className={styles.simBody}>
-        <div className={styles.simControls}>
-          <Select label="Discipline" value={q.discipline} options={DISCIPLINES} onChange={set("discipline")} />
-          <Select label="Station subsystem" value={q.subsystem} options={SUBSYSTEMS} onChange={set("subsystem")} />
-          <Select label="Environment" value={q.environment} options={ENVIRONMENTS} onChange={set("environment")} />
-          <Select label="Technology readiness" value={q.trl} options={TRLS} onChange={set("trl")} />
-          <Select label="Academic level" value={q.level} options={LEVELS} onChange={set("level")} />
-        </div>
-        <div className={styles.simOutput} aria-live="polite">
+      <Wizard
+        label="Research question generator"
+        summaryTitle="Research question"
+        steps={[
+            { title: "Discipline", content: <Select label="Discipline" value={q.discipline} options={DISCIPLINES} onChange={set("discipline")} /> },
+            { title: "Station subsystem", content: <Select label="Station subsystem" value={q.subsystem} options={SUBSYSTEMS} onChange={set("subsystem")} /> },
+            { title: "Environment", content: <Select label="Environment" value={q.environment} options={ENVIRONMENTS} onChange={set("environment")} /> },
+            { title: "Technology readiness", content: <Select label="Technology readiness" value={q.trl} options={TRLS} onChange={set("trl")} /> },
+            { title: "Academic level", content: <Select label="Academic level" value={q.level} options={LEVELS} onChange={set("level")} /> },
+        ]}
+        summary={
+          <>
           <dl className={styles.kv}>
             <div><dt>Research problem</dt><dd>{g.problem}</dd></div>
             <div><dt>Hypothesis</dt><dd>{g.hypothesis}</dd></div>
@@ -50,8 +54,9 @@ export default function ResearchQuestionGenerator() {
               </dd>
             </div>
           </dl>
-        </div>
-      </div>
+          </>
+        }
+      />
     </div>
   );
 }

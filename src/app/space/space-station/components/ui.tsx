@@ -31,6 +31,7 @@ const TONE: Record<string, string> = {
   Retired: "retired",
   Historical: "retired",
   Paused: "warn",
+  "Development · Paused": "warn",
 };
 
 /** Status label: always text (never colour alone), with a tone for emphasis. */
@@ -42,11 +43,18 @@ export function Badge({ label }: { label: string }) {
   );
 }
 
-export function SourceList({ ids, title = "Sources & Further Research" }: { ids: SourceId[]; title?: string }) {
+/**
+ * Section sources as a disclosure: collapsed by default so long citation lists
+ * don't interrupt reading, but always present in the server HTML.
+ */
+export function SourceList({ ids, title = "Sources & Further Research", open = false }: { ids: SourceId[]; title?: string; open?: boolean }) {
   const unique = [...new Set(ids)];
   return (
-    <aside className={styles.sources} aria-label={title}>
-      <h3>{title}</h3>
+    <details className={styles.sources} aria-label={title} open={open || undefined}>
+      <summary>
+        <span className={styles.sourcesTitle}>{title}</span>
+        <span className={styles.sourcesCount}>{unique.length} authoritative sources</span>
+      </summary>
       <ul>
         {unique.map((id) => {
           const s = source(id);
@@ -65,7 +73,7 @@ export function SourceList({ ids, title = "Sources & Further Research" }: { ids:
       <p className={styles.reviewed}>
         Last reviewed: <time dateTime={LAST_REVIEWED}>{LAST_REVIEWED_LABEL}</time>
       </p>
-    </aside>
+    </details>
   );
 }
 
@@ -79,3 +87,23 @@ export function Notice({ children }: { children: React.ReactNode }) {
 }
 
 export const EDU_LABEL = "Educational model — not mission design data.";
+
+/** Divider that opens one of the page's four parts (Knowledge, Systems, Laboratory, Research). */
+export function PartDivider({ id, number, title, description, links }: { id: string; number: string; title: string; description: string; links: [string, string][] }) {
+  return (
+    <div id={id} className={styles.part} data-part={id.replace("part-", "")} role="group" aria-label={`Part ${number}: ${title}`}>
+      <div className={styles.partHead}>
+        <p className={styles.partNumber}>Part {number}</p>
+        <p className={styles.partTitle}>{title}</p>
+        <p className={styles.partDesc}>{description}</p>
+      </div>
+      <nav aria-label={`${title} sections`} className={styles.partLinks}>
+        {links.map(([href, label]) => (
+          <a key={href} href={href}>
+            {label}
+          </a>
+        ))}
+      </nav>
+    </div>
+  );
+}

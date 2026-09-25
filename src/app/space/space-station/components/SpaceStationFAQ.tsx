@@ -5,6 +5,7 @@ import { source } from "../data/sources";
 import styles from "../station.module.css";
 
 const TOPICS = ["All", ...Array.from(new Set(FAQ.map((f) => f.topic)))] as const;
+const POPULAR = ["fall", "breathe", "docking", "bas", "why-bas", "microgravity", "power-failure", "after-iss"];
 
 export default function SpaceStationFAQ() {
   const [q, setQ] = useState("");
@@ -12,8 +13,32 @@ export default function SpaceStationFAQ() {
   const searchId = useId();
   const needle = q.trim().toLowerCase();
   const items = FAQ.filter((f) => (topic === "All" || f.topic === topic) && (!needle || `${f.q} ${f.a}`.toLowerCase().includes(needle)));
+  const openQuestion = (id: string) => {
+    setQ("");
+    setTopic("All");
+    requestAnimationFrame(() => {
+      const el = document.getElementById(`faq-${id}`) as HTMLDetailsElement | null;
+      if (!el) return;
+      el.open = true;
+      el.scrollIntoView?.({ block: "center" });
+      el.querySelector("summary")?.focus();
+    });
+  };
   return (
     <div>
+      <p className={styles.askPrompt}>What would you like to understand?</p>
+      <ul className={styles.popular} aria-label="Popular questions">
+        {POPULAR.map((id) => {
+          const f = FAQ.find((x) => x.id === id)!;
+          return (
+            <li key={id}>
+              <button type="button" onClick={() => openQuestion(id)}>
+                {f.q}
+              </button>
+            </li>
+          );
+        })}
+      </ul>
       <div className={styles.faqTools}>
         <label htmlFor={searchId} className={styles.srOnly}>
           Search questions

@@ -17,7 +17,7 @@ import {
 import { SimFrame, Slider, Metric, fmt } from "./SimFrame";
 import styles from "../station.module.css";
 
-const W = 640, H = 170, X0 = 40, X1 = 600, CY = 88;
+const W = 640, H = 190, X0 = 40, X1 = 600, CY = 88;
 // Log-scaled range axis so the last metres are visible next to the far field.
 const xFor = (r: number) => X1 - (Math.log10(r + 1) / Math.log10(3001)) * (X1 - X0);
 

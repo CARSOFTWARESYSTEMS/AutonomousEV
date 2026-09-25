@@ -1,0 +1,71 @@
+/* Research workspace grammar: sidebar + reading pane, rule-separated fields,
+   compact scholarly rows. Deliberately fewer boxes than the simulator console. */
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+.sidebar { position: sticky; top: 140px; display: grid; gap: 10px; }
+.topicList { list-style: none; padding: 0 !important; margin: 0; max-height: calc(100vh - 230px); overflow-y: auto; border-top: 1px solid var(--space-border); }
+.topicList li { margin: 0; }
+.topicList button {
+  width: 100%;
+  min-height: 40px;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 6px;
+  align-items: center;
+  text-align: left;
+  padding: 7px 10px;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--space-border);
+  border-left: 2px solid transparent;
+  color: var(--space-muted);
+  font-size: 14px;
+}
+.topicList button:hover { color: var(--space-text); background: rgba(59, 130, 246, 0.06); }
+.topicList button[aria-current="true"] { color: var(--space-text); border-left-color: var(--space-cyan); background: rgba(6, 182, 212, 0.08); font-weight: 600; }
+.topicNum { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; color: var(--space-blue-text); }
+.empty { padding: 10px; font-size: 14px; color: var(--space-muted); }
+.pane { min-width: 0; max-width: 860px; }
+.paneTitle { font-size: 26px !important; margin-bottom: 14px !important; }
+.pane h4 { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--space-muted); margin: 24px 0 8px; font-family: var(--font-space-inter); }
+.fields { margin: 0; }
+.fields > div { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 18px; padding: 11px 0; border-top: 1px solid var(--space-border); }
+.fields dt { font-size: 13px; font-weight: 600; color: var(--space-blue-text); }
+.fields dd { margin: 0; font-size: 15px; line-height: 1.65; color: var(--space-text); max-width: 68ch; }
+.twoCol { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; }
+.refs { padding-left: 18px !important; }
+.refs li { font-size: 14px; }
+.gate { margin-top: 18px; padding: 16px 18px; border-left: 2px solid var(--space-blue); background: rgba(59, 130, 246, 0.06); }
+.gate p { color: var(--space-text) !important; font-size: 15px !important; }
+
+.toolbar { display: grid; grid-template-columns: minmax(260px, 380px) minmax(0, 1fr); gap: 10px 16px; align-items: center; margin-bottom: 16px; }
+.filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.filter { min-height: 36px; padding: 5px 12px; border-radius: 8px; border: 1px solid var(--space-border); background: transparent; color: var(--space-muted); font-size: 13px; font-weight: 600; }
+.filter[aria-pressed="true"] { border-color: var(--space-control-border); background: var(--space-button-surface); color: var(--space-blue-text); }
+.count { grid-column: 1 / -1; font-size: 13px; color: var(--space-muted); }
+.rows { list-style: none; padding: 0 !important; margin: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 32px; border-top: 1px solid var(--space-border); }
+.row { display: grid; gap: 2px; padding: 12px 0; border-bottom: 1px solid var(--space-border); margin: 0 !important; min-width: 0; }
+.rowTitle { color: var(--space-text) !important; font-weight: 600; font-size: 15px; display: inline-flex; gap: 6px; align-items: baseline; text-decoration: underline; text-decoration-color: var(--space-control-border); text-underline-offset: 4px; }
+.rowTitle svg { flex-shrink: 0; color: var(--space-blue-text); }
+.rowMeta { font-size: 12px; color: var(--space-muted); }
+.rowMeta b { color: var(--space-blue-text); font-weight: 600; }
+.rowNote { font-size: 13px; color: var(--space-muted); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+@media (max-width: 1024px) {
+  .workspace { grid-template-columns: 1fr; }
+  .sidebar { position: static; }
+  .topicList { max-height: none; }
+  .toolbar { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .rows, .twoCol { grid-template-columns: 1fr; }
+  .fields > div { grid-template-columns: 1fr; gap: 4px; }
+}
+@media (max-width: 640px) {
+  .filters { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; }
+  .filter { flex-shrink: 0; min-height: 40px; }
+}
