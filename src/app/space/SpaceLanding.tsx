@@ -588,6 +588,13 @@ export default function SpaceLanding({ entityGraph }: { entityGraph: object }) {
               <Link href="/space/cubesat" className={theme.secondaryButton}>Explore CubeTwin <ArrowRight size={16} /></Link>
               <p style={{ fontSize: 12, color: "#B5B8C9", marginTop: 12 }}>Educational R&D prototype · Simulated data · Not flight software.</p>
             </div>
+            <div className={`${styles.cardHover} ${theme.card}`} style={{ padding: 24 }}>
+              <StatusPill label="Interactive Research Platform" color="#3B82F6" />
+              <h3 style={{ color: "#fff", marginTop: 18, marginBottom: 12 }}>Space Station</h3>
+              <p style={{ ...sectionDesc, marginBottom: 12 }}>Explore how orbital research stations are designed, powered, controlled and operated—from life support and microgravity laboratories to docking, robotics and future lunar stations.</p>
+              <Link href="/space/space-station" className={theme.secondaryButton}>Explore Space Station <ArrowRight size={16} /></Link>
+              <p style={{ fontSize: 12, color: "#B5B8C9", marginTop: 12 }}>Educational models · Sourced programme facts · Not mission design data.</p>
+            </div>
           </div>
         </section>
 

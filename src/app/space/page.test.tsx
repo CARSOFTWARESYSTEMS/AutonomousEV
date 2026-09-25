@@ -340,3 +340,13 @@ it("shows a researcher attribution card linking to the canonical profile", () =>
     const profileLink = screen.getByRole("link", { name: /View full profile/ });
     expect(profileLink).toHaveAttribute("href", "/about/sudarshana-karkala");
   });
+
+it("shows the Space Station card immediately after the CubeTwin card", () => {
+    const { container } = render(<SpacePage />);
+    const simulations = container.querySelector("#simulations") as HTMLElement;
+    const cubetwinCard = within(simulations).getByRole("link", { name: "Explore CubeTwin" }).parentElement as HTMLElement;
+    const stationLink = within(simulations).getByRole("link", { name: /Explore Space Station/ });
+    expect(stationLink).toHaveAttribute("href", "/space/space-station");
+    expect(cubetwinCard.nextElementSibling).toBe(stationLink.parentElement);
+    expect(within(stationLink.parentElement as HTMLElement).getByRole("heading", { level: 3 })).toHaveTextContent("Space Station");
+  });

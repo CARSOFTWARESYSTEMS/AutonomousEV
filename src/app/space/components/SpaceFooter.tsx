@@ -3,7 +3,14 @@ import { Orbit, Mail } from "lucide-react";
 import { FONT_MANROPE } from "../fonts";
 import styles from "../space.module.css";
 const CONTACT_HREF = "/contact";
-export default function SpaceFooter({ basePath = "" }: { basePath?: string }) {
+export default function SpaceFooter({
+  basePath = "",
+  showCommunityBranding = true,
+}: {
+  basePath?: string;
+  /** Pages that must not carry EV Society branding pass false. */
+  showCommunityBranding?: boolean;
+}) {
   return (
     <footer
       style={{
@@ -58,7 +65,7 @@ export default function SpaceFooter({ basePath = "" }: { basePath?: string }) {
                 maxWidth: 320,
               }}
             >
-              Space &middot; An EV Society initiative.
+              {showCommunityBranding ? <>Space &middot; An EV Society initiative.</> : <>Space &middot; EV.ENGINEER</>}
             </p>
             <p
               style={{
@@ -187,18 +194,20 @@ export default function SpaceFooter({ basePath = "" }: { basePath?: string }) {
               >
                 UFlight
               </a>
-              <a
-                href="https://www.evsociety.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  color: "#B5B8C9",
-                  fontSize: 14,
-                  textDecoration: "none",
-                }}
-              >
-                EV Society
-              </a>
+              {showCommunityBranding && (
+                <a
+                  href="https://www.evsociety.org/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: "#B5B8C9",
+                    fontSize: 14,
+                    textDecoration: "none",
+                  }}
+                >
+                  EV Society
+                </a>
+              )}
               <a
                 href="https://itelematics.com"
                 target="_blank"
@@ -226,7 +235,7 @@ export default function SpaceFooter({ basePath = "" }: { basePath?: string }) {
           }}
         >
           <span style={{ color: "#B5B8C9", fontSize: 13 }}>
-            &copy; 2026 Space &middot; An EV Society initiative
+            &copy; 2026 Space{showCommunityBranding ? <> &middot; An EV Society initiative</> : null}
           </span>
           <span style={{ color: "#B5B8C9", fontSize: 13 }}>
             Commercial products and services, where applicable, are handled

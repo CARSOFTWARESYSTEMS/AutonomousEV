@@ -19,7 +19,15 @@ const navItems = [
   { label: "EV Society", href: "https://www.evsociety.org" },
 ];
 
-export default function SpaceHeader({ basePath = "" }: { basePath?: string }) {
+export default function SpaceHeader({
+  basePath = "",
+  showCommunityBranding = true,
+}: {
+  basePath?: string;
+  /** Pages that must not carry EV Society branding pass false. */
+  showCommunityBranding?: boolean;
+}) {
+  const items = showCommunityBranding ? navItems : navItems.filter((item) => item.label !== "EV Society");
   const [mobileOpen, setMobileOpen] = useState(false);
   const mobileToggleRef = useRef<HTMLButtonElement>(null);
   useMobileMenuLock(mobileOpen, setMobileOpen, mobileToggleRef);
@@ -89,7 +97,7 @@ export default function SpaceHeader({ basePath = "" }: { basePath?: string }) {
           }}
           className={styles.headerNavDesktop}
         >
-          {navItems.map((item) => {
+          {items.map((item) => {
             const isInternalRoute = item.href === "/";
             const isExternal = item.href.startsWith("http");
             const borderedStyle: React.CSSProperties = {
@@ -238,7 +246,7 @@ export default function SpaceHeader({ basePath = "" }: { basePath?: string }) {
             gap: 8,
           }}
         >
-          {navItems.map((item) => {
+          {items.map((item) => {
             const isInternalRoute = item.href === "/";
             const isExternal = item.href.startsWith("http");
             const borderedStyle: React.CSSProperties = {

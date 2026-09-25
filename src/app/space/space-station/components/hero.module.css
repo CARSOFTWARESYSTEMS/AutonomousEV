@@ -1,0 +1,16 @@
+/* Motion here encodes engineering state (power direction), not decoration. */
+.closeup {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 12px;
+  border: 1px solid var(--space-border);
+  border-radius: var(--space-radius);
+  background: var(--space-surface);
+}
+.sun text { font-family: var(--font-space-inter); }
+@keyframes flow { to { stroke-dashoffset: -20; } }
+.flow path { animation: flow 1s linear infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .flow path { animation: none; }
+}
