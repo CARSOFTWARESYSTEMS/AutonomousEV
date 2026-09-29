@@ -20,6 +20,7 @@ import spaceTheme from "../spaceTheme.module.css";
 import styles from "./satellite.module.css";
 import HeroVisual from "./components/HeroVisual";
 import Curriculum from "./components/Curriculum";
+import PageToc from "./components/PageToc";
 import { structuredData } from "./seo";
 import {
   heroChips,
@@ -50,6 +51,7 @@ import {
   missionSegments,
   marginPolicy,
   adrExample,
+  tocLinks,
   LAST_REVIEWED,
   LAST_REVIEWED_LABEL,
 } from "./programData";
@@ -57,22 +59,6 @@ import {
 export { metadata } from "./seo";
 
 const MOTTO = ["Design", "Analyse", "Architect", "Build", "Test", "Operate", "Lead"];
-
-const JUMP_LINKS: [string, string][] = [
-  ["#thesis", "Thesis"],
-  ["#system-of-systems", "Mission system"],
-  ["#audience", "Who it is for"],
-  ["#glance", "At a glance"],
-  ["#reference-mission", "Reference mission"],
-  ["#curriculum", "12-week architecture"],
-  ["#digital-twin", "Digital twin"],
-  ["#flatsat", "Flatsat"],
-  ["#reviews", "Review gates"],
-  ["#outcomes", "Outcomes"],
-  ["#portfolio", "Portfolio"],
-  ["#careers", "Careers"],
-  ["#certification", "Certification"],
-];
 
 function SectionHead({
   id,
@@ -178,18 +164,10 @@ export default function SatelliteEngineeringPage() {
           </div>
         </div>
 
-        <nav className={styles.jumpNav} aria-label="On this page">
-          <ul className={styles.container}>
-            {JUMP_LINKS.map(([href, label]) => (
-              <li key={href}>
-                <a href={href}>{label}</a>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <PageToc links={tocLinks} />
 
         {/* ── Thesis ── */}
-        <section id="thesis" className={styles.section} aria-labelledby="thesis-h">
+        <section id="thesis" className={`${styles.section} ${styles.sectionFirst}`} aria-labelledby="thesis-h">
           <div className={styles.container}>
             <SectionHead id="thesis-h" eyebrow="Course thesis" title="Engineering beyond individual subsystems">
               <p>
@@ -341,7 +319,7 @@ export default function SatelliteEngineeringPage() {
         </section>
 
         {/* ── Reference mission ── */}
-        <section id="reference-mission" className={`${styles.section} ${styles.sectionAlt}`} aria-labelledby="mission-h">
+        <section id="reference-mission" className={`${styles.section} ${styles.sectionAlt} ${styles.sectionMajor}`} aria-labelledby="mission-h">
           <div className={styles.container}>
             <SectionHead id="mission-h" eyebrow="One reference mission" title="One Mission. Twelve Weeks. Increasing Engineering Fidelity.">
               <p>
@@ -494,7 +472,7 @@ export default function SatelliteEngineeringPage() {
         </section>
 
         {/* ── Curriculum ── */}
-        <section id="curriculum" className={`${styles.section} ${styles.sectionAlt}`} aria-labelledby="curriculum-h">
+        <section id="curriculum" className={`${styles.section} ${styles.sectionAlt} ${styles.sectionMajor}`} aria-labelledby="curriculum-h">
           <div className={styles.container}>
             <SectionHead id="curriculum-h" eyebrow="Full 12-week structure" title="The 12-Week Architecture">
               <p>
@@ -522,7 +500,10 @@ export default function SatelliteEngineeringPage() {
                 {twinProgression.map((t) => (
                   <li key={t.name}>
                     <span className={styles.twinWeek}>Week {t.week}</span>
-                    <span className={styles.twinName}>{t.name}</span>
+                    <span className={styles.twinStage}>
+                      <span className={styles.twinName}>{t.name}</span>
+                      <span className={styles.twinDetail}>{t.detail}</span>
+                    </span>
                   </li>
                 ))}
               </ol>

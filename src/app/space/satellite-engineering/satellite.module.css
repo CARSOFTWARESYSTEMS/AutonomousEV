@@ -13,7 +13,9 @@
   --se-violet: #7c3aed;
   --se-lavender: #b39ddb;
   --se-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --se-section: 48px;
+  /* Section padding per side (the gap between sections is twice this).
+     Tuned per breakpoint below: 32 → 44 → 52 → 60px. */
+  --se-section: 32px;
   position: relative;
   min-height: 100vh;
   background: var(--space-background);
@@ -86,9 +88,23 @@
   padding-inline: var(--space-inset);
 }
 
-/* ── Section rhythm ── */
+/* ── Section rhythm ──
+   Visual spacing lives in padding; scroll-margin only offsets anchor jumps
+   for the fixed 60px Space header and never adds layout space. */
 .section {
   padding-block: var(--se-section);
+  scroll-margin-top: 60px;
+}
+
+/* First section after the table of contents: its own top spacing so the
+   hero → TOC → thesis opening reads as one sequence. */
+.sectionFirst {
+  padding-top: 40px;
+}
+
+/* The two densest anchor sections get slightly more room. */
+.sectionMajor {
+  padding-block: calc(var(--se-section) + 12px);
 }
 
 .sectionAlt {
@@ -106,7 +122,7 @@
 
 .sectionHead {
   max-width: 780px;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 }
 
 .eyebrow {
@@ -121,7 +137,7 @@
 
 .h1 {
   margin: 0;
-  font-size: clamp(40px, 9vw, 68px);
+  font-size: clamp(40px, 3.2vw + 26px, 68px);
   font-weight: 800;
   line-height: 1.02;
   letter-spacing: -0.035em;
@@ -146,6 +162,24 @@
   line-height: 1.2;
   letter-spacing: -0.02em;
   color: #fff;
+}
+
+.h3,
+.h3Large,
+.weekTitle,
+.phaseTitle,
+.certTitle,
+.pillarTitle,
+.gateName,
+.sosName {
+  text-wrap: balance;
+}
+.lead p,
+.heroLede,
+.weekFocus,
+.audienceCard p,
+.phaseSummary {
+  text-wrap: pretty;
 }
 
 .h3 {
@@ -257,7 +291,7 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  padding-bottom: 40px;
+  padding-bottom: 32px;
   background-image:
     linear-gradient(rgba(124, 58, 237, 0.06) 1px, transparent 1px),
     linear-gradient(90deg, rgba(124, 58, 237, 0.06) 1px, transparent 1px);
@@ -375,7 +409,7 @@
   margin: 14px 0 0;
   max-width: 22ch;
   font-family: var(--font-space-manrope), system-ui, sans-serif;
-  font-size: clamp(22px, 4.6vw, 32px);
+  font-size: clamp(22px, 1.4vw + 16px, 32px);
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.02em;
@@ -437,6 +471,9 @@
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 28px;
+}
+.heroActions > a {
+  padding-inline: 20px;
 }
 
 .heroChips {
@@ -600,49 +637,76 @@
   line-height: 1.5;
 }
 
-/* ── Jump navigation ──
-   Scrolls horizontally inside its own strip on phones (the page itself
-   never scrolls sideways) and wraps onto centred rows from tablet up. */
-.jumpNav {
+/* ── In-page table of contents ──
+   Phones and tablets: an "On this page" disclosure. From 1024px: one
+   left-aligned row that never wraps; it can scroll sideways (scrollbar
+   hidden) if a narrow laptop ever runs out of room. */
+.toc {
   border-block: 1px solid var(--se-line);
   background: rgba(9, 11, 29, 0.6);
 }
-.jumpNav ul {
-  display: flex;
-  gap: 6px;
-  padding-block: 8px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent);
-  mask-image: linear-gradient(90deg, #000 88%, transparent);
+.toc > .container {
+  padding-block: 10px;
 }
-.jumpNav ul::-webkit-scrollbar {
+.tocToggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 48px;
+  padding: 0 16px;
+  border: 1px solid var(--se-line-strong);
+  border-radius: 12px;
+  background: var(--se-surface);
+  color: #fff;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.tocChevron {
+  flex: 0 0 auto;
+  color: var(--se-lavender);
+  transition: transform 0.2s ease;
+}
+.toc[data-open] .tocChevron {
+  transform: rotate(180deg);
+}
+.tocList {
   display: none;
 }
-.jumpNav li {
-  flex: 0 0 auto;
+/* Two columns filled top-to-bottom (6 + 5), so reading order, tab order and
+   layout agree and no single link is stranded on a row of its own. */
+.toc[data-open] .tocList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(6, auto);
+  grid-auto-flow: column;
+  column-gap: 12px;
+  margin-top: 8px;
+  padding: 6px 0;
+  border: 1px solid var(--se-line);
+  border-radius: 12px;
+  background: rgba(17, 21, 46, 0.55);
 }
-.jumpNav a {
-  display: inline-flex;
+.tocList a {
+  display: flex;
   align-items: center;
   min-height: 44px;
-  padding: 0 14px;
-  border-radius: 999px;
-  color: var(--space-muted);
-  font-size: 14px;
+  padding: 0 16px;
+  border-radius: 8px;
+  color: var(--se-body);
+  font-size: 15px;
   font-weight: 600;
   text-decoration: none;
-  white-space: nowrap;
 }
-.jumpNav a:hover {
+.tocList a:hover {
   background: rgba(124, 58, 237, 0.12);
   color: #fff;
 }
 
 /* ── Thesis / lifecycle ── */
-.lifecycle {
-  counter-reset: none;
-}
 .lifecycle li {
   position: relative;
   display: flex;
@@ -775,7 +839,7 @@
 /* ── At a glance (datasheet) ── */
 .glanceGrid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1px;
   margin: 0;
   overflow: hidden;
@@ -795,6 +859,9 @@
   letter-spacing: 0.08em;
   line-height: 1.5;
   text-transform: uppercase;
+}
+.glanceCell:nth-child(n + 5) {
+  grid-column: 1 / -1;
 }
 .glanceCell dd {
   margin: 6px 0 0;
@@ -913,6 +980,7 @@
 }
 
 .couplingPanel {
+  container-type: inline-size;
   min-width: 0;
   padding: 22px;
   border: 1px solid var(--se-line);
@@ -951,6 +1019,11 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
   margin-top: 10px !important;
+}
+@container (min-width: 500px) {
+  .fidelityTrack {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
 .fidelityTrack li {
   display: flex;
@@ -1068,7 +1141,7 @@
 
 .phaseList {
   display: grid;
-  gap: 36px;
+  gap: 28px;
 }
 .phase {
   display: grid;
@@ -1117,6 +1190,7 @@
   min-width: 0;
 }
 .week {
+  container: week / inline-size;
   min-width: 0;
   border: 1px solid var(--se-line);
   border-radius: 16px;
@@ -1137,13 +1211,13 @@
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   grid-template-areas:
-    "num title chev"
-    "num badge chev";
-  align-items: start;
-  column-gap: 14px;
+    "num badge chev"
+    "title title title";
+  align-items: center;
+  gap: 8px 10px;
   width: 100%;
-  min-height: 64px;
-  padding: 16px;
+  min-height: 56px;
+  padding: 12px 14px;
   border: 0;
   border-radius: 16px;
   background: transparent;
@@ -1157,19 +1231,17 @@
 }
 .weekNumber {
   grid-area: num;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 46px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
   color: #fff;
   font-family: var(--font-space-manrope), system-ui, sans-serif;
-  font-size: 24px;
+  font-size: 15px;
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.02em;
 }
 .weekNumberLabel {
-  margin-bottom: 5px;
   color: var(--se-lavender);
   font-size: 12px;
   font-weight: 700;
@@ -1196,10 +1268,18 @@
   font-size: 14.5px;
   line-height: 1.5;
 }
+/* Narrow panels: the collapsed header shows a one-line focus; the full
+   sentence returns when the week is opened (it is always in the DOM). */
+.weekToggle[aria-expanded="false"] .weekFocus {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+}
 .milestoneBadge {
   grid-area: badge;
   justify-self: start;
-  margin-top: 10px;
   padding: 3px 10px;
   border: 1px solid rgba(6, 182, 212, 0.4);
   border-radius: 999px;
@@ -1214,8 +1294,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.04);
   color: var(--space-muted);
@@ -1226,7 +1306,41 @@
   color: var(--se-lavender);
 }
 .weekPanel {
-  padding: 0 16px 20px;
+  padding: 0 16px 18px;
+}
+
+@container week (min-width: 560px) {
+  .weekToggle {
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    grid-template-areas: "num title badge chev";
+    gap: 0 16px;
+    padding: 16px 20px;
+  }
+  .weekToggle[aria-expanded="false"] .weekFocus {
+    display: block;
+    -webkit-line-clamp: unset;
+    line-clamp: none;
+  }
+  .weekNumber {
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    min-width: 46px;
+    font-size: 24px;
+  }
+  .weekPanel {
+    padding: 0 20px 22px;
+  }
+  .weekFeature {
+    padding: 18px;
+  }
+}
+
+@container week (min-width: 720px) {
+  .weekBody {
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: 32px;
+  }
 }
 
 .weekBody {
@@ -1277,8 +1391,9 @@
   line-height: 1.4;
 }
 .weekFeature {
+  container-type: inline-size;
   margin-top: 20px;
-  padding: 16px;
+  padding: 14px;
   border: 1px solid rgba(6, 182, 212, 0.22);
   border-radius: 14px;
   background: rgba(6, 182, 212, 0.05);
@@ -1296,6 +1411,11 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 6px 16px;
+}
+@container (min-width: 380px) {
+  .featureList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 .featureList li,
 .plainList li {
@@ -1410,7 +1530,7 @@
   position: relative;
   display: grid;
   grid-template-columns: 78px minmax(0, 1fr);
-  align-items: center;
+  align-items: start;
   gap: 14px;
   padding: 7px 0;
 }
@@ -1425,11 +1545,27 @@
   font-weight: 700;
   white-space: nowrap;
 }
+.twinStage {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
 .twinName {
   color: #fff;
   font-size: 16px;
   font-weight: 600;
   line-height: 1.35;
+}
+.twinDetail {
+  color: var(--se-note);
+  font-size: 14px;
+  line-height: 1.45;
+}
+/* Below 1024px the flatsat ↔ twin ↔ mission-control loop leads: it is the
+   main concept, and the stage-by-stage progression follows it. */
+.twinLoop {
+  order: -1;
 }
 
 .twinLoop {
@@ -1496,14 +1632,7 @@
 
 /* ── Flatsat ── */
 .flatsatBoard {
-  padding: 16px;
-  border: 1px solid rgba(59, 130, 246, 0.25);
   border-radius: 22px;
-  background-color: rgba(9, 11, 29, 0.6);
-  background-image:
-    linear-gradient(rgba(59, 130, 246, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(59, 130, 246, 0.06) 1px, transparent 1px);
-  background-size: 24px 24px;
 }
 .flatsatGroups {
   display: grid;
@@ -2130,12 +2259,37 @@
   }
 }
 
+/* ── < 640px: compact topic lists inside week panels ── */
+@media (max-width: 639px) {
+  .topicList {
+    display: block;
+  }
+  .topicList li {
+    display: inline;
+    padding: 0;
+    border: 0;
+    background: none;
+    font-size: 15px;
+    line-height: 1.65;
+  }
+  .topicList li:not(:last-child)::after {
+    content: "";
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    margin: 0 9px;
+    border-radius: 50%;
+    background: var(--se-lavender);
+    vertical-align: middle;
+  }
+  .topicGroup + .topicGroup {
+    margin-top: 12px;
+  }
+}
+
 /* ── ≥ 420px ── */
 @media (min-width: 420px) {
   .readinessGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .featureList {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -2174,7 +2328,10 @@
 /* ── ≥ 640px (large phones landscape / small tablets) ── */
 @media (min-width: 640px) {
   .page {
-    --se-section: 64px;
+    --se-section: 44px;
+  }
+  .sectionFirst {
+    padding-top: 56px;
   }
   .heroChips,
   .heroLede,
@@ -2208,23 +2365,20 @@
   .audienceCard:last-child {
     grid-column: 1 / -1;
   }
-  .glanceGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .glanceCell:last-child {
-    grid-column: 1 / -1;
-  }
   .glanceCell dd {
     font-size: 21px;
-  }
-  .fidelityTrack {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
   .flatsatGroups {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .flatsatBoard {
     padding: 22px;
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    background-color: rgba(9, 11, 29, 0.6);
+    background-image:
+      linear-gradient(rgba(59, 130, 246, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59, 130, 246, 0.06) 1px, transparent 1px);
+    background-size: 24px 24px;
   }
   .modelTrack {
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -2304,18 +2458,13 @@
     padding-top: 80px;
   }
   .sectionHead {
-    margin-bottom: 36px;
+    margin-bottom: 32px;
   }
-  .jumpNav ul {
-    flex-wrap: wrap;
-    justify-content: center;
-    overflow: visible;
-    -webkit-mask-image: none;
-    mask-image: none;
+  .glanceGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-  .jumpNav a {
-    min-height: 40px;
-    font-size: 13.5px;
+  .glanceCell:nth-child(n + 5) {
+    grid-column: auto;
   }
   .lifecycle {
     display: grid;
@@ -2357,21 +2506,6 @@
   .dossierGroup:first-child {
     grid-row: span 2;
   }
-  .weekToggle {
-    grid-template-columns: auto minmax(0, 1fr) auto auto;
-    grid-template-areas: "num title badge chev";
-    align-items: center;
-    padding: 18px 20px;
-  }
-  .milestoneBadge {
-    margin-top: 0;
-  }
-  .weekPanel {
-    padding: 0 20px 22px;
-  }
-  .weekFeature {
-    padding: 18px;
-  }
   .outcomeList {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2393,16 +2527,78 @@
   }
 }
 
-/* ── ≥ 900px ── */
-@media (min-width: 900px) {
-  .weekBody {
-    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
-    gap: 32px;
-  }
-}
-
 /* ── ≥ 1024px (laptop / tablet landscape) ── */
 @media (min-width: 1024px) {
+  .page {
+    --se-section: 52px;
+  }
+  .sectionFirst {
+    padding-top: 72px;
+  }
+  .phaseList {
+    gap: 36px;
+  }
+
+  .toc > .container {
+    padding-block: 4px;
+  }
+  .tocToggle {
+    display: none;
+  }
+  .tocList,
+  .toc[data-open] .tocList {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: clamp(20px, 3.4vw - 10px, 40px);
+    margin-top: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .tocList::-webkit-scrollbar {
+    display: none;
+  }
+  .tocList li {
+    flex: 0 0 auto;
+  }
+  .tocList a {
+    position: relative;
+    min-height: 52px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    color: var(--space-muted);
+    font-size: 14px;
+    white-space: nowrap;
+  }
+  .tocList a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 12px;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #7c3aed, #3b82f6);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s ease;
+  }
+  .tocList a:hover,
+  .tocList a:focus-visible {
+    background: none;
+    color: #fff;
+  }
+  .tocList a:hover::after,
+  .tocList a:focus-visible::after {
+    transform: scaleX(1);
+  }
+
   .hero {
     grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
     align-items: center;
@@ -2410,7 +2606,7 @@
     padding-top: 24px;
   }
   .heroWrap {
-    padding-bottom: 64px;
+    padding-bottom: 48px;
   }
   .subsystemGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2500,14 +2696,15 @@
   .twinTrack li {
     display: grid;
     grid-template-columns: 78px minmax(0, 1fr);
-    align-items: center;
+    align-items: start;
     gap: 14px;
-    padding: 7px 0;
+    padding: 6px 0;
     border: 0;
     border-radius: 0;
     background: none;
   }
   .twinLoop {
+    order: 0;
     padding: 28px;
   }
   .twinLoopNodes {
@@ -2527,30 +2724,6 @@
   }
   .twinLoopLink svg {
     transform: rotate(90deg);
-  }
-
-  /* Review gates: horizontal timeline. */
-  .gateTimeline {
-    display: grid;
-    grid-template-columns: repeat(7, minmax(0, 1fr));
-  }
-  .gateTimeline li {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    padding: 0 14px 0 0;
-  }
-  .gateTimeline li::before {
-    left: 26px;
-    right: 0;
-    top: 11px;
-    bottom: auto;
-    width: auto;
-    height: 2px;
-    background: linear-gradient(90deg, rgba(124, 58, 237, 0.6), rgba(59, 130, 246, 0.3));
-  }
-  .gateCode {
-    font-size: 24px;
   }
 
   .certLayout {
@@ -2592,13 +2765,47 @@
   }
 }
 
+/* ── 1024–1179px: two-column hero with a narrow copy column ── */
+@media (min-width: 1024px) and (max-width: 1179px) {
+  .heroActions > a {
+    flex: 1 1 auto;
+  }
+}
+
+/* ── ≥ 1180px: seven review gates fit side by side ── */
+@media (min-width: 1180px) {
+  /* Review gates: horizontal timeline. */
+  .gateTimeline {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+  .gateTimeline li {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 0 14px 0 0;
+  }
+  .gateTimeline li::before {
+    left: 26px;
+    right: 0;
+    top: 11px;
+    bottom: auto;
+    width: auto;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(124, 58, 237, 0.6), rgba(59, 130, 246, 0.3));
+  }
+  .gateCode {
+    font-size: 24px;
+  }
+}
+
 /* ── ≥ 1280px ── */
 @media (min-width: 1280px) {
   .page {
-    --se-section: 88px;
+    --se-section: 60px;
   }
   .sectionHead {
-    margin-bottom: 44px;
+    margin-bottom: 40px;
   }
   .hero {
     gap: 72px;
@@ -2972,10 +3179,13 @@
     margin-top: 56px;
     padding-top: 44px;
   }
-  .sosSegments {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
   .sosFrame {
     padding: 30px 20px 20px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .sosSegments {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 }

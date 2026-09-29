@@ -1,6 +1,22 @@
 // Content for /space/satellite-engineering. Kept as plain data so the page,
 // its JSON-LD graph and its tests all read from one source and never drift.
 
+// In-page table of contents: short labels, 11 items at most. Certification,
+// Week 0 and the tools/reference sections sit between these anchors.
+export const tocLinks = [
+  ["#thesis", "Overview"],
+  ["#audience", "Audience"],
+  ["#glance", "Program"],
+  ["#reference-mission", "Mission"],
+  ["#curriculum", "Curriculum"],
+  ["#digital-twin", "Digital Twin"],
+  ["#flatsat", "Flatsat"],
+  ["#reviews", "Reviews"],
+  ["#outcomes", "Outcomes"],
+  ["#portfolio", "Portfolio"],
+  ["#careers", "Careers"],
+] as const;
+
 export const heroChips = [
   "12 Weeks",
   "120 Contact Hours",
@@ -833,15 +849,15 @@ export const phases: Phase[] = [
 ];
 
 export const twinProgression = [
-  { week: 2, name: "Orbit Twin" },
-  { week: 3, name: "ADCS Twin" },
-  { week: 4, name: "Energy Twin" },
-  { week: 5, name: "Thermal Twin" },
-  { week: 7, name: "Communications Twin" },
-  { week: 8, name: "Avionics / Flight-State Model" },
-  { week: 9, name: "Payload Model" },
-  { week: 10, name: "Fault Injection" },
-  { week: 11, name: "Telemetry-Driven Operational Model" },
+  { week: 2, name: "Orbit Twin", detail: "Propagation, eclipse and ground contacts" },
+  { week: 3, name: "ADCS Twin", detail: "Attitude dynamics, sensors and control" },
+  { week: 4, name: "Energy Twin", detail: "Solar input, battery state of charge, loads" },
+  { week: 5, name: "Thermal Twin", detail: "Hot and cold cases, heater control" },
+  { week: 7, name: "Communications Twin", detail: "Link margin and contact windows" },
+  { week: 8, name: "Avionics / Flight-State Model", detail: "Modes, commands and FDIR states" },
+  { week: 9, name: "Payload Model", detail: "Imaging demand, data volume, pointing" },
+  { week: 10, name: "Fault Injection", detail: "Injected faults and recovery response" },
+  { week: 11, name: "Telemetry-Driven Operational Model", detail: "Operations driven by live telemetry" },
 ] as const;
 
 export const twinLoop = ["Physical Flatsat", "Telemetry", "Satellite Digital Twin", "Mission Control"] as const;

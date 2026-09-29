@@ -3,7 +3,7 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { EOI_FORM_URL } from "@/lib/eoi";
 import SatelliteEngineeringPage from "./page";
-import { outcomes, portfolio, phases, reviewGates, GATE_ORDER } from "./programData";
+import { outcomes, portfolio, phases, reviewGates, GATE_ORDER, tocLinks } from "./programData";
 
 vi.mock("next/navigation", () => ({
   usePathname: () => "/space/satellite-engineering",
@@ -222,5 +222,63 @@ describe("Satellite Engineering V1.1 architecture rigour", () => {
     expect(text.match(/Satellite Systems Engineering Course in India/g)).toHaveLength(1);
     expect(screen.getByRole("heading", { name: "Engineering Tools & Open Technical Stack" })).toBeInTheDocument();
     expect(text).toMatch(/EV\.ENGINEER™ professional program within the EV Society™ Space initiative/);
+  });
+});
+
+describe("Satellite Engineering in-page navigation", () => {
+  const EXPECTED = ["Overview", "Audience", "Program", "Mission", "Curriculum", "Digital Twin", "Flatsat", "Reviews", "Outcomes", "Portfolio", "Careers"];
+
+  it("uses eleven short labels whose anchors all resolve, without a Certification entry", () => {
+    const { container } = render(<SatelliteEngineeringPage />);
+    const nav = screen.getByRole("navigation", { name: "On this page" });
+    const links = within(nav).getAllByRole("link");
+    expect(links.map((a) => a.textContent)).toEqual(EXPECTED);
+    expect(tocLinks).toHaveLength(11);
+    expect(within(nav).queryByRole("link", { name: /Certification/ })).toBeNull();
+    links.forEach((a) => expect(container.querySelector(a.getAttribute("href") as string)).not.toBeNull());
+    // Certification content itself stays on the page, reachable after Careers.
+    expect(screen.getByRole("heading", { level: 2, name: "Certification" })).toBeInTheDocument();
+  });
+
+  it("exposes an accessible 'On this page' disclosure for small screens", async () => {
+    const user = userEvent.setup();
+    render(<SatelliteEngineeringPage />);
+    const nav = screen.getByRole("navigation", { name: "On this page" });
+    const toggle = within(nav).getByRole("button", { name: "On this page" });
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    expect(toggle).toHaveAttribute("aria-controls", "page-toc-list");
+    expect(document.getElementById("page-toc-list")).not.toBeNull();
+
+    await user.click(toggle);
+    expect(toggle).toHaveAttribute("aria-expanded", "true");
+    await user.keyboard("{Escape}");
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    expect(toggle).toHaveFocus();
+
+    await user.click(toggle);
+    await user.click(within(nav).getByRole("link", { name: "Curriculum" }));
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("keeps the V1.1 technical content after the responsive pass", () => {
+    const { container } = render(<SatelliteEngineeringPage />);
+    const text = container.textContent ?? "";
+    [
+      "Verification-Ready Baseline",
+      "A Satellite Mission Is a System-of-Systems",
+      "Pointing budget",
+      "Performance / Image Quality budget",
+      "Engineering Margin Policy",
+      "Architecture Decision Records",
+      "Software assurance",
+      "EEE parts engineering",
+      "Product assurance & quality engineering",
+      "validated flight digital twin",
+      "Design Life Target",
+      "Evaluate extension toward 5 years",
+      "EV.ENGINEER™ professional program",
+      "Engineering Tools & Open Technical Stack",
+    ].forEach((phrase) => expect(text).toContain(phrase));
+    expect(Array.from(container.querySelectorAll("#reviews ol > li")).map((li) => li.getAttribute("data-gate"))).toEqual([...GATE_ORDER]);
   });
 });
