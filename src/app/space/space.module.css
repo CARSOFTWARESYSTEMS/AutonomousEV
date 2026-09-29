@@ -159,12 +159,14 @@
   .footerGrid { grid-template-columns: 1fr !important; }
 }
 
-/* ── Header: desktop nav / mobile toggle ──────────────────────────────────
+/* ── Header: desktop nav / compact header ────────────────────────────────
    Kept separate from .hiddenMobile/.showMobile (which serve unrelated
    decorative elements like the roadmap connector) so the header's own
-   breakpoint can be tuned independently. 10 nav items overflow the header
-   well before 640px, so the mobile toggle takes over at 1024px — matching
-   the site-wide Navbar's breakpoint. */
+   breakpoint can be tuned independently. The full header (10 nav items +
+   CTA) needs ~1,300px on one line, so below 1340px the compact header —
+   logo, Express Interest (from 640px) and the menu button — takes over.
+   Labels are nowrap, so there is no intermediate wrapping state. Keep the
+   1339px value in sync with SPACE_HEADER_COMPACT_MAX in SpaceHeader.tsx. */
 .headerBar {
   padding: 0 32px;
 }
@@ -178,13 +180,19 @@
   display: none;
 }
 
-@media (max-width: 1024px) {
-  .headerNavDesktop,
-  .headerCtaDesktop {
+@media (max-width: 1339px) {
+  .headerNavDesktop {
     display: none !important;
   }
   .headerToggle {
     display: flex !important;
+  }
+}
+
+/* On phones the CTA moves into the opened menu (it is already listed there). */
+@media (max-width: 639px) {
+  .headerCtaDesktop {
+    display: none !important;
   }
 }
 
@@ -196,10 +204,32 @@
   .headerBar { padding: 0 16px; }
 }
 
-/* ── Mobile nav panel ── */
+/* ── Mobile nav panel ──
+   Phones: a full-width sheet under the header. From 640px (tablets and
+   laptops below the desktop breakpoint) it becomes a compact dropdown card
+   aligned under the menu button instead of a 1,000px-wide list. */
 .mobileMenu {
   max-height: calc(100dvh - 60px);
   overflow-y: auto;
+}
+
+@media (min-width: 640px) {
+  .mobileMenu {
+    left: auto !important;
+    right: 20px !important;
+    top: 68px !important;
+    width: 360px;
+    max-height: calc(100dvh - 84px);
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 16px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+  }
+}
+
+@media (min-width: 769px) {
+  .mobileMenu {
+    right: 32px !important;
+  }
 }
 
 /* ── Section rhythm ──────────────────────────────────────────────────────

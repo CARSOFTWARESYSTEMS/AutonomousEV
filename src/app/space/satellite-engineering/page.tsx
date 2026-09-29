@@ -52,6 +52,8 @@ import {
   marginPolicy,
   adrExample,
   tocLinks,
+  PROGRAM,
+  referenceSpacecraft,
   LAST_REVIEWED,
   LAST_REVIEWED_LABEL,
 } from "./programData";
@@ -114,16 +116,13 @@ export default function SatelliteEngineeringPage() {
                   <span className={styles.eyebrowSep} aria-hidden="true">
                     ·
                   </span>{" "}
-                  <span>Architecture &amp; Leadership Track</span>
+                  <span>{PROGRAM.track}</span>
                 </p>
                 <h1 id="hero-title" className={styles.h1}>
-                  Satellite Engineering
+                  {PROGRAM.title}
                 </h1>
-                <p className={styles.heroSub}>From First Principles to Spacecraft Systems Architect</p>
-                <p className={styles.heroLede}>
-                  Develop the systems thinking, engineering judgement and architecture capability required to architect complex satellite missions
-                  and lead multidisciplinary spacecraft engineering programs.
-                </p>
+                <p className={styles.heroSub}>{PROGRAM.subtitle}</p>
+                <p className={styles.heroLede}>{PROGRAM.lede}</p>
                 <p className={styles.heroMotto}>
                   {MOTTO.map((w, i) => (
                     <span key={w}>
@@ -245,7 +244,7 @@ export default function SatelliteEngineeringPage() {
         {/* ── Audience ── */}
         <section id="audience" className={`${styles.section} ${styles.sectionAlt}`} aria-labelledby="audience-h">
           <div className={styles.container}>
-            <SectionHead id="audience-h" eyebrow="Who this program is for" title="Architecture & Leadership Track">
+            <SectionHead id="audience-h" eyebrow="Who this program is for" title={PROGRAM.track}>
               <p>
                 This program develops the systems thinking, engineering judgement and architecture capability required to architect complex
                 satellite missions and lead multidisciplinary spacecraft engineering programs.
@@ -343,7 +342,7 @@ export default function SatelliteEngineeringPage() {
                   <div>
                     <p className={styles.panelLabel}>Reference mission · Capstone</p>
                     <h3 id="mission-card-title" className={styles.h3Large}>
-                      6U Earth Observation Satellite
+                      {referenceSpacecraft.name}
                     </h3>
                   </div>
                 </div>

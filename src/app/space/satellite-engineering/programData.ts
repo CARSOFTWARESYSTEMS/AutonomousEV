@@ -17,6 +17,14 @@ export const tocLinks = [
   ["#careers", "Careers"],
 ] as const;
 
+/** Program identity: the one source for the hero, credential, course schema and OG image. */
+export const PROGRAM = {
+  title: "Satellite Engineering",
+  subtitle: "From First Principles to Spacecraft Systems Architect",
+  track: "Architecture & Leadership Track",
+  lede: "Develop the systems thinking, engineering judgement and architecture capability required to architect complex satellite missions and lead multidisciplinary spacecraft engineering programs.",
+} as const;
+
 export const heroChips = [
   "12 Weeks",
   "120 Contact Hours",
@@ -131,24 +139,64 @@ export const readiness: ReadinessArea[] = [
 ];
 
 export type Spec = { label: string; value: string; detail?: string };
+type Fact = Spec & { short?: string };
+
+const DESIGN_LIFE_YEARS = 3;
+const EXTENSION_YEARS = 5;
+
+/** Reference mission facts in full (mission card) and short (hero panel) form. */
+export const referenceSpacecraft = {
+  name: "6U Earth Observation Satellite",
+  designLifeYears: DESIGN_LIFE_YEARS,
+  extensionYears: EXTENSION_YEARS,
+  facts: {
+    orbit: { label: "Orbit", value: "500–550 km Sun-Synchronous Orbit", short: "SSO · 500–550 km" },
+    mission: { label: "Mission", value: "Earth Observation" },
+    payload: { label: "Payload", value: "Optical EO payload", short: "Optical EO" },
+    designLife: { label: "Design Life Target", value: `${DESIGN_LIFE_YEARS} years` },
+    lifeTrade: {
+      label: "Life Extension Trade",
+      value: `Evaluate extension toward ${EXTENSION_YEARS} years`,
+      detail: "Battery cycling · radiation · orbit decay · propulsion · reliability · degradation · commercial value",
+    },
+    power: { label: "Power", value: "Deployable solar arrays + Li-ion battery", short: "Deployable solar + Li-ion" },
+    adcs: { label: "ADCS", value: "Three-axis stabilised, reaction wheels + magnetorquers", short: "3-axis · RW + MTQ" },
+    ttc: { label: "TT&C", value: "S-band", short: "S-band" },
+    downlink: { label: "Payload Downlink", value: "X-band", short: "X-band" },
+    computing: { label: "Computing", value: "Onboard flight computer + edge processing", short: "Flight computer + edge" },
+    safety: { label: "Safety", value: "FDIR + safe mode", short: "Safe mode" },
+    sustainability: { label: "Sustainability", value: "Collision avoidance / end-of-life disposal strategy", short: "Disposal strategy" },
+  } satisfies Record<string, Fact>,
+} as const;
+
+const facts = referenceSpacecraft.facts;
+const toSpec = (f: Fact): Spec => (f.detail ? { label: f.label, value: f.value, detail: f.detail } : { label: f.label, value: f.value });
 
 export const referenceMission: Spec[] = [
-  { label: "Orbit", value: "500–550 km Sun-Synchronous Orbit" },
-  { label: "Mission", value: "Earth Observation" },
-  { label: "Payload", value: "Optical EO payload" },
-  { label: "Design Life Target", value: "3 years" },
-  {
-    label: "Life Extension Trade",
-    value: "Evaluate extension toward 5 years",
-    detail: "Battery cycling · radiation · orbit decay · propulsion · reliability · degradation · commercial value",
-  },
-  { label: "Power", value: "Deployable solar arrays + Li-ion battery" },
-  { label: "ADCS", value: "Three-axis stabilised, reaction wheels + magnetorquers" },
-  { label: "TT&C", value: "S-band" },
-  { label: "Payload Downlink", value: "X-band" },
-  { label: "Computing", value: "Onboard flight computer + edge processing" },
-  { label: "Safety", value: "FDIR + safe mode" },
-  { label: "Sustainability", value: "Collision avoidance / end-of-life disposal strategy" },
+  facts.orbit,
+  facts.mission,
+  facts.payload,
+  facts.designLife,
+  facts.lifeTrade,
+  facts.power,
+  facts.adcs,
+  facts.ttc,
+  facts.downlink,
+  facts.computing,
+  facts.safety,
+  facts.sustainability,
+].map(toSpec);
+
+/** Hero panel subsystem tiles, drawn from the same facts. */
+export const heroSubsystems: [string, string][] = [
+  ["Payload", facts.payload.short],
+  ["ADCS", facts.adcs.short],
+  ["EPS", facts.power.short],
+  ["TT&C", facts.ttc.short],
+  ["Downlink", facts.downlink.short],
+  ["OBC", facts.computing.short],
+  ["FDIR", facts.safety.short],
+  ["End of life", facts.sustainability.short],
 ];
 
 export type Coupling = { from: string; to: string; statement: string };
@@ -162,10 +210,10 @@ export const couplings: Coupling[] = [
 ];
 
 export const fidelityStages = [
-  { phase: "Phase I", weeks: "Weeks 1–3", level: "Concept baseline" },
-  { phase: "Phase II", weeks: "Weeks 4–8", level: "Preliminary design" },
+  { phase: "Phase I", weeks: "Weeks 1–3", level: "Concept Baseline" },
+  { phase: "Phase II", weeks: "Weeks 4–8", level: "Preliminary Design" },
   { phase: "Phase III", weeks: "Weeks 9–10", level: "Verification-Ready Baseline" },
-  { phase: "Phase IV", weeks: "Weeks 11–12", level: "Operational baseline" },
+  { phase: "Phase IV", weeks: "Weeks 11–12", level: "Operational Baseline" },
 ] as const;
 
 export type MissionSegment = { name: string; elements: string };
@@ -204,10 +252,10 @@ export const adrExample = {
     ["Options considered", "Three orthogonal wheels with magnetorquer backup · four wheels in a pyramid configuration"],
     ["Evaluation criteria", "Pointing after a wheel failure, mass, power, volume, cost, momentum management"],
     ["Selected option", "Four-wheel pyramid"],
-    ["Rationale", "Preserves imaging capability after a single wheel failure across the 3-year design life"],
+    ["Rationale", `Preserves imaging capability after a single wheel failure across the ${referenceSpacecraft.designLifeYears}-year design life`],
     ["Assumptions", "Supplier wheel reliability data; volume available in the 6U layout"],
     ["Risks", "Power and volume margin consumption; wheel-speed zero crossings"],
-    ["Revisit trigger", "Design life extended toward 5 years, or power margin falls below policy"],
+    ["Revisit trigger", `Design life extended toward ${referenceSpacecraft.extensionYears} years, or power margin falls below policy`],
   ] as [string, string][],
 } as const;
 
@@ -264,6 +312,33 @@ export const dossier: DossierGroup[] = [
   },
 ];
 
+export type GateCode = "MCR" | "SRR" | "PDR" | "CDR" | "TRR" | "ORR" | "MRR";
+export type ReviewGate = { code: GateCode; name: string; when: string; purpose: string };
+
+// Formal gates in lifecycle order. Engineering-model testing happens throughout
+// the course; the formal TRR follows the CDR design baseline.
+export const reviewGates: ReviewGate[] = [
+  { code: "MCR", name: "Mission Concept Review", when: "Week 1", purpose: "Is the mission need clear and the concept feasible?" },
+  { code: "SRR", name: "System Requirements Review", when: "Week 3", purpose: "Are the requirements complete, verifiable and traceable?" },
+  { code: "PDR", name: "Preliminary Design Review", when: "Week 7", purpose: "Does the preliminary architecture close with margin?" },
+  { code: "CDR", name: "Critical Design Review", when: "Week 12", purpose: "Is the detailed design mature enough to build and verify?" },
+  { code: "TRR", name: "Test Readiness Review", when: "Week 12", purpose: "Are the test article, procedures and facilities ready to verify the CDR baseline?" },
+  { code: "ORR", name: "Operational Readiness Review", when: "Week 12", purpose: "Can the team operate the mission and handle anomalies?" },
+  { code: "MRR", name: "Mission Readiness Review", when: "Week 12", purpose: "Is the complete mission system ready, and can its architecture be defended?" },
+];
+
+/** Formal gate sequence, derived from reviewGates so it can never drift from it. */
+export const GATE_ORDER: GateCode[] = reviewGates.map((g) => g.code);
+
+/** Week milestones reference gates by code; names come from reviewGates. */
+function gates(...codes: GateCode[]) {
+  return codes.map((code) => {
+    const gate = reviewGates.find((g) => g.code === code);
+    if (!gate) throw new Error(`Unknown review gate ${code}`);
+    return { code: gate.code, name: gate.name };
+  });
+}
+
 export type TopicGroup = { label?: string; note?: string; items: string[] };
 
 export type Week = {
@@ -276,7 +351,7 @@ export type Week = {
   studio: string[];
   deliverables: string[];
   /** Formal review gates held during this week, in order. */
-  milestones?: { code: string; name: string }[];
+  milestones?: { code: GateCode; name: string }[];
   /** A working checkpoint that is not a formal review gate. */
   checkpoint?: string;
   /** One architecture principle highlighted inside the week. */
@@ -332,7 +407,7 @@ export const phases: Phase[] = [
           "Top-Level Requirements",
           "System Context Diagram",
         ],
-        milestones: [{ code: "MCR", name: "Mission Concept Review" }],
+        milestones: gates("MCR"),
       },
       {
         number: 2,
@@ -404,7 +479,7 @@ export const phases: Phase[] = [
         ],
         studio: ["Attitude dynamics and estimator simulation", "Digital twin increment: ADCS Twin"],
         deliverables: ["ADCS architecture and sizing", "Pointing budget", "System Requirements baseline"],
-        milestones: [{ code: "SRR", name: "System Requirements Review" }],
+        milestones: gates("SRR"),
       },
     ],
   },
@@ -560,7 +635,7 @@ export const phases: Phase[] = [
           "Regulatory feasibility is an input to communications architecture, not post-design paperwork. Spectrum and frequency constraints shape band selection, antenna architecture, link design, the ground segment and the licensing timeline.",
         studio: ["Link budget and contact analysis", "Digital twin increment: Communications Twin"],
         deliverables: ["Link budget", "Data budget", "Ground segment architecture"],
-        milestones: [{ code: "PDR", name: "Preliminary Design Review" }],
+        milestones: gates("PDR"),
       },
       {
         number: 8,
@@ -837,12 +912,7 @@ export const phases: Phase[] = [
           "Final spacecraft architecture defense — Mission Readiness Review",
         ],
         deliverables: ["Spacecraft Architecture Dossier", "CDR package", "Architecture defense"],
-        milestones: [
-          { code: "CDR", name: "Critical Design Review" },
-          { code: "TRR", name: "Test Readiness Review" },
-          { code: "ORR", name: "Operational Readiness Review" },
-          { code: "MRR", name: "Mission Readiness Review" },
-        ],
+        milestones: gates("CDR", "TRR", "ORR", "MRR"),
       },
     ],
   },
@@ -874,22 +944,6 @@ export const flatsat: FlatsatGroup[] = [
 ];
 
 export const flatsatBus = "CAN / I2C / SPI interfaces";
-
-export type ReviewGate = { code: string; name: string; when: string; purpose: string };
-
-// Formal gates in lifecycle order. Engineering-model testing happens throughout
-// the course; the formal TRR follows the CDR design baseline.
-export const reviewGates: ReviewGate[] = [
-  { code: "MCR", name: "Mission Concept Review", when: "Week 1", purpose: "Is the mission need clear and the concept feasible?" },
-  { code: "SRR", name: "System Requirements Review", when: "Week 3", purpose: "Are the requirements complete, verifiable and traceable?" },
-  { code: "PDR", name: "Preliminary Design Review", when: "Week 7", purpose: "Does the preliminary architecture close with margin?" },
-  { code: "CDR", name: "Critical Design Review", when: "Week 12", purpose: "Is the detailed design mature enough to build and verify?" },
-  { code: "TRR", name: "Test Readiness Review", when: "Week 12", purpose: "Are the test article, procedures and facilities ready to verify the CDR baseline?" },
-  { code: "ORR", name: "Operational Readiness Review", when: "Week 12", purpose: "Can the team operate the mission and handle anomalies?" },
-  { code: "MRR", name: "Mission Readiness Review", when: "Week 12", purpose: "Is the complete mission system ready, and can its architecture be defended?" },
-];
-
-export const GATE_ORDER = ["MCR", "SRR", "PDR", "CDR", "TRR", "ORR", "MRR"] as const;
 
 export const outcomes = [
   "Translate mission needs into spacecraft-level requirements.",
@@ -1135,15 +1189,16 @@ export const references: Reference[] = [
   },
 ];
 
+export const COURSE_NAME = `${PROGRAM.title}: ${PROGRAM.subtitle}`;
+
 export const credential = {
   primary: "Advanced Certificate in Satellite Engineering",
-  track: "Architecture & Leadership Track",
-  program: "Satellite Engineering: From First Principles to Spacecraft Systems Architect",
+  track: PROGRAM.track,
+  program: COURSE_NAME,
   capstone: "Spacecraft Systems Architecture Capstone",
   capstoneStatus: "Successfully Completed",
 } as const;
 
-export const COURSE_NAME = "Satellite Engineering: From First Principles to Spacecraft Systems Architect";
 export const COURSE_DESCRIPTION =
   "Advanced Architecture & Leadership Track covering mission engineering, spacecraft systems architecture, satellite digital twins, subsystem engineering, verification, operations and technical leadership.";
 

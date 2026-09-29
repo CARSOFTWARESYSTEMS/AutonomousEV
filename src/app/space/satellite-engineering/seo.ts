@@ -14,6 +14,7 @@ import { SUDARSHANA_KARKALA } from "@/data/public-entities";
 import {
   COURSE_NAME,
   COURSE_DESCRIPTION,
+  PROGRAM,
   LAST_REVIEWED,
   audiences,
   credential,
@@ -28,8 +29,7 @@ export const DESCRIPTION =
   "Advanced satellite engineering program covering spacecraft systems architecture, digital twins, CubeSat engineering, mission design, testing and operations.";
 export const DATE_PUBLISHED = "2026-09-29";
 const OG_IMAGE = `${CANONICAL}/opengraph-image`;
-const OG_ALT =
-  "Satellite Engineering — From First Principles to Spacecraft Systems Architect · Architecture & Leadership Track · EV.ENGINEER";
+const OG_ALT = `${PROGRAM.title} — ${PROGRAM.subtitle} · ${PROGRAM.track} · EV.ENGINEER`;
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://aerospace.ev.engineer"),
@@ -124,7 +124,7 @@ export const structuredData = {
       "@type": "Course",
       "@id": COURSE_ID,
       name: COURSE_NAME,
-      alternateName: "Satellite Engineering — Architecture & Leadership Track",
+      alternateName: `${PROGRAM.title} — ${PROGRAM.track}`,
       description: COURSE_DESCRIPTION,
       url: CANONICAL,
       inLanguage: "en",

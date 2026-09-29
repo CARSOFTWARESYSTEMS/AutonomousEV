@@ -21,6 +21,14 @@ const navItems = [
 
 export type BrandLink = { label: string; href: string };
 
+/**
+ * Widest viewport (px) that still uses the compact header + menu. The full
+ * single-line desktop header needs ~1,300px of layout width; 1340px leaves
+ * room for a classic Windows scrollbar. Must match the header media query in
+ * ../space.module.css.
+ */
+export const SPACE_HEADER_COMPACT_MAX = 1339;
+
 export default function SpaceHeader({
   basePath = "",
   brandLinks,
@@ -32,7 +40,7 @@ export default function SpaceHeader({
   const items = brandLinks ? [...navItems.filter((item) => item.href.startsWith("#")), ...brandLinks] : navItems;
   const [mobileOpen, setMobileOpen] = useState(false);
   const mobileToggleRef = useRef<HTMLButtonElement>(null);
-  useMobileMenuLock(mobileOpen, setMobileOpen, mobileToggleRef);
+  useMobileMenuLock(mobileOpen, setMobileOpen, mobileToggleRef, SPACE_HEADER_COMPACT_MAX);
   return (
     <>
       {/* ── Header ── */}
@@ -103,7 +111,7 @@ export default function SpaceHeader({
             const isInternalRoute = item.href === "/";
             const isExternal = item.href.startsWith("http");
             const borderedStyle: React.CSSProperties = {
-              padding: "6px 14px",
+              padding: "6px 12px",
               borderRadius: 8,
               fontWeight: 600,
               fontSize: 13,
@@ -113,7 +121,8 @@ export default function SpaceHeader({
               color: "#B39DDB",
               textDecoration: "none",
               display: "block",
-              marginLeft: 10,
+              marginLeft: 8,
+              whiteSpace: "nowrap",
             };
             if (isInternalRoute) {
               return (
@@ -148,7 +157,7 @@ export default function SpaceHeader({
               );
             }
             const linkStyle: React.CSSProperties = {
-              padding: "6px 12px",
+              padding: "6px 10px",
               borderRadius: 8,
               color: "#B5B8C9",
               fontSize: 13,
@@ -156,6 +165,7 @@ export default function SpaceHeader({
               textDecoration: "none",
               transition: "color 0.2s, background 0.2s",
               display: "block",
+              whiteSpace: "nowrap",
             };
             return (
               <a
@@ -196,7 +206,9 @@ export default function SpaceHeader({
             aria-label="Express Interest (opens Google Form in a new tab)"
             className={styles.headerCtaDesktop}
             style={{
-              padding: "7px 16px",
+              alignItems: "center",
+              minHeight: 40,
+              padding: "0 16px",
               borderRadius: 10,
               background: "linear-gradient(135deg, #7C3AED, #06B6D4)",
               border: "none",
@@ -204,6 +216,7 @@ export default function SpaceHeader({
               fontWeight: 600,
               fontSize: 13,
               textDecoration: "none",
+              whiteSpace: "nowrap",
             }}
           >
             Express Interest
@@ -216,11 +229,17 @@ export default function SpaceHeader({
             aria-expanded={mobileOpen}
             aria-controls="space-mobile-menu"
             style={{
+              alignItems: "center",
+              justifyContent: "center",
+              width: 44,
+              height: 44,
+              marginRight: -10,
               background: "none",
               border: "none",
+              borderRadius: 10,
               color: "#fff",
               cursor: "pointer",
-              padding: 4,
+              padding: 0,
             }}
             className={styles.headerToggle}
           >

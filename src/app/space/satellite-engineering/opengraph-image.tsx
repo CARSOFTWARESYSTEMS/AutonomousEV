@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
-export const alt =
-  "Satellite Engineering — From First Principles to Spacecraft Systems Architect · Architecture & Leadership Track · EV.ENGINEER";
+import { PROGRAM } from "./programData";
+export const alt = `${PROGRAM.title} — ${PROGRAM.subtitle} · ${PROGRAM.track} · EV.ENGINEER`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export default function Image() {
@@ -32,11 +32,11 @@ export default function Image() {
         />
         <div style={{ display: "flex", flexDirection: "column", width: 780, zIndex: 2 }}>
           <div style={{ display: "flex", color: "#B39DDB", fontSize: 20, letterSpacing: 3 }}>
-            FLAGSHIP · ARCHITECTURE &amp; LEADERSHIP TRACK
+            {`FLAGSHIP · ${PROGRAM.track.toUpperCase()}`}
           </div>
-          <div style={{ display: "flex", fontSize: 76, fontWeight: 800, marginTop: 36, letterSpacing: -2 }}>Satellite Engineering</div>
+          <div style={{ display: "flex", fontSize: 76, fontWeight: 800, marginTop: 36, letterSpacing: -2 }}>{PROGRAM.title}</div>
           <div style={{ display: "flex", fontSize: 34, fontWeight: 600, color: "#93C5FD", lineHeight: 1.25, marginTop: 18 }}>
-            From First Principles to Spacecraft Systems Architect
+            {PROGRAM.subtitle}
           </div>
           <div style={{ display: "flex", fontSize: 22, color: "#B5B8C9", marginTop: 34 }}>
             12 weeks · Digital twin · CubeSat flatsat · SRR · PDR · CDR

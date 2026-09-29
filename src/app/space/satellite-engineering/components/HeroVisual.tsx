@@ -1,16 +1,5 @@
 import styles from "../satellite.module.css";
-import { GATE_ORDER } from "../programData";
-
-const subsystems: [string, string][] = [
-  ["Payload", "Optical EO"],
-  ["ADCS", "3-axis · RW + MTQ"],
-  ["EPS", "Deployable solar + Li-ion"],
-  ["TT&C", "S-band"],
-  ["Downlink", "X-band"],
-  ["OBC", "Flight computer + edge"],
-  ["FDIR", "Safe mode"],
-  ["End of life", "Disposal strategy"],
-];
+import { GATE_ORDER, heroSubsystems, referenceSpacecraft } from "../programData";
 
 const gates = GATE_ORDER;
 
@@ -24,10 +13,10 @@ export default function HeroVisual() {
         <div>
           <p className={styles.panelLabel}>Reference spacecraft</p>
           <p id="hero-panel-title" className={styles.heroPanelTitle}>
-            6U Earth Observation Satellite
+            {referenceSpacecraft.name}
           </p>
         </div>
-        <span className={styles.heroPanelTag}>SSO · 500–550 km</span>
+        <span className={styles.heroPanelTag}>{referenceSpacecraft.facts.orbit.short}</span>
       </div>
 
       <svg className={styles.heroSchematic} viewBox="0 0 440 200" aria-hidden="true" focusable="false">
@@ -106,7 +95,7 @@ export default function HeroVisual() {
       </svg>
 
       <dl className={styles.subsystemGrid}>
-        {subsystems.map(([name, value]) => (
+        {heroSubsystems.map(([name, value]) => (
           <div key={name} className={styles.subsystem}>
             <dt>{name}</dt>
             <dd>{value}</dd>
