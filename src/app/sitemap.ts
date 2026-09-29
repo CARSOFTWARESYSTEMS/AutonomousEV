@@ -57,5 +57,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: "https://aerospace.ev.engineer/space/model-rocketry", lastModified: "2026-09-14", changeFrequency: "monthly", priority: 0.8 },
     { url: "https://aerospace.ev.engineer/space/everyday-applications", lastModified: "2026-09-14", changeFrequency: "monthly", priority: 0.8 },
     { url: "https://aerospace.ev.engineer/space/space-station", lastModified: "2026-09-25", changeFrequency: "monthly", priority: 0.8 },
+    { url: "https://aerospace.ev.engineer/space/satellite-engineering", lastModified: "2026-09-29", changeFrequency: "monthly", priority: 0.8 },
   ];
 }

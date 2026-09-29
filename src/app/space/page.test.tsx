@@ -350,3 +350,17 @@ it("shows the Space Station card immediately after the CubeTwin card", () => {
     expect(cubetwinCard.nextElementSibling).toBe(stationLink.parentElement);
     expect(within(stationLink.parentElement as HTMLElement).getByRole("heading", { level: 3 })).toHaveTextContent("Space Station");
   });
+
+it("shows the flagship Satellite Engineering card immediately after Space Applications and before Model Rocketry", () => {
+    const { container } = render(<SpacePage />);
+    const simulations = container.querySelector("#simulations") as HTMLElement;
+    const titles = within(simulations).getAllByRole("heading", { level: 3 }).map((h) => h.textContent);
+    expect(titles).toEqual(["Space Applications", "Satellite Engineering", "Model Rocketry", "CubeTwin", "Space Station"]);
+
+    const satelliteLink = within(simulations).getByRole("link", { name: /Explore Satellite Engineering/ });
+    expect(satelliteLink).toHaveAttribute("href", "/space/satellite-engineering");
+    const card = satelliteLink.parentElement as HTMLElement;
+    expect(within(card).getByText("Flagship Advanced Program")).toBeInTheDocument();
+    expect(within(card).getByText("From First Principles to Spacecraft Systems Architect")).toBeInTheDocument();
+    expect(within(card).getByText(/Architecture & Leadership Track · Systems Leads · CTO · Chief Architect/)).toBeInTheDocument();
+  });

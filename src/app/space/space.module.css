@@ -422,6 +422,49 @@
   text-align: center;
 }
 
+/* ── Simulations & R&D project grid ──
+   Capped at three columns so five cards read as 3 + 2 on desktop instead of
+   stretching into one crowded row; two columns on tablets, one on phones. */
+.projectGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+}
+
+@media (min-width: 640px) {
+  .projectGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1000px) {
+  .projectGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* Flagship program card: same layout as its siblings, set apart only by a
+   gradient hairline border, a restrained violet glow and a subtitle. */
+.flagshipCard {
+  border: 1px solid transparent;
+  border-radius: var(--space-radius);
+  background:
+    linear-gradient(160deg, rgba(27, 22, 66, 0.95), rgba(17, 21, 46, 0.92)) padding-box,
+    linear-gradient(135deg, rgba(179, 157, 219, 0.7), rgba(59, 130, 246, 0.4), rgba(6, 182, 212, 0.3)) border-box;
+  box-shadow: 0 0 48px rgba(124, 58, 237, 0.14);
+}
+.flagshipSubtitle {
+  margin: -4px 0 10px;
+  color: #C4B5FD;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+.flagshipCta {
+  background: rgba(124, 58, 237, 0.16) !important;
+  border-color: rgba(179, 157, 219, 0.45) !important;
+  color: #E4DCFA !important;
+}
+.flagshipCta:hover {
+  background: rgba(124, 58, 237, 0.26) !important;
+}
+
 /* ── Simulations & R&D project cards ──
    Column layout so every card's call to action sits on the same baseline,
    left-aligned text to match the titles, and full-width buttons whose labels

@@ -566,13 +566,21 @@ export default function SpaceLanding({ entityGraph }: { entityGraph: object }) {
             <h2 style={sectionH2}>Learn by building mission-ready thinking</h2>
             <p style={sectionDesc}>Explore guided simulation projects that turn spacecraft concepts into testable models, telemetry and engineering evidence.</p>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 14 }}>
+          <div className={styles.projectGrid}>
             <div className={`${styles.cardHover} ${theme.card} ${styles.projectCard}`}>
               <StatusPill label="Interactive Learning Experience" color="#06B6D4" />
               <h3 className={styles.projectTitle}>Space Applications</h3>
               <p className={styles.projectDesc}>Discover how satellites and space data improve everyday life—from weather and mobility to agriculture, connectivity, disaster response and infrastructure.</p>
               <Link href="/space/everyday-applications" className={`${theme.secondaryButton} ${styles.projectCta}`}>Explore Space Applications <ArrowRight size={16} /></Link>
               <p className={styles.projectNote}>Educational reference · No aerospace background needed.</p>
+            </div>
+            <div className={`${styles.cardHover} ${styles.projectCard} ${styles.flagshipCard}`}>
+              <StatusPill label="Flagship Advanced Program" color="#B39DDB" />
+              <h3 className={styles.projectTitle}>Satellite Engineering</h3>
+              <p className={styles.flagshipSubtitle}>From First Principles to Spacecraft Systems Architect</p>
+              <p className={styles.projectDesc}>A systems-level architecture and engineering leadership program covering mission design, spacecraft subsystems, digital twins, verification, operations, risk, cost and technical decision-making.</p>
+              <Link href="/space/satellite-engineering" className={`${theme.secondaryButton} ${styles.projectCta} ${styles.flagshipCta}`}>Explore Satellite Engineering <ArrowRight size={16} /></Link>
+              <p className={styles.projectNote}>Architecture &amp; Leadership Track · Systems Leads · CTO · Chief Architect</p>
             </div>
             <div className={`${styles.cardHover} ${theme.card} ${styles.projectCard}`}>
               <StatusPill label="Interactive Learning Experience" color="#7C3AED" />
