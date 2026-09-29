@@ -3,6 +3,7 @@ import {
   WEBSITE_ID,
   EV_SOCIETY_ID,
   EV_ENGINEER_BRAND_ID,
+  ITELEMATICS_ID,
   PERSON_ID,
   websiteNode,
   evSocietyOrgNode,
@@ -94,9 +95,11 @@ export const structuredData = {
     // websiteNode() names iTelematics as the WebSite publisher, so its node
     // must be present for that reference to resolve within this graph.
     itelematicsOrgNode(),
+    // EV.ENGINEER is the program / technical-education brand and the Course
+    // provider (same pattern as /internships/AegisCAN). It stays a Brand node:
+    // the entity registry deliberately does not model it as a legal entity.
     evEngineerBrandNode(),
-    // EV Society is the content steward for the /space family of pages
-    // ("Space · An EV Society initiative"), so it is the Course provider.
+    // EV Society stewards the /space initiative that publishes this page.
     evSocietyOrgNode(),
     PERSON_NODE,
     {
@@ -113,7 +116,7 @@ export const structuredData = {
       mainEntity: { "@id": COURSE_ID },
       author: { "@id": PERSON_ID },
       publisher: { "@id": EV_SOCIETY_ID },
-      mentions: [{ "@id": EV_ENGINEER_BRAND_ID }],
+      mentions: [{ "@id": EV_ENGINEER_BRAND_ID }, { "@id": ITELEMATICS_ID }],
       breadcrumb: { "@id": BREADCRUMB_ID },
       primaryImageOfPage: { "@type": "ImageObject", url: OG_IMAGE, width: 1200, height: 630, caption: OG_ALT },
     },
@@ -125,7 +128,7 @@ export const structuredData = {
       description: COURSE_DESCRIPTION,
       url: CANONICAL,
       inLanguage: "en",
-      provider: { "@id": EV_SOCIETY_ID },
+      provider: { "@id": EV_ENGINEER_BRAND_ID },
       author: { "@id": PERSON_ID },
       educationalLevel: "Advanced / Professional",
       timeRequired: "P12W",
@@ -140,7 +143,13 @@ export const structuredData = {
         phase.weeks.map((week) => ({
           "@type": "Syllabus",
           name: `Week ${week.number} · ${week.title}`,
-          description: week.focus,
+          description: [
+            week.focus,
+            week.milestones && `Review gates: ${week.milestones.map((m) => m.code).join(", ")}.`,
+            week.checkpoint && `Checkpoint: ${week.checkpoint}.`,
+          ]
+            .filter(Boolean)
+            .join(" "),
           timeRequired: "P1W",
         })),
       ),

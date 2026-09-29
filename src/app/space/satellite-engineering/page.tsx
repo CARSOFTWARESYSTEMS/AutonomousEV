@@ -1,6 +1,7 @@
 import Link from "next/link";
 import {
   ArrowRight,
+  ArrowDown,
   ArrowLeftRight,
   ChevronRight,
   ExternalLink,
@@ -46,6 +47,9 @@ import {
   batteryExample,
   tools,
   references,
+  missionSegments,
+  marginPolicy,
+  adrExample,
   LAST_REVIEWED,
   LAST_REVIEWED_LABEL,
 } from "./programData";
@@ -56,6 +60,7 @@ const MOTTO = ["Design", "Analyse", "Architect", "Build", "Test", "Operate", "Le
 
 const JUMP_LINKS: [string, string][] = [
   ["#thesis", "Thesis"],
+  ["#system-of-systems", "Mission system"],
   ["#audience", "Who it is for"],
   ["#glance", "At a glance"],
   ["#reference-mission", "Reference mission"],
@@ -130,7 +135,7 @@ export default function SatelliteEngineeringPage() {
                 </h1>
                 <p className={styles.heroSub}>From First Principles to Spacecraft Systems Architect</p>
                 <p className={styles.heroLede}>
-                  Develop the systems thinking, engineering judgement and architecture capability required to design complex satellite missions
+                  Develop the systems thinking, engineering judgement and architecture capability required to architect complex satellite missions
                   and lead multidisciplinary spacecraft engineering programs.
                 </p>
                 <p className={styles.heroMotto}>
@@ -216,6 +221,46 @@ export default function SatelliteEngineeringPage() {
                 ))}
               </ul>
             </div>
+
+            <div id="system-of-systems" className={styles.sosBlock}>
+              <div className={styles.sosIntro}>
+                <p className={styles.panelLabel}>Mission architecture</p>
+                <h3 className={styles.h3Large}>
+                  A Satellite Mission Is a <span className={styles.noWrap}>System-of-Systems</span>
+                </h3>
+                <p>
+                  A spacecraft cannot be architected in isolation. Orbit, launch interface, payload, ground network, mission operations and
+                  downstream user needs must be designed as one mission system.
+                </p>
+              </div>
+              <figure className={styles.sosDiagram} aria-label="Mission objective, system-of-systems architecture and mission capability">
+                <p className={styles.sosTerminal}>Mission objective</p>
+                <span className={styles.sosArrow} aria-hidden="true">
+                  <ArrowDown size={18} />
+                </span>
+                <div className={styles.sosFrame}>
+                  <p className={styles.sosFrameLabel}>System-of-systems architecture</p>
+                  <ul className={styles.sosSegments}>
+                    {missionSegments.map((seg, i) => (
+                      <li key={seg.name}>
+                        <span className={styles.sosCode} aria-hidden="true">
+                          SEG-{String(i + 1).padStart(2, "0")}
+                        </span>
+                        <span className={styles.sosName}>{seg.name}</span>
+                        <span className={styles.sosElements}>{seg.elements}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className={styles.sosInterfaces}>
+                    <span>Interfaces</span> ICDs · RF links · launch interface · data formats · operations procedures · end-to-end budgets
+                  </p>
+                </div>
+                <span className={styles.sosArrow} aria-hidden="true">
+                  <ArrowDown size={18} />
+                </span>
+                <p className={`${styles.sosTerminal} ${styles.sosCapability}`}>Mission capability</p>
+              </figure>
+            </div>
           </div>
         </section>
 
@@ -226,6 +271,10 @@ export default function SatelliteEngineeringPage() {
               <p>
                 This program develops the systems thinking, engineering judgement and architecture capability required to architect complex
                 satellite missions and lead multidisciplinary spacecraft engineering programs.
+              </p>
+              <p>
+                This Architecture &amp; Leadership Track is designed as an advanced Satellite Systems Engineering Course in India for experienced
+                engineers and technical leaders working toward spacecraft systems and mission architecture responsibilities.
               </p>
             </SectionHead>
             <ul className={styles.audienceGrid}>
@@ -324,7 +373,10 @@ export default function SatelliteEngineeringPage() {
                   {referenceMission.map((s) => (
                     <div key={s.label}>
                       <dt>{s.label}</dt>
-                      <dd>{s.value}</dd>
+                      <dd>
+                        {s.value}
+                        {s.detail && <span className={styles.specDetail}>{s.detail}</span>}
+                      </dd>
                     </div>
                   ))}
                 </dl>
@@ -379,17 +431,64 @@ export default function SatelliteEngineeringPage() {
                     {group.title}
                   </h3>
                   <ol className={styles.dossierList}>
-                    {group.items.map((item, i) => (
-                      <li key={item}>
-                        <span className={styles.docCode} aria-hidden="true">
-                          {group.code}-{String(i + 1).padStart(2, "0")}
-                        </span>
-                        <span>{group.code === "BUD" ? `${item} budget` : item}</span>
-                      </li>
-                    ))}
+                    {group.items.map((item, i) => {
+                      const name = typeof item === "string" ? item : item.name;
+                      return (
+                        <li key={name}>
+                          <span className={styles.docCode} aria-hidden="true">
+                            {group.code}-{String(i + 1).padStart(2, "0")}
+                          </span>
+                          <span>
+                            {group.code === "BUD" ? `${name} budget` : name}
+                            {typeof item !== "string" && <span className={styles.docDetail}>{item.detail}</span>}
+                          </span>
+                        </li>
+                      );
+                    })}
                   </ol>
                 </div>
               ))}
+            </div>
+
+            <div className={styles.artifactRow}>
+              <article className={styles.marginCard} aria-labelledby="margin-h">
+                <p className={styles.panelLabel}>Governance artefact</p>
+                <h3 id="margin-h" className={styles.h3}>
+                  Engineering Margin Policy
+                </h3>
+                <p className={styles.artifactStatement}>{marginPolicy.statement}</p>
+                <ul className={styles.marginList} aria-label="Margins tracked and defended">
+                  {marginPolicy.tracked.map((m) => (
+                    <li key={m}>{m}</li>
+                  ))}
+                </ul>
+                <p className={styles.reviewQuestion}>
+                  <span>Review question</span>
+                  {marginPolicy.reviewQuestion}
+                </p>
+              </article>
+
+              <article className={styles.adrCard} aria-labelledby="adr-h">
+                <div className={styles.adrHead}>
+                  <p className={styles.panelLabel}>Architecture Decision Records</p>
+                  <span className={styles.adrId}>{adrExample.id}</span>
+                </div>
+                <h3 id="adr-h" className={styles.h3}>
+                  {adrExample.title}
+                </h3>
+                <p className={styles.adrIntro}>
+                  Each major decision is logged with its options, criteria, rationale, assumptions, risks and the trigger that would reopen it.
+                  Illustrative example:
+                </p>
+                <dl className={styles.adrFields}>
+                  {adrExample.fields.map(([k, v]) => (
+                    <div key={k} data-field={k}>
+                      <dt>{k}</dt>
+                      <dd>{v}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </article>
             </div>
           </div>
         </section>
@@ -447,6 +546,11 @@ export default function SatelliteEngineeringPage() {
                 </figcaption>
               </figure>
             </div>
+            <p className={styles.twinFidelity}>
+              The Satellite Digital Twin developed in this program is an engineering model whose fidelity increases as simulation, test and
+              telemetry evidence are added. It should not be interpreted as a validated flight digital twin unless validation criteria have been
+              explicitly demonstrated.
+            </p>
             <p className={styles.relatedNote}>
               Related on this platform:{" "}
               <Link href="/space/cubesat">CubeTwin — a CubeSat energy digital twin</Link> explores the orbit-power-battery coupling behind the Week 4
@@ -504,7 +608,7 @@ export default function SatelliteEngineeringPage() {
             </SectionHead>
             <ol className={styles.gateTimeline}>
               {reviewGates.map((g) => (
-                <li key={g.code}>
+                <li key={g.code} data-gate={g.code}>
                   <span className={styles.gateDot} aria-hidden="true" />
                   <div className={styles.gateBody}>
                     <p className={styles.gateWhen}>{g.when}</p>
@@ -517,8 +621,8 @@ export default function SatelliteEngineeringPage() {
               ))}
             </ol>
             <p className={styles.fineNote}>
-              The sequence is compressed for a 12-week program. In a flight project, test, operational and mission readiness reviews follow CDR; here
-              the flatsat test campaign runs before CDR so that test evidence informs the design review.
+              Engineering-model verification occurs throughout the course, while formal review gates represent the progressive maturity of the
+              mission architecture and test baseline. In this compressed format, CDR, TRR, ORR and MRR are held in sequence in the Week 12 studio.
             </p>
           </div>
         </section>
@@ -569,7 +673,7 @@ export default function SatelliteEngineeringPage() {
         {/* ── Careers ── */}
         <section id="careers" className={`${styles.section} ${styles.sectionAlt}`} aria-labelledby="careers-h">
           <div className={styles.container}>
-            <SectionHead id="careers-h" eyebrow="Job roles after completion" title="Career & Leadership Pathways">
+            <SectionHead id="careers-h" eyebrow="Roles & progression" title="Career & Leadership Pathways">
               <p>
                 The program develops capabilities applicable to spacecraft systems engineering, mission architecture and multidisciplinary
                 engineering leadership. Eligibility for specific roles depends on prior education, domain experience and demonstrated engineering
@@ -592,7 +696,7 @@ export default function SatelliteEngineeringPage() {
             </div>
             <p className={styles.fineNote}>
               Pathways are illustrative. The program does not guarantee placement, and course completion alone does not confer senior titles such
-              as CTO or Chief Architect.
+              as CTO, Chief Architect or Director.
             </p>
           </div>
         </section>
@@ -608,8 +712,8 @@ export default function SatelliteEngineeringPage() {
                 </h2>
                 <div className={styles.lead}>
                   <p>
-                    The credential recognises completion of the program assessments and a successfully defended capstone. It is awarded by the
-                    program; it is not an accredited academic qualification and does not claim university equivalence.
+                    The credential recognises completion of the program assessments and a successfully defended capstone. It is awarded by
+                    EV.ENGINEER™, the program provider; it is not an accredited academic qualification and does not claim university equivalence.
                   </p>
                 </div>
               </div>
@@ -687,8 +791,10 @@ export default function SatelliteEngineeringPage() {
         {/* ── Tools & references ── */}
         <section id="tools" className={`${styles.section} ${styles.sectionAlt}`} aria-labelledby="tools-h">
           <div className={styles.container}>
-            <SectionHead id="tools-h" eyebrow="Tools & engineering stack" title="Industry-grade and open engineering tools">
-              <p>Open and professional tools used across mission analysis, simulation, flight software, modelling and RF.</p>
+            <SectionHead id="tools-h" eyebrow="Tools & engineering stack" title="Engineering Tools & Open Technical Stack">
+              <p>
+                Tools used for mission analysis, simulation, modelling, flight-software learning, RF experimentation and systems engineering.
+              </p>
             </SectionHead>
             <dl className={styles.toolGrid}>
               {tools.map((t) => (
@@ -706,7 +812,7 @@ export default function SatelliteEngineeringPage() {
             </dl>
             <p className={styles.fineNote}>
               Tool selection may vary by cohort, licensing and laboratory availability. Naming a tool does not imply a partnership with, or
-              endorsement by, its developer.
+              endorsement by, its developer — including NASA, JPL or commercial software vendors.
             </p>
 
             <div className={styles.referencesBlock}>
@@ -769,6 +875,10 @@ export default function SatelliteEngineeringPage() {
         <section className={`${styles.section} ${styles.preparedBy}`} aria-label="Prepared by">
           <div className={styles.container}>
             <ResearcherCard />
+            <p className={styles.providerNote}>
+              Satellite Engineering is an EV.ENGINEER™ professional program within the EV Society™ Space initiative. Commercial arrangements,
+              where applicable, are handled by iTelematics Software Private Limited.
+            </p>
             <p className={styles.reviewed}>
               Program information last reviewed: <time dateTime={LAST_REVIEWED}>{LAST_REVIEWED_LABEL}</time>.
             </p>

@@ -27,6 +27,33 @@ function WeekHeader({ week }: { week: Week }) {
   );
 }
 
+function WeekFeature({ week }: { week: Week }) {
+  if (!week.feature) return null;
+  const { title, items, flow } = week.feature;
+  return (
+    <div className={styles.weekFeature}>
+      <h5 className={styles.weekLabel}>{title}</h5>
+      {items.length > 0 && (
+        <ul className={styles.featureList}>
+          {items.map((t) => (
+            <li key={t}>{t}</li>
+          ))}
+        </ul>
+      )}
+      {flow && (
+        <ol className={styles.flowInline} aria-label={`${title} sequence`}>
+          {flow.map((step, i, arr) => (
+            <li key={step}>
+              {step}
+              {i < arr.length - 1 && <ArrowRight size={13} aria-hidden="true" />}
+            </li>
+          ))}
+        </ol>
+      )}
+    </div>
+  );
+}
+
 function WeekBody({ week }: { week: Week }) {
   return (
     <div className={styles.weekBody}>
@@ -35,6 +62,7 @@ function WeekBody({ week }: { week: Week }) {
         {week.topics.map((group, i) => (
           <div key={group.label ?? i} className={styles.topicGroup}>
             {group.label && <p className={styles.topicGroupLabel}>{group.label}</p>}
+            {group.note && <p className={styles.topicGroupNote}>{group.note}</p>}
             <ul className={styles.topicList}>
               {group.items.map((t) => (
                 <li key={t}>{t}</li>
@@ -43,28 +71,9 @@ function WeekBody({ week }: { week: Week }) {
           </div>
         ))}
 
-        {week.feature && (
-          <div className={styles.weekFeature}>
-            <h5 className={styles.weekLabel}>{week.feature.title}</h5>
-            {week.feature.items.length > 0 && (
-              <ul className={styles.featureList}>
-                {week.feature.items.map((t) => (
-                  <li key={t}>{t}</li>
-                ))}
-              </ul>
-            )}
-            {week.feature.flow && (
-              <ol className={styles.flowInline} aria-label={`${week.feature.title} sequence`}>
-                {week.feature.flow.map((step, i, arr) => (
-                  <li key={step}>
-                    {step}
-                    {i < arr.length - 1 && <ArrowRight size={13} aria-hidden="true" />}
-                  </li>
-                ))}
-              </ol>
-            )}
-          </div>
-        )}
+        {week.callout && <p className={styles.weekCallout}>{week.callout}</p>}
+
+        {!week.featureInSide && <WeekFeature week={week} />}
       </div>
 
       <div className={styles.weekSide}>
@@ -103,6 +112,12 @@ function WeekBody({ week }: { week: Week }) {
             ))}
           </div>
         )}
+        {week.checkpoint && (
+          <p className={styles.checkpointNote}>
+            <strong>Checkpoint</strong> · {week.checkpoint}
+          </p>
+        )}
+        {week.featureInSide && <WeekFeature week={week} />}
       </div>
     </div>
   );
@@ -120,6 +135,7 @@ export default function Curriculum() {
           const first = phase.weeks[0].number;
           const last = phase.weeks[phase.weeks.length - 1].number;
           const milestones = phase.weeks.flatMap((w) => w.milestones ?? []).map((m) => m.code);
+          const checkpoints = phase.weeks.flatMap((w) => (w.checkpoint ? [w.checkpoint] : []));
           return (
             <section key={phase.numeral} className={styles.phase} aria-labelledby={`phase-${phase.numeral}`}>
               <header className={styles.phaseHead}>
@@ -135,6 +151,11 @@ export default function Curriculum() {
                     Review gates: <span>{milestones.join(" · ")}</span>
                   </p>
                 )}
+                {checkpoints.map((c) => (
+                  <p key={c} className={styles.phaseCheckpoint}>
+                    Checkpoint: <span>{c}</span>
+                  </p>
+                ))}
               </header>
               <div className={styles.weekList}>
                 {phase.weeks.map((week) => (

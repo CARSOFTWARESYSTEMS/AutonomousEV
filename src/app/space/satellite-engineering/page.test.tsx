@@ -3,7 +3,7 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { EOI_FORM_URL } from "@/lib/eoi";
 import SatelliteEngineeringPage from "./page";
-import { outcomes, portfolio, phases } from "./programData";
+import { outcomes, portfolio, phases, reviewGates, GATE_ORDER } from "./programData";
 
 vi.mock("next/navigation", () => ({
   usePathname: () => "/space/satellite-engineering",
@@ -95,7 +95,7 @@ describe("Satellite Engineering page", () => {
     const { container } = render(<SatelliteEngineeringPage />);
     const text = container.textContent ?? "";
     expect(text).not.toMatch(/guaranteed (job|placement)|NASA-certified|MIT-equivalent|Stanford-equivalent|World.s #1|Industry certified|in 12 weeks become/i);
-    expect(text).toMatch(/course completion alone does not confer senior titles such as CTO or Chief Architect/i);
+    expect(text).toMatch(/course completion alone does not confer senior titles such as CTO, Chief Architect or Director/i);
     expect(text).toMatch(/not flight-qualified hardware/);
     expect(text).toMatch(/not an accredited academic qualification/);
   });
@@ -122,5 +122,105 @@ describe("Satellite Engineering page", () => {
       expect(a).toHaveAttribute("target", "_blank");
       expect(a).toHaveAttribute("rel", "noopener noreferrer");
     });
+  });
+});
+
+describe("Satellite Engineering V1.1 architecture rigour", () => {
+  const FORMAL_ORDER = ["MCR", "SRR", "PDR", "CDR", "TRR", "ORR", "MRR"];
+
+  it("orders formal review gates MCR < SRR < PDR < CDR < TRR < ORR < MRR everywhere", () => {
+    expect([...GATE_ORDER]).toEqual(FORMAL_ORDER);
+    expect(reviewGates.map((g) => g.code)).toEqual(FORMAL_ORDER);
+    // Week-level milestones, read in week order, follow the same sequence.
+    expect(phases.flatMap((p) => p.weeks).flatMap((w) => w.milestones ?? []).map((m) => m.code)).toEqual(FORMAL_ORDER);
+
+    const { container } = render(<SatelliteEngineeringPage />);
+    const timeline = Array.from(container.querySelectorAll("#reviews ol > li")).map((li) => li.getAttribute("data-gate"));
+    expect(timeline).toEqual(FORMAL_ORDER);
+    const heroStrip = Array.from(container.querySelectorAll("figure ol li")).slice(0, 7).map((li) => li.textContent);
+    expect(heroStrip).toEqual(FORMAL_ORDER);
+  });
+
+  it("keeps formal TRR after the CDR baseline and treats Week 10 as an engineering-model checkpoint", () => {
+    const weeks = phases.flatMap((p) => p.weeks);
+    const week10 = weeks.find((w) => w.number === 10)!;
+    expect(week10.milestones).toBeUndefined();
+    expect(week10.checkpoint).toMatch(/Engineering-model verification campaign \+ CDR preparation/);
+    const week12 = weeks.find((w) => w.number === 12)!;
+    expect(week12.milestones?.map((m) => m.code)).toEqual(["CDR", "TRR", "ORR", "MRR"]);
+
+    const { container } = render(<SatelliteEngineeringPage />);
+    expect(container.querySelector("#reviews")?.textContent).toMatch(
+      /Engineering-model verification occurs throughout the course, while formal review gates represent the progressive maturity of the\s+mission architecture and test baseline/,
+    );
+  });
+
+  it("uses Verification-Ready Baseline and introduces no unsupported qualification claims", () => {
+    const { container } = render(<SatelliteEngineeringPage />);
+    const text = container.textContent ?? "";
+    expect(text).toContain("Verification-Ready Baseline");
+    expect(text).not.toMatch(/Qualified design/i);
+    // The only permitted use of "qualified" is the explicit negation for the flatsat.
+    const remaining = text.replace(/not flight-qualified/g, "");
+    expect(remaining).not.toMatch(/\bqualified\b/i);
+  });
+
+  it("presents the mission as a system-of-systems with all six segments", () => {
+    const { container } = render(<SatelliteEngineeringPage />);
+    const block = container.querySelector("#system-of-systems") as HTMLElement;
+    expect(block).not.toBeNull();
+    expect(within(block).getByRole("heading", { name: "A Satellite Mission Is a System-of-Systems" })).toBeInTheDocument();
+    ["Space Segment", "Payload", "Launch Segment", "Ground Segment", "Mission Operations", "Data / User Segment"].forEach((seg) =>
+      expect(within(block).getByText(seg)).toBeInTheDocument(),
+    );
+    expect(within(block).getByText("Mission objective")).toBeInTheDocument();
+    expect(within(block).getByText("Mission capability")).toBeInTheDocument();
+    expect(block.textContent).toMatch(/A spacecraft cannot be architected in isolation/);
+  });
+
+  it("adds pointing and image-quality budgets, the margin policy and an ADR example to the dossier", () => {
+    const { container } = render(<SatelliteEngineeringPage />);
+    const dossier = container.querySelector("#dossier") as HTMLElement;
+    expect(within(dossier).getByText("Pointing budget")).toBeInTheDocument();
+    expect(within(dossier).getByText("Performance / Image Quality budget")).toBeInTheDocument();
+    expect(within(dossier).getByRole("heading", { name: "Engineering Margin Policy" })).toBeInTheDocument();
+    expect(dossier.textContent).toMatch(/What margin remains, and what assumptions consume it\?/);
+    expect(within(dossier).getAllByText("Architecture Decision Records").length).toBeGreaterThan(0);
+    expect(within(dossier).getByText("ADR-ADCS-004")).toBeInTheDocument();
+    ["Question", "Options considered", "Evaluation criteria", "Selected option", "Rationale", "Assumptions", "Risks", "Revisit trigger"].forEach(
+      (field) => expect(within(dossier).getByText(field)).toBeInTheDocument(),
+    );
+  });
+
+  it("states digital-twin fidelity responsibly", () => {
+    const { container } = render(<SatelliteEngineeringPage />);
+    expect(container.querySelector("#digital-twin")?.textContent).toMatch(
+      /engineering model whose fidelity increases as simulation, test and\s+telemetry evidence are added\. It should not be interpreted as a validated flight digital twin/,
+    );
+  });
+
+  it("covers software assurance, EEE parts and product assurance inside the weeks", () => {
+    const { container } = render(<SatelliteEngineeringPage />);
+    const panel = (n: number) =>
+      document.getElementById((container.querySelector(`#week-${n} button`) as HTMLElement).getAttribute("aria-controls") as string)!;
+    expect(panel(8).textContent).toMatch(/Software assurance/);
+    expect(panel(8).textContent).toMatch(/Requirements-to-code traceability/);
+    expect(panel(10).textContent).toMatch(/EEE parts engineering/);
+    expect(panel(10).textContent).toMatch(/Counterfeit avoidance/);
+    expect(panel(10).textContent).toMatch(/Product assurance & quality engineering/);
+    expect(panel(10).textContent).toMatch(/design intent is preserved through manufacturing, integration, test and acceptance/);
+    expect(panel(7).textContent).toMatch(/Regulatory feasibility is an input to communications architecture, not post-design paperwork/);
+  });
+
+  it("frames mission life as a design trade and uses the refined hero wording", () => {
+    const { container } = render(<SatelliteEngineeringPage />);
+    const text = container.textContent ?? "";
+    expect(text).toMatch(/Design Life Target3 years/);
+    expect(text).toMatch(/Evaluate extension toward 5 years/);
+    expect(text).not.toMatch(/Lifetime3–5 years/);
+    expect(text).toMatch(/required to architect complex satellite missions/);
+    expect(text.match(/Satellite Systems Engineering Course in India/g)).toHaveLength(1);
+    expect(screen.getByRole("heading", { name: "Engineering Tools & Open Technical Stack" })).toBeInTheDocument();
+    expect(text).toMatch(/EV\.ENGINEER™ professional program within the EV Society™ Space initiative/);
   });
 });

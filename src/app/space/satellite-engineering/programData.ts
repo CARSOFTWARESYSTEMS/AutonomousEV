@@ -114,13 +114,18 @@ export const readiness: ReadinessArea[] = [
   },
 ];
 
-export type Spec = { label: string; value: string };
+export type Spec = { label: string; value: string; detail?: string };
 
 export const referenceMission: Spec[] = [
   { label: "Orbit", value: "500–550 km Sun-Synchronous Orbit" },
   { label: "Mission", value: "Earth Observation" },
   { label: "Payload", value: "Optical EO payload" },
-  { label: "Lifetime", value: "3–5 years" },
+  { label: "Design Life Target", value: "3 years" },
+  {
+    label: "Life Extension Trade",
+    value: "Evaluate extension toward 5 years",
+    detail: "Battery cycling · radiation · orbit decay · propulsion · reliability · degradation · commercial value",
+  },
   { label: "Power", value: "Deployable solar arrays + Li-ion battery" },
   { label: "ADCS", value: "Three-axis stabilised, reaction wheels + magnetorquers" },
   { label: "TT&C", value: "S-band" },
@@ -143,11 +148,55 @@ export const couplings: Coupling[] = [
 export const fidelityStages = [
   { phase: "Phase I", weeks: "Weeks 1–3", level: "Concept baseline" },
   { phase: "Phase II", weeks: "Weeks 4–8", level: "Preliminary design" },
-  { phase: "Phase III", weeks: "Weeks 9–10", level: "Qualified design" },
+  { phase: "Phase III", weeks: "Weeks 9–10", level: "Verification-Ready Baseline" },
   { phase: "Phase IV", weeks: "Weeks 11–12", level: "Operational baseline" },
 ] as const;
 
-export type DossierGroup = { title: string; code: string; items: string[] };
+export type MissionSegment = { name: string; elements: string };
+
+export const missionSegments: MissionSegment[] = [
+  { name: "Space Segment", elements: "Bus, subsystems, flight software, onboard autonomy" },
+  { name: "Payload", elements: "Instrument, onboard processing, calibration" },
+  { name: "Launch Segment", elements: "Launcher, deployer interface, orbit injection" },
+  { name: "Ground Segment", elements: "Stations, network, TT&C and payload data reception" },
+  { name: "Mission Operations", elements: "Planning, commanding, anomaly response, end of life" },
+  { name: "Data / User Segment", elements: "Processing, data products, delivery to users" },
+];
+
+export const marginPolicy = {
+  statement:
+    "Architecture is not only about meeting nominal requirements; it is also about preserving quantified margin as the design matures.",
+  tracked: [
+    "Mass",
+    "Power",
+    "Energy",
+    "Data",
+    "Thermal uncertainty",
+    "Processor load",
+    "Link margin",
+    "Propellant reserve",
+    "Schedule reserve",
+  ],
+  reviewQuestion: "What margin remains, and what assumptions consume it?",
+} as const;
+
+export const adrExample = {
+  id: "ADR-ADCS-004",
+  title: "Three-wheel vs four-wheel reaction-wheel architecture",
+  fields: [
+    ["Question", "Must three-axis payload pointing survive a single reaction-wheel failure?"],
+    ["Options considered", "Three orthogonal wheels with magnetorquer backup · four wheels in a pyramid configuration"],
+    ["Evaluation criteria", "Pointing after a wheel failure, mass, power, volume, cost, momentum management"],
+    ["Selected option", "Four-wheel pyramid"],
+    ["Rationale", "Preserves imaging capability after a single wheel failure across the 3-year design life"],
+    ["Assumptions", "Supplier wheel reliability data; volume available in the 6U layout"],
+    ["Risks", "Power and volume margin consumption; wheel-speed zero crossings"],
+    ["Revisit trigger", "Design life extended toward 5 years, or power margin falls below policy"],
+  ] as [string, string][],
+} as const;
+
+export type DossierItem = string | { name: string; detail: string };
+export type DossierGroup = { title: string; code: string; items: DossierItem[] };
 
 export const dossier: DossierGroup[] = [
   {
@@ -169,7 +218,17 @@ export const dossier: DossierGroup[] = [
   {
     title: "Engineering Budgets",
     code: "BUD",
-    items: ["Mass", "Power", "Energy", "Data", "Link", "Delta-V", "Thermal"],
+    items: [
+      "Mass",
+      "Power",
+      "Energy",
+      "Data",
+      "Link",
+      "Delta-V",
+      "Thermal",
+      { name: "Pointing", detail: "Accuracy · knowledge · stability · jitter" },
+      { name: "Performance / Image Quality", detail: "Image-quality allocation · GSD-related dependencies" },
+    ],
   },
   {
     title: "Engineering Governance",
@@ -183,11 +242,13 @@ export const dossier: DossierGroup[] = [
       "Schedule",
       "Make / Buy Decisions",
       "Configuration Baseline",
+      "Engineering Margin Policy",
+      "Architecture Decision Records",
     ],
   },
 ];
 
-export type TopicGroup = { label?: string; items: string[] };
+export type TopicGroup = { label?: string; note?: string; items: string[] };
 
 export type Week = {
   number: number;
@@ -198,10 +259,16 @@ export type Week = {
   decisions?: string[];
   studio: string[];
   deliverables: string[];
-  /** Review gates held during this week, in order. */
+  /** Formal review gates held during this week, in order. */
   milestones?: { code: string; name: string }[];
+  /** A working checkpoint that is not a formal review gate. */
+  checkpoint?: string;
+  /** One architecture principle highlighted inside the week. */
+  callout?: string;
   /** Additional structured block rendered after topics (e.g. a trade matrix or fault list). */
   feature?: { title: string; items: string[]; flow?: string[] };
+  /** Render the feature in the side column to balance topic-heavy weeks. */
+  featureInSide?: boolean;
 };
 
 export type Phase = {
@@ -473,6 +540,8 @@ export const phases: Phase[] = [
           "Own ground station or GSaaS?",
           "What latency does the mission require?",
         ],
+        callout:
+          "Regulatory feasibility is an input to communications architecture, not post-design paperwork. Spectrum and frequency constraints shape band selection, antenna architecture, link design, the ground segment and the licensing timeline.",
         studio: ["Link budget and contact analysis", "Digital twin increment: Communications Twin"],
         deliverables: ["Link budget", "Data budget", "Ground segment architecture"],
         milestones: [{ code: "PDR", name: "Preliminary Design Review" }],
@@ -484,7 +553,7 @@ export const phases: Phase[] = [
         topics: [
           {
             label: "Hardware",
-            items: ["OBC", "MCU / FPGA / SoC", "COTS vs rad-hard", "Redundancy", "EDAC", "Watchdog", "Fault containment"],
+            items: ["OBC", "MCU / FPGA / SoC", "COTS vs rad-hard", "Redundancy", "EDAC", "Watchdog"],
           },
           { label: "Interfaces", items: ["I2C", "SPI", "CAN", "RS-422", "SpaceWire"] },
           {
@@ -497,6 +566,19 @@ export const phases: Phase[] = [
               "Telemetry / telecommand",
               "Bootloaders",
               "Software update",
+            ],
+          },
+          {
+            label: "Software assurance",
+            items: [
+              "Coding standards",
+              "Static analysis",
+              "Unit testing",
+              "Integration testing",
+              "Requirements-to-code traceability",
+              "Fault containment",
+              "Software configuration management",
+              "Independent verification concepts",
             ],
           },
           { label: "Autonomy", items: ["FDIR", "Onboard AI", "Edge processing", "Autonomous recovery"] },
@@ -521,7 +603,7 @@ export const phases: Phase[] = [
   },
   {
     numeral: "III",
-    title: "Payload, Qualification & Mission Readiness",
+    title: "Payload, Verification & Qualification Planning",
     summary: "Put the payload at the centre of the architecture, then prove the design can be built and trusted.",
     weeks: [
       {
@@ -544,12 +626,12 @@ export const phases: Phase[] = [
         decisionsLabel: "Key architecture question",
         decisions: ["Does the spacecraft exist to support the payload, or has the payload been forced to fit the spacecraft?"],
         studio: ["Payload performance model", "Digital twin increment: Payload Model"],
-        deliverables: ["Payload-to-platform requirements", "Payload performance analysis", "Updated data budget"],
+        deliverables: ["Payload-to-platform requirements", "Performance / image-quality budget", "Updated data budget"],
       },
       {
         number: 10,
         title: "AIT, Reliability & Failure Engineering",
-        focus: "Plan how the spacecraft is integrated, tested and trusted — and learn how it fails.",
+        focus: "Verify the engineering model, prepare the CDR baseline — and learn how the spacecraft fails.",
         topics: [
           {
             label: "AIT",
@@ -575,7 +657,6 @@ export const phases: Phase[] = [
               "Fault tree analysis",
               "Reliability block diagrams",
               "Redundancy",
-              "Derating",
               "Single-point failures",
             ],
           },
@@ -589,6 +670,37 @@ export const phases: Phase[] = [
               "Software failure",
               "Test escape",
               "Operational error",
+            ],
+          },
+          {
+            label: "EEE parts engineering",
+            items: [
+              "COTS vs space-grade parts",
+              "Derating",
+              "Radiation tolerance",
+              "Lot traceability",
+              "Screening",
+              "Counterfeit avoidance",
+              "Obsolescence",
+              "Parts control",
+              "Supplier qualification concepts",
+            ],
+          },
+          {
+            label: "Product assurance & quality engineering",
+            note: "Technical leadership must understand how design intent is preserved through manufacturing, integration, test and acceptance.",
+            items: [
+              "Nonconformance / NCR",
+              "Material Review Board (MRB)",
+              "Deviation / waiver",
+              "Workmanship",
+              "Inspection",
+              "Calibration",
+              "Cleanliness",
+              "Traceability",
+              "Supplier quality",
+              "Configuration audit",
+              "Acceptance records",
             ],
           },
         ],
@@ -608,9 +720,14 @@ export const phases: Phase[] = [
           ],
           flow: ["Detect", "Isolate", "Recover", "Analyse", "Correct"],
         },
-        studio: ["Flatsat integration and fault injection", "Digital twin increment: Fault Injection"],
-        deliverables: ["Reliability / FMEA package", "Verification & Validation Matrix", "Test plan"],
-        milestones: [{ code: "TRR", name: "Test Readiness Review" }],
+        featureInSide: true,
+        studio: [
+          "Engineering-model verification campaign on the flatsat",
+          "Fault injection and model correlation",
+          "Digital twin increment: Fault Injection",
+        ],
+        deliverables: ["Reliability / FMEA package", "Verification & Validation Matrix", "Test plan", "EEE parts and derating approach"],
+        checkpoint: "Engineering-model verification campaign + CDR preparation",
       },
     ],
   },
@@ -698,13 +815,15 @@ export const phases: Phase[] = [
         studio: [
           "Architecture trade studies",
           "Technology roadmapping",
-          "Mission operations simulation",
           "Critical Design Review — external-review style panel",
-          "Final spacecraft architecture defense",
+          "Test Readiness Review — formal test baseline against the CDR design",
+          "Mission operations simulation and Operational Readiness Review",
+          "Final spacecraft architecture defense — Mission Readiness Review",
         ],
         deliverables: ["Spacecraft Architecture Dossier", "CDR package", "Architecture defense"],
         milestones: [
           { code: "CDR", name: "Critical Design Review" },
+          { code: "TRR", name: "Test Readiness Review" },
           { code: "ORR", name: "Operational Readiness Review" },
           { code: "MRR", name: "Mission Readiness Review" },
         ],
@@ -742,15 +861,19 @@ export const flatsatBus = "CAN / I2C / SPI interfaces";
 
 export type ReviewGate = { code: string; name: string; when: string; purpose: string };
 
+// Formal gates in lifecycle order. Engineering-model testing happens throughout
+// the course; the formal TRR follows the CDR design baseline.
 export const reviewGates: ReviewGate[] = [
   { code: "MCR", name: "Mission Concept Review", when: "Week 1", purpose: "Is the mission need clear and the concept feasible?" },
   { code: "SRR", name: "System Requirements Review", when: "Week 3", purpose: "Are the requirements complete, verifiable and traceable?" },
   { code: "PDR", name: "Preliminary Design Review", when: "Week 7", purpose: "Does the preliminary architecture close with margin?" },
-  { code: "TRR", name: "Test Readiness Review", when: "Week 10", purpose: "Is the flatsat test campaign ready and safe to run?" },
-  { code: "CDR", name: "Critical Design Review", when: "Week 12", purpose: "Is the detailed design mature enough to build?" },
+  { code: "CDR", name: "Critical Design Review", when: "Week 12", purpose: "Is the detailed design mature enough to build and verify?" },
+  { code: "TRR", name: "Test Readiness Review", when: "Week 12", purpose: "Are the test article, procedures and facilities ready to verify the CDR baseline?" },
   { code: "ORR", name: "Operational Readiness Review", when: "Week 12", purpose: "Can the team operate the mission and handle anomalies?" },
-  { code: "MRR", name: "Mission Readiness Review", when: "Week 12", purpose: "Can the architecture be defended as a whole?" },
+  { code: "MRR", name: "Mission Readiness Review", when: "Week 12", purpose: "Is the complete mission system ready, and can its architecture be defended?" },
 ];
+
+export const GATE_ORDER = ["MCR", "SRR", "PDR", "CDR", "TRR", "ORR", "MRR"] as const;
 
 export const outcomes = [
   "Translate mission needs into spacecraft-level requirements.",
@@ -846,7 +969,7 @@ export const careers: CareerCategory[] = [
   },
   {
     title: "Advanced / Leadership Pathways",
-    note: "For experienced engineers, relevant progression pathways can include the roles below. Course completion alone does not confer senior titles such as CTO or Chief Architect.",
+    note: "For experienced engineers, relevant progression pathways can include the roles below. Course completion alone does not confer senior titles such as CTO, Chief Architect or Director.",
     roles: [
       "Principal Space Systems Engineer",
       "Lead Systems Engineer",
@@ -1022,6 +1145,12 @@ export const teaches = [
   "Reliability Engineering",
   "Satellite Digital Twins",
   "Mission Operations",
+  "Mission System-of-Systems Architecture",
+  "Engineering Margin Management",
+  "Architecture Decision Records",
+  "Software Assurance",
+  "EEE Parts Engineering",
+  "Product Assurance and Quality Engineering",
   "Space Systems Leadership",
 ];
 

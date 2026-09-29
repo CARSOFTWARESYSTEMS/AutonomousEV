@@ -1,4 +1,5 @@
 import styles from "../satellite.module.css";
+import { GATE_ORDER } from "../programData";
 
 const subsystems: [string, string][] = [
   ["Payload", "Optical EO"],
@@ -11,7 +12,7 @@ const subsystems: [string, string][] = [
   ["End of life", "Disposal strategy"],
 ];
 
-const gates = ["MCR", "SRR", "PDR", "TRR", "CDR", "ORR", "MRR"];
+const gates = GATE_ORDER;
 
 // Illustrative reference-architecture panel. The schematic is decorative
 // (aria-hidden); every fact it hints at is carried by the HTML grid below it
