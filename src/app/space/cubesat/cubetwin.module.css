@@ -303,6 +303,43 @@
   flex-shrink: 0;
   margin-top: 4px;
 }
+.explorerLink {
+  composes: card from "../spaceTheme.module.css";
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px 32px;
+  margin-top: 24px;
+  padding: 24px 26px;
+}
+.explorerLink > div:first-child {
+  flex: 1 1 380px;
+  min-width: 0;
+}
+.explorerLink .eyebrow {
+  margin-bottom: 10px;
+}
+.portal .explorerLinkText {
+  margin: 0;
+  max-width: 62ch;
+  color: var(--space-text);
+  font-size: 17px;
+  line-height: 1.6;
+}
+.explorerLinkAction {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+.explorerLinkAction .button {
+  border-color: var(--space-control-border);
+  color: var(--space-blue-text);
+}
+.explorerLinkAction small {
+  color: var(--space-muted);
+}
 .simulatorSlot {
   min-height: 350px;
 }

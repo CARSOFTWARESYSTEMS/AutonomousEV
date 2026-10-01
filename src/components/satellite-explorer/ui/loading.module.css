@@ -1,0 +1,127 @@
+/* Loading scene and the pre-hydration gates. Loaded with the route shell, so
+   it stays small and independent of the desktop application's styles. */
+
+/* Before hydration both experiences are in the HTML; CSS shows the right one
+   so no viewport ever sees the other flash by. */
+.pendingDesktop {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .pendingMobile {
+    display: none;
+  }
+  .pendingDesktop {
+    display: block;
+  }
+}
+
+.loading {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  background: var(--sx-bg, #04050a);
+  color: var(--sx-text, #eef0f4);
+  overflow: hidden;
+  transition: opacity 0.9s var(--sx-ease, ease), visibility 0.9s;
+}
+
+.loading[data-hidden="true"] {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Earth's limb, drawn in CSS: a faint horizon so the wait already feels like orbit. */
+.horizon {
+  position: absolute;
+  left: 50%;
+  bottom: -168vmax;
+  width: 200vmax;
+  height: 200vmax;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  background: radial-gradient(circle at 50% 0%, #0d1f3d 0%, #060b17 6%, #04050a 14%);
+  box-shadow:
+    0 -1px 0 rgba(140, 190, 255, 0.5),
+    0 -14px 60px rgba(70, 130, 230, 0.2);
+}
+
+.content {
+  position: relative;
+  width: min(360px, 78vw);
+  text-align: center;
+}
+
+.name {
+  margin: 0;
+  font-family: var(--sx-display, system-ui, sans-serif);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-indent: 0.32em;
+  color: #fff;
+}
+
+.status {
+  margin: 14px 0 22px;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--sx-muted, #9aa0ad);
+}
+
+.track {
+  position: relative;
+  height: 2px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.bar {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 100%;
+  background: #fff;
+  transform-origin: left center;
+  transform: scaleX(var(--progress, 0));
+  transition: transform 0.5s var(--sx-ease, ease);
+}
+
+.track[data-indeterminate="true"] .bar {
+  width: 38%;
+  transform: none;
+  animation: sweep 1.5s var(--sx-ease, ease) infinite;
+}
+
+@keyframes sweep {
+  from {
+    left: -38%;
+  }
+  to {
+    left: 100%;
+  }
+}
+
+.percent {
+  margin: 12px 0 0;
+  font-family: var(--sx-mono, monospace);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--sx-dim, #6d7380);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading,
+  .bar {
+    transition: none;
+  }
+  .track[data-indeterminate="true"] .bar {
+    animation: none;
+    left: 0;
+    width: 100%;
+    opacity: 0.4;
+  }
+}

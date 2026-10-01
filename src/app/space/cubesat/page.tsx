@@ -345,6 +345,25 @@ export default function CubeTwinPage() {
                 </dl>
               </article>
             </div>
+            <aside className={styles.explorerLink} aria-labelledby="explorer-link-title">
+              <div>
+                <div className={styles.eyebrow}>FROM SIMULATION TO SPACECRAFT</div>
+                <p id="explorer-link-title" className={styles.explorerLinkText}>
+                  See where the battery, EPS, avionics, payload, ADCS and communications systems live inside a satellite.
+                </p>
+              </div>
+              <div className={styles.explorerLinkAction}>
+                <Link
+                  href="/space/satellite-engineering/interactive-3d"
+                  className={styles.button}
+                  data-track-event="satellite_3d_launch"
+                  data-track-source="cubetwin"
+                >
+                  Explore Satellite in 3D <ArrowRight size={16} />
+                </Link>
+                <small>Interactive desktop experience</small>
+              </div>
+            </aside>
           </section>
           <section id="roadmap" className={styles.section}>
             <SectionHeading

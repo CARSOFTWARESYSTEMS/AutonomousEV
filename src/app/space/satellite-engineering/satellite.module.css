@@ -2171,6 +2171,67 @@
   line-height: 1.55;
 }
 
+/* ── Satellite Explorer 3D cross-link ── */
+.explorerCta {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  margin-top: 16px;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: 22px;
+  background:
+    linear-gradient(160deg, #0b0e20, #080a16) padding-box,
+    linear-gradient(135deg, rgba(147, 197, 253, 0.45), rgba(124, 58, 237, 0.3), rgba(6, 182, 212, 0.25)) border-box;
+}
+.explorerCtaCopy {
+  min-width: 0;
+  padding: 24px 22px 26px;
+}
+.explorerCtaCopy > p:not(.panelLabel) {
+  margin: 12px 0 0;
+  max-width: 52ch;
+  color: var(--space-muted);
+  font-size: 16px;
+  line-height: 1.65;
+}
+.explorerCtaActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 18px;
+  margin-top: 22px;
+}
+.explorerCtaActions .explorerCtaNote {
+  margin: 0;
+  color: var(--se-note);
+  font-size: 13.5px;
+}
+.explorerCtaVisual {
+  min-width: 0;
+  aspect-ratio: 16 / 10;
+  background: #04050a;
+}
+.explorerCtaVisual img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+@media (min-width: 900px) {
+  .explorerCta {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    align-items: stretch;
+  }
+  .explorerCtaCopy {
+    align-self: center;
+    padding: 34px 36px;
+  }
+  .explorerCtaVisual {
+    aspect-ratio: auto;
+    min-height: 280px;
+  }
+}
+
 /* ── Final CTA ── */
 .ctaPanel {
   position: relative;

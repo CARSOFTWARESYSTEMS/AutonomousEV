@@ -1,0 +1,300 @@
+/* Compact learning page for phones and for desktops without WebGL.
+   Intentionally a different, lighter product — not a broken desktop view. */
+.page {
+  min-height: 100dvh;
+  padding-top: 60px; /* fixed Space header */
+  overflow-x: clip;
+}
+
+.main {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 20px 56px;
+}
+
+/* ── Hero ── */
+.hero {
+  position: relative;
+  margin: 0 -20px;
+}
+
+.poster {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: radial-gradient(120% 90% at 50% 110%, #0d1b33 0%, #05070d 55%, var(--sx-bg) 100%);
+}
+
+.poster img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.poster::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(4, 5, 10, 0) 45%, rgba(4, 5, 10, 0.72) 82%, var(--sx-bg) 100%);
+  pointer-events: none;
+}
+
+.heroCopy {
+  position: relative;
+  margin-top: -64px;
+  padding: 0 20px;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--sx-display);
+  font-size: clamp(28px, 8.4vw, 40px);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1.05;
+  color: #fff;
+}
+
+.subtitle {
+  margin: 10px 0 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--sx-body);
+}
+
+.missionLine {
+  margin: 6px 0 0;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sx-muted);
+}
+
+/* ── Desktop recommendation ── */
+.recommend {
+  margin-top: 28px;
+  padding: 18px;
+  border: 1px solid var(--sx-line-strong);
+  border-radius: var(--sx-radius);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015));
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border: 1px solid var(--sx-line-strong);
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.recommendTitle {
+  margin: 14px 0 0;
+  font-family: var(--sx-display);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #fff;
+}
+
+.recommend p {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--sx-body);
+}
+
+/* ── Sections ── */
+.section {
+  margin-top: 40px;
+}
+
+.sectionLabel {
+  margin: 0 0 6px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sx-muted);
+}
+
+.sectionTitle {
+  margin: 0 0 16px;
+  font-family: var(--sx-display);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #fff;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  padding: 14px;
+  border: 1px solid var(--sx-line);
+  border-radius: var(--sx-radius);
+  background: var(--sx-bg-soft);
+}
+
+.cardIcon {
+  display: block;
+  color: var(--card-accent, var(--sx-text));
+}
+
+.cardTitle {
+  margin: 12px 0 4px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #fff;
+}
+
+.cardFlow {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--sx-body);
+}
+
+/* ── Mission flow ── */
+.flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin: 0;
+  padding: 18px;
+  list-style: none;
+  border: 1px solid var(--sx-line);
+  border-radius: var(--sx-radius);
+  background: var(--sx-bg-soft);
+}
+
+.flow li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.flowNode {
+  min-width: 148px;
+  padding: 8px 14px;
+  border: 1px solid var(--sx-line-strong);
+  border-radius: var(--sx-radius-small);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-align: center;
+  color: #fff;
+}
+
+.flowArrow {
+  color: var(--sx-dim);
+}
+
+/* ── Actions ── */
+.actions {
+  display: grid;
+  gap: 10px;
+}
+
+.action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 52px;
+  padding: 0 18px;
+  border: 1px solid var(--sx-line-strong);
+  border-radius: var(--sx-radius);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #fff;
+}
+
+.actionPrimary {
+  background: #fff;
+  border-color: #fff;
+  color: #05060a;
+}
+
+.note {
+  margin: 24px 0 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--sx-dim);
+}
+
+@media (min-width: 560px) {
+  .cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .actions {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Desktop without WebGL: the same content, laid out for a wide viewport. */
+@media (min-width: 1024px) {
+  .main {
+    max-width: 1040px;
+    padding-inline: 32px;
+  }
+  .hero {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    align-items: center;
+    gap: 40px;
+    margin: 32px 0 0;
+  }
+  .poster {
+    border: 1px solid var(--sx-line);
+    border-radius: var(--sx-radius);
+  }
+  .poster::after {
+    display: none;
+  }
+  .heroCopy {
+    margin-top: 0;
+    padding: 0;
+  }
+  .recommend {
+    margin-top: 22px;
+  }
+  .cards {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  .flow {
+    flex-direction: row;
+    justify-content: center;
+    gap: 6px;
+  }
+  .flow li {
+    flex-direction: row;
+    gap: 6px;
+  }
+  .flowNode {
+    min-width: 0;
+  }
+  .flowArrow {
+    transform: rotate(-90deg);
+  }
+}

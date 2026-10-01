@@ -8,14 +8,21 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "test:cubetwin:e2e": "node scripts/test-cubetwin.cjs"
+    "test:cubetwin:e2e": "node scripts/test-cubetwin.cjs",
+    "test:satellite-explorer:e2e": "node scripts/test-satellite-explorer.cjs"
   },
   "dependencies": {
+    "@react-three/drei": "^10.7.9",
+    "@react-three/fiber": "^9.8.1",
+    "@react-three/postprocessing": "^3.1.3",
     "framer-motion": "^12.38.0",
     "lucide-react": "^1.14.0",
     "next": "16.2.3",
+    "postprocessing": "^6.39.5",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "three": "^0.186.1",
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^7.0.0",
@@ -24,6 +31,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/three": "^0.186.0",
     "@vitejs/plugin-react": "^6.0.5",
     "eslint": "^9",
     "eslint-config-next": "16.2.3",

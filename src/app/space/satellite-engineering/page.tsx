@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -388,6 +389,40 @@ export default function SatelliteEngineeringPage() {
                 </div>
               </div>
             </div>
+
+            {/* ── Satellite Explorer 3D ── */}
+            <aside className={styles.explorerCta} aria-labelledby="explorer-cta-h">
+              <div className={styles.explorerCtaCopy}>
+                <p className={styles.panelLabel}>See the spacecraft come alive</p>
+                <h3 id="explorer-cta-h" className={styles.h3Large}>
+                  Explore the 6U satellite in 3D
+                </h3>
+                <p>
+                  Build it. Open it. Follow power, data and RF signals. Command it from the ground and watch an end-to-end Earth-observation
+                  mission unfold.
+                </p>
+                <div className={styles.explorerCtaActions}>
+                  <Link
+                    href="/space/satellite-engineering/interactive-3d"
+                    className={styles.primaryButton}
+                    data-track-event="satellite_3d_launch"
+                    data-track-source="satellite_engineering"
+                  >
+                    Launch Satellite Explorer 3D <ArrowRight size={16} aria-hidden="true" />
+                  </Link>
+                  <p className={styles.explorerCtaNote}>Best experienced on Laptop/Desktop</p>
+                </div>
+              </div>
+              <div className={styles.explorerCtaVisual}>
+                <Image
+                  src="/space/satellite-explorer/poster.jpg"
+                  alt="Reference 6U Earth-observation satellite with deployed solar arrays above Earth, rendered in Satellite Explorer 3D"
+                  width={1600}
+                  height={1200}
+                  sizes="(min-width: 900px) 420px, 100vw"
+                />
+              </div>
+            </aside>
           </div>
         </section>
 
