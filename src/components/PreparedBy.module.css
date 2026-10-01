@@ -1,0 +1,23 @@
+/* Attribution under the shared profile card. Values match the "Prepared by"
+   section of the Satellite Engineering page. */
+.section {
+  width: 100%;
+}
+
+.note {
+  margin: 16px 0 0;
+  max-width: 82ch;
+  color: #9ea1b8;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.note + .note {
+  margin-top: 6px;
+}
+
+.reviewed {
+  margin: 14px 0 0;
+  color: #8b8fa3;
+  font-size: 13px;
+}

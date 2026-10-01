@@ -243,6 +243,11 @@
   color: var(--sx-dim);
 }
 
+/* Prepared by: the shared profile card and attribution, at the foot of the page. */
+.prepared {
+  margin-top: 40px;
+}
+
 @media (min-width: 560px) {
   .cards {
     grid-template-columns: repeat(3, 1fr);

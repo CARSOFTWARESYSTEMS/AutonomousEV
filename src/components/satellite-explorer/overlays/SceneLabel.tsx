@@ -32,16 +32,19 @@ export default function SceneLabel({ children, position, className, center = fal
   return <group ref={anchor} position={position} />;
 }
 
-/** Projects every label after each rendered frame, so labels never trail the picture. */
-export function LabelProjector() {
+/**
+ * Projects every label after each rendered frame, so labels never trail the
+ * picture. `declutter` stacks labels that would otherwise be drawn over each other.
+ */
+export function LabelProjector({ declutter = false }: { declutter?: boolean }) {
   const get = useThree((state) => state.get);
   useEffect(
     () =>
       addAfterEffect(() => {
         const { camera, size } = get();
-        projectLabels(camera, size.width, size.height);
+        projectLabels(camera, size.width, size.height, declutter);
       }),
-    [get],
+    [get, declutter],
   );
   return null;
 }

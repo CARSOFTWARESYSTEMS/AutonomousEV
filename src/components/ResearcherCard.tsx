@@ -10,7 +10,7 @@ export default function ResearcherCard() {
       <div className={styles.identity}>
         <Image
           src="/SudarshanaKarkala.jpg"
-          alt=""
+          alt={`Portrait of ${SUDARSHANA_KARKALA.name}`}
           width={56}
           height={56}
           className={styles.avatar}

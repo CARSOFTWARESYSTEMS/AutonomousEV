@@ -70,8 +70,47 @@ function isDrawn(object: Object3D): boolean {
   return true;
 }
 
-/** Move every label to its anchor's place on screen. Call after the frame has been rendered. */
-export function projectLabels(camera: Camera, width: number, height: number) {
+interface Placed {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+const placed: Placed[] = [];
+/** How far two label boxes may overlap before one is moved: about the margin a label keeps from its anchor. */
+const OVERLAP_ALLOWED = 5;
+
+const overlaps = (a: Placed, b: Placed) =>
+  a.x < b.x + b.width && b.x < a.x + a.width && a.y < b.y + b.height - OVERLAP_ALLOWED && b.y < a.y + a.height - OVERLAP_ALLOWED;
+
+/**
+ * Move a label clear of the labels placed before it: up or down, whichever is
+ * shorter at the first one it meets, and on in that direction past any others.
+ * Earlier labels never move, so nothing swaps places as the camera turns.
+ */
+function separate(label: Placed, count: number) {
+  let direction = 0;
+  for (let pass = 0; pass < count; pass++) {
+    let moved = false;
+    for (let i = 0; i < count; i++) {
+      const other = placed[i];
+      if (!overlaps(label, other)) continue;
+      if (direction === 0) direction = label.y + label.height / 2 >= other.y + other.height / 2 ? 1 : -1;
+      label.y = direction > 0 ? other.y + other.height - OVERLAP_ALLOWED : other.y - label.height + OVERLAP_ALLOWED;
+      moved = true;
+    }
+    if (!moved) return;
+  }
+}
+
+/**
+ * Move every label to its anchor's place on screen. Call after the frame has
+ * been rendered. With `declutter`, labels whose anchors project close together
+ * are stacked instead of drawn over one another.
+ */
+export function projectLabels(camera: Camera, width: number, height: number, declutter = false) {
+  placed.length = 0;
   for (const [key, anchor] of anchors) {
     const element = elements.get(key);
     if (!element) continue;
@@ -84,7 +123,13 @@ export function projectLabels(camera: Camera, width: number, height: number) {
       if (shown) {
         projected.applyMatrix4(camera.projectionMatrix);
         const x = (projected.x * 0.5 + 0.5) * width;
-        const y = (-projected.y * 0.5 + 0.5) * height;
+        let y = (-projected.y * 0.5 + 0.5) * height;
+        if (declutter) {
+          const label = { x, y, width: element.offsetWidth, height: element.offsetHeight };
+          separate(label, placed.length);
+          placed.push(label);
+          y = label.y;
+        }
         element.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`;
       }
     }

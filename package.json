@@ -9,7 +9,8 @@
     "lint": "eslint",
     "test": "vitest run",
     "test:cubetwin:e2e": "node scripts/test-cubetwin.cjs",
-    "test:satellite-explorer:e2e": "node scripts/test-satellite-explorer.cjs"
+    "test:satellite-explorer:e2e": "node scripts/test-satellite-explorer.cjs",
+    "test:uflight-3d:e2e": "node scripts/test-uflight-3d.cjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.9",

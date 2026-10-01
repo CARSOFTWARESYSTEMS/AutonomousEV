@@ -8,14 +8,14 @@ import {
   evEngineerBrandNode,
   itelematicsOrgNode,
 } from "@/lib/structured-data/entities";
-import { SATELLITE_REFERENCE, SUBSYSTEMS, SUBSYSTEM_ORDER } from "@/components/satellite-explorer/data/satelliteReference";
+import { PREPARED_BY, SATELLITE_REFERENCE, SUBSYSTEMS, SUBSYSTEM_ORDER } from "@/components/satellite-explorer/data/satelliteReference";
 
 export const CANONICAL = "https://aerospace.ev.engineer/space/satellite-engineering/interactive-3d";
 const PARENT = "https://aerospace.ev.engineer/space/satellite-engineering";
 export const TITLE = "Satellite Explorer 3D | Interactive Satellite Engineering | EV.ENGINEER";
 export const DESCRIPTION =
   "Explore a 6U Earth observation satellite in interactive 3D. Learn spacecraft structure, power, ADCS, avionics, payload, communications, orbit and ground-station operations through visual engineering demonstrations.";
-export const LAST_REVIEWED = "2026-10-01";
+export const LAST_REVIEWED: string = PREPARED_BY.reviewed;
 const OG_IMAGE = `${CANONICAL}/opengraph-image`;
 export const OG_ALT = "Satellite Explorer 3D — Build · Explore · Operate a Satellite. A 6U Earth observation satellite above Earth.";
 

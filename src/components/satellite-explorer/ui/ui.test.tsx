@@ -468,6 +468,22 @@ describe("header, help, hero and index", () => {
     expect(screen.getByRole("link", { name: "Back to Satellite Engineering" })).toHaveAttribute("href", "/space/satellite-engineering");
   });
 
+  it("the header opens who prepared the experience, and Esc closes it", async () => {
+    const user = userEvent.setup();
+    render(<ExplorerHeader />);
+    const button = screen.getByRole("button", { name: /About this experience/ });
+    expect(button).toHaveAttribute("aria-expanded", "false");
+    await user.click(button);
+    const about = screen.getByRole("dialog", { name: "About this experience" });
+    expect(within(about).getByText("Prepared by")).toBeInTheDocument();
+    expect(within(about).getByRole("link", { name: /View full profile/ })).toHaveAttribute("href", "/about/sudarshana-karkala");
+    expect(within(about).getByText(/Satellite Explorer 3D is an EV.ENGINEER™ interactive engineering learning experience/)).toBeInTheDocument();
+    expect(within(about).getByText(/Experience information last reviewed:/)).toHaveTextContent("1 October 2026");
+    await user.keyboard("{Escape}");
+    expect(screen.queryByRole("dialog", { name: "About this experience" })).toBeNull();
+    expect(button).toHaveAttribute("aria-expanded", "false");
+  });
+
   it("help lists the controls from the brief and closes with its button", async () => {
     const user = userEvent.setup();
     state().setHelpOpen(true);

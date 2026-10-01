@@ -165,6 +165,21 @@ describe("compact overview page", () => {
     expect(container.querySelector("canvas")).toBeNull();
   });
 
+  it("ends with who prepared it, the attribution and the review date", () => {
+    render(<MobileExplorer />);
+    const prepared = screen.getByRole("region", { name: "Prepared by" });
+    expect(within(prepared).getByText("Prepared by")).toBeInTheDocument();
+    expect(within(prepared).getByRole("heading", { level: 3, name: "Sudarshana Karkala" })).toBeInTheDocument();
+    expect(within(prepared).getByText("EV.ENGINEER™")).toBeInTheDocument();
+    expect(within(prepared).getByRole("img", { name: "Portrait of Sudarshana Karkala" })).toBeInTheDocument();
+    expect(within(prepared).getByRole("link", { name: /View full profile/ })).toHaveAttribute("href", "/about/sudarshana-karkala");
+    expect(within(prepared).getByText("Satellite Explorer 3D is an EV.ENGINEER™ interactive engineering learning experience within the EV Society™ Space initiative.")).toBeInTheDocument();
+    expect(within(prepared).getByText(/Experience information last reviewed:/)).toHaveTextContent("Experience information last reviewed: 1 October 2026.");
+    expect(prepared.querySelector("time")).toHaveAttribute("datetime", "2026-10-01");
+    // Nothing about the aircraft project, and no overstatement.
+    expect(prepared.textContent).not.toMatch(/uflight|aircraft|evtol|certif|accredit|flight heritage|operational/i);
+  });
+
   it("never skips a heading level and states what the spacecraft is", () => {
     const { container } = render(<MobileExplorer />);
     const levels = Array.from(container.querySelectorAll("h1, h2, h3, h4")).map((h) => Number(h.tagName[1]));

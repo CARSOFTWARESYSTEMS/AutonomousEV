@@ -67,6 +67,10 @@
   border-color: rgba(59, 130, 246, 0.55);
   color: #fff;
 }
+.cta:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
 @media (max-width: 640px) {
   .card {
     flex-direction: column;

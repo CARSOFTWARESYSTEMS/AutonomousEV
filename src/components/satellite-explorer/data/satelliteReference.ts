@@ -127,6 +127,13 @@ export const SATELLITE_REFERENCE = {
     "Educational reference spacecraft. Figures are reference or simulated values for learning, not specifications of flight hardware or of any real mission.",
 } as const;
 
+/** Who prepared the experience, and when its information was last reviewed. */
+export const PREPARED_BY = {
+  notes: ["Satellite Explorer 3D is an EV.ENGINEER™ interactive engineering learning experience within the EV Society™ Space initiative."],
+  reviewed: "2026-10-01",
+  reviewedLabel: "1 October 2026",
+} as const;
+
 export const PRODUCT = {
   name: "SATELLITE EXPLORER 3D",
   subtitle: "Build · Explore · Operate a Satellite",

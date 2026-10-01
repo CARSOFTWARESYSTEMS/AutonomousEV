@@ -1285,6 +1285,22 @@
 .help {
   width: 248px;
 }
+/* Prepared by: the profile card and attribution, reachable from the header. */
+.about {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  z-index: 45;
+  width: min(660px, calc(100vw - 40px));
+  padding: 14px 16px 18px;
+  border: 1px solid var(--sx-line);
+  border-radius: var(--sx-radius);
+  background: rgba(9, 11, 17, 0.96);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  animation: panelIn 0.22s var(--sx-ease) both;
+  user-select: text;
+}
 .index {
   width: min(640px, calc(100vw - 40px));
   max-height: calc(100dvh - 90px);

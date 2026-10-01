@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Manrope, Inter } from "next/font/google";
 import {
@@ -14,6 +15,7 @@ import styles from "./aerospace.module.css";
 import { useMobileMenuLock } from "@/hooks/useMobileMenuLock";
 import { EOI_FORM_URL } from "@/lib/eoi";
 import ResearcherCard from "@/components/ResearcherCard";
+import { POSTER, PRODUCT } from "@/components/uflight-3d/data/uflightReferenceAircraft";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -541,6 +543,31 @@ export default function AerospacePage() {
                 View All Learning Paths <ArrowRight size={14} />
               </button>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── UFlight™ 3D ── */}
+      <section className={styles.section} aria-labelledby="uflight-3d-title" style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+        <div className={styles.uflightCard}>
+          <div className={styles.uflightCopy}>
+            <p className={styles.uflightEyebrow}>UFLIGHT™ · DIGITAL ENGINEERING</p>
+            <h2 id="uflight-3d-title" className={styles.uflightTitle} style={{ fontFamily: FONT_MANROPE }}>
+              THE AIRCRAFT KNOWS MORE THAN YOU CAN SEE.
+            </h2>
+            <p className={styles.uflightText}>
+              Explore a next-generation 6-seat electric aircraft from the inside. Follow propulsion, energy, avionics, flight-control and structural systems in 3D, then see how advanced health
+              monitoring detects degradation, diagnoses faults and predicts maintenance needs.
+            </p>
+            <div className={styles.uflightActions}>
+              <Link href={PRODUCT.route} className={styles.uflightCta} data-track-event="uflight_3d_launch" data-track-source="aerospace_home">
+                LAUNCH UFLIGHT™ 3D <ArrowRight size={16} aria-hidden="true" />
+              </Link>
+              <p className={styles.uflightNote}>Best experienced on Desktop / Laptop</p>
+            </div>
+          </div>
+          <div className={styles.uflightVisual}>
+            <Image src={POSTER.src} alt={POSTER.alt} width={POSTER.width} height={POSTER.height} sizes="(min-width: 1024px) 620px, 100vw" />
           </div>
         </div>
       </section>
