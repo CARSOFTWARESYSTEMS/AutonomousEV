@@ -604,6 +604,21 @@ export default function SpaceLanding({ entityGraph }: { entityGraph: object }) {
               <Link href="/space/space-station" className={`${theme.secondaryButton} ${styles.projectCta}`}>Explore Space Station <ArrowRight size={16} /></Link>
               <p className={styles.projectNote}>Educational models · Sourced programme facts · Not mission design data.</p>
             </div>
+            <div className={`${styles.cardHover} ${theme.card} ${styles.projectCard}`}>
+              <StatusPill label="Interactive Digital Twin" color="#F59E0B" />
+              <h3 className={styles.projectTitle}>Next-Generation Rocket Engine Digital Twin</h3>
+              <p className={styles.projectDesc}>Explore a reusable liquid rocket engine reference architecture—propellant feed, turbomachinery, combustion, regenerative cooling, control, simulated testing and engine health monitoring.</p>
+              <Link
+                href="/space/rocket-engine-digital-twin"
+                className={`${theme.secondaryButton} ${styles.projectCta}`}
+                data-track-event="space_project_card_click"
+                data-track-project="rocket_engine_digital_twin"
+                data-track-placement="simulation_projects"
+              >
+                Explore Rocket Engine Digital Twin <ArrowRight size={16} />
+              </Link>
+              <p className={styles.projectNote}>Educational demonstrator · Reference and simulated data · Not a real engine.</p>
+            </div>
           </div>
         </section>
 

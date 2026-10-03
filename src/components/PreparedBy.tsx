@@ -1,7 +1,7 @@
-import ResearcherCard from "./ResearcherCard";
+import ResearcherCard, { type ResearcherCardProps } from "./ResearcherCard";
 import styles from "./PreparedBy.module.css";
 
-interface PreparedByProps {
+interface PreparedByProps extends ResearcherCardProps {
   /** Attribution lines shown under the profile card, one paragraph each. */
   notes: readonly string[];
   /** ISO date the information was last reviewed, and how it is written out. */
@@ -16,10 +16,10 @@ interface PreparedByProps {
  * and the date it was last reviewed. Same card, typography and spacing as on
  * the Satellite Engineering page.
  */
-export default function PreparedBy({ notes, reviewed, reviewedLabel, reviewedSubject = "Experience information" }: PreparedByProps) {
+export default function PreparedBy({ notes, reviewed, reviewedLabel, reviewedSubject = "Experience information", imageAlt, profileLinkProps }: PreparedByProps) {
   return (
     <section className={styles.section} aria-label="Prepared by">
-      <ResearcherCard />
+      <ResearcherCard imageAlt={imageAlt} profileLinkProps={profileLinkProps} />
       {notes.map((note) => (
         <p key={note} className={styles.note}>
           {note}

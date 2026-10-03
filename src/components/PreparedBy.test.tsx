@@ -18,6 +18,12 @@ describe("PreparedBy", () => {
     expect(section.querySelector("time")).toHaveAttribute("datetime", "2026-10-01");
   });
 
+  it("passes a page's portrait alt text and profile-link attributes to the shared card", () => {
+    render(<PreparedBy notes={["One line."]} reviewed="2026-10-03" reviewedLabel="3 October 2026" imageAlt="Sudarshana Karkala — EV.ENGINEER" profileLinkProps={{ "data-track-event": "rocket_twin_profile_click" }} />);
+    expect(screen.getByRole("img", { name: "Sudarshana Karkala — EV.ENGINEER" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /View full profile/ })).toHaveAttribute("data-track-event", "rocket_twin_profile_click");
+  });
+
   it("names what was reviewed when told", () => {
     render(<PreparedBy notes={[]} reviewed="2026-09-29" reviewedLabel="29 September 2026" reviewedSubject="Program information" />);
     expect(screen.getByText(/last reviewed/)).toHaveTextContent("Program information last reviewed: 29 September 2026.");

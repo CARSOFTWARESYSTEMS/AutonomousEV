@@ -44,7 +44,11 @@ function AnalyticsTracker() {
         return; // Prevent fallback duplicate events
       }
 
-      // 2. Fallback Implicit Tracking (Mutually Exclusive)
+      // 2. Opt-out: an area marked data-track-manual reports its own events
+      // through trackEvent, so a click there must not also be counted below.
+      if (target.closest('[data-track-manual]')) return;
+
+      // 3. Fallback Implicit Tracking (Mutually Exclusive)
       const link = target.closest('a');
       const button = target.closest('button');
 

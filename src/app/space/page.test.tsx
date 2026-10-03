@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import SpacePage from "./page";
 
 vi.mock("next/navigation", () => ({
@@ -355,7 +357,7 @@ it("shows the flagship Satellite Engineering card immediately after Space Applic
     const { container } = render(<SpacePage />);
     const simulations = container.querySelector("#simulations") as HTMLElement;
     const titles = within(simulations).getAllByRole("heading", { level: 3 }).map((h) => h.textContent);
-    expect(titles).toEqual(["Space Applications", "Satellite Engineering", "Model Rocketry", "CubeTwin", "Space Station"]);
+    expect(titles).toEqual(["Space Applications", "Satellite Engineering", "Model Rocketry", "CubeTwin", "Space Station", "Next-Generation Rocket Engine Digital Twin"]);
 
     const satelliteLink = within(simulations).getByRole("link", { name: /Explore Satellite Engineering/ });
     expect(satelliteLink).toHaveAttribute("href", "/space/satellite-engineering");
@@ -364,3 +366,24 @@ it("shows the flagship Satellite Engineering card immediately after Space Applic
     expect(within(card).getByText("From First Principles to Spacecraft Systems Architect")).toBeInTheDocument();
     expect(within(card).getByText(/Architecture & Leadership Track · Systems Leads · CTO · Chief Architect/)).toBeInTheDocument();
   });
+
+it("links to the Next-Generation Rocket Engine Digital Twin from the simulations section and reports the click", () => {
+    const { container } = render(<SpacePage />);
+    const simulations = container.querySelector("#simulations") as HTMLElement;
+    const link = within(simulations).getByRole("link", { name: "Explore Rocket Engine Digital Twin" });
+    expect(link).toHaveAttribute("href", "/space/rocket-engine-digital-twin");
+    expect(link).toHaveAttribute("data-track-event", "space_project_card_click");
+    expect(link).toHaveAttribute("data-track-project", "rocket_engine_digital_twin");
+    expect(link).toHaveAttribute("data-track-placement", "simulation_projects");
+    const card = link.parentElement as HTMLElement;
+    expect(within(card).getByRole("heading", { level: 3 })).toHaveTextContent("Next-Generation Rocket Engine Digital Twin");
+    expect(within(card).getByText("Educational demonstrator · Reference and simulated data · Not a real engine.")).toBeInTheDocument();
+    // The card is the last one, after Space Station.
+    expect(within(simulations).getByRole("link", { name: /Explore Space Station/ }).parentElement?.nextElementSibling).toBe(card);
+  });
+
+it("does not import the rocket engine experience into the Space page: its card is a plain link", () => {
+    const source = readFileSync(resolve(import.meta.dirname, "SpaceLanding.tsx"), "utf-8");
+    expect(source).not.toMatch(/rocket-engine-twin/);
+  });
+
