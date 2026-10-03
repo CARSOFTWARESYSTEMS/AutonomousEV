@@ -10,7 +10,8 @@
     "test": "vitest run",
     "test:cubetwin:e2e": "node scripts/test-cubetwin.cjs",
     "test:satellite-explorer:e2e": "node scripts/test-satellite-explorer.cjs",
-    "test:uflight-3d:e2e": "node scripts/test-uflight-3d.cjs"
+    "test:uflight-3d:e2e": "node scripts/test-uflight-3d.cjs",
+    "test:rocket-engine-twin:e2e": "node scripts/test-rocket-engine-twin.cjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.9",

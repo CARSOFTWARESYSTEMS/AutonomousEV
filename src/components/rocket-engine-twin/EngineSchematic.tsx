@@ -42,6 +42,9 @@ const SENSOR_AT: Record<SensorId, Offset> = {
   pump_vibration: [396, 196],
   coolant_outlet_temperature: [192, 206],
   valve_position: [168, 199],
+  pump_discharge_pressure: [352, 236],
+  bearing_temperature: [396, 174],
+  thrust_mount_strain: [262, 70],
 };
 
 const CONTROLLER_PORT: Offset = [128, 353];
@@ -142,7 +145,7 @@ export default function EngineSchematic({ view = DEFAULT_VIEW, className, flowCl
     return <path d={d} fill={cooled ? "rgba(94,211,230,0.28)" : t.fill} stroke={t.stroke} strokeWidth={t.strokeWidth} strokeLinejoin="round" />;
   };
 
-  const chamberLit = view.firing || view.flow === "hot_gas" || view.cutaway === "combustion";
+  const chamberLit = view.firing || view.flow === "hot_gas" || view.cutaway === "combustion" || view.cutaway === "regenerative_cooling";
   const nozzleLit = view.firing || view.flow === "hot_gas" || view.cutaway === "nozzle";
   const chamberTone = tone(["combustion", "regenerative_cooling"]);
   const nozzleTone = tone(["nozzle", "regenerative_cooling"]);

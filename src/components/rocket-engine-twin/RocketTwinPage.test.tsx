@@ -3,7 +3,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { resetRocketTwinTracking } from "./analytics";
-import { DISCLAIMER, FAQ, GLOSSARY, MODELS, MODEL_STATUS, OVERVIEW, PREPARED_BY, PRODUCT, SYSTEMS, TEST_PHASES, TEST_PHASE_MS, TWIN_STATES } from "./data/engineReference";
+import { DISCLAIMER, FAQ, GLOSSARY, MODELS, MODEL_STATUS, OVERVIEW, PREPARED_BY, PRODUCT, SYSTEMS, TEST_PHASES, TWIN_STATES } from "./data/engineReference";
+import { PHASE_MS } from "./simulation/engineSim";
 import RocketTwinPage from "./RocketTwinPage";
 import { resetRocketTwinStore } from "./state/twinStore";
 
@@ -20,7 +21,10 @@ const staticText = () =>
     .replace(/&amp;/g, "&")
     .replace(/\s+/g, " ");
 
-/** jsdom reports no media query as matching, which is a small screen here; this makes it a desktop. */
+/**
+ * jsdom reports no media query as matching, which is a small screen here; this makes it a desktop.
+ * jsdom has no WebGL either, so a desktop here gets the lightweight console: the fallback.
+ */
 function asDesktopViewport() {
   vi.spyOn(window, "matchMedia").mockImplementation(
     (query: string) => ({ matches: true, media: query, onchange: null, addListener: () => {}, removeListener: () => {}, addEventListener: () => {}, removeEventListener: () => {}, dispatchEvent: () => false }) as MediaQueryList,
@@ -49,11 +53,13 @@ describe("page identity", () => {
   it("shows the hero copy from the brief", () => {
     render(<RocketTwinPage />);
     const hero = screen.getByRole("region", { name: PRODUCT.name });
-    expect(within(hero).getByText("Design · Build · Simulate · Test · Diagnose")).toBeInTheDocument();
+    expect(within(hero).getByText("Design · Simulate · Test · Diagnose")).toBeInTheDocument();
     expect(within(hero).getByText("Reusable Liquid Rocket Engine · Reference Architecture")).toBeInTheDocument();
     expect(within(hero).getByText("Interactive digital-engineering learning environment for understanding propulsion systems, control, instrumentation, health monitoring and digital-twin behaviour.")).toBeInTheDocument();
     expect(within(hero).getByRole("link", { name: "Enter Digital Twin" })).toHaveAttribute("href", "#digital-twin");
     expect(within(hero).getByRole("link", { name: "Run Engine Demo" })).toHaveAttribute("href", "#digital-twin");
+    expect(within(hero).getByRole("button", { name: "Guided Engine Tour" })).toBeInTheDocument();
+    expect(within(hero).getByText("Desktop / Laptop Experience")).toBeInTheDocument();
   });
 
   it("follows the section order of the brief", () => {
@@ -146,7 +152,7 @@ describe("frequently asked questions", () => {
   it("asks the eight questions, each answered in 40 to 90 words", () => {
     expect(FAQ.map((f) => f.q)).toEqual([
       "What is a rocket engine digital twin?",
-      "What can I explore in this rocket engine digital twin?",
+      "What can I explore in this 3D rocket engine?",
       "What is turbomachinery in a liquid rocket engine?",
       "How does regenerative cooling work?",
       "What does the engine controller monitor?",
@@ -272,7 +278,7 @@ describe("calls to action", () => {
     fireEvent.click(screen.getByRole("link", { name: "Explore regenerative cooling" }));
     expect(screen.getByRole("tab", { name: "Explore engine systems" })).toHaveAttribute("aria-selected", "true");
     expect(screen.getByRole("button", { name: "Explore regenerative cooling" })).toHaveAttribute("aria-pressed", "true");
-    expect(screen.getByRole("status")).toHaveTextContent("Systems · Regenerative Cooling");
+    expect(screen.getByRole("status")).toHaveTextContent("Engine · Regenerative Cooling");
   });
 });
 
@@ -283,14 +289,16 @@ describe("interactive console", () => {
     render(<RocketTwinPage />);
     const tabs = within(screen.getByRole("tablist", { name: "Digital twin modes" })).getAllByRole("tab");
     expect(tabs.map((t) => t.getAttribute("aria-label"))).toEqual([
-      "Open engine build view",
       "Explore engine systems",
+      "Open engine build view",
       "Show engine flow paths",
       "Open engine control and instrumentation",
       "Open simulated engine test",
       "Open engine health monitoring",
       "Compare digital twin states",
+      "Open system architecture",
     ]);
+    expect(tabs.map((t) => t.textContent)).toEqual(["Engine", "Build", "Flow", "Control", "Test", "Health", "Twin", "Architecture"]);
     // The visible word is part of the accessible name, so voice control can address the tab by what it shows.
     for (const tab of tabs) expect(tab.getAttribute("aria-label")!.toLowerCase()).toContain(tab.textContent!.toLowerCase());
     expect(screen.getAllByRole("tabpanel")).toHaveLength(1);
@@ -307,10 +315,10 @@ describe("interactive console", () => {
   it("moves between modes with the arrow keys", () => {
     render(<RocketTwinPage />);
     fireEvent.keyDown(screen.getByRole("tab", { name: "Explore engine systems" }), { key: "ArrowRight" });
-    expect(screen.getByRole("tab", { name: "Show engine flow paths" })).toHaveAttribute("aria-selected", "true");
-    expect(screen.getByRole("tab", { name: "Show engine flow paths" })).toHaveFocus();
-    fireEvent.keyDown(screen.getByRole("tab", { name: "Show engine flow paths" }), { key: "End" });
-    expect(screen.getByRole("tab", { name: "Compare digital twin states" })).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByRole("tab", { name: "Open engine build view" })).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByRole("tab", { name: "Open engine build view" })).toHaveFocus();
+    fireEvent.keyDown(screen.getByRole("tab", { name: "Open engine build view" }), { key: "End" });
+    expect(screen.getByRole("tab", { name: "Open system architecture" })).toHaveAttribute("aria-selected", "true");
   });
 
   it("sends the semantic component id when a component is selected", () => {
@@ -318,7 +326,7 @@ describe("interactive console", () => {
     fireEvent.click(screen.getByRole("button", { name: "Engineer mode: engineering detail" }));
     fireEvent.click(screen.getByRole("button", { name: "Oxidiser turbopump" }));
     expect(calls("rocket_twin_audience_mode")).toEqual([["rocket_twin_audience_mode", { mode: "engineer" }]]);
-    expect(calls("rocket_twin_component_select")).toEqual([["rocket_twin_component_select", { component_id: "oxidiser_turbopump", system: "turbomachinery", mode: "systems", audience_mode: "engineer" }]]);
+    expect(calls("rocket_twin_component_select")).toEqual([["rocket_twin_component_select", { component_id: "oxidiser_turbopump", system: "turbomachinery", mode: "engine", audience_mode: "engineer" }]]);
     expect(screen.getByText(/Pump pressure rise scales roughly with the square of shaft speed/)).toBeInTheDocument();
   });
 
@@ -358,8 +366,8 @@ describe("interactive console", () => {
     fireEvent.click(screen.getByRole("tab", { name: "Open simulated engine test" }));
     fireEvent.click(screen.getByRole("button", { name: "Run simulated engine test" }));
     expect(screen.queryByRole("button", { name: "Run simulated engine test" })).not.toBeInTheDocument();
-    for (let i = 0; i < TEST_PHASES.length; i++) act(() => void vi.advanceTimersByTime(TEST_PHASE_MS));
-    act(() => void vi.advanceTimersByTime(TEST_PHASE_MS * 3));
+    for (const phase of TEST_PHASES) act(() => void vi.advanceTimersByTime(PHASE_MS[phase.id]));
+    act(() => void vi.advanceTimersByTime(20_000));
 
     expect(calls("rocket_twin_test_start")).toHaveLength(1);
     expect(calls("rocket_twin_test_phase").map(([, p]) => p.phase)).toEqual(["system_check", "conditioning", "ready", "start", "mainstage", "throttle", "shutdown", "review"]);
@@ -406,8 +414,11 @@ describe("small screens", () => {
   it("serves the same subject at the same address, with a note that a larger screen is easier", () => {
     render(<RocketTwinPage />);
     expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
-    const note = screen.getByRole("complementary", { name: /BEST ON A LAPTOP OR DESKTOP/ });
-    expect(note).toHaveTextContent("Everything on this page also works here.");
+    const note = screen.getByRole("complementary", { name: /DESKTOP EXPERIENCE RECOMMENDED/ });
+    expect(note).toHaveTextContent("Here you can explore the same systems, test and health views on a schematic.");
+    // The lightweight experience covers the brief's basics: feed, turbomachinery, combustion, cooling, control, health and the twin.
+    for (const name of ["Explore the propellant feed system", "Explore turbomachinery", "Explore the combustion chamber", "Explore regenerative cooling", "Explore the engine control system"]) expect(screen.getByRole("button", { name })).toBeInTheDocument();
+    for (const name of ["Open engine health monitoring", "Compare digital twin states"]) expect(screen.getByRole("tab", { name })).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 2, name: "Model Credibility" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 3, name: "Engine Health Monitoring" })).toBeInTheDocument();
   });

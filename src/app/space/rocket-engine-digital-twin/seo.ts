@@ -21,7 +21,7 @@ export const OG_DESCRIPTION =
   "Explore rocket propulsion architecture, turbomachinery, combustion, cooling, instrumentation, control, simulated testing and engine health through an interactive 3D digital twin.";
 export const LAST_REVIEWED: string = PREPARED_BY.reviewed;
 const OG_IMAGE = `${CANONICAL}/opengraph-image`;
-export const OG_ALT = `${PRODUCT.name}: schematic of a reusable liquid rocket engine reference architecture in a dark engineering environment. EV.ENGINEER.`;
+export const OG_ALT = `${PRODUCT.name}: a reusable liquid rocket engine reference architecture, rendered in 3D in a dark engineering studio. EV.ENGINEER.`;
 
 /** The subjects the page connects, in the order the engine connects them. */
 export const SUBJECTS = [
@@ -119,8 +119,8 @@ export const structuredData = {
       url: CANONICAL,
       applicationCategory: "EducationalApplication",
       operatingSystem: "Web browser",
-      browserRequirements: "Requires JavaScript for the interactive console. The page content is readable without it.",
-      description: "Educational digital-engineering demonstrator: a reusable liquid rocket engine reference architecture with simulated telemetry, operating states, faults and test scenarios. Not a real engine and not correlated with test data.",
+      browserRequirements: "The interactive 3D application requires WebGL and is designed for laptop and desktop screens. Phones, and browsers without WebGL, get a lightweight schematic version. The page content is readable without either.",
+      description: "Educational digital-engineering demonstrator: an interactive 3D reusable liquid rocket engine reference architecture with simulated telemetry, operating states, faults and test scenarios. Not a real engine and not correlated with test data.",
       isAccessibleForFree: true,
       creator: { "@id": PERSON_ID },
       publisher: { "@id": ITELEMATICS_ID },
@@ -131,7 +131,7 @@ export const structuredData = {
       name: PRODUCT.name,
       description: PRODUCT.description,
       url: CANONICAL,
-      learningResourceType: "Interactive simulation",
+      learningResourceType: ["Interactive simulation", "3D model"],
       educationalUse: "Self-study",
       inLanguage: "en",
       isAccessibleForFree: true,

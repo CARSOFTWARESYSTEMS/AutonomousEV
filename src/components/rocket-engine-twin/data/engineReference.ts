@@ -22,7 +22,7 @@ import type {
 
 export const PRODUCT = {
   name: "Next-Generation Rocket Engine Digital Twin",
-  tagline: "Design · Build · Simulate · Test · Diagnose",
+  tagline: "Design · Simulate · Test · Diagnose",
   platform: "Reusable Liquid Rocket Engine · Reference Architecture",
   description: "Interactive digital-engineering learning environment for understanding propulsion systems, control, instrumentation, health monitoring and digital-twin behaviour.",
   route: "/space/rocket-engine-digital-twin",
@@ -30,6 +30,7 @@ export const PRODUCT = {
   homeLabel: "Space",
   enterLabel: "Enter Digital Twin",
   demoLabel: "Run Engine Demo",
+  tourLabel: "Guided Engine Tour",
   /** In-page anchor of the interactive console. */
   consoleId: "digital-twin",
 } as const;
@@ -40,6 +41,14 @@ export const PREPARED_BY = {
   reviewed: "2026-10-03",
   reviewedLabel: "3 October 2026",
   imageAlt: "Sudarshana Karkala — EV.ENGINEER",
+} as const;
+
+/** Stills rendered from the 3D scene itself: re-render them after a visible change to the engine. */
+export const POSTER = {
+  src: "/space/rocket-engine-twin/poster.jpg",
+  alt: "The reusable liquid rocket engine reference architecture in a dark engineering studio: a bell nozzle under a cooled combustion chamber, with a turbopump on either side, their ducting, and the gimbal mount above",
+  width: 1200,
+  height: 1000,
 } as const;
 
 export const DISCLAIMER = "Educational digital-engineering demonstrator. Engine architecture, telemetry, operating states, faults and test scenarios are reference or simulated representations.";
@@ -142,6 +151,12 @@ export const SYSTEMS: readonly EngineSystem[] = [
         name: "Preburner",
         learn: "A small combustor that makes the hot gas that drives the turbines.",
         engineer: "Burns a small share of the propellants away from the main mixture ratio to keep turbine inlet temperature within material limits. In this closed-cycle reference architecture the turbine exhaust goes to the main injector instead of overboard.",
+      },
+      {
+        id: "bearing_region",
+        name: "Bearing region",
+        learn: "Bearings hold the spinning shaft in place. Their condition shows up as vibration.",
+        engineer: "Vibration and temperature sensors sit beside the bearings. A change at a frequency tied to shaft speed is the usual first sign of wear.",
       },
     ],
   },
@@ -286,13 +301,14 @@ export const COMPONENT_SYSTEM = Object.fromEntries(SYSTEMS.flatMap((s) => s.comp
 // ── Interactive console ─────────────────────────────────────────────────────
 
 export const MODES: readonly { id: ModeId; label: string; ariaLabel: string }[] = [
+  { id: "engine", label: "Engine", ariaLabel: "Explore engine systems" },
   { id: "build", label: "Build", ariaLabel: "Open engine build view" },
-  { id: "systems", label: "Systems", ariaLabel: "Explore engine systems" },
   { id: "flow", label: "Flow", ariaLabel: "Show engine flow paths" },
   { id: "control", label: "Control", ariaLabel: "Open engine control and instrumentation" },
   { id: "test", label: "Test", ariaLabel: "Open simulated engine test" },
   { id: "health", label: "Health", ariaLabel: "Open engine health monitoring" },
   { id: "twin", label: "Twin", ariaLabel: "Compare digital twin states" },
+  { id: "architecture", label: "Architecture", ariaLabel: "Open system architecture" },
 ];
 
 export const AUDIENCE_MODES: readonly { id: AudienceMode; label: string; ariaLabel: string }[] = [
@@ -309,7 +325,8 @@ export const EXPLODED_LEVELS: readonly { id: ExplodedLevel; label: string }[] = 
 export const CUTAWAYS: readonly { system: CutawaySystem; label: string; ariaLabel: string; text: string }[] = [
   { system: "combustion", label: "Combustion chamber", ariaLabel: "View combustion chamber cutaway", text: "Inside the chamber: the injector face at the top and the combustion zone beneath it." },
   { system: "turbomachinery", label: "Turbopump", ariaLabel: "View turbopump cutaway", text: "Inside each turbopump: a turbine wheel and a pump impeller on a single shaft." },
-  { system: "nozzle", label: "Nozzle", ariaLabel: "View nozzle cutaway", text: "Inside the nozzle: the gas expands and accelerates from the throat to the exit." },
+  { system: "regenerative_cooling", label: "Cooling jacket", ariaLabel: "View cooling jacket cutaway", text: "Inside the wall: the liner on the gas side, the cooling passages, and the jacket that holds the pressure." },
+  { system: "nozzle", label: "Nozzle throat", ariaLabel: "View nozzle cutaway", text: "Inside the nozzle: the gas expands and accelerates from the throat to the exit." },
 ];
 
 export interface EngineFlow {
@@ -361,11 +378,14 @@ export interface EngineSensor {
 
 export const SENSORS: readonly EngineSensor[] = [
   { id: "chamber_pressure", type: "pressure", system: "combustion", name: "Chamber pressure", use: "Primary thrust feedback for the control loop." },
+  { id: "pump_discharge_pressure", type: "pressure", system: "turbomachinery", name: "Pump discharge pressure", use: "Shows the pressure the turbopump adds." },
   { id: "turbine_inlet_temperature", type: "temperature", system: "turbomachinery", name: "Turbine inlet temperature", use: "Limit-monitored to protect the turbine." },
   { id: "shaft_speed", type: "speed", system: "turbomachinery", name: "Turbopump shaft speed", use: "Overspeed protection and pump power estimate." },
   { id: "pump_vibration", type: "vibration", system: "turbomachinery", name: "Turbopump vibration", use: "Bearing and rotor condition." },
+  { id: "bearing_temperature", type: "temperature", system: "turbomachinery", name: "Bearing temperature", use: "Follows bearing wear, later than vibration." },
   { id: "coolant_outlet_temperature", type: "temperature", system: "regenerative_cooling", name: "Coolant outlet temperature", use: "Shows the heat picked up from the wall." },
   { id: "valve_position", type: "position", system: "valves_actuation", name: "Valve position", use: "Confirms that each valve followed its command." },
+  { id: "thrust_mount_strain", type: "strain", system: "valves_actuation", name: "Thrust mount strain", use: "Load carried from the engine into the vehicle." },
 ];
 
 /** Where a measurement goes after it leaves the sensor. */
@@ -385,8 +405,6 @@ export const TEST_PHASES: readonly { id: TestPhaseId; name: string; text: string
 /** Phases in which the engine is burning. */
 export const FIRING_PHASES: readonly TestPhaseId[] = ["start", "mainstage", "throttle"];
 
-/** How long the simulated test stays in each phase. */
-export const TEST_PHASE_MS = 2400;
 
 export interface FaultScenario {
   id: FaultId;
@@ -493,7 +511,7 @@ export const FAQ: readonly { q: string; a: string }[] = [
     a: "A rocket engine digital twin is a digital representation that combines an engine architecture, physics-based or data-driven models, simulated or measured telemetry, operating state and health information. It can be used to compare expected and observed behaviour, investigate anomalies and study how engine systems interact. The digital twin on this page is educational: its models are reference and reduced-order models, and its telemetry is simulated.",
   },
   {
-    q: "What can I explore in this rocket engine digital twin?",
+    q: "What can I explore in this 3D rocket engine?",
     a: "You can explore a reusable liquid rocket engine reference architecture system by system: the propellant feed system, turbomachinery, combustion chamber, regenerative cooling, nozzle, valves and actuation, instrumentation and engine control. You can follow propellant, cooling, hot-gas and data flows, run a simulated engine test from system check to review, work through fault scenarios, and compare observed, estimated, expected and predicted digital twin states.",
   },
   {
@@ -541,6 +559,6 @@ export const RELATED: readonly { destination: RelatedDestination; href: string; 
 ];
 
 export const LARGER_SCREEN_NOTE = {
-  badge: "BEST ON A LAPTOP OR DESKTOP",
-  body: "The engine schematic, the test sequence and the digital twin comparison are easier to read side by side on a larger screen. Everything on this page also works here.",
+  badge: "DESKTOP EXPERIENCE RECOMMENDED",
+  body: "The interactive 3D engine, with its cut-aways, flows, simulated test, fault diagnosis and digital twin comparison, opens on a laptop or desktop. Here you can explore the same systems, test and health views on a schematic.",
 } as const;

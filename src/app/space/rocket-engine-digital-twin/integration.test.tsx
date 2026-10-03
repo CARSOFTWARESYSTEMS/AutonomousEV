@@ -21,6 +21,7 @@ vi.mock("next/font/google", () => ({
 
 const ROUTE = "/space/rocket-engine-digital-twin";
 const ROOT = path.resolve(import.meta.dirname, "../../../..");
+const COMPONENTS = path.join(ROOT, "src/components/rocket-engine-twin");
 
 type Node = { "@type": string | string[]; "@id"?: string; [k: string]: unknown };
 
@@ -52,12 +53,40 @@ describe("Rocket Engine Digital Twin route", () => {
     expect(() => JSON.parse(blocks[0].textContent ?? "")).not.toThrow();
   });
 
-  it("loads no 3D runtime: nothing on the route reaches three.js", () => {
-    const dir = path.join(ROOT, "src/components/rocket-engine-twin");
-    const sources = fs.readdirSync(dir, { recursive: true }) as string[];
-    for (const file of sources.filter((f) => /\.tsx?$/.test(f) && !/\.test\./.test(f))) {
-      expect(fs.readFileSync(path.join(dir, file), "utf-8"), file).not.toMatch(/from "(three|@react-three\/[a-z]+)/);
-    }
+  it("loads the 3D application only on the client, as its own chunk", () => {
+    const entry = fs.readFileSync(path.join(COMPONENTS, "RocketTwinExperience.tsx"), "utf-8");
+    expect(entry).toMatch(/dynamic\(\(\) => import\("\.\/DesktopTwin"\), \{\s*ssr: false/);
+  });
+
+  it("keeps three.js out of everything the server and phones load", () => {
+    // Follows static imports from the page; the dynamic import of the 3D application is the one door it does not go through.
+    const seen = new Set<string>();
+    const resolve = (from: string, spec: string) => {
+      const base = path.resolve(path.dirname(from), spec);
+      return [base + ".ts", base + ".tsx", path.join(base, "index.ts")].find((f) => fs.existsSync(f));
+    };
+    const walk = (file: string) => {
+      if (seen.has(file)) return;
+      seen.add(file);
+      const source = fs.readFileSync(file, "utf-8");
+      expect(source, path.relative(ROOT, file)).not.toMatch(/from "(three|three\/[^"]+|@react-three\/[^"]+)"/);
+      for (const match of source.matchAll(/^import (?!type )[^;]*? from "(\.{1,2}\/[^"]+)";/gm)) {
+        const next = resolve(file, match[1]);
+        if (next) walk(next);
+      }
+    };
+    walk(path.join(COMPONENTS, "RocketTwinPage.tsx"));
+    const reached = [...seen].map((f) => path.relative(COMPONENTS, f));
+    expect(reached).toEqual(expect.arrayContaining(["RocketTwinExperience.tsx", "TwinConsole.tsx", "EngineSchematic.tsx", path.join("state", "twinStore.ts")]));
+    expect(reached).not.toContain("DesktopTwin.tsx");
+    expect(reached.some((f) => f.startsWith("engine") || f.startsWith("scene") || f.startsWith("visualization"))).toBe(false);
+  });
+
+  it("builds the 3D application from separate scene, engine, visualization, state and mode modules", () => {
+    for (const dir of ["scene", "engine", "visualization", "simulation", "state", "modes", "ui", "data"]) expect(fs.statSync(path.join(COMPONENTS, dir)).isDirectory(), dir).toBe(true);
+    const sources = (fs.readdirSync(COMPONENTS, { recursive: true }) as string[]).filter((f) => /\.tsx?$/.test(f) && !/\.test\./.test(f));
+    // No single component carries the application.
+    for (const file of sources) expect(fs.readFileSync(path.join(COMPONENTS, file), "utf-8").split("\n").length, file).toBeLessThan(700);
   });
 });
 
@@ -146,7 +175,7 @@ describe("Rocket Engine Digital Twin structured data", () => {
     expect(learning).toMatchObject({
       name: "Next-Generation Rocket Engine Digital Twin",
       url: CANONICAL,
-      learningResourceType: "Interactive simulation",
+      learningResourceType: ["Interactive simulation", "3D model"],
       educationalUse: "Self-study",
       inLanguage: "en",
       isAccessibleForFree: true,
@@ -162,7 +191,9 @@ describe("Rocket Engine Digital Twin structured data", () => {
     expect(app.applicationCategory).toBe("EducationalApplication");
     expect(app.description).toMatch(/Educational digital-engineering demonstrator/);
     expect(app.description).toMatch(/Not a real engine and not correlated with test data/);
-    expect(app.browserRequirements).not.toMatch(/WebGL/);
+    // The 3D needs WebGL, and the page says so; it also says what a device without it gets.
+    expect(app.browserRequirements).toMatch(/requires WebGL/);
+    expect(app.browserRequirements).toMatch(/lightweight schematic version/);
   });
 
   it("attributes the page to Sudarshana Karkala using only the site's verified profile facts", () => {

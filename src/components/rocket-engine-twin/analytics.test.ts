@@ -18,8 +18,8 @@ describe("trackRocketTwinEvent", () => {
   });
 
   it("passes the event's parameters as given", () => {
-    trackRocketTwinEvent("rocket_twin_component_select", { component_id: "fuel_turbopump", system: "turbomachinery", mode: "systems", audience_mode: "engineer" });
-    expect(trackEvent).toHaveBeenCalledWith("rocket_twin_component_select", { component_id: "fuel_turbopump", system: "turbomachinery", mode: "systems", audience_mode: "engineer" });
+    trackRocketTwinEvent("rocket_twin_component_select", { component_id: "fuel_turbopump", system: "turbomachinery", mode: "engine", audience_mode: "engineer" });
+    expect(trackEvent).toHaveBeenCalledWith("rocket_twin_component_select", { component_id: "fuel_turbopump", system: "turbomachinery", mode: "engine", audience_mode: "engineer" });
   });
 
   it("drops any value that is not a short id, so free text can never be sent", () => {
@@ -36,14 +36,16 @@ describe("trackRocketTwinEvent", () => {
   });
 
   it("has one open event for each mode", () => {
+    // Engine mode is the systems view, and keeps the event name it was first given.
     expect(MODES.map((m) => MODE_OPEN_EVENT[m.id])).toEqual([
-      "rocket_twin_build_open",
       "rocket_twin_systems_open",
+      "rocket_twin_build_open",
       "rocket_twin_flow_open",
       "rocket_twin_control_open",
       "rocket_twin_test_open",
       "rocket_twin_health_open",
       "rocket_twin_twin_open",
+      "rocket_twin_architecture_open",
     ]);
   });
 });

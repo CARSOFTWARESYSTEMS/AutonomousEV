@@ -1,6 +1,7 @@
-// The Next-Generation Rocket Engine Digital Twin page. Everything here except
-// the three interactive pieces (hero actions, stage, console) is rendered on
-// the server, so the page says what it is without running any script.
+// The Next-Generation Rocket Engine Digital Twin page: the experience at the
+// top, and under it the long-form content. All of the text, including the hero,
+// is rendered on the server, so the page says what it is without running any
+// script and whether or not the 3D application ever starts.
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import PreparedBy from "@/components/PreparedBy";
@@ -24,10 +25,7 @@ import {
   TWIN_STATES,
 } from "./data/engineReference";
 import ExploreSystemLink from "./ExploreSystemLink";
-import HeroActions from "./HeroActions";
-import LargerScreenNote from "./LargerScreenNote";
-import TwinConsole from "./TwinConsole";
-import TwinStage from "./TwinStage";
+import RocketTwinExperience from "./RocketTwinExperience";
 import styles from "./rocketTwin.module.css";
 
 export default function RocketTwinPage() {
@@ -55,24 +53,11 @@ export default function RocketTwinPage() {
         <span className={styles.brand}>EV.ENGINEER™</span>
       </header>
 
-      <main id="main-content" className={styles.main}>
-        <div className={styles.app}>
-          <section className={styles.hero} aria-labelledby="rocket-twin-title">
-            <h1 id="rocket-twin-title" className={styles.title}>
-              {PRODUCT.name}
-            </h1>
-            <p className={styles.tagline}>{PRODUCT.tagline}</p>
-            <p className={styles.platform}>{PRODUCT.platform}</p>
-            <p className={styles.description}>{PRODUCT.description}</p>
-            <HeroActions />
-            <LargerScreenNote />
-          </section>
+      <main id="main-content">
+        <RocketTwinExperience />
 
-          <TwinStage />
-          <TwinConsole />
-        </div>
-
-        <section className={styles.section} aria-labelledby="overview-title">
+        <div className={styles.main}>
+        <section id="overview" className={styles.section} aria-labelledby="overview-title">
           <div className={styles.split}>
             <h2 id="overview-title" className={styles.heading}>
               {OVERVIEW.heading}
@@ -241,6 +226,7 @@ export default function RocketTwinPage() {
             profileLinkProps={rocketTwinLinkTracking("rocket_twin_profile_click", { placement: "prepared_by" })}
           />
         </section>
+        </div>
       </main>
 
       <footer className={styles.footer}>

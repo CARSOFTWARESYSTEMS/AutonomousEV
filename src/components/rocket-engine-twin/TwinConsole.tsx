@@ -1,7 +1,7 @@
 "use client";
 // The interactive console: seven modes over one engine. Every control calls a
 // store action; the actions own the state changes and the analytics.
-import { type KeyboardEvent, type ReactNode, useEffect } from "react";
+import type { KeyboardEvent, ReactNode } from "react";
 import { ArrowRight, Play, Square } from "lucide-react";
 import {
   AUDIENCE_MODES,
@@ -17,18 +17,19 @@ import {
   SYSTEMS,
   SYSTEM_BY_ID,
   TEST_PHASES,
-  TEST_PHASE_MS,
   TRACE_PATH,
   TWIN_SNAPSHOT,
 } from "./data/engineReference";
-import { useRocketTwinStore } from "./state/twinStore";
+import { ARCHITECTURE_LAYERS } from "./data/twinContent";
+import { useTestClock } from "./state/clocks";
+import { explodedLevel, useRocketTwinStore } from "./state/twinStore";
 import type { ModeId } from "./types";
 import styles from "./rocketTwin.module.css";
 
 const signed = (value: number) => `${value > 0 ? "+" : value < 0 ? "−" : ""}${Math.abs(value).toFixed(1)}`;
 
 function BuildPanel() {
-  const exploded = useRocketTwinStore((s) => s.exploded);
+  const exploded = useRocketTwinStore((s) => explodedLevel(s.explodedAmount));
   const cutaway = useRocketTwinStore((s) => s.cutaway);
   const setExploded = useRocketTwinStore((s) => s.setExploded);
   const toggleCutaway = useRocketTwinStore((s) => s.toggleCutaway);
@@ -342,27 +343,35 @@ function TwinPanel() {
   );
 }
 
+function ArchitecturePanel() {
+  return (
+    <>
+      <p className={styles.lead}>How hardware, sensors, software, models and test evidence form one system.</p>
+      <ol className={styles.steps}>
+        {ARCHITECTURE_LAYERS.map((layer) => (
+          <li key={layer.id}>
+            <span>
+              <strong>{layer.name}</strong>
+              <br />
+              {layer.text}
+            </span>
+          </li>
+        ))}
+      </ol>
+    </>
+  );
+}
+
 const PANELS: Record<ModeId, () => ReactNode> = {
+  engine: SystemsPanel,
   build: BuildPanel,
-  systems: SystemsPanel,
   flow: FlowPanel,
   control: ControlPanel,
   test: TestPanel,
   health: HealthPanel,
   twin: TwinPanel,
+  architecture: ArchitecturePanel,
 };
-
-/** Steps the simulated test through its phases while it is running. */
-function useTestClock() {
-  const status = useRocketTwinStore((s) => s.test.status);
-  const phase = useRocketTwinStore((s) => s.test.phase);
-  const advanceTest = useRocketTwinStore((s) => s.advanceTest);
-  useEffect(() => {
-    if (status !== "running") return;
-    const timer = window.setTimeout(advanceTest, TEST_PHASE_MS);
-    return () => window.clearTimeout(timer);
-  }, [status, phase, advanceTest]);
-}
 
 export default function TwinConsole() {
   const mode = useRocketTwinStore((s) => s.mode);
