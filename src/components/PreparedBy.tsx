@@ -12,13 +12,13 @@ interface PreparedByProps extends ResearcherCardProps {
 }
 
 /**
- * The "Prepared by" block: the shared profile card, the page's attribution
+ * The "Designed by" block: the shared profile card, the page's attribution
  * and the date it was last reviewed. Same card, typography and spacing as on
  * the Satellite Engineering page.
  */
 export default function PreparedBy({ notes, reviewed, reviewedLabel, reviewedSubject = "Experience information", imageAlt, profileLinkProps }: PreparedByProps) {
   return (
-    <section className={styles.section} aria-label="Prepared by">
+    <section className={styles.section} aria-label="Designed by">
       <ResearcherCard imageAlt={imageAlt} profileLinkProps={profileLinkProps} />
       {notes.map((note) => (
         <p key={note} className={styles.note}>

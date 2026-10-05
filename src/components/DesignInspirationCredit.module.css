@@ -1,4 +1,4 @@
-/* The acknowledgement that follows "Prepared by". The profile card's geometry
+/* The acknowledgement that follows "Designed by". The profile card's geometry
    in a quieter treatment, so it stays secondary to that card. */
 .card {
   display: flex;
@@ -24,32 +24,19 @@
   line-height: 1.3;
   color: #fff;
 }
-.name {
-  margin: 10px 0 0;
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1.4;
-  color: #e6e8f0;
-}
 .body {
-  margin: 6px 0 0;
+  margin: 10px 0 0;
   font-size: 14px;
   line-height: 1.6;
   color: #9ea1b8;
 }
-/* What the thanks are for, lifted one step from the muted body colour. */
+/* Who is thanked and what for, lifted one step from the muted body colour. */
 .body strong {
   font-weight: 600;
   color: #c9cdd6;
 }
-.actions {
-  flex-shrink: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
 .link {
-  position: relative;
+  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -74,20 +61,13 @@
   outline: 2px solid #fff;
   outline-offset: 3px;
 }
-/* Phones: a tighter card, so the two links share a row wherever they fit. */
+/* Phones: a tighter card. */
 @media (max-width: 640px) {
   .card {
     padding: 18px 20px;
   }
-  .actions {
-    width: 100%;
-  }
-  .link {
-    flex: 1 1 auto;
-    padding: 0 12px;
-  }
 }
-/* Touch screens: both links are at least 44px tall. */
+/* Touch screens: the link is at least 44px tall. */
 @media (pointer: coarse) {
   .link {
     min-height: 44px;

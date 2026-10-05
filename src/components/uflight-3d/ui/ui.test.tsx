@@ -129,14 +129,14 @@ describe("header and navigation", () => {
     );
     await user.click(screen.getByRole("button", { name: /About this experience/ }));
     const about = screen.getByRole("dialog", { name: "About this experience" });
-    expect(within(about).getByText("Prepared by")).toBeInTheDocument();
+    expect(within(about).getByText("Designed by")).toBeInTheDocument();
     expect(within(about).getByRole("link", { name: /View full profile/ })).toHaveAttribute("href", "/about/sudarshana-karkala");
     expect(within(about).getByText(/UFlight™ 3D is an EV.ENGINEER™ digital engineering demonstrator/)).toBeInTheDocument();
     await user.click(within(about).getByRole("button", { name: "Close" }));
     expect(screen.queryByRole("dialog", { name: "About this experience" })).toBeNull();
   });
 
-  it("acknowledges the early design work that inspired it, after Prepared by", async () => {
+  it("acknowledges the early design work that inspired it, after Designed by", async () => {
     const user = userEvent.setup();
     render(
       <>
@@ -147,9 +147,9 @@ describe("header and navigation", () => {
     await user.click(screen.getByRole("button", { name: /About this experience/ }));
     const about = screen.getByRole("dialog", { name: "About this experience" });
     const credit = within(about).getByRole("region", { name: "Inspiration & Acknowledgement" });
-    expect(within(about).getByRole("region", { name: "Prepared by" }).compareDocumentPosition(credit) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(within(credit).getByText(/^Special thanks to Bhavya for inspiring our early approach/)).toBeInTheDocument();
-    expect(within(credit).getAllByRole("link")).toHaveLength(2);
+    expect(within(about).getByRole("region", { name: "Designed by" }).compareDocumentPosition(credit) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(within(credit).getByText(/^Special thanks to/)).toHaveTextContent(/^Special thanks to Bhavya for inspiring our early approach/);
+    expect(within(credit).getAllByRole("link")).toHaveLength(1);
   });
 });
 

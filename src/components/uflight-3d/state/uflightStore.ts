@@ -131,7 +131,7 @@ export interface UFlightState {
   telemetry: Telemetry;
 
   helpOpen: boolean;
-  /** The "Prepared by" panel. */
+  /** The "Designed by" panel. */
   aboutOpen: boolean;
   reducedMotion: boolean;
   quality: QualitySettings;

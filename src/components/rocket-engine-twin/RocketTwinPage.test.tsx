@@ -70,7 +70,7 @@ describe("page identity", () => {
       "From Sensors to Digital Twin",
       "Model Credibility",
       "Frequently Asked Questions",
-      "Prepared By",
+      "Designed By",
     ]);
   });
 
@@ -133,12 +133,12 @@ describe("semantic content, without running the interactive console", () => {
     expect(section.textContent).not.toMatch(/\bvalidated\b|flight[- ]proven|certified|\bqualified\b/i);
   });
 
-  it("keeps the short disclaimer once, in the footer, apart from Prepared By", () => {
+  it("keeps the short disclaimer once, in the footer, apart from Designed By", () => {
     render(<RocketTwinPage />);
     expect(text.split(DISCLAIMER)).toHaveLength(2);
     const disclaimer = screen.getByText(DISCLAIMER);
     expect(disclaimer.closest("footer")).not.toBeNull();
-    expect(screen.getByRole("region", { name: "Prepared by" })).not.toContainElement(disclaimer);
+    expect(screen.getByRole("region", { name: "Designed by" })).not.toContainElement(disclaimer);
   });
 
   it("carries a text alternative for the engine schematic", () => {
@@ -197,12 +197,12 @@ describe("frequently asked questions", () => {
   });
 });
 
-describe("Prepared By", () => {
+describe("Designed By", () => {
   it("reuses the shared profile card with a one-line attribution and the review date", () => {
     render(<RocketTwinPage />);
-    const section = screen.getByRole("region", { name: "Prepared by" });
+    const section = screen.getByRole("region", { name: "Designed by" });
     const card = within(section).getByRole("complementary", { name: "About the researcher" });
-    expect(within(card).getByText("Prepared by")).toBeInTheDocument();
+    expect(within(card).getByText("Designed by")).toBeInTheDocument();
     expect(within(card).getByRole("heading", { level: 3, name: "Sudarshana Karkala" })).toBeInTheDocument();
     expect(within(card).getByText("EV.ENGINEER™")).toBeInTheDocument();
     expect(within(section).getByText("Next-Generation Rocket Engine Digital Twin is an EV.ENGINEER™ interactive engineering experience.")).toBeInTheDocument();
@@ -214,7 +214,7 @@ describe("Prepared By", () => {
     expect(PREPARED_BY.notes).toHaveLength(1);
     expect(words(PREPARED_BY.notes[0])).toBeLessThan(15);
     render(<RocketTwinPage />);
-    expect(screen.getByRole("region", { name: "Prepared by" }).querySelectorAll("p")).toHaveLength(4); // eyebrow, role, attribution, review date
+    expect(screen.getByRole("region", { name: "Designed by" }).querySelectorAll("p")).toHaveLength(4); // eyebrow, role, attribution, review date
   });
 
   it("uses the existing portrait with explicit dimensions and the brief's alt text", () => {
@@ -235,34 +235,31 @@ describe("Prepared By", () => {
 });
 
 describe("Inspiration & Acknowledgement", () => {
-  it("follows Prepared By in the same section, before the footer", () => {
+  it("follows Designed By in the same section, before the footer", () => {
     render(<RocketTwinPage />);
-    const prepared = screen.getByRole("region", { name: "Prepared by" });
+    const prepared = screen.getByRole("region", { name: "Designed by" });
     const credit = screen.getByRole("region", { name: "Inspiration & Acknowledgement" });
     expect(prepared.compareDocumentPosition(credit) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(credit.compareDocumentPosition(screen.getByRole("contentinfo")) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(screen.getByRole("region", { name: "Prepared By" })).toContainElement(credit);
+    expect(screen.getByRole("region", { name: "Designed By" })).toContainElement(credit);
     expect(prepared).not.toContainElement(credit);
   });
 
-  it("thanks Bhavya Naga Sai Parvathi Kshatri for the inspiration, in the shared wording, in the server HTML", () => {
+  it("thanks Bhavya for the inspiration, in the shared wording, in the server HTML", () => {
     const text = staticText();
-    expect(text).toContain("Bhavya Naga Sai Parvathi Kshatri Special thanks to Bhavya for inspiring our early approach to interactive engineering visualisation and Digital Twin experiences across Satellite Engineering, Model Rocketry and Aerospace.");
-    // No line of this page's own, and the full name is not repeated.
-    expect(text).not.toMatch(/Her early interactive design work/);
-    expect(text.split("Bhavya Naga Sai Parvathi Kshatri")).toHaveLength(2);
+    expect(text).toContain("Special thanks to Bhavya for inspiring our early approach to interactive engineering visualisation and Digital Twin experiences across Satellite Engineering, Model Rocketry and Aerospace.");
+    // No line of this page's own, and no separate name line.
+    expect(text).not.toMatch(/Her early interactive design work|Naga Sai Parvathi Kshatri/);
     expect(text).not.toMatch(/(designed|developed|created) by Bhavya/i);
   });
 
-  it("links to her original work and LinkedIn profile in a new tab", () => {
+  it("links only to her original work, in a new tab", () => {
     render(<RocketTwinPage />);
     const credit = screen.getByRole("region", { name: "Inspiration & Acknowledgement" });
     const links = within(credit).getAllByRole("link");
-    expect(links.map((a) => a.getAttribute("href"))).toEqual(["https://bhavyacyber.github.io/", "https://www.linkedin.com/in/bhavya-naga-sai-parvathi-kshatri"]);
-    for (const link of links) {
-      expect(link).toHaveAttribute("target", "_blank");
-      expect(link).toHaveAttribute("rel", "noopener noreferrer");
-    }
+    expect(links.map((a) => a.getAttribute("href"))).toEqual(["https://bhavyacyber.github.io/"]);
+    expect(links[0]).toHaveAttribute("target", "_blank");
+    expect(links[0]).toHaveAttribute("rel", "noopener noreferrer");
   });
 });
 

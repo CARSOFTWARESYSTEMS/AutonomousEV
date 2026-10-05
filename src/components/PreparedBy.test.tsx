@@ -5,9 +5,9 @@ import PreparedBy from "./PreparedBy";
 describe("PreparedBy", () => {
   it("shows the shared profile card, the attribution lines and the review date", () => {
     render(<PreparedBy notes={["First line.", "Second line."]} reviewed="2026-10-01" reviewedLabel="1 October 2026" />);
-    const section = screen.getByRole("region", { name: "Prepared by" });
+    const section = screen.getByRole("region", { name: "Designed by" });
     const card = within(section).getByRole("complementary", { name: "About the researcher" });
-    expect(within(card).getByText("Prepared by")).toBeInTheDocument();
+    expect(within(card).getByText("Designed by")).toBeInTheDocument();
     expect(within(card).getByRole("heading", { level: 3, name: "Sudarshana Karkala" })).toBeInTheDocument();
     expect(within(card).getByText("EV.ENGINEER™")).toBeInTheDocument();
     expect(within(card).getByRole("img", { name: "Portrait of Sudarshana Karkala" })).toBeInTheDocument();

@@ -39,7 +39,7 @@ export default function Header() {
             <VehicleBadge state={vehicleState} />
           </p>
         )}
-        <button type="button" className={ui.iconButton} aria-expanded={aboutOpen} aria-controls="uflight-about" aria-label="About this experience: prepared by" onClick={() => setAboutOpen(!aboutOpen)}>
+        <button type="button" className={ui.iconButton} aria-expanded={aboutOpen} aria-controls="uflight-about" aria-label="About this experience: designed by" onClick={() => setAboutOpen(!aboutOpen)}>
           <Info size={16} aria-hidden="true" />
         </button>
         <button type="button" className={ui.iconButton} aria-expanded={helpOpen} aria-controls="uflight-help" aria-label="Help: how to control the view" onClick={() => setHelpOpen(!helpOpen)}>

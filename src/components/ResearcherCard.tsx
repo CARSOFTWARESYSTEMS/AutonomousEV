@@ -23,7 +23,7 @@ export default function ResearcherCard({ imageAlt = `Portrait of ${SUDARSHANA_KA
           className={styles.avatar}
         />
         <div className={styles.text}>
-          <p className={styles.eyebrow}>Prepared by</p>
+          <p className={styles.eyebrow}>Designed by</p>
           <h3 className={styles.name}>{SUDARSHANA_KARKALA.name}</h3>
           <p className={styles.role}>EV.ENGINEER™</p>
         </div>

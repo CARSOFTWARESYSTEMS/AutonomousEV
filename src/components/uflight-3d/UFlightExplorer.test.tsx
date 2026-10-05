@@ -170,8 +170,8 @@ describe("overview page", () => {
 
   it("ends with who prepared it, the attribution and the review date", () => {
     render(<MobileUFlight />);
-    const prepared = screen.getByRole("region", { name: "Prepared by" });
-    expect(within(prepared).getByText("Prepared by")).toBeInTheDocument();
+    const prepared = screen.getByRole("region", { name: "Designed by" });
+    expect(within(prepared).getByText("Designed by")).toBeInTheDocument();
     expect(within(prepared).getByRole("heading", { level: 3, name: "Sudarshana Karkala" })).toBeInTheDocument();
     expect(within(prepared).getByText("EV.ENGINEER™")).toBeInTheDocument();
     expect(within(prepared).getByRole("img", { name: "Portrait of Sudarshana Karkala" })).toBeInTheDocument();
@@ -183,18 +183,16 @@ describe("overview page", () => {
     expect(prepared.textContent).not.toMatch(/certif|approved|flight[- ]qualified|operational deployment|production aircraft/i);
   });
 
-  it("follows Prepared by with the acknowledgement of the early design work that inspired it", () => {
+  it("follows Designed by with the acknowledgement of the early design work that inspired it", () => {
     render(<MobileUFlight />);
-    const prepared = screen.getByRole("region", { name: "Prepared by" });
+    const prepared = screen.getByRole("region", { name: "Designed by" });
     const credit = screen.getByRole("region", { name: "Inspiration & Acknowledgement" });
     expect(prepared.compareDocumentPosition(credit) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(screen.getByRole("main")).toContainElement(credit);
-    expect(within(credit).getByText("Bhavya Naga Sai Parvathi Kshatri")).toBeInTheDocument();
-    expect(within(credit).getByText(/^Special thanks to Bhavya/)).toHaveTextContent("Special thanks to Bhavya for inspiring our early approach to interactive engineering visualisation and Digital Twin experiences across Satellite Engineering, Model Rocketry and Aerospace.");
-    // The same two paragraphs as on every other page: no line of this page's own.
-    expect(credit.querySelectorAll("p")).toHaveLength(2);
+    // The same single paragraph as on every other page: no name line, no line of this page's own.
+    expect(Array.from(credit.querySelectorAll("p"), (p) => p.textContent)).toEqual(["Special thanks to Bhavya for inspiring our early approach to interactive engineering visualisation and Digital Twin experiences across Satellite Engineering, Model Rocketry and Aerospace."]);
     expect(within(credit).getByRole("link", { name: /^View Original Work/ })).toHaveAttribute("href", "https://bhavyacyber.github.io/");
-    // Prepared by is unchanged: the acknowledgement sits beside it, not inside it.
+    // Designed by is unchanged: the acknowledgement sits beside it, not inside it.
     expect(prepared).not.toContainElement(credit);
   });
 });

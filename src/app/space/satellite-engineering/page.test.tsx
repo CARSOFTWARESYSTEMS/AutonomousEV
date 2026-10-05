@@ -100,7 +100,7 @@ describe("Satellite Engineering page", () => {
     expect(text).toMatch(/not an accredited academic qualification/);
   });
 
-  it("routes Express Interest to the approved EOI form and keeps the Prepared by panel", () => {
+  it("routes Express Interest to the approved EOI form and keeps the Designed by panel", () => {
     render(<SatelliteEngineeringPage />);
     const cta = screen.getByRole("region", { name: "Architect the Mission. Defend the Decisions." });
     const eoi = within(cta).getByRole("link", { name: /Express Interest/ });
@@ -110,7 +110,7 @@ describe("Satellite Engineering page", () => {
     expect(within(cta).getByRole("link", { name: /Explore Space R&D/ })).toHaveAttribute("href", "/space#research");
 
     const prepared = screen.getByRole("complementary", { name: "About the researcher" });
-    expect(within(prepared).getByText("Prepared by")).toBeInTheDocument();
+    expect(within(prepared).getByText("Designed by")).toBeInTheDocument();
     expect(within(prepared).getByRole("link", { name: /View full profile/ })).toHaveAttribute("href", "/about/sudarshana-karkala");
   });
 

@@ -886,8 +886,8 @@ export default function SatelliteEngineeringPage() {
           </div>
         </section>
 
-        {/* ── Prepared by ── */}
-        <section className={`${styles.section} ${styles.preparedBy}`} aria-label="Prepared by">
+        {/* ── Designed by ── */}
+        <section className={`${styles.section} ${styles.preparedBy}`} aria-label="Designed by">
           <div className={styles.container}>
             <ResearcherCard />
             <p className={styles.providerNote}>

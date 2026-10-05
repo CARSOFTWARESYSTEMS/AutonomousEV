@@ -217,7 +217,7 @@ export default function RocketTwinPage() {
 
         <section className={styles.section} aria-labelledby="prepared-title">
           <h2 id="prepared-title" className={styles.srOnly}>
-            Prepared By
+            Designed By
           </h2>
           <PreparedBy
             notes={PREPARED_BY.notes}

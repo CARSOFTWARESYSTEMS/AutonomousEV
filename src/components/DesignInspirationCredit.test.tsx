@@ -1,46 +1,38 @@
 import { describe, expect, it } from "vitest";
 import { render, screen, within } from "@testing-library/react";
-import { BHAVYA_KSHATRI } from "@/data/public-entities";
 import DesignInspirationCredit from "./DesignInspirationCredit";
 
-const NAME = "Bhavya Naga Sai Parvathi Kshatri";
 const THANKS = "Special thanks to Bhavya for inspiring our early approach to interactive engineering visualisation and Digital Twin experiences across Satellite Engineering, Model Rocketry and Aerospace.";
 const section = () => screen.getByRole("region", { name: "Inspiration & Acknowledgement" });
 
 describe("DesignInspirationCredit", () => {
-  it("is the heading, the person's name and one paragraph of thanks, with no second heading", () => {
+  it("is the heading and one paragraph of thanks, with no separate name line or second heading", () => {
     render(<DesignInspirationCredit />);
     expect(within(section()).getByRole("heading", { level: 3, name: "Inspiration & Acknowledgement" })).toBeInTheDocument();
-    expect(Array.from(section().querySelectorAll("p"), (p) => p.textContent)).toEqual([NAME, THANKS]);
-    expect(section().textContent).not.toMatch(/Original Design/i);
-    // What the thanks are for is the one emphasised phrase.
-    expect(Array.from(section().querySelectorAll("strong"), (s) => s.textContent)).toEqual(["interactive engineering visualisation and Digital Twin experiences"]);
+    expect(Array.from(section().querySelectorAll("p"), (p) => p.textContent)).toEqual([THANKS]);
+    expect(section().textContent).not.toMatch(/Original Design|Naga Sai Parvathi Kshatri/i);
   });
 
-  it("shows the full name once: the link labels stay short", () => {
+  it("emphasises the name and what the thanks are for, inside the sentence", () => {
     render(<DesignInspirationCredit />);
-    expect(section().textContent!.split(NAME)).toHaveLength(2);
-    expect(within(section()).getAllByRole("link").map((a) => a.textContent)).toEqual(["View Original Work", "LinkedIn"]);
+    expect(Array.from(section().querySelectorAll("p strong"), (s) => s.textContent)).toEqual(["Bhavya", "interactive engineering visualisation and Digital Twin experiences"]);
   });
 
-  it("links to her original work and her LinkedIn profile in a new tab, and says so in each link's name", () => {
+  it("has one link, to the original work, in a new tab, and says so in the link's name", () => {
     render(<DesignInspirationCredit />);
-    const links = within(section()).getAllByRole("link");
-    expect(links.map((a) => a.getAttribute("href"))).toEqual(["https://bhavyacyber.github.io/", "https://www.linkedin.com/in/bhavya-naga-sai-parvathi-kshatri"]);
-    for (const link of links) {
-      expect(link).toHaveAttribute("target", "_blank");
-      expect(link).toHaveAttribute("rel", "noopener noreferrer");
-    }
-    expect(links[0]).toHaveAccessibleName(`View Original Work by ${NAME} (opens in a new tab)`);
-    expect(links[1]).toHaveAccessibleName(`LinkedIn profile of ${NAME} (opens in a new tab)`);
-    // The arrows are decoration: the accessible name carries whose work it is.
+    const link = within(section()).getByRole("link");
+    expect(link).toHaveAttribute("href", "https://bhavyacyber.github.io/");
+    expect(link).toHaveAttribute("target", "_blank");
+    expect(link).toHaveAttribute("rel", "noopener noreferrer");
+    expect(link.textContent).toBe("View Original Work");
+    expect(link).toHaveAccessibleName("View Original Work by Bhavya (opens in a new tab)");
+    // The arrow is decoration: the accessible name carries the rest.
     for (const icon of section().querySelectorAll("svg")) expect(icon).toHaveAttribute("aria-hidden", "true");
   });
 
-  it("uses the name and the profile link the entity registry records for her", () => {
-    render(<DesignInspirationCredit />);
-    expect(BHAVYA_KSHATRI.name).toBe(NAME);
-    expect(BHAVYA_KSHATRI.sameAs).toContain(within(section()).getByRole("link", { name: /^LinkedIn/ }).getAttribute("href"));
+  it("does not link to a LinkedIn profile", () => {
+    const { container } = render(<DesignInspirationCredit />);
+    expect(container.innerHTML).not.toMatch(/linkedin/i);
   });
 
   it("credits inspiration, never authorship of the current experiences", () => {

@@ -322,7 +322,7 @@ async function main() {
       assert((await stage.innerText()).includes('MISSION COMPLETE'));
     });
 
-    await test('Prepared by, help and reset', async () => {
+    await test('Designed by, help and reset', async () => {
       await button(/About this experience/, false).click();
       const about = page.getByRole('dialog', { name: 'About this experience' });
       await about.getByRole('link', { name: /View full profile/ }).waitFor();
@@ -376,11 +376,11 @@ async function main() {
       await phone.screenshot({ path: path.join(OUTPUT, 'mobile-page.png'), fullPage: true });
     });
 
-    await test('Mobile: system cards, health flow and prepared by', async () => {
+    await test('Mobile: system cards, health flow and designed by', async () => {
       const cards = phone.getByRole('heading', { level: 2, name: 'What the aircraft monitors' }).locator('xpath=ancestor::section').getByRole('listitem');
       assert.equal(await cards.count(), 6);
       assert.equal(await phone.getByRole('list', { name: /Health monitoring flow/ }).getByRole('listitem').count(), 6);
-      const prepared = phone.getByRole('region', { name: 'Prepared by' });
+      const prepared = phone.getByRole('region', { name: 'Designed by' });
       await prepared.scrollIntoViewIfNeeded();
       assert.equal(await prepared.getByRole('link', { name: /View full profile/ }).getAttribute('href'), '/about/sudarshana-karkala');
       assert((await prepared.innerText()).includes('Experience information last reviewed: 1 October 2026.'));

@@ -85,7 +85,7 @@ export default function ExplorerHeader() {
           className={ui.iconButton}
           aria-expanded={aboutOpen}
           aria-controls="explorer-about"
-          aria-label="About this experience: prepared by"
+          aria-label="About this experience: designed by"
           onClick={() => {
             setHelpOpen(false);
             setIndexOpen(false);
