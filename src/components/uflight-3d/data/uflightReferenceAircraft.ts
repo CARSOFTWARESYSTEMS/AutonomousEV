@@ -49,6 +49,9 @@ export const PREPARED_BY = {
   reviewedLabel: "1 October 2026",
 } as const;
 
+/** This page's line in the "Inspiration & Acknowledgement" card that follows "Prepared by". */
+export const INSPIRATION_CONTEXT = "Her early interactive design work helped inspire our approach to visualising complex aerospace systems, Digital Twins, health monitoring and interactive 3D engineering.";
+
 export const PROVENANCE = {
   platform: "REFERENCE PLATFORM · DIGITAL ENGINEERING DEMONSTRATOR",
   data: "SIMULATED HEALTH DATA",

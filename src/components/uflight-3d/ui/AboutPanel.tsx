@@ -1,6 +1,7 @@
 import { X } from "lucide-react";
+import DesignInspirationCredit from "@/components/DesignInspirationCredit";
 import PreparedBy from "@/components/PreparedBy";
-import { PREPARED_BY } from "../data/uflightReferenceAircraft";
+import { INSPIRATION_CONTEXT, PREPARED_BY } from "../data/uflightReferenceAircraft";
 import { useUFlightStore } from "../state/uflightStore";
 import ui from "../uflight.module.css";
 
@@ -19,6 +20,7 @@ export default function AboutPanel() {
       </button>
       <p className={ui.panelHeading}>About</p>
       <PreparedBy notes={PREPARED_BY.notes} reviewed={PREPARED_BY.reviewed} reviewedLabel={PREPARED_BY.reviewedLabel} />
+      <DesignInspirationCredit context={INSPIRATION_CONTEXT} />
     </div>
   );
 }

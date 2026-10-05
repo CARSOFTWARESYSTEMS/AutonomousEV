@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { resetRocketTwinTracking } from "./analytics";
-import { DISCLAIMER, FAQ, GLOSSARY, MODELS, MODEL_STATUS, OVERVIEW, PREPARED_BY, PRODUCT, SYSTEMS, TEST_PHASES, TWIN_STATES } from "./data/engineReference";
+import { DISCLAIMER, FAQ, GLOSSARY, INSPIRATION_CONTEXT, MODELS, MODEL_STATUS, OVERVIEW, PREPARED_BY, PRODUCT, SYSTEMS, TEST_PHASES, TWIN_STATES } from "./data/engineReference";
 import { PHASE_MS } from "./simulation/engineSim";
 import RocketTwinPage from "./RocketTwinPage";
 import { resetRocketTwinStore } from "./state/twinStore";
@@ -231,6 +231,37 @@ describe("Prepared By", () => {
     expect(link).toHaveAttribute("href", "/about/sudarshana-karkala");
     expect(link).toHaveAttribute("data-track-event", "rocket_twin_profile_click");
     expect(link).toHaveAttribute("data-track-placement", "prepared_by");
+  });
+});
+
+describe("Inspiration & Acknowledgement", () => {
+  it("follows Prepared By in the same section, before the footer", () => {
+    render(<RocketTwinPage />);
+    const prepared = screen.getByRole("region", { name: "Prepared by" });
+    const credit = screen.getByRole("region", { name: "Inspiration & Acknowledgement" });
+    expect(prepared.compareDocumentPosition(credit) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(credit.compareDocumentPosition(screen.getByRole("contentinfo")) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(screen.getByRole("region", { name: "Prepared By" })).toContainElement(credit);
+    expect(prepared).not.toContainElement(credit);
+  });
+
+  it("thanks Bhavya Naga Sai Parvathi Kshatri for the inspiration, with the page's own line, in the server HTML", () => {
+    const text = staticText();
+    expect(text).toContain("Special thanks to Bhavya Naga Sai Parvathi Kshatri for inspiring our early approach to interactive engineering visualisation and Digital Twin experiences.");
+    expect(text).toContain(INSPIRATION_CONTEXT);
+    expect(INSPIRATION_CONTEXT).toBe("Her early interactive design work helped inspire our approach to interactive Model Rocketry, propulsion-system visualisation and Rocket Engine Digital Twin experiences.");
+    expect(text).not.toMatch(/(designed|developed|created) by Bhavya/i);
+  });
+
+  it("links to her original work and LinkedIn profile in a new tab", () => {
+    render(<RocketTwinPage />);
+    const credit = screen.getByRole("region", { name: "Inspiration & Acknowledgement" });
+    const links = within(credit).getAllByRole("link");
+    expect(links.map((a) => a.getAttribute("href"))).toEqual(["https://bhavyacyber.github.io/", "https://www.linkedin.com/in/bhavya-naga-sai-parvathi-kshatri-3140251a2/"]);
+    for (const link of links) {
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(link).toHaveAttribute("rel", "noopener noreferrer");
+    }
   });
 });
 

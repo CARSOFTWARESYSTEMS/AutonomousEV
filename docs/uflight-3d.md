@@ -24,6 +24,8 @@ The server renders the overview page and the loading screen together and CSS sho
 
 The desktop application fills the viewport and does not scroll, so the "Prepared by" block and the review date sit at the foot of the overview page and, on desktop, in the **About this experience** panel (the info button in the header). Both use the shared `src/components/PreparedBy.tsx`; the text and date are `PREPARED_BY` in `data/uflightReferenceAircraft.ts`.
 
+In both places "Prepared by" is followed by the "Inspiration & Acknowledgement" card, the shared `src/components/DesignInspirationCredit.tsx`, which credits the early design exploration that inspired the interactive 3D and Digital Twin experiences. It is an acknowledgement of inspiration, not of who builds the experience; this page's own sentence is `INSPIRATION_CONTEXT` in `data/uflightReferenceAircraft.ts`.
+
 ## Layout of the code
 
 ```

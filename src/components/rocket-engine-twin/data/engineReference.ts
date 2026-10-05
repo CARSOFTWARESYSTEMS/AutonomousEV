@@ -43,6 +43,9 @@ export const PREPARED_BY = {
   imageAlt: "Sudarshana Karkala — EV.ENGINEER",
 } as const;
 
+/** This page's line in the "Inspiration & Acknowledgement" card that follows "Prepared by". */
+export const INSPIRATION_CONTEXT = "Her early interactive design work helped inspire our approach to interactive Model Rocketry, propulsion-system visualisation and Rocket Engine Digital Twin experiences.";
+
 /** Stills rendered from the 3D scene itself: re-render them after a visible change to the engine. */
 export const POSTER = {
   src: "/space/rocket-engine-twin/poster.jpg",

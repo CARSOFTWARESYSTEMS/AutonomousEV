@@ -135,6 +135,22 @@ describe("header and navigation", () => {
     await user.click(within(about).getByRole("button", { name: "Close" }));
     expect(screen.queryByRole("dialog", { name: "About this experience" })).toBeNull();
   });
+
+  it("acknowledges the early design work that inspired it, after Prepared by", async () => {
+    const user = userEvent.setup();
+    render(
+      <>
+        <Header />
+        <AboutPanel />
+      </>,
+    );
+    await user.click(screen.getByRole("button", { name: /About this experience/ }));
+    const about = screen.getByRole("dialog", { name: "About this experience" });
+    const credit = within(about).getByRole("region", { name: "Inspiration & Acknowledgement" });
+    expect(within(about).getByRole("region", { name: "Prepared by" }).compareDocumentPosition(credit) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(within(credit).getByText(/helped inspire our approach to visualising complex aerospace systems, Digital Twins, health monitoring and interactive 3D engineering\./)).toBeInTheDocument();
+    expect(within(credit).getAllByRole("link")).toHaveLength(2);
+  });
 });
 
 describe("aircraft and systems controls", () => {

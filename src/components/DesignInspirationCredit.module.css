@@ -1,0 +1,117 @@
+/* The acknowledgement that follows "Prepared by". The profile card's geometry
+   in a quieter treatment, so it stays secondary to that card. */
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px 28px;
+  margin-top: 20px;
+  padding: 20px 28px;
+  border-radius: 16px;
+  background: rgba(17, 21, 46, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.text {
+  flex: 1 1 460px;
+  min-width: 0;
+  max-width: 82ch;
+}
+.title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #fff;
+}
+.eyebrow {
+  margin: 12px 0 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9ea1b8;
+}
+.name {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #e6e8f0;
+}
+.body {
+  margin: 10px 0 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #9ea1b8;
+}
+.body + .body {
+  margin-top: 6px;
+}
+.actions {
+  flex-shrink: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #c9cdd6;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.link:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
+}
+.link:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+/* Phones: a tighter card, so the two links share a row wherever they fit. */
+@media (max-width: 640px) {
+  .card {
+    padding: 18px 20px;
+  }
+  .actions {
+    width: 100%;
+  }
+  .link {
+    flex: 1 1 auto;
+    padding: 0 12px;
+  }
+}
+/* Touch screens: both links are at least 44px tall. */
+@media (pointer: coarse) {
+  .link {
+    min-height: 44px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .link {
+    transition: none;
+  }
+}

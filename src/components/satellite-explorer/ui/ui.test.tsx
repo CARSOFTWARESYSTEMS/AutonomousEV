@@ -484,6 +484,17 @@ describe("header, help, hero and index", () => {
     expect(button).toHaveAttribute("aria-expanded", "false");
   });
 
+  it("the About panel acknowledges the early design work that inspired it, after Prepared by", async () => {
+    const user = userEvent.setup();
+    render(<ExplorerHeader />);
+    await user.click(screen.getByRole("button", { name: /About this experience/ }));
+    const about = screen.getByRole("dialog", { name: "About this experience" });
+    const credit = within(about).getByRole("region", { name: "Inspiration & Acknowledgement" });
+    expect(within(about).getByRole("region", { name: "Prepared by" }).compareDocumentPosition(credit) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(within(credit).getByText(/helped inspire our approach to visualising spacecraft systems and developing interactive Satellite Engineering and Digital Twin learning experiences\./)).toBeInTheDocument();
+    expect(within(credit).getAllByRole("link")).toHaveLength(2);
+  });
+
   it("help lists the controls from the brief and closes with its button", async () => {
     const user = userEvent.setup();
     state().setHelpOpen(true);

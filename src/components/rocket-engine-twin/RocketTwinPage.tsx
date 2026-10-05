@@ -4,6 +4,7 @@
 // script and whether or not the 3D application ever starts.
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import DesignInspirationCredit from "@/components/DesignInspirationCredit";
 import PreparedBy from "@/components/PreparedBy";
 import { rocketTwinLinkTracking } from "./analytics";
 import {
@@ -12,6 +13,7 @@ import {
   FAQ,
   FAULTS,
   GLOSSARY,
+  INSPIRATION_CONTEXT,
   MODELS,
   MODEL_CREDIBILITY,
   MODEL_STATUS,
@@ -225,6 +227,7 @@ export default function RocketTwinPage() {
             imageAlt={PREPARED_BY.imageAlt}
             profileLinkProps={rocketTwinLinkTracking("rocket_twin_profile_click", { placement: "prepared_by" })}
           />
+          <DesignInspirationCredit context={INSPIRATION_CONTEXT} />
         </section>
         </div>
       </main>

@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, CircleHelp, Info, List, X } from "lucide-react";
+import DesignInspirationCredit from "@/components/DesignInspirationCredit";
 import PreparedBy from "@/components/PreparedBy";
-import { PREPARED_BY, PRODUCT } from "../data/satelliteReference";
+import { INSPIRATION_CONTEXT, PREPARED_BY, PRODUCT } from "../data/satelliteReference";
 import { useExplorerStore } from "../state/explorerStore";
 import LearnEngineerToggle from "./LearnEngineerToggle";
 import ui from "../explorer.module.css";
@@ -31,6 +32,7 @@ function AboutPanel({ onClose }: { onClose: () => void }) {
         </button>
       </div>
       <PreparedBy notes={PREPARED_BY.notes} reviewed={PREPARED_BY.reviewed} reviewedLabel={PREPARED_BY.reviewedLabel} />
+      <DesignInspirationCredit context={INSPIRATION_CONTEXT} />
     </div>
   );
 }

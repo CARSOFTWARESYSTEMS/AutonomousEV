@@ -186,4 +186,17 @@ describe("overview page", () => {
     expect(prepared.querySelector("time")).toHaveAttribute("datetime", "2026-10-01");
     expect(prepared.textContent).not.toMatch(/certif|approved|flight[- ]qualified|operational deployment|production aircraft/i);
   });
+
+  it("follows Prepared by with the acknowledgement of the early design work that inspired it", () => {
+    render(<MobileUFlight />);
+    const prepared = screen.getByRole("region", { name: "Prepared by" });
+    const credit = screen.getByRole("region", { name: "Inspiration & Acknowledgement" });
+    expect(prepared.compareDocumentPosition(credit) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(screen.getByRole("main")).toContainElement(credit);
+    expect(within(credit).getByText("Bhavya Naga Sai Parvathi Kshatri")).toBeInTheDocument();
+    expect(within(credit).getByText("Her early interactive design work helped inspire our approach to visualising complex aerospace systems, Digital Twins, health monitoring and interactive 3D engineering.")).toBeInTheDocument();
+    expect(within(credit).getByRole("link", { name: /^View Original Work/ })).toHaveAttribute("href", "https://bhavyacyber.github.io/");
+    // Prepared by is unchanged: the acknowledgement sits beside it, not inside it.
+    expect(prepared).not.toContainElement(credit);
+  });
 });

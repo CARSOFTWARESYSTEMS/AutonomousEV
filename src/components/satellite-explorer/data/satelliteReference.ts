@@ -134,6 +134,9 @@ export const PREPARED_BY = {
   reviewedLabel: "1 October 2026",
 } as const;
 
+/** This page's line in the "Inspiration & Acknowledgement" card that follows "Prepared by". */
+export const INSPIRATION_CONTEXT = "Her early interactive design work helped inspire our approach to visualising spacecraft systems and developing interactive Satellite Engineering and Digital Twin learning experiences.";
+
 export const PRODUCT = {
   name: "SATELLITE EXPLORER 3D",
   subtitle: "Build · Explore · Operate a Satellite",
