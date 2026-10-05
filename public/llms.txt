@@ -32,6 +32,11 @@ link below points to a canonical public page already listed in
   (Co-Researcher · EV.ENGINEER™, aerospace cybersecurity research and
   AS9102 First Article Inspection engineering focus) and Sudarshana Karkala
   (Co-Researcher · EV.ENGINEER™).
+- [Cybersecurity Engineers](https://autonomous.ev.engineer/internships/cybersecurity-engineers):
+  Profiles of engineers and researchers contributing to cybersecurity research
+  at EV.ENGINEER — Bhavya Naga Sai Parvathi Kshatri (Cybersecurity Researcher ·
+  EV.ENGINEER™) and Sudarshana Karkala (Co-Researcher · EV.ENGINEER™) — with
+  links to their public profiles and to the related cybersecurity programs.
 - [Sudarshana Karkala](https://autonomous.ev.engineer/about/sudarshana-karkala):
   Canonical public professional profile — verified role, focus areas,
   initiatives and contact channels.

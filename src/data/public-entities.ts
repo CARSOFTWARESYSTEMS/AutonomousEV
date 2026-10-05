@@ -160,13 +160,13 @@ export const TANUJA_JADHAV: PublicEntity = {
  * pattern as Tanuja Jadhav above.
  */
 export const BHAVYA_KSHATRI: PublicEntity = {
-  id: "https://www.linkedin.com/in/bhavya-naga-sai-parvathi-kshatri-3140251a2/#person",
+  id: "https://www.linkedin.com/in/bhavya-naga-sai-parvathi-kshatri#person",
   type: "Person",
   name: "Bhavya Naga Sai Parvathi Kshatri",
   description:
     "Bhavya Naga Sai Parvathi Kshatri contributes to the AegisCAN cybersecurity research track on EV.ENGINEER, including threat analysis, security monitoring, anomaly investigation and defensive cybersecurity concepts relevant to CAN-based systems.",
   canonicalUrl: `${SITE_URL}/internships/AegisCAN#research-team`,
-  sameAs: ["https://www.linkedin.com/in/bhavya-naga-sai-parvathi-kshatri-3140251a2/"],
+  sameAs: ["https://www.linkedin.com/in/bhavya-naga-sai-parvathi-kshatri"],
   knowsAbout: ["Cybersecurity", "AI SOC analysis", "Threat detection and alert investigation"],
   affiliations: [EV_ENGINEER.canonicalUrl],
 };

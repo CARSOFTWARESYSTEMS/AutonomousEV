@@ -257,7 +257,7 @@ describe("Inspiration & Acknowledgement", () => {
     render(<RocketTwinPage />);
     const credit = screen.getByRole("region", { name: "Inspiration & Acknowledgement" });
     const links = within(credit).getAllByRole("link");
-    expect(links.map((a) => a.getAttribute("href"))).toEqual(["https://bhavyacyber.github.io/", "https://www.linkedin.com/in/bhavya-naga-sai-parvathi-kshatri-3140251a2/"]);
+    expect(links.map((a) => a.getAttribute("href"))).toEqual(["https://bhavyacyber.github.io/", "https://www.linkedin.com/in/bhavya-naga-sai-parvathi-kshatri"]);
     for (const link of links) {
       expect(link).toHaveAttribute("target", "_blank");
       expect(link).toHaveAttribute("rel", "noopener noreferrer");

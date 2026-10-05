@@ -255,6 +255,15 @@ export default function BatteryCybersecurityContent() {
             >
               Explore →
             </a>
+            <Link
+              href="/internships/cybersecurity-engineers"
+              className="btn btn-secondary"
+              data-track-event="cybersecurity_engineers_cta_click"
+              data-track-source="battery_cybersecurity"
+              data-track-destination="/internships/cybersecurity-engineers"
+            >
+              Cybersecurity Engineers →
+            </Link>
             <a
               href="https://genz.ev.engineer/"
               target="_blank"

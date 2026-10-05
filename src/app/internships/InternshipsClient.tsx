@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import PrerequisitesSection from "@/components/PrerequisitesSection";
 import { Rocket } from "lucide-react";
 
-function ProjectCard({ title, desc, link, pricingLink, secondaryLink, secondaryLinkLabel, tertiaryLink, tertiaryLinkLabel, quaternaryLink, quaternaryLinkLabel, quinaryLink, quinaryLinkLabel, category, badge, tags, ctaLabel, icon: Icon }: { title: string, desc?: string, link: string, pricingLink?: string, secondaryLink?: string, secondaryLinkLabel?: string, tertiaryLink?: string, tertiaryLinkLabel?: string, quaternaryLink?: string, quaternaryLinkLabel?: string, quinaryLink?: string, quinaryLinkLabel?: string, category?: string, badge?: string, tags?: string[], ctaLabel?: string, icon?: any }) {
+function ProjectCard({ title, desc, link, pricingLink, secondaryLink, secondaryLinkLabel, tertiaryLink, tertiaryLinkLabel, quaternaryLink, quaternaryLinkLabel, quinaryLink, quinaryLinkLabel, category, badge, tags, ctaLabel, trackProps, icon: Icon }: { title: string, desc?: string, link: string, pricingLink?: string, secondaryLink?: string, secondaryLinkLabel?: string, tertiaryLink?: string, tertiaryLinkLabel?: string, quaternaryLink?: string, quaternaryLinkLabel?: string, quinaryLink?: string, quinaryLinkLabel?: string, category?: string, badge?: string, tags?: string[], ctaLabel?: string, trackProps?: Record<`data-${string}`, string>, icon?: any }) {
   const isExternal = link.startsWith('http');
   const sLink = pricingLink || secondaryLink;
   const sLabel = pricingLink ? "Pricing" : secondaryLinkLabel;
@@ -50,6 +50,7 @@ function ProjectCard({ title, desc, link, pricingLink, secondaryLink, secondaryL
               style={{ display: 'inline-flex', alignItems: 'center', color: 'var(--accent-primary)', fontSize: '0.9rem', fontWeight: 600, textDecoration: 'none' }}
               data-track-event="internship_card_click"
               data-track-title={title}
+              {...trackProps}
             >
               {ctaLabel ? ctaLabel : "Visit Website"}
               <span style={{ marginLeft: '6px', fontSize: '1.1rem' }}>↗</span>
@@ -60,6 +61,7 @@ function ProjectCard({ title, desc, link, pricingLink, secondaryLink, secondaryL
               style={{ display: 'inline-flex', alignItems: 'center', color: 'var(--accent-primary)', fontSize: '0.9rem', fontWeight: 600, textDecoration: 'none' }}
               data-track-event="internship_card_click"
               data-track-title={title}
+              {...trackProps}
             >
               {ctaLabel ? ctaLabel : "Explore Program"}
               <span style={{ marginLeft: '6px', fontSize: '1.1rem' }}>→</span>
@@ -213,11 +215,11 @@ function ProjectCard({ title, desc, link, pricingLink, secondaryLink, secondaryL
   );
 
   return isExternal ? (
-    <a href={link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }} className="project-card-link" data-track-event="internship_card_click" data-track-title={title}>
+    <a href={link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }} className="project-card-link" data-track-event="internship_card_click" data-track-title={title} {...trackProps}>
       {cardContent}
     </a>
   ) : (
-    <Link href={link} style={{ textDecoration: 'none' }} className="project-card-link" data-track-event="internship_card_click" data-track-title={title}>
+    <Link href={link} style={{ textDecoration: 'none' }} className="project-card-link" data-track-event="internship_card_click" data-track-title={title} {...trackProps}>
       {cardContent}
     </Link>
   );
@@ -589,6 +591,16 @@ export default function InternshipsClient() {
               title="Selection Process & Fees structure"
               link="/internships/training-internship"
               ctaLabel="Explore Program →"
+            />
+            <ProjectCard
+              title="Cybersecurity Engineers"
+              link="/internships/cybersecurity-engineers"
+              ctaLabel="Explore Engineers →"
+              trackProps={{
+                "data-track-event": "cybersecurity_engineers_card_click",
+                "data-track-source": "internships_miscellaneous",
+                "data-track-destination": "/internships/cybersecurity-engineers",
+              }}
             />
             <ProjectCard
               title="VTU Internyet"

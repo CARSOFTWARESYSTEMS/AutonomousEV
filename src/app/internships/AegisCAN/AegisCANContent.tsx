@@ -510,7 +510,7 @@ const RESEARCHERS: Researcher[] = [
     focus: "Cybersecurity Professional · AI SOC Analyst · Threat Detection & Alert Investigation",
     body: "Contributes to the AegisCAN cybersecurity research track, including threat analysis, security monitoring, anomaly investigation and defensive cybersecurity concepts relevant to CAN-based systems.",
     links: [
-      { label: "Bhavya Naga Sai Parvathi Kshatri on LinkedIn", href: "https://www.linkedin.com/in/bhavya-naga-sai-parvathi-kshatri-3140251a2/" },
+      { label: "Bhavya Naga Sai Parvathi Kshatri on LinkedIn", href: "https://www.linkedin.com/in/bhavya-naga-sai-parvathi-kshatri" },
     ],
   },
   {

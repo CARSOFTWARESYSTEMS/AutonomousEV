@@ -4,8 +4,8 @@ import { BHAVYA_KSHATRI } from "@/data/public-entities";
 import styles from "./DesignInspirationCredit.module.css";
 
 const ORIGINAL_WORK_URL = "https://bhavyacyber.github.io/";
-/** The profile link the entity registry records for her, which is also the one her portfolio uses. */
-const LINKEDIN_URL = "https://www.linkedin.com/in/bhavya-naga-sai-parvathi-kshatri-3140251a2/";
+/** The profile link the entity registry records for her. */
+const LINKEDIN_URL = "https://www.linkedin.com/in/bhavya-naga-sai-parvathi-kshatri";
 
 interface DesignInspirationCreditProps {
   /** The page's own sentence: what her early design work helped inspire here. */

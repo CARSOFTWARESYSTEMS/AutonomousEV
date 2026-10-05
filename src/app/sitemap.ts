@@ -31,6 +31,7 @@ const ROUTES = [
   "/internships/battery-diagnostics-12-week-plan",
   "/internships/battery-fire-prevention",
   "/internships/battery-pack-design",
+  "/internships/cybersecurity-engineers",
   "/internships/ev-help-agent",
   "/internships/ev-help-agent/usecases",
   "/internships/evAutoRickshaw",
