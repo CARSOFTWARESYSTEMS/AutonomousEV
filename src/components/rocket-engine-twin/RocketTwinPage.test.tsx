@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { resetRocketTwinTracking } from "./analytics";
-import { DISCLAIMER, FAQ, GLOSSARY, INSPIRATION_CONTEXT, MODELS, MODEL_STATUS, OVERVIEW, PREPARED_BY, PRODUCT, SYSTEMS, TEST_PHASES, TWIN_STATES } from "./data/engineReference";
+import { DISCLAIMER, FAQ, GLOSSARY, MODELS, MODEL_STATUS, OVERVIEW, PREPARED_BY, PRODUCT, SYSTEMS, TEST_PHASES, TWIN_STATES } from "./data/engineReference";
 import { PHASE_MS } from "./simulation/engineSim";
 import RocketTwinPage from "./RocketTwinPage";
 import { resetRocketTwinStore } from "./state/twinStore";
@@ -198,21 +198,21 @@ describe("frequently asked questions", () => {
 });
 
 describe("Prepared By", () => {
-  it("reuses the shared profile card with the brief's copy and review date", () => {
+  it("reuses the shared profile card with a one-line attribution and the review date", () => {
     render(<RocketTwinPage />);
     const section = screen.getByRole("region", { name: "Prepared by" });
     const card = within(section).getByRole("complementary", { name: "About the researcher" });
     expect(within(card).getByText("Prepared by")).toBeInTheDocument();
     expect(within(card).getByRole("heading", { level: 3, name: "Sudarshana Karkala" })).toBeInTheDocument();
     expect(within(card).getByText("EV.ENGINEER™")).toBeInTheDocument();
-    expect(within(section).getByText("Next-Generation Rocket Engine Digital Twin is an EV.ENGINEER™ interactive engineering experience for rocket propulsion, simulation, health monitoring and digital-twin learning.")).toBeInTheDocument();
+    expect(within(section).getByText("Next-Generation Rocket Engine Digital Twin is an EV.ENGINEER™ interactive engineering experience.")).toBeInTheDocument();
     expect(within(section).getByText(/last reviewed/)).toHaveTextContent("Experience information last reviewed: 3 October 2026.");
     expect(section.querySelector("time")).toHaveAttribute("datetime", "2026-10-03");
   });
 
   it("keeps the attribution to a single short line", () => {
     expect(PREPARED_BY.notes).toHaveLength(1);
-    expect(words(PREPARED_BY.notes[0])).toBeLessThan(30);
+    expect(words(PREPARED_BY.notes[0])).toBeLessThan(15);
     render(<RocketTwinPage />);
     expect(screen.getByRole("region", { name: "Prepared by" }).querySelectorAll("p")).toHaveLength(4); // eyebrow, role, attribution, review date
   });
@@ -245,11 +245,12 @@ describe("Inspiration & Acknowledgement", () => {
     expect(prepared).not.toContainElement(credit);
   });
 
-  it("thanks Bhavya Naga Sai Parvathi Kshatri for the inspiration, with the page's own line, in the server HTML", () => {
+  it("thanks Bhavya Naga Sai Parvathi Kshatri for the inspiration, in the shared wording, in the server HTML", () => {
     const text = staticText();
-    expect(text).toContain("Special thanks to Bhavya Naga Sai Parvathi Kshatri for inspiring our early approach to interactive engineering visualisation and Digital Twin experiences.");
-    expect(text).toContain(INSPIRATION_CONTEXT);
-    expect(INSPIRATION_CONTEXT).toBe("Her early interactive design work helped inspire our approach to interactive Model Rocketry, propulsion-system visualisation and Rocket Engine Digital Twin experiences.");
+    expect(text).toContain("Bhavya Naga Sai Parvathi Kshatri Special thanks to Bhavya for inspiring our early approach to interactive engineering visualisation and Digital Twin experiences across Satellite Engineering, Model Rocketry and Aerospace.");
+    // No line of this page's own, and the full name is not repeated.
+    expect(text).not.toMatch(/Her early interactive design work/);
+    expect(text.split("Bhavya Naga Sai Parvathi Kshatri")).toHaveLength(2);
     expect(text).not.toMatch(/(designed|developed|created) by Bhavya/i);
   });
 

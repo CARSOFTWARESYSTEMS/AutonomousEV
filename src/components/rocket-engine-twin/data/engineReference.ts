@@ -37,14 +37,11 @@ export const PRODUCT = {
 
 /** Who prepared the experience, and when its information was last reviewed. */
 export const PREPARED_BY = {
-  notes: ["Next-Generation Rocket Engine Digital Twin is an EV.ENGINEER™ interactive engineering experience for rocket propulsion, simulation, health monitoring and digital-twin learning."],
+  notes: ["Next-Generation Rocket Engine Digital Twin is an EV.ENGINEER™ interactive engineering experience."],
   reviewed: "2026-10-03",
   reviewedLabel: "3 October 2026",
   imageAlt: "Sudarshana Karkala — EV.ENGINEER",
 } as const;
-
-/** This page's line in the "Inspiration & Acknowledgement" card that follows "Prepared by". */
-export const INSPIRATION_CONTEXT = "Her early interactive design work helped inspire our approach to interactive Model Rocketry, propulsion-system visualisation and Rocket Engine Digital Twin experiences.";
 
 /** Stills rendered from the 3D scene itself: re-render them after a visible change to the engine. */
 export const POSTER = {

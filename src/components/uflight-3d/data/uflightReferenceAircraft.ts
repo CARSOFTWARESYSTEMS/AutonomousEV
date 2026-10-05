@@ -42,15 +42,12 @@ export const DISCLAIMER =
 /** Who prepared the experience, and when its information was last reviewed. */
 export const PREPARED_BY = {
   notes: [
-    "UFlight™ 3D is an EV.ENGINEER™ digital engineering demonstrator focused on Advanced Health Monitoring Systems for Aerospace & Autonomous Platforms, with a next-generation air mobility reference platform.",
+    "UFlight™ 3D is an EV.ENGINEER™ digital engineering demonstrator.",
     "Commercial arrangements, where applicable, are handled by iTelematics Software Private Limited.",
   ],
   reviewed: "2026-10-01",
   reviewedLabel: "1 October 2026",
 } as const;
-
-/** This page's line in the "Inspiration & Acknowledgement" card that follows "Prepared by". */
-export const INSPIRATION_CONTEXT = "Her early interactive design work helped inspire our approach to visualising complex aerospace systems, Digital Twins, health monitoring and interactive 3D engineering.";
 
 export const PROVENANCE = {
   platform: "REFERENCE PLATFORM · DIGITAL ENGINEERING DEMONSTRATOR",

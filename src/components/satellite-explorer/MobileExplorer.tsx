@@ -6,7 +6,7 @@ import SpaceFooter from "@/app/space/components/SpaceFooter";
 import DesignInspirationCredit from "@/components/DesignInspirationCredit";
 import PreparedBy from "@/components/PreparedBy";
 import type { SubsystemId } from "./types";
-import { INSPIRATION_CONTEXT, PREPARED_BY, PRODUCT, SATELLITE_REFERENCE, SUBSYSTEMS } from "./data/satelliteReference";
+import { PREPARED_BY, PRODUCT, SATELLITE_REFERENCE, SUBSYSTEMS } from "./data/satelliteReference";
 import { DESKTOP_RECOMMENDATION, MISSION_FLOW, OVERVIEW_CARDS } from "./data/missionSequence";
 import styles from "./mobile.module.css";
 
@@ -124,7 +124,7 @@ export default function MobileExplorer({ variant = "mobile" }: { variant?: "mobi
 
         <div className={styles.prepared}>
           <PreparedBy notes={PREPARED_BY.notes} reviewed={PREPARED_BY.reviewed} reviewedLabel={PREPARED_BY.reviewedLabel} />
-          <DesignInspirationCredit context={INSPIRATION_CONTEXT} />
+          <DesignInspirationCredit />
         </div>
       </main>
       <SpaceFooter basePath="/space" />

@@ -129,13 +129,10 @@ export const SATELLITE_REFERENCE = {
 
 /** Who prepared the experience, and when its information was last reviewed. */
 export const PREPARED_BY = {
-  notes: ["Satellite Explorer 3D is an EV.ENGINEER™ interactive engineering learning experience within the EV Society™ Space initiative."],
+  notes: ["Satellite Explorer 3D is an EV.ENGINEER™ interactive learning experience."],
   reviewed: "2026-10-01",
   reviewedLabel: "1 October 2026",
 } as const;
-
-/** This page's line in the "Inspiration & Acknowledgement" card that follows "Prepared by". */
-export const INSPIRATION_CONTEXT = "Her early interactive design work helped inspire our approach to visualising spacecraft systems and developing interactive Satellite Engineering and Digital Twin learning experiences.";
 
 export const PRODUCT = {
   name: "SATELLITE EXPLORER 3D",

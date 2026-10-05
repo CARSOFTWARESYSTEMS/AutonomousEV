@@ -176,11 +176,7 @@ describe("overview page", () => {
     expect(within(prepared).getByText("EV.ENGINEER™")).toBeInTheDocument();
     expect(within(prepared).getByRole("img", { name: "Portrait of Sudarshana Karkala" })).toBeInTheDocument();
     expect(within(prepared).getByRole("link", { name: /View full profile/ })).toHaveAttribute("href", "/about/sudarshana-karkala");
-    expect(
-      within(prepared).getByText(
-        "UFlight™ 3D is an EV.ENGINEER™ digital engineering demonstrator focused on Advanced Health Monitoring Systems for Aerospace & Autonomous Platforms, with a next-generation air mobility reference platform.",
-      ),
-    ).toBeInTheDocument();
+    expect(within(prepared).getByText("UFlight™ 3D is an EV.ENGINEER™ digital engineering demonstrator.")).toBeInTheDocument();
     expect(within(prepared).getByText("Commercial arrangements, where applicable, are handled by iTelematics Software Private Limited.")).toBeInTheDocument();
     expect(within(prepared).getByText(/Experience information last reviewed:/)).toHaveTextContent("Experience information last reviewed: 1 October 2026.");
     expect(prepared.querySelector("time")).toHaveAttribute("datetime", "2026-10-01");
@@ -194,7 +190,9 @@ describe("overview page", () => {
     expect(prepared.compareDocumentPosition(credit) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(screen.getByRole("main")).toContainElement(credit);
     expect(within(credit).getByText("Bhavya Naga Sai Parvathi Kshatri")).toBeInTheDocument();
-    expect(within(credit).getByText("Her early interactive design work helped inspire our approach to visualising complex aerospace systems, Digital Twins, health monitoring and interactive 3D engineering.")).toBeInTheDocument();
+    expect(within(credit).getByText(/^Special thanks to Bhavya/)).toHaveTextContent("Special thanks to Bhavya for inspiring our early approach to interactive engineering visualisation and Digital Twin experiences across Satellite Engineering, Model Rocketry and Aerospace.");
+    // The same two paragraphs as on every other page: no line of this page's own.
+    expect(credit.querySelectorAll("p")).toHaveLength(2);
     expect(within(credit).getByRole("link", { name: /^View Original Work/ })).toHaveAttribute("href", "https://bhavyacyber.github.io/");
     // Prepared by is unchanged: the acknowledgement sits beside it, not inside it.
     expect(prepared).not.toContainElement(credit);

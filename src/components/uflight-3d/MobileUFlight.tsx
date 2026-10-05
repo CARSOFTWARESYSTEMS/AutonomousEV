@@ -4,7 +4,7 @@ import { Activity, ArrowDown, ArrowLeft, BatteryCharging, Cpu, Fan, Monitor, Mov
 import DesignInspirationCredit from "@/components/DesignInspirationCredit";
 import PreparedBy from "@/components/PreparedBy";
 import type { SystemId } from "./types";
-import { AIRCRAFT, DESKTOP_RECOMMENDATION, DISCLAIMER, FALLBACK_MESSAGE, INSPIRATION_CONTEXT, OVERVIEW_CARDS, OVERVIEW_FLOW, POSTER, PREPARED_BY, PRODUCT, PROVENANCE } from "./data/uflightReferenceAircraft";
+import { AIRCRAFT, DESKTOP_RECOMMENDATION, DISCLAIMER, FALLBACK_MESSAGE, OVERVIEW_CARDS, OVERVIEW_FLOW, POSTER, PREPARED_BY, PRODUCT, PROVENANCE } from "./data/uflightReferenceAircraft";
 import styles from "./mobile.module.css";
 
 const ICONS: Partial<Record<SystemId, typeof Fan>> = {
@@ -102,7 +102,7 @@ export default function MobileUFlight({ variant = "mobile" }: { variant?: "mobil
 
         <div className={styles.prepared}>
           <PreparedBy notes={PREPARED_BY.notes} reviewed={PREPARED_BY.reviewed} reviewedLabel={PREPARED_BY.reviewedLabel} />
-          <DesignInspirationCredit context={INSPIRATION_CONTEXT} />
+          <DesignInspirationCredit />
         </div>
       </main>
 

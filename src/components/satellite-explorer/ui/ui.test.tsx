@@ -477,7 +477,7 @@ describe("header, help, hero and index", () => {
     const about = screen.getByRole("dialog", { name: "About this experience" });
     expect(within(about).getByText("Prepared by")).toBeInTheDocument();
     expect(within(about).getByRole("link", { name: /View full profile/ })).toHaveAttribute("href", "/about/sudarshana-karkala");
-    expect(within(about).getByText(/Satellite Explorer 3D is an EV.ENGINEER™ interactive engineering learning experience/)).toBeInTheDocument();
+    expect(within(about).getByText(/Satellite Explorer 3D is an EV.ENGINEER™ interactive learning experience/)).toBeInTheDocument();
     expect(within(about).getByText(/Experience information last reviewed:/)).toHaveTextContent("1 October 2026");
     await user.keyboard("{Escape}");
     expect(screen.queryByRole("dialog", { name: "About this experience" })).toBeNull();
@@ -491,7 +491,7 @@ describe("header, help, hero and index", () => {
     const about = screen.getByRole("dialog", { name: "About this experience" });
     const credit = within(about).getByRole("region", { name: "Inspiration & Acknowledgement" });
     expect(within(about).getByRole("region", { name: "Prepared by" }).compareDocumentPosition(credit) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(within(credit).getByText(/helped inspire our approach to visualising spacecraft systems and developing interactive Satellite Engineering and Digital Twin learning experiences\./)).toBeInTheDocument();
+    expect(within(credit).getByText(/^Special thanks to Bhavya for inspiring our early approach/)).toBeInTheDocument();
     expect(within(credit).getAllByRole("link")).toHaveLength(2);
   });
 

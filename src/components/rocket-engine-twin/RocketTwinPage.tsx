@@ -13,7 +13,6 @@ import {
   FAQ,
   FAULTS,
   GLOSSARY,
-  INSPIRATION_CONTEXT,
   MODELS,
   MODEL_CREDIBILITY,
   MODEL_STATUS,
@@ -227,7 +226,7 @@ export default function RocketTwinPage() {
             imageAlt={PREPARED_BY.imageAlt}
             profileLinkProps={rocketTwinLinkTracking("rocket_twin_profile_click", { placement: "prepared_by" })}
           />
-          <DesignInspirationCredit context={INSPIRATION_CONTEXT} />
+          <DesignInspirationCredit />
         </section>
         </div>
       </main>

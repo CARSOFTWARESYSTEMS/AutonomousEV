@@ -148,7 +148,7 @@ describe("header and navigation", () => {
     const about = screen.getByRole("dialog", { name: "About this experience" });
     const credit = within(about).getByRole("region", { name: "Inspiration & Acknowledgement" });
     expect(within(about).getByRole("region", { name: "Prepared by" }).compareDocumentPosition(credit) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(within(credit).getByText(/helped inspire our approach to visualising complex aerospace systems, Digital Twins, health monitoring and interactive 3D engineering\./)).toBeInTheDocument();
+    expect(within(credit).getByText(/^Special thanks to Bhavya for inspiring our early approach/)).toBeInTheDocument();
     expect(within(credit).getAllByRole("link")).toHaveLength(2);
   });
 });

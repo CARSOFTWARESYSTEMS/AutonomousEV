@@ -173,7 +173,7 @@ describe("compact overview page", () => {
     expect(within(prepared).getByText("EV.ENGINEER™")).toBeInTheDocument();
     expect(within(prepared).getByRole("img", { name: "Portrait of Sudarshana Karkala" })).toBeInTheDocument();
     expect(within(prepared).getByRole("link", { name: /View full profile/ })).toHaveAttribute("href", "/about/sudarshana-karkala");
-    expect(within(prepared).getByText("Satellite Explorer 3D is an EV.ENGINEER™ interactive engineering learning experience within the EV Society™ Space initiative.")).toBeInTheDocument();
+    expect(within(prepared).getByText("Satellite Explorer 3D is an EV.ENGINEER™ interactive learning experience.")).toBeInTheDocument();
     expect(within(prepared).getByText(/Experience information last reviewed:/)).toHaveTextContent("Experience information last reviewed: 1 October 2026.");
     expect(prepared.querySelector("time")).toHaveAttribute("datetime", "2026-10-01");
     // Nothing about the aircraft project, and no overstatement.
@@ -187,7 +187,9 @@ describe("compact overview page", () => {
     expect(prepared.compareDocumentPosition(credit) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(screen.getByRole("main")).toContainElement(credit);
     expect(within(credit).getByText("Bhavya Naga Sai Parvathi Kshatri")).toBeInTheDocument();
-    expect(within(credit).getByText("Her early interactive design work helped inspire our approach to visualising spacecraft systems and developing interactive Satellite Engineering and Digital Twin learning experiences.")).toBeInTheDocument();
+    expect(within(credit).getByText(/^Special thanks to Bhavya/)).toHaveTextContent("Special thanks to Bhavya for inspiring our early approach to interactive engineering visualisation and Digital Twin experiences across Satellite Engineering, Model Rocketry and Aerospace.");
+    // The same two paragraphs as on every other page: no line of this page's own.
+    expect(credit.querySelectorAll("p")).toHaveLength(2);
     expect(within(credit).getByRole("link", { name: /^View Original Work/ })).toHaveAttribute("href", "https://bhavyacyber.github.io/");
     // Prepared by is unchanged: the acknowledgement sits beside it, not inside it.
     expect(prepared).not.toContainElement(credit);
