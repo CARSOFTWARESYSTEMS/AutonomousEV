@@ -7,7 +7,7 @@
   background-color: var(--bg-dark);
 }
 
-/* A short hero: the two profiles follow it directly. */
+/* A short hero: the profiles follow it directly. */
 .page .hero {
   min-height: 0;
   padding-bottom: 0;
@@ -26,13 +26,20 @@
 .page .profile {
   gap: 1.1rem;
 }
+/* A lone profile sits centred at card width instead of leaving half the row empty. */
+.page .profile:only-child {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: 100%;
+  max-width: 640px;
+}
 .identity {
   display: flex;
   align-items: center;
   gap: 1.25rem;
   min-width: 0;
 }
-/* Both portraits get the same square frame, anchored to the top so no face is cropped. */
+/* Every portrait gets the same square frame, anchored to the top so no face is cropped. */
 .portrait {
   position: relative;
   flex-shrink: 0;

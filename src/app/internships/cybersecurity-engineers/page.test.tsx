@@ -18,15 +18,18 @@ const card = (name: string) => screen.getByRole("article", { name });
 const hrefs = (el: HTMLElement) => within(el).getAllByRole("link").map((a) => a.getAttribute("href"));
 
 describe("Cybersecurity Engineers page", () => {
-  it("has one H1 and the two engineers and the programs as H2s, in that order", () => {
-    render(<CybersecurityEngineersPage />);
+  it("has one H1 and the engineer and the programs as H2s, in that order", () => {
+    const { container } = render(<CybersecurityEngineersPage />);
     expect(screen.getAllByRole("heading", { level: 1 }).map((h) => h.textContent)).toEqual(["Cybersecurity Engineers"]);
-    expect(screen.getAllByRole("heading", { level: 2 }).map((h) => h.textContent)).toEqual([BHAVYA, "Sudarshana Karkala", "Cybersecurity Research & Programs"]);
+    expect(screen.getAllByRole("heading", { level: 2 }).map((h) => h.textContent)).toEqual([BHAVYA, "Cybersecurity Research & Programs"]);
+    expect(screen.getAllByRole("article")).toHaveLength(1);
+    // Sudarshana Karkala is not listed here: not in the copy, the links or the JSON-LD.
+    expect(container.innerHTML).not.toMatch(/karkala/i);
     expect(screen.getByText("Engineering Security for EV, Battery, Aerospace and Connected Systems")).toBeInTheDocument();
     expect(screen.getByText(/^Meet engineers and researchers contributing to cybersecurity, battery safety, connected systems/)).toBeInTheDocument();
   });
 
-  it("gives each engineer a portrait, the role already published for them, focus areas and three links", () => {
+  it("gives the engineer a portrait, the role already published for them, focus areas and three links", () => {
     render(<CybersecurityEngineersPage />);
     const bhavya = card(BHAVYA);
     expect(within(bhavya).getByRole("img", { name: `${BHAVYA} — Cybersecurity Researcher` }).getAttribute("src")).toContain("bhavyaparvathi.png");
@@ -34,11 +37,6 @@ describe("Cybersecurity Engineers page", () => {
     expect(within(bhavya).getAllByRole("listitem").slice(0, 3).map((li) => li.textContent)).toEqual(["Cybersecurity", "Threat Detection & Alert Investigation", "AI SOC Analysis"]);
     expect(hrefs(bhavya)).toEqual(["https://bhavyacyber.github.io/", "https://www.linkedin.com/in/bhavya-naga-sai-parvathi-kshatri", "/internships/AegisCAN"]);
     expect(BHAVYA_KSHATRI.sameAs).toContain(hrefs(bhavya)[1]);
-
-    const sudarshana = card("Sudarshana Karkala");
-    expect(within(sudarshana).getByRole("img", { name: "Sudarshana Karkala — Co-Researcher, EV.ENGINEER" }).getAttribute("src")).toContain("SudarshanaKarkala.jpg");
-    expect(within(sudarshana).getByText("Co-Researcher · EV.ENGINEER™")).toBeInTheDocument();
-    expect(hrefs(sudarshana)).toEqual(["https://www.linkedin.com/in/sudarshanakarkala/", "https://www.evsociety.org/programs/evto/candidates/sudarshana-karkala", "/internships/battery-cybersecurity"]);
   });
 
   it("does not present Tanuja Jadhav's EV Society page as Bhavya's profile", () => {
@@ -59,7 +57,6 @@ describe("Cybersecurity Engineers page", () => {
       ["cybersecurity_engineer_profile_click", "Bhavya Parvathi", "linkedin"],
       ["cybersecurity_engineer_profile_click", "Bhavya Parvathi", "research_project"],
     ]);
-    expect(within(card("Sudarshana Karkala")).getAllByRole("link").map((a) => a.getAttribute("data-track-link_type"))).toEqual(["linkedin", "ev_society", "battery_cybersecurity"]);
     expect(links[0]).toHaveAttribute("data-track-destination", "https://bhavyacyber.github.io/");
   });
 
@@ -80,14 +77,13 @@ describe("Cybersecurity Engineers page", () => {
     expect(fs.readFileSync(path.join(process.cwd(), "public/llms.txt"), "utf-8")).toContain(CANONICAL);
   });
 
-  it("describes the page, the list and both people in one JSON-LD graph, with nothing invented", () => {
+  it("describes the page, the list and the engineer in one JSON-LD graph, with nothing invented", () => {
     const { container } = render(<CybersecurityEngineersPage />);
     const graph = JSON.parse(container.querySelector('script[type="application/ld+json"]')!.textContent!)["@graph"] as Array<Record<string, unknown>>;
-    expect(graph.map((n) => n["@type"])).toEqual(["WebSite", "Brand", "Organization", "Person", "Person", "WebPage", "ItemList"]);
+    expect(graph.map((n) => n["@type"])).toEqual(["WebSite", "Brand", "Organization", "Person", "WebPage", "ItemList"]);
     const people = graph.filter((n) => n["@type"] === "Person");
-    expect(people.map((p) => p.name)).toEqual([BHAVYA, "Sudarshana Karkala"]);
+    expect(people.map((p) => p.name)).toEqual([BHAVYA]);
     expect(people[0].sameAs).toEqual(["https://www.linkedin.com/in/bhavya-naga-sai-parvathi-kshatri", "https://bhavyacyber.github.io/"]);
-    expect(people[1].sameAs).toContain("https://www.linkedin.com/in/sudarshanakarkala/");
     for (const person of people) {
       expect(person.image).toMatch(/^https:\/\/autonomous\.ev\.engineer\//);
       for (const invented of ["jobTitle", "worksFor", "alumniOf", "hasCredential", "award"]) expect(person).not.toHaveProperty(invented);

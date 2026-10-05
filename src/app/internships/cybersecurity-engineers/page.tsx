@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
-import { BHAVYA_KSHATRI, SITE_URL, SUDARSHANA_KARKALA } from "@/data/public-entities";
+import { BHAVYA_KSHATRI, SITE_URL } from "@/data/public-entities";
 import { JsonLd } from "@/lib/structured-data/JsonLd";
-import { BHAVYA_KSHATRI_ID, EV_ENGINEER_BRAND_ID, PERSON_ID, WEBSITE_ID, bhavyaKshatriPersonNode, evEngineerBrandNode, itelematicsOrgNode, sudarshanaKarkalaPersonNode, websiteNode } from "@/lib/structured-data/entities";
+import { BHAVYA_KSHATRI_ID, EV_ENGINEER_BRAND_ID, WEBSITE_ID, bhavyaKshatriPersonNode, evEngineerBrandNode, itelematicsOrgNode, websiteNode } from "@/lib/structured-data/entities";
 // The page shares the Battery Cybersecurity theme: its hero, sections, grids and cards.
 import theme from "../battery-cybersecurity/page.module.css";
 import styles from "./page.module.css";
@@ -18,7 +18,6 @@ const INTRO = "Meet engineers and researchers contributing to cybersecurity, bat
 
 const BHAVYA_PORTFOLIO = "https://bhavyacyber.github.io/";
 const BHAVYA_IMAGE = "/team/bhavyaparvathi.png";
-const SUDARSHANA_IMAGE = "/SudarshanaKarkala.jpg";
 
 interface ProfileLink {
   label: string;
@@ -60,21 +59,6 @@ const ENGINEERS: readonly Engineer[] = [
       { label: "Portfolio", href: BHAVYA_PORTFOLIO, type: "portfolio" },
       { label: "LinkedIn", href: "https://www.linkedin.com/in/bhavya-naga-sai-parvathi-kshatri", type: "linkedin" },
       { label: "AegisCAN Research", href: "/internships/AegisCAN", type: "research_project" },
-    ],
-  },
-  {
-    id: "sudarshana-karkala",
-    name: SUDARSHANA_KARKALA.name,
-    trackName: "Sudarshana Karkala",
-    role: "Co-Researcher · EV.ENGINEER™",
-    summary: "Engineering and technology leader with over two decades of experience across software architecture, cybersecurity, connected systems and energy platforms.",
-    focus: ["EV Battery Safety & Cybersecurity", "Battery Management Systems", "Aerospace Cybersecurity"],
-    image: SUDARSHANA_IMAGE,
-    imageAlt: `${SUDARSHANA_KARKALA.name} — Co-Researcher, EV.ENGINEER`,
-    links: [
-      { label: "LinkedIn", href: "https://www.linkedin.com/in/sudarshanakarkala/", type: "linkedin" },
-      { label: "EV Society Profile", href: "https://www.evsociety.org/programs/evto/candidates/sudarshana-karkala", type: "ev_society" },
-      { label: "Battery Cybersecurity", href: "/internships/battery-cybersecurity", type: "battery_cybersecurity" },
     ],
   },
 ];
@@ -126,7 +110,6 @@ const structuredData = {
     evEngineerBrandNode(),
     itelematicsOrgNode(),
     { ...bhavyaKshatriPersonNode(), image: `${SITE_URL}${BHAVYA_IMAGE}`, sameAs: [...(BHAVYA_KSHATRI.sameAs ?? []), BHAVYA_PORTFOLIO] },
-    { ...sudarshanaKarkalaPersonNode(), image: SUDARSHANA_KARKALA.imageUrl },
     {
       "@type": "WebPage",
       "@id": `${PAGE_URL}#webpage`,
@@ -151,10 +134,7 @@ const structuredData = {
       "@type": "ItemList",
       "@id": `${PAGE_URL}#engineers`,
       name: "Cybersecurity Engineers",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, item: { "@id": BHAVYA_KSHATRI_ID } },
-        { "@type": "ListItem", position: 2, item: { "@id": PERSON_ID } },
-      ],
+      itemListElement: [{ "@type": "ListItem", position: 1, item: { "@id": BHAVYA_KSHATRI_ID } }],
     },
   ],
 };
@@ -246,7 +226,7 @@ export default function CybersecurityEngineersPage() {
               Cybersecurity Research &amp; Programs
             </h2>
             <p className={theme.sectionSubtitle}>
-              {ENGINEERS[0].name} and {ENGINEERS[1].name} contribute to cybersecurity research at EV.ENGINEER, including the AegisCAN research track. Their professional profiles are linked from the cards above; the related programs are below.
+              {ENGINEERS[0].name} contributes to cybersecurity research at EV.ENGINEER, including the AegisCAN research track. The professional profiles are linked from the card above; the related programs are below.
             </p>
           </div>
           <ul className={`${theme.grid3} ${styles.programs}`}>
