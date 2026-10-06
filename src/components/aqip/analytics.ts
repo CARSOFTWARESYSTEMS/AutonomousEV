@@ -32,6 +32,14 @@ export interface AqipEvents {
   aqip_decision_framework_use: { decision: string };
   aqip_90_day_interaction: { phase: string; action: "check" | "uncheck" | "clear" };
   aqip_policy_toggle: { critical: "true" | "false" };
+  /** A feature of the 3D Inspection Twin chosen on the drawing, on the model or in the list. */
+  aqip_twin_feature_select: { feature: string; source: "sheet" | "model" | "list" };
+  aqip_twin_control: { control: string };
+  aqip_twin_mode: { mode: "cad" | "reconstruction" };
+  /** Whether the interactive 3D view started, or the isometric view stayed in its place. */
+  aqip_twin_view: { view: "webgl" | "isometric" };
+  aqip_agent_select: { item: string };
+  aqip_hitl_action: { card: string; action: string };
   aqip_glossary_search: NoParams;
   aqip_view_mode: { mode: "executive" | "full" };
   aqip_print: NoParams;
@@ -40,7 +48,7 @@ export interface AqipEvents {
 export type AqipEvent = keyof AqipEvents;
 
 /** Events a master/detail list may report when one of its items is opened. */
-export type AqipSelectEvent = "aqip_problem_expand" | "aqip_role_select" | "aqip_revenue_engine_select" | "aqip_customer_playbook_open";
+export type AqipSelectEvent = "aqip_problem_expand" | "aqip_role_select" | "aqip_revenue_engine_select" | "aqip_customer_playbook_open" | "aqip_agent_select";
 
 /** Link clicks, reported by the site-wide click listener from `data-track-event`. */
 export const LINK_EVENTS = {

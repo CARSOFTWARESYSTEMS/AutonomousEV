@@ -6,9 +6,9 @@ import { usePathname } from "next/navigation";
 import PrerequisitesSection from "@/components/PrerequisitesSection";
 import TrackCard from "./TrackCard";
 import trackStyles from "./TrackCard.module.css";
-import { Rocket } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
-function ProjectCard({ title, desc, link, pricingLink, secondaryLink, secondaryLinkLabel, tertiaryLink, tertiaryLinkLabel, quaternaryLink, quaternaryLinkLabel, quinaryLink, quinaryLinkLabel, category, badge, tags, ctaLabel, trackProps, icon: Icon }: { title: string, desc?: string, link: string, pricingLink?: string, secondaryLink?: string, secondaryLinkLabel?: string, tertiaryLink?: string, tertiaryLinkLabel?: string, quaternaryLink?: string, quaternaryLinkLabel?: string, quinaryLink?: string, quinaryLinkLabel?: string, category?: string, badge?: string, tags?: string[], ctaLabel?: string, trackProps?: Record<`data-${string}`, string>, icon?: any }) {
+function ProjectCard({ title, desc, link, pricingLink, secondaryLink, secondaryLinkLabel, tertiaryLink, tertiaryLinkLabel, quaternaryLink, quaternaryLinkLabel, quinaryLink, quinaryLinkLabel, category, badge, tags, ctaLabel, trackProps, icon: Icon }: { title: string, desc?: string, link: string, pricingLink?: string, secondaryLink?: string, secondaryLinkLabel?: string, tertiaryLink?: string, tertiaryLinkLabel?: string, quaternaryLink?: string, quaternaryLinkLabel?: string, quinaryLink?: string, quinaryLinkLabel?: string, category?: string, badge?: string, tags?: string[], ctaLabel?: string, trackProps?: Record<`data-${string}`, string>, icon?: LucideIcon }) {
   const isExternal = link.startsWith('http');
   const sLink = pricingLink || secondaryLink;
   const sLabel = pricingLink ? "Pricing" : secondaryLinkLabel;
@@ -356,6 +356,59 @@ function InternshipAnswerBlocks() {
   );
 }
 
+/** The workshop poster, full screen. It closes itself after ten seconds, or when Close is pressed. */
+function WorkshopPoster() {
+  const [open, setOpen] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setOpen(false), 10000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!open) return null;
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 9999,
+        backgroundColor: 'rgba(0, 0, 0, 0.92)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '16px',
+        animation: 'fadeIn 0.4s ease',
+      }}
+    >
+      <img
+        src="/workshops/EV ENGINEER Sudarshana Karkala.png"
+        alt="EV Battery Intelligence Platform"
+        style={{
+          maxWidth: '100%',
+          maxHeight: 'calc(100vh - 100px)',
+          objectFit: 'contain',
+          borderRadius: '12px',
+          boxShadow: '0 8px 64px rgba(0, 0, 0, 0.8)',
+        }}
+      />
+      <button
+        onClick={() => setOpen(false)}
+        className="btn btn-primary"
+        style={{
+          marginTop: '20px',
+          padding: '0.6rem 2rem',
+          fontSize: '1rem',
+          cursor: 'pointer',
+        }}
+        data-track-event="workshop_poster_close"
+      >
+        Close
+      </button>
+    </div>
+  );
+}
+
 export default function InternshipsClient() {
   const pathname = usePathname();
   const isWorkshop = pathname === "/workshop";
@@ -363,64 +416,13 @@ export default function InternshipsClient() {
   const typeText = isWorkshop ? "workshop" : "internship";
   const typeTextCapitalized = isWorkshop ? "Workshop" : "Internship";
 
-  const contactUsMsg = encodeURIComponent(`Hi, I would like to know more about the EV/AV ${typeText} opportunities listed on EV.ENGINEER™. Could you please share more details?`);
   const registerNowMsg = encodeURIComponent(`Hi, I am interested in ${typeText}s. Please let me know more details.`);
-
-  // Workshop poster popup
-  const [showPoster, setShowPoster] = useState(false);
-
-  useEffect(() => {
-    if (!isWorkshop) return;
-    setShowPoster(true);
-    const timer = setTimeout(() => setShowPoster(false), 10000);
-    return () => clearTimeout(timer);
-  }, [isWorkshop]);
 
   return (
     <div style={{ paddingTop: '80px', minHeight: '100vh' }}>
 
-      {/* Workshop Poster Full-Screen Popup */}
-      {showPoster && (
-        <div
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 9999,
-            backgroundColor: 'rgba(0, 0, 0, 0.92)',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '16px',
-            animation: 'fadeIn 0.4s ease',
-          }}
-        >
-          <img
-            src="/workshops/EV ENGINEER Sudarshana Karkala.png"
-            alt="EV Battery Intelligence Platform"
-            style={{
-              maxWidth: '100%',
-              maxHeight: 'calc(100vh - 100px)',
-              objectFit: 'contain',
-              borderRadius: '12px',
-              boxShadow: '0 8px 64px rgba(0, 0, 0, 0.8)',
-            }}
-          />
-          <button
-            onClick={() => setShowPoster(false)}
-            className="btn btn-primary"
-            style={{
-              marginTop: '20px',
-              padding: '0.6rem 2rem',
-              fontSize: '1rem',
-              cursor: 'pointer',
-            }}
-            data-track-event="workshop_poster_close"
-          >
-            Close
-          </button>
-        </div>
-      )}
+      {/* Workshop poster: shown on arriving at /workshop, for ten seconds or until closed. */}
+      {isWorkshop && <WorkshopPoster />}
       <section className="section">
         <div className="container">
           <h1 style={{ fontSize: '2.5rem', fontWeight: 600, marginBottom: '16px' }}>
@@ -575,7 +577,7 @@ export default function InternshipsClient() {
               title="Aerospace Quality Intelligence Platform"
               badge="AQIP"
               desc="AI-assisted aerospace manufacturing quality intelligence connecting engineering requirements, inspection, FAI, configuration control, manufacturing evidence and supplier quality through a trusted digital thread."
-              tags={["Aerospace", "Defence", "Quality Intelligence", "FAI", "Digital Thread", "AI-Assisted"]}
+              tags={["Aerospace", "Defence", "Quality Intelligence", "Digital Thread", "Secure Engineering", "AI-Assisted"]}
               cta="Explore AQIP"
               href="/internships/aerospace-quality-intelligence-platform"
               trackProps={{

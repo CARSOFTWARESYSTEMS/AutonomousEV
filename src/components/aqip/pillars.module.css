@@ -1,0 +1,386 @@
+/* AQIP strategy page: the diagrams of the three product pillars added to the
+   manual: the four-layer platform, the Trust Triangle, the security-to-quality
+   links, agent permissions, the human-in-the-loop panel and the 3D revision
+   example. Colours and radii come from the page root in aqip.module.css. */
+
+/* ── Platform architecture: three layers stacked inside the fourth ── */
+.platform {
+  display: grid;
+  gap: 10px;
+  padding: 10px;
+  list-style: none;
+  border-radius: var(--aq-radius);
+  /* The frame is the fourth layer: cybersecurity and governance round everything. */
+  border: 1px solid rgba(251, 191, 36, 0.5);
+  background: rgba(251, 191, 36, 0.04);
+}
+.platformLayer {
+  display: grid;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: var(--aq-radius-sm);
+  border: 1px solid var(--aq-line);
+  background: #0d1230;
+}
+.platformLayer[data-spans] {
+  border: 0;
+  border-top: 1px dashed rgba(251, 191, 36, 0.5);
+  border-radius: 0;
+  background: none;
+  padding: 14px 6px 4px;
+}
+.platformLayer[data-spans] h4 {
+  color: var(--aq-warn);
+}
+.platformRole {
+  margin-top: 3px;
+  font-size: 0.88rem;
+  color: var(--aq-muted);
+}
+
+/* ── Trust Triangle ── */
+.triangle {
+  display: grid;
+  gap: 16px;
+  align-items: center;
+}
+.triangleSvg {
+  display: block;
+  width: 100%;
+  max-width: 440px;
+  height: auto;
+  margin: 0 auto;
+}
+.triangleEdge {
+  fill: rgba(59, 130, 246, 0.08);
+  stroke: var(--aq-accent-2);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+.triangleSpoke {
+  fill: none;
+  stroke: rgba(147, 197, 253, 0.35);
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+}
+.triangleCore {
+  fill: #0d1230;
+  stroke: var(--aq-accent);
+  stroke-width: 1.5;
+}
+.triangleNode {
+  fill: var(--aq-accent-2);
+  stroke: #dbeafe;
+  stroke-width: 2;
+}
+.triangleTrust {
+  fill: var(--aq-strong);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+.triangleLabel {
+  fill: var(--aq-text);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+.triangleSides {
+  display: grid;
+  gap: 12px;
+  list-style: none;
+}
+.sideName {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--aq-accent);
+}
+.sideQuestion {
+  font-family: var(--aq-display);
+  font-size: 1.08rem;
+  font-weight: 650;
+  line-height: 1.35;
+  color: var(--aq-strong);
+}
+
+/* ── A security failure and the quality failure it becomes ── */
+.links {
+  display: grid;
+  gap: 10px;
+  list-style: none;
+}
+.links li {
+  display: grid;
+  gap: 6px;
+  padding: 14px 16px;
+  border-radius: var(--aq-radius-sm);
+  border: 1px solid var(--aq-line);
+  background: var(--aq-panel);
+}
+.linkCause {
+  font-weight: 650;
+  color: var(--aq-text);
+}
+.linkArrow::before {
+  content: "↓";
+  color: var(--aq-warn);
+}
+.linkEffect {
+  font-weight: 650;
+  color: var(--aq-danger);
+}
+
+/* ── What an agent can and cannot do ── */
+.permissions {
+  display: grid;
+  gap: 14px;
+  margin-top: 14px;
+}
+.permissions > div {
+  padding: 14px 16px;
+  border-radius: var(--aq-radius-sm);
+  border: 1px solid var(--aq-line);
+}
+.permissions > div[data-kind="can"] {
+  border-color: rgba(110, 231, 183, 0.4);
+}
+.permissions > div[data-kind="cannot"] {
+  border-color: rgba(252, 165, 165, 0.45);
+}
+.permissionList {
+  display: grid;
+  gap: 7px;
+  margin-top: 10px;
+  list-style: none;
+}
+.permissionList li {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  gap: 6px;
+  font-size: 0.93rem;
+  color: var(--aq-text-2);
+}
+.permissionList span {
+  font-weight: 800;
+  color: var(--aq-ok);
+}
+[data-kind="cannot"] .permissionList span {
+  color: var(--aq-danger);
+}
+
+/* ── Human-in-the-loop control panel ── */
+.hitl {
+  display: grid;
+  gap: 12px;
+}
+.hitlCards {
+  display: grid;
+  gap: 16px;
+}
+.hitlCard {
+  min-width: 0;
+  padding: clamp(16px, 2.2vw, 22px);
+  border-radius: var(--aq-radius);
+  border: 1px solid var(--aq-line-2);
+  background: var(--aq-panel);
+}
+.hitlCard > * + * {
+  margin-top: 12px;
+}
+.hitlKind {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--aq-accent);
+}
+.hitlTitle {
+  font-family: var(--aq-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--aq-strong);
+}
+.hitlFields > div {
+  display: grid;
+  grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+  gap: 12px;
+  padding: 8px 0;
+  border-top: 1px solid var(--aq-line);
+}
+.hitlFields dt {
+  font-size: 0.82rem;
+  font-weight: 650;
+  color: var(--aq-muted);
+}
+.hitlFields dd {
+  font-size: 0.95rem;
+  color: var(--aq-text);
+}
+.hitlStatus dd {
+  font-weight: 700;
+  color: var(--aq-warn);
+}
+.hitlStatus[data-kind="approve"] dd {
+  color: var(--aq-ok);
+}
+.hitlStatus[data-kind="change"] dd {
+  color: var(--aq-accent);
+}
+.hitlStatus[data-kind="reject"] dd {
+  color: var(--aq-danger);
+}
+.hitlActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.hitlButton {
+  flex: 1 1 auto;
+  min-height: 44px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--aq-line-2);
+  background: transparent;
+  color: var(--aq-accent);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 650;
+  line-height: 1.25;
+  cursor: pointer;
+  transition: background var(--aq-fast), border-color var(--aq-fast), color var(--aq-fast);
+}
+.hitlButton:hover {
+  border-color: var(--aq-accent-2);
+  color: var(--aq-strong);
+}
+.hitlButton[aria-pressed="true"],
+.hitlButton[aria-expanded="true"] {
+  border-color: var(--aq-accent-2);
+  background: var(--aq-accent-2);
+  color: var(--aq-on-accent);
+}
+.hitlButton:focus-visible {
+  outline: 2px solid var(--aq-strong);
+  outline-offset: 2px;
+}
+.hitlSource,
+.hitlLog {
+  font-size: 0.88rem;
+  color: var(--aq-text-2);
+}
+.hitlSource {
+  padding: 10px 12px;
+  border-left: 3px solid var(--aq-accent-2);
+  border-radius: 0 8px 8px 0;
+  background: var(--aq-accent-soft);
+}
+.hitlSource[hidden] {
+  display: none;
+}
+.hitlSource strong,
+.hitlLog strong {
+  color: var(--aq-text);
+}
+.hitlNote {
+  font-size: 0.82rem;
+  color: var(--aq-muted);
+}
+
+/* ── One revision change, before and after ── */
+.revision {
+  min-width: 0;
+  padding: clamp(18px, 2.4vw, 26px);
+  border-radius: var(--aq-radius);
+  border: 1px solid var(--aq-line-2);
+  background: var(--aq-panel);
+}
+.revision > * + * {
+  margin-top: 12px;
+}
+.revisionPair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.revisionPair > div {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--aq-line);
+}
+.revisionPair > div[data-new] {
+  border-color: var(--aq-accent-2);
+  background: var(--aq-accent-soft);
+}
+.revisionPair dt {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--aq-muted);
+}
+.revisionPair dd {
+  margin-top: 2px;
+  font-family: var(--aq-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--aq-strong);
+}
+
+/* ── Wider layouts ── */
+@media (min-width: 700px) {
+  .platformLayer {
+    grid-template-columns: 250px minmax(0, 1fr);
+    align-items: center;
+    gap: 18px;
+  }
+  .links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .links li {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 12px;
+  }
+  .linkArrow::before {
+    content: "→";
+  }
+  .permissions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .hitlCards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+
+@media (min-width: 900px) {
+  .triangle {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hitlButton {
+    transition: none;
+  }
+}
+
+@media print {
+  .hitlActions {
+    display: none;
+  }
+  .hitlSource[hidden] {
+    display: block;
+  }
+  .platformLayer,
+  .hitlCard,
+  .links li,
+  .permissions > div {
+    background: #fff;
+    break-inside: avoid;
+  }
+}

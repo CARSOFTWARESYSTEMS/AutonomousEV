@@ -43,6 +43,12 @@ export const KEYWORDS = [
   "Aerospace Quality AI",
   "Defence Manufacturing Quality",
   "Aerospace MSME India",
+  "3D Inspection Twin",
+  "2D to 3D Engineering Drawing Reconstruction",
+  "Aerospace Manufacturing Cybersecurity",
+  "AI Assurance",
+  "Human-in-the-Loop AI",
+  "Secure Engineering Data",
 ] as const;
 
 export const metadata: Metadata = {

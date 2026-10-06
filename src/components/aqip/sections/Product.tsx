@@ -1,9 +1,6 @@
 import { ShieldAlert } from "lucide-react";
 import { AQIP, PRINCIPLES, SAFETY_RULE } from "../data/overview";
 import {
-  AI_GOVERNANCE,
-  AI_MAY_ASSIST,
-  AI_MUST_NOT,
   ARCHITECTURE,
   BOUNDARY_POSITIONING,
   INTEGRATES_WITH,
@@ -11,19 +8,20 @@ import {
   MATURITY_LEGEND,
   MATURITY_MATRIX,
   MODULES,
+  NOT_PRODUCTION_READY,
   PASSPORT_NOTES,
   PASSPORT_ROWS,
+  PLATFORM_ARCHITECTURE,
   REVISION_CHANGES,
   REVISION_IMPACT,
-  SECURITY_CONTROLS,
-  SECURITY_STATEMENT,
   SYNTHETIC_PART,
 } from "../data/product";
 import InView from "../interactive/InView";
 import { DigitalThreadSimulator, QualityGraph } from "../interactive/Lazy";
-import type { Maturity } from "../types";
-import { Block, Callout, Chip, DataTable, Group, ListCard, Tags } from "../ui/primitives";
+import { MATURITY_ORDER } from "../types";
+import { Block, Callout, Chip, Group, Layers, ListCard, Tags } from "../ui/primitives";
 import css from "../aqip.module.css";
+import pillars from "../pillars.module.css";
 
 export function ProductPrinciples() {
   return (
@@ -103,7 +101,13 @@ export function QualityPassport() {
         <div>
           <Callout>Prove the manufacturing history of a serialized aerospace product in seconds, not hours.</Callout>
           <ListCard title="Access is controlled" items={PASSPORT_NOTES} />
-          <p className={css.fine}>Select a row to see what stands behind it. The part, serial and statuses are synthetic.</p>
+          <p className={css.fine}>
+            Select a row to see what stands behind it. The part, serial and statuses are synthetic. The long-term idea of locating this history on the part is the{" "}
+            <a href="#spatial-quality-passport" className={css.textLink}>
+              Spatial Quality Passport
+            </a>
+            .
+          </p>
         </div>
       </div>
     </Block>
@@ -117,7 +121,7 @@ export function RevisionIntelligence() {
     <Block
       id="revision-intelligence"
       title="Revision Intelligence"
-      label={<Chip tone="planned" />}
+      label={<Chip tone="planned-y1" />}
       lead="Listing what is on a drawing is useful. Knowing exactly what a new revision changes, and which quality work it invalidates, is worth more."
     >
       <div className={css.revision}>
@@ -148,17 +152,21 @@ export function RevisionIntelligence() {
           </div>
           <ListCard title="Impact analysis" items={REVISION_IMPACT} emphasis="accent" />
         </div>
-        <p className={css.fine}>Synthetic example. In the product, engineering and quality decide the scope of re-work; the analysis only shows them what is affected.</p>
+        <p className={css.fine}>
+          Synthetic example. Comparison is planned for Year 1 and impact analysis for Year 2. Engineering and quality decide the scope of re-work; the analysis only shows them what is affected. Seeing the same change on the geometry is{" "}
+          <a href="#twin-revision" className={css.textLink}>
+            3D revision intelligence
+          </a>
+          , a long-term idea.
+        </p>
       </div>
     </Block>
   );
 }
 
-const MATURITY_ORDER: readonly Maturity[] = ["now", "next", "later"];
-
 export function ProductModules() {
   return (
-    <Block id="modules" title="Product modules" lead="One core platform, fourteen modules. The label says when each is planned to be worked on, not that it exists." executive>
+    <Block id="modules" title="Product modules" lead="One core platform, fifteen modules. Each carries one of six maturity labels. None of the six means production-ready." executive>
       <dl className={css.legend}>
         {MATURITY_ORDER.map((maturity) => (
           <div key={maturity}>
@@ -187,63 +195,58 @@ export function ProductModules() {
 
 export function MaturityMatrix() {
   return (
-    <Block id="maturity" title="What exists and what is planned" lead="Only the first column describes software that exists today, and it is a prototype." executive>
-      <div className={css.cols4}>
+    <Block id="maturity" title="What exists and what is planned" lead="Only the first group describes software that exists today, and it is a prototype. Everything else is ahead." executive>
+      <div className={css.maturityGrid}>
         {MATURITY_MATRIX.map((column) => (
-          <ListCard key={column.status} title={column.heading} eyebrow={<Chip tone={column.status} />} items={column.items} emphasis={column.status === "available" ? "accent" : undefined}>
+          <ListCard key={column.status} title={column.heading} eyebrow={<Chip tone={column.status} />} items={column.items} emphasis={column.status === "prototype" ? "accent" : undefined}>
             <p className={css.cardText}>{column.note}</p>
           </ListCard>
         ))}
       </div>
+      <div className={css.card} data-emphasis="warn">
+        <p className={css.cardEyebrow}>Not production-ready today</p>
+        <Tags items={NOT_PRODUCTION_READY} label="Capabilities that are not production-ready today" />
+        <p className={css.cardText}>Where this page describes any of these, it describes a plan, research or a long-term vision.</p>
+      </div>
+    </Block>
+  );
+}
+
+export function PlatformArchitecture() {
+  return (
+    <Block id="architecture" title="Platform architecture: four layers" label={<Chip tone="planned">Target architecture</Chip>} lead="Three layers stack: what quality teams do, what AI helps them interpret, and the graph that holds every record. The fourth does not stack. Cybersecurity and governance surrounds all of them.">
+      <ol className={pillars.platform} aria-label="Platform architecture: three stacked layers, enclosed by cybersecurity and governance">
+        {PLATFORM_ARCHITECTURE.map((layer) => (
+          <li key={layer.id} className={pillars.platformLayer} data-spans={layer.spans ? "" : undefined}>
+            <div>
+              <h4 className={css.archName}>{layer.layer}</h4>
+              <p className={pillars.platformRole}>{layer.role}</p>
+            </div>
+            <Tags items={layer.items} />
+          </li>
+        ))}
+      </ol>
     </Block>
   );
 }
 
 export function TechnicalArchitecture() {
   return (
-    <Block id="architecture" title="Technology architecture" label={<Chip tone="planned">Target architecture</Chip>} lead="Data moves down the stack. Nothing reaches the quality graph without passing human verification, and security governs every layer.">
+    <Block id="data-flow" title="How data moves through the platform" label={<Chip tone="planned">Target architecture</Chip>} lead="Data moves down the stack. Nothing reaches the quality graph without passing human verification, and security governs every layer.">
       <InView>
-        <ol className={css.architecture} aria-label="Architecture layers, from input to output">
-          {ARCHITECTURE.map((layer) => (
-            <li key={layer.id} className={css.archLayer} data-emphasis={layer.emphasis}>
-              <h4 className={css.archName}>{layer.layer}</h4>
-              <Tags items={layer.items} />
-            </li>
-          ))}
-        </ol>
+        <Layers label="Architecture layers, from input to output" layers={ARCHITECTURE} />
       </InView>
-    </Block>
-  );
-}
-
-export function AIGovernance() {
-  return (
-    <Block id="ai-governance" title="AI and agentic AI: assist versus controlled authority" lead="Agentic AI can do useful preparatory work. It is never the authority for a controlled record.">
-      <div className={css.cols2}>
-        <ListCard title="Agentic AI may assist with" items={AI_MAY_ASSIST} emphasis="accent" />
-        <ListCard title="Agentic AI must not independently" items={AI_MUST_NOT} emphasis="warn" />
-      </div>
-      <DataTable caption="AI assistance compared with controlled authority, by activity" columns={["Activity", "AI assist", "Controlled authority"]} rows={AI_GOVERNANCE.map((row) => [row.activity, row.assist, row.authority])} />
-    </Block>
-  );
-}
-
-export function SecurityArchitecture() {
-  return (
-    <Block
-      id="security"
-      title="Security architecture"
-      label={<Chip tone="planned">Design requirements</Chip>}
-      lead="Security is a first-class requirement, not a later phase. These are the controls the platform is being designed around; they are not a certification claim."
-    >
-      <div className={css.cardGrid} data-plain="">
-        {SECURITY_CONTROLS.map((group) => (
-          <ListCard key={group.group} title={group.group} items={group.items} />
-        ))}
-      </div>
-      <Callout kind="safety" label="Data commitment">
-        {SECURITY_STATEMENT}
-      </Callout>
+      <p className={css.fine}>
+        The controls behind the security layer are in{" "}
+        <a href="#cybersecurity" className={css.textLink}>
+          Cybersecurity &amp; Digital Trust
+        </a>
+        ; the limits on AI are in{" "}
+        <a href="#ai-assurance" className={css.textLink}>
+          AI Assurance
+        </a>
+        .
+      </p>
     </Block>
   );
 }
@@ -271,9 +274,8 @@ export function ProductGroup() {
       <RevisionIntelligence />
       <ProductModules />
       <MaturityMatrix />
+      <PlatformArchitecture />
       <TechnicalArchitecture />
-      <AIGovernance />
-      <SecurityArchitecture />
       <ProductBoundary />
     </Group>
   );
@@ -285,7 +287,7 @@ export function QualityGraphGroup() {
       <Block
         title="How quality entities connect"
         label={<Chip tone="planned">Planned data model</Chip>}
-        lead="Every part, requirement, measurement and approval becomes an entity with explicit links to the others. Select an entity to see what the graph is planned to hold about it and what it connects to."
+        lead="Every part, requirement, measurement and approval becomes an entity with explicit links to the others. The lower band adds geometry: the path from a 2D characteristic to the 3D feature it controls, and on to its inspection, measurement and evidence. Select an entity to see what the graph is planned to hold about it and what it connects to."
       >
         <QualityGraph />
       </Block>

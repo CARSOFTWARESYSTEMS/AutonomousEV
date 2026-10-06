@@ -49,7 +49,7 @@ function RequirementToEvidence() {
           SYNTHETIC
         </text>
         <text x="490" y="334" className={css.svgNote}>
-          SHEET 1/1
+          SHEET 2/2
         </text>
       </g>
 

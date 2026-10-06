@@ -1,4 +1,4 @@
-import { AQIP, CONNECTS, CORE_PROBLEM, EXECUTIVE_SUMMARY, FRAGMENTS, MARKET_DRIVERS, PROBLEM_FLOW, STAKEHOLDERS, STRATEGIC_HIERARCHY, WHERE_WE_ARE_GOING, WHERE_WE_START } from "../data/overview";
+import { AQIP, CONNECTS, CORE_PROBLEM, EXECUTIVE_SUMMARY, FRAGMENTS, MARKET_DRIVERS, PROBLEM_FLOW, STAKEHOLDERS, STRATEGIC_HIERARCHY, STRATEGIC_HIERARCHY_LABEL, STRATEGIC_MESSAGE, WHERE_WE_ARE_GOING, WHERE_WE_START } from "../data/overview";
 import { PROBLEMS, PROBLEM_FIELDS, type Problem } from "../data/problems";
 import InView from "../interactive/InView";
 import MasterDetail from "../interactive/MasterDetail";
@@ -11,6 +11,9 @@ export function ExecutiveSummary() {
       <Block id="executive-summary" title="Executive summary" executive>
         <div className={css.split}>
           <div>
+            <p className={css.prose}>
+              <strong>{STRATEGIC_MESSAGE.not}</strong> {STRATEGIC_MESSAGE.connects}
+            </p>
             <p className={css.prose}>{EXECUTIVE_SUMMARY}</p>
             <p className={css.fine}>
               Strategy last reviewed: <time dateTime={AQIP.reviewed}>{AQIP.reviewedLabel}</time>. Planning horizon: {AQIP.horizon}.
@@ -35,8 +38,8 @@ export function ExecutiveSummary() {
         </div>
       </Block>
 
-      <Block title="The strategic hierarchy" lead="Where the initiative starts, how the platform expands, how the network develops and what it can ultimately become." executive>
-        <Flow steps={STRATEGIC_HIERARCHY} label="Strategic hierarchy, from the prototype to the long-term vision" />
+      <Block id="strategic-progression" title="The strategic progression" lead="Where the initiative starts, what each step adds, and what it can ultimately become. The label on each step says how real it is today." executive>
+        <Flow steps={STRATEGIC_HIERARCHY} label={`Strategic progression: ${STRATEGIC_HIERARCHY_LABEL}`} />
       </Block>
 
       <Block title="Who is behind AQIP">
@@ -61,7 +64,7 @@ export function IndiaOpportunity() {
       title="Why now: the India opportunity"
       lead="What is changing in Indian aerospace and defence manufacturing, described as market drivers rather than market-size claims."
     >
-      <Block title="Market drivers" label={<Chip tone="current">Qualitative</Chip>}>
+      <Block title="Market drivers" label={<Chip tone="target">Qualitative</Chip>}>
         <ol className={css.cardGrid} data-plain="">
           {MARKET_DRIVERS.map((driver) => (
             <li key={driver.title} className={css.card}>
@@ -125,7 +128,7 @@ export function CoreProblem() {
         <Flow steps={PROBLEM_FLOW} label="The path from engineering intent to quality approval" direction="column" />
         <div className={css.card} data-emphasis="accent">
           <p className={css.cardEyebrow}>
-            With AQIP <Chip tone="planned" />
+            With AQIP <Chip tone="planned-y1" />
           </p>
           <p className={css.cardText}>One connected record. Each of those sources is linked to the requirement it supports; none of them has to be thrown away.</p>
           <p className={css.cardText}>The question “what proves this characteristic?” gets a direct answer.</p>
@@ -167,6 +170,14 @@ export function StakeholderValue() {
             <p className={css.cardEyebrow}>Wins</p>
             <ul className={css.list}>
               {stakeholder.wins.map((win) => (
+                <li key={win}>{win}</li>
+              ))}
+            </ul>
+            <p className={css.cardEyebrow}>
+              With the 3D Inspection Twin <Chip tone="research" />
+            </p>
+            <ul className={css.list}>
+              {stakeholder.twin.map((win) => (
                 <li key={win}>{win}</li>
               ))}
             </ul>

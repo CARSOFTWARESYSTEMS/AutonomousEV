@@ -32,17 +32,33 @@ export const DIGITAL_THREAD = ["Engineering Requirement", "Manufacturing", "Insp
 
 /** The progression the whole page argues for: where it starts and what it can become. */
 export const STRATEGIC_HIERARCHY: readonly { label: string; note: string; tone: Tone }[] = [
-  { label: "FAI Engineer", note: "The existing prototype foundation", tone: "current" },
-  { label: "AQIP", note: "Years 1–2: the product", tone: "planned" },
-  { label: "Aerospace Quality Network", note: "Year 3: suppliers and customers connected", tone: "planned" },
+  { label: "FAI Engineer", note: "The existing prototype foundation", tone: "prototype" },
+  { label: "Drawing Intelligence", note: "Source-linked extraction, verified by a person", tone: "development" },
+  { label: "3D Inspection Twin", note: "Verified 3D reconstruction and balloon-to-feature mapping", tone: "research" },
+  { label: "AQIP", note: "Years 1–2: the product", tone: "planned-y1" },
+  { label: "Secure Aerospace Quality Intelligence", note: "Evidence, AI assurance and security on one graph", tone: "planned-y23" },
+  { label: "Supplier Quality Network", note: "Year 3: suppliers and customers connected", tone: "planned-y23" },
   { label: "Aerospace Manufacturing Trust Infrastructure", note: "Year 5: the long-term destination", tone: "vision" },
 ];
 
+/** The same progression as one sentence, for assistive technology. */
+export const STRATEGIC_HIERARCHY_LABEL = STRATEGIC_HIERARCHY.map((step) => step.label).join(" to ");
+
 export const EXECUTIVE_SUMMARY =
-  "AQIP — the Aerospace Quality Intelligence Platform — is not merely First Article Inspection (FAI) software. It is intended to become the quality intelligence and evidence layer for aerospace and defence manufacturing: one traceable record that connects the engineering definition of a part to how it was made, inspected, measured and accepted. FAI is the initial market-entry wedge, because it is mandatory, recurring and painful for every supplier. From there the platform is planned to extend into production quality, configuration control, supplier collaboration and customer acceptance. AI helps interpret drawings and evidence; a qualified person approves every controlled record; the software keeps the proof. The long-term destination is aerospace manufacturing trust infrastructure. Today AQIP is an early-stage initiative: most capabilities described on this page are planned, not yet built.";
+  "AQIP — the Aerospace Quality Intelligence Platform — is not simply First Article Inspection (FAI) software. It is intended to connect engineering drawings, interactive 3D inspection intelligence, manufacturing quality evidence, cybersecurity and human-controlled AI into one trusted digital thread: a traceable record from the engineering definition of a part to how it was made, inspected, measured and accepted. FAI is the initial market-entry wedge, because it is mandatory, recurring and painful for every supplier. From there the platform is planned to extend into production quality, configuration control, supplier collaboration and customer acceptance. AI helps interpret drawings and evidence; a qualified person approves every controlled record; the software keeps the proof, and security protects it. The long-term destination is aerospace manufacturing trust infrastructure. Today AQIP is an early-stage initiative: what exists is the FAI Engineer prototype foundation, and most capabilities described on this page are planned, in research or long-term vision.";
+
+/** The page's positioning in three statements and a long-term aim. */
+export const STRATEGIC_MESSAGE = {
+  not: "AQIP is not simply FAI software.",
+  connects: "AQIP connects engineering drawings, interactive 3D inspection intelligence, manufacturing quality evidence, cybersecurity and human-controlled AI into one trusted digital thread.",
+  proves: "We help aerospace manufacturers prove that every part was built exactly as engineering intended.",
+  longTerm:
+    "AQIP aims to become the trusted quality intelligence infrastructure for aerospace and defence manufacturing — from requirement to evidence, 2D drawing to 3D inspection twin, supplier to OEM, and factory to field.",
+} as const;
 
 export const CONNECTS = [
   "Engineering definition",
+  "2D drawings and 3D inspection geometry",
   "Manufacturing",
   "Inspection",
   "Measurement",
@@ -105,7 +121,8 @@ export const PROBLEM_FLOW = ["Engineering intent", "Manufacturing", "Inspection"
 /** Where the evidence lives today. */
 export const FRAGMENTS = ["PDF", "Excel", "Email", "CMM files", "Material certificates", "Shared drives", "Paper travellers", "ERP", "QMS", "FAI reports"] as const;
 
-export const STAKEHOLDERS: readonly { id: string; name: string; gives: string; wins: readonly string[] }[] = [
+/** `twin` is what the 3D Inspection Twin could add for each party. It is research, not a delivered benefit. */
+export const STAKEHOLDERS: readonly { id: string; name: string; gives: string; wins: readonly string[]; twin: readonly string[] }[] = [
   {
     id: "msme",
     name: "Aerospace / Defence MSME",
@@ -119,24 +136,28 @@ export const STAKEHOLDERS: readonly { id: string; name: string; gives: string; w
       "Improved supplier credibility",
       "Ability to scale without proportionally scaling paperwork",
     ],
+    twin: ["Easier interpretation of complex drawings", "Quicker onboarding of junior engineers", "Spatial inspection navigation", "Fewer missed features"],
   },
   {
     id: "oem",
     name: "OEM / Prime / DPSU / Customer",
     gives: "Gives: clear requirements, faster review and repeat business.",
     wins: ["Stronger supplier quality", "Consistent evidence", "Faster review", "Improved supplier onboarding", "Better traceability", "Visibility across quality workflows"],
+    twin: ["Clearer supplier communication", "Visually linked quality evidence", "Easier review"],
   },
   {
     id: "ecosystem",
     name: "End User / Aerospace & Defence Ecosystem",
     gives: "Gives: the demand for assured, reliable hardware.",
     wins: ["Higher manufacturing assurance", "Stronger configuration control", "Fewer quality escapes", "Stronger reliability culture"],
+    twin: ["Stronger manufacturing assurance"],
   },
   {
     id: "aqip",
     name: "AQIP / iTelematics",
     gives: "Gives: the platform, deployment, security and support.",
     wins: ["Recurring SaaS revenue", "Enterprise revenue", "Network revenue", "Integration revenue", "Workflow stickiness", "Proprietary quality graph", "Industry trust"],
+    twin: ["Premium differentiated module", "Stronger data moat", "Deeper workflow integration"],
   },
 ];
 
@@ -154,3 +175,18 @@ export const PRINCIPLES: readonly { title: string; text: string }[] = [
 ];
 
 export const SAFETY_RULE = "AI must never silently release a controlled aerospace quality record.";
+
+/** What the whole initiative stands on. The last one is what AQIP ultimately sells. */
+export const AQIP_PRINCIPLES: readonly { name: string; text: string }[] = [
+  { name: "Quality", text: "Every aerospace manufacturing requirement should connect to verifiable evidence." },
+  { name: "Visual engineering", text: "Quality information should be understandable in both 2D drawings and interactive 3D geometry." },
+  { name: "Human authority", text: "AI assists qualified engineers. Humans retain controlled engineering and quality authority." },
+  { name: "Cybersecurity", text: "Engineering information and quality evidence must remain protected, authentic and auditable." },
+  { name: "AI assurance", text: "Every important AI-assisted conclusion should be explainable and traceable." },
+  { name: "Intelligence", text: "Structured manufacturing data should evolve from documentation into predictive quality intelligence." },
+];
+
+export const ULTIMATE_PRODUCT = {
+  not: ["a PDF", "a 3D model", "an AI agent", "a QMS"],
+  is: "Trust in how aerospace products were built.",
+} as const;

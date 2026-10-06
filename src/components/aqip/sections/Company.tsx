@@ -82,7 +82,7 @@ export function LeadershipGroup() {
 
 export function InvestorThesis() {
   return (
-    <Block id="investor-thesis" title="Investor thesis" lead="Six questions an investor will ask, answered briefly. No valuation is claimed anywhere on this page." executive>
+    <Block id="investor-thesis" title="Investor thesis" lead="Seven questions an investor will ask, answered briefly. No valuation is claimed anywhere on this page." executive>
       <dl className={css.thesis} data-plain="">
         {INVESTOR_THESIS.map((item) => (
           <div key={item.question} className={css.card}>

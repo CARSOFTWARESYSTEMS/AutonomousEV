@@ -231,9 +231,13 @@ export const INVESTOR_THESIS: readonly { question: string; answer: string; point
   { question: "Why now?", answer: "Growing aerospace/defence manufacturing and supplier complexity." },
   { question: "Why this problem?", answer: "Quality is mandatory and recurring." },
   { question: "Why software?", answer: "Many workflows remain fragmented and repetitive." },
-  { question: "Why AQIP?", answer: "Digital thread + Quality Graph + human-verifiable AI + supplier network." },
-  { question: "Why defensible?", answer: "The advantages that compound with use:", points: ["Domain data", "Workflow depth", "Integrations", "Historical evidence", "Network effects", "Trust"] },
+  { question: "Why AQIP?", answer: "Digital thread + Quality Graph + human-verifiable AI + 3D inspection intelligence + security by design + supplier network." },
+  { question: "Why defensible?", answer: "The advantages that compound with use:", points: ["Domain data", "Verified geometry-to-characteristic mappings", "Workflow depth", "Integrations", "Historical evidence", "Network effects", "Security and deployment trust"] },
   { question: "Why scale?", answer: "Supplier → OEM → network." },
+  {
+    question: "What is not proven yet?",
+    answer: "Most of it. The FAI Engineer prototype exists; the 3D Inspection Twin and agentic assistance are research, and demand for them still has to be validated with customers.",
+  },
 ];
 
 export const FUNDING_STAGES: readonly { stage: string; name: string; source: string; objective: string; when: string }[] = [

@@ -133,9 +133,3 @@ export const NINETY_DAY: readonly { id: string; phase: string; goal: string; ite
     ],
   },
 ];
-
-export const FINAL_MESSAGE = [
-  "We do not build aerospace quality software merely to digitise paperwork.",
-  "We help aerospace manufacturers prove that every part was built exactly as engineering intended.",
-  "AQIP aims to become the trust infrastructure for aerospace and defence manufacturing — from requirement to evidence, supplier to OEM, and factory to field.",
-] as const;

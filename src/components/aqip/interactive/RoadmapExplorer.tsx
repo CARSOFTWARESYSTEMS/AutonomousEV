@@ -7,9 +7,9 @@ import { Chip, Tags } from "../ui/primitives";
 import css from "../interactive.module.css";
 
 /**
- * The five-year roadmap. On wide screens the reader picks a year and sees its
- * objectives, customer and company phase, and what the platform covers by
- * then. On phones every year is stacked as a milestone card that carries the
+ * The five-year roadmap. On wide screens the reader picks a year and sees what
+ * it adds on each track (quality, AI, 3D and security), its objectives, the
+ * customer and company phase, and what the platform covers by then. On phones every year is stacked as a milestone card that carries the
  * same detail, so nothing depends on the selector or on swiping.
  */
 export default function RoadmapExplorer() {
@@ -46,6 +46,14 @@ export default function RoadmapExplorer() {
               {item.theme}
             </h4>
             <p className={css.yearSummary}>{item.summary}</p>
+            <dl className={css.yearTracks} aria-label={`Year ${item.year} by track`}>
+              {item.tracks.map((track) => (
+                <div key={track.track} data-track={track.track}>
+                  <dt>{track.track}</dt>
+                  <dd>{track.text}</dd>
+                </div>
+              ))}
+            </dl>
             <p className={css.yearHeading}>Objectives and modules</p>
             <Tags items={item.items} label={`Year ${item.year} work`} />
             <dl className={css.yearPhases}>

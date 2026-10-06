@@ -3,14 +3,23 @@
 import type { Maturity } from "../types";
 
 export const REVENUE_ENGINES: readonly { id: string; n: number; name: string; how: string; payer: string; starts: Maturity; note: string }[] = [
-  { id: "saas", n: 1, name: "SaaS subscription", how: "An annual subscription per organisation, scaled by modules and users.", payer: "Supplier", starts: "now", note: "The base of recurring revenue." },
-  { id: "usage", n: 2, name: "Usage-based processing", how: "A charge per drawing or FAI processed, above an included allowance.", payer: "Supplier", starts: "now", note: "Lets a small supplier start small." },
-  { id: "managed", n: 3, name: "Managed Quality Service", how: "AQIP-assisted preparation of quality packages, delivered as a service.", payer: "Supplier", starts: "now", note: "Useful for learning in Year 1; must not turn into custom development." },
-  { id: "private", n: 4, name: "Secure / private / on-prem deployment", how: "A dedicated or customer-hosted deployment with its own commercial terms.", payer: "Supplier or enterprise", starts: "now", note: "Often a precondition for defence work." },
-  { id: "network", n: 5, name: "OEM Supplier Network", how: "A customer sponsors AQIP access for its suppliers under one agreement.", payer: "OEM, prime or DPSU", starts: "later", note: "The largest contract shape; needs proven supplier value first." },
-  { id: "integrations", n: 6, name: "Enterprise integrations / APIs", how: "Connectors to ERP, PLM, MES and metrology systems, and API access.", payer: "Enterprise", starts: "next", note: "Deepens the workflow and raises switching cost." },
-  { id: "academy", n: 7, name: "Training / AQIP Academy", how: "Training in digital quality practice, FAI and the platform.", payer: "Supplier or individual", starts: "next", note: "Builds skills and awareness in the ecosystem." },
+  { id: "saas", n: 1, name: "SaaS subscription", how: "An annual subscription per organisation, scaled by modules and users.", payer: "Supplier", starts: "planned-y1", note: "The base of recurring revenue." },
+  { id: "usage", n: 2, name: "Usage-based processing", how: "A charge per drawing or FAI processed, above an included allowance.", payer: "Supplier", starts: "planned-y1", note: "Lets a small supplier start small." },
+  { id: "managed", n: 3, name: "Managed Quality Service", how: "AQIP-assisted preparation of quality packages, delivered as a service.", payer: "Supplier", starts: "planned-y1", note: "Useful for learning in Year 1; must not turn into custom development." },
+  { id: "private", n: 4, name: "Secure / private / on-prem deployment", how: "A dedicated or customer-hosted deployment with its own commercial terms.", payer: "Supplier or enterprise", starts: "planned-y1", note: "Often a precondition for defence work." },
+  { id: "network", n: 5, name: "OEM Supplier Network", how: "A customer sponsors AQIP access for its suppliers under one agreement.", payer: "OEM, prime or DPSU", starts: "planned-y23", note: "The largest contract shape; needs proven supplier value first." },
+  { id: "integrations", n: 6, name: "Enterprise integrations / APIs", how: "Connectors to ERP, PLM, MES and metrology systems, and API access.", payer: "Enterprise", starts: "planned-y23", note: "Deepens the workflow and raises switching cost." },
+  { id: "academy", n: 7, name: "Training / AQIP Academy", how: "Training in digital quality practice, FAI and the platform.", payer: "Supplier or individual", starts: "planned-y23", note: "Builds skills and awareness in the ecosystem." },
 ];
+
+/** A possible future premium module. Dimensions a price could depend on; no price is claimed. */
+export const TWIN_REVENUE = {
+  name: "3D Inspection Twin",
+  kind: "Premium module",
+  text: "If customer discovery confirms the need, the 3D Inspection Twin could be offered as a premium module on top of the subscription. It is research today, so this is a commercial hypothesis, not an offer.",
+  dimensions: ["Parts processed", "Reconstruction complexity", "CAD conversion", "Seats", "Enterprise integration"],
+  note: "No price is published for this module. Any figure would have to come from validated customer demand.",
+} as const;
 
 export const PRICING_LABEL = "Illustrative commercial hypotheses — validate through customer discovery.";
 
@@ -89,6 +98,8 @@ export const NOT_STRATEGY = "another ballooning tool";
 export const DIFFERENTIATORS = [
   "Requirement-to-evidence digital thread",
   "Human-verifiable engineering AI",
+  "2D-to-3D inspection intelligence with verified geometry",
+  "Cybersecurity and AI assurance built into the platform",
   "Quality Graph",
   "Revision/configuration intelligence",
   "MSME-oriented deployment",

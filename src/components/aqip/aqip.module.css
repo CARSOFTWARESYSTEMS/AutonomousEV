@@ -589,6 +589,14 @@
 .cardGrid {
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr));
 }
+/* Six maturity groups: one column, then two, then three rows of two. */
+.maturityGrid {
+  display: grid;
+  gap: 16px;
+}
+.maturityGrid > * {
+  min-width: 0;
+}
 
 /* ── Cards, lists, tags, chips ── */
 .card {
@@ -747,23 +755,38 @@
   border-radius: 50%;
   background: currentColor;
 }
-.chip[data-tone="now"],
-.chip[data-tone="available"],
-.chip[data-tone="current"] {
+.chip[data-tone="prototype"] {
   color: var(--aq-ok);
 }
-.chip[data-tone="next"],
-.chip[data-tone="development"],
+.chip[data-tone="development"] {
+  color: #7dd3fc;
+}
+.chip[data-tone="planned-y1"],
 .chip[data-tone="target"] {
   color: var(--aq-accent);
 }
-.chip[data-tone="later"],
+.chip[data-tone="planned-y23"],
 .chip[data-tone="planned"],
-.chip[data-tone="research"],
-.chip[data-tone="vision"],
 .chip[data-tone="future"],
 .chip[data-tone="strategy"] {
   color: var(--aq-violet);
+}
+.chip[data-tone="research"] {
+  color: #e9b8ff;
+}
+.chip[data-tone="vision"] {
+  color: #b6bdd6;
+}
+.chip[data-tone="planned-y1"]::before,
+.chip[data-tone="planned-y23"]::before,
+.chip[data-tone="planned"]::before,
+.chip[data-tone="research"]::before,
+.chip[data-tone="vision"]::before,
+.chip[data-tone="future"]::before {
+  width: 4px;
+  height: 4px;
+  border: 1.5px solid currentColor;
+  background: none;
 }
 .chip[data-tone="illustrative"],
 .chip[data-tone="synthetic"],
@@ -1315,11 +1338,17 @@
   border-left: 3px solid var(--aq-violet);
   background: var(--aq-panel);
 }
-.module[data-maturity="now"] {
+.module[data-maturity="prototype"] {
   border-left-color: var(--aq-ok);
 }
-.module[data-maturity="next"] {
+.module[data-maturity="development"] {
+  border-left-color: #7dd3fc;
+}
+.module[data-maturity="planned-y1"] {
   border-left-color: var(--aq-accent-2);
+}
+.module[data-maturity="vision"] {
+  border-left-color: var(--aq-muted);
 }
 .module > * + * {
   margin-top: 6px;
@@ -1897,32 +1926,38 @@
   margin-top: 14px;
 }
 
-/* The site's shared footer, unchanged, drawn in AQIP's palette: it reads these properties. */
-.footerTheme {
-  --bg-dark: #050816;
-  --glass-border: rgba(147, 197, 253, 0.14);
-  --accent-primary: #93c5fd;
-  --text-primary: #f4f6fc;
-  --text-secondary: #c4c9db;
+.finalPrinciples {
+  margin-top: clamp(40px, 6vw, 64px);
+  scroll-margin-top: calc(var(--aq-site-nav) + var(--aq-index) + 12px);
 }
-/* The footer's container takes this page's width and gutters, so its edges meet the manual's. */
-.footerTheme :global(.container) {
-  max-width: var(--aq-content-max);
-  padding-left: max(var(--aq-gutter), env(safe-area-inset-left));
-  padding-right: max(var(--aq-gutter), env(safe-area-inset-right));
+.finalPrinciples > * + * {
+  margin-top: 18px;
 }
-/* The shared footer's links are a line of text tall; on touch screens give each a full-size target. */
-@media (max-width: 1023px) {
-  .footerTheme a {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    margin-block: -6px;
-  }
+.ultimate {
+  padding: clamp(18px, 2.6vw, 28px);
+  border-radius: var(--aq-radius);
+  border: 1px solid var(--aq-line-2);
+  background: linear-gradient(180deg, rgba(59, 130, 246, 0.12), var(--aq-panel));
+}
+.ultimate > * + * {
+  margin-top: 8px;
+}
+.ultimateText {
+  font-family: var(--aq-display);
+  font-size: clamp(1.35rem, 3vw, 2.1rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--aq-strong);
+  text-wrap: balance;
 }
 
 /* ── Wider layouts ── */
 @media (min-width: 600px) {
+  .maturityGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .ctaRow {
     flex-direction: row;
     flex-wrap: wrap;
@@ -2017,6 +2052,9 @@
 }
 
 @media (min-width: 900px) {
+  .maturityGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
   .split {
     grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
     gap: 24px;
@@ -2159,9 +2197,6 @@
     --aq-violet: #5b21b6;
     background: #fff;
   }
-  .footerTheme {
-    display: none;
-  }
   .hero {
     padding-top: 0;
     background: none;
@@ -2179,6 +2214,7 @@
   .statement,
   .passport,
   .northStar,
+  .ultimate,
   .archLayer[data-emphasis="human"],
   .tier:first-child,
   .apiRequest {

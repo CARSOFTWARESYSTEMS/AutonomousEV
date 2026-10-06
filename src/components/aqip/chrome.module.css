@@ -632,6 +632,136 @@
   display: none;
 }
 
+/* ── Footer: AQIP's own, in place of the site's ── */
+.footer {
+  margin-top: 0;
+  padding: clamp(40px, 6vw, 72px) 0 calc(28px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--aq-line);
+  background: #050816;
+  color: var(--aq-text-2);
+}
+.footerInner {
+  display: grid;
+  gap: 36px;
+  max-width: var(--aq-content-max);
+  margin: 0 auto;
+  padding-left: max(var(--aq-gutter), env(safe-area-inset-left));
+  padding-right: max(var(--aq-gutter), env(safe-area-inset-right));
+}
+.footerBrand > * + * {
+  margin-top: 6px;
+}
+.footerMark {
+  font-family: var(--aq-display);
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--aq-strong);
+}
+.footerName {
+  font-size: 0.95rem;
+  font-weight: 650;
+  color: var(--aq-accent);
+}
+.footerTagline {
+  max-width: 34ch;
+  padding-top: 8px;
+  font-size: 0.95rem;
+  color: var(--aq-text-2);
+}
+.footerPhilosophy {
+  font-size: 0.88rem;
+  font-weight: 650;
+  color: var(--aq-muted);
+}
+.footerNav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px 20px;
+}
+.footerColumn ul,
+.footerLegal {
+  list-style: none;
+}
+.footerTitle,
+.footerRoles dt {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--aq-muted);
+}
+.footerTitle {
+  margin-bottom: 4px;
+}
+/* Every footer link is a full-size target. */
+.footerLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 44px;
+  color: var(--aq-text-2);
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: color var(--aq-fast);
+}
+.footerLink:hover {
+  color: var(--aq-strong);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.footerLink:focus-visible {
+  outline: 2px solid var(--aq-strong);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.footerRoles {
+  display: grid;
+  gap: 16px 24px;
+  padding: 24px 0;
+  border-top: 1px solid var(--aq-line);
+  border-bottom: 1px solid var(--aq-line);
+}
+.footerRoles dd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 8px;
+  margin-top: 4px;
+  font-size: 0.95rem;
+  font-weight: 650;
+  color: var(--aq-text);
+}
+.footerRoles dd .footerLink {
+  font-weight: 650;
+  color: var(--aq-text);
+}
+.footerRoles dd span {
+  font-weight: 500;
+  color: var(--aq-muted);
+}
+.footerBottom {
+  display: grid;
+  gap: 14px;
+  font-size: 0.85rem;
+  color: var(--aq-muted);
+}
+.footerLegal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 22px;
+}
+.footerCompany {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 18px;
+  font-style: normal;
+}
+.footerCopy {
+  max-width: 76ch;
+}
+
 /* ── Wider layouts ── */
 @media (min-width: 480px) {
   .brandLine {
@@ -765,5 +895,43 @@
   .chapter {
     break-before: page;
     padding-top: 0;
+  }
+}
+
+@media (min-width: 640px) {
+  .footerNav {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .footerRoles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .footerInner {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: 40px 48px;
+  }
+  .footerRoles,
+  .footerBottom {
+    grid-column: 1 / -1;
+  }
+  .footerRoles {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+  /* A pointer does not need a 44px row for each link. */
+  .footerColumn .footerLink,
+  .footerLegal .footerLink {
+    min-height: 34px;
+  }
+}
+
+@media print {
+  .footerNav,
+  .footerLegal {
+    display: none;
+  }
+  .footer {
+    background: #fff;
   }
 }

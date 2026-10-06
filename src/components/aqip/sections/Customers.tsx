@@ -1,4 +1,19 @@
-import { AI_METRICS, CHANNELS, CHANNEL_LABEL, CLUSTERS, DISCOVERY, DISCOVERY_TOPICS, PMF_SIGNALS, PMF_STRONGEST, SEGMENTS, VALIDATION_MEASURES, VALIDATION_RULE } from "../data/customers";
+import {
+  AI_METRICS,
+  CHANNELS,
+  CHANNEL_LABEL,
+  CLUSTERS,
+  DISCOVERY,
+  DISCOVERY_TOPICS,
+  PMF_SIGNALS,
+  PMF_STRONGEST,
+  SEGMENTS,
+  TWIN_CRITICAL_METRIC,
+  TWIN_DISCOVERY_RULE,
+  TWIN_VALIDATION,
+  VALIDATION_MEASURES,
+  VALIDATION_RULE,
+} from "../data/customers";
 import { CustomerScorecard as Scorecard } from "../interactive/Lazy";
 import MasterDetail from "../interactive/MasterDetail";
 import { Block, Callout, Chip, DataTable, Group, Tags } from "../ui/primitives";
@@ -73,6 +88,9 @@ export function CustomerDiscovery() {
           “{DISCOVERY.validationAvoid}”
         </Callout>
       </div>
+      <Callout kind="note" label="On 3D">
+        {TWIN_DISCOVERY_RULE} The “3D and CAD” topic above is there to find out whether the 3D Inspection Twin solves a cost the customer already feels.
+      </Callout>
     </Block>
   );
 }
@@ -122,6 +140,24 @@ export function ValidationFramework() {
   );
 }
 
+export function TwinValidation() {
+  return (
+    <Block id="twin-validation" title="Validating the 3D Inspection Twin" label={<Chip tone="research" />} lead="The twin earns a place in the product only if it measurably helps an engineer, and only where it can be trusted. Measure both before offering it.">
+      <DataTable caption="What to measure when validating the 3D Inspection Twin" columns={["Measure", "How to measure it"]} rows={TWIN_VALIDATION.map((row) => [row.measure, row.how])} />
+      <div className={css.split}>
+        <div className={css.card} data-emphasis="accent">
+          <p className={css.cardEyebrow}>Critical metric</p>
+          <h4 className={css.h4}>{TWIN_CRITICAL_METRIC.name}</h4>
+          <p className={css.cardText}>{TWIN_CRITICAL_METRIC.text}</p>
+        </div>
+        <Callout kind="safety" label="Principle">
+          {TWIN_CRITICAL_METRIC.principle}
+        </Callout>
+      </div>
+    </Block>
+  );
+}
+
 export function PMFSignals() {
   return (
     <Block id="product-market-fit" title="Product-market fit" lead="A demo is NOT product-market fit. These are the signals that count, because each one costs the customer something.">
@@ -141,6 +177,7 @@ export function ValidationGroup() {
   return (
     <Group id="validation" kicker="Validation" title="Validation: prove it works before claiming it does" lead="Measure the product against the customer's existing process, and measure demand by what customers do.">
       <ValidationFramework />
+      <TwinValidation />
       <PMFSignals />
     </Group>
   );

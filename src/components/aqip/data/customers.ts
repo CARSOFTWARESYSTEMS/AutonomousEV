@@ -60,7 +60,25 @@ export const DISCOVERY_TOPICS: readonly { id: string; topic: string; listenFor: 
   { id: "commercial", topic: "Commercial", listenFor: "A cost or delay the business already feels.", questions: ["What does a difficult FAI cost internally?", "What happens when approval is delayed?"] },
   { id: "buying", topic: "Buying", listenFor: "The owner of the pain, the approver and the blockers.", questions: ["Who owns this pain?", "Who would approve software?", "What security requirements apply?"] },
   { id: "validation", topic: "Validation", listenFor: "A commitment of time and a live job, not a compliment.", questions: ["Can we run your next live FAI together?"] },
+  {
+    id: "twin",
+    topic: "3D and CAD",
+    listenFor: "Whether 3D would remove a real cost. Do not assume the demand: a team that reads drawings fluently may not need it.",
+    questions: [
+      "Do engineers struggle to mentally interpret complex 2D drawings?",
+      "Do operators and inspectors use 3D CAD today?",
+      "Are STEP files always available?",
+      "How often do suppliers receive only PDF drawings?",
+      "Would spatial balloon navigation help inspection?",
+      "Where do drawing interpretation errors occur?",
+      "Would a 3D model help customer review?",
+      "Can CAD files leave your network?",
+      "What CAD formats do you receive?",
+    ],
+  },
 ];
+
+export const TWIN_DISCOVERY_RULE = "Do not assume customer demand for 3D. Validate it.";
 
 export const VALIDATION_MEASURES: readonly { measure: string; how: string }[] = [
   { measure: "Engineering hours", how: "Hours booked to the job, existing process against AQIP process." },
@@ -82,6 +100,23 @@ export const AI_METRICS: readonly { metric: string; meaning: string }[] = [
   { metric: "False negatives", meaning: "Characteristics that were missed. The most dangerous error." },
   { metric: "False positives", meaning: "Characteristics proposed that do not exist. A cost in review time." },
 ];
+
+/** What to measure before the 3D Inspection Twin is offered to anyone. */
+export const TWIN_VALIDATION: readonly { measure: string; how: string }[] = [
+  { measure: "Reconstruction time", how: "From drawing received to a geometry candidate ready for review." },
+  { measure: "Engineer correction time", how: "Time an engineer spends confirming, editing or rejecting the candidate." },
+  { measure: "Feature mapping accuracy", how: "Recognised features against a verified reference model of the same part." },
+  { measure: "Balloon-to-feature accuracy", how: "Balloons mapped to the correct feature, against the verified reference." },
+  { measure: "User comprehension", how: "Whether engineers answer questions about the part faster or more accurately with the twin than with the drawing alone." },
+  { measure: "Inspection navigation time", how: "Time to find a characteristic's feature, with and without the twin." },
+  { measure: "Ambiguity rate", how: "Features flagged medium or unresolved, as a share of all features." },
+];
+
+export const TWIN_CRITICAL_METRIC = {
+  name: "Unsupported Geometry Rate",
+  text: "How often AQIP cannot safely infer geometry and says so. A high rate on a class of part means the twin should not be offered for it yet.",
+  principle: "An honest “Unable to determine” is better than inventing geometry.",
+} as const;
 
 export const VALIDATION_RULE = "Any supported critical characteristic requires human reconciliation before release.";
 

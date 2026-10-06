@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import { trackEvent } from "@/utils/analytics";
 import styles from "./PrerequisitesSection.module.css";
 
@@ -27,6 +26,29 @@ const PREREQUISITES: readonly { track: string; items: readonly string[] }[] = [
     ],
   },
 ];
+
+/** What an intern builds, by track. A project draws on its own track and the common set. */
+const SKILLS: readonly { track: string; items: readonly string[] }[] = [
+  { track: "Common Engineering", items: ["Systems thinking", "Requirements", "Validation", "Documentation", "Problem solving"] },
+  { track: "EV / Battery", items: ["Battery", "BMS", "CAN", "Energy intelligence", "Cybersecurity"] },
+  { track: "AI / Software", items: ["Python", "AI/ML", "GenAI", "Agentic AI", "AI evaluation", "Secure AI"] },
+  { track: "Cybersecurity", items: ["Secure SDLC", "Threat modelling", "IAM", "API security", "SBOM", "AI security", "Connected systems"] },
+  {
+    track: "Space / Aerospace",
+    items: ["Systems engineering", "Avionics", "Telemetry", "Digital twins", "Mission systems", "Aerospace cybersecurity", "Aerospace quality", "GD&T / inspection concepts"],
+  },
+  { track: "Digital Engineering / 3D", items: ["Engineering drawing interpretation", "CAD concepts", "2D-to-3D reconstruction", "3D visualisation", "Digital twins", "Model-Based Engineering"] },
+];
+
+/** Roles the EV and battery tracks have led to. The other tracks lead to their own. */
+const EV_ROLES = [
+  "EV Battery Diagnostics Engineer",
+  "EV Software Engineer",
+  "Battery Management System (BMS) Engineer",
+  "EV Data & Analytics Engineer",
+  "Automotive Embedded Systems Engineer",
+  "EV AI/ML Engineer",
+] as const;
 
 export default function PrerequisitesSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -100,49 +122,38 @@ export default function PrerequisitesSection() {
 
         {/* CARD 2 */}
         <div className={styles.largeCard}>
-          <h3 className={styles.cardHeader}>Skills You Will Learn After Internship</h3>
+          <h3 className={styles.cardHeader}>Skills You Will Build</h3>
           <p className={styles.goalText}>
-            <span className={styles.highlight}>Goal:</span> Become industry-ready EV Engineer
+            <span className={styles.highlight}>Goal:</span> Become an industry-ready engineer in your chosen track
           </p>
 
-          <ul className={styles.bulletList}>
-            <li className={styles.bulletItem}>
-              <span className={styles.arrow}>→</span>
-              <span><span className={styles.highlight}>Core Skills:</span> EV Battery Systems & BMS (Cell → Module → Pack, SOC/SOH), Automotive Cybersecurity.</span>
-            </li>
-            <li className={styles.bulletItem}>
-              <span className={styles.arrow}>→</span>
-              <span><span className={styles.highlight}>What You Will Be Able To Do:</span> Real-World Data Acquisition (Sensors, ESP32) and EV Data Analysis using Python & cloud tools.</span>
-            </li>
-            <li className={styles.bulletItem}>
-              <span className={styles.arrow}>→</span>
-              <span><span className={styles.highlight}>Outcome:</span> Implement AI/ML for Battery Intelligence (health prediction, anomaly detection, risk analysis).</span>
-            </li>
-            <li className={styles.bulletItem}>
-              <span className={styles.arrow}>→</span>
-              <span>
-                <span className={styles.highlight}>Job Roles:</span>
-                <ul style={{ listStyle: 'none', padding: 0, margin: '8px 0 0 0', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  {[
-                    'EV Battery Diagnostics Engineer',
-                    'EV Software Engineer',
-                    'Battery Management System (BMS) Engineer',
-                    'EV Data & Analytics Engineer',
-                    'Automotive Embedded Systems Engineer',
-                    'EV AI/ML Engineer',
-                  ].map((role) => (
-                    <li key={role} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '0.9rem', color: '#d0d0d0', lineHeight: 1.5 }}>
-                      <span style={{ color: 'var(--accent-primary)', flexShrink: 0, fontSize: '0.7rem', marginTop: '4px' }}>◆</span>
-                      {role}
-                    </li>
-                  ))}
-                </ul>
-              </span>
-            </li>
-          </ul>
+          {SKILLS.map((group) => (
+            <div key={group.track} className={styles.track}>
+              <h4 className={styles.trackTitle}>{group.track}</h4>
+              <ul className={styles.skillList} aria-label={`${group.track} skills`}>
+                {group.items.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+
+          <p className={styles.trackNote}>Specific skills depend on project.</p>
+
+          <div className={styles.track}>
+            <h4 className={styles.trackTitle}>Example roles from the EV / Battery tracks</h4>
+            <ul className={styles.roleList}>
+              {EV_ROLES.map((role) => (
+                <li key={role}>
+                  <span aria-hidden="true">◆</span>
+                  {role}
+                </li>
+              ))}
+            </ul>
+          </div>
 
           <div className={styles.tipBlock}>
-            <span className={styles.highlight}>Tip:</span> You will master real-world EV engineering workflows and build a strong portfolio.
+            <span className={styles.highlight}>Tip:</span> You will work through real engineering workflows and build a strong portfolio.
           </div>
         </div>
 

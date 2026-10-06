@@ -64,6 +64,33 @@ describe("/internships hero, prerequisites and metadata", () => {
     expect(screen.getByText(/It depends on the track\./)).toBeInTheDocument();
   });
 
+  it("lists the skills an intern builds by track, for all six tracks rather than for EV alone", () => {
+    render(<InternshipsPage />);
+    const card = screen.getByRole("heading", { level: 3, name: "Skills You Will Build" }).parentElement!;
+    const skills = (track: string) =>
+      within(within(card).getByRole("list", { name: `${track} skills` }))
+        .getAllByRole("listitem")
+        .map((item) => item.textContent);
+    expect(within(card).getAllByRole("heading", { level: 4 }).map((h) => h.textContent)).toEqual([
+      "Common Engineering",
+      "EV / Battery",
+      "AI / Software",
+      "Cybersecurity",
+      "Space / Aerospace",
+      "Digital Engineering / 3D",
+      "Example roles from the EV / Battery tracks",
+    ]);
+    expect(skills("Common Engineering")).toEqual(["Systems thinking", "Requirements", "Validation", "Documentation", "Problem solving"]);
+    expect(skills("EV / Battery")).toEqual(["Battery", "BMS", "CAN", "Energy intelligence", "Cybersecurity"]);
+    expect(skills("AI / Software")).toEqual(["Python", "AI/ML", "GenAI", "Agentic AI", "AI evaluation", "Secure AI"]);
+    expect(skills("Cybersecurity")).toEqual(["Secure SDLC", "Threat modelling", "IAM", "API security", "SBOM", "AI security", "Connected systems"]);
+    expect(skills("Space / Aerospace")).toEqual(["Systems engineering", "Avionics", "Telemetry", "Digital twins", "Mission systems", "Aerospace cybersecurity", "Aerospace quality", "GD&T / inspection concepts"]);
+    expect(skills("Digital Engineering / 3D")).toEqual(["Engineering drawing interpretation", "CAD concepts", "2D-to-3D reconstruction", "3D visualisation", "Digital twins", "Model-Based Engineering"]);
+    expect(within(card).getByText("Specific skills depend on project.")).toBeInTheDocument();
+    expect(card).toHaveTextContent("Become an industry-ready engineer in your chosen track");
+    expect(screen.queryByText("Skills You Will Learn After Internship")).toBeNull();
+  });
+
   it("has a title and description that span the whole programme", () => {
     expect(metadata.title).toBe("Engineering Internships & R&D — EV, AI, Aerospace & Space | EV.ENGINEER™");
     expect(metadata.description).toBe(
@@ -100,12 +127,12 @@ describe("/internships Space & Aerospace Engineering", () => {
     }
   });
 
-  it("gives AQIP its new identity: a badge, FAI and AI-Assisted tags, and no Agentic AI label", () => {
+  it("gives AQIP its new identity: a badge, six tags from Aerospace to AI-Assisted, and no Agentic AI label", () => {
     render(<InternshipsPage />);
     const card = within(section()).getByRole("heading", { level: 3, name: "Aerospace Quality Intelligence Platform" }).closest("article")!;
     expect(within(card).getByText("AQIP")).toBeInTheDocument();
     expect(within(card).getByText(/connecting engineering requirements, inspection, FAI, configuration control, manufacturing evidence and supplier quality through a trusted digital thread\./)).toBeInTheDocument();
-    expect(within(within(card).getByRole("list", { name: "Topics" })).getAllByRole("listitem").slice(0, 6).map((tag) => tag.textContent)).toEqual(["Aerospace", "Defence", "Quality Intelligence", "FAI", "Digital Thread", "AI-Assisted"]);
+    expect(within(within(card).getByRole("list", { name: "Topics" })).getAllByRole("listitem").slice(0, 6).map((tag) => tag.textContent)).toEqual(["Aerospace", "Defence", "Quality Intelligence", "Digital Thread", "Secure Engineering", "AI-Assisted"]);
     expect(card.textContent).not.toMatch(/Agentic AI|GenAI/);
     expect(within(card).getByRole("link", { name: "Explore AQIP" })).toHaveAttribute("data-track-event", "aqip_card_click");
   });

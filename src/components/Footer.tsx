@@ -25,7 +25,6 @@ export default function Footer() {
         <div className={styles.column}>
           <div className={styles.columnTitle}>Resources</div>
           <Link href="/av-concepts" className={styles.link}>AV Concepts</Link>
-          <Link href="/simulations" className={styles.link}>AV Simulations</Link>
           <Link href="/developer-portal" className={styles.link}>Developer Portal</Link>
           <Link href="/challenges" className={styles.link}>Challenges</Link>
           <a href="https://itelematics.com/public/iTelematics-FrequentlyAskedQuestions.pdf" target="_blank" rel="noopener noreferrer" className={styles.link}>Internship & Fees FAQ</a>

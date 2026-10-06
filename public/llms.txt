@@ -28,10 +28,14 @@ link below points to a canonical public page already listed in
   Strategy and operating manual for an early-stage initiative to build the
   quality intelligence and evidence layer for aerospace and defence
   manufacturing: First Article Inspection (FAI) as the starting point, the
-  Aerospace Quality Graph, a three-year roadmap and five-year vision,
-  customer discovery and validation playbooks, business model, risks, FAQ and
-  glossary. Most capabilities described are planned, not released. An EV
-  Society initiative; commercial product development through iTelematics
+  Aerospace Quality Graph, a 3D Inspection Twin concept (a verified 3D
+  reconstruction from a 2D drawing, shown as a synthetic demonstration and
+  never as authoritative CAD), cybersecurity and digital trust, AI assurance
+  with bounded agents and human approval, a three-year roadmap and five-year
+  vision, customer discovery and validation playbooks, business model, risks,
+  FAQ and glossary. What exists is the FAI Engineer prototype foundation; the
+  rest is labelled in development, planned, research or long-term vision. An
+  EV Society initiative; commercial product development through iTelematics
   Software Private Limited.
 - [AegisCAN](https://autonomous.ev.engineer/internships/AegisCAN): 12-week
   educational R&D mini-project on Battery, BMS, BESS, CAN communication,

@@ -128,6 +128,27 @@ export function ListCard({ title, eyebrow, items, children, ordered, emphasis }:
   );
 }
 
+export interface Layer {
+  id: string;
+  layer: string;
+  items: readonly string[];
+  emphasis?: "human" | "security";
+}
+
+/** Named layers stacked top to bottom with an arrow between each: an architecture, or a pipeline. */
+export function Layers({ layers, label }: { layers: readonly Layer[]; label: string }) {
+  return (
+    <ol className={css.architecture} aria-label={label}>
+      {layers.map((layer) => (
+        <li key={layer.id} className={css.archLayer} data-emphasis={layer.emphasis}>
+          <h4 className={css.archName}>{layer.layer}</h4>
+          <Tags items={layer.items} />
+        </li>
+      ))}
+    </ol>
+  );
+}
+
 /** A statement set apart from the body: a principle, a rule or a quotation. */
 export function Callout({ kind = "principle", label, children }: { kind?: "principle" | "safety" | "note"; label?: string; children: ReactNode }) {
   return (

@@ -1,41 +1,46 @@
 // Product: modules, maturity, the synthetic demonstrations, architecture,
 // AI governance, security, boundary and the long-term concepts.
-import type { Maturity, Status, Tone } from "../types";
+import type { Maturity, Tone } from "../types";
 
 /** The fictitious part used by every demonstration on the page. Not a real part or drawing. */
 export const SYNTHETIC_PART = { part: "AQ-1042", description: "Fictitious aerospace bracket", revision: "C", serial: "000148" } as const;
 
+/** What each of the six maturity labels means on this page. None of them means production-ready. */
 export const MATURITY_LEGEND: Record<Maturity, string> = {
-  now: "Year 1 build focus. Not a statement that the module is finished.",
-  next: "Planned for Year 2.",
-  later: "Planned for Years 3 to 5.",
+  prototype: "Exists today in the FAI Engineer prototype. A foundation, not a production product.",
+  development: "Being built now, beyond the prototype. Not released.",
+  "planned-y1": "Planned for Year 1 (2026–27). Not yet built.",
+  "planned-y23": "Planned for Years 2 and 3 (2027–29). Not yet built.",
+  research: "Under investigation. Depends on validation, and may change or stop.",
+  vision: "Year 4 and beyond. A direction, not a commitment.",
 };
 
 export const MODULES: readonly { n: number; name: string; text: string; maturity: Maturity }[] = [
-  { n: 1, name: "Drawing Intelligence", text: "Reads engineering drawings and proposes characteristics for a person to verify.", maturity: "now" },
-  { n: 2, name: "Digital Characteristics", text: "One accountable record per characteristic, with its source and revision.", maturity: "now" },
-  { n: 3, name: "Inspection Planning", text: "Builds an inspection plan from verified characteristics and approved rules.", maturity: "now" },
-  { n: 4, name: "Measurement / CMM Hub", text: "Imports measurement results and maps them to characteristics.", maturity: "now" },
-  { n: 5, name: "FAI / FAIR", text: "Assembles first article inspection reports and shows what is missing.", maturity: "now" },
-  { n: 6, name: "Revision & Configuration Intelligence", text: "Compares revisions and scopes the quality work a change affects.", maturity: "now" },
-  { n: 7, name: "Quality Evidence", text: "Links certificates, results and approvals to the requirement they satisfy.", maturity: "now" },
-  { n: 8, name: "NCR / CAPA", text: "Nonconformance and corrective action tied to the part, process and supplier.", maturity: "next" },
-  { n: 9, name: "SPC / Predictive Quality", text: "In-process monitoring first; predictive indicators later.", maturity: "next" },
-  { n: 10, name: "Supplier Quality", text: "Supplier deviations, requests and reviews on shared, structured evidence.", maturity: "next" },
-  { n: 11, name: "Certification Evidence", text: "Audit and certification evidence retrievable by requirement.", maturity: "next" },
-  { n: 12, name: "Quality APIs", text: "Controlled programmatic access to quality evidence for customer systems.", maturity: "later" },
-  { n: 13, name: "Quality Passport", text: "The verified manufacturing history of a serialised part.", maturity: "later" },
-  { n: 14, name: "Quality Intelligence", text: "Cross-part and cross-supplier insight from structured evidence.", maturity: "later" },
+  { n: 1, name: "Drawing Intelligence", text: "Reads engineering drawings and proposes characteristics for a person to verify.", maturity: "development" },
+  { n: 2, name: "Digital Characteristics", text: "One accountable record per characteristic, with its source and revision.", maturity: "prototype" },
+  { n: 3, name: "Inspection Planning", text: "Builds an inspection plan from verified characteristics and approved rules.", maturity: "planned-y1" },
+  { n: 4, name: "Measurement / CMM Hub", text: "Imports measurement results and maps them to characteristics.", maturity: "planned-y1" },
+  { n: 5, name: "FAI / FAIR", text: "Assembles first article inspection reports and shows what is missing. The prototype covers an AS9102 Form 3-oriented foundation only.", maturity: "prototype" },
+  { n: 6, name: "Revision & Configuration Intelligence", text: "Compares revisions and scopes the quality work a change affects.", maturity: "planned-y1" },
+  { n: 7, name: "Quality Evidence", text: "Links certificates, results and approvals to the requirement they satisfy.", maturity: "planned-y1" },
+  { n: 8, name: "NCR / CAPA", text: "Nonconformance and corrective action tied to the part, process and supplier.", maturity: "planned-y23" },
+  { n: 9, name: "SPC / Predictive Quality", text: "In-process monitoring first; predictive indicators are research.", maturity: "planned-y23" },
+  { n: 10, name: "Supplier Quality", text: "Supplier deviations, requests and reviews on shared, structured evidence.", maturity: "planned-y23" },
+  { n: 11, name: "Certification Evidence", text: "Audit and certification evidence retrievable by requirement.", maturity: "planned-y23" },
+  { n: 12, name: "Quality APIs", text: "Controlled programmatic access to quality evidence for customer systems.", maturity: "planned-y23" },
+  { n: 13, name: "Quality Passport", text: "The verified manufacturing history of a serialised part.", maturity: "planned-y23" },
+  { n: 14, name: "Quality Intelligence", text: "Cross-part and cross-supplier insight from structured evidence.", maturity: "vision" },
+  { n: 15, name: "3D Inspection Twin", text: "Links balloons and characteristics to 3D geometry: approved CAD where it is supplied, an engineer-verified reconstruction where it is not.", maturity: "research" },
 ];
 
 /**
- * What exists against what is planned. Only the first group describes software
- * that exists today: the FAI Engineer prototype. The split between the other
- * three labels is this page's reading of the roadmap.
+ * What exists against what is planned, under the page's six maturity labels.
+ * Only the first group describes software that exists today: the FAI Engineer
+ * prototype. Where the other groups fall is this page's reading of the roadmap.
  */
-export const MATURITY_MATRIX: readonly { status: Status; heading: string; note: string; items: readonly string[] }[] = [
+export const MATURITY_MATRIX: readonly { status: Maturity; heading: string; note: string; items: readonly string[] }[] = [
   {
-    status: "available",
+    status: "prototype",
     heading: "FAI Engineer prototype foundations",
     note: "A prototype, not a production product.",
     items: ["Engineering drawing viewer", "Manual ballooning workflow", "Digital characteristic table", "AS9102 Form 3-oriented workflow and export foundation"],
@@ -44,31 +49,46 @@ export const MATURITY_MATRIX: readonly { status: Status; heading: string; note: 
     status: "development",
     heading: "First AQIP capabilities",
     note: "The immediate step beyond the prototype.",
-    items: ["AI-assisted characteristic extraction", "GD&T and tolerance interpretation"],
+    items: ["AI-assisted characteristic extraction with source links", "Dimension, tolerance and supported GD&T interpretation", "Human verification of every proposal"],
   },
   {
-    status: "planned",
-    heading: "Planned AQIP capabilities",
+    status: "planned-y1",
+    heading: "Year 1 plan",
     note: "On the roadmap; not yet built.",
-    items: [
-      "Inspection planning",
-      "CMM integration",
-      "Evidence linking",
-      "Revision intelligence",
-      "Full and partial FAI workflows",
-      "Secure multi-user workflows",
-      "Private and on-prem deployment",
-      "NCR / CAPA",
-      "Supplier quality",
-    ],
+    items: ["Inspection planning", "CMM result import", "Evidence linking", "Revision comparison", "Full and partial FAI workflows", "RBAC, MFA, encryption and audit logging", "Private deployment foundations"],
+  },
+  {
+    status: "planned-y23",
+    heading: "Years 2 and 3 plan",
+    note: "Depends on Year 1 working with customers.",
+    items: ["NCR / CAPA", "Production inspection and SPC", "STEP visualisation with balloon-to-feature mapping", "SSO and on-prem maturity", "Supplier quality and evidence sharing", "Quality APIs"],
   },
   {
     status: "research",
     heading: "Research directions",
-    note: "Long-term; depends on data and validation.",
-    items: ["Process intelligence", "Predictive quality", "Quality policy as code", "Field-to-factory feedback"],
+    note: "Depends on data and validation; may not ship.",
+    items: ["2D-to-3D reconstruction of simple parts", "Bounded agentic assistance", "Advanced GD&T interpretation", "Predictive quality", "Quality policy as code"],
+  },
+  {
+    status: "vision",
+    heading: "Long-term vision",
+    note: "A direction for Year 4 and beyond.",
+    items: ["3D revision intelligence", "Spatial Quality Passport", "Field-to-factory intelligence", "Multi-tier evidence exchange"],
   },
 ];
+
+/** Capabilities this page must never be read as claiming to be production-ready today. */
+export const NOT_PRODUCTION_READY = [
+  "Automatic full drawing interpretation",
+  "Advanced GD&T",
+  "Autonomous inspection planning",
+  "Broad CMM integration",
+  "Supplier-quality network",
+  "Predictive quality",
+  "Autonomous agent execution",
+  "2D-to-3D reconstruction",
+  "Field-to-factory intelligence",
+] as const;
 
 export interface SimStep {
   title: string;
@@ -130,13 +150,40 @@ export const REVISION_CHANGES: readonly { item: string; change: string; kind: "c
 
 export const REVISION_IMPACT = ["Inspection plan impacted", "Partial FAI review required", "Open work orders require review", "Affected evidence identified"] as const;
 
+/**
+ * The platform in four layers. The first three stack; cybersecurity and
+ * governance is not a fourth storey but the wall around all of them.
+ */
+export const PLATFORM_ARCHITECTURE: readonly { id: string; layer: string; role: string; items: readonly string[]; spans?: boolean }[] = [
+  { id: "workflows", layer: "Quality Workflows", role: "What a quality team does.", items: ["Drawing", "3D Inspection Twin", "Inspection", "FAI", "NCR/CAPA", "SPC", "Supplier Quality", "Quality Passport"] },
+  {
+    id: "intelligence",
+    layer: "AI & Quality Intelligence",
+    role: "What AI helps interpret, for a person to approve.",
+    items: ["Document AI", "Engineering AI", "2D→3D Intelligence", "Revision Intelligence", "Evidence Intelligence", "Agentic Assistance", "Predictive Quality"],
+  },
+  {
+    id: "graph",
+    layer: "Aerospace Quality Graph",
+    role: "Where every record, and every link between records, is kept.",
+    items: ["Part", "Revision", "Characteristic", "Geometry", "Inspection", "Measurement", "Evidence", "Configuration", "Supplier", "Serial Number"],
+  },
+  {
+    id: "governance",
+    layer: "Cybersecurity & Governance",
+    role: "Spans every layer above.",
+    items: ["Identity", "Access", "Encryption", "Audit", "AI Governance", "Data Security", "Secure Deployment"],
+    spans: true,
+  },
+];
+
 export const ARCHITECTURE: readonly { id: string; layer: string; items: readonly string[]; emphasis?: "human" | "security" }[] = [
   { id: "input", layer: "Input", items: ["Engineering Drawings", "CAD/MBD", "Specifications", "CMM", "Measurement", "Certificates", "ERP/PLM/MES"] },
   { id: "ingestion", layer: "Ingestion", items: ["PDF parser", "OCR", "Computer Vision", "Structured import", "CMM adapters", "API connectors"] },
-  { id: "intelligence", layer: "Engineering Intelligence", items: ["Dimension extraction", "Tolerance extraction", "GD&T interpretation", "Notes", "Revision detection", "Classification"] },
+  { id: "intelligence", layer: "Engineering Intelligence", items: ["Dimension extraction", "Tolerance extraction", "GD&T interpretation", "Notes", "Revision detection", "Classification", "View and feature inference"] },
   { id: "verification", layer: "Human Verification", items: ["Source highlight", "Confidence", "Approve", "Correct", "Reject"], emphasis: "human" },
-  { id: "graph", layer: "Quality Graph", items: ["Part", "Revision", "Characteristic", "Requirement", "Inspection", "Measurement", "Evidence", "Configuration"] },
-  { id: "workflows", layer: "Workflows", items: ["Inspection", "FAI", "NCR/CAPA", "SPC", "Supplier Quality", "Audit Evidence"] },
+  { id: "graph", layer: "Quality Graph", items: ["Part", "Revision", "Characteristic", "Requirement", "Geometry", "Inspection", "Measurement", "Evidence", "Configuration"] },
+  { id: "workflows", layer: "Workflows", items: ["Inspection", "3D Inspection Twin", "FAI", "NCR/CAPA", "SPC", "Supplier Quality", "Audit Evidence"] },
   { id: "security", layer: "Security / Governance", items: ["RBAC", "MFA", "Encryption", "Audit", "Tenant isolation", "Private deployment", "AI provenance"], emphasis: "security" },
   { id: "output", layer: "Output", items: ["FAI", "Inspection record", "Quality Passport", "API", "OEM Supplier Network"] },
 ];
@@ -204,10 +251,13 @@ export const POLICY_OUTCOME: readonly { control: string; critical: string; stand
   { control: "authorised_verifier", critical: "required", standard: "standard inspector" },
 ];
 
-export const LABELS: Record<"simulator" | "passport" | "policy" | "api" | "network", { tone: Tone; text: string }> = {
+export const LABELS: Record<"simulator" | "passport" | "policy" | "api" | "network" | "twin" | "twinDemo" | "revenue3d", { tone: Tone; text: string }> = {
   simulator: { tone: "synthetic", text: "Illustrative synthetic demonstration" },
   passport: { tone: "future", text: "Concept with synthetic data" },
   policy: { tone: "vision", text: "Long-Term Product Direction" },
   api: { tone: "future", text: "Future Architecture Concept" },
   network: { tone: "strategy", text: "Strategic Business Model — Future Scale" },
+  twin: { tone: "research", text: "Research / In development" },
+  twinDemo: { tone: "synthetic", text: "Synthetic demo" },
+  revenue3d: { tone: "future", text: "Future Commercial Model" },
 };

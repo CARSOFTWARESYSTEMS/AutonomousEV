@@ -1,13 +1,16 @@
-// Navigation, FAQ, glossary, sources, organisations and calls to action.
+// Navigation, FAQ, glossary, sources, organisations, the footer and calls to action.
 import { EV_SOCIETY, ITELEMATICS } from "@/data/public-entities";
 
-/** The seventeen sections, in page order. `executive` sections stay visible in Executive View. */
+/** The twenty sections, in page order. `executive` sections stay visible in Executive View. */
 export const NAV: readonly { id: string; label: string; executive?: boolean }[] = [
   { id: "overview", label: "Overview", executive: true },
   { id: "opportunity", label: "Opportunity" },
   { id: "problems", label: "Problems", executive: true },
   { id: "product", label: "Product", executive: true },
+  { id: "inspection-twin", label: "3D Inspection Twin", executive: true },
   { id: "quality-graph", label: "Quality Graph" },
+  { id: "ai-assurance", label: "AI Assurance" },
+  { id: "cybersecurity", label: "Cybersecurity", executive: true },
   { id: "roadmap", label: "Roadmap", executive: true },
   { id: "customers", label: "Customers" },
   { id: "validation", label: "Validation" },
@@ -35,7 +38,13 @@ export interface ChapterDef {
 /** The manual's seven chapters. Every section in NAV belongs to exactly one. */
 export const CHAPTERS: readonly ChapterDef[] = [
   { id: "chapter-strategy", n: "01", title: "Strategy", summary: "What AQIP is, why now, and the problems it sets out to solve.", sections: ["overview", "opportunity", "problems"] },
-  { id: "chapter-product", n: "02", title: "Product", summary: "Principles, the platform and its modules, and the quality graph beneath them.", sections: ["product", "quality-graph"] },
+  {
+    id: "chapter-product",
+    n: "02",
+    title: "Product",
+    summary: "The platform and its modules, the 3D Inspection Twin, the quality graph, AI assurance and cybersecurity.",
+    sections: ["product", "inspection-twin", "quality-graph", "ai-assurance", "cybersecurity"],
+  },
   { id: "chapter-roadmap", n: "03", title: "Roadmap", summary: "Three years of execution and five years of direction.", sections: ["roadmap"] },
   { id: "chapter-customer", n: "04", title: "Customer", summary: "Who to serve first, how to validate with them and how to go to market.", sections: ["customers", "validation", "go-to-market"] },
   { id: "chapter-business", n: "05", title: "Business", summary: "Revenue, the business model, defensibility and the investor thesis.", sections: ["business", "investor"] },
@@ -60,7 +69,7 @@ export function sectionNumber(sectionId: string): string {
 /** The header's high-level navigation. `sections` are the sections during which the entry is current. */
 export const HEADER_NAV: readonly { id: string; label: string; target: string; sections: readonly string[] }[] = [
   { id: "strategy", label: "Strategy", target: "overview", sections: ["overview", "opportunity", "problems"] },
-  { id: "product", label: "Product", target: "product", sections: ["product", "quality-graph"] },
+  { id: "product", label: "Product", target: "product", sections: ["product", "inspection-twin", "quality-graph", "ai-assurance", "cybersecurity"] },
   { id: "roadmap", label: "Roadmap", target: "roadmap", sections: ["roadmap"] },
   { id: "customers", label: "Customers", target: "customers", sections: ["customers", "validation", "go-to-market"] },
   { id: "business", label: "Business", target: "business", sections: ["business", "investor"] },
@@ -68,7 +77,7 @@ export const HEADER_NAV: readonly { id: string; label: string; target: string; s
   { id: "execution", label: "Execution", target: "execution", sections: ["execution", "metrics", "risks", "90-day-plan"] },
 ];
 
-export const EXECUTIVE_SECTIONS = ["Vision", "Problem", "Solution", "Roadmap", "Business Model", "Investor Thesis", "90-Day Plan"] as const;
+export const EXECUTIVE_SECTIONS = ["Vision", "Problem", "Solution", "3D Inspection Twin", "Digital Trust", "Roadmap", "Business Model", "Investor Thesis", "90-Day Plan"] as const;
 
 export const FAQ: readonly { q: string; a: string }[] = [
   {
@@ -117,7 +126,23 @@ export const FAQ: readonly { q: string; a: string }[] = [
   },
   {
     q: "Is AQIP already production-ready?",
-    a: "No. What exists today is the FAI Engineer prototype: a drawing viewer, a manual ballooning workflow, a digital characteristic table and an AS9102 Form 3-oriented workflow and export foundation. Everything else on this page is in development, planned or research, and is labelled as such.",
+    a: "No. What exists today is the FAI Engineer prototype: a drawing viewer, a manual ballooning workflow, a digital characteristic table and an AS9102 Form 3-oriented workflow and export foundation. Everything else on this page is in development, planned, research or long-term vision, and is labelled as such.",
+  },
+  {
+    q: "What is the 3D Inspection Twin?",
+    a: "A research concept: an interactive 3D view of a part in which each balloon on the 2D drawing is linked to the feature it controls, together with its requirement, inspection method, measurement, evidence and FAI status. Where a customer supplies approved CAD, AQIP is planned to display that geometry. Where only a drawing exists, AQIP is researching an AI-assisted reconstruction that an engineer must verify. The demonstration on this page is illustrative and uses synthetic data.",
+  },
+  {
+    q: "Can AQIP turn any 2D drawing into an exact 3D CAD model?",
+    a: "No. A 2D drawing can leave out depth, hidden and internal geometry, draft, complex curves and manufacturing intent, so an exact model cannot always be recovered. AQIP's concept is a verified 3D reconstruction: it shows its assumptions and confidence, highlights what it could not resolve and asks an engineer to confirm or correct it. A reconstruction never becomes the authoritative engineering definition. The source drawing remains authoritative unless an approved CAD or MBD model is explicitly supplied.",
+  },
+  {
+    q: "How does AQIP protect engineering drawings and quality evidence?",
+    a: "Security is designed as platform infrastructure, not a later module: role-based access, multi-factor authentication, encryption, tenant isolation, audit logging, and private, India-hosted or on-prem deployment options. Uploaded files are treated as a security boundary and processed in isolation. Customer drawings are not sent to uncontrolled external AI providers, and are not used for general AI model training without explicit authorisation. These are design requirements; AQIP holds no external security certification today.",
+  },
+  {
+    q: "What are AQIP's AI agents allowed to do?",
+    a: "The agents described on this page are research and long-term vision, not released software. Each is bounded: it can call only allowlisted tools, read only the data its task needs, and prepare or propose work. No agent can approve a quality record, release an FAI, change a source drawing or export customer data, and every action it takes is logged.",
   },
   {
     q: "What is the 3-year roadmap?",
@@ -158,6 +183,18 @@ export const GLOSSARY: readonly { term: string; definition: string }[] = [
   { term: "Quality Graph", definition: "AQIP's planned data model: quality entities and the relationships between them." },
   { term: "Quality Passport", definition: "A concept for the verified, permission-controlled manufacturing history of one serialised part." },
   { term: "Supplier Quality", definition: "The work a customer does to make sure its suppliers deliver conforming parts with the evidence to show it." },
+  { term: "Balloon", definition: "A numbered marker on a drawing that identifies one characteristic to be inspected." },
+  { term: "3D Inspection Twin", definition: "A research concept: an interactive 3D view of a part with its balloons, characteristics, results and evidence linked to the geometry." },
+  { term: "Verified 3D Reconstruction", definition: "Geometry inferred from a 2D drawing that an engineer has checked. A navigation aid, not the engineering definition." },
+  { term: "STEP", definition: "A neutral file format for exchanging 3D CAD geometry between systems, standardised as ISO 10303." },
+  { term: "Human-in-the-loop", definition: "A workflow in which a qualified person must verify an AI proposal before it is used." },
+  { term: "AI Provenance", definition: "The record of where an AI-assisted result came from: source, model, version, confidence and reviewer." },
+  { term: "RAG", definition: "Retrieval-Augmented Generation: an AI answer built from documents retrieved for the question, which it can cite." },
+  { term: "RBAC", definition: "Role-Based Access Control: permissions granted by a person's role rather than one by one." },
+  { term: "MFA", definition: "Multi-Factor Authentication: signing in with more than a password." },
+  { term: "SSO", definition: "Single Sign-On: signing in through the organisation's own identity provider." },
+  { term: "SBOM", definition: "Software Bill of Materials: the list of components a piece of software is built from." },
+  { term: "Zero Trust", definition: "A security approach in which no user, device or network is trusted by default." },
 ];
 
 /** Authoritative sources for the programmes and standards the page refers to. Numbers are cited in the text. */
@@ -177,6 +214,8 @@ export const SOURCES_NOTE = "AQIP does not claim certification to, or compliance
 export interface EcosystemEntity {
   id: "ev-engineer" | "uflight" | "ev-society" | "itelematics";
   name: string;
+  /** The name alone, without a company's legal suffix. */
+  brand: string;
   /** Its role in relation to AQIP, as a short label. */
   role: string;
   /** One line for the Ecosystem menu. */
@@ -190,7 +229,8 @@ export interface EcosystemEntity {
 
 /**
  * The four names AQIP sits among, from the project's own records: one source
- * for the header's Ecosystem menu, the mobile menu and the attribution cards.
+ * for the header's Ecosystem menu, the mobile menu, the footer and the
+ * attribution cards, so no address is written twice.
  * They are not one organisation. UFlight is recorded in this repository as a
  * brand with its own site, not as a company, and is described that way here.
  */
@@ -198,6 +238,7 @@ const ECOSYSTEM_BY_ID: Record<EcosystemEntity["id"], EcosystemEntity> = {
   "ev-engineer": {
     id: "ev-engineer",
     name: "EV.ENGINEER™",
+    brand: "EV.ENGINEER™",
     role: "Mission Platform",
     purpose: "Engineering learning, research and technology platform.",
     line: "Building World-Class Engineers to Solve Energy and EV Battery Challenges",
@@ -208,6 +249,7 @@ const ECOSYSTEM_BY_ID: Record<EcosystemEntity["id"], EcosystemEntity> = {
   uflight: {
     id: "uflight",
     name: "UFlight™",
+    brand: "UFlight™",
     role: "Aerospace Health Monitoring",
     purpose: "Advanced health monitoring systems for aerospace and autonomous platforms.",
     line: "Advanced health monitoring systems for aerospace and autonomous platforms.",
@@ -218,6 +260,7 @@ const ECOSYSTEM_BY_ID: Record<EcosystemEntity["id"], EcosystemEntity> = {
   "ev-society": {
     id: "ev-society",
     name: "EV Society™",
+    brand: "EV Society™",
     role: "Initiative",
     purpose: "Education and research initiative; non-profit organisation.",
     line: "Non Profit Organisation",
@@ -228,8 +271,9 @@ const ECOSYSTEM_BY_ID: Record<EcosystemEntity["id"], EcosystemEntity> = {
   itelematics: {
     id: "itelematics",
     name: "iTelematics® Software Private Limited",
+    brand: "iTelematics®",
     role: "Commercial Product Development",
-    purpose: "Commercial engineering, software products and customer deployments.",
+    purpose: "Commercial engineering, software-product development and customer deployment.",
     line: "Commercial product development and deployment.",
     href: ITELEMATICS.canonicalUrl,
     linkLabel: "iTelematics.com",
@@ -263,3 +307,69 @@ export const MENU_CONTACT: readonly { id: string; label: string; href: string }[
   { id: "menu-discuss", label: "Discuss AQIP", href: "/consulting" },
   { id: "menu-pilot", label: "Explore a Pilot", href: "/contact" },
 ];
+
+// ── The AQIP footer ──
+
+/** In-page destinations, grouped as the footer shows them. Every target is an id on this page. */
+export const FOOTER_NAV: readonly { id: string; title: string; links: readonly { label: string; href: string }[] }[] = [
+  {
+    id: "strategy",
+    title: "Strategy",
+    links: [
+      { label: "Overview", href: "#overview" },
+      { label: "Problems", href: "#problems" },
+      { label: "Roadmap", href: "#roadmap" },
+      { label: "Business Model", href: "#business" },
+      { label: "Investor Thesis", href: "#investor" },
+    ],
+  },
+  {
+    id: "product",
+    title: "Product",
+    links: [
+      { label: "Architecture", href: "#architecture" },
+      { label: "Quality Graph", href: "#quality-graph" },
+      { label: "3D Inspection Twin", href: "#inspection-twin" },
+      { label: "Validation", href: "#validation" },
+      { label: "Customer Discovery", href: "#customer-discovery" },
+      { label: "90-Day Plan", href: "#90-day-plan" },
+    ],
+  },
+];
+
+/** The same contact routes as the closing calls to action. */
+export const FOOTER_ENGAGE: readonly { id: string; label: string; href: string }[] = [
+  { id: "footer-pilot", label: "Explore a Pilot", href: "/contact" },
+  { id: "footer-discuss", label: "Discuss AQIP", href: "/consulting" },
+  { id: "footer-design-partner", label: "Become a Design Partner", href: "/contact" },
+];
+
+/** Who does what, in the footer's words. Four roles, not one legal entity. */
+export const FOOTER_ROLES: readonly { role: string; entity: EcosystemEntity }[] = [
+  { role: "Initiative", entity: ECOSYSTEM_BY_ID["ev-society"] },
+  { role: "Engineering & Research", entity: ECOSYSTEM_BY_ID["ev-engineer"] },
+  { role: "Aerospace Ecosystem", entity: ECOSYSTEM_BY_ID.uflight },
+  { role: "Commercial Product Development", entity: ECOSYSTEM_BY_ID.itelematics },
+];
+
+export const FOOTER_DESIGNED_BY = { name: "Sudarshana Karkala", brand: "EV.ENGINEER™", href: "/about/sudarshana-karkala" } as const;
+
+/**
+ * The site-wide links the shared footer carries that still apply here. This
+ * site publishes no separate privacy or terms page; its Trust Center and its
+ * contact page are the routes that exist, so those are the ones linked.
+ */
+export const FOOTER_LEGAL: readonly { label: string; href: string; external?: boolean }[] = [
+  { label: "Trust Center", href: "/trust-center" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+  { label: "Internship & Fees FAQ", href: "https://itelematics.com/public/iTelematics-FrequentlyAskedQuestions.pdf", external: true },
+];
+
+/** The operating company's published contact details, from the project's entity registry. */
+export const FOOTER_COMPANY = {
+  name: ITELEMATICS.legalName ?? ITELEMATICS.name,
+  email: ITELEMATICS.publicEmail,
+  telephone: ITELEMATICS.publicTelephone,
+  location: ITELEMATICS.publicLocation,
+} as const;

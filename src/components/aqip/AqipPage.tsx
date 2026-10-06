@@ -1,4 +1,3 @@
-import Footer from "@/components/Footer";
 import { AQIP } from "./data/overview";
 import { CHAPTERS, EXECUTIVE_SECTIONS, chapterIsExecutive } from "./data/reference";
 import AqipHeader from "./interactive/AqipHeader";
@@ -6,27 +5,30 @@ import Chapter from "./interactive/Chapter";
 import ChapterNav from "./interactive/ChapterNav";
 import Runtime from "./interactive/Runtime";
 import ViewControls from "./interactive/ViewControls";
+import { AiAssuranceGroup } from "./sections/Assurance";
 import { BusinessGroup, GoToMarketGroup } from "./sections/Business";
 import { InvestorGroup, LeadershipGroup } from "./sections/Company";
 import { CustomersGroup, ValidationGroup } from "./sections/Customers";
 import { Execution90Day, ExecutionGroup, MetricsGroup, RisksGroup } from "./sections/Execution";
 import { AQIPHero } from "./sections/Hero";
+import AqipFooter from "./sections/Footer";
 import { ExecutiveSummary, IndiaOpportunity, ProblemsGroup } from "./sections/Overview";
 import { ProductGroup, QualityGraphGroup } from "./sections/Product";
 import { Closing, ReferenceGroup } from "./sections/Reference";
 import { RoadmapGroup } from "./sections/Roadmap";
+import { CybersecurityGroup } from "./sections/Trust";
+import { InspectionTwinGroup } from "./sections/Twin";
 import css from "./aqip.module.css";
 
 const [STRATEGY, PRODUCT, ROADMAP, CUSTOMER, BUSINESS, LEADERSHIP, REFERENCE] = CHAPTERS;
 
 /**
  * The AQIP page: its own header, the hero, the view controls, the sticky
- * chapter bar, seven chapters holding the manual's seventeen sections, the
- * closing statement, and the site footer in AQIP's colours.
+ * chapter bar, seven chapters holding the manual's twenty sections, the
+ * closing statement, and AQIP's own footer.
  *
  * The site's shared navbar and footer are not drawn on this route (see
- * ChromeGate), so the page supplies both. The footer is the shared component,
- * restyled here through the custom properties it already reads.
+ * ChromeGate), so the page supplies both.
  *
  * `data-track-manual` tells the site-wide click listener that the page reports
  * its own interactions (see ./analytics), so a button here is not also counted
@@ -52,7 +54,10 @@ export default function AqipPage() {
         </Chapter>
         <Chapter chapter={PRODUCT} executive={chapterIsExecutive(PRODUCT)}>
           <ProductGroup />
+          <InspectionTwinGroup />
           <QualityGraphGroup />
+          <AiAssuranceGroup />
+          <CybersecurityGroup />
         </Chapter>
         <Chapter chapter={ROADMAP} executive={chapterIsExecutive(ROADMAP)}>
           <RoadmapGroup />
@@ -78,9 +83,7 @@ export default function AqipPage() {
         </Chapter>
         <Closing />
       </main>
-      <div className={css.footerTheme}>
-        <Footer />
-      </div>
+      <AqipFooter />
     </div>
   );
 }

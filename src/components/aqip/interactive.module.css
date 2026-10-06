@@ -213,7 +213,8 @@
 }
 .graphNetwork {
   position: relative;
-  aspect-ratio: 100 / 62;
+  /* Taller than it is wide by less than before: the geometry band sits under the thread. */
+  aspect-ratio: 100 / 80;
   border-radius: var(--aq-radius);
   border: 1px solid var(--aq-line);
   background:
@@ -640,6 +641,34 @@
 .yearSummary {
   font-size: 0.95rem;
   color: var(--aq-text-2);
+}
+/* What the year adds on each of the four tracks. */
+.yearTracks {
+  display: grid;
+  gap: 0;
+  border-radius: var(--aq-radius-sm);
+  border: 1px solid var(--aq-line);
+}
+.yearTracks > div {
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr);
+  gap: 12px;
+  padding: 9px 12px;
+}
+.yearTracks > div + div {
+  border-top: 1px solid var(--aq-line);
+}
+.yearTracks dt {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.9;
+  text-transform: uppercase;
+  color: var(--aq-accent);
+}
+.yearTracks dd {
+  font-size: 0.93rem;
+  color: var(--aq-text);
 }
 .yearHeading {
   padding-top: 4px;

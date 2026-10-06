@@ -11,6 +11,7 @@ import {
   PRICING,
   PRICING_LABEL,
   REVENUE_ENGINES,
+  TWIN_REVENUE,
 } from "../data/business";
 import { DECISION_MAKERS, MARKETING_ASSETS, MARKETING_PRINCIPLE, ONBOARDING, ROUNDTABLE, SALES_MOTION, SALES_PRINCIPLE, SUCCESS_METRICS } from "../data/company";
 import { LABELS } from "../data/product";
@@ -23,7 +24,7 @@ import css from "../aqip.module.css";
 
 export function RevenueEngines() {
   return (
-    <Block id="revenue-model" title="Revenue model: seven engines" lead="Several ways the same platform can earn. The label shows when each is expected to start." executive>
+    <Block id="revenue-model" title="Revenue model: seven engines" lead="Several ways the same platform can earn. The label shows when each is planned to start; none is earning today." executive>
       <MasterDetail
         label="Revenue engines"
         event="aqip_revenue_engine_select"
@@ -61,6 +62,16 @@ export function RevenueEngines() {
       </h4>
       <p className={css.fine}>{PRICING_LABEL} These are not established market prices.</p>
       <DataTable caption="Indicative pricing hypotheses by customer segment" columns={["Segment", "Illustrative annual pricing"]} rows={PRICING.map((row) => [row.segment, row.price])} />
+      <div id="twin-revenue" className={css.card}>
+        <p className={css.cardEyebrow}>
+          {TWIN_REVENUE.kind} <Chip tone={LABELS.revenue3d.tone}>{LABELS.revenue3d.text}</Chip>
+        </p>
+        <h4 className={css.h4}>{TWIN_REVENUE.name}</h4>
+        <p className={css.cardText}>{TWIN_REVENUE.text}</p>
+        <p className={css.cardEyebrow}>Potential pricing dimensions</p>
+        <Tags items={TWIN_REVENUE.dimensions} label="Potential pricing dimensions for the 3D Inspection Twin" />
+        <p className={css.fine}>{TWIN_REVENUE.note}</p>
+      </div>
     </Block>
   );
 }

@@ -2,8 +2,7 @@ import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import ResearcherCard from "@/components/ResearcherCard";
 import { LINK_EVENTS } from "../analytics";
-import { FINAL_MESSAGE } from "../data/execution";
-import { STRATEGIC_HIERARCHY } from "../data/overview";
+import { AQIP_PRINCIPLES, STRATEGIC_HIERARCHY, STRATEGIC_HIERARCHY_LABEL, STRATEGIC_MESSAGE, ULTIMATE_PRODUCT } from "../data/overview";
 import { CTAS, FAQ as FAQ_ITEMS, GLOSSARY, ORGANISATIONS, SOURCES, SOURCES_NOTE } from "../data/reference";
 import GlossarySearch from "../interactive/Glossary";
 import { Block, Disclosure, Flow, Group } from "../ui/primitives";
@@ -103,16 +102,39 @@ export function OrganisationAttribution() {
   );
 }
 
+export function FinalPrinciples() {
+  return (
+    <div id="principles-final" className={css.finalPrinciples}>
+      <h3 className={css.h3}>The AQIP principles</h3>
+      <ol className={css.principles}>
+        {AQIP_PRINCIPLES.map((principle) => (
+          <li key={principle.name}>
+            <h4 className={css.h4}>{principle.name}</h4>
+            <p className={css.cardText}>{principle.text}</p>
+          </li>
+        ))}
+      </ol>
+      <div className={css.ultimate}>
+        <h4 className={css.h4}>Trust</h4>
+        <p className={css.cardText}>AQIP&apos;s ultimate product is not {ULTIMATE_PRODUCT.not.slice(0, -1).join(", not ")} and not {ULTIMATE_PRODUCT.not[ULTIMATE_PRODUCT.not.length - 1]}.</p>
+        <p className={css.ultimateText}>{ULTIMATE_PRODUCT.is}</p>
+      </div>
+    </div>
+  );
+}
+
 export function Closing() {
   return (
     <section id="closing" className={css.closing} aria-labelledby="closing-title">
       <div className={css.container}>
-        <p className={css.closingLead}>{FINAL_MESSAGE[0]}</p>
+        <p className={css.closingLead}>
+          <strong>{STRATEGIC_MESSAGE.not}</strong> {STRATEGIC_MESSAGE.connects}
+        </p>
         <h2 id="closing-title" className={css.closingTitle}>
-          {FINAL_MESSAGE[1]}
+          {STRATEGIC_MESSAGE.proves}
         </h2>
-        <p className={css.closingVision}>{FINAL_MESSAGE[2]}</p>
-        <Flow steps={STRATEGIC_HIERARCHY.map((step) => step.label)} label="FAI Engineer to AQIP to Aerospace Quality Network to Aerospace Manufacturing Trust Infrastructure" />
+        <p className={css.closingVision}>{STRATEGIC_MESSAGE.longTerm}</p>
+        <Flow steps={STRATEGIC_HIERARCHY.map((step) => step.label)} label={STRATEGIC_HIERARCHY_LABEL} />
         <div className={css.ctaRow}>
           {CTAS.map((cta) => (
             <Link key={cta.id} href={cta.href} className={css.btn} data-kind={cta.kind} data-track-event={LINK_EVENTS.cta} data-track-cta={cta.id}>
@@ -121,6 +143,7 @@ export function Closing() {
           ))}
         </div>
         <p className={css.fine}>These links use the site&apos;s existing contact pages. AQIP is at an early stage; a conversation starts with your current FAI process, not a product demonstration.</p>
+        <FinalPrinciples />
         <DesignedBy />
         <OrganisationAttribution />
       </div>
