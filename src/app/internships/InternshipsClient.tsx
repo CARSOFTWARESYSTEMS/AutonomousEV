@@ -511,6 +511,20 @@ export default function InternshipsClient() {
               tertiaryLink="/internships/ev-help-agent/usecases"
               tertiaryLinkLabel="Real AI Dialogs"
             />
+            <ProjectCard
+              title="Aerospace Quality Intelligence Platform"
+              desc="AI-assisted aerospace manufacturing quality intelligence — connecting engineering requirements, inspection, evidence, FAI, configuration control and supplier quality through a trusted digital thread."
+              link="/internships/aerospace-quality-intelligence-platform"
+              category="Aerospace & Defence R&D"
+              badge="AQIP"
+              tags={["Aerospace", "Defence", "GenAI", "Agentic AI", "Quality Intelligence", "Manufacturing", "Digital Thread"]}
+              ctaLabel="Explore AQIP"
+              trackProps={{
+                "data-track-event": "aqip_card_click",
+                "data-track-source": "internships_genai",
+                "data-track-destination": "/internships/aerospace-quality-intelligence-platform",
+              }}
+            />
           </Section>
 
           <Section title="Research">

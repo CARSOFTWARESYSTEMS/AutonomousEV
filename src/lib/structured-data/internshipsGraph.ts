@@ -50,6 +50,11 @@ const PROGRAMME_TRACKS: { name: string; url: string; description: string }[] = [
     description: "AI voice agent design and real-world dialog projects for EV support.",
   },
   {
+    name: "Aerospace Quality Intelligence Platform (AQIP)",
+    url: `${SITE_URL}/internships/aerospace-quality-intelligence-platform`,
+    description: "AI-assisted aerospace manufacturing quality intelligence: engineering requirements, inspection, evidence, FAI, configuration control and supplier quality on one digital thread.",
+  },
+  {
     name: "Super-Intelligent AI EMS",
     url: `${SITE_URL}/si-ems`,
     description: "AI-driven Energy Management Systems research for autonomous EVs.",

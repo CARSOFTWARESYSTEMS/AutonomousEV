@@ -25,6 +25,7 @@ const ROUTES = [
   "/insights/customer-discovery-toolkit",
   "/internships",
   "/internships/AegisCAN",
+  "/internships/aerospace-quality-intelligence-platform",
   "/internships/battery-aadhaar",
   "/internships/battery-circular-economy",
   "/internships/battery-cybersecurity",

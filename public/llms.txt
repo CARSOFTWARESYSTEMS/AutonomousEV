@@ -24,6 +24,15 @@ link below points to a canonical public page already listed in
 - [Internships](https://autonomous.ev.engineer/internships): Canonical hub
   for EV, battery, cybersecurity, autonomous-systems, aerospace, space and
   model-rocketry internships and student projects.
+- [AQIP — Aerospace Quality Intelligence Platform](https://autonomous.ev.engineer/internships/aerospace-quality-intelligence-platform):
+  Strategy and operating manual for an early-stage initiative to build the
+  quality intelligence and evidence layer for aerospace and defence
+  manufacturing: First Article Inspection (FAI) as the starting point, the
+  Aerospace Quality Graph, a three-year roadmap and five-year vision,
+  customer discovery and validation playbooks, business model, risks, FAQ and
+  glossary. Most capabilities described are planned, not released. An EV
+  Society initiative; commercial product development through iTelematics
+  Software Private Limited.
 - [AegisCAN](https://autonomous.ev.engineer/internships/AegisCAN): 12-week
   educational R&D mini-project on Battery, BMS, BESS, CAN communication,
   validation, fault injection and CAN cybersecurity. Initiated and led by
