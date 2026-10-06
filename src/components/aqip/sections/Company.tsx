@@ -20,7 +20,7 @@ export function VisionMissionValues() {
         </div>
       </Block>
       <Block id="core-values" title="Core values">
-        <ul className={css.cardGrid}>
+        <ul className={css.cardGrid} data-plain="">
           {VALUES.map((value) => (
             <li key={value.name} className={css.card}>
               <h4 className={css.valueName}>{value.name}</h4>
@@ -43,6 +43,7 @@ export function ExecutiveRoles() {
         panels={ROLES.map((role) => (
           <div key={role.id}>
             <h4 className={css.h4}>{role.title}</h4>
+            <p className={css.roleSummary}>{role.summary}</p>
             <p className={css.cardEyebrow}>Responsibilities</p>
             <ul className={css.listCols}>
               {role.responsibilities.map((item) => (
@@ -71,7 +72,7 @@ export function OrganisationRoadmap() {
 
 export function LeadershipGroup() {
   return (
-    <Group id="leadership" index={11} kicker="Leadership" title="Leadership: vision, values and who owns what" lead="What the company is for, what it stands on and how responsibility is divided." executive>
+    <Group id="leadership" kicker="Leadership" title="Leadership: vision, values and who owns what" lead="What the company is for, what it stands on and how responsibility is divided." executive>
       <VisionMissionValues />
       <ExecutiveRoles />
       <OrganisationRoadmap />
@@ -82,7 +83,7 @@ export function LeadershipGroup() {
 export function InvestorThesis() {
   return (
     <Block id="investor-thesis" title="Investor thesis" lead="Six questions an investor will ask, answered briefly. No valuation is claimed anywhere on this page." executive>
-      <dl className={css.thesis}>
+      <dl className={css.thesis} data-plain="">
         {INVESTOR_THESIS.map((item) => (
           <div key={item.question} className={css.card}>
             <dt className={css.thesisQuestion}>{item.question}</dt>
@@ -135,7 +136,7 @@ export function FundingRoadmap() {
 
 export function InvestorGroup() {
   return (
-    <Group id="investor" index={12} kicker="Investor" title="Investor thesis and funding strategy" lead="Why this could become a large company, and how it should be financed on the way." executive>
+    <Group id="investor" kicker="Investor" title="Investor thesis and funding strategy" lead="Why this could become a large company, and how it should be financed on the way." executive>
       <InvestorThesis />
       <FundingRoadmap />
     </Group>

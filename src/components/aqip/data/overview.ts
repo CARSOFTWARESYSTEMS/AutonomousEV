@@ -8,7 +8,7 @@ export const AQIP = {
   route: "/internships/aerospace-quality-intelligence-platform",
   /** The id of the page root, which carries the view mode the stylesheet reads. */
   rootId: "aqip-root",
-  eyebrow: "Aerospace Manufacturing • Quality Intelligence • GenAI & Agentic AI",
+  eyebrow: "Aerospace & Defence • Quality Intelligence",
   tagline: "The Trust Infrastructure for Aerospace & Defence Manufacturing",
   narrative: "Help aerospace manufacturers prove that every part was built exactly as engineering intended.",
   longTermVision: "From requirement to evidence, supplier to OEM, and factory to field.",
@@ -20,6 +20,12 @@ export const AQIP = {
   reviewed: "2026-10-06",
   reviewedLabel: "6 October 2026",
 } as const;
+
+/** The hero's flow: the same thread, with the first step shortened so all six fit one row. */
+export const HERO_THREAD = ["Engineering", "Manufacturing", "Inspection", "Measurement", "Evidence", "Acceptance"] as const;
+
+/** The enabling technologies, shown as small badges. AQIP is a quality platform; AI is how it helps. */
+export const HERO_BADGES = ["AI-Assisted", "Digital Thread", "Human Verified"] as const;
 
 /** The digital thread, in the order a requirement travels it. */
 export const DIGITAL_THREAD = ["Engineering Requirement", "Manufacturing", "Inspection", "Measurement", "Evidence", "Acceptance"] as const;

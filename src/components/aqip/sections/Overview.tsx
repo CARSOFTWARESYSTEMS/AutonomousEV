@@ -1,17 +1,13 @@
 import { AQIP, CONNECTS, CORE_PROBLEM, EXECUTIVE_SUMMARY, FRAGMENTS, MARKET_DRIVERS, PROBLEM_FLOW, STAKEHOLDERS, STRATEGIC_HIERARCHY, WHERE_WE_ARE_GOING, WHERE_WE_START } from "../data/overview";
 import { PROBLEMS, PROBLEM_FIELDS, type Problem } from "../data/problems";
-import { EXECUTIVE_SECTIONS } from "../data/reference";
 import InView from "../interactive/InView";
 import MasterDetail from "../interactive/MasterDetail";
-import PageTools from "../interactive/PageTools";
 import { Block, Callout, Chip, Flow, Group, ListCard, Tags } from "../ui/primitives";
 import css from "../aqip.module.css";
 
 export function ExecutiveSummary() {
   return (
-    <Group id="overview" index={1} kicker="Overview" title="What is AQIP?" lead={AQIP.longTermVision} executive>
-      <PageTools rootId={AQIP.rootId} sections={EXECUTIVE_SECTIONS} />
-
+    <Group id="overview" kicker="Overview" title="What is AQIP?" lead={AQIP.longTermVision} executive>
       <Block id="executive-summary" title="Executive summary" executive>
         <div className={css.split}>
           <div>
@@ -61,13 +57,12 @@ export function IndiaOpportunity() {
   return (
     <Group
       id="opportunity"
-      index={2}
       kicker="Opportunity"
       title="Why now: the India opportunity"
       lead="What is changing in Indian aerospace and defence manufacturing, described as market drivers rather than market-size claims."
     >
       <Block title="Market drivers" label={<Chip tone="current">Qualitative</Chip>}>
-        <ol className={css.cardGrid}>
+        <ol className={css.cardGrid} data-plain="">
           {MARKET_DRIVERS.map((driver) => (
             <li key={driver.title} className={css.card}>
               <h4 className={css.h4}>{driver.title}</h4>
@@ -184,7 +179,7 @@ export function StakeholderValue() {
 
 export function ProblemsGroup() {
   return (
-    <Group id="problems" index={3} kicker="Problems" title="The problems AQIP solves" lead="One core problem, ten places it shows up, and who gains when it is solved." executive>
+    <Group id="problems" kicker="Problems" title="The problems AQIP solves" lead="One core problem, ten places it shows up, and who gains when it is solved." executive>
       <CoreProblem />
       <ProblemExplorer />
       <StakeholderValue />

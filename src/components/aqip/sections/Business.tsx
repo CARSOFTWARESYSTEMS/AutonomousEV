@@ -167,7 +167,7 @@ export function MoatPyramid() {
 
 export function BusinessGroup() {
   return (
-    <Group id="business" index={9} kicker="Business" title="The business: revenue, model and defensibility" lead="How AQIP earns, what it costs a customer not to have it, and why the position gets stronger with use." executive>
+    <Group id="business" kicker="Business" title="The business: revenue, model and defensibility" lead="How AQIP earns, what it costs a customer not to have it, and why the position gets stronger with use." executive>
       <RevenueEngines />
       <ROICalculator />
       <BusinessModelCanvas />
@@ -228,7 +228,7 @@ export function MarketingStrategy() {
 
 export function GoToMarketGroup() {
   return (
-    <Group id="go-to-market" index={10} kicker="Go-To-Market" title="Go-to-market: sell outcomes, then keep them" lead="How a deal is won, how a customer is made successful and how the category is taught.">
+    <Group id="go-to-market" kicker="Go-To-Market" title="Go-to-market: sell outcomes, then keep them" lead="How a deal is won, how a customer is made successful and how the category is taught.">
       <SalesMotion />
       <CustomerSuccess />
       <MarketingStrategy />

@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import { JsonLd } from "@/lib/structured-data/JsonLd";
 import { buildInternshipsGraph } from "@/lib/structured-data/internshipsGraph";
 
-const PAGE_TITLE = "EV, Battery, Aerospace and Space Internships | EV.ENGINEER™";
+const PAGE_TITLE = "Engineering Internships & R&D — EV, AI, Aerospace & Space | EV.ENGINEER™";
 const PAGE_DESCRIPTION =
-  "Explore engineering internships and student projects in EV battery systems, BMS, cybersecurity, autonomous systems, aerospace, space and model rocketry.";
+  "Hands-on engineering internships and R&D projects across EV batteries, autonomous systems, AI, aerospace, space systems, cybersecurity, model rocketry and advanced manufacturing.";
 const PAGE_URL = "https://autonomous.ev.engineer/internships";
-const LAST_REVIEWED = "2026-08-17";
+const LAST_REVIEWED = "2026-10-06";
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,

@@ -4,6 +4,8 @@ import Link from "next/link";
 import { ReactNode, useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import PrerequisitesSection from "@/components/PrerequisitesSection";
+import TrackCard from "./TrackCard";
+import trackStyles from "./TrackCard.module.css";
 import { Rocket } from "lucide-react";
 
 function ProjectCard({ title, desc, link, pricingLink, secondaryLink, secondaryLinkLabel, tertiaryLink, tertiaryLinkLabel, quaternaryLink, quaternaryLinkLabel, quinaryLink, quinaryLinkLabel, category, badge, tags, ctaLabel, trackProps, icon: Icon }: { title: string, desc?: string, link: string, pricingLink?: string, secondaryLink?: string, secondaryLinkLabel?: string, tertiaryLink?: string, tertiaryLinkLabel?: string, quaternaryLink?: string, quaternaryLinkLabel?: string, quinaryLink?: string, quinaryLinkLabel?: string, category?: string, badge?: string, tags?: string[], ctaLabel?: string, trackProps?: Record<`data-${string}`, string>, icon?: any }) {
@@ -225,9 +227,9 @@ function ProjectCard({ title, desc, link, pricingLink, secondaryLink, secondaryL
   );
 }
 
-function Section({ title, children, gridClassName }: { title: string, children: ReactNode, gridClassName?: string }) {
+function Section({ title, children, gridClassName, id }: { title: string, children: ReactNode, gridClassName?: string, id?: string }) {
   return (
-    <div style={{ marginBottom: '48px' }}>
+    <div id={id} style={{ marginBottom: '48px', scrollMarginTop: '100px' }}>
       <h2 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--accent-primary)', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
         {title}
       </h2>
@@ -248,9 +250,9 @@ const ANSWER_ITEMS: AnswerItem[] = [
     q: "Who can apply?",
     a: (
       <>
-        Students with basic programming (Python, Flutter or React Native), circuits, sensors and AI/ML
-        fundamentals who want hands-on EV, battery, cybersecurity, autonomous-systems or aerospace project
-        experience. A discovery call confirms fit before you start.
+        Students with an engineering and problem-solving mindset, and working skills in the programming or
+        technical tools their chosen track needs, who want hands-on EV, battery, AI, cybersecurity,
+        autonomous-systems, aerospace or space project experience. A discovery call confirms fit before you start.
       </>
     ),
   },
@@ -258,8 +260,11 @@ const ANSWER_ITEMS: AnswerItem[] = [
     q: "What prerequisites are required?",
     a: (
       <>
-        Basic EV architecture and lithium-ion battery knowledge, working programming skills, and the ability to
-        break down and debug technical problems. See the Prerequisites section above for the full list.
+        It depends on the track. Everyone needs to be able to break down and debug technical problems and to
+        research and document engineering decisions. EV and battery projects add EV architecture and lithium-ion
+        fundamentals; AI and software projects add Python, web or mobile skills and basic AI/ML concepts; space
+        and aerospace projects add the relevant physics, electronics, mechanical or software fundamentals. See the
+        Prerequisites section above for the full list.
       </>
     ),
   },
@@ -339,7 +344,7 @@ function InternshipAnswerBlocks() {
       <h2 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--accent-primary)', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
         Common Questions
       </h2>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(320px, 100%), 1fr))', gap: '20px' }}>
         {ANSWER_ITEMS.map((item) => (
           <div key={item.q} className="glass-panel" style={{ padding: '1.5rem' }}>
             <h3 style={{ fontSize: '1.05rem', color: 'var(--text-primary)', fontWeight: 600, marginBottom: '10px' }}>{item.q}</h3>
@@ -419,14 +424,14 @@ export default function InternshipsClient() {
       <section className="section">
         <div className="container">
           <h1 style={{ fontSize: '2.5rem', fontWeight: 600, marginBottom: '16px' }}>
-            <span style={{ color: 'var(--accent-primary)' }}>AV, EV & Battery</span> {isWorkshop ? "Workshops" : "Internships"}
+            <span style={{ color: 'var(--accent-primary)' }}>Engineering</span> {isWorkshop ? "Workshops" : "Internships"} &amp; R&amp;D
           </h1>
           <p style={{ fontSize: "1.1rem", color: "var(--accent-primary)", fontWeight: "400", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "48px" }}>
-            Building <strong className="glowing-text">World-Class Engineers</strong> to Solve <strong className="glowing-text">Energy</strong> and <strong className="glowing-text">EV Battery</strong> Challenges
+            Building <strong className="glowing-text">World-Class Engineers</strong> to Solve Energy, EV Battery, Autonomous Systems, Aerospace and Space Engineering Challenges
           </p>
           <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', marginBottom: '56px', lineHeight: 1.6 }}>
-            Gain hands-on experience in EV Battery Diagnostics, Autonomous System integration, and more.
-            Explore ongoing initiatives across Research, Proof of Concepts, and structured Design & Development.
+            Gain hands-on experience through engineering research, design, simulation, proof-of-concept development
+            and real-world product initiatives across EV, Energy, AI, Autonomous Systems, Aerospace and Space.
           </p>
 
           {!isWorkshop && <PrerequisitesSection />}
@@ -511,20 +516,6 @@ export default function InternshipsClient() {
               tertiaryLink="/internships/ev-help-agent/usecases"
               tertiaryLinkLabel="Real AI Dialogs"
             />
-            <ProjectCard
-              title="Aerospace Quality Intelligence Platform"
-              desc="AI-assisted aerospace manufacturing quality intelligence — connecting engineering requirements, inspection, evidence, FAI, configuration control and supplier quality through a trusted digital thread."
-              link="/internships/aerospace-quality-intelligence-platform"
-              category="Aerospace & Defence R&D"
-              badge="AQIP"
-              tags={["Aerospace", "Defence", "GenAI", "Agentic AI", "Quality Intelligence", "Manufacturing", "Digital Thread"]}
-              ctaLabel="Explore AQIP"
-              trackProps={{
-                "data-track-event": "aqip_card_click",
-                "data-track-source": "internships_genai",
-                "data-track-destination": "/internships/aerospace-quality-intelligence-platform",
-              }}
-            />
           </Section>
 
           <Section title="Research">
@@ -562,20 +553,50 @@ export default function InternshipsClient() {
             />
           </Section>
 
-          <Section title="Space & Aerospace Engineering">
-            <ProjectCard
+          <Section title="Space & Aerospace Engineering" id="space-aerospace-engineering" gridClassName={trackStyles.grid}>
+            <TrackCard
+              eyebrow="Space Systems R&D"
+              title="Spacecraft Health Management Mission 2040"
+              desc="Long-term space engineering and research initiative focused on autonomous spacecraft health management, telemetry intelligence, fault detection, isolation and recovery, digital twins and verified safe recovery."
+              tags={["Space Systems", "Spacecraft Health", "FDIR", "Telemetry", "Digital Twin", "Autonomy"]}
+              cta="Explore Space Mission"
+              href="/space"
+            />
+            <TrackCard
+              eyebrow="Aerospace Engineering & Research"
+              title="Aerospace Learning & Research Platform"
+              desc="Practical aerospace engineering and cybersecurity platform covering aircraft, drones, eVTOL, avionics, embedded systems, satellite security, digital engineering and hands-on research."
+              tags={["Aerospace", "Avionics", "Aircraft", "Drones & eVTOL", "Cybersecurity", "Digital Engineering"]}
+              cta="Explore Aerospace"
+              href="/aerospace"
+            />
+            <TrackCard
+              eyebrow="Aerospace & Defence R&D"
+              title="Aerospace Quality Intelligence Platform"
+              badge="AQIP"
+              desc="AI-assisted aerospace manufacturing quality intelligence connecting engineering requirements, inspection, FAI, configuration control, manufacturing evidence and supplier quality through a trusted digital thread."
+              tags={["Aerospace", "Defence", "Quality Intelligence", "FAI", "Digital Thread", "AI-Assisted"]}
+              cta="Explore AQIP"
+              href="/internships/aerospace-quality-intelligence-platform"
+              trackProps={{
+                "data-track-event": "aqip_card_click",
+                "data-track-source": "internships_space_aerospace",
+                "data-track-destination": "/internships/aerospace-quality-intelligence-platform",
+              }}
+            />
+            <TrackCard
+              eyebrow="Model Rocketry & Mission Engineering"
               title="IN-SPACe Model Rocketry"
               desc="End-to-end mission architecture, telemetry systems, avionics, recovery mechanisms, and systems engineering for national-level student rocketry competitions."
-              link="https://labs.ev.engineer/Internships/Rocketry/astroforge.html"
-              ctaLabel="Student Competition 2026"
-              secondaryLink="/space/2026-INSPACe-ROCKETRY-059"
-              secondaryLinkLabel="Workshop Topics & Workbook"
-              tertiaryLink="https://www.inspace.gov.in/inspace?id=workshop_on_essentials_of_model_rocketry"
-              tertiaryLinkLabel="IN-SPACe Workshop Listing"
-              quaternaryLink="/workbook/inspace-model-rocketry-workshop-brochure.pdf"
-              quaternaryLinkLabel="Workshop Brochure (PDF)"
-              quinaryLink="/workbook/model-rocketry-7-day-learning-workbook-2026.pdf"
-              quinaryLinkLabel="7-Day Learning Workbook (PDF)"
+              tags={["Model Rocketry", "Avionics", "Telemetry", "Propulsion", "Recovery Systems", "Mission Engineering"]}
+              cta="Explore Model Rocketry"
+              href="/space/2026-INSPACe-ROCKETRY-059"
+              links={[
+                { label: "Student Competition 2026", href: "https://labs.ev.engineer/Internships/Rocketry/astroforge.html" },
+                { label: "IN-SPACe Workshop Listing", href: "https://www.inspace.gov.in/inspace?id=workshop_on_essentials_of_model_rocketry" },
+                { label: "Workshop Brochure (PDF)", href: "/workbook/inspace-model-rocketry-workshop-brochure.pdf" },
+                { label: "7-Day Learning Workbook (PDF)", href: "/workbook/model-rocketry-7-day-learning-workbook-2026.pdf" },
+              ]}
             />
           </Section>
 

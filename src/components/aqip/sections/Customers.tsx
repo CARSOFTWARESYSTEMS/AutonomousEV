@@ -87,7 +87,7 @@ export function CustomerScorecard() {
 
 export function CustomersGroup() {
   return (
-    <Group id="customers" index={7} kicker="Customers" title="Customers: who to serve first and how to learn from them" lead="An initial customer profile, where to find it, what to ask and how to score the answer.">
+    <Group id="customers" kicker="Customers" title="Customers: who to serve first and how to learn from them" lead="An initial customer profile, where to find it, what to ask and how to score the answer.">
       <CustomerSegments />
       <CustomerMap />
       <CustomerDiscovery />
@@ -139,7 +139,7 @@ export function PMFSignals() {
 
 export function ValidationGroup() {
   return (
-    <Group id="validation" index={8} kicker="Validation" title="Validation: prove it works before claiming it does" lead="Measure the product against the customer's existing process, and measure demand by what customers do.">
+    <Group id="validation" kicker="Validation" title="Validation: prove it works before claiming it does" lead="Measure the product against the customer's existing process, and measure demand by what customers do.">
       <ValidationFramework />
       <PMFSignals />
     </Group>

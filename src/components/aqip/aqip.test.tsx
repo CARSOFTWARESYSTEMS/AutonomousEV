@@ -1,5 +1,5 @@
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import { render, screen, within } from "@testing-library/react";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 const trackEvent = vi.hoisted(() => vi.fn());
@@ -10,7 +10,11 @@ import { NINETY_DAY, RISKS } from "./data/execution";
 import { GRAPH_EDGES, GRAPH_NODES, NODE_BY_ID, relationsOf } from "./data/graph";
 import { PROBLEMS } from "./data/problems";
 import { MATURITY_MATRIX, MODULES, SIM_STEPS } from "./data/product";
-import { FAQ, GLOSSARY, NAV } from "./data/reference";
+import { CHAPTERS, ECOSYSTEM, FAQ, GLOSSARY, HEADER_NAV, NAV } from "./data/reference";
+import { ROADMAP } from "./data/roadmap";
+import AqipHeader from "./interactive/AqipHeader";
+import Chapter from "./interactive/Chapter";
+import ChapterNav from "./interactive/ChapterNav";
 import CustomerScorecard from "./interactive/CustomerScorecard";
 import DecisionFramework from "./interactive/DecisionFramework";
 import DigitalThreadSimulator from "./interactive/DigitalThreadSimulator";
@@ -18,12 +22,13 @@ import Glossary from "./interactive/Glossary";
 import MasterDetail from "./interactive/MasterDetail";
 import MobileDisclosure from "./interactive/MobileDisclosure";
 import NinetyDayChecklist, { STORAGE_KEY } from "./interactive/NinetyDayChecklist";
-import PageTools from "./interactive/PageTools";
+import { VIEW_MODE_KEY, resetPageState, setActiveSection, setChapterOpen } from "./interactive/pageState";
 import PolicyAsCode from "./interactive/PolicyAsCode";
 import QualityGraph from "./interactive/QualityGraph";
 import RoadmapExplorer from "./interactive/RoadmapExplorer";
 import RoiCalculator from "./interactive/RoiCalculator";
-import StrategyNav from "./interactive/StrategyNav";
+import Runtime from "./interactive/Runtime";
+import ViewControls from "./interactive/ViewControls";
 import { SCORE_DIMENSIONS } from "./logic/scorecard";
 
 const events = () => trackEvent.mock.calls.map(([name]) => name as string);
@@ -38,6 +43,9 @@ beforeAll(() => {
 beforeEach(() => {
   trackEvent.mockClear();
   window.localStorage.clear();
+  act(() => resetPageState());
+  window.history.replaceState(null, "", "/");
+  vi.mocked(Element.prototype.scrollIntoView).mockClear();
 });
 
 afterEach(() => {
@@ -55,6 +63,22 @@ describe("content data", () => {
     expect(GLOSSARY).toHaveLength(24);
     expect(NINETY_DAY.map((phase) => phase.items.length)).toEqual([8, 7, 7]);
     expect(NAV).toHaveLength(17);
+    expect(ROADMAP.map((year) => year.horizon)).toEqual(["target", "target", "target", "vision", "vision"]);
+  });
+
+  it("puts every section in exactly one of seven chapters, in page order", () => {
+    expect(CHAPTERS.map((chapter) => `${chapter.n} ${chapter.title}`)).toEqual(["01 Strategy", "02 Product", "03 Roadmap", "04 Customer", "05 Business", "06 Leadership & Execution", "07 Reference"]);
+    expect(CHAPTERS.flatMap((chapter) => chapter.sections)).toEqual(NAV.map((item) => item.id));
+    for (const item of HEADER_NAV) expect(NAV.map((section) => section.id)).toContain(item.target);
+  });
+
+  it("names four ecosystem destinations, with UFlight at the address the project already uses", () => {
+    expect(ECOSYSTEM.map((entity) => [entity.name, entity.href, entity.external])).toEqual([
+      ["EV.ENGINEER™", "/", false],
+      ["UFlight™", "https://www.uflight.in/", true],
+      ["EV Society™", "https://www.evsociety.org/", true],
+      ["iTelematics® Software Private Limited", "https://itelematics.com/", true],
+    ]);
   });
 
   it("connects every graph node, with no edge to a node that does not exist", () => {
@@ -227,10 +251,13 @@ describe("DigitalThreadSimulator", () => {
 });
 
 describe("RoadmapExplorer", () => {
-  it("keeps all three years in the document and updates the platform scope on selection", async () => {
+  it("keeps all five years in the document and updates the platform scope on selection", async () => {
     const user = userEvent.setup();
     render(<RoadmapExplorer />);
-    expect(screen.getAllByRole("article")).toHaveLength(3);
+    expect(screen.getAllByRole("article")).toHaveLength(5);
+    expect(screen.getAllByText("Customer phase")).toHaveLength(5);
+    expect(screen.getAllByText("Company phase")).toHaveLength(5);
+    expect(screen.getAllByText("Long-term vision")).toHaveLength(2);
     expect(screen.getByText("Platform scope by the end of Year 1")).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: /Year 3/ }));
     expect(screen.getByRole("button", { name: /Year 3/ })).toHaveAttribute("aria-pressed", "true");
@@ -259,7 +286,9 @@ describe("RoiCalculator", () => {
     const outputs = () => Object.fromEntries(screen.getAllByRole("definition").map((dd) => [dd.previousElementSibling?.textContent, dd.textContent]));
     expect(outputs()).toMatchObject({ "Current annual effort": "1,536 hours", "Potential hours saved": "614 hours", "Indicative payback period": "8.9 months" });
 
-    const fais = screen.getByLabelText("FAIs per month");
+    expect(screen.getAllByRole("group").map((group) => within(group).getByText(/./, { selector: "legend" }).textContent)).toEqual(["Current Process", "Improvement Assumptions", "Commercial Estimate"]);
+    const fais = screen.getByLabelText("First article inspections");
+    expect(fais).toHaveAccessibleDescription("FAIs / month");
     await user.clear(fais);
     await user.type(fais, "16");
     expect(outputs()["Current annual effort"]).toBe("3,072 hours");
@@ -279,7 +308,7 @@ describe("RoiCalculator", () => {
   it("reports only that the calculator was used, never a value that was typed", async () => {
     const user = userEvent.setup();
     render(<RoiCalculator />);
-    const cost = screen.getByLabelText("Annual software cost");
+    const cost = screen.getByLabelText("Software cost");
     await user.clear(cost);
     await user.type(cost, "987654");
     await user.tab();
@@ -410,83 +439,345 @@ describe("MobileDisclosure", () => {
   });
 });
 
-describe("StrategyNav", () => {
-  it("links to every section, marks the current one and reports the page view", () => {
-    render(<StrategyNav items={NAV} />);
-    const nav = screen.getByRole("navigation", { name: "Strategy index" });
-    const links = within(nav).getAllByRole("link");
-    expect(links.map((link) => link.getAttribute("href"))).toEqual(NAV.map((item) => `#${item.id}`));
-    expect(links[0]).toHaveAttribute("aria-current", "location");
-    expect(events()).toEqual(["aqip_page_view", "aqip_section_view"]);
+describe("AqipHeader", () => {
+  it("carries AQIP's own identity, seven destinations, the Ecosystem menu and one action", () => {
+    render(<AqipHeader />);
+    const header = screen.getByRole("banner");
+    expect(within(header).getByRole("link", { name: /^AQIP: Aerospace Quality Intelligence Platform/ })).toHaveAttribute("href", "#top");
+    const nav = within(header).getByRole("navigation", { name: "AQIP" });
+    expect(within(nav).getAllByRole("link").map((link) => [link.textContent, link.getAttribute("href")])).toEqual([
+      ["Strategy", "#overview"],
+      ["Product", "#product"],
+      ["Roadmap", "#roadmap"],
+      ["Customers", "#customers"],
+      ["Business", "#business"],
+      ["Leadership", "#leadership"],
+      ["Execution", "#execution"],
+    ]);
+    expect(within(nav).getByRole("button", { name: "Ecosystem" })).toHaveAttribute("aria-expanded", "false");
+    expect(within(header).getByRole("link", { name: "Discuss AQIP" })).toHaveAttribute("href", "/consulting");
+    // Nothing of the site-wide EV.ENGINEER navbar.
+    expect(within(header).queryByRole("link", { name: /Training|Consulting$|Gallery|EV Career/ })).toBeNull();
+    expect(header.querySelectorAll("h1, h2, h3")).toHaveLength(0);
   });
 
-  it("moves to a section, focuses it, updates the address and reports the click", async () => {
+  it("marks the destination the reader is in, and none while in the reference chapter", () => {
+    render(<AqipHeader />);
+    const link = (name: string) => within(screen.getByRole("navigation", { name: "AQIP" })).getByRole("link", { name });
+    expect(link("Strategy")).toHaveAttribute("aria-current", "location");
+    act(() => setActiveSection("risks"));
+    expect(link("Execution")).toHaveAttribute("aria-current", "location");
+    expect(link("Strategy")).not.toHaveAttribute("aria-current");
+    act(() => setActiveSection("reference"));
+    expect(screen.getByRole("navigation", { name: "AQIP" }).querySelectorAll("[aria-current]")).toHaveLength(0);
+  });
+
+  it("jumps to a destination and reports which one", async () => {
     const user = userEvent.setup();
     render(
       <>
-        <StrategyNav items={NAV} />
+        <AqipHeader />
         <section id="roadmap" tabIndex={-1} />
       </>,
     );
-    const section = document.getElementById("roadmap")!;
-    await user.click(screen.getByRole("link", { name: "Roadmap" }));
-    expect(section.scrollIntoView).toHaveBeenCalledWith({ behavior: "smooth", block: "start" });
-    expect(section).toHaveFocus();
+    await user.click(within(screen.getByRole("navigation", { name: "AQIP" })).getByRole("link", { name: "Roadmap" }));
+    expect(document.getElementById("roadmap")!.scrollIntoView).toHaveBeenCalledWith({ behavior: "smooth", block: "start" });
     expect(window.location.hash).toBe("#roadmap");
-    expect(eventParams("aqip_strategy_nav_click")).toEqual([{ section: "roadmap" }]);
+    expect(eventParams("aqip_header_nav_click")).toEqual([{ item: "roadmap" }]);
+  });
+});
+
+describe("Ecosystem menu", () => {
+  const open = async (user: ReturnType<typeof userEvent.setup>) => {
+    const button = screen.getByRole("button", { name: "Ecosystem" });
+    await user.click(button);
+    return { button, panel: document.getElementById(button.getAttribute("aria-controls")!)! };
+  };
+
+  it("opens on click and lists the four names, each with its purpose and where it leads", async () => {
+    const user = userEvent.setup();
+    render(<AqipHeader />);
+    const { button, panel } = await open(user);
+    expect(button).toHaveAttribute("aria-expanded", "true");
+    expect(panel).toBeVisible();
+    const links = within(panel).getAllByRole("link");
+    expect(links.map((link) => link.getAttribute("href"))).toEqual(["/", "https://www.uflight.in/", "https://www.evsociety.org/", "https://itelematics.com/"]);
+    expect(links[0]).not.toHaveAttribute("target");
+    for (const link of links.slice(1)) {
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(link).toHaveAttribute("rel", "noopener noreferrer");
+      expect(link.textContent).toContain("(opens in a new tab)");
+    }
+    expect(links[1]).toHaveTextContent("UFlight™Advanced health monitoring systems for aerospace and autonomous platforms.");
+    expect(links.map((link) => [link.getAttribute("data-track-event"), link.getAttribute("data-track-destination")])).toEqual([
+      ["aqip_ecosystem_link_click", "ev-engineer"],
+      ["aqip_ecosystem_link_click", "uflight"],
+      ["aqip_ecosystem_link_click", "ev-society"],
+      ["aqip_ecosystem_link_click", "itelematics"],
+    ]);
+    expect(panel.textContent).toContain("These are separate names with different roles.");
+    expect(events()).toContain("aqip_ecosystem_menu_open");
   });
 
-  it("does not animate the scroll for readers who ask for reduced motion", async () => {
+  it("closes on Escape and returns focus to its button, and closes on a press outside", async () => {
+    const user = userEvent.setup();
+    render(
+      <>
+        <AqipHeader />
+        <p>Elsewhere</p>
+      </>,
+    );
+    const { button, panel } = await open(user);
+    await user.keyboard("{Escape}");
+    expect(panel).not.toBeVisible();
+    expect(button).toHaveFocus();
+    await user.click(button);
+    expect(panel).toBeVisible();
+    await user.click(screen.getByText("Elsewhere"));
+    expect(panel).not.toBeVisible();
+  });
+
+  it("is reachable and operable from the keyboard alone", async () => {
+    const user = userEvent.setup();
+    render(<AqipHeader />);
+    const button = screen.getByRole("button", { name: "Ecosystem" });
+    button.focus();
+    await user.keyboard("{Enter}");
+    expect(button).toHaveAttribute("aria-expanded", "true");
+    await user.tab();
+    expect(document.activeElement).toHaveAttribute("href", "/");
+  });
+});
+
+describe("Phone menu", () => {
+  it("opens as a dialog with AQIP's sections, the ecosystem and contact, and locks the page behind it", async () => {
+    const user = userEvent.setup();
+    render(<AqipHeader />);
+    const button = screen.getByRole("button", { name: "Menu" });
+    expect(button).toHaveAttribute("aria-expanded", "false");
+    await user.click(button);
+    expect(screen.getByRole("button", { name: "Close" })).toHaveAttribute("aria-expanded", "true");
+    const menu = screen.getByRole("dialog", { name: "AQIP menu" });
+    expect(menu).toHaveAttribute("aria-modal", "true");
+    expect(within(within(menu).getByRole("navigation", { name: "AQIP sections" })).getAllByRole("link").map((link) => link.textContent)).toEqual(["Strategy", "Product", "Roadmap", "Customers", "Business", "Leadership", "Execution"]);
+    for (const name of ["EV.ENGINEER™", "UFlight™", "EV Society™", "iTelematics® Software Private Limited"]) expect(within(menu).getByText(name)).toBeInTheDocument();
+    expect(within(menu).getByRole("link", { name: "Discuss AQIP" })).toHaveAttribute("href", "/consulting");
+    expect(within(menu).getByRole("link", { name: "Explore a Pilot" })).toHaveAttribute("href", "/contact");
+    expect(document.body.style.overflow).toBe("hidden");
+    expect(within(menu).getByRole("link", { name: "Strategy" })).toHaveFocus();
+    expect(events()).toContain("aqip_mobile_menu_open");
+  });
+
+  it("closes on Escape, restores scrolling and returns focus to the button", async () => {
+    const user = userEvent.setup();
+    render(<AqipHeader />);
+    await user.click(screen.getByRole("button", { name: "Menu" }));
+    await user.keyboard("{Escape}");
+    expect(screen.queryByRole("dialog")).toBeNull();
+    expect(document.body.style.overflow).toBe("");
+    expect(screen.getByRole("button", { name: "Menu" })).toHaveFocus();
+  });
+
+  it("keeps Tab inside the menu, and closes when a section is chosen", async () => {
+    const user = userEvent.setup();
+    render(
+      <>
+        <AqipHeader />
+        <section id="business" tabIndex={-1} />
+      </>,
+    );
+    await user.click(screen.getByRole("button", { name: "Menu" }));
+    const menu = screen.getByRole("dialog");
+    const links = within(menu).getAllByRole("link");
+    links[links.length - 1].focus();
+    await user.tab();
+    expect(screen.getByRole("button", { name: "Close" })).toHaveFocus();
+    await user.click(within(menu).getByRole("link", { name: "Business" }));
+    expect(screen.queryByRole("dialog")).toBeNull();
+    expect(document.getElementById("business")!.scrollIntoView).toHaveBeenCalled();
+  });
+});
+
+describe("ChapterNav", () => {
+  const nav = () => screen.getByRole("navigation", { name: "Chapters and sections" });
+  const toggle = () => within(nav()).getAllByRole("button")[0];
+
+  it("names the current chapter and section, and lists only that chapter's sections beside it", () => {
+    render(<ChapterNav />);
+    expect(toggle()).toHaveTextContent("Jump to section01StrategyOverview");
+    expect(within(within(nav()).getByRole("list", { name: "Sections in Strategy" })).getAllByRole("link").map((link) => link.textContent)).toEqual(["Overview", "Opportunity", "Problems"]);
+    act(() => setActiveSection("validation"));
+    expect(toggle()).toHaveTextContent("04CustomerValidation");
+    const sections = within(within(nav()).getByRole("list", { name: "Sections in Customer" })).getAllByRole("link");
+    expect(sections.map((link) => link.textContent)).toEqual(["Customers", "Validation", "Go-To-Market"]);
+    expect(sections[1]).toHaveAttribute("aria-current", "location");
+    expect(events()).toEqual(["aqip_page_view", "aqip_section_view", "aqip_section_view"]);
+  });
+
+  it("opens the full contents: seven chapters and their seventeen sections", async () => {
+    const user = userEvent.setup();
+    render(<ChapterNav />);
+    expect(toggle()).toHaveAttribute("aria-expanded", "false");
+    await user.click(toggle());
+    const contents = document.getElementById(toggle().getAttribute("aria-controls")!)!;
+    expect(contents).toBeVisible();
+    const chapters = within(contents).getAllByRole("listitem").filter((item) => item.parentElement === contents.querySelector("ol"));
+    expect(chapters).toHaveLength(7);
+    expect(chapters.map((chapter) => within(chapter).getAllByRole("link").length - 1)).toEqual([3, 2, 1, 3, 2, 5, 1]);
+    await user.keyboard("{Escape}");
+    expect(contents).not.toBeVisible();
+    expect(toggle()).toHaveFocus();
+  });
+
+  it("jumps to a chosen section or chapter, closes the contents and reports the choice", async () => {
+    const user = userEvent.setup();
+    render(
+      <>
+        <ChapterNav />
+        <section id="risks" tabIndex={-1} />
+        <section id="product" tabIndex={-1} />
+      </>,
+    );
+    await user.click(toggle());
+    const contents = document.getElementById(toggle().getAttribute("aria-controls")!)!;
+    await user.click(within(contents).getByRole("link", { name: "Risks" }));
+    expect(document.getElementById("risks")!.scrollIntoView).toHaveBeenCalledWith({ behavior: "smooth", block: "start" });
+    expect(document.getElementById("risks")).toHaveFocus();
+    expect(contents).not.toBeVisible();
+    expect(eventParams("aqip_strategy_nav_click")).toEqual([{ section: "risks" }]);
+
+    await user.click(toggle());
+    await user.click(within(contents).getByRole("link", { name: "02Product" }));
+    expect(window.location.hash).toBe("#product");
+    expect(eventParams("aqip_chapter_select")).toEqual([{ chapter: "chapter-product", source: "index" }]);
+  });
+
+  it("does not animate the jump for readers who ask for reduced motion", async () => {
     vi.spyOn(window, "matchMedia").mockImplementation((query) => ({ matches: query.includes("reduce"), media: query }) as MediaQueryList);
     const user = userEvent.setup();
     render(
       <>
-        <StrategyNav items={NAV} />
-        <section id="risks" tabIndex={-1} />
+        <ChapterNav />
+        <section id="problems" tabIndex={-1} />
       </>,
     );
-    await user.click(screen.getByRole("link", { name: "Risks" }));
-    expect(document.getElementById("risks")!.scrollIntoView).toHaveBeenCalledWith({ behavior: "auto", block: "start" });
+    await user.click(within(nav()).getByRole("link", { name: "Problems" }));
+    expect(document.getElementById("problems")!.scrollIntoView).toHaveBeenCalledWith({ behavior: "auto", block: "start" });
   });
 });
 
-describe("PageTools", () => {
-  it("switches the page root between the full manual and Executive Mode", async () => {
+describe("Chapter", () => {
+  const [strategy, product] = CHAPTERS;
+
+  it("is a labelled region whose sections are always in the document, open or closed", async () => {
     const user = userEvent.setup();
     render(
+      <>
+        <Chapter chapter={strategy}>
+          <p>Strategy sections</p>
+        </Chapter>
+        <Chapter chapter={product} executive>
+          <p>Product sections</p>
+        </Chapter>
+      </>,
+    );
+    const region = screen.getByRole("region", { name: "02 Product" });
+    expect(region).toHaveAttribute("data-executive");
+    expect(within(region).getByText("Product sections")).toBeInTheDocument();
+    // The first chapter starts open on a phone; the rest start closed.
+    expect(within(screen.getByRole("region", { name: "01 Strategy" })).getByRole("button")).toHaveAttribute("aria-expanded", "true");
+    const toggle = within(region).getByRole("button", { name: "Open chapter" });
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    expect(document.getElementById(toggle.getAttribute("aria-controls")!)).not.toHaveAttribute("data-open");
+    await user.click(toggle);
+    expect(within(region).getByRole("button", { name: "Close chapter" })).toHaveAttribute("aria-expanded", "true");
+    expect(document.getElementById(toggle.getAttribute("aria-controls")!)).toHaveAttribute("data-open");
+    expect(eventParams("aqip_chapter_select")).toEqual([{ chapter: "chapter-product", source: "chapter" }]);
+  });
+});
+
+describe("ViewControls and Runtime", () => {
+  const page = () =>
+    render(
       <div id="root-under-test" data-mode="full">
-        <PageTools rootId="root-under-test" sections={["Vision", "Roadmap"]} />
+        <Runtime rootId="root-under-test" />
+        <ViewControls sections={["Vision", "Roadmap"]} />
+        <a href="#deep">Go deep</a>
+        <Chapter chapter={CHAPTERS[1]}>
+          <section id="deep" tabIndex={-1} />
+        </Chapter>
+        <details>
+          <summary>Question</summary>Answer
+        </details>
       </div>,
     );
-    const root = document.getElementById("root-under-test")!;
-    const executive = screen.getByRole("button", { name: "Executive Mode" });
-    expect(executive).toHaveAttribute("aria-pressed", "false");
+  const root = () => document.getElementById("root-under-test")!;
+
+  it("offers Executive View and the Full Operating Manual, each explained, and applies the choice to the page", async () => {
+    const user = userEvent.setup();
+    page();
+    const executive = screen.getByRole("button", { name: /Executive View/ });
+    const full = screen.getByRole("button", { name: /Full Operating Manual/ });
+    expect(executive).toHaveTextContent("~10-minute overview");
+    expect(full).toHaveTextContent("Complete strategy & execution reference");
+    expect(full).toHaveAttribute("aria-pressed", "true");
     await user.click(executive);
-    expect(root).toHaveAttribute("data-mode", "executive");
-    expect(screen.getByRole("status")).toHaveTextContent("Executive Mode: showing Vision, Roadmap.");
-    await user.click(screen.getByRole("button", { name: "Full manual" }));
-    expect(root).toHaveAttribute("data-mode", "full");
+    expect(root()).toHaveAttribute("data-mode", "executive");
+    expect(screen.getByText("Executive View: Vision, Roadmap.")).toBeInTheDocument();
+    await user.click(full);
+    expect(root()).toHaveAttribute("data-mode", "full");
     expect(eventParams("aqip_view_mode")).toEqual([{ mode: "executive" }, { mode: "full" }]);
+  });
+
+  it("remembers the view in this browser, so the next visit starts in it", async () => {
+    const user = userEvent.setup();
+    const { unmount } = page();
+    await user.click(screen.getByRole("button", { name: /Executive View/ }));
+    expect(window.localStorage.getItem(VIEW_MODE_KEY)).toBe("executive");
+    unmount();
+    page();
+    expect(screen.getByRole("button", { name: /Executive View/ })).toHaveAttribute("aria-pressed", "true");
+    expect(root()).toHaveAttribute("data-mode", "executive");
+  });
+
+  it("opens and closes every chapter at once", async () => {
+    const user = userEvent.setup();
+    page();
+    const chapter = within(screen.getByRole("region", { name: "02 Product" }));
+    expect(chapter.getByRole("button")).toHaveAttribute("aria-expanded", "false");
+    await user.click(screen.getByRole("button", { name: "Expand all" }));
+    expect(chapter.getByRole("button")).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getByRole("button", { name: "Expand all" })).toBeDisabled();
+    await user.click(screen.getByRole("button", { name: "Collapse all" }));
+    expect(chapter.getByRole("button")).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("opens the chapter an in-page link points into before scrolling there", async () => {
+    const user = userEvent.setup();
+    page();
+    act(() => setChapterOpen(CHAPTERS[1].id, false));
+    await user.click(screen.getByRole("link", { name: "Go deep" }));
+    expect(within(screen.getByRole("region", { name: "02 Product" })).getByRole("button")).toHaveAttribute("aria-expanded", "true");
+    // The move waits for the newly opened chapter to be laid out.
+    await waitFor(() => expect(window.location.hash).toBe("#deep"));
+    expect(document.getElementById("deep")!.scrollIntoView).toHaveBeenCalledOnce();
   });
 
   it("opens every collapsed answer for printing and closes them again afterwards", async () => {
     const print = vi.fn();
     vi.stubGlobal("print", print);
     const user = userEvent.setup();
-    render(
-      <div id="root-under-test">
-        <PageTools rootId="root-under-test" sections={[]} />
-        <details>
-          <summary>Question</summary>Answer
-        </details>
-      </div>,
-    );
+    page();
     await user.click(screen.getByRole("button", { name: "Print / Executive Brief" }));
     expect(print).toHaveBeenCalledOnce();
     const details = document.querySelector("details")!;
-    window.dispatchEvent(new Event("beforeprint"));
+    act(() => {
+      window.dispatchEvent(new Event("beforeprint"));
+    });
     expect(details.open).toBe(true);
-    window.dispatchEvent(new Event("afterprint"));
+    act(() => {
+      window.dispatchEvent(new Event("afterprint"));
+    });
     expect(details.open).toBe(false);
     vi.unstubAllGlobals();
   });

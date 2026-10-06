@@ -70,6 +70,7 @@ export default function DigitalThreadSimulator() {
           <p className={css.simCount}>
             Step {step} of {total} <span className={css.simActor} data-actor={current.actor}>{ACTOR_LINE[current.actor]}</span>
           </p>
+          <progress className={css.simProgress} max={total} value={step} aria-label={`Step ${step} of ${total}`} />
           <h4 className={css.simTitle}>{current.title}</h4>
           <p className={css.simText}>{current.text}</p>
         </div>

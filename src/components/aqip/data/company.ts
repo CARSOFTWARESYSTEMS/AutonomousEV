@@ -74,6 +74,8 @@ export const VALUES: readonly { name: string; text: string }[] = [
 export interface ExecutiveRole {
   id: string;
   title: string;
+  /** What the role is for, in one line. */
+  summary: string;
   responsibilities: readonly string[];
   /** The principle, note or question the role works by. */
   principle?: string;
@@ -84,6 +86,7 @@ export const ROLES: readonly ExecutiveRole[] = [
   {
     id: "ceo",
     title: "Founder / CEO",
+    summary: "Owns the vision, the first customers and where the company's time and money go.",
     responsibilities: [
       "Vision and category creation",
       "Personally understand the first 100 customers",
@@ -103,6 +106,7 @@ export const ROLES: readonly ExecutiveRole[] = [
   {
     id: "cto",
     title: "CTO",
+    summary: "Owns the architecture: a deterministic core, with AI where interpretation helps.",
     responsibilities: [
       "Platform architecture",
       "Quality Graph",
@@ -122,6 +126,7 @@ export const ROLES: readonly ExecutiveRole[] = [
   {
     id: "cqo",
     title: "Chief Quality Officer",
+    summary: "The aerospace quality authority: what is correct, and how it is proven.",
     responsibilities: [
       "Aerospace quality domain authority",
       "FAI",
@@ -140,6 +145,7 @@ export const ROLES: readonly ExecutiveRole[] = [
   {
     id: "cpo",
     title: "Chief Product Officer",
+    summary: "Decides what gets built next, from measured customer outcomes.",
     responsibilities: ["Problem discovery", "Roadmap", "Prioritisation", "Product metrics", "UX", "Customer feedback", "Market segmentation", "Product-market fit"],
     principle: "What measurable customer outcome improves?",
     principleLabel: "The question for every proposed feature",
@@ -147,6 +153,7 @@ export const ROLES: readonly ExecutiveRole[] = [
   {
     id: "ciso",
     title: "CISO",
+    summary: "Keeps customer engineering data protected, in every deployment model.",
     responsibilities: [
       "Threat modelling",
       "Secure SDLC",
@@ -164,6 +171,7 @@ export const ROLES: readonly ExecutiveRole[] = [
   {
     id: "cso",
     title: "Chief Sales Officer",
+    summary: "Turns founder-led selling into a repeatable sales motion.",
     responsibilities: ["Account segmentation", "Founder-to-sales transition", "Enterprise sales", "Partner and channel strategy", "OEM network agreements", "Pipeline and forecast", "Renewals", "Expansion"],
     principle: SALES_PRINCIPLE,
     principleLabel: "Sales principle",
@@ -171,6 +179,7 @@ export const ROLES: readonly ExecutiveRole[] = [
   {
     id: "cmo",
     title: "CMO",
+    summary: "Builds the category through evidence and education.",
     responsibilities: ["Category creation", "Positioning", "Industry research", "Benchmark reports", "Case studies", "Conferences", "Community", "ABM", "Content", "Customer stories", "Qualified demand"],
     principle: MARKETING_PRINCIPLE,
     principleLabel: "Marketing principle",
@@ -178,6 +187,7 @@ export const ROLES: readonly ExecutiveRole[] = [
   {
     id: "cfo",
     title: "CFO",
+    summary: "Keeps the company funded by customers first and capital second.",
     responsibilities: ["Runway", "Pricing", "Collections", "Grant accounting", "SaaS economics", "Cash forecasting", "Fundraising", "Budget discipline", "Enterprise contracts"],
     principle: "Use grants to accelerate R&D. Build the business on customer value and recurring revenue.",
     principleLabel: "Principle",
@@ -185,6 +195,7 @@ export const ROLES: readonly ExecutiveRole[] = [
   {
     id: "customer-success",
     title: "Customer Success",
+    summary: "Makes each customer faster on real work, and proves it.",
     responsibilities: ["Onboarding and workflow mapping", "Historical drawing benchmarks", "User configuration and training", "First controlled live workflow", "ROI reviews", "Adoption and renewal", "Feeding customer evidence back to product"],
     principle: "A customer is successful when a live FAI is completed faster, with the evidence to show it.",
     principleLabel: "Principle",
@@ -192,6 +203,7 @@ export const ROLES: readonly ExecutiveRole[] = [
   {
     id: "engineering",
     title: "Engineering / AI Team",
+    summary: "Builds, measures and ships the platform.",
     responsibilities: [
       "Build the platform and the Quality Graph",
       "Extraction models and their evaluation",

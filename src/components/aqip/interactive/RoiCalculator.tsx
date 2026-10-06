@@ -2,7 +2,7 @@
 
 import { useId, useRef, useState } from "react";
 import { trackAqip } from "../analytics";
-import { ROI_FIELDS } from "../data/business";
+import { ROI_GROUPS } from "../data/business";
 import { ROI_DEFAULTS, computeRoi, type RoiInputs } from "../logic/roi";
 import css from "../interactive.module.css";
 
@@ -21,9 +21,9 @@ function payback(months: number | null) {
 }
 
 /**
- * A back-of-envelope return calculation. It runs in the browser; the figures a
- * visitor types are never stored or sent. Analytics learns only that the
- * calculator was used.
+ * A back-of-envelope return calculation, with its inputs in three groups and
+ * the results beside them. It runs in the browser; the figures a visitor types
+ * are never stored or sent. Analytics learns only that the calculator was used.
  */
 export default function RoiCalculator() {
   const uid = useId();
@@ -57,41 +57,42 @@ export default function RoiCalculator() {
   ];
 
   return (
-    // autoComplete="off": Firefox otherwise restores a control's value, checked and disabled state on reload,
+    // autoComplete="off": Firefox otherwise restores a control's value on reload,
     // before React starts from its own initial state, leaving the two out of step.
     <form className={css.roi} autoComplete="off" onSubmit={(event) => event.preventDefault()} aria-label="ROI calculator">
       <div className={css.roiInputs}>
-        {ROI_FIELDS.map((field) => (
-          <div key={field.key} className={css.roiField}>
-            <label htmlFor={`${uid}-${field.key}`}>{field.label}</label>
-            <div className={css.roiControl}>
-              <input
-                id={`${uid}-${field.key}`}
-                type="number"
-                inputMode="decimal"
-                min={0}
-                max={field.max}
-                step={field.step}
-                value={draft[field.key]}
-                onChange={(event) => change(field.key, event.target.value)}
-                onBlur={finish}
-              />
-              <span aria-hidden="true">{field.unit}</span>
-            </div>
-          </div>
+        {ROI_GROUPS.map((group) => (
+          <fieldset key={group.id} className={css.roiGroup}>
+            <legend>{group.title}</legend>
+            {group.fields.map((field) => (
+              <div key={field.key} className={css.roiField}>
+                <label htmlFor={`${uid}-${field.key}`}>{field.label}</label>
+                <div className={css.roiControl}>
+                  <input
+                    id={`${uid}-${field.key}`}
+                    type="number"
+                    inputMode="decimal"
+                    min={0}
+                    max={field.max}
+                    step={field.step}
+                    value={draft[field.key]}
+                    aria-describedby={`${uid}-${field.key}-unit`}
+                    onChange={(event) => change(field.key, event.target.value)}
+                    onBlur={finish}
+                  />
+                  <span id={`${uid}-${field.key}-unit`}>{field.unit}</span>
+                </div>
+              </div>
+            ))}
+          </fieldset>
         ))}
-        <button
-          type="button"
-          className={css.button}
-          onClick={() => {
-            setDraft(asDraft(ROI_DEFAULTS));
-          }}
-        >
+        <button type="button" className={css.button} onClick={() => setDraft(asDraft(ROI_DEFAULTS))}>
           Reset to illustrative assumptions
         </button>
       </div>
 
       <div className={css.roiOutputs}>
+        <p className={css.roiHeading}>Results</p>
         <dl aria-live="polite">
           {outputs.map((output) => (
             <div key={output.label} className={css.roiOutput} data-strong={output.strong ? "" : undefined}>

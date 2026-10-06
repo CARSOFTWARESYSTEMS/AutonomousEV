@@ -13,7 +13,7 @@ vi.mock("@/components/aqip/interactive/Lazy", async () => ({
   RoiCalculator: (await import("@/components/aqip/interactive/RoiCalculator")).default,
 }));
 
-import { FAQ, NAV, SOURCES } from "@/components/aqip/data/reference";
+import { CHAPTERS, FAQ, NAV, SOURCES } from "@/components/aqip/data/reference";
 import { buildInternshipsGraph } from "@/lib/structured-data/internshipsGraph";
 import sitemap from "../../sitemap";
 import InternshipsPage from "../page";
@@ -29,6 +29,9 @@ beforeAll(() => {
 
 const renderPage = () => render(<Page />);
 const root = (container: HTMLElement) => container.querySelector<HTMLElement>("#aqip-root")!;
+// The page draws its own chrome: AQIP's header, the manual, and the site footer in AQIP's colours.
+const header = (container: HTMLElement) => container.querySelector<HTMLElement>("#aqip-root > header")!;
+const main = (container: HTMLElement) => container.querySelector<HTMLElement>("#aqip-root > main")!;
 
 describe("AQIP page: structure", () => {
   it("has one H1 that names AQIP in full, and never skips a heading level", () => {
@@ -43,30 +46,69 @@ describe("AQIP page: structure", () => {
     expect(container.querySelectorAll("h5, h6")).toHaveLength(0);
   });
 
-  it("shows a breadcrumb back to the internships hub that matches the structured data", () => {
+  it("shows a breadcrumb back to the internships hub and to the Space & Aerospace tracks", () => {
     renderPage();
     const crumbs = within(screen.getByRole("navigation", { name: "Breadcrumb" })).getAllByRole("listitem");
-    expect(crumbs.map((crumb) => crumb.textContent)).toEqual(["Home", "Internships", "AQIP"]);
-    expect(within(crumbs[0]).getByRole("link")).toHaveAttribute("href", "/");
-    expect(within(crumbs[1]).getByRole("link")).toHaveAttribute("href", "/internships");
+    expect(crumbs.map((crumb) => crumb.textContent)).toEqual(["Internships", "Space & Aerospace", "AQIP"]);
+    expect(within(crumbs[0]).getByRole("link")).toHaveAttribute("href", "/internships");
+    expect(within(crumbs[1]).getByRole("link")).toHaveAttribute("href", "/internships#space-aerospace-engineering");
     expect(crumbs[2]).toHaveAttribute("aria-current", "page");
   });
 
-  it("gives the strategy index a link to each of its seventeen sections, and each section a labelled landmark", () => {
+  it("has its own header in place of the site navbar, one main landmark, and the site footer", () => {
     const { container } = renderPage();
-    const nav = screen.getByRole("navigation", { name: "Strategy index" });
-    const hrefs = within(nav).getAllByRole("link").map((link) => link.getAttribute("href"));
-    expect(hrefs).toHaveLength(17);
+    const top = header(container);
+    expect(within(top).getByRole("link", { name: /^AQIP: Aerospace Quality Intelligence Platform/ })).toBeInTheDocument();
+    expect(within(within(top).getByRole("navigation", { name: "AQIP" })).getAllByRole("link").map((link) => link.textContent)).toEqual(["Strategy", "Product", "Roadmap", "Customers", "Business", "Leadership", "Execution"]);
+    expect(within(top).getByRole("button", { name: "Ecosystem" })).toBeInTheDocument();
+    expect(within(top).getByRole("link", { name: "Discuss AQIP" })).toHaveAttribute("href", "/consulting");
+    // None of the EV.ENGINEER navbar: no wordmark, no Training, EV Career or Gallery.
+    expect(top.textContent).not.toMatch(/EV\.ENGINEER™?\s*$|Training|EV Career|Gallery|Workshops/);
+    expect(container.querySelectorAll("main")).toHaveLength(1);
+    expect(screen.getByRole("contentinfo")).toBeInTheDocument();
+    // Header, main and footer, in that order, and nothing else that a reader would see.
+    expect(Array.from(root(container).children, (child) => child.tagName).filter((tag) => tag !== "NOSCRIPT")).toEqual(["HEADER", "MAIN", "DIV"]);
+  });
+
+  it("leads the hero with two actions and one quieter link", () => {
+    const { container } = renderPage();
+    const hero = container.querySelector<HTMLElement>("#top")!;
+    const links = Array.from(hero.querySelectorAll<HTMLAnchorElement>('a[href^="#"]'));
+    expect(links.map((link) => [link.textContent, link.getAttribute("href"), link.getAttribute("data-kind")])).toEqual([
+      ["Explore Strategy", "#overview", "primary"],
+      ["View Product Architecture", "#architecture", "secondary"],
+      ["Customer Discovery Playbook", "#customer-discovery", null],
+    ]);
+    expect(within(hero).getByText("Aerospace & Defence • Quality Intelligence")).toBeInTheDocument();
+    expect(within(within(hero).getByRole("list", { name: "How AQIP works" })).getAllByRole("listitem").map((item) => item.textContent)).toEqual(["AI-Assisted", "Digital Thread", "Human Verified"]);
+    expect(within(within(hero).getByRole("list", { name: /^The digital thread/ })).getAllByRole("listitem").map((item) => item.textContent)).toEqual(["Engineering", "Manufacturing", "Inspection", "Measurement", "Evidence", "Acceptance"]);
+  });
+
+  it("groups the seventeen sections into seven chapters, each section a labelled landmark", () => {
+    const { container } = renderPage();
+    const chapters = Array.from(container.querySelectorAll<HTMLElement>("[data-chapter]"));
+    expect(chapters.map((chapter) => chapter.id)).toEqual(CHAPTERS.map((chapter) => chapter.id));
+    expect(chapters.map((chapter) => Array.from(chapter.querySelectorAll(":scope > div > section"), (section) => section.id))).toEqual(CHAPTERS.map((chapter) => [...chapter.sections]));
     for (const item of NAV) {
       const section = container.querySelector(`[id="${item.id}"]`);
       expect(section, item.id).not.toBeNull();
       expect(section!.tagName).toBe("SECTION");
       expect(document.getElementById(section!.getAttribute("aria-labelledby")!)?.tagName).toBe("H2");
     }
-    // The suggested categories from the brief are all present.
-    for (const label of ["Overview", "Opportunity", "Problems", "Product", "Quality Graph", "Roadmap", "Customers", "Validation", "Business", "Go-To-Market", "Leadership", "Investor", "Execution", "Metrics", "Risks", "90-Day Plan"]) {
-      expect(within(nav).getByRole("link", { name: label })).toBeInTheDocument();
-    }
+    // Every chapter's sections are in the document whether or not a phone has the chapter open.
+    for (const chapter of chapters) expect(chapter.querySelector("[data-aqip-chapter-body]")!.children.length).toBeGreaterThan(0);
+  });
+
+  it("replaces the old row of seventeen pills with the current chapter's sections and a full table of contents", () => {
+    renderPage();
+    const nav = screen.getByRole("navigation", { name: "Chapters and sections" });
+    expect(within(within(nav).getByRole("list", { name: "Sections in Strategy" })).getAllByRole("link").map((link) => link.getAttribute("href"))).toEqual(["#overview", "#opportunity", "#problems"]);
+    const contents = document.getElementById(within(nav).getAllByRole("button")[0].getAttribute("aria-controls")!)!;
+    expect(contents).toHaveAttribute("hidden");
+    const hrefs = Array.from(contents.querySelectorAll("a"), (link) => link.getAttribute("href"));
+    expect(hrefs).toHaveLength(CHAPTERS.length + NAV.length);
+    for (const item of NAV) expect(hrefs, item.id).toContain(`#${item.id}`);
+    expect(screen.queryByRole("navigation", { name: "Strategy index" })).toBeNull();
   });
 
   it("points every in-page link at something that exists", () => {
@@ -78,12 +120,15 @@ describe("AQIP page: structure", () => {
 
   it("links internally only to pages in the sitemap, and opens external links safely in a new tab", () => {
     const { container } = renderPage();
+    // The shared footer is tested with the site; these are the links this page adds.
+    const own = [header(container), main(container)];
     const known = new Set(sitemap().map((entry) => new URL(entry.url).pathname));
-    const internal = Array.from(container.querySelectorAll<HTMLAnchorElement>('a[href^="/"]'), (a) => a.getAttribute("href")!);
-    expect(internal).toEqual(expect.arrayContaining(["/contact", "/consulting", "/about/sudarshana-karkala", "/"]));
+    const internal = own.flatMap((part) => Array.from(part.querySelectorAll<HTMLAnchorElement>('a[href^="/"]'), (a) => a.getAttribute("href")!.split("#")[0]));
+    expect(internal).toEqual(expect.arrayContaining(["/contact", "/consulting", "/about/sudarshana-karkala", "/", "/internships"]));
     for (const href of internal) expect(known.has(href), href).toBe(true);
-    const external = Array.from(container.querySelectorAll<HTMLAnchorElement>('a[href^="http"]'));
-    expect(external.length).toBe(SOURCES.length + 2);
+    const external = own.flatMap((part) => Array.from(part.querySelectorAll<HTMLAnchorElement>('a[href^="http"]')));
+    // The sources, then UFlight, EV Society and iTelematics in both the Ecosystem menu and the attribution.
+    expect(external.length).toBe(SOURCES.length + 3 + 3);
     for (const link of external) {
       expect(link).toHaveAttribute("target", "_blank");
       expect(link).toHaveAttribute("rel", "noopener noreferrer");
@@ -110,7 +155,7 @@ describe("AQIP page: structure", () => {
 describe("AQIP page: content", () => {
   it("states the positioning, philosophy and safety principle from the brief", () => {
     const { container } = renderPage();
-    const text = root(container).textContent!;
+    const text = main(container).textContent!;
     for (const statement of [
       "The Trust Infrastructure for Aerospace & Defence Manufacturing",
       "Help aerospace manufacturers prove that every part was built exactly as engineering intended.",
@@ -136,8 +181,9 @@ describe("AQIP page: content", () => {
 
   it("makes none of the claims the brief rules out, and invents no market size", () => {
     const { container } = renderPage();
-    const text = root(container).textContent!;
+    const text = main(container).textContent!;
     expect(text).not.toMatch(/world['’]s first|nobody has done|only solution|guaranteed compliance|AI replaces quality engineers|market leader|award[- ]winning/i);
+    expect(header(container).textContent).not.toMatch(/world['’]s first|only solution|guaranteed/i);
     expect(text).not.toMatch(/\b(TAM|SAM|SOM)\b[^.]*\d/);
     expect(text).not.toMatch(/\$\s?\d|billion|crore market/i);
     expect(text).toContain("This page gives no TAM, SAM or SOM figures.");
@@ -197,7 +243,7 @@ describe("AQIP page: content", () => {
     }
   });
 
-  it("credits the design and keeps the three organisations' roles distinct", () => {
+  it("credits the design and keeps the four names' roles distinct", () => {
     const { container } = renderPage();
     const designed = screen.getByRole("region", { name: "Designed by" });
     expect(within(designed).getByText("Designed by")).toBeInTheDocument();
@@ -209,16 +255,21 @@ describe("AQIP page: content", () => {
 
     const attribution = container.querySelector<HTMLElement>("#attribution")!;
     const cards = within(attribution).getAllByRole("listitem");
-    expect(cards.map((card) => within(card).getByRole("heading", { level: 4 }).textContent)).toEqual(["EV Society™", "EV.ENGINEER™", "iTelematics® Software Private Limited"]);
+    expect(cards.map((card) => within(card).getByRole("heading", { level: 4 }).textContent)).toEqual(["EV Society™", "EV.ENGINEER™", "UFlight™", "iTelematics® Software Private Limited"]);
     expect(cards[0]).toHaveTextContent("Initiative");
     expect(cards[0]).toHaveTextContent("Non Profit Organisation");
     expect(cards[1]).toHaveTextContent("Building World-Class Engineers to Solve Energy and EV Battery Challenges");
-    expect(cards[2]).toHaveTextContent("Commercial Product Development");
-    expect(within(cards[0]).getByRole("link")).toHaveAttribute("href", "https://www.evsociety.org/");
-    expect(within(cards[0]).getByRole("link")).toHaveAttribute("data-track-event", "aqip_evsociety_click");
-    expect(within(cards[2]).getByRole("link")).toHaveAttribute("href", "https://itelematics.com/");
-    expect(within(cards[2]).getByRole("link")).toHaveAttribute("data-track-event", "aqip_itelematics_click");
-    expect(attribution.textContent).toContain("EV Society™ and iTelematics® Software Private Limited are separate organisations.");
+    expect(cards[2]).toHaveTextContent("Advanced health monitoring systems for aerospace and autonomous platforms.");
+    expect(cards[3]).toHaveTextContent("Commercial Product Development");
+    expect(cards.map((card) => [within(card).getByRole("link").getAttribute("href"), within(card).getByRole("link").getAttribute("data-track-event")])).toEqual([
+      ["https://www.evsociety.org/", "aqip_evsociety_click"],
+      ["/", "aqip_ecosystem_link_click"],
+      ["https://www.uflight.in/", "aqip_ecosystem_link_click"],
+      ["https://itelematics.com/", "aqip_itelematics_click"],
+    ]);
+    // Two organisations and two brands: nothing says they are one legal entity, or that UFlight is a company.
+    expect(attribution.textContent).toContain("EV Society™ and iTelematics® Software Private Limited are separate organisations; EV.ENGINEER™ and UFlight™ are brands, not companies.");
+    expect(main(container).textContent).not.toMatch(/UFlight™? (Private Limited|Pvt|Inc|company)/i);
   });
 
   it("sends the closing calls to action to the site's existing contact pages", () => {
@@ -268,6 +319,7 @@ describe("AQIP page: SEO", () => {
     const article = graph.find((node) => node["@type"] === "TechArticle")!;
     expect(article.author).toEqual({ "@id": "https://autonomous.ev.engineer/about/sudarshana-karkala#person" });
     expect(article.articleSection).toEqual(NAV.map((item) => item.label));
+    // The markup lists pages; the visible trail's middle step is a place on the internships page.
     const crumbs = (graph.find((node) => node["@type"] === "BreadcrumbList")!.itemListElement as Array<Record<string, unknown>>).map((item) => item.name);
     expect(crumbs).toEqual(["Home", "Internships", "Aerospace Quality Intelligence Platform"]);
   });
@@ -287,24 +339,18 @@ describe("AQIP page: SEO", () => {
 });
 
 describe("AQIP on the internships page", () => {
-  it("sits next to EV Help Agent under GenAI & Agentic AI Projects, with its badge, tags and link", () => {
+  it("is a Space & Aerospace Engineering track, not a GenAI project", () => {
     render(<InternshipsPage />);
-    const heading = screen.getByRole("heading", { level: 2, name: "GenAI & Agentic AI Projects" });
-    const grid = heading.nextElementSibling as HTMLElement;
-    expect(within(grid).getAllByRole("heading", { level: 3 }).map((h) => h.textContent)).toEqual(["EV Help Agent", "Aerospace Quality Intelligence Platform"]);
-
-    const card = within(grid).getByRole("link", { name: /Aerospace Quality Intelligence Platform/ });
-    expect(card).toHaveAttribute("href", ROUTE);
-    expect(card).toHaveAttribute("data-track-event", "aqip_card_click");
-    expect(card).toHaveAttribute("data-track-destination", ROUTE);
+    const section = screen.getByRole("heading", { level: 2, name: "Space & Aerospace Engineering" }).parentElement!;
+    const card = within(section).getByRole("heading", { level: 3, name: "Aerospace Quality Intelligence Platform" }).closest("article")!;
+    const link = within(card).getByRole("link", { name: "Explore AQIP" });
+    expect(link).toHaveAttribute("href", ROUTE);
+    expect(link).toHaveAttribute("data-track-event", "aqip_card_click");
+    expect(link).toHaveAttribute("data-track-destination", ROUTE);
     expect(within(card).getByText("AQIP")).toBeInTheDocument();
-    expect(within(card).getByText(/connecting engineering requirements, inspection, evidence, FAI, configuration control and supplier quality through a trusted digital thread\./)).toBeInTheDocument();
-    for (const tag of ["Aerospace", "Defence", "GenAI", "Agentic AI", "Quality Intelligence", "Manufacturing", "Digital Thread"]) expect(within(card).getByText(tag)).toBeInTheDocument();
-    expect(within(card).getByText(/Explore AQIP/)).toBeInTheDocument();
 
-    // EV Help Agent is unchanged.
-    expect(within(grid).getByRole("link", { name: /Visit Website/ })).toHaveAttribute("href", "https://help.ev.engineer/");
-    expect(within(grid).getByRole("link", { name: /design flow/ })).toHaveAttribute("href", "/internships/ev-help-agent");
+    const genai = screen.getByRole("heading", { level: 2, name: "GenAI & Agentic AI Projects" }).nextElementSibling as HTMLElement;
+    expect(genai.textContent).not.toMatch(/Aerospace Quality Intelligence Platform|AQIP/);
   });
 
   it("is listed in the internships structured data", () => {

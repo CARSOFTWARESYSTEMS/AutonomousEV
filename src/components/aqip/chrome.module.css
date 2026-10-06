@@ -1,0 +1,769 @@
+/* AQIP page chrome: its own header, the Ecosystem menu, the phone menu, the
+   sticky chapter bar, the view controls and the chapter openers. Colours, radii
+   and the two sticky heights (--aq-site-nav, --aq-index) are custom properties
+   set on the page root in aqip.module.css. Everything is at least 44px to
+   touch, keyboard operable, and never depends on hover. */
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.chevron {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  margin: 0 2px 4px 4px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform var(--aq-fast);
+}
+[aria-expanded="true"] > .chevron {
+  margin-bottom: -4px;
+  transform: rotate(-135deg);
+}
+
+/* ── Header ── */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  padding-top: env(safe-area-inset-top);
+  border-bottom: 1px solid var(--aq-line);
+  background: var(--aq-bg);
+}
+.headerInner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: var(--aq-content-max);
+  height: var(--aq-site-nav);
+  margin: 0 auto;
+  padding: 0 max(var(--aq-gutter), env(safe-area-inset-right)) 0 max(var(--aq-gutter), env(safe-area-inset-left));
+}
+.brand {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  min-height: 44px;
+  margin-right: auto;
+  text-decoration: none;
+}
+.brandMark {
+  font-family: var(--aq-display);
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  color: var(--aq-strong);
+}
+/* The supporting line needs room: it joins the mark from large phones upwards. */
+.brandLine {
+  display: none;
+  font-size: 0.72rem;
+  font-weight: 500;
+  line-height: 1.3;
+  white-space: nowrap;
+  color: var(--aq-muted);
+}
+.headerNav,
+.headerCta {
+  display: none;
+}
+.headerNav > ul {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  list-style: none;
+}
+.headerLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--aq-text-2);
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color var(--aq-fast), background var(--aq-fast);
+}
+.headerLink:hover,
+.headerLink[aria-expanded="true"] {
+  background: var(--aq-accent-soft);
+  color: var(--aq-strong);
+}
+.headerLink[aria-current] {
+  color: var(--aq-strong);
+  box-shadow: inset 0 -2px 0 var(--aq-accent-2);
+  border-radius: 10px 10px 0 0;
+}
+.headerCta {
+  align-items: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid var(--aq-line-2);
+  color: var(--aq-accent);
+  font-size: 0.9rem;
+  font-weight: 650;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background var(--aq-fast), border-color var(--aq-fast), color var(--aq-fast);
+}
+.headerCta:hover {
+  border-color: var(--aq-accent-2);
+  background: var(--aq-accent-soft);
+  color: var(--aq-strong);
+}
+.menuButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--aq-line-2);
+  background: transparent;
+  color: var(--aq-text);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+/* Three bars that become a cross. */
+.menuIcon {
+  position: relative;
+  width: 18px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: background var(--aq-fast);
+}
+.menuIcon::before,
+.menuIcon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 18px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: transform var(--aq-fast);
+}
+.menuIcon::before {
+  transform: translateY(-6px);
+}
+.menuIcon::after {
+  transform: translateY(6px);
+}
+.menuIcon[data-open] {
+  background: transparent;
+}
+.menuIcon[data-open]::before {
+  transform: rotate(45deg);
+}
+.menuIcon[data-open]::after {
+  transform: rotate(-45deg);
+}
+.brand:focus-visible,
+.headerLink:focus-visible,
+.headerCta:focus-visible,
+.menuButton:focus-visible,
+.ecoLink:focus-visible,
+.sheetLink:focus-visible,
+.tocToggle:focus-visible,
+.subnavLink:focus-visible,
+.tocChapterLink:focus-visible,
+.tocLink:focus-visible,
+.mode:focus-visible,
+.quiet:focus-visible,
+.chapterToggle:focus-visible {
+  outline: 2px solid var(--aq-strong);
+  outline-offset: 2px;
+}
+
+/* ── Ecosystem menu ── */
+.eco {
+  position: relative;
+}
+.ecoPanel {
+  position: absolute;
+  top: calc(100% + 14px);
+  right: 0;
+  z-index: 10;
+  width: min(440px, calc(100vw - 32px));
+  padding: 18px;
+  border-radius: 16px;
+  border: 1px solid var(--aq-line-2);
+  background: #0b1030;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+.ecoPanel[hidden] {
+  display: none;
+}
+.ecoHeading,
+.sheetHeading {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--aq-accent);
+}
+.ecoIntro {
+  margin-top: 6px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--aq-muted);
+}
+.ecoList {
+  display: grid;
+  gap: 6px;
+  margin-top: 12px;
+  list-style: none;
+}
+.ecoLink {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2px 14px;
+  align-items: center;
+  min-height: 44px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--aq-line);
+  text-decoration: none;
+  transition: border-color var(--aq-fast), background var(--aq-fast);
+}
+.ecoLink:hover {
+  border-color: var(--aq-line-2);
+  background: var(--aq-accent-soft);
+}
+.ecoName {
+  font-weight: 700;
+  color: var(--aq-strong);
+}
+.ecoPurpose {
+  grid-column: 1;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--aq-text-2);
+}
+.ecoOpen {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.82rem;
+  font-weight: 650;
+  color: var(--aq-accent);
+}
+
+/* ── Phone and tablet menu: a sheet that fills the visible viewport under the header ── */
+.sheet {
+  position: fixed;
+  top: calc(var(--aq-site-nav) + env(safe-area-inset-top) + 1px);
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+  display: grid;
+  align-content: start;
+  gap: 24px;
+  max-height: calc(100vh - var(--aq-site-nav));
+  max-height: calc(100dvh - var(--aq-site-nav) - env(safe-area-inset-top));
+  padding: 20px max(var(--aq-gutter), env(safe-area-inset-right)) calc(28px + env(safe-area-inset-bottom)) max(var(--aq-gutter), env(safe-area-inset-left));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  background: var(--aq-bg);
+}
+.sheetList {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+  list-style: none;
+}
+.sheetLink {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid var(--aq-line);
+  color: var(--aq-text);
+  font-weight: 600;
+  text-decoration: none;
+}
+.sheetLink[aria-current] {
+  border-color: var(--aq-accent-2);
+  background: var(--aq-accent-soft);
+  color: var(--aq-strong);
+}
+
+/* ── View controls ── */
+.viewBar {
+  border-top: 1px solid var(--aq-line);
+  background: rgba(13, 18, 48, 0.45);
+}
+.viewInner {
+  display: grid;
+  gap: 12px;
+  max-width: var(--aq-content-max);
+  margin: 0 auto;
+  padding: 16px max(var(--aq-gutter), env(safe-area-inset-right)) 16px max(var(--aq-gutter), env(safe-area-inset-left));
+}
+.modes {
+  display: grid;
+  gap: 8px;
+}
+.mode {
+  display: grid;
+  gap: 2px;
+  min-height: 56px;
+  padding: 9px 16px;
+  border-radius: var(--aq-radius-sm);
+  border: 1px solid var(--aq-line);
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--aq-fast), background var(--aq-fast);
+}
+.mode[aria-pressed="true"] {
+  border-color: var(--aq-accent-2);
+  background: var(--aq-accent-soft);
+}
+.modeLabel {
+  font-weight: 700;
+  color: var(--aq-text);
+}
+.mode[aria-pressed="true"] .modeLabel {
+  color: var(--aq-strong);
+}
+.modeNote {
+  font-size: 0.85rem;
+  color: var(--aq-muted);
+}
+.viewActions,
+.chapterActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.quiet,
+.chapterToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid var(--aq-line-2);
+  background: transparent;
+  color: var(--aq-accent);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background var(--aq-fast), border-color var(--aq-fast), color var(--aq-fast);
+}
+.quiet:hover:not(:disabled),
+.chapterToggle:hover {
+  border-color: var(--aq-accent-2);
+  background: var(--aq-accent-soft);
+  color: var(--aq-strong);
+}
+.quiet:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.viewNote {
+  font-size: 0.85rem;
+  color: var(--aq-muted);
+}
+
+/* ── Chapter bar ── */
+.chapterNav {
+  position: sticky;
+  top: calc(var(--aq-site-nav) + env(safe-area-inset-top));
+  z-index: 900;
+  border-top: 1px solid var(--aq-line);
+  border-bottom: 1px solid var(--aq-line);
+  background: var(--aq-bg);
+}
+.chapterNavInner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: var(--aq-content-max);
+  min-height: var(--aq-index);
+  margin: 0 auto;
+  padding: 0 max(var(--aq-gutter), env(safe-area-inset-right)) 0 max(var(--aq-gutter), env(safe-area-inset-left));
+}
+.tocToggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--aq-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.tocHint {
+  flex-shrink: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--aq-muted);
+}
+.tocNow {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+  margin-left: auto;
+  font-weight: 650;
+  white-space: nowrap;
+}
+.tocNo {
+  font-size: 0.78rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  color: var(--aq-accent);
+}
+/* A phone names the section; wider bars name the chapter and list its sections beside it. */
+.tocChapter,
+.tocNow .tocNo {
+  display: none;
+}
+.tocSection {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--aq-strong);
+}
+.subnav {
+  display: none;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+}
+.subnavLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  color: var(--aq-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color var(--aq-fast), background var(--aq-fast), border-color var(--aq-fast);
+}
+.subnavLink:hover {
+  color: var(--aq-text);
+}
+.subnavLink[aria-current] {
+  border-color: var(--aq-line-2);
+  background: rgba(59, 130, 246, 0.16);
+  color: var(--aq-strong);
+}
+/* The contents: a full-width panel under the bar on phones, a dropdown on wide screens. */
+.toc {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  max-height: calc(100vh - var(--aq-site-nav) - var(--aq-index));
+  max-height: calc(100dvh - var(--aq-site-nav) - var(--aq-index) - env(safe-area-inset-top));
+  padding: 16px max(var(--aq-gutter), env(safe-area-inset-right)) calc(20px + env(safe-area-inset-bottom)) max(var(--aq-gutter), env(safe-area-inset-left));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-bottom: 1px solid var(--aq-line-2);
+  background: #0b1030;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+.toc[hidden] {
+  display: none;
+}
+.tocChapters {
+  display: grid;
+  gap: 16px;
+  list-style: none;
+}
+.tocGroup[data-current] .tocChapterLink {
+  color: var(--aq-strong);
+}
+.tocChapterLink {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-height: 44px;
+  padding-top: 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: var(--aq-text-2);
+}
+.tocSections {
+  display: grid;
+  gap: 2px;
+  list-style: none;
+}
+.tocLink {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 10px;
+  color: var(--aq-text-2);
+  text-decoration: none;
+}
+.tocLink:hover {
+  background: var(--aq-accent-soft);
+  color: var(--aq-strong);
+}
+.tocLink[aria-current] {
+  background: var(--aq-accent-soft);
+  color: var(--aq-strong);
+  font-weight: 650;
+  box-shadow: inset 2px 0 0 var(--aq-accent-2);
+}
+
+/* ── Chapters ── */
+.chapter {
+  padding-top: var(--aq-space-chapter);
+  scroll-margin-top: calc(var(--aq-site-nav) + var(--aq-index));
+}
+.chapter + .chapter {
+  margin-top: var(--aq-space-chapter);
+  border-top: 1px solid var(--aq-line);
+}
+.chapterHead {
+  display: grid;
+  gap: 10px;
+  max-width: var(--aq-content-max);
+  margin: 0 auto;
+  padding: 0 max(var(--aq-gutter), env(safe-area-inset-right)) 0 max(var(--aq-gutter), env(safe-area-inset-left));
+}
+.chapterLabel {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+.chapterNo {
+  font-family: var(--aq-display);
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--aq-accent-2);
+}
+.chapterTitle {
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aq-accent);
+}
+.chapterSummary {
+  max-width: var(--aq-reading-max);
+  font-size: 1rem;
+  color: var(--aq-muted);
+}
+.chapterToggle {
+  justify-self: start;
+  gap: 4px;
+}
+@media (max-width: 759px) {
+  .chapter {
+    padding-top: 40px;
+  }
+  .chapter + .chapter {
+    margin-top: 40px;
+  }
+}
+/* On a phone a chapter can be closed; its sections stay in the document. */
+.chapterBody:not([data-open]) {
+  display: none;
+}
+[data-mode="executive"] .chapter:not([data-executive]) {
+  display: none;
+}
+[data-mode="executive"] .chapterBody {
+  display: block;
+}
+[data-mode="executive"] .chapterToggle,
+[data-mode="executive"] .chapterActions {
+  display: none;
+}
+[data-mode="executive"] .subnav li:not([data-executive]),
+[data-mode="executive"] .tocSections li:not([data-executive]),
+[data-mode="executive"] .tocGroup:not([data-executive]) {
+  display: none;
+}
+
+/* ── Wider layouts ── */
+@media (min-width: 480px) {
+  .brandLine {
+    display: block;
+  }
+}
+
+@media (min-width: 640px) {
+  .modes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .viewInner {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+  .viewNote {
+    grid-column: 1 / -1;
+  }
+}
+
+/* From here every chapter is open and the control to close one is gone. */
+@media (min-width: 760px) {
+  .chapterBody,
+  .chapterBody:not([data-open]) {
+    display: block;
+  }
+  .chapterToggle,
+  .chapterActions {
+    display: none;
+  }
+  .headerCta {
+    display: inline-flex;
+  }
+  .tocToggle {
+    flex: 0 0 auto;
+    padding-right: 14px;
+  }
+  .tocHint {
+    display: none;
+  }
+  .tocNow {
+    margin-left: 0;
+  }
+  .tocChapter,
+  .tocNow .tocNo {
+    display: inline;
+  }
+  .tocChapter {
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--aq-strong);
+  }
+  .tocSection {
+    display: none;
+  }
+  .subnav {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    padding-left: 14px;
+    border-left: 1px solid var(--aq-line);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .subnav::-webkit-scrollbar {
+    display: none;
+  }
+  .toc {
+    left: max(var(--aq-gutter), env(safe-area-inset-left));
+    right: auto;
+    width: min(880px, calc(100vw - 2 * var(--aq-gutter)));
+    padding: 20px 22px 22px;
+    border: 1px solid var(--aq-line-2);
+    border-top: 0;
+    border-radius: 0 0 16px 16px;
+  }
+  .tocChapters {
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 18px 22px;
+  }
+}
+
+/* The desktop header: destinations in the bar, no menu button. */
+@media (min-width: 1180px) {
+  .headerNav {
+    display: block;
+  }
+  .menuButton {
+    display: none;
+  }
+  .brand {
+    margin-right: 20px;
+  }
+  .headerNav {
+    margin-right: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chevron,
+  .menuIcon,
+  .menuIcon::before,
+  .menuIcon::after,
+  .headerLink,
+  .headerCta,
+  .ecoLink,
+  .mode,
+  .quiet,
+  .chapterToggle,
+  .subnavLink {
+    transition: none;
+  }
+}
+
+@media print {
+  .header,
+  .chapterNav,
+  .viewBar,
+  .chapterToggle {
+    display: none !important;
+  }
+  .chapterBody,
+  .chapterBody:not([data-open]) {
+    display: block !important;
+  }
+  .chapterNo {
+    color: #000;
+    -webkit-text-stroke: 0;
+  }
+  .chapter {
+    break-before: page;
+    padding-top: 0;
+  }
+}

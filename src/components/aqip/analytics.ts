@@ -13,6 +13,11 @@ export interface AqipEvents {
   aqip_page_view: NoParams;
   aqip_section_view: { section: string };
   aqip_strategy_nav_click: { section: string };
+  aqip_header_nav_click: { item: string };
+  aqip_ecosystem_menu_open: NoParams;
+  aqip_mobile_menu_open: NoParams;
+  /** A chapter chosen from the contents ("index") or opened in place on a phone ("chapter"). */
+  aqip_chapter_select: { chapter: string; source: "index" | "chapter" };
   aqip_problem_expand: { item: string };
   aqip_quality_graph_interaction: { node: string; view: "network" | "focus" | "explorer" };
   aqip_digital_thread_start: NoParams;
@@ -44,6 +49,7 @@ export const LINK_EVENTS = {
   profile: "aqip_profile_click",
   evSociety: "aqip_evsociety_click",
   iTelematics: "aqip_itelematics_click",
+  ecosystem: "aqip_ecosystem_link_click",
 } as const;
 
 const SAFE_ID = /^[a-z0-9][a-z0-9_-]{0,39}$/;

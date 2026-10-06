@@ -8,7 +8,9 @@
 // ProjectCard on /internships (see InternshipsClient.tsx) — the
 // "Miscellaneous" grab-bag section (VTU Internyet, AICTE, CAR Software
 // Systems, etc.) is deliberately excluded, since those are external
-// resource links, not EV.ENGINEER-offered programme tracks.
+// resource links, not EV.ENGINEER-offered programme tracks. The "Aerospace
+// Learning & Research Platform" card is also left out: it links to
+// /aerospace, which is noindex on this host.
 
 import { SITE_URL, INTERNSHIP_PROGRAM } from "@/data/public-entities";
 import {
@@ -48,6 +50,11 @@ const PROGRAMME_TRACKS: { name: string; url: string; description: string }[] = [
     name: "EV Help Agent",
     url: "https://help.ev.engineer/",
     description: "AI voice agent design and real-world dialog projects for EV support.",
+  },
+  {
+    name: "Spacecraft Health Management Mission 2040",
+    url: `${SITE_URL}/space`,
+    description: "Space engineering and research initiative on autonomous spacecraft health management, telemetry intelligence, fault detection, isolation and recovery, and digital twins.",
   },
   {
     name: "Aerospace Quality Intelligence Platform (AQIP)",

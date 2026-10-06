@@ -236,7 +236,7 @@ export function SecurityArchitecture() {
       label={<Chip tone="planned">Design requirements</Chip>}
       lead="Security is a first-class requirement, not a later phase. These are the controls the platform is being designed around; they are not a certification claim."
     >
-      <div className={css.cardGrid}>
+      <div className={css.cardGrid} data-plain="">
         {SECURITY_CONTROLS.map((group) => (
           <ListCard key={group.group} title={group.group} items={group.items} />
         ))}
@@ -264,7 +264,7 @@ export function ProductBoundary() {
 
 export function ProductGroup() {
   return (
-    <Group id="product" index={4} kicker="Product" title="The product: principles, platform and proof" lead="AI interprets. Humans approve. Software proves." executive>
+    <Group id="product" kicker="Product" title="The product: principles, platform and proof" lead="AI interprets. Humans approve. Software proves." executive>
       <ProductPrinciples />
       <DigitalThread />
       <QualityPassport />
@@ -281,7 +281,7 @@ export function ProductGroup() {
 
 export function QualityGraphGroup() {
   return (
-    <Group id="quality-graph" index={5} kicker="Quality Graph" title="The Aerospace Quality Graph" lead="The long-term intelligence foundation of AQIP.">
+    <Group id="quality-graph" kicker="Quality Graph" title="The Aerospace Quality Graph" lead="The long-term intelligence foundation of AQIP.">
       <Block
         title="How quality entities connect"
         label={<Chip tone="planned">Planned data model</Chip>}

@@ -7,9 +7,10 @@ import { Chip, Tags } from "../ui/primitives";
 import css from "../interactive.module.css";
 
 /**
- * The three-year roadmap. On wide screens the reader picks a year and the
- * platform diagram shows what is in scope by then. On phones all three years
- * are stacked as milestone cards, each carrying its own scope list.
+ * The five-year roadmap. On wide screens the reader picks a year and sees its
+ * objectives, customer and company phase, and what the platform covers by
+ * then. On phones every year is stacked as a milestone card that carries the
+ * same detail, so nothing depends on the selector or on swiping.
  */
 export default function RoadmapExplorer() {
   const [year, setYear] = useState(1);
@@ -22,6 +23,7 @@ export default function RoadmapExplorer() {
             key={item.id}
             type="button"
             className={css.yearTab}
+            data-horizon={item.horizon}
             aria-pressed={year === item.year}
             onClick={() => {
               setYear(item.year);
@@ -38,13 +40,24 @@ export default function RoadmapExplorer() {
         {ROADMAP.map((item) => (
           <article key={item.id} className={css.yearPanel} data-active={year === item.year ? "" : undefined} aria-labelledby={`${item.id}-title`}>
             <p className={css.yearMeta}>
-              Year {item.year} · {item.period} <Chip tone="target" />
+              Year {item.year} · {item.period} <Chip tone={item.horizon} />
             </p>
             <h4 id={`${item.id}-title`} className={css.yearTitle}>
               {item.theme}
             </h4>
             <p className={css.yearSummary}>{item.summary}</p>
+            <p className={css.yearHeading}>Objectives and modules</p>
             <Tags items={item.items} label={`Year ${item.year} work`} />
+            <dl className={css.yearPhases}>
+              <div>
+                <dt>Customer phase</dt>
+                <dd>{item.customer}</dd>
+              </div>
+              <div>
+                <dt>Company phase</dt>
+                <dd>{item.company}</dd>
+              </div>
+            </dl>
             <ul className={css.yearScope} aria-label={`Platform scope by the end of Year ${item.year}`}>
               {PLATFORM_LAYERS.map((layer) => (
                 <li key={layer.name} data-in={layer.fromYear <= item.year ? "" : undefined}>
@@ -68,7 +81,7 @@ export default function RoadmapExplorer() {
                   <span className={css.platformName}>{layer.name}</span>
                   <span className={css.platformState}>{state === "new" ? `Added in Year ${year}` : state === "in" ? "In scope" : `Planned for Year ${layer.fromYear}`}</span>
                 </div>
-                <Tags items={layer.parts} />
+                {state === "later" ? null : <Tags items={layer.parts} />}
               </li>
             );
           })}

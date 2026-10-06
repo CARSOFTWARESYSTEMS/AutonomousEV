@@ -2,12 +2,12 @@ import { EVIDENCE_API, LABELS } from "../data/product";
 import { FIELD_LOOP, FIELD_QUESTION, VISION_FLOW, VISION_YEARS } from "../data/roadmap";
 import PolicyAsCode from "../interactive/PolicyAsCode";
 import RoadmapExplorer from "../interactive/RoadmapExplorer";
-import { Block, Callout, Chip, Flow, Group, Tags } from "../ui/primitives";
+import { Block, Callout, Chip, Flow, Group } from "../ui/primitives";
 import css from "../aqip.module.css";
 
 export function Roadmap3Year() {
   return (
-    <Block id="three-year-roadmap" title="The 3-year roadmap" label={<Chip tone="target">Planning targets</Chip>} lead="Each year adds a layer to the platform. The years are planning targets on the 2026–2031 horizon, not commitments." executive>
+    <Block id="three-year-roadmap" title="The 3-year roadmap, and the two years beyond it" label={<Chip tone="target">Planning targets</Chip>} lead="Each year adds a layer to the platform. Years 1 to 3 are planning targets; years 4 and 5 are the long-term vision. None is a commitment." executive>
       <RoadmapExplorer />
     </Block>
   );
@@ -15,19 +15,17 @@ export function Roadmap3Year() {
 
 export function Vision5Year() {
   return (
-    <Block id="five-year-vision" title="The 5-year vision" label={<Chip tone="vision" />} lead="Years 4 and 5 depend on the structured evidence that the first three years create." executive>
-      <div className={css.cols2}>
+    <Block id="five-year-vision" title="The 5-year vision" label={<Chip tone="vision" />} lead="Years 4 and 5 depend on the structured evidence that the first three years create. Their work is listed in the roadmap above; this is where it leads." executive>
+      <ul className={css.visionYears}>
         {VISION_YEARS.map((year) => (
-          <article key={year.id} className={css.card}>
-            <p className={css.cardEyebrow}>
-              Year {year.year} · {year.period}
-            </p>
-            <h4 className={css.h4}>{year.theme}</h4>
-            <p className={css.cardText}>{year.summary}</p>
-            <Tags items={year.items} label={`Year ${year.year} work`} />
-          </article>
+          <li key={year.id}>
+            <strong>
+              Year {year.year} · {year.period}: {year.theme}.
+            </strong>{" "}
+            {year.summary}
+          </li>
         ))}
-      </div>
+      </ul>
       <Flow steps={VISION_FLOW} label="From factory to field, and back as intelligence" />
     </Block>
   );
@@ -87,7 +85,7 @@ export function EvidenceApi() {
 
 export function RoadmapGroup() {
   return (
-    <Group id="roadmap" index={6} kicker="Roadmap" title="Roadmap: three years of execution, five years of direction" lead="Win a narrow wedge, widen it into an operating system, then connect the supply chain." executive>
+    <Group id="roadmap" kicker="Roadmap" title="Roadmap: three years of execution, five years of direction" lead="Win a narrow wedge, widen it into an operating system, then connect the supply chain." executive>
       <Roadmap3Year />
       <Vision5Year />
       <QualityPolicyCode />

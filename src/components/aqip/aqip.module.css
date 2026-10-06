@@ -25,9 +25,16 @@
   --aq-radius: 20px;
   --aq-radius-sm: 12px;
   --aq-gutter: clamp(16px, 4vw, 40px);
-  /* Height of the site's fixed navbar, and of this page's sticky index below it. */
-  --aq-site-nav: 80px;
-  --aq-index: 58px;
+  /* Heights of this page's sticky header and of the chapter bar below it. */
+  --aq-site-nav: 56px;
+  --aq-index: 48px;
+  /* Two widths: reading text, and everything else. The header, the hero and the manual share one, so their edges line up. */
+  --aq-reading-max: 760px;
+  --aq-content-max: 1280px;
+  /* Space above a chapter, and above each section inside one. */
+  --aq-space-chapter: clamp(56px, 8vw, 112px);
+  --aq-space-group: clamp(40px, 5.5vw, 76px);
+  --aq-fast: 180ms;
   --aq-display: var(--font-aqip-display), var(--font-inter), "Inter", system-ui, sans-serif;
   position: relative;
   /* clip, not hidden: hidden would make this the scroll container and stop the index sticking. */
@@ -41,7 +48,7 @@
 
 .container {
   width: 100%;
-  max-width: 1280px;
+  max-width: var(--aq-content-max);
   margin: 0 auto;
   padding-left: max(var(--aq-gutter), env(safe-area-inset-left));
   padding-right: max(var(--aq-gutter), env(safe-area-inset-right));
@@ -63,9 +70,10 @@
 .hero {
   position: relative;
   overflow: hidden;
-  padding: calc(var(--aq-site-nav) + clamp(28px, 6vw, 72px)) 0 clamp(36px, 6vw, 72px);
+  padding: clamp(20px, 3vw, 40px) 0 clamp(32px, 4vw, 56px);
+  scroll-margin-top: var(--aq-site-nav);
   background:
-    radial-gradient(120% 80% at 85% 0%, rgba(59, 130, 246, 0.16), transparent 60%),
+    radial-gradient(110% 80% at 85% 0%, rgba(59, 130, 246, 0.16), transparent 60%),
     linear-gradient(180deg, #0a0f2a, var(--aq-bg));
 }
 .heroGrid {
@@ -79,17 +87,21 @@
   -webkit-mask-image: linear-gradient(180deg, #000, transparent 88%);
   mask-image: linear-gradient(180deg, #000, transparent 88%);
 }
+/* One column on phones, in reading order: copy, drawing, trust statement. */
 .heroInner {
   position: relative;
   display: grid;
-  gap: 32px;
-  align-items: center;
+  gap: 24px;
+  max-width: var(--aq-content-max);
+  margin: 0 auto;
+  padding: 0 max(var(--aq-gutter), env(safe-area-inset-right)) 0 max(var(--aq-gutter), env(safe-area-inset-left));
 }
-.heroCopy {
+.heroCopy,
+.heroTrust {
   min-width: 0;
 }
 .heroCopy > * + * {
-  margin-top: 16px;
+  margin-top: 14px;
 }
 .breadcrumb ol {
   display: flex;
@@ -97,33 +109,37 @@
   align-items: center;
   gap: 0 8px;
   list-style: none;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: var(--aq-muted);
 }
 .breadcrumb li + li::before {
   content: "/";
   content: "/" / "";
   margin-right: 8px;
+  opacity: 0.6;
 }
 .breadcrumb a {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  color: var(--aq-text-2);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  color: var(--aq-muted);
+  text-decoration: none;
 }
 .breadcrumb a:hover {
   color: var(--aq-strong);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
-.breadcrumb a:focus-visible {
+.breadcrumb a:focus-visible,
+.heroLink:focus-visible {
   outline: 2px solid var(--aq-strong);
   outline-offset: 2px;
 }
 .eyebrow {
+  margin-top: 0;
   font-size: 0.78rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--aq-accent);
 }
@@ -133,70 +149,173 @@
 }
 .h1Short {
   display: block;
-  font-size: clamp(3.2rem, 11vw, 6rem);
+  font-size: clamp(2.75rem, 6.2vw, 4.75rem);
   font-weight: 800;
   letter-spacing: -0.03em;
   color: var(--aq-strong);
 }
 .h1Name {
   display: block;
-  margin-top: 8px;
-  font-size: clamp(1.25rem, 3.2vw, 2rem);
+  margin-top: 6px;
+  font-size: clamp(1.6rem, 2.6vw, 2.1rem);
   font-weight: 600;
   letter-spacing: -0.01em;
   line-height: 1.2;
   color: var(--aq-accent);
 }
 .tagline {
+  max-width: 30ch;
   font-family: var(--aq-display);
-  font-size: clamp(1.15rem, 2.4vw, 1.6rem);
+  font-size: clamp(1.3rem, 2vw, 1.7rem);
   font-weight: 650;
   line-height: 1.3;
   color: var(--aq-text);
 }
 .narrative {
-  max-width: 56ch;
-  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  max-width: 60ch;
+  font-size: clamp(1rem, 1.3vw, 1.125rem);
   color: var(--aq-text-2);
 }
+/* The digital thread as a numbered sequence: two per row on phones, three from tablets up. */
+.thread {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  max-width: 720px;
+  padding-top: 4px;
+  list-style: none;
+  counter-reset: thread;
+}
+.thread li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 40px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--aq-line);
+  background: var(--aq-panel);
+  font-size: 0.875rem;
+  font-weight: 650;
+  line-height: 1.25;
+  color: var(--aq-text);
+  counter-increment: thread;
+}
+.thread li::before {
+  content: counter(thread);
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid var(--aq-line-2);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--aq-accent);
+}
+.heroLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  color: var(--aq-accent);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.heroLink:hover {
+  color: var(--aq-strong);
+}
+.heroTrust {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+}
 .trust {
+  flex-basis: 100%;
   font-size: 0.9rem;
   letter-spacing: 0.02em;
   color: var(--aq-muted);
+}
+.heroBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+}
+.heroBadges li {
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--aq-line-2);
+  font-size: 0.8rem;
+  font-weight: 650;
+  color: var(--aq-text-2);
 }
 .badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 14px;
+  padding: 6px 13px;
   border-radius: 999px;
   border: 1px solid rgba(251, 191, 36, 0.4);
   background: rgba(251, 191, 36, 0.07);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--aq-warn);
 }
 .heroVisual {
-  display: none;
+  min-width: 0;
 }
 .heroSvg {
   display: block;
   width: 100%;
-  max-width: 560px;
+  max-width: 620px;
   height: auto;
   margin: 0 auto;
 }
 .svgFrame {
-  fill: rgba(13, 18, 48, 0.6);
+  fill: rgba(13, 18, 48, 0.72);
   stroke: var(--aq-line-2);
 }
-.svgSheet path,
-.svgSheet circle {
+.svgBorder {
+  fill: none;
+  stroke: rgba(147, 197, 253, 0.2);
+}
+.svgRule {
+  fill: none;
+  stroke: rgba(147, 197, 253, 0.28);
+}
+.svgNote {
+  fill: var(--aq-muted);
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+}
+.svgPart path,
+.svgPart circle {
+  fill: rgba(96, 165, 250, 0.07);
+  stroke: #bfdbfe;
+  stroke-width: 1.6;
+}
+.svgCentre path {
+  fill: none;
+  stroke: rgba(147, 197, 253, 0.45);
+  stroke-width: 1;
+  stroke-dasharray: 6 3 1 3;
+}
+.svgDimension path {
   fill: none;
   stroke: rgba(147, 197, 253, 0.55);
-  stroke-width: 1.5;
+  stroke-width: 1;
+}
+.svgProbe circle {
+  fill: var(--aq-ok);
 }
 .svgBalloon path {
   stroke: var(--aq-accent);
@@ -205,29 +324,65 @@
 .svgBalloon circle {
   fill: #0d1230;
   stroke: var(--aq-accent);
+  stroke-width: 1.4;
 }
 .svgBalloon text {
   fill: var(--aq-strong);
   font-size: 12px;
   font-weight: 700;
 }
-.svgThread {
-  fill: none;
-  stroke: rgba(96, 165, 250, 0.35);
-  stroke-width: 2;
+.svgBalloon[data-active] circle {
+  fill: var(--aq-accent-2);
+  stroke: #dbeafe;
 }
-/* The dots that travel the thread. */
-.svgThreadFlow {
+.svgBalloon[data-active] text {
+  fill: var(--aq-on-accent);
+}
+.svgRecord rect {
+  fill: #0d1230;
+  stroke: var(--aq-accent-2);
+}
+.svgRecordTitle {
+  fill: var(--aq-accent);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+.svgRecordValue {
+  fill: var(--aq-strong);
+  font-size: 16px;
+  font-weight: 700;
+}
+.svgTick {
   fill: none;
-  stroke: #bfdbfe;
+  stroke: var(--aq-ok);
   stroke-width: 2.5;
   stroke-linecap: round;
-  stroke-dasharray: 2 22;
-  animation: aqThread 2.4s linear infinite;
+  stroke-linejoin: round;
+}
+.svgLink {
+  fill: none;
+  stroke: rgba(96, 165, 250, 0.55);
+  stroke-width: 1.2;
+  stroke-dasharray: 3 4;
+}
+.svgThread {
+  fill: none;
+  stroke: rgba(96, 165, 250, 0.4);
+  stroke-width: 2;
+}
+/* The signal that travels the chain. */
+.svgThreadFlow {
+  fill: none;
+  stroke: #dbeafe;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 2 46;
+  animation: aqThread 3.2s linear infinite;
 }
 @keyframes aqThread {
   to {
-    stroke-dashoffset: -48;
+    stroke-dashoffset: -96;
   }
 }
 .svgNode {
@@ -236,9 +391,19 @@
   stroke-width: 2;
 }
 .svgLabel {
-  fill: var(--aq-muted);
-  font-size: 11px;
-  letter-spacing: 0.08em;
+  fill: var(--aq-text-2);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+/* Phones: the drawing keeps its shapes and loses the labels too small to read. */
+@media (max-width: 599px) {
+  .svgFine {
+    display: none;
+  }
+  .svgLabel {
+    font-size: 15px;
+  }
 }
 
 /* ── Buttons ── */
@@ -292,8 +457,7 @@
 
 /* ── Groups, blocks and type ── */
 .group {
-  padding: clamp(48px, 7vw, 88px) 0;
-  border-top: 1px solid var(--aq-line);
+  padding-top: var(--aq-space-group);
   scroll-margin-top: calc(var(--aq-site-nav) + var(--aq-index));
 }
 .group:focus {
@@ -303,10 +467,15 @@
   max-width: 900px;
 }
 .kicker {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+  color: var(--aq-muted);
+}
+.kickerNo {
+  margin-right: 6px;
+  font-variant-numeric: tabular-nums;
   color: var(--aq-accent);
 }
 .h2 {
@@ -320,9 +489,10 @@
   text-wrap: balance;
 }
 .lead {
-  max-width: 68ch;
+  max-width: var(--aq-reading-max);
   margin-top: 14px;
-  font-size: clamp(1.02rem, 1.4vw, 1.18rem);
+  font-size: clamp(1.0625rem, 1.4vw, 1.2rem);
+  line-height: 1.6;
   color: var(--aq-text-2);
 }
 .block {
@@ -347,8 +517,9 @@
   color: var(--aq-text);
 }
 .blockLead {
-  max-width: 72ch;
+  max-width: var(--aq-reading-max);
   margin-top: 8px;
+  font-size: 1.0625rem;
   color: var(--aq-text-2);
 }
 .h4 {
@@ -359,8 +530,8 @@
   color: var(--aq-text);
 }
 .prose {
-  max-width: 72ch;
-  font-size: 1.02rem;
+  max-width: var(--aq-reading-max);
+  font-size: 1.0625rem;
   color: var(--aq-text-2);
 }
 .prose strong {
@@ -430,6 +601,17 @@
 .card > * + * {
   margin-top: 12px;
 }
+/* A grid of explanations, not of panels: no box around each one, only a rule above it. */
+.page [data-plain] {
+  gap: 0 32px;
+}
+.page [data-plain] > .card {
+  padding: 18px 0 20px;
+  border: 0;
+  border-top: 1px solid var(--aq-line);
+  border-radius: 0;
+  background: none;
+}
 .card[data-emphasis="accent"] {
   border-color: var(--aq-line-2);
   background: linear-gradient(180deg, rgba(59, 130, 246, 0.1), var(--aq-panel));
@@ -449,7 +631,8 @@
   color: var(--aq-accent);
 }
 .cardText {
-  font-size: 0.95rem;
+  font-size: 1rem;
+  line-height: 1.6;
   color: var(--aq-text-2);
 }
 .list,
@@ -805,6 +988,7 @@
 .faq {
   display: grid;
   gap: 10px;
+  max-width: 880px;
 }
 
 /* ── Key/value lists ── */
@@ -819,14 +1003,12 @@
 }
 .kv dt,
 .legend dt {
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
+  font-size: 0.85rem;
+  font-weight: 650;
   color: var(--aq-muted);
 }
 .kv dd {
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: var(--aq-text-2);
 }
 .legend {
@@ -941,24 +1123,22 @@
 }
 .principles {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 0 32px;
   list-style: none;
   counter-reset: principle;
 }
 .principles li {
   position: relative;
-  padding: 16px 18px 16px 58px;
-  border-radius: var(--aq-radius-sm);
-  border: 1px solid var(--aq-line);
-  background: var(--aq-panel);
+  padding: 16px 0 18px 44px;
+  border-top: 1px solid var(--aq-line);
   counter-increment: principle;
 }
 .principles li::before {
   content: counter(principle, decimal-leading-zero);
   position: absolute;
-  left: 18px;
-  top: 16px;
+  left: 0;
+  top: 18px;
   font-size: 0.85rem;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
@@ -1306,6 +1486,21 @@
 .canvas > * + * {
   margin-top: 10px;
 }
+.roleSummary {
+  margin-top: 6px;
+  font-size: 1.0625rem;
+  color: var(--aq-text);
+}
+.visionYears {
+  display: grid;
+  gap: 10px;
+  max-width: var(--aq-reading-max);
+  list-style: none;
+  color: var(--aq-text-2);
+}
+.visionYears strong {
+  color: var(--aq-text);
+}
 .modelText {
   font-family: var(--aq-display);
   font-size: 1.15rem;
@@ -1495,16 +1690,14 @@
 }
 .warnings {
   display: grid;
-  gap: 10px;
+  gap: 0 32px;
   list-style: none;
 }
 .warnings li {
   display: flex;
   gap: 12px;
-  padding: 14px 16px;
-  border-radius: var(--aq-radius-sm);
-  border: 1px solid rgba(252, 165, 165, 0.28);
-  background: rgba(252, 165, 165, 0.05);
+  padding: 14px 0;
+  border-top: 1px solid rgba(252, 165, 165, 0.22);
 }
 .warningMark {
   flex-shrink: 0;
@@ -1667,7 +1860,8 @@
   display: none;
 }
 .closing {
-  padding: clamp(56px, 8vw, 104px) 0;
+  margin-top: var(--aq-space-chapter);
+  padding: var(--aq-space-chapter) 0;
   border-top: 1px solid var(--aq-line);
   background: radial-gradient(100% 70% at 50% 0%, rgba(59, 130, 246, 0.14), transparent 70%);
 }
@@ -1703,6 +1897,30 @@
   margin-top: 14px;
 }
 
+/* The site's shared footer, unchanged, drawn in AQIP's palette: it reads these properties. */
+.footerTheme {
+  --bg-dark: #050816;
+  --glass-border: rgba(147, 197, 253, 0.14);
+  --accent-primary: #93c5fd;
+  --text-primary: #f4f6fc;
+  --text-secondary: #c4c9db;
+}
+/* The footer's container takes this page's width and gutters, so its edges meet the manual's. */
+.footerTheme :global(.container) {
+  max-width: var(--aq-content-max);
+  padding-left: max(var(--aq-gutter), env(safe-area-inset-left));
+  padding-right: max(var(--aq-gutter), env(safe-area-inset-right));
+}
+/* The shared footer's links are a line of text tall; on touch screens give each a full-size target. */
+@media (max-width: 1023px) {
+  .footerTheme a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-block: -6px;
+  }
+}
+
 /* ── Wider layouts ── */
 @media (min-width: 600px) {
   .ctaRow {
@@ -1717,8 +1935,8 @@
     grid-template-columns: 210px minmax(0, 1fr);
     gap: 16px;
   }
-  .heroVisual {
-    display: block;
+  .thread {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -1790,6 +2008,9 @@
   .table tbody tr:last-child > * {
     border-bottom: 0;
   }
+  .table tbody tr:hover > * {
+    background: rgba(147, 197, 253, 0.05);
+  }
   .table td::before {
     content: none;
   }
@@ -1838,7 +2059,7 @@
     flex-basis: 100%;
     margin-top: 0;
   }
-  /* The classic nine-block canvas. */
+  /* The classic nine-block canvas, drawn as one sheet: the gaps are its ruled lines. */
   .canvas {
     display: grid;
     grid-template-columns: repeat(10, minmax(0, 1fr));
@@ -1846,16 +2067,48 @@
       "partners partners activities activities value value relationship relationship segments segments"
       "partners partners resources resources value value channels channels segments segments"
       "costs costs costs costs costs revenue revenue revenue revenue revenue";
-    gap: 12px;
+    gap: 1px;
+    overflow: hidden;
+    border-radius: var(--aq-radius);
+    border: 1px solid var(--aq-line-2);
+    background: var(--aq-line-2);
+  }
+  .canvas > * {
+    border: 0;
+    border-radius: 0;
+    background: #0d1230;
   }
   .canvas > * + * {
     margin-top: 0;
   }
 }
 
+/* Two columns: copy and trust statement on the left, the drawing on the right, centred against them. */
 @media (min-width: 1024px) {
   .heroInner {
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    grid-template-columns: minmax(0, 58fr) minmax(0, 42fr);
+    grid-template-areas:
+      "copy visual"
+      "trust visual";
+    gap: 20px clamp(32px, 4vw, 64px);
+    align-items: center;
+  }
+  .heroCopy {
+    grid-area: copy;
+    align-self: end;
+  }
+  .heroTrust {
+    grid-area: trust;
+    align-self: start;
+  }
+  .heroVisual {
+    grid-area: visual;
+  }
+}
+
+@media (min-width: 1180px) {
+  .page {
+    --aq-site-nav: 72px;
   }
 }
 
@@ -1906,9 +2159,7 @@
     --aq-violet: #5b21b6;
     background: #fff;
   }
-  :global(body):has(.page) > :global(nav),
-  :global(body):has(.page) > :global(header),
-  :global(body):has(.page) > :global(footer) {
+  .footerTheme {
     display: none;
   }
   .hero {
@@ -1917,7 +2168,9 @@
   }
   .heroGrid,
   .heroVisual,
-  .ctaRow {
+  .ctaRow,
+  .heroLink,
+  .breadcrumb {
     display: none;
   }
   .hero,

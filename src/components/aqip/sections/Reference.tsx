@@ -54,7 +54,7 @@ export function Sources() {
 
 export function ReferenceGroup() {
   return (
-    <Group id="reference" index={17} kicker="Reference" title="FAQ, glossary and sources" lead="Short answers, plain definitions and where to check the facts.">
+    <Group id="reference" kicker="Reference" title="FAQ, glossary and sources" lead="Short answers, plain definitions and where to check the facts.">
       <FAQ />
       <Glossary />
       <Sources />
@@ -73,24 +73,24 @@ export function DesignedBy() {
 export function OrganisationAttribution() {
   return (
     <div id="attribution" className={css.attribution}>
-      <h3 className={css.h3}>The organisations and their roles</h3>
-      <p className={css.blockLead}>Three distinct roles. EV Society™ and iTelematics® Software Private Limited are separate organisations.</p>
-      <ul className={css.cols3}>
+      <h3 className={css.h3}>The ecosystem and each name&apos;s role</h3>
+      <p className={css.blockLead}>Four distinct roles. EV Society™ and iTelematics® Software Private Limited are separate organisations; EV.ENGINEER™ and UFlight™ are brands, not companies.</p>
+      <ul className={css.cols4}>
         {ORGANISATIONS.map((organisation) => {
-          const event = organisation.id === "ev-society" ? LINK_EVENTS.evSociety : organisation.id === "itelematics" ? LINK_EVENTS.iTelematics : LINK_EVENTS.cta;
+          const event = organisation.id === "ev-society" ? LINK_EVENTS.evSociety : organisation.id === "itelematics" ? LINK_EVENTS.iTelematics : LINK_EVENTS.ecosystem;
           return (
             <li key={organisation.id} className={css.card}>
               <p className={css.cardEyebrow}>{organisation.role}</p>
               <h4 className={css.h4}>{organisation.name}</h4>
               <p className={css.cardText}>{organisation.line}</p>
               {organisation.external ? (
-                <a href={organisation.href} target="_blank" rel="noopener noreferrer" className={css.textLink} data-track-event={event}>
+                <a href={organisation.href} target="_blank" rel="noopener noreferrer" className={css.textLink} data-track-event={event} data-track-destination={organisation.id} data-track-placement="attribution">
                   {organisation.linkLabel}
                   <span className={css.srOnly}> (opens in a new tab)</span>
                   <ArrowUpRight size={14} aria-hidden="true" />
                 </a>
               ) : (
-                <Link href={organisation.href} className={css.textLink} data-track-event={event} data-track-cta="ev-engineer-home">
+                <Link href={organisation.href} className={css.textLink} data-track-event={event} data-track-destination={organisation.id} data-track-placement="attribution">
                   {organisation.linkLabel}
                   <ArrowRight size={14} aria-hidden="true" />
                 </Link>

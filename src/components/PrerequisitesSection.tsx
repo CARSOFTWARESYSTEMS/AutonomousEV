@@ -5,6 +5,29 @@ import Link from "next/link";
 import { trackEvent } from "@/utils/analytics";
 import styles from "./PrerequisitesSection.module.css";
 
+/** What every applicant needs, then what each family of tracks adds. */
+const PREREQUISITES: readonly { track: string; items: readonly string[] }[] = [
+  {
+    track: "Common Foundation",
+    items: [
+      "An engineering and problem-solving mindset",
+      "Programming or technical tools appropriate to your selected track",
+      "The ability to break down and debug technical problems",
+      "Willingness to research and document engineering decisions",
+    ],
+  },
+  { track: "EV / Battery", items: ["Basic EV architecture", "Lithium-ion battery fundamentals", "Sensors and CAN are useful"] },
+  { track: "AI / Software", items: ["Python, web or mobile development skills", "Basic AI/ML concepts"] },
+  {
+    track: "Space / Aerospace",
+    items: [
+      "Basic physics, electronics, mechanical or software fundamentals, as applicable",
+      "An interest in systems engineering",
+      "Willingness to learn avionics, telemetry, simulation and mission concepts",
+    ],
+  },
+];
+
 export default function PrerequisitesSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [hasTracked, setHasTracked] = useState(false);
@@ -38,27 +61,24 @@ export default function PrerequisitesSection() {
         <div className={styles.largeCard}>
           <h3 className={styles.cardHeader}>Prerequisites</h3>
           <p className={styles.goalText}>
-            <span className={styles.highlight}>Goal:</span> Prepare for EV Engineering Internship
+            <span className={styles.highlight}>Goal:</span> Prepare for an Engineering Internship
           </p>
 
-          <ul className={styles.bulletList}>
-            <li className={styles.bulletItem}>
-              <span className={styles.arrow}>→</span>
-              <span><span className={styles.highlight}>Required Basics:</span> Python, Flutter / React Native, iOS/Android, plus basic AI/ML concepts, circuits, sensors, and signals.</span>
-            </li>
-            <li className={styles.bulletItem}>
-              <span className={styles.arrow}>→</span>
-              <span><span className={styles.highlight}>What You Should Be Able To Do:</span> Break down technical problems and debug effectively.</span>
-            </li>
-            <li className={styles.bulletItem}>
-              <span className={styles.arrow}>→</span>
-              <span><span className={styles.highlight}>Focus Areas:</span> Basic knowledge of EV architecture and lithium-ion batteries.</span>
-            </li>
-            <li className={styles.bulletItem}>
-              <span className={styles.arrow}>→</span>
-              <span><span className={styles.highlight}>Discovery &amp; Preparation:</span> Schedule a discovery call to understand the internship, expectations, and opportunities. A short bridge course may be recommended before starting if needed.</span>
-            </li>
-          </ul>
+          {PREREQUISITES.map((group) => (
+            <div key={group.track} className={styles.track}>
+              <h4 className={styles.trackTitle}>{group.track}</h4>
+              <ul className={styles.bulletList}>
+                {group.items.map((item) => (
+                  <li key={item} className={styles.bulletItem}>
+                    <span className={styles.arrow}>→</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+
+          <p className={styles.trackNote}>Specific prerequisites vary by project. A discovery call confirms fit and any bridge learning required.</p>
 
           <a
             href="https://topmate.io/sudarshana_karkala"
@@ -74,7 +94,7 @@ export default function PrerequisitesSection() {
           </a>
 
           <div className={styles.tipBlock}>
-            <span className={styles.highlight}>Tip:</span> Demonstrate a strong interest in EV, Energy, and AI domains with consistent effort.
+            <span className={styles.highlight}>Tip:</span> Demonstrate a strong interest in your chosen track with consistent effort.
           </div>
         </div>
 

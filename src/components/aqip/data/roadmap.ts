@@ -1,5 +1,5 @@
-// The three-year roadmap and the five-year vision. Years are planning targets
-// on the 2026–2031 horizon, not commitments.
+// The roadmap: three years of planning targets and two of long-term vision, on
+// the 2026–2031 horizon. None of it is a commitment.
 
 export interface RoadmapYear {
   id: string;
@@ -11,6 +11,12 @@ export interface RoadmapYear {
   items: readonly string[];
   /** What the platform covers once this year's work is added. */
   scope: string;
+  /** Who the customers are expected to be by then. */
+  customer: string;
+  /** The shape of the company by then. */
+  company: string;
+  /** Years 1 to 3 are planning targets; years 4 and 5 are long-term vision. */
+  horizon: "target" | "vision";
 }
 
 export const ROADMAP: readonly RoadmapYear[] = [
@@ -36,6 +42,9 @@ export const ROADMAP: readonly RoadmapYear[] = [
       "Paid pilots",
     ],
     scope: "Drawing → Inspection → FAI",
+    customer: "Design partners and paid pilots with precision-machining MSMEs.",
+    company: "A founding team of up to 10, founder-led sales, founder capital and non-dilutive funding.",
+    horizon: "target",
   },
   {
     id: "year-2",
@@ -55,6 +64,9 @@ export const ROADMAP: readonly RoadmapYear[] = [
       "Supplier portal",
     ],
     scope: "The wedge, plus production quality operations",
+    customer: "Paying MSME customers expanding from first article into production quality.",
+    company: "10 to 30 people; pre-seed to seed; the first repeatable sales.",
+    horizon: "target",
   },
   {
     id: "year-3",
@@ -64,10 +76,10 @@ export const ROADMAP: readonly RoadmapYear[] = [
     summary: "Connect suppliers and their customers on shared, permission-controlled quality evidence.",
     items: ["OEM supplier network", "Supplier collaboration", "Supplier quality passport", "Evidence sharing", "Quality APIs", "Enterprise integrations", "Multi-site deployment"],
     scope: "Quality operations, plus the supplier–customer network",
+    customer: "Larger suppliers, and the first customer-sponsored supplier networks.",
+    company: "30 to 100 people; seed stage; enterprise sales and integrations.",
+    horizon: "target",
   },
-];
-
-export const VISION_YEARS: readonly RoadmapYear[] = [
   {
     id: "year-4",
     year: 4,
@@ -76,6 +88,9 @@ export const VISION_YEARS: readonly RoadmapYear[] = [
     summary: "Use the structured evidence the first three years create.",
     items: ["Predictive quality", "AI-assisted root cause analysis", "Supplier risk indicators", "3D MBD / PMI support", "Advanced process intelligence", "Quality policy as code"],
     scope: "The network, plus intelligence built on its evidence",
+    customer: "OEMs, primes and multi-tier supplier networks.",
+    company: "Growth stage, organised into product groups.",
+    horizon: "vision",
   },
   {
     id: "year-5",
@@ -93,14 +108,22 @@ export const VISION_YEARS: readonly RoadmapYear[] = [
       "Factory-to-field intelligence",
     ],
     scope: "Factory-to-field trust infrastructure",
+    customer: "Cross-supply-chain networks, including international aerospace suppliers.",
+    company: "Growth stage; national and global expansion.",
+    horizon: "vision",
   },
 ];
+
+/** Years 4 and 5: the long-term vision. */
+export const VISION_YEARS: readonly RoadmapYear[] = ROADMAP.filter((year) => year.horizon === "vision");
 
 /** The platform layers the roadmap adds, in order. A layer is in scope from the year given. */
 export const PLATFORM_LAYERS: readonly { name: string; fromYear: number; parts: readonly string[] }[] = [
   { name: "Drawing → Inspection → FAI", fromYear: 1, parts: ["Drawing Intelligence", "Digital Characteristics", "Inspection Planning", "CMM import", "FAI / FAIR", "Evidence", "Revision comparison"] },
   { name: "Quality Operating System", fromYear: 2, parts: ["Incoming, in-process and final inspection", "NCR / CAPA", "SPC", "Calibration", "Audit evidence", "Supplier portal"] },
   { name: "Aerospace Quality Network", fromYear: 3, parts: ["OEM supplier network", "Quality Passport", "Evidence sharing", "Quality APIs", "Enterprise integrations"] },
+  { name: "Quality Intelligence", fromYear: 4, parts: ["Predictive quality", "Assisted root cause analysis", "Supplier risk indicators", "MBD / PMI support", "Quality policy as code"] },
+  { name: "Trust Infrastructure", fromYear: 5, parts: ["Cross-supply-chain evidence", "Serialized quality passports", "Field-to-manufacturing feedback", "Quality Evidence API"] },
 ];
 
 export const VISION_FLOW = ["Factory", "Supplier", "OEM", "Product", "Field", "Feedback", "AQIP intelligence"] as const;

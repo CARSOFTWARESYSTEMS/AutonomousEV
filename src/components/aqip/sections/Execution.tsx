@@ -51,7 +51,7 @@ export function AntiPatterns() {
 
 export function ExecutionGroup() {
   return (
-    <Group id="execution" index={13} kicker="Execution" title="Execution: how to decide, how to start and what to avoid" lead="The operating habits that keep a small team on the right problem.">
+    <Group id="execution" kicker="Execution" title="Execution: how to decide, how to start and what to avoid" lead="The operating habits that keep a small team on the right problem.">
       <DecisionFramework />
       <FounderPlaybook />
       <AntiPatterns />
@@ -102,7 +102,7 @@ export function NorthStarMetric() {
 
 export function MetricsGroup() {
   return (
-    <Group id="metrics" index={14} kicker="Metrics" title="Metrics: what the company measures" lead="Customer outcome first, then product, business and trust.">
+    <Group id="metrics" kicker="Metrics" title="Metrics: what the company measures" lead="Customer outcome first, then product, business and trust.">
       <MetricsDashboard />
       <NorthStarMetric />
     </Group>
@@ -166,7 +166,7 @@ export function RiskRegister() {
 
 export function RisksGroup() {
   return (
-    <Group id="risks" index={15} kicker="Risks" title="Risks: what could go wrong, and who watches for it" lead="Sixteen risks with an owner and an early warning sign for each.">
+    <Group id="risks" kicker="Risks" title="Risks: what could go wrong, and who watches for it" lead="Sixteen risks with an owner and an early warning sign for each.">
       <RiskRegister />
     </Group>
   );
@@ -174,7 +174,7 @@ export function RisksGroup() {
 
 export function Execution90Day() {
   return (
-    <Group id="90-day-plan" index={16} kicker="90-Day Plan" title="The 90-day execution plan" lead="A founder's checklist for the first three months. Tick items off as they are done." executive>
+    <Group id="90-day-plan" kicker="90-Day Plan" title="The 90-day execution plan" lead="A founder's checklist for the first three months. Tick items off as they are done." executive>
       <Block id="ninety-day-checklist" title="Founder checklist" executive>
         <NinetyDayChecklist />
       </Block>

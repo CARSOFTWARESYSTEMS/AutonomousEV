@@ -11,7 +11,9 @@ export default function ChromeGate({ children }: { children: React.ReactNode }) 
     pathname?.startsWith("/aerospace/") ||
     pathname === "/space" ||
     pathname?.startsWith("/space/") ||
-    pathname === "/ishavasyam-space";
+    pathname === "/ishavasyam-space" ||
+    // AQIP has its own header and a themed footer, rendered by the page itself.
+    pathname === "/internships/aerospace-quality-intelligence-platform";
 
   if (isSelfContained) {
     return <>{children}</>;

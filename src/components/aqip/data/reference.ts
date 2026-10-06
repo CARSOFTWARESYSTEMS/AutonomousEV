@@ -1,7 +1,7 @@
 // Navigation, FAQ, glossary, sources, organisations and calls to action.
 import { EV_SOCIETY, ITELEMATICS } from "@/data/public-entities";
 
-/** The strategy index, in page order. `executive` groups stay visible in Executive Mode. */
+/** The seventeen sections, in page order. `executive` sections stay visible in Executive View. */
 export const NAV: readonly { id: string; label: string; executive?: boolean }[] = [
   { id: "overview", label: "Overview", executive: true },
   { id: "opportunity", label: "Opportunity" },
@@ -11,15 +11,61 @@ export const NAV: readonly { id: string; label: string; executive?: boolean }[] 
   { id: "roadmap", label: "Roadmap", executive: true },
   { id: "customers", label: "Customers" },
   { id: "validation", label: "Validation" },
-  { id: "business", label: "Business", executive: true },
   { id: "go-to-market", label: "Go-To-Market" },
-  { id: "leadership", label: "Leadership", executive: true },
+  { id: "business", label: "Business", executive: true },
   { id: "investor", label: "Investor", executive: true },
+  { id: "leadership", label: "Leadership", executive: true },
   { id: "execution", label: "Execution" },
   { id: "metrics", label: "Metrics" },
   { id: "risks", label: "Risks" },
   { id: "90-day-plan", label: "90-Day Plan", executive: true },
   { id: "reference", label: "FAQ & Glossary" },
+];
+
+export interface ChapterDef {
+  id: string;
+  /** The chapter's number as printed, e.g. "01". */
+  n: string;
+  title: string;
+  summary: string;
+  /** Ids of the sections it holds, in order. */
+  sections: readonly string[];
+}
+
+/** The manual's seven chapters. Every section in NAV belongs to exactly one. */
+export const CHAPTERS: readonly ChapterDef[] = [
+  { id: "chapter-strategy", n: "01", title: "Strategy", summary: "What AQIP is, why now, and the problems it sets out to solve.", sections: ["overview", "opportunity", "problems"] },
+  { id: "chapter-product", n: "02", title: "Product", summary: "Principles, the platform and its modules, and the quality graph beneath them.", sections: ["product", "quality-graph"] },
+  { id: "chapter-roadmap", n: "03", title: "Roadmap", summary: "Three years of execution and five years of direction.", sections: ["roadmap"] },
+  { id: "chapter-customer", n: "04", title: "Customer", summary: "Who to serve first, how to validate with them and how to go to market.", sections: ["customers", "validation", "go-to-market"] },
+  { id: "chapter-business", n: "05", title: "Business", summary: "Revenue, the business model, defensibility and the investor thesis.", sections: ["business", "investor"] },
+  { id: "chapter-leadership", n: "06", title: "Leadership & Execution", summary: "Vision and roles, how to decide, what to measure, the risks and the first 90 days.", sections: ["leadership", "execution", "metrics", "risks", "90-day-plan"] },
+  { id: "chapter-reference", n: "07", title: "Reference", summary: "Frequently asked questions, the glossary and sources.", sections: ["reference"] },
+];
+
+const CHAPTER_OF = new Map(CHAPTERS.flatMap((chapter) => chapter.sections.map((section) => [section, chapter] as const)));
+const NAV_BY_ID = new Map(NAV.map((item) => [item.id, item]));
+
+export const chapterOf = (sectionId: string): ChapterDef => CHAPTER_OF.get(sectionId) ?? CHAPTERS[0];
+export const sectionIsExecutive = (sectionId: string): boolean => NAV_BY_ID.get(sectionId)?.executive === true;
+export const chapterIsExecutive = (chapter: ChapterDef): boolean => chapter.sections.some(sectionIsExecutive);
+export const sectionLabel = (sectionId: string): string => NAV_BY_ID.get(sectionId)?.label ?? "";
+
+/** A section's handbook number, e.g. "1.2" for the second section of chapter 01. */
+export function sectionNumber(sectionId: string): string {
+  const chapter = chapterOf(sectionId);
+  return `${Number(chapter.n)}.${chapter.sections.indexOf(sectionId) + 1}`;
+}
+
+/** The header's high-level navigation. `sections` are the sections during which the entry is current. */
+export const HEADER_NAV: readonly { id: string; label: string; target: string; sections: readonly string[] }[] = [
+  { id: "strategy", label: "Strategy", target: "overview", sections: ["overview", "opportunity", "problems"] },
+  { id: "product", label: "Product", target: "product", sections: ["product", "quality-graph"] },
+  { id: "roadmap", label: "Roadmap", target: "roadmap", sections: ["roadmap"] },
+  { id: "customers", label: "Customers", target: "customers", sections: ["customers", "validation", "go-to-market"] },
+  { id: "business", label: "Business", target: "business", sections: ["business", "investor"] },
+  { id: "leadership", label: "Leadership", target: "leadership", sections: ["leadership"] },
+  { id: "execution", label: "Execution", target: "execution", sections: ["execution", "metrics", "risks", "90-day-plan"] },
 ];
 
 export const EXECUTIVE_SECTIONS = ["Vision", "Problem", "Solution", "Roadmap", "Business Model", "Investor Thesis", "90-Day Plan"] as const;
@@ -128,11 +174,74 @@ export const SOURCES: readonly { n: number; name: string; covers: string; url: s
 
 export const SOURCES_NOTE = "AQIP does not claim certification to, or compliance with, any of these standards. They are cited so that readers can check the requirements for themselves.";
 
-export const ORGANISATIONS: readonly { id: "ev-society" | "ev-engineer" | "itelematics"; role: string; name: string; line: string; href: string; linkLabel: string; external: boolean }[] = [
-  { id: "ev-society", role: "Initiative", name: "EV Society™", line: "Non Profit Organisation", href: EV_SOCIETY.canonicalUrl, linkLabel: "EVSociety.org", external: true },
-  { id: "ev-engineer", role: "Mission Platform", name: "EV.ENGINEER™", line: "Building World-Class Engineers to Solve Energy and EV Battery Challenges", href: "/", linkLabel: "EV.ENGINEER home", external: false },
-  { id: "itelematics", role: "Commercial Product Development", name: "iTelematics® Software Private Limited", line: "Commercial product development and deployment.", href: ITELEMATICS.canonicalUrl, linkLabel: "iTelematics.com", external: true },
-];
+export interface EcosystemEntity {
+  id: "ev-engineer" | "uflight" | "ev-society" | "itelematics";
+  name: string;
+  /** Its role in relation to AQIP, as a short label. */
+  role: string;
+  /** One line for the Ecosystem menu. */
+  purpose: string;
+  /** The line shown on its attribution card. */
+  line: string;
+  href: string;
+  linkLabel: string;
+  external: boolean;
+}
+
+/**
+ * The four names AQIP sits among, from the project's own records: one source
+ * for the header's Ecosystem menu, the mobile menu and the attribution cards.
+ * They are not one organisation. UFlight is recorded in this repository as a
+ * brand with its own site, not as a company, and is described that way here.
+ */
+const ECOSYSTEM_BY_ID: Record<EcosystemEntity["id"], EcosystemEntity> = {
+  "ev-engineer": {
+    id: "ev-engineer",
+    name: "EV.ENGINEER™",
+    role: "Mission Platform",
+    purpose: "Engineering learning, research and technology platform.",
+    line: "Building World-Class Engineers to Solve Energy and EV Battery Challenges",
+    href: "/",
+    linkLabel: "EV.ENGINEER home",
+    external: false,
+  },
+  uflight: {
+    id: "uflight",
+    name: "UFlight™",
+    role: "Aerospace Health Monitoring",
+    purpose: "Advanced health monitoring systems for aerospace and autonomous platforms.",
+    line: "Advanced health monitoring systems for aerospace and autonomous platforms.",
+    href: "https://www.uflight.in/",
+    linkLabel: "UFlight.in",
+    external: true,
+  },
+  "ev-society": {
+    id: "ev-society",
+    name: "EV Society™",
+    role: "Initiative",
+    purpose: "Education and research initiative; non-profit organisation.",
+    line: "Non Profit Organisation",
+    href: EV_SOCIETY.canonicalUrl,
+    linkLabel: "EVSociety.org",
+    external: true,
+  },
+  itelematics: {
+    id: "itelematics",
+    name: "iTelematics® Software Private Limited",
+    role: "Commercial Product Development",
+    purpose: "Commercial engineering, software products and customer deployments.",
+    line: "Commercial product development and deployment.",
+    href: ITELEMATICS.canonicalUrl,
+    linkLabel: "iTelematics.com",
+    external: true,
+  },
+};
+
+/** Menu order: the platform this page is on, then its siblings. */
+export const ECOSYSTEM: readonly EcosystemEntity[] = [ECOSYSTEM_BY_ID["ev-engineer"], ECOSYSTEM_BY_ID.uflight, ECOSYSTEM_BY_ID["ev-society"], ECOSYSTEM_BY_ID.itelematics];
+
+/** Attribution order: who initiated it, where it is published, the related brand, who commercialises it. */
+export const ORGANISATIONS: readonly EcosystemEntity[] = [ECOSYSTEM_BY_ID["ev-society"], ECOSYSTEM_BY_ID["ev-engineer"], ECOSYSTEM_BY_ID.uflight, ECOSYSTEM_BY_ID.itelematics];
 
 /** The site's existing contact routes. No new forms or addresses are introduced. */
 export const CTAS: readonly { id: string; label: string; href: string; kind: "primary" | "secondary" | "tertiary" }[] = [
@@ -141,8 +250,16 @@ export const CTAS: readonly { id: string; label: string; href: string; kind: "pr
   { id: "design-partner", label: "Customer Discovery / Design Partner", href: "/contact", kind: "tertiary" },
 ];
 
-export const HERO_CTAS: readonly { id: string; label: string; href: string; kind: "primary" | "secondary" | "tertiary" }[] = [
-  { id: "hero-strategy", label: "Explore the Strategy", href: "#overview", kind: "primary" },
+export const HERO_CTAS: readonly { id: string; label: string; href: string; kind: "primary" | "secondary" }[] = [
+  { id: "hero-strategy", label: "Explore Strategy", href: "#overview", kind: "primary" },
   { id: "hero-architecture", label: "View Product Architecture", href: "#architecture", kind: "secondary" },
-  { id: "hero-playbook", label: "Customer Discovery Playbook", href: "#customer-discovery", kind: "tertiary" },
+];
+
+export const HERO_LINK = { id: "hero-playbook", label: "Customer Discovery Playbook", href: "#customer-discovery" } as const;
+
+/** The header's and the mobile menu's contact actions: the site's existing contact routes. */
+export const HEADER_CTA = { id: "header-discuss", label: "Discuss AQIP", href: "/consulting" } as const;
+export const MENU_CONTACT: readonly { id: string; label: string; href: string }[] = [
+  { id: "menu-discuss", label: "Discuss AQIP", href: "/consulting" },
+  { id: "menu-pilot", label: "Explore a Pilot", href: "/contact" },
 ];

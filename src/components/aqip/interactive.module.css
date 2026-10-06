@@ -17,8 +17,7 @@
 
 /* ── Buttons ── */
 .button,
-.buttonPrimary,
-.toolButton {
+.buttonPrimary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -33,10 +32,9 @@
   font-weight: 650;
   line-height: 1.25;
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  transition: background var(--aq-fast), border-color var(--aq-fast), color var(--aq-fast);
 }
-.button:hover:not(:disabled),
-.toolButton:hover {
+.button:hover:not(:disabled) {
   background: var(--aq-accent-soft);
   border-color: var(--aq-accent-2);
   color: var(--aq-strong);
@@ -57,8 +55,6 @@
 }
 .button:focus-visible,
 .buttonPrimary:focus-visible,
-.toolButton:focus-visible,
-.segmented button:focus-visible,
 .mdTab:focus-visible,
 .yearTab:focus-visible,
 .graphNode:focus-visible,
@@ -81,147 +77,6 @@
   color: var(--aq-muted);
 }
 
-/* ── Strategy index ── */
-.nav {
-  position: sticky;
-  top: var(--aq-site-nav);
-  z-index: 900;
-  border-top: 1px solid var(--aq-line);
-  border-bottom: 1px solid var(--aq-line);
-  background: var(--aq-bg);
-}
-.navList {
-  position: relative;
-  display: flex;
-  gap: 6px;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 6px max(var(--aq-gutter), env(safe-area-inset-right)) 6px max(var(--aq-gutter), env(safe-area-inset-left));
-  overflow-x: auto;
-  list-style: none;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-}
-.navList::-webkit-scrollbar {
-  display: none;
-}
-.navLink {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 0 14px;
-  border-radius: 999px;
-  border: 1px solid transparent;
-  color: var(--aq-muted);
-  font-size: 0.9rem;
-  font-weight: 600;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: color 0.2s, background 0.2s, border-color 0.2s;
-}
-.navLink:hover {
-  color: var(--aq-text);
-}
-.navLink[aria-current] {
-  border-color: var(--aq-line-2);
-  background: rgba(59, 130, 246, 0.16);
-  color: var(--aq-strong);
-}
-.navLink:focus-visible {
-  outline: 2px solid var(--aq-strong);
-  outline-offset: -2px;
-}
-[data-mode="executive"] .navList li:not([data-executive]) {
-  display: none;
-}
-/* Mouse users cannot swipe the list, so each end gets a button while there is more to show. */
-.navScroll {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  z-index: 1;
-  display: grid;
-  place-items: center;
-  width: 52px;
-  border: 0;
-  background: linear-gradient(90deg, var(--aq-bg) 58%, transparent);
-  color: var(--aq-accent);
-  cursor: pointer;
-}
-.navScroll[data-side="start"] {
-  left: 0;
-}
-.navScroll[data-side="end"] {
-  right: 0;
-  background: linear-gradient(270deg, var(--aq-bg) 58%, transparent);
-}
-.navScroll[hidden] {
-  display: none;
-}
-.navScroll::before {
-  content: "";
-  width: 9px;
-  height: 9px;
-  border-left: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  transform: rotate(45deg);
-}
-.navScroll[data-side="end"]::before {
-  transform: rotate(-135deg);
-}
-.navScroll:hover {
-  color: var(--aq-strong);
-}
-.navScroll:focus-visible {
-  outline: 2px solid var(--aq-strong);
-  outline-offset: -3px;
-}
-@media (pointer: coarse) {
-  .navScroll {
-    display: none;
-  }
-}
-
-/* ── View tools ── */
-.tools {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px 16px;
-  margin-top: 24px;
-  padding: 14px 16px;
-  border-radius: var(--aq-radius-sm);
-  border: 1px solid var(--aq-line);
-  background: rgba(13, 18, 48, 0.5);
-}
-.segmented {
-  display: inline-flex;
-  padding: 3px;
-  border-radius: 999px;
-  border: 1px solid var(--aq-line-2);
-}
-.segmented button {
-  min-height: 44px;
-  padding: 0 16px;
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  color: var(--aq-muted);
-  font: inherit;
-  font-size: 0.9rem;
-  font-weight: 650;
-  cursor: pointer;
-}
-.segmented button[aria-pressed="true"] {
-  background: var(--aq-accent-2);
-  color: var(--aq-on-accent);
-}
-.toolsNote {
-  flex-basis: 100%;
-  font-size: 0.85rem;
-  color: var(--aq-muted);
-}
-
 /* ── Master/detail: an accordion on phones, a list with a side panel when wide ── */
 .mdTab {
   display: flex;
@@ -241,7 +96,7 @@
   line-height: 1.3;
   text-align: left;
   cursor: pointer;
-  transition: border-color 0.2s, background 0.2s, color 0.2s;
+  transition: border-color var(--aq-fast), background var(--aq-fast), color var(--aq-fast);
 }
 .mdTab:first-child {
   margin-top: 0;
@@ -274,7 +129,7 @@
   border-right: 2px solid currentColor;
   border-bottom: 2px solid currentColor;
   transform: rotate(45deg);
-  transition: transform 0.2s;
+  transition: transform var(--aq-fast);
 }
 [aria-expanded="true"] > .mdChevron {
   margin-bottom: -4px;
@@ -307,7 +162,7 @@
 .graphEdges line {
   stroke: rgba(147, 197, 253, 0.17);
   stroke-width: 1;
-  transition: stroke 0.2s;
+  transition: stroke var(--aq-fast);
 }
 .graphEdges line[data-on] {
   stroke: #93c5fd;
@@ -331,7 +186,7 @@
   text-transform: uppercase;
   transform: translate(-50%, -50%);
   cursor: pointer;
-  transition: border-color 0.2s, background 0.2s, color 0.2s, opacity 0.2s, box-shadow 0.2s;
+  transition: border-color var(--aq-fast), background var(--aq-fast), color var(--aq-fast), opacity var(--aq-fast), box-shadow var(--aq-fast);
 }
 /* A larger target than the pill itself, for touch. */
 .graphNode::after {
@@ -568,21 +423,30 @@
   grid-template-columns: minmax(0, 1fr);
   gap: 18px;
 }
+/* Phones: eight numbered dots in a row; the current step is named in the panel below. */
 .simSteps {
-  display: grid;
-  gap: 4px;
+  display: flex;
+  justify-content: space-between;
   list-style: none;
 }
 .simStep {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 7px 10px;
-  border-radius: 10px;
+  padding: 3px;
+  border-radius: 999px;
   border: 1px solid transparent;
   font-size: 0.9rem;
   line-height: 1.3;
   color: var(--aq-muted);
+}
+.simStepLabel {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
 }
 .simStep[data-state="done"] {
   color: var(--aq-text-2);
@@ -621,9 +485,29 @@
   background: var(--aq-panel);
 }
 .simStage > *,
-.simNarrative,
-.simStepLabel {
+.simNarrative {
   min-width: 0;
+}
+.simProgress {
+  display: block;
+  width: 100%;
+  height: 4px;
+  margin-top: 10px;
+  overflow: hidden;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(147, 197, 253, 0.16);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.simProgress::-webkit-progress-bar {
+  background: rgba(147, 197, 253, 0.16);
+}
+.simProgress::-webkit-progress-value {
+  background: #60a5fa;
+}
+.simProgress::-moz-progress-bar {
+  background: #60a5fa;
 }
 .simCount {
   display: flex;
@@ -693,10 +577,22 @@
 .simField[data-new] {
   background: rgba(96, 165, 250, 0.14);
 }
+/* On a phone the controls stay in reach while the record below is read. */
 .simControls {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  margin: 0 calc(-1 * clamp(16px, 2.6vw, 26px));
+  padding: 10px clamp(16px, 2.6vw, 26px) calc(10px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--aq-line);
+  background: #0e1330;
+  order: 3;
+}
+.simRecord {
+  order: 2;
 }
 
 /* ── Roadmap ── */
@@ -745,6 +641,26 @@
   font-size: 0.95rem;
   color: var(--aq-text-2);
 }
+.yearHeading {
+  padding-top: 4px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--aq-muted);
+}
+.yearPhases {
+  display: grid;
+  gap: 10px;
+  padding-top: 4px;
+}
+.yearPhases dt {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--aq-muted);
+}
+.yearPhases dd {
+  font-size: 0.95rem;
+  color: var(--aq-text-2);
+}
 .yearScope {
   display: grid;
   gap: 6px;
@@ -781,7 +697,11 @@
   font: inherit;
   text-align: left;
   cursor: pointer;
-  transition: border-color 0.2s, background 0.2s, color 0.2s;
+  transition: border-color var(--aq-fast), background var(--aq-fast), color var(--aq-fast);
+}
+/* Years 4 and 5 are vision, not targets: a dashed edge says so before the label does. */
+.yearTab[data-horizon="vision"] {
+  border-style: dashed;
 }
 .yearTab[aria-pressed="true"] {
   border-color: var(--aq-accent-2);
@@ -979,7 +899,7 @@
   font-size: 0.88rem;
   line-height: 1.3;
   color: var(--aq-text-2);
-  transition: border-color 0.2s, background 0.2s, color 0.2s;
+  transition: border-color var(--aq-fast), background var(--aq-fast), color var(--aq-fast);
 }
 .scoreOption b {
   flex-shrink: 0;
@@ -1068,6 +988,29 @@
   border-radius: var(--aq-radius);
   border: 1px solid var(--aq-line);
   background: var(--aq-panel);
+}
+.roiGroup {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+}
+.roiGroup + .roiGroup {
+  padding-top: 14px;
+  border-top: 1px solid var(--aq-line);
+}
+.roiGroup legend,
+.roiHeading {
+  padding: 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--aq-accent);
+}
+.roiGroup legend {
+  margin-bottom: 4px;
 }
 .roiField {
   display: grid;
@@ -1350,7 +1293,9 @@
   .graphPanel {
     display: block;
   }
+  /* Tablets: the steps named, in two rows of four. */
   .simSteps {
+    display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 8px;
   }
@@ -1359,7 +1304,27 @@
     align-items: flex-start;
     gap: 6px;
     padding: 10px;
+    border-radius: 10px;
     border-color: var(--aq-line);
+  }
+  .simStepLabel {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+  .simControls {
+    position: static;
+    margin: 0;
+    padding: 0;
+    border-top: 0;
+    background: none;
+    order: 0;
+  }
+  .simRecord {
+    order: 0;
   }
   .policy,
   .decision {
@@ -1417,8 +1382,8 @@
   .yearTabs {
     grid-column: 1 / -1;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 8px;
   }
   .yearPanel:not([data-active]),
   .yearScope {
@@ -1457,9 +1422,23 @@
   }
 }
 
+/* Wide screens: the eight steps down the left, the current state on the right. */
 @media (min-width: 1100px) {
+  .sim {
+    grid-template-columns: minmax(250px, 300px) minmax(0, 1fr);
+    align-items: start;
+  }
   .simSteps {
-    grid-template-columns: repeat(8, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+  .simStep {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    min-height: 44px;
+    padding: 6px 12px;
+    border-color: transparent;
   }
 }
 
@@ -1491,8 +1470,6 @@
 @media (prefers-reduced-motion: reduce) {
   .button,
   .buttonPrimary,
-  .toolButton,
-  .navLink,
   .mdTab,
   .mdChevron,
   .graphNode,
@@ -1507,9 +1484,6 @@
 
 /* ── Print: no controls, every panel open ── */
 @media print {
-  .nav,
-  .navScroll,
-  .tools,
   .simControls,
   .yearTabs,
   .platform,

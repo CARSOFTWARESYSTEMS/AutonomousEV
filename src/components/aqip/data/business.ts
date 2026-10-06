@@ -21,14 +21,31 @@ export const PRICING: readonly { segment: string; price: string }[] = [
   { segment: "Enterprise / Prime", price: "₹20 lakh–₹1 crore+ depending on scope" },
 ];
 
-export const ROI_FIELDS: readonly { key: "faisPerMonth" | "characteristicsPerFai" | "hoursPerFai" | "costPerHour" | "timeReductionPct" | "reworkCostPerYear" | "softwareCostPerYear"; label: string; unit: string; step: number; max?: number }[] = [
-  { key: "faisPerMonth", label: "FAIs per month", unit: "FAIs", step: 1 },
-  { key: "characteristicsPerFai", label: "Average characteristics per FAI", unit: "characteristics", step: 10 },
-  { key: "hoursPerFai", label: "Current engineer hours per FAI", unit: "hours", step: 1 },
-  { key: "costPerHour", label: "Engineer loaded cost per hour", unit: "₹", step: 50 },
-  { key: "timeReductionPct", label: "Expected time reduction", unit: "%", step: 5, max: 100 },
-  { key: "reworkCostPerYear", label: "Rework / rejection cost per year", unit: "₹", step: 10000 },
-  { key: "softwareCostPerYear", label: "Annual software cost", unit: "₹", step: 10000 },
+type RoiKey = "faisPerMonth" | "characteristicsPerFai" | "hoursPerFai" | "costPerHour" | "timeReductionPct" | "reworkCostPerYear" | "softwareCostPerYear";
+
+/** The calculator's inputs, in the three groups a reader thinks about them in. */
+export const ROI_GROUPS: readonly { id: string; title: string; fields: readonly { key: RoiKey; label: string; unit: string; step: number; max?: number }[] }[] = [
+  {
+    id: "current",
+    title: "Current Process",
+    fields: [
+      { key: "faisPerMonth", label: "First article inspections", unit: "FAIs / month", step: 1 },
+      { key: "characteristicsPerFai", label: "Average characteristics", unit: "per FAI", step: 10 },
+      { key: "hoursPerFai", label: "Engineer effort", unit: "hours / FAI", step: 1 },
+      { key: "costPerHour", label: "Engineer loaded cost", unit: "₹ / hour", step: 50 },
+      { key: "reworkCostPerYear", label: "Rework and rejection cost", unit: "₹ / year", step: 10000 },
+    ],
+  },
+  {
+    id: "improvement",
+    title: "Improvement Assumptions",
+    fields: [{ key: "timeReductionPct", label: "Expected time reduction", unit: "%", step: 5, max: 100 }],
+  },
+  {
+    id: "commercial",
+    title: "Commercial Estimate",
+    fields: [{ key: "softwareCostPerYear", label: "Software cost", unit: "₹ / year", step: 10000 }],
+  },
 ];
 
 /** The canvas blocks, with the grid area each takes on the desktop canvas. */

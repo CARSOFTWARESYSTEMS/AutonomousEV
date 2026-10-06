@@ -1,6 +1,7 @@
 // Layout and content primitives shared by every AQIP section. Server-safe: no
 // state, no effects.
 import type { CSSProperties, ReactNode } from "react";
+import { sectionNumber } from "../data/reference";
 import { TONE_LABEL, type Tone } from "../types";
 import css from "../aqip.module.css";
 
@@ -14,8 +15,8 @@ export function Chip({ tone, children }: { tone: Tone; children?: ReactNode }) {
 }
 
 interface GroupProps {
+  /** One of the section ids in NAV; its handbook number comes from its chapter. */
   id: string;
-  index: number;
   kicker: string;
   title: string;
   lead?: ReactNode;
@@ -24,14 +25,14 @@ interface GroupProps {
   children: ReactNode;
 }
 
-/** One entry of the strategy index: an H2 and the blocks under it. */
-export function Group({ id, index, kicker, title, lead, executive, children }: GroupProps) {
+/** One section of the manual: an H2 and the blocks under it. */
+export function Group({ id, kicker, title, lead, executive, children }: GroupProps) {
   return (
     <section id={id} className={css.group} aria-labelledby={`${id}-title`} data-executive={executive ? "" : undefined} tabIndex={-1}>
       <div className={css.container}>
         <header className={css.groupHead}>
           <p className={css.kicker}>
-            <span aria-hidden="true">{String(index).padStart(2, "0")}</span> {kicker}
+            <span className={css.kickerNo}>{sectionNumber(id)}</span> {kicker}
           </p>
           <h2 id={`${id}-title`} className={css.h2}>
             {title}
