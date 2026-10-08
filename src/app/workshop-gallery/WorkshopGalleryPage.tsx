@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import galleryData from "@/data/workshop-gallery.json";
+import FeaturedGallerySection, { isFeaturedGallery } from "./FeaturedGallerySection";
 
 export default function WorkshopGalleryPage() {
   const [lightbox, setLightbox] = useState<{ src: string; label: string } | null>(null);
@@ -124,6 +125,9 @@ export default function WorkshopGalleryPage() {
           <div style={{ display: "flex", flexDirection: "column", gap: "64px" }}>
             {galleryData.map((section, sIdx) => {
               if (!section.items || section.items.length === 0) return null;
+              if (isFeaturedGallery(section)) {
+                return <FeaturedGallerySection key={sIdx} gallery={section} />;
+              }
               return (
                 <div key={sIdx}>
                   <h2 style={{ 

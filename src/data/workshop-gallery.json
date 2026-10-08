@@ -343,6 +343,88 @@
     ]
   },
   {
+    "sectionName": "FACTORY VISIT & CUSTOMER INTERACTION",
+    "layout": "featured",
+    "date": "2026-10-07",
+    "description": "Aerospace MSME",
+    "items": [
+      {
+        "filename": "fai_factory_visit_0.jpeg",
+        "date": "2026-10-07",
+        "label": "Factory Visit & Customer Interaction — Aerospace MSME — 07 October 2026 — Photo 1",
+        "src": "/factory_visit/fai_factory_visit_0.jpeg",
+        "width": 1280,
+        "height": 960,
+        "featured": true
+      },
+      {
+        "filename": "fai_factory_visit_1.jpeg",
+        "date": "2026-10-07",
+        "label": "Factory Visit & Customer Interaction — Aerospace MSME — 07 October 2026 — Photo 2",
+        "src": "/factory_visit/fai_factory_visit_1.jpeg",
+        "width": 1280,
+        "height": 960
+      },
+      {
+        "filename": "fai_factory_visit_2.jpeg",
+        "date": "2026-10-07",
+        "label": "Factory Visit & Customer Interaction — Aerospace MSME — 07 October 2026 — Photo 3",
+        "src": "/factory_visit/fai_factory_visit_2.jpeg",
+        "width": 1280,
+        "height": 960
+      },
+      {
+        "filename": "fai_factory_visit_3.jpeg",
+        "date": "2026-10-07",
+        "label": "Factory Visit & Customer Interaction — Aerospace MSME — 07 October 2026 — Photo 4",
+        "src": "/factory_visit/fai_factory_visit_3.jpeg",
+        "width": 1280,
+        "height": 960
+      },
+      {
+        "filename": "fai_factory_visit_4.jpeg",
+        "date": "2026-10-07",
+        "label": "Factory Visit & Customer Interaction — Aerospace MSME — 07 October 2026 — Photo 5",
+        "src": "/factory_visit/fai_factory_visit_4.jpeg",
+        "width": 1280,
+        "height": 960
+      },
+      {
+        "filename": "fai_factory_visit_5.jpeg",
+        "date": "2026-10-07",
+        "label": "Factory Visit & Customer Interaction — Aerospace MSME — 07 October 2026 — Photo 6",
+        "src": "/factory_visit/fai_factory_visit_5.jpeg",
+        "width": 1280,
+        "height": 960,
+        "featured": true
+      },
+      {
+        "filename": "fai_factory_visit_6.jpeg",
+        "date": "2026-10-07",
+        "label": "Factory Visit & Customer Interaction — Aerospace MSME — 07 October 2026 — Photo 7",
+        "src": "/factory_visit/fai_factory_visit_6.jpeg",
+        "width": 1280,
+        "height": 960
+      },
+      {
+        "filename": "fai_factory_visit_7.jpeg",
+        "date": "2026-10-07",
+        "label": "Factory Visit & Customer Interaction — Aerospace MSME — 07 October 2026 — Photo 8",
+        "src": "/factory_visit/fai_factory_visit_7.jpeg",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "filename": "fai_factory_visit_8.jpeg",
+        "date": "2026-10-07",
+        "label": "Factory Visit & Customer Interaction — Aerospace MSME — 07 October 2026 — Photo 9",
+        "src": "/factory_visit/fai_factory_visit_8.jpeg",
+        "width": 1280,
+        "height": 960
+      }
+    ]
+  },
+  {
     "sectionName": "EV Society - Workshops",
     "items": [
       {
