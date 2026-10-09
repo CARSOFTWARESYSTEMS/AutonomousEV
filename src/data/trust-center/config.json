@@ -100,5 +100,5 @@
     { "id": "youtube", "label": "Videos", "sources": ["youtube"] },
     { "id": "case-study", "label": "Success Stories", "sources": ["case-study"] }
   ],
-  "lastUpdated": "2026-08-05"
+  "lastUpdated": "2026-10-09"
 }
