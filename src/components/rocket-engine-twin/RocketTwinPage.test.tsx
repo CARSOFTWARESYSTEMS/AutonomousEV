@@ -70,8 +70,20 @@ describe("page identity", () => {
       "From Sensors to Digital Twin",
       "Model Credibility",
       "Frequently Asked Questions",
+      "Ready for the Engineering Digital Twin?",
       "Designed By",
     ]);
+  });
+
+  it("leads on to the advanced tutorial: understand the engine here, engineer the Digital Twin there", () => {
+    render(<RocketTwinPage />);
+    const section = screen.getByRole("region", { name: "Ready for the Engineering Digital Twin?" });
+    const link = within(section).getByRole("link", { name: "Explore Advanced Propulsion Digital Twin" });
+    expect(link).toHaveAttribute("href", "/space/rocket-engine-digital-twin-advanced");
+    expect(link).toHaveAttribute("data-track-event", "rocket_twin_related_click");
+    expect(link).toHaveAttribute("data-track-destination", "advanced_twin");
+    expect(within(section).getByText(/understanding the engine/)).toBeInTheDocument();
+    expect(within(section).getByText(/engineering its Digital Twin/)).toBeInTheDocument();
   });
 
   it("gives a breadcrumb back to Space", () => {

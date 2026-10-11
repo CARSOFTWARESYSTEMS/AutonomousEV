@@ -132,4 +132,4 @@ export type PartId =
   | "sensor_bodies"
   | "structure";
 
-export type RelatedDestination = "space" | "model_rocketry" | "satellite_engineering";
+export type RelatedDestination = "space" | "model_rocketry" | "satellite_engineering" | "advanced_twin";

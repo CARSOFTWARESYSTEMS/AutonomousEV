@@ -44,6 +44,14 @@ const nextConfig: NextConfig = {
         destination: "/internships/evAutoRickshaw",
         permanent: true,
       },
+      {
+        // The social card for aerospace.ishavasyam.org/space moved from the
+        // opengraph-image convention to a plain .png URL. Anything that kept
+        // the old address is sent to the new one instead of a 404.
+        source: "/ishavasyam-space/opengraph-image",
+        destination: "/ishavasyam-space/og-image.png",
+        permanent: true,
+      },
     ];
   },
 

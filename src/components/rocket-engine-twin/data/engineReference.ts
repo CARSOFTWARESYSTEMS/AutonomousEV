@@ -558,6 +558,15 @@ export const RELATED: readonly { destination: RelatedDestination; href: string; 
   { destination: "satellite_engineering", href: "/space/satellite-engineering", title: "Satellite Engineering", text: "Spacecraft systems architecture and digital twins" },
 ];
 
+/** The step after this page: from understanding the engine to engineering its Digital Twin. */
+export const ADVANCED_TWIN = {
+  heading: "Ready for the Engineering Digital Twin?",
+  text: "This page is about understanding the engine. The advanced tutorial is about engineering its Digital Twin: instrumenting the propulsion system, modelling its physics, synchronising the model with telemetry, and using residuals, physics and AI/ML to detect, diagnose and predict faults.",
+  cta: "Explore Advanced Propulsion Digital Twin",
+  href: "/space/rocket-engine-digital-twin-advanced",
+  destination: "advanced_twin",
+} as const satisfies { heading: string; text: string; cta: string; href: string; destination: RelatedDestination };
+
 export const LARGER_SCREEN_NOTE = {
   badge: "DESKTOP EXPERIENCE RECOMMENDED",
   body: "The interactive 3D engine, with its cut-aways, flows, simulated test, fault diagnosis and digital twin comparison, opens on a laptop or desktop. Here you can explore the same systems, test and health views on a schematic.",

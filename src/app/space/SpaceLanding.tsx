@@ -5,6 +5,7 @@ import Link from "next/link";
 import { manrope, inter, FONT_MANROPE, FONT_INTER } from "./fonts";
 import SpaceHeader from "./components/SpaceHeader";
 import SpaceFooter from "./components/SpaceFooter";
+import PropulsionTwinCardVisual from "./components/PropulsionTwinCardVisual";
 import ResearcherCard from "@/components/ResearcherCard";
 import theme from "./spaceTheme.module.css";
 import {
@@ -604,7 +605,8 @@ export default function SpaceLanding({ entityGraph }: { entityGraph: object }) {
               <Link href="/space/space-station" className={`${theme.secondaryButton} ${styles.projectCta}`}>Explore Space Station <ArrowRight size={16} /></Link>
               <p className={styles.projectNote}>Educational models · Sourced programme facts · Not mission design data.</p>
             </div>
-            <div className={`${styles.cardHover} ${theme.card} ${styles.projectCard}`}>
+            {/* The two propulsion twins sit side by side as one learning progression: see .twinPairStart. */}
+            <div className={`${styles.cardHover} ${theme.card} ${styles.projectCard} ${styles.twinPairStart}`}>
               <StatusPill label="Interactive Digital Twin" color="#F59E0B" />
               <h3 className={styles.projectTitle}>Next-Generation Rocket Engine Digital Twin</h3>
               <p className={styles.projectDesc}>Explore a reusable liquid rocket engine reference architecture—propellant feed, turbomachinery, combustion, regenerative cooling, control, simulated testing and engine health monitoring.</p>
@@ -618,6 +620,28 @@ export default function SpaceLanding({ entityGraph }: { entityGraph: object }) {
                 Explore Rocket Engine Digital Twin <ArrowRight size={16} />
               </Link>
               <p className={styles.projectNote}>Educational demonstrator · Reference and simulated data · Not a real engine.</p>
+            </div>
+            <div className={`${styles.cardHover} ${theme.card} ${styles.projectCard} ${styles.advancedTwinCard}`}>
+              <PropulsionTwinCardVisual className={styles.advancedTwinVisual} flowClassName={styles.advancedTwinFlow} />
+              <StatusPill label="Physics · Pressure Monitoring · AI/ML · FDIR · Prognostics" color="#F59E0B" />
+              <h3 className={styles.projectTitle}>Advanced Rocket Propulsion Digital Twin</h3>
+              <p className={styles.twinProgression}>
+                <span>Understand the Engine</span>
+                <ArrowRight size={14} aria-hidden="true" />
+                <span className={styles.srOnly}>, then </span>
+                <span>Engineer the Digital Twin</span>
+              </p>
+              <p className={styles.projectDesc}>Build a physics-based, data-driven and AI/ML-assisted Digital Twin for an end-to-end rocket propulsion system, with a focus on pressure monitoring, fault detection, diagnosis and prognostics.</p>
+              <Link
+                href="/space/rocket-engine-digital-twin-advanced"
+                className={`${theme.secondaryButton} ${styles.projectCta}`}
+                data-track-event="space_project_card_click"
+                data-track-project="rocket_propulsion_digital_twin_advanced"
+                data-track-placement="simulation_projects"
+              >
+                Explore Advanced Digital Twin <ArrowRight size={16} />
+              </Link>
+              <p className={styles.projectNote}>Advanced educational and research-oriented reference architecture · Simulated data · Not a proprietary or flight engine.</p>
             </div>
           </div>
         </section>

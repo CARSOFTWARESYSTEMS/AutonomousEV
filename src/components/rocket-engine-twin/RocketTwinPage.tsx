@@ -8,6 +8,7 @@ import DesignInspirationCredit from "@/components/DesignInspirationCredit";
 import PreparedBy from "@/components/PreparedBy";
 import { rocketTwinLinkTracking } from "./analytics";
 import {
+  ADVANCED_TWIN,
   ARCHITECTURE,
   DISCLAIMER,
   FAQ,
@@ -211,6 +212,22 @@ export default function RocketTwinPage() {
                   ))}
                 </dl>
               </details>
+            </div>
+          </div>
+        </section>
+
+        <section className={styles.section} aria-labelledby="advanced-title">
+          <div className={styles.split}>
+            <h2 id="advanced-title" className={styles.heading}>
+              {ADVANCED_TWIN.heading}
+            </h2>
+            <div>
+              <p className={styles.prose}>{ADVANCED_TWIN.text}</p>
+              <div className={styles.actions}>
+                <Link href={ADVANCED_TWIN.href} className={styles.primaryButton} {...rocketTwinLinkTracking("rocket_twin_related_click", { destination: ADVANCED_TWIN.destination })}>
+                  {ADVANCED_TWIN.cta} <ArrowRight size={16} aria-hidden="true" />
+                </Link>
+              </div>
             </div>
           </div>
         </section>

@@ -14,3 +14,6 @@ export const SEO_CANONICAL = `${SITE_ORIGIN}/space`;
 export const OG_ALT =
   "Autonomous Spacecraft Health Mission 2040 — Health Management, FDIR, Digital Twin, Safe Recovery — ISHAVASYAM.ORG · Space Research Organisation";
 export const OG_FOOTER = SEO_TITLE;
+// Served by ./og-image.png/route.tsx. Absolute, no query string, ends in .png.
+export const OG_IMAGE_URL = `${SITE_ORIGIN}/ishavasyam-space/og-image.png`;
+export const OG_IMAGE_SIZE = { width: 1200, height: 630 };

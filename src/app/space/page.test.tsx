@@ -357,7 +357,7 @@ it("shows the flagship Satellite Engineering card immediately after Space Applic
     const { container } = render(<SpacePage />);
     const simulations = container.querySelector("#simulations") as HTMLElement;
     const titles = within(simulations).getAllByRole("heading", { level: 3 }).map((h) => h.textContent);
-    expect(titles).toEqual(["Space Applications", "Satellite Engineering", "Model Rocketry", "CubeTwin", "Space Station", "Next-Generation Rocket Engine Digital Twin"]);
+    expect(titles).toEqual(["Space Applications", "Satellite Engineering", "Model Rocketry", "CubeTwin", "Space Station", "Next-Generation Rocket Engine Digital Twin", "Advanced Rocket Propulsion Digital Twin"]);
 
     const satelliteLink = within(simulations).getByRole("link", { name: /Explore Satellite Engineering/ });
     expect(satelliteLink).toHaveAttribute("href", "/space/satellite-engineering");
@@ -378,8 +378,55 @@ it("links to the Next-Generation Rocket Engine Digital Twin from the simulations
     const card = link.parentElement as HTMLElement;
     expect(within(card).getByRole("heading", { level: 3 })).toHaveTextContent("Next-Generation Rocket Engine Digital Twin");
     expect(within(card).getByText("Educational demonstrator · Reference and simulated data · Not a real engine.")).toBeInTheDocument();
-    // The card is the last one, after Space Station.
+    // The card follows Space Station.
     expect(within(simulations).getByRole("link", { name: /Explore Space Station/ }).parentElement?.nextElementSibling).toBe(card);
+  });
+
+it("places the Advanced Rocket Propulsion Digital Twin card immediately next to the Rocket Engine Digital Twin card", () => {
+    const { container } = render(<SpacePage />);
+    const simulations = container.querySelector("#simulations") as HTMLElement;
+    const link = within(simulations).getByRole("link", { name: "Explore Advanced Digital Twin" });
+    expect(link).toHaveAttribute("href", "/space/rocket-engine-digital-twin-advanced");
+    expect(link).toHaveAttribute("data-track-event", "space_project_card_click");
+    expect(link).toHaveAttribute("data-track-project", "rocket_propulsion_digital_twin_advanced");
+    expect(link).toHaveAttribute("data-track-placement", "simulation_projects");
+    const card = link.parentElement as HTMLElement;
+    expect(within(card).getByRole("heading", { level: 3 })).toHaveTextContent("Advanced Rocket Propulsion Digital Twin");
+    expect(within(card).getByText("Build a physics-based, data-driven and AI/ML-assisted Digital Twin for an end-to-end rocket propulsion system, with a focus on pressure monitoring, fault detection, diagnosis and prognostics.")).toBeInTheDocument();
+    expect(within(card).getByText("Physics · Pressure Monitoring · AI/ML · FDIR · Prognostics")).toBeInTheDocument();
+    // Fundamentals first, then advanced: the two cards are neighbours, and the advanced card is the last.
+    const rocketCard = within(simulations).getByRole("link", { name: "Explore Rocket Engine Digital Twin" }).parentElement as HTMLElement;
+    expect(rocketCard.nextElementSibling).toBe(card);
+    expect(card.nextElementSibling).toBeNull();
+  });
+
+it("positions the advanced card as the next step, with a propulsion visual and no claim to be any agency's engine", () => {
+    const { container } = render(<SpacePage />);
+    const simulations = container.querySelector("#simulations") as HTMLElement;
+    const card = within(simulations).getByRole("link", { name: "Explore Advanced Digital Twin" }).parentElement as HTMLElement;
+    const progression = within(card).getByText("Understand the Engine").parentElement as HTMLElement;
+    expect(progression).toHaveTextContent(/Understand the Engine\s*, then\s*Engineer the Digital Twin/);
+    expect(within(card).getByRole("img", { name: /rocket engine with its pressure paths.*Digital Twin.*telemetry trace/i })).toBeInTheDocument();
+    expect(within(card).getByText("Advanced educational and research-oriented reference architecture · Simulated data · Not a proprietary or flight engine.")).toBeInTheDocument();
+    expect(card.textContent).not.toMatch(/SpaceX|NASA|ISRO/);
+  });
+
+it("keeps the two propulsion twin cards in one row from the two-column layout up, and lets them stack on a phone", () => {
+    const css = readFileSync(resolve(import.meta.dirname, "space.module.css"), "utf-8");
+    // The fundamentals card starts a row; the advanced card follows it and, with three columns, takes the two that are left.
+    expect(css).toMatch(/@media \(min-width: 640px\) \{\s*\.twinPairStart \{ grid-column-start: 1; \}\s*\}/);
+    expect(css).toMatch(/@media \(min-width: 1000px\) \{\s*\.advancedTwinCard \{\s*grid-column: span 2;/);
+    // Below 640px nothing is placed by hand, so the one-column stack is unchanged; the visual can never be wider than its card.
+    expect(css).not.toMatch(/@media \(max-width: [0-9]+px\) \{[^}]*(twinPairStart|advancedTwinCard)/);
+    expect(css).toMatch(/\.advancedTwinVisual \{[^}]*width: 100%;[^}]*max-width: 100%;/);
+    expect(css).toMatch(/@media \(prefers-reduced-motion: reduce\) \{\s*\.advancedTwinFlow \{ animation: none; \}/);
+  });
+
+it("does not import the advanced propulsion twin into the Space page: its card is a plain link and an inline drawing", () => {
+    const source = readFileSync(resolve(import.meta.dirname, "SpaceLanding.tsx"), "utf-8");
+    expect(source).not.toMatch(/propulsion-twin-advanced/);
+    const visual = readFileSync(resolve(import.meta.dirname, "components/PropulsionTwinCardVisual.tsx"), "utf-8");
+    expect(visual).not.toMatch(/^import /m);
   });
 
 it("does not import the rocket engine experience into the Space page: its card is a plain link", () => {

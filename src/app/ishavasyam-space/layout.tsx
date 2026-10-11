@@ -5,7 +5,13 @@ import {
   SEO_TITLE as TITLE,
   SEO_DESCRIPTION as DESCRIPTION,
   SEO_CANONICAL as CANONICAL,
+  OG_ALT,
+  OG_IMAGE_URL,
+  OG_IMAGE_SIZE,
 } from "./seo";
+
+// One image for Open Graph and Twitter, named explicitly: see ./og-image.png/route.tsx.
+const SOCIAL_IMAGE = { url: OG_IMAGE_URL, ...OG_IMAGE_SIZE, type: "image/png", alt: OG_ALT };
 
 // Served for aerospace.ishavasyam.org/space via a host-matched rewrite in
 // next.config.ts. Every field the root and /space layouts would otherwise
@@ -49,13 +55,13 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: ORG_NAME,
-    // og:image is generated from ./opengraph-image.tsx (file-based metadata).
+    images: [SOCIAL_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
     title: TITLE,
     description: DESCRIPTION,
-    // twitter:image is generated from the same ./opengraph-image.tsx.
+    images: [SOCIAL_IMAGE],
   },
 };
 
