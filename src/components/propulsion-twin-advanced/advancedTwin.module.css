@@ -317,6 +317,66 @@
 .navTabs::-webkit-scrollbar {
   display: none;
 }
+
+/* ── Contact / Consultation ──
+   A secondary action of the page's header, before the EV.ENGINEER mark. It is
+   there at every width. Where the header is short of room the link shows the
+   first word of its name, as the CTO button does, and the mark keeps its size. */
+.headerActions {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 16px;
+}
+.contactLink {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 5px;
+  min-height: 44px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  text-decoration: none;
+  text-underline-offset: 5px;
+  color: var(--rt-body);
+  transition: color 0.15s;
+}
+.contactLink:hover {
+  color: #fff;
+  text-decoration: underline;
+  text-decoration-color: var(--rt-line-strong);
+}
+.contactLink svg {
+  flex-shrink: 0;
+}
+/* On the narrowest phones the word stands alone, which leaves the header a clear margin of spare room. */
+@media (max-width: 359px) {
+  .contactLink svg {
+    display: none;
+  }
+}
+.contactRest {
+  display: none;
+}
+/* From here up the header holds the whole breadcrumb, the whole name of the link and the mark on one line. */
+@media (min-width: 720px) {
+  .headerActions {
+    gap: 22px;
+  }
+  .contactRest {
+    display: inline;
+  }
+}
+/* The breadcrumb gives way before the mark does: its last item shortens to an ellipsis and nothing leaves the screen. */
+.crumbNav {
+  min-width: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .contactLink {
+    transition: none;
+  }
+}
 .navTab {
   flex-shrink: 0;
   min-height: 40px;

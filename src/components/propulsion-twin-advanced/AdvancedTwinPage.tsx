@@ -3,13 +3,13 @@
 // twelve modules, the questions and the references. Interaction decides what
 // is showing; the simulation and the 3D view are fetched only when asked for.
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Compass, FlaskConical } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, Compass, FlaskConical } from "lucide-react";
 import DesignInspirationCredit from "@/components/DesignInspirationCredit";
 import PreparedBy from "@/components/PreparedBy";
 import rt from "../rocket-engine-twin/rocketTwin.module.css";
 import { advancedTwinLinkTracking } from "./analytics";
 import { FAQ, GLOSSARY, REFERENCES, REFERENCE_ARCHITECTURE } from "./data/faq";
-import { CREDIBILITY_NOTICE, PREPARED_BY, PRODUCT, RELATED } from "./data/product";
+import { CONTACT, CREDIBILITY_NOTICE, PREPARED_BY, PRODUCT, RELATED } from "./data/product";
 import { OverviewModule, PhysicsModule, PressureModule, SystemModule } from "./sections/Foundations";
 import { ArchitectureModule, FdirModule, HealthModule, LabModule, WeeksModule } from "./sections/Operations";
 import { AiModule, DataModule, TwinModule } from "./sections/TwinModules";
@@ -19,6 +19,9 @@ import PropulsionSchematic from "./ui/PropulsionSchematic";
 import css from "./advancedTwin.module.css";
 
 const REFERENCE_GROUPS = [...new Set(REFERENCES.map((r) => r.group))];
+/** The contact link's name, split after its first word: the first word always shows, the rest where the header has room. */
+const CONTACT_FIRST = CONTACT.label.split(" ")[0];
+const CONTACT_REST = CONTACT.label.slice(CONTACT_FIRST.length).trim();
 
 export default function AdvancedTwinPage() {
   return (
@@ -29,7 +32,7 @@ export default function AdvancedTwinPage() {
       </a>
 
       <header className={rt.header}>
-        <nav aria-label="Breadcrumb">
+        <nav aria-label="Breadcrumb" className={css.crumbNav}>
           <ol className={rt.crumbs}>
             <li>
               <Link href={PRODUCT.homeRoute} className={rt.crumbLink}>
@@ -42,7 +45,17 @@ export default function AdvancedTwinPage() {
             </li>
           </ol>
         </nav>
-        <span className={rt.brand}>EV.ENGINEER™</span>
+        <div className={css.headerActions}>
+          {/* One name at every width. Where the header is short of room only its first word shows, and the name still begins with what is shown. */}
+          <a href={CONTACT.href} target="_blank" rel="noopener noreferrer" className={css.contactLink} aria-label={CONTACT.ariaLabel}>
+            <span>
+              {CONTACT_FIRST}
+              <span className={css.contactRest}> {CONTACT_REST}</span>
+            </span>
+            <ArrowUpRight size={14} aria-hidden="true" />
+          </a>
+          <span className={rt.brand}>EV.ENGINEER™</span>
+        </div>
       </header>
 
       <main id="main-content">

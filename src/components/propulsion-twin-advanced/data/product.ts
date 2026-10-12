@@ -25,6 +25,18 @@ export const PRODUCT = {
   ctoLabel: "CTO / Architect View",
 } as const;
 
+/**
+ * The way to reach the author: technical questions, feedback on the tutorial, engineering consultation,
+ * research or industry collaboration. A secondary action of the page's navigation, never a hero call to action.
+ */
+export const CONTACT = {
+  /** Its first word always shows; the rest where the header has room. */
+  label: "Contact / Consultation",
+  /** Begins with the words on the link, so it can be spoken to, and then says what it is for. */
+  ariaLabel: "Contact / Consultation: technical questions, collaboration or engineering consultation (opens in a new tab)",
+  href: "https://aerospace.ishavasyam.org/about/sudarshana-karkala",
+} as const;
+
 export const PREPARED_BY = {
   notes: [
     "Advanced Rocket Propulsion System Digital Twin is an EV.ENGINEER™ interactive engineering tutorial. It is an independent educational and research-oriented work, and is not affiliated with or endorsed by NASA, SpaceX, ISRO or any other agency or launch provider.",

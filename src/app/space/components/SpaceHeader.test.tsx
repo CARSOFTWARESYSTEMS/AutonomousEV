@@ -59,7 +59,34 @@ describe("Shared Space header", () => {
     expect(spy).toHaveBeenCalledWith(`(min-width: ${SPACE_HEADER_COMPACT_MAX + 1}px)`);
   });
 
-  it("keeps every destination — including UFlight, EV.ENGINEER, ISHAVASYAM.ORG and Express Interest — in the compact menu", async () => {
+  it("is branded ISHAVASYAM.ORG /space: the organisation leads to its own site, the section to the top of Space", () => {
+    render(<SpaceHeader basePath="/space" />);
+    const header = screen.getByRole("banner");
+    expect(header).toHaveTextContent(/^ISHAVASYAM\.ORG\/space/);
+    const brand = within(header).getAllByRole("link", { name: "ISHAVASYAM.ORG" });
+    // Once: the brand is the link to the organisation, and no menu item repeats it.
+    expect(brand).toHaveLength(1);
+    expect(brand[0]).toHaveAttribute("href", "https://ishavasyam.org/");
+    expect(brand[0]).toHaveAttribute("target", "_blank");
+    expect(brand[0]).toHaveAttribute("rel", "noopener noreferrer");
+    const section = within(header).getByRole("link", { name: /^\/space/ });
+    expect(section).toHaveTextContent("/space");
+    expect(section).toHaveAttribute("href", "/space#home");
+  });
+
+  it("offers iTelematics and EV.ENGINEER beside the navigation, and no longer UFlight", () => {
+    render(<SpaceHeader />);
+    const nav = screen.getByRole("navigation", { name: "Space section navigation" });
+    expect(within(nav).getAllByRole("link").map((a) => a.textContent)).toEqual(["Home", "Mission Path", "Research", "Labs", "Research Themes", "Vision & References", "Community", "iTelematics", "EV.ENGINEER"]);
+    expect(within(nav).getByRole("link", { name: "iTelematics" })).toHaveAttribute("href", "https://itelematics.com/");
+    expect(within(nav).getByRole("link", { name: "EV.ENGINEER" })).toHaveAttribute("href", "https://ev.engineer/");
+    for (const name of ["iTelematics", "EV.ENGINEER"]) expect(within(nav).getByRole("link", { name })).toHaveAttribute("rel", "noopener noreferrer");
+    expect(screen.getByRole("banner").textContent).not.toMatch(/UFlight/);
+    // On the landing page itself the section link is an in-page jump.
+    expect(within(screen.getByRole("banner")).getByRole("link", { name: /^\/space/ })).toHaveAttribute("href", "#home");
+  });
+
+  it("keeps every destination — including iTelematics, EV.ENGINEER and Express Interest — in the compact menu, and the organisation only as the brand", async () => {
     const user = userEvent.setup();
     render(<SpaceHeader basePath="/space" />);
     const desktopNav = screen.getByRole("navigation", { name: "Space section navigation" });
@@ -79,9 +106,11 @@ describe("Shared Space header", () => {
       .getAllByRole("link")
       .map((a) => [a.textContent, a.getAttribute("href")]);
     desktop.forEach((entry) => expect(menuLinks).toContainEqual(entry));
-    ["Home", "Mission Path", "Research", "Labs", "Research Themes", "Vision & References", "Community", "UFlight", "EV.ENGINEER", "ISHAVASYAM.ORG"].forEach(
+    ["Home", "Mission Path", "Research", "Labs", "Research Themes", "Vision & References", "Community", "iTelematics", "EV.ENGINEER"].forEach(
       (label) => expect(menuLinks.map(([l]) => l)).toContain(label),
     );
+    expect(menuLinks.map(([l]) => l)).not.toContain("ISHAVASYAM.ORG");
+    expect(within(screen.getByRole("banner")).getByRole("link", { name: "ISHAVASYAM.ORG" })).toHaveAttribute("href", "https://ishavasyam.org/");
     expect(within(menu).getByRole("link", { name: /Express Interest/ })).toHaveAttribute("href", EOI_FORM_URL);
   });
 

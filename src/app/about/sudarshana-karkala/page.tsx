@@ -2,12 +2,13 @@ import FounderContent from "./FounderContent";
 import type { Metadata } from "next";
 import { JsonLd } from "@/lib/structured-data/JsonLd";
 import { buildProfileGraph } from "@/lib/structured-data/profileGraph";
+import { LAST_REVIEWED } from "./profile";
 
-const PAGE_TITLE = "Sudarshana Karkala | Space Systems, Avionics & EV Battery | EV.ENGINEER™";
+const PAGE_TITLE = "Sudarshana Karkala | Space Systems Engineering & Digital Twins | EV.ENGINEER™";
+// Research and engineering focus, named as that: the description claims no flight, operational or certification experience.
 const PAGE_DESCRIPTION =
-  "Sudarshana Karkala is an engineering leader and technology consultant focused on Space Systems & Applications, Avionics & Telemetry, EV Battery & Energy Intelligence, AI and Cybersecurity.";
+  "Sudarshana Karkala is an engineering leader and technology consultant. Research and engineering focus: Space Systems Engineering, Digital Twins, spacecraft health management (IVHM/FDIR/PHM), avionics and telemetry, aerospace cybersecurity, AI/ML and EV Battery & Energy Intelligence.";
 const PAGE_URL = "https://autonomous.ev.engineer/about/sudarshana-karkala";
-const LAST_REVIEWED = "2026-09-23";
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
@@ -16,15 +17,21 @@ export const metadata: Metadata = {
     "Sudarshana Karkala",
     "EV.ENGINEER",
     "Director of Engineering",
-    "Space Systems",
-    "Space Applications",
+    "Space Systems Engineering",
+    "Satellite Engineering",
+    "Spacecraft Digital Twin",
+    "Digital Twin Engineering",
+    "Spacecraft Health Management",
+    "IVHM",
+    "FDIR",
+    "PHM",
     "Avionics",
     "Telemetry",
-    "EV Battery Technology",
-    "Energy Intelligence",
-    "CanSat Model Rocketry",
     "Aerospace Cybersecurity",
-    "Digital Twin",
+    "AI/ML Engineering",
+    "CubeSat",
+    "Model Rocketry",
+    "EV Battery Intelligence",
     "National Institute of Technology Karnataka",
     "IIT Madras",
     "IN-SPACe",
@@ -62,7 +69,7 @@ const profileGraph = {
   "@graph": buildProfileGraph({
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
-    dateModified: LAST_REVIEWED,
+    dateModified: LAST_REVIEWED.iso,
   }),
 };
 

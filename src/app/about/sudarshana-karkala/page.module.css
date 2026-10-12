@@ -38,8 +38,8 @@
   z-index: 1;
   display: flex;
   flex-direction: row;
-  /* flex-start, not center: the hero text block now runs to 5-6 lines
-     (title, positioning, focus areas, supporting areas, exploring line),
+  /* flex-start, not center: the hero text block runs to several lines
+     (title, positioning, focus areas, supporting areas),
      so centering vertically floated the photo away from the name and into
      the middle of the paragraph text — a real bug caught via screenshot. */
   align-items: flex-start;
@@ -108,22 +108,13 @@
 }
 
 .heroSupporting {
-  font-size: clamp(0.68rem, 1.2vw, 0.78rem);
-  color: var(--text-secondary);
-  line-height: 1.5;
-  max-width: 620px;
-  margin: 0 0 0.5rem;
-  opacity: 0.75;
-}
-
-.heroExploring {
-  font-size: clamp(0.68rem, 1.2vw, 0.8rem);
+  /* Part of the positioning, so on a phone it is as large as the line above it (12px, not 10.9px). */
+  font-size: clamp(0.75rem, 1.2vw, 0.78rem);
   color: var(--text-secondary);
   line-height: 1.5;
   max-width: 620px;
   margin: 0;
-  opacity: 0.7;
-  font-style: italic;
+  opacity: 0.75;
 }
 
 /* --- SECTIONS --- */
@@ -216,6 +207,35 @@
   color: var(--accent-primary);
   margin: 0 0 0.4rem;
   line-height: 1.35;
+  letter-spacing: normal;
+}
+
+/* The items of a card: a list, set as one run of text with a dot after each
+   item but the last. The dot stays on the line of the item it follows. */
+.focusCardList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.focusCardList li {
+  display: inline;
+}
+
+/* No-break space, middle dot, space. The space is written as an escape too: a plain one
+   after "\00b7" would only end that escape, and the items would then run together unbroken. */
+.focusCardList li:not(:last-child)::after {
+  content: "\00a0\00b7\0020";
+}
+
+.focusNote {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: -0.75rem 0 0;
 }
 
 .focusCardDesc {
@@ -237,6 +257,8 @@
   flex-wrap: wrap;
   gap: 0.5rem;
   margin: 0 0 1.25rem;
+  padding: 0;
+  list-style: none;
 }
 
 .tag {

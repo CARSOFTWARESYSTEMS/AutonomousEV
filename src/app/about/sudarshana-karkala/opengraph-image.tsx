@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
+import { HERO } from "./profile";
 
 export const alt = "Sudarshana Karkala | EV.ENGINEER™";
 export const size = { width: 1200, height: 630 };
@@ -11,6 +12,10 @@ const BG_DARK = "#04140E";
 const BG_DEEP = "#052016";
 const TEXT_PRIMARY = "#EAF7F1";
 const TEXT_SECONDARY = "rgba(234, 247, 241, 0.72)";
+
+/** One line of the card: it may wrap between its parts and never inside one, and a separator never starts a line. */
+const line = (parts: readonly string[], separator: string) =>
+  parts.map((part) => part.replace(/ /g, "\u00a0")).join(`\u00a0${separator} `);
 
 export default async function OpengraphImage() {
   const photoData = await readFile(join(process.cwd(), "public", "SudarshanaKarkala.jpg"), "base64");
@@ -64,10 +69,13 @@ export default async function OpengraphImage() {
             Sudarshana Karkala
           </div>
           <div style={{ display: "flex", fontSize: 27, fontWeight: 600, color: TEXT_PRIMARY, marginTop: 22, maxWidth: 740 }}>
-            Director of Engineering | Technology &amp; R&amp;D Consultant
+            {line(HERO.positioning.split(" | "), "|")}
           </div>
-          <div style={{ display: "flex", fontSize: 24, fontWeight: 500, color: TEXT_SECONDARY, marginTop: 12, maxWidth: 740 }}>
-            Space Systems &amp; Applications · Avionics &amp; Telemetry · EV Battery Intelligence
+          <div style={{ display: "flex", fontSize: 22, fontWeight: 500, color: TEXT_SECONDARY, marginTop: 14, maxWidth: 740 }}>
+            {line(HERO.primary, "·")}
+          </div>
+          <div style={{ display: "flex", fontSize: 22, fontWeight: 500, color: TEXT_SECONDARY, marginTop: 8, maxWidth: 740 }}>
+            {line(HERO.supporting, "·")}
           </div>
           <div style={{ display: "flex", fontSize: 24, color: TEXT_SECONDARY, marginTop: 28 }}>
             autonomous.ev.engineer

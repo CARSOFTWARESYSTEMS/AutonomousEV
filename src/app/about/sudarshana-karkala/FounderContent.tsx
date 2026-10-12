@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./page.module.css";
+import { ADVANCED_TWIN_PROJECT, CONSULTATION, FOCUS_AREAS, FOCUS_NOTE, HERO, LAST_REVIEWED, MISSION, VISION, dotted, piped } from "./profile";
 
 export default function FounderContent() {
   return (
@@ -25,19 +26,9 @@ export default function FounderContent() {
           <div className={styles.heroText}>
             <h1 className={styles.heroTitle}>Sudarshana Karkala</h1>
             <p className={styles.heroSubtitle}>EV.ENGINEER™</p>
-            <p className={styles.heroTagline}>
-              Director of Engineering | Technology &amp; R&amp;D Consultant
-            </p>
-            <p className={styles.heroAreas}>
-              Space Systems &amp; Applications · Avionics &amp; Telemetry · EV Battery &amp; Energy Intelligence
-            </p>
-            <p className={styles.heroSupporting}>
-              AI · Cybersecurity · Digital Twins · CanSat Model Rocketry
-            </p>
-            <p className={styles.heroExploring}>
-              Exploring Director of Engineering, Technology Consulting, Systems Architecture and R&amp;D
-              collaboration opportunities across Space, Aerospace and mission-critical EV/Energy systems.
-            </p>
+            <p className={styles.heroTagline}>{piped(HERO.positioning)}</p>
+            <p className={styles.heroAreas}>{dotted(HERO.primary)}</p>
+            <p className={styles.heroSupporting}>{dotted(HERO.supporting)}</p>
           </div>
         </div>
       </section>
@@ -52,9 +43,20 @@ export default function FounderContent() {
             mobility, EV and energy platforms.
           </p>
           <p className={styles.description}>
-            His current technology and R&amp;D focus spans <strong>Space Systems &amp; Applications</strong>,{" "}
-            <strong>Avionics &amp; Telemetry</strong>, <strong>EV Battery &amp; Energy Intelligence</strong>, AI
-            and Cybersecurity.
+            His current research and engineering development focus is <strong>Space Systems Engineering</strong>:
+            spacecraft and satellite systems, <strong>Digital Twin engineering</strong>, spacecraft health
+            management, avionics and telemetry, and <strong>IVHM / FDIR / PHM</strong> (integrated vehicle health
+            management; fault detection, isolation and recovery; prognostics and health management). It extends to
+            aerospace cybersecurity, AI/ML-assisted engineering and{" "}
+            <strong>EV Battery &amp; Energy Intelligence</strong>.
+          </p>
+          {/* Which of this is long practice and which is newer work. Said in so many words, so neither is read as the other. */}
+          <p className={styles.description}>
+            The two are kept distinct here. Software architecture, cybersecurity, connected systems, EV and energy
+            are his established professional experience. The Space and Aerospace work is newer research and
+            engineering development, carried out through simulation, educational Digital Twins, CanSat model
+            rocketry and published engineering tutorials. It is not presented as flight-qualified,
+            operational-spacecraft or physical-engine test experience.
           </p>
           <p className={styles.description}>
             Through <strong>EV.ENGINEER™</strong>, he is exploring the convergence of space technology,
@@ -69,31 +71,19 @@ export default function FounderContent() {
           </p>
 
           <h3 className={styles.sectionTitle} style={{ marginTop: '2rem' }}>Core Focus Areas</h3>
+          <p className={styles.focusNote}>{FOCUS_NOTE}</p>
           <div className={styles.focusGrid}>
-            <div className={styles.focusCard}>
-              <p className={styles.focusCardTitle}>Space Systems &amp; Applications</p>
-              <p className={styles.focusCardDesc}>
-                Space technology R&amp;D · Space applications · Mission/Ground Systems concepts · AI/Data applications
-              </p>
-            </div>
-            <div className={styles.focusCard}>
-              <p className={styles.focusCardTitle}>Avionics &amp; Telemetry</p>
-              <p className={styles.focusCardDesc}>
-                CanSat avionics · Sensors · Telemetry · Connected systems · Secure communications
-              </p>
-            </div>
-            <div className={styles.focusCard}>
-              <p className={styles.focusCardTitle}>EV Battery &amp; Energy Intelligence</p>
-              <p className={styles.focusCardDesc}>
-                BMS · Battery Safety · Diagnostics · Digital Twin · Predictive Maintenance · Battery Cybersecurity
-              </p>
-            </div>
-            <div className={styles.focusCard}>
-              <p className={styles.focusCardTitle}>AI &amp; Cybersecurity</p>
-              <p className={styles.focusCardDesc}>
-                AI/ML · Agentic AI · Digital Twins · Connected-System Security · Aerospace/Automotive Cybersecurity
-              </p>
-            </div>
+            {FOCUS_AREAS.map((area) => (
+              <div key={area.title} className={styles.focusCard}>
+                <h4 className={styles.focusCardTitle}>{area.title}</h4>
+                {/* A list, drawn as one run of text with a dot between items, as these cards always were. */}
+                <ul className={styles.focusCardList} role="list">
+                  {area.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -128,6 +118,12 @@ export default function FounderContent() {
                 CubeTwin — CubeSat Battery &amp; Energy Digital Twin
               </Link>{" "}
               — Educational R&amp;D exploring spacecraft health management, energy intelligence and safe recovery.
+            </li>
+            <li>
+              <Link href={ADVANCED_TWIN_PROJECT.href} style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: 600 }}>
+                {ADVANCED_TWIN_PROJECT.name}
+              </Link>{" "}
+              — {ADVANCED_TWIN_PROJECT.summary} {ADVANCED_TWIN_PROJECT.caveat}
             </li>
             <li>
               <Link href="/internships" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: 600 }}>
@@ -253,14 +249,10 @@ export default function FounderContent() {
       {/* MISSION SECTION */}
       <section className={styles.missionSection}>
         <h2 className={styles.sectionTitle}>Mission</h2>
-        <p className={styles.missionText}>
-          "To solve EV battery safety and energy system challenges through intelligent, scalable, and engineering-driven solutions."
-        </p>
+        <p className={styles.missionText}>&ldquo;{MISSION}&rdquo;</p>
 
         <h2 className={styles.sectionTitle} style={{ marginTop: '2rem' }}>Vision</h2>
-        <p className={styles.missionText}>
-          "To eliminate EV battery failures and define the future of safe, intelligent, and autonomous energy systems."
-        </p>
+        <p className={styles.missionText}>&ldquo;{VISION}&rdquo;</p>
         
         <div className={styles.connectSection}>
           <a
@@ -268,15 +260,31 @@ export default function FounderContent() {
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-primary"
-            style={{ padding: '1rem 2.5rem', fontSize: '1.1rem' }}
+            style={{ padding: '1rem 2.5rem', fontSize: '1.2rem', fontWeight: 700 }}
           >
             View Profile on LinkedIn
           </a>
         </div>
       </section>
 
+      {/* TECHNICAL CONSULTATION & COLLABORATION — where the "Contact / Consultation" link of the engineering tutorials lands */}
+      <section id={CONSULTATION.id} className={styles.contentSection} aria-labelledby="consultation-title">
+        <div className={styles.glassCard}>
+          <h2 id="consultation-title" className={styles.sectionTitle}>{CONSULTATION.heading}</h2>
+          <p className={styles.description}>{CONSULTATION.copy}</p>
+          <ul className={styles.tagRow} role="list" aria-label="Consultation and collaboration areas">
+            {CONSULTATION.tags.map((tag) => (
+              <li key={tag} className={styles.tag}>{tag}</li>
+            ))}
+          </ul>
+          <p className={styles.description} style={{ marginBottom: 0, fontSize: "0.95rem" }}>
+            {CONSULTATION.scope} {CONSULTATION.tutorials}
+          </p>
+        </div>
+      </section>
+
       {/* CONTACT & COLLABORATION SECTION */}
-      <section className={styles.contentSection}>
+      <section id="contact" className={styles.contentSection}>
         <div className={styles.glassCard}>
           <h2 className={styles.sectionTitle}>Contact and Collaboration</h2>
           <p className={styles.description}>
@@ -284,17 +292,10 @@ export default function FounderContent() {
             and strategic collaboration opportunities across Space, Aerospace and EV Battery technologies</strong>.
           </p>
 
-          <div className={styles.tagRow}>
-            <span className={styles.tag}>Space Systems &amp; Applications</span>
-            <span className={styles.tag}>Avionics &amp; Telemetry</span>
-            <span className={styles.tag}>EV Battery &amp; Energy Intelligence</span>
-            <span className={styles.tag}>Aerospace Cybersecurity</span>
-          </div>
-
           <div style={{ display: "flex", alignItems: "center", gap: "12px", fontSize: "0.95rem", flexWrap: "wrap", marginBottom: "16px" }}>
             <a
               href="tel:+919845561518"
-              style={{ color: "var(--accent-primary)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px", fontWeight: 600 }}
+              style={{ color: "var(--accent-primary)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px", fontWeight: 600, minHeight: "44px" }}
               data-track-event="sudarshana_profile_click"
               data-track-section-id="profile-contact-block"
             >
@@ -347,12 +348,12 @@ export default function FounderContent() {
       {/* FRESHNESS / TRUST SIGNAL */}
       <section className={styles.contentSection}>
         <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", textAlign: "center" }}>
-          Independent public profile page. Last reviewed: 23 September 2026. See the{" "}
-          <Link href="/trust-center" style={{ color: "var(--accent-primary)", textDecoration: "none" }}>
+          Independent public profile page. Last reviewed: {LAST_REVIEWED.shown}. See the{" "}
+          <Link href="/trust-center" style={{ color: "var(--accent-primary)", textDecoration: "underline" }}>
             Trust Center
           </Link>{" "}
           for verified feedback and recognition, or{" "}
-          <Link href="/contact" style={{ color: "var(--accent-primary)", textDecoration: "none" }}>
+          <Link href="/contact" style={{ color: "var(--accent-primary)", textDecoration: "underline" }}>
             contact EV.ENGINEER
           </Link>{" "}
           to report a correction.

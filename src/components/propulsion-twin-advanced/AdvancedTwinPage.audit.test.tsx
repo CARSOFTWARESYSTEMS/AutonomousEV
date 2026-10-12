@@ -10,7 +10,7 @@ import { PHYSICS_CONCEPTS } from "./data/physics";
 import { QUALITY_CHECKS, TRANSFORMATION_STEPS } from "./data/pipeline";
 import { PRESSURE_SENSORS, PRESSURE_UNIT_NOTE } from "./data/pressure";
 import { FAQ } from "./data/faq";
-import { PREPARED_BY, PRODUCT, CREDIBILITY_NOTICE, VALUE_NOTE } from "./data/product";
+import { CONTACT, PREPARED_BY, PRODUCT, CREDIBILITY_NOTICE, VALUE_NOTE } from "./data/product";
 import { IMPLEMENTATION_STATUS, NOT_IMPLEMENTED } from "./data/status";
 import { ESTIMATORS, MATURITY_HERE } from "./data/twin";
 import { AI_BOUNDARY } from "./data/aiml";
@@ -516,6 +516,34 @@ describe("what the page is, and is not", () => {
     render(<AdvancedTwinPage />);
     expect(document.body.textContent).toContain(PREPARED_BY.notes[1]);
     expect(document.body.textContent).not.toMatch(/EV Society/);
+  });
+});
+
+describe("the way to reach the author", () => {
+  it("is a link in the header, immediately before the EV.ENGINEER mark, and never a hero call to action", () => {
+    const { container } = render(<AdvancedTwinPage />);
+    const header = container.querySelector("header")!;
+    const link = within(header).getByRole("link", { name: /^Contact \/ Consultation/ });
+    expect(link).toHaveAttribute("href", "https://aerospace.ishavasyam.org/about/sudarshana-karkala");
+    expect(link).toHaveAttribute("target", "_blank");
+    expect(link).toHaveAttribute("rel", "noopener noreferrer");
+    // Spoken, it begins with the words on it, says what it is for, and says that it leaves the page.
+    expect(link).toHaveTextContent(/^Contact \/ Consultation$/);
+    expect(link).toHaveAccessibleName(CONTACT.ariaLabel);
+    expect(CONTACT.ariaLabel).toMatch(/technical questions, collaboration or engineering consultation \(opens in a new tab\)$/);
+    expect(link.nextElementSibling).toHaveTextContent(/^EV\.ENGINEER™$/);
+    // The breadcrumb still comes first, so nothing moved in the order a keyboard reaches things.
+    expect(within(header).getAllByRole("link").map((a) => a.textContent)).toEqual(["Space", "Contact / Consultation"]);
+
+    // On a narrow screen only the first word shows. It is the first word of the name, so the name still begins with what is shown.
+    expect(link.querySelector("span > span")).toHaveTextContent("/ Consultation");
+    expect(link.querySelector("span")!.firstChild).toHaveTextContent("Contact");
+    expect(CONTACT.ariaLabel.startsWith("Contact / Consultation")).toBe(true);
+
+    // The header and nowhere else: the module bar holds its tabs and tools as before, and the hero keeps the calls to action it had.
+    expect(container.querySelectorAll(`a[href="${CONTACT.href}"]`)).toHaveLength(1);
+    expect([...screen.getByRole("tablist", { name: "Tutorial modules" }).children].every((child) => child.getAttribute("role") === "tab")).toBe(true);
+    expect(container.querySelector('section[aria-labelledby="advanced-twin-title"]')!.querySelector(`a[href="${CONTACT.href}"]`)).toBeNull();
   });
 });
 

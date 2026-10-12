@@ -47,7 +47,7 @@ export function buildProfileGraph({ title, description, dateModified }: ProfileG
       // remains Founder of EV.ENGINEER (see worksFor/description below);
       // jobTitle reflects the current professional headline rather than
       // duplicating that relationship.
-      jobTitle: "Director of Engineering | Technology & R&D Consultant",
+      jobTitle: "Director of Engineering | Systems Architecture | Technology & R&D",
       // Verified: FounderContent.tsx states he is founder of the
       // EV.ENGINEER platform/brand and a Consultant at iTelematics.
       worksFor: { "@id": EV_ENGINEER_BRAND_ID },

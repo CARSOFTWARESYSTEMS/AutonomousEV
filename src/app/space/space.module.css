@@ -162,13 +162,27 @@
 /* ── Header: desktop nav / compact header ────────────────────────────────
    Kept separate from .hiddenMobile/.showMobile (which serve unrelated
    decorative elements like the roadmap connector) so the header's own
-   breakpoint can be tuned independently. The full header (10 nav items +
-   CTA) needs ~1,300px on one line, so below 1340px the compact header —
-   logo, Express Interest (from 640px) and the menu button — takes over.
+   breakpoint can be tuned independently. The full header (the brand, 9 nav
+   items + CTA) needs 1,315px on one line, so below 1340px the compact header —
+   brand, Express Interest (from 640px) and the menu button — takes over.
    Labels are nowrap, so there is no intermediate wrapping state. Keep the
    1339px value in sync with SPACE_HEADER_COMPACT_MAX in SpaceHeader.tsx. */
 .headerBar {
   padding: 0 32px;
+}
+
+/* "ISHAVASYAM.ORG /space". Sized so that the full header still fits on one
+   line at its 1340px breakpoint with a classic scrollbar showing; on a narrow
+   phone it is set smaller again, so that the brand, its section and the menu
+   button share one line at 320px. */
+.headerBrandName {
+  font-size: 16px;
+}
+
+@media (max-width: 420px) {
+  .headerBrandName {
+    font-size: 14.5px;
+  }
 }
 
 .headerNavDesktop,

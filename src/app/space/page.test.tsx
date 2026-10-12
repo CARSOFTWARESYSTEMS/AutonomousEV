@@ -22,11 +22,14 @@ describe("Space page", () => {
     expect(h1s[0]).toHaveTextContent(/Protect Missions/);
   });
 
-  it("links EV.ENGINEER back to the home page", () => {
+  it("sends the header's EV.ENGINEER button to EV.ENGINEER's own site, and the links in the page to this site's home", () => {
     render(<SpacePage />);
-    const homeLinks = screen.getAllByRole("link", { name: "EV.ENGINEER" });
-    expect(homeLinks.length).toBeGreaterThan(0);
-    homeLinks.forEach((link) => expect(link).toHaveAttribute("href", "/"));
+    const header = screen.getByRole("navigation", { name: "Space section navigation" });
+    // "/" would be the wrong place on aerospace.ishavasyam.org, which serves this same header.
+    expect(within(header).getByRole("link", { name: "EV.ENGINEER" })).toHaveAttribute("href", "https://ev.engineer/");
+    const inPage = screen.getAllByRole("link", { name: "EV.ENGINEER" }).filter((link) => !header.contains(link));
+    expect(inPage.length).toBeGreaterThan(0);
+    inPage.forEach((link) => expect(link).toHaveAttribute("href", "/"));
   });
 
   it("labels the hero console as an illustrative simulation, not live telemetry", () => {

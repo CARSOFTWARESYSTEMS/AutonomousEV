@@ -136,7 +136,10 @@ describe("/space/space-station page", () => {
     await user.click(screen.getByRole("button", { name: "Open menu" }));
     const menu = document.getElementById("space-mobile-menu") as HTMLElement;
     expect(menu.textContent).not.toMatch(/EV\.ENGINEER|UFlight/);
-    expect(within(menu).getByRole("link", { name: "ISHAVASYAM.ORG" })).toBeInTheDocument();
+    // The organisation is the header's brand; the menu lists the other organisation and does not repeat it.
+    expect(within(menu).getByRole("link", { name: "iTelematics" })).toBeInTheDocument();
+    expect(within(menu).queryByRole("link", { name: "ISHAVASYAM.ORG" })).toBeNull();
+    expect(within(screen.getByRole("banner")).getByRole("link", { name: "ISHAVASYAM.ORG" })).toHaveAttribute("href", "https://ishavasyam.org/");
   });
 
   it("server-rendered markup contains no EV Society or UFlight string", async () => {

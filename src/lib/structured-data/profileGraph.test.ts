@@ -90,19 +90,47 @@ describe("/about/sudarshana-karkala JSON-LD entity graph", () => {
     expect(person.knowsAbout).toContain("CanSat Model Rocketry");
   });
 
-  it("includes the 2026 Space Systems, Avionics and Aerospace Cybersecurity focus areas in knowsAbout", () => {
+  it("includes Space Systems Engineering, health management, Digital Twins, avionics and aerospace cybersecurity in knowsAbout", () => {
     const person = findByType("Person");
-    expect(person.knowsAbout).toContain("Space Systems & Applications");
-    expect(person.knowsAbout).toContain("Avionics & Telemetry");
-    expect(person.knowsAbout).toContain("Digital Twins");
-    expect(person.knowsAbout).toContain("Aerospace Cybersecurity");
+    for (const subject of [
+      "Space Systems Engineering",
+      "Satellite and CubeSat systems engineering",
+      "Spacecraft health management",
+      "Integrated Vehicle Health Management (IVHM)",
+      "Fault Detection, Isolation and Recovery (FDIR)",
+      "Prognostics and Health Management (PHM)",
+      "Digital Twin engineering",
+      "Spacecraft and CubeSat Digital Twins",
+      "Avionics & Telemetry",
+      "Aerospace Cybersecurity",
+      "AI/ML-assisted engineering diagnostics",
+      "EV battery intelligence and diagnostics",
+    ]) {
+      expect(person.knowsAbout).toContain(subject);
+    }
   });
 
-  it("sets jobTitle to the 2026 Director of Engineering positioning without claiming 20+ years of aerospace experience", () => {
+  it("lists subjects, not credentials: nothing in knowsAbout claims propulsion expertise, flight, operations, validation or certification", () => {
     const person = findByType("Person");
-    expect(person.jobTitle).toBe("Director of Engineering | Technology & R&D Consultant");
-    expect(JSON.stringify(person)).not.toMatch(/20\+? years?[^"]*aerospace/i);
-    expect(JSON.stringify(person)).not.toMatch(/two decades[^"]*aerospace/i);
+    const subjects = (person.knowsAbout as string[]).join(" | ");
+    expect(subjects).not.toMatch(/propulsion|rocket engine|flight|operational|validated|certif|qualif/i);
+    expect(new Set(person.knowsAbout as string[]).size).toBe((person.knowsAbout as string[]).length);
+  });
+
+  it("sets jobTitle to the Director of Engineering positioning, and never puts the two decades of experience in the same sentence as space or aerospace", () => {
+    const person = findByType("Person");
+    expect(person.jobTitle).toBe("Director of Engineering | Systems Architecture | Technology & R&D");
+    // Bounded by the sentence: the description goes on to name the aerospace research focus, which is a different claim.
+    expect(JSON.stringify(person)).not.toMatch(/20\+? years?[^".]*(aerospace|space|satellite)/i);
+    expect(JSON.stringify(person)).not.toMatch(/two decades[^".]*(aerospace|space|satellite)/i);
+    expect(person.description).toMatch(/over two decades of experience across software architecture, cybersecurity, connected systems and energy platforms\./);
+  });
+
+  it("describes the Space and Aerospace work as research and development, and claims no flight, operational or certified experience", () => {
+    const person = findByType("Person");
+    expect(person.description).toMatch(/research and engineering development focus spans Space Systems Engineering, Digital Twins, spacecraft health management \(IVHM, FDIR and PHM\)/);
+    expect(person.description).toMatch(/The Space and Aerospace work is research, simulation and engineering development\.$/);
+    expect(person.description).not.toMatch(/propulsion expert|flight[- ]qualified|flight heritage|operational spacecraft|validated|certified/i);
   });
 
   it("never sets worksFor to IN-SPACe or ISRO", () => {

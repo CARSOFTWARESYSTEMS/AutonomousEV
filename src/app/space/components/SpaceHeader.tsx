@@ -7,6 +7,11 @@ import { EOI_FORM_URL } from "@/lib/eoi";
 import { FONT_MANROPE } from "../fonts";
 import styles from "../space.module.css";
 import { SPACE_INITIATIVE } from "@/data/space-initiative";
+import { ITELEMATICS } from "@/data/public-entities";
+
+/** EV.ENGINEER's own address. Not "/": this header is also served on aerospace.ishavasyam.org, where "/" is that host's root. */
+const EV_ENGINEER_URL = "https://ev.engineer/";
+
 const navItems = [
   { label: "Home", href: "#home" },
   { label: "Mission Path", href: "#pathway" },
@@ -15,18 +20,17 @@ const navItems = [
   { label: "Research Themes", href: "#projects" },
   { label: "Vision & References", href: "#vision" },
   { label: "Community", href: "#community" },
-  { label: "UFlight", href: "https://www.uflight.in/" },
-  { label: "EV.ENGINEER", href: "/" },
-  // The organisation the initiative belongs to.
-  { label: SPACE_INITIATIVE.brand, href: SPACE_INITIATIVE.url },
+  { label: "iTelematics", href: ITELEMATICS.canonicalUrl },
+  { label: "EV.ENGINEER", href: EV_ENGINEER_URL },
 ];
 
 export type BrandLink = { label: string; href: string };
 
 /**
  * Widest viewport (px) that still uses the compact header + menu. The full
- * single-line desktop header needs ~1,300px of layout width; 1340px leaves
- * room for a classic Windows scrollbar. Must match the header media query in
+ * single-line desktop header needs 1,315px of layout width (measured with the
+ * "ISHAVASYAM.ORG /space" brand); 1340px leaves room for a classic Windows
+ * scrollbar, which takes 17px. Must match the header media query in
  * ../space.module.css.
  */
 export const SPACE_HEADER_COMPACT_MAX = 1339;
@@ -36,10 +40,11 @@ export default function SpaceHeader({
   brandLinks,
 }: {
   basePath?: string;
-  /** Replaces the default brand links (UFlight, EV.ENGINEER, ISHAVASYAM.ORG) for pages with their own attribution. */
+  /** Replaces the default brand links (iTelematics, EV.ENGINEER) for pages with their own attribution. */
   brandLinks?: BrandLink[];
 }) {
-  const items = brandLinks ? [...navItems.filter((item) => item.href.startsWith("#")), ...brandLinks] : navItems;
+  // The brand is the link to the organisation, so a page's own list never repeats it as a menu item.
+  const items = (brandLinks ? [...navItems.filter((item) => item.href.startsWith("#")), ...brandLinks] : navItems).filter((item) => item.href !== SPACE_INITIATIVE.url);
   const [mobileOpen, setMobileOpen] = useState(false);
   const mobileToggleRef = useRef<HTMLButtonElement>(null);
   useMobileMenuLock(mobileOpen, setMobileOpen, mobileToggleRef, SPACE_HEADER_COMPACT_MAX);
@@ -61,7 +66,7 @@ export default function SpaceHeader({
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          gap: 16,
+          gap: 12,
         }}
       >
         <div
@@ -72,30 +77,40 @@ export default function SpaceHeader({
             flexShrink: 0,
           }}
         >
-          <div
-            style={{
-              width: 34,
-              height: 34,
-              borderRadius: 10,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              background: "linear-gradient(135deg, #7C3AED, #06B6D4)",
-            }}
+          {/* The brand: the organisation, which leads to its own site, and the section, which leads to the top of Space. */}
+          <a
+            href={SPACE_INITIATIVE.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0, textDecoration: "none" }}
           >
-            <Orbit size={18} color="#fff" />
-          </div>
-          <span
-            style={{
-              fontFamily: FONT_MANROPE,
-              fontWeight: 800,
-              fontSize: 17,
-              letterSpacing: "-0.02em",
-              color: "#fff",
-            }}
+            <span
+              aria-hidden="true"
+              style={{
+                width: 34,
+                height: 34,
+                flexShrink: 0,
+                borderRadius: 10,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                background: "linear-gradient(135deg, #7C3AED, #06B6D4)",
+              }}
+            >
+              <Orbit size={18} color="#fff" />
+            </span>
+            <span className={styles.headerBrandName} style={{ fontFamily: FONT_MANROPE, fontWeight: 800, letterSpacing: "-0.02em", color: "#fff", whiteSpace: "nowrap" }}>
+              {SPACE_INITIATIVE.brand}
+            </span>
+          </a>
+          <a
+            href={`${basePath}#home`}
+            aria-label="/space: the top of the Space page"
+            className={styles.headerBrandName}
+            style={{ fontFamily: FONT_MANROPE, fontWeight: 700, letterSpacing: "-0.01em", color: "#B39DDB", whiteSpace: "nowrap", textDecoration: "none", marginLeft: -4 }}
           >
-            Space
-          </span>
+            /space
+          </a>
         </div>
 
         <nav
@@ -113,7 +128,7 @@ export default function SpaceHeader({
             const isInternalRoute = item.href === "/";
             const isExternal = item.href.startsWith("http");
             const borderedStyle: React.CSSProperties = {
-              padding: "6px 12px",
+              padding: "6px 10px",
               borderRadius: 8,
               fontWeight: 600,
               fontSize: 13,
@@ -159,7 +174,7 @@ export default function SpaceHeader({
               );
             }
             const linkStyle: React.CSSProperties = {
-              padding: "6px 10px",
+              padding: "6px 8px",
               borderRadius: 8,
               color: "#B5B8C9",
               fontSize: 13,
