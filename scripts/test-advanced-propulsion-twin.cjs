@@ -97,6 +97,15 @@ async function main() {
         const ids = new Set(graph.map((n) => n['@id']).filter(Boolean));
         const refs = [...JSON.stringify(graph).matchAll(/\{"@id":"([^"]+)"\}/g)].map((m) => m[1]);
         for (const ref of refs) assert(ids.has(ref), `unresolved ${ref}`);
+        // Three organisations in three roles: the operator publishes the page, EV.ENGINEER provides the course, and
+        // ISHAVASYAM.ORG is the organisation whose Space initiative the tutorial belongs to. None replaces another.
+        const one = (type) => graph.find((n) => [n['@type']].flat().includes(type));
+        const owner = graph.find((n) => n.name === 'ISHAVASYAM.ORG');
+        assert(owner && owner['@type'] === 'Organization', 'no ISHAVASYAM.ORG organisation in the graph');
+        assert.deepEqual(one('LearningResource').sourceOrganization, { '@id': owner['@id'] });
+        assert.equal(graph.find((n) => n['@id'] === one('WebPage').publisher['@id']).legalName, 'iTelematics Software Private Limited');
+        assert.equal(graph.find((n) => n['@id'] === one('Course').provider['@id']).name, 'EV.ENGINEER');
+        assert.doesNotMatch(JSON.stringify(graph), /EV Society/);
         assert.equal(graph.find((n) => n['@type'] === 'FAQPage').mainEntity.length, 15);
       });
       await check('server', 'Educational content of every module is in the server HTML, whichever module is showing', async () => {

@@ -1,6 +1,6 @@
 {
   "base": "http://localhost:3100",
-  "started": "2026-10-12T06:24:17.550Z",
+  "started": "2026-10-12T07:08:51.928Z",
   "responsive": [
     {
       "viewport": "mobile-320",
@@ -2878,7 +2878,7 @@
           "activeTabVisible": true,
           "toolsInViewport": true,
           "headingObscured": false,
-          "stickyShare": 0.1,
+          "stickyShare": 0.11,
           "canvases": 0
         },
         "pressure": {
@@ -3049,20 +3049,20 @@
     }
   ],
   "performance": {
-    "htmlBytes": 1075410,
+    "htmlBytes": 1076230,
     "conditions": "390×844, 4× CPU slowdown, 1.6 Mbps down / 150 ms latency, cold cache",
     "htmlKB": 186,
     "jsKB": 276,
     "cssKB": 48,
-    "lcpMs": 1076,
-    "tbtMs": 27,
+    "lcpMs": 928,
+    "tbtMs": 26,
     "cls": 0,
     "domNodes": 6574,
     "threeLoaded": false,
     "worstInteractionMs": 120,
     "interactions": 12,
     "clsAfterLoad": 0,
-    "longTaskMsWhileRunning": 471
+    "longTaskMsWhileRunning": 463
   },
   "accessibility": {
     "desktop": {},
@@ -3096,16 +3096,16 @@
       {
         "id": "cooling_restriction",
         "isolated": true,
-        "verdict": "Probable Cooling-channel restriction — 96 %",
-        "health": "HEALTH ▲ MONITOR Index 83",
+        "verdict": "Probable Cooling-channel restriction — 72 %",
+        "health": "HEALTH ● NOMINAL Index 94",
         "quality": "DATA QUALITY ● GOOD 18 ms latency",
-        "history": "Fault history 7.0 sISOLATEDProbable cause: Cooling-channel restriction (92 %) 6.2 sDETECTEDAnomaly detected by cusum, multivariate 3.6 sINJECTEDFault injected: Cooling-channel restriction"
+        "history": "Fault history 3.6 sINJECTEDFault injected: Cooling-channel restriction"
       },
       {
         "id": "feed_pressure_reduction",
         "isolated": true,
-        "verdict": "Probable Oxidiser feed pressure reduction — 92 %",
-        "health": "HEALTH ▲ DEGRADED Index 69",
+        "verdict": "Probable Oxidiser feed pressure reduction — 85 %",
+        "health": "HEALTH ▲ MONITOR Index 74",
         "quality": "DATA QUALITY ● GOOD 18 ms latency",
         "history": "Fault history 5.0 sDETECTEDAnomaly detected by residual, ml 4.8 sDETECTEDAnomaly detected by residual, ml 3.6 sINJECTEDFault injected: Oxidiser feed pressure reduction"
       },
@@ -3120,18 +3120,18 @@
       {
         "id": "combustion_loss",
         "isolated": true,
-        "verdict": "Probable Combustion performance loss — 59 %",
-        "health": "HEALTH ▲ MONITOR Index 87",
+        "verdict": "Probable Combustion performance loss — 95 %",
+        "health": "HEALTH ▲ MONITOR Index 74",
         "quality": "DATA QUALITY ● GOOD 18 ms latency",
-        "history": "Fault history 7.8 sDETECTEDAnomaly detected by cusum, multivariate 3.6 sINJECTEDFault injected: Combustion performance loss"
+        "history": "Fault history 9.1 sISOLATEDProbable cause: Combustion performance loss (88 %) 7.8 sDETECTEDAnomaly detected by cusum, multivariate 3.6 sINJECTEDFault injected: Combustion performance loss"
       },
       {
         "id": "pc_sensor_drift",
         "isolated": true,
-        "verdict": "Probable Chamber pressure sensor A drift — 85 %",
+        "verdict": "Probable Chamber pressure sensor A drift — 99 %",
         "health": "HEALTH ● NOMINAL Index 100",
         "quality": "DATA QUALITY ● GOOD 18 ms latency",
-        "history": "Fault history 3.6 sINJECTEDFault injected: Chamber pressure sensor A drift"
+        "history": "Fault history 5.8 sSENSORChamber pressure sensor A voted out: it disagrees with sensor B and with the virtual sensor 3.6 sINJECTEDFault injected: Chamber pressure sensor A drift"
       },
       {
         "id": "sensor_noise",
@@ -3167,17 +3167,17 @@
       }
     ],
     "rateDetector": {
-      "gradual": "Anomaly detected by residual, cusum, multivariate ",
+      "gradual": "Anomaly detected by residual, cusum ",
       "abruptFirstAlarmSeconds": 0.5
     },
     "memory": {
       "before": {
         "nodes": 7029,
-        "heap": 30
+        "heap": 15
       },
       "after": {
         "nodes": 7029,
-        "heap": 30
+        "heap": 15
       }
     }
   },
@@ -3186,7 +3186,7 @@
   "inducedFailure": {
     "failedRequests": 2
   },
-  "finished": "2026-10-12T06:32:57.441Z",
+  "finished": "2026-10-12T07:17:32.320Z",
   "passed": 159,
   "failed": 0,
   "results": [
@@ -3943,8 +3943,8 @@
         "htmlKB": 186,
         "jsKB": 276,
         "cssKB": 48,
-        "lcpMs": 1076,
-        "tbtMs": 27,
+        "lcpMs": 928,
+        "tbtMs": 26,
         "cls": 0,
         "domNodes": 6574,
         "threeLoaded": false
@@ -3958,7 +3958,7 @@
         "worstInteractionMs": 120,
         "interactions": 12,
         "clsAfterLoad": 0,
-        "longTaskMsWhileRunning": 471
+        "longTaskMsWhileRunning": 463
       }
     },
     {

@@ -1,0 +1,223 @@
+{
+  "note": "The JSON-LD graph as rendered by the local production build on 12 October 2026, after ISHAVASYAM.ORG was added. Long lists are summarised. Every {\"@id\"} reference resolves to a node in the graph.",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://autonomous.ev.engineer/#website",
+      "name": "EV.ENGINEER",
+      "url": "https://autonomous.ev.engineer/",
+      "brand": {
+        "@id": "https://autonomous.ev.engineer/#brand"
+      },
+      "publisher": {
+        "@id": "https://itelematics.com/#organization"
+      }
+    },
+    {
+      "@type": "Brand",
+      "@id": "https://autonomous.ev.engineer/#brand",
+      "name": "EV.ENGINEER",
+      "url": "https://autonomous.ev.engineer/",
+      "description": "EV.ENGINEER is an engineering-education platform and brand publishing content, internships and student project tracks in EV battery systems, autonomous vehicles, cybersecurity, aerospace and space engineering."
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://itelematics.com/#organization",
+      "name": "iTelematics Software Private Limited",
+      "legalName": "iTelematics Software Private Limited",
+      "url": "https://itelematics.com/"
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://ishavasyam.org/#organization",
+      "name": "ISHAVASYAM.ORG",
+      "url": "https://ishavasyam.org/",
+      "description": "ISHAVASYAM.ORG is the organisation behind the Space initiative published on this site: an education, research and engineering initiative."
+    },
+    {
+      "@type": "Person",
+      "@id": "https://autonomous.ev.engineer/about/sudarshana-karkala#person",
+      "name": "Sudarshana Karkala",
+      "url": "https://autonomous.ev.engineer/about/sudarshana-karkala",
+      "description": "Sudarshana Karkala is an engineering and technology leader with over two decades of experience across software architecture, cybersecurity, connected systems and energy platforms. He founded the EV.ENGINEER platform and consults for iTelematics Software Private Limited. His current technology and R&D focus spans Space Systems & Applications, Avionics & Telemetry, EV Battery & Energy Intelligence, AI and Cybersecurity.",
+      "sameAs": [
+        "https://www.linkedin.com/in/sudarshanakarkala/",
+        "https://topmate.io/sudarshana_karkala"
+      ],
+      "affiliation": {
+        "@id": "https://autonomous.ev.engineer/#brand"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced#webpage",
+      "url": "https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced",
+      "name": "Advanced Rocket Propulsion Digital Twin | Physics, AI/ML & Pressure Monitoring | EV.ENGINEER",
+      "description": "Learn how to design an advanced rocket propulsion Digital Twin for pressure monitoring using physics-based models, telemetry, state estimation, AI/ML, fault detection, prognostics and Digital Twin validation.",
+      "inLanguage": "en",
+      "dateModified": "2026-10-12",
+      "isPartOf": {
+        "@id": "https://autonomous.ev.engineer/#website"
+      },
+      "about": {
+        "@id": "https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced#learning"
+      },
+      "mainEntity": {
+        "@id": "https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced#learning"
+      },
+      "hasPart": [
+        {
+          "@id": "https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced#course"
+        },
+        {
+          "@id": "https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced#faq"
+        }
+      ],
+      "author": {
+        "@id": "https://autonomous.ev.engineer/about/sudarshana-karkala#person"
+      },
+      "publisher": {
+        "@id": "https://itelematics.com/#organization"
+      },
+      "mentions": [
+        {
+          "@id": "https://autonomous.ev.engineer/#brand"
+        },
+        {
+          "@id": "https://ishavasyam.org/#organization"
+        }
+      ],
+      "breadcrumb": {
+        "@id": "https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced#breadcrumb"
+      },
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced/opengraph-image",
+        "width": 1200,
+        "height": 630,
+        "caption": "Advanced Rocket Propulsion System Digital Twin: a rocket engine reference architecture beside the chain from physical system to physics, telemetry, AI/ML, Digital Twin and prognostics. EV.ENGINEER."
+      }
+    },
+    {
+      "@type": "LearningResource",
+      "@id": "https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced#learning",
+      "name": "Advanced Rocket Propulsion System Digital Twin",
+      "description": "Interactive engineering tutorial on building a propulsion pressure-monitoring Digital Twin, with a simulated twin that runs in the browser. Uses a generic reference architecture and simulated telemetry; it does not represent any flight engine and is not correlated with test data.",
+      "url": "https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced",
+      "learningResourceType": [
+        "Interactive tutorial",
+        "Interactive simulation"
+      ],
+      "educationalLevel": "Advanced",
+      "educationalUse": "Self-study",
+      "inLanguage": "en",
+      "isAccessibleForFree": true,
+      "about": [
+        {
+          "@type": "Thing",
+          "name": "Rocket propulsion"
+        },
+        {
+          "@type": "Thing",
+          "name": "Digital twin"
+        },
+        {
+          "@type": "Thing",
+          "name": "Propulsion pressure monitoring"
+        },
+        {
+          "@type": "Thing",
+          "name": "Rocket engine instrumentation"
+        },
+        {
+          "@type": "Thing",
+          "name": "Telemetry"
+        },
+        {
+          "@type": "Thing",
+          "name": "Physics-based modelling"
+        },
+        {
+          "@type": "Thing",
+          "name": "State estimation"
+        },
+        {
+          "@type": "Thing",
+          "name": "Fault detection and isolation"
+        },
+        {
+          "@type": "Thing",
+          "name": "Physics-informed machine learning"
+        },
+        {
+          "@type": "Thing",
+          "name": "Prognostics and health management"
+        },
+        {
+          "@type": "Thing",
+          "name": "Model verification and validation"
+        }
+      ],
+      "teaches": "[24 objectives]",
+      "isBasedOn": "https://aerospace.ev.engineer/space/rocket-engine-digital-twin",
+      "isPartOf": {
+        "@id": "https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced#webpage"
+      },
+      "creator": {
+        "@id": "https://autonomous.ev.engineer/about/sudarshana-karkala#person"
+      },
+      "sourceOrganization": {
+        "@id": "https://ishavasyam.org/#organization"
+      }
+    },
+    {
+      "@type": "Course",
+      "@id": "https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced#course",
+      "name": "12-Week Digital Twin Assignment",
+      "description": "A self-paced, twelve-week project in four phases in which the learner builds a propulsion pressure-monitoring Digital Twin against simulated or experimental telemetry, with a review at the end of each phase.",
+      "url": "https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced#weeks",
+      "inLanguage": "en",
+      "isAccessibleForFree": true,
+      "provider": {
+        "@id": "https://autonomous.ev.engineer/#brand"
+      },
+      "creator": {
+        "@id": "https://autonomous.ev.engineer/about/sudarshana-karkala#person"
+      },
+      "syllabusSections": "[4 phases]"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced#faq",
+      "url": "https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced",
+      "isPartOf": {
+        "@id": "https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced#webpage"
+      },
+      "mainEntity": "[15 questions, as on the page]"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Space",
+          "item": "https://aerospace.ev.engineer/space"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Rocket Engine Digital Twin",
+          "item": "https://aerospace.ev.engineer/space/rocket-engine-digital-twin"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Advanced Rocket Propulsion Digital Twin",
+          "item": "https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced"
+        }
+      ]
+    }
+  ]
+}

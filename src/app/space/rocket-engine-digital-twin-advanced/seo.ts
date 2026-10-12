@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { EV_ENGINEER_BRAND_ID, ITELEMATICS_ID, PERSON_ID, WEBSITE_ID, evEngineerBrandNode, itelematicsOrgNode, sudarshanaKarkalaPersonNode, websiteNode } from "@/lib/structured-data/entities";
+import { EV_ENGINEER_BRAND_ID, ISHAVASYAM_ID, ITELEMATICS_ID, PERSON_ID, WEBSITE_ID, evEngineerBrandNode, ishavasyamOrgNode, itelematicsOrgNode, sudarshanaKarkalaPersonNode, websiteNode } from "@/lib/structured-data/entities";
 import { COURSE_PHASES } from "@/components/propulsion-twin-advanced/data/course";
 import { FAQ } from "@/components/propulsion-twin-advanced/data/faq";
 import { OBJECTIVES, PREPARED_BY, PRODUCT } from "@/components/propulsion-twin-advanced/data/product";
@@ -90,6 +90,9 @@ export const structuredData = {
     // websiteNode() references the brand and its publisher, so both must be in this graph.
     evEngineerBrandNode(),
     itelematicsOrgNode(),
+    // Three organisations, three roles, none standing in for another: the site's operator publishes the page,
+    // EV.ENGINEER provides the course, and ISHAVASYAM.ORG is the organisation whose Space initiative the tutorial belongs to.
+    ishavasyamOrgNode(),
     sudarshanaKarkalaPersonNode(),
     {
       "@type": "WebPage",
@@ -105,7 +108,7 @@ export const structuredData = {
       hasPart: [{ "@id": COURSE_ID }, { "@id": FAQ_ID }],
       author: { "@id": PERSON_ID },
       publisher: { "@id": ITELEMATICS_ID },
-      mentions: [{ "@id": EV_ENGINEER_BRAND_ID }],
+      mentions: [{ "@id": EV_ENGINEER_BRAND_ID }, { "@id": ISHAVASYAM_ID }],
       breadcrumb: { "@id": BREADCRUMB_ID },
       primaryImageOfPage: { "@type": "ImageObject", url: OG_IMAGE, width: 1200, height: 630, caption: OG_ALT },
     },
@@ -125,6 +128,8 @@ export const structuredData = {
       isBasedOn: FUNDAMENTALS,
       isPartOf: { "@id": WEBPAGE_ID },
       creator: { "@id": PERSON_ID },
+      // The organisation on whose behalf the tutorial was made: it is published within Space, an ISHAVASYAM.ORG initiative.
+      sourceOrganization: { "@id": ISHAVASYAM_ID },
     },
     {
       // A self-paced syllabus published on this page. No enrolment, instructor, schedule or credential is offered.

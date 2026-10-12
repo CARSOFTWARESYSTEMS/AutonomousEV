@@ -380,7 +380,7 @@ Every control on the page and the check that exercises it. "E" checks run in a r
 
 ## Found by the release gate, 12 October 2026
 
-Uncommitted at the time of writing. Reproduction, action and evidence are in the report.
+APT-30 to APT-34 were committed by the owner as `c2c8831` and are deployed. APT-35 is the final step, committed locally and awaiting approval to push. Reproduction, action and evidence are in the report.
 
 | ID | Sev. | Finding | Root cause | Fix | Verified by |
 | --- | --- | --- | --- | --- | --- |
@@ -389,5 +389,6 @@ Uncommitted at the time of writing. Reproduction, action and evidence are in the
 | APT-32 | P2 | Cybersecurity controls, MLOps practices, the data architecture and the digital thread were described with no statement that this simulator implements none of them; FDIR "recovery" likewise; the estimator descriptions did not say which one the live twin runs | Reference material and implementation were not told apart on the page | `data/status.ts`: one statement per part, shown beside it; three sections tagged CONCEPTUAL | A "says, beside each part it only describes, that the simulator does not implement it", "does not let the live twin be credited with an estimator it does not run", "says that recovery, range and rate checks, security controls and validation are not there" |
 | APT-33 | P3 | The page did not say whose initiative it belongs to | Written before the Space initiative's ownership was settled | One attribution sentence | A "places the tutorial in the hierarchy…" |
 | APT-34 | P3 | Five evidence logs cited by the report were not in the repository: `.gitignore` excludes `*.log` | – | Renamed `.txt` | – |
+| APT-35 | P3 | The page's structured data named EV.ENGINEER and iTelematics but not the organisation whose initiative it belongs to | Written before the initiative's ownership was settled | ISHAVASYAM.ORG added as an `Organization` node and as the learning resource's `sourceOrganization`. Publisher (iTelematics) and course provider (EV.ENGINEER) unchanged. Canonical address verified on three hosts and left as it is | Integration tests "names three organisations in three roles, and lets none stand in for another" and "keeps one canonical address whichever host serves the page…"; E[server] structured-data check |
 
 Verification added without a defect behind it: the post-start hold measured at 2.75 s; a real fault present before a restart is declared 0.15–0.20 s after the hold and isolated 1.1 s after it, for all seven modelled faults; every modelled fault is carried from physical effect to recommended investigation (`simulation/verification.test.ts`, twelve tests).

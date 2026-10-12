@@ -4,11 +4,43 @@ Page: `/space/rocket-engine-digital-twin-advanced`. Audit of 11–12 October 202
 Issue register, with reproduction steps and root causes: [advanced-propulsion-twin-audit.md](advanced-propulsion-twin-audit.md).
 Evidence: [advanced-propulsion-twin-review/](advanced-propulsion-twin-review/).
 
-**Release decision (gate of 12 October 2026): GO WITH CONDITIONS.** See [Release gate](#release-gate-12-october-2026) below. Sections 1 to 12 are the audit report as written before the audited work was committed; where the gate supersedes them, it says so.
+**Release decision (gate of 12 October 2026): GO.** The gate first returned GO WITH CONDITIONS; both conditions were then met, and a final step added the initiative's organisation to the page's structured data. See [Release gate](#release-gate-12-october-2026) below, starting with "Final step". Sections 1 to 12 are the audit report as written before the audited work was committed; where the gate supersedes them, it says so.
 
 ## Release gate, 12 October 2026
 
 An independent re-verification of the audited state, run after the audit.
+
+### Final step, after approval
+
+The owner approved the gate's corrections and the attribution sentence, and committed and deployed them as `c2c8831`. Both conditions of the first decision are therefore met. Production now carries the corrected hot-gas and turbine wording, the CONCEPTUAL labels, the estimator wording and the attribution sentence (checked on all three hosts).
+
+One change was then asked for and made, and the whole gate was run again on it:
+
+| Item | Result |
+| --- | --- |
+| **ISHAVASYAM.ORG in the page's structured data** | Added as an `Organization` node (`https://ishavasyam.org/#organization`, the id every Space page uses). The learning resource names it as `sourceOrganization`, the organisation on whose behalf the tutorial was made, and the page lists it under `mentions`. |
+| **EV.ENGINEER's role** | Unchanged: `Brand` of the website and `provider` of the course; `author` and `creator` in the page's metadata |
+| **iTelematics Software Private Limited's role** | Unchanged: `publisher` of the page and of the website, in JSON-LD and in metadata |
+| **What ISHAVASYAM.ORG is not made** | Publisher, provider, author or creator of anything on the page. A test asserts it |
+| **Graph as rendered** | One JSON-LD block, 10 nodes, 19 references, 0 unresolved, no EV Society. `release-gate/structured-data.json` |
+| **Canonical address** | Verified, and deliberately not changed. `aerospace.ev.engineer`, `aerospace.ishavasyam.org` and `autonomous.ev.engineer` all serve the page with status 200 and the same canonical and `og:url`: `https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced`. The sitemap lists that address once. Moving the canonical to the ISHAVASYAM.ORG host would be a domain migration, not a branding change. `release-gate/canonical.txt` |
+
+Gate re-run on this final state, local production build:
+
+| Check | Result |
+| --- | --- |
+| Browser audit, Chromium | 159 of 159; no console error, page error or failed request |
+| axe WCAG 2.2 A and AA | 0 violations, desktop and phone |
+| WebKit / Firefox | 10 of 10 / 10 of 10 |
+| Fundamentals page regression | 16 of 16 |
+| Unit and component tests | 1,671 passed, 1 failed (the same unrelated satellite-explorer test) |
+| of which this page | 211 passed, 0 failed |
+| Type-check; lint on changed files; production build | clean; clean; succeeds |
+| Largest contentful paint / layout shift, emulated phone | 928 ms / 0 |
+
+**Final decision: GO**, in the sense defined below and no other. The final step is committed locally and is not pushed or deployed; that waits for the owner's approval. Simulation behaviour, physics, thresholds and interface are untouched by it: it changes one structured-data file, two tests and the audit script's structured-data check.
+
+Files of the final step: `src/app/space/rocket-engine-digital-twin-advanced/seo.ts`, `integration.test.tsx` (two tests), `scripts/test-advanced-propulsion-twin.cjs` (one check extended), this report, the register, and the evidence under `release-gate/`.
 
 ### What "GO" means here
 
@@ -30,7 +62,7 @@ The gate's brief describes an uncommitted working tree to be verified before com
 - Production is serving that build. This gate is therefore a verification **after** release, and it was run against the deployed site as well as locally.
 - `git diff --check`: clean. No debug, probe or generated file is in either commit. Two things were found and are reported, not changed: `scratchpad/model-rocketry-dev-report.html` and `.md` are tracked from an earlier, unrelated commit (`917d516`); and five evidence logs named in this report were never committed because `.gitignore` excludes `*.log`. They are now `.txt` files and can be tracked.
 
-What the gate itself changed is uncommitted and listed at the end of this section. Nothing was committed, pushed or deployed by it.
+What the gate itself changed was uncommitted at this point and is listed at the end of this section. (It has since been committed and deployed by the owner as `c2c8831`: see "Final step" above.)
 
 ### Results reproduced
 
@@ -47,8 +79,8 @@ Every figure below was re-run for this gate; none is carried over from the audit
 | WebKit, 10 checks | 10 passed | – | – |
 | Firefox, 10 checks | 10 passed | – | – |
 | Fundamentals page regression | 16 passed | – | – |
-| Unit and component tests (`npm test`) | 1,669 passed, 1 failed | – | – |
-| of which this page | 209 passed, 0 failed | – | – |
+| Unit and component tests (`npm test`) | 1,669 passed, 1 failed (1,671 after the final step) | – | – |
+| of which this page | 209 passed, 0 failed (211 after the final step) | – | – |
 | Type-check | clean | – | – |
 | Lint, files changed | 0 errors (one warning that predates the audit, `<img>` in `SpaceLanding.tsx`) | – | – |
 | Production build | succeeds | – | – |
@@ -142,7 +174,7 @@ Telemetry is simulated; reference values are not flight-engine measurements; no 
 | Initiative | Not stated anywhere on the page | – | One sentence added to the attribution note: "It is published within Space, an ISHAVASYAM.ORG education, research and engineering initiative. EV.ENGINEER™ is the engineering and learning platform it is built and hosted on. Commercial engineering, where applicable, is handled separately by iTelematics Software Private Limited under explicit agreements." |
 | EV Society | Not named | – | – |
 
-No ownership statement on the page was incorrect. The page did not place itself in the hierarchy at all, and now does. Not changed, for the owner to decide: the canonical URL is `aerospace.ev.engineer`, not the `aerospace.ishavasyam.org` address the gate names; the page's JSON-LD has no ISHAVASYAM.ORG node; and the Fundamentals page has no such sentence.
+No ownership statement on the page was incorrect. The page did not place itself in the hierarchy at all, and now does. Decided since, in the final step: the canonical URL stays on `aerospace.ev.engineer`, verified on all three hosts; and the page's JSON-LD now has the ISHAVASYAM.ORG node. Still open: the Fundamentals page has no such sentence.
 
 ### Deferred to a later version, on purpose
 
@@ -159,7 +191,7 @@ Not attempted in this release, and not to be read as done:
 
 ### Unresolved
 
-- The gate's own changes are **not in production**. Until they are, the deployed page still credits the twin with a turbine power estimate and a turbine pressure-ratio check, and still describes security controls, MLOps and a data architecture without saying they are not implemented.
+- Resolved: the gate's corrections are in production (`c2c8831`). What is not yet in production is the final step alone: the ISHAVASYAM.ORG node in the page's structured data. It is committed locally and awaits approval to push.
 - `satellite-explorer/ui/ui.test.tsx`: one failing test, unrelated, older than this page.
 - `scratchpad/model-rocketry-dev-report.*` is tracked in the repository from an earlier commit. It looks accidental; it is not part of this work and was left.
 - Repository-wide `npm run lint` reports problems in files this work did not touch.
@@ -167,7 +199,7 @@ Not attempted in this release, and not to be read as done:
 
 ### Decision
 
-**GO WITH CONDITIONS.**
+**GO WITH CONDITIONS** at the first pass of the gate. Both conditions have since been met, and the final decision, recorded under "Final step" above, is **GO**.
 
 The audited implementation is sound as what it declares itself to be, and has been verified again locally, on production and on the target address. The conditions are:
 
@@ -176,7 +208,7 @@ The audited implementation is sound as what it declares itself to be, and has be
 
 Not conditions: the eight deferred items. They are the difference between this release and a validated twin, and the page says so.
 
-### Files changed by the gate (uncommitted)
+### Files changed by the gate (committed by the owner as `c2c8831`)
 
 | File | Change |
 | --- | --- |
@@ -189,7 +221,7 @@ Not conditions: the eight deferred items. They are the difference between this r
 | `docs/advanced-propulsion-twin-review/` | `release-gate/` (results, logs, screenshots, `diagnosis-integrity.md`); matrix regenerated; five logs renamed `.txt` |
 | This report and the register | This section; status lines |
 
-Also uncommitted, from the task before this one: `docs/space-ishavasyam-migration.md` and `docs/space-ishavasyam-migration-review/rendered-routes-production.json`.
+The Space migration report, `docs/space-ishavasyam-migration.md`, and its production evidence went into the same commit.
 
 ---
 

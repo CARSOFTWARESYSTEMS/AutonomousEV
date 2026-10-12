@@ -4,7 +4,7 @@ import path from "node:path";
 import { render, screen } from "@testing-library/react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { JsonLd } from "@/lib/structured-data/JsonLd";
-import { PERSON_ID } from "@/lib/structured-data/entities";
+import { EV_ENGINEER_BRAND_ID, EV_SOCIETY_ID, ISHAVASYAM_ID, ITELEMATICS_ID, PERSON_ID, WEBSITE_ID } from "@/lib/structured-data/entities";
 import { SUDARSHANA_KARKALA } from "@/data/public-entities";
 import { FAQ } from "@/components/propulsion-twin-advanced/data/faq";
 import robots from "@/app/robots";
@@ -212,6 +212,51 @@ describe("Advanced Rocket Propulsion Digital Twin structured data", () => {
     const person = find("Person");
     expect(person).toMatchObject({ "@id": PERSON_ID, name: SUDARSHANA_KARKALA.name, url: SUDARSHANA_KARKALA.canonicalUrl });
     for (const key of ["jobTitle", "honorificPrefix", "hasCredential"]) expect(person).not.toHaveProperty(key);
+  });
+
+  it("names three organisations in three roles, and lets none stand in for another", () => {
+    const graph = parseGraph();
+    const byId = (id: string) => graph.find((n) => n["@id"] === id)!;
+    // ISHAVASYAM.ORG: the organisation whose Space initiative the tutorial belongs to.
+    expect(byId(ISHAVASYAM_ID)).toMatchObject({ "@type": "Organization", name: "ISHAVASYAM.ORG", url: "https://ishavasyam.org/" });
+    expect(find("LearningResource").sourceOrganization).toEqual({ "@id": ISHAVASYAM_ID });
+    // EV.ENGINEER: the platform, and the provider of the course. Unchanged.
+    expect(byId(EV_ENGINEER_BRAND_ID)).toMatchObject({ "@type": "Brand", name: "EV.ENGINEER" });
+    expect(find("Course").provider).toEqual({ "@id": EV_ENGINEER_BRAND_ID });
+    expect(byId(WEBSITE_ID).brand).toEqual({ "@id": EV_ENGINEER_BRAND_ID });
+    // iTelematics Software Private Limited: the operator of the site, and the publisher of the page. Unchanged.
+    expect(byId(ITELEMATICS_ID)).toMatchObject({ "@type": "Organization", legalName: "iTelematics Software Private Limited" });
+    expect(find("WebPage").publisher).toEqual({ "@id": ITELEMATICS_ID });
+    expect(byId(WEBSITE_ID).publisher).toEqual({ "@id": ITELEMATICS_ID });
+    expect(find("WebPage").mentions).toEqual([{ "@id": EV_ENGINEER_BRAND_ID }, { "@id": ISHAVASYAM_ID }]);
+    // ISHAVASYAM.ORG is not made the publisher, the provider, the author or the creator of anything here.
+    for (const node of graph) for (const role of ["publisher", "provider", "author", "creator"]) expect(node[role], `${String(node["@type"])}.${role}`).not.toEqual({ "@id": ISHAVASYAM_ID });
+    // The page's metadata says the same as its graph.
+    expect(pageMetadata.publisher).toBe("iTelematics Software Private Limited");
+    expect(pageMetadata.creator).toBe("EV.ENGINEER");
+    // EV Society has no part in it.
+    expect(JSON.stringify(graph)).not.toContain(EV_SOCIETY_ID);
+    expect(JSON.stringify(graph)).not.toMatch(/EV Society/);
+    // Every reference in the graph is to a node that is in the graph.
+    const ids = new Set(graph.map((n) => n["@id"]).filter(Boolean));
+    const refs = [...JSON.stringify(graph).matchAll(/\{"@id":"([^"]+)"\}/g)].map((m) => m[1]);
+    expect(refs.filter((ref) => !ids.has(ref))).toEqual([]);
+  });
+
+  it("keeps one canonical address whichever host serves the page: the initiative's name does not move it", () => {
+    // The same build answers on aerospace.ev.engineer, autonomous.ev.engineer and aerospace.ishavasyam.org.
+    expect(CANONICAL).toBe("https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced");
+    expect(pageMetadata.alternates?.canonical).toBe(CANONICAL);
+    expect(pageMetadata.openGraph?.url).toBe(CANONICAL);
+    expect(String(pageMetadata.metadataBase)).toBe("https://aerospace.ev.engineer/");
+    const graph = parseGraph();
+    for (const type of ["WebPage", "LearningResource", "FAQPage"]) expect(find(type).url, type).toBe(CANONICAL);
+    expect(find("WebPage")["@id"]).toBe(`${CANONICAL}#webpage`);
+    // Nothing of this page's own is addressed on the ISHAVASYAM.ORG host; that name appears only as the organisation's own site.
+    const own = graph.filter((n) => typeof n["@id"] === "string" && (n["@id"] as string).includes("rocket-engine-digital-twin-advanced"));
+    expect(own.length).toBeGreaterThanOrEqual(5);
+    expect(JSON.stringify(own)).not.toMatch(/aerospace\.ishavasyam\.org/);
+    expect(sitemap().filter((entry) => entry.url.includes("rocket-engine-digital-twin-advanced")).map((entry) => entry.url)).toEqual([CANONICAL]);
   });
 
   it("claims no accreditation, certification, approval, rating or award, and no affiliation with an agency", () => {
