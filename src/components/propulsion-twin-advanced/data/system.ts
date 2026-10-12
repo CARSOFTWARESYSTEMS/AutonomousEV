@@ -5,7 +5,7 @@
 import type { SubsystemId } from "../types";
 
 export const ARCHITECTURE_STATEMENT =
-  "The reference architecture is a pump-fed, regeneratively cooled liquid propulsion system with a closed cycle: a preburner makes the gas that drives the turbine, and that gas is then burned in the main chamber. It is a generic teaching layout. It claims no dimension, material, rating or performance figure of any proprietary or flight engine.";
+  "The reference architecture is a pump-fed, regeneratively cooled liquid propulsion system with a closed cycle: a preburner makes the gas that drives the turbines of two turbopumps, and that gas is then burned in the main chamber. It is a generic teaching layout. It claims no dimension, material, rating or performance figure of any proprietary or flight engine.";
 
 export interface Subsystem {
   id: SubsystemId;
@@ -42,8 +42,8 @@ export const SUBSYSTEMS: readonly Subsystem[] = [
   {
     id: "turbomachinery",
     name: "Turbomachinery",
-    role: "Raises propellant pressure from tank level to well above chamber pressure, using shaft power from a turbine.",
-    elements: ["Fuel pump", "Oxidiser pump", "Turbine", "Shaft", "Bearings", "Seals", "Pump inlet", "Pump discharge"],
+    role: "Two turbopumps raise propellant pressure from tank level to well above chamber pressure, each using shaft power from its own turbine.",
+    elements: ["Fuel turbopump", "Oxidiser turbopump", "A turbine and a shaft in each", "Bearings", "Seals", "Pump inlet", "Pump discharge"],
     measured: ["Pump inlet and discharge pressure", "Shaft speed", "Vibration", "Bearing temperature"],
     hidden: ["Pump head coefficient", "Pump efficiency", "Turbine efficiency", "Bearing and seal condition"],
     twin: "The reduced-order model lumps the rotating machinery into one shaft-speed state. Pump head coefficient, inferred from pressure rise, speed and flow, is the main turbomachinery health state.",
@@ -51,11 +51,11 @@ export const SUBSYSTEMS: readonly Subsystem[] = [
   {
     id: "hot_gas",
     name: "Hot-Gas Generation",
-    role: "Burns a small share of the propellants to make the gas that drives the turbine.",
+    role: "Burns a small share of the propellants to make the gas that drives both turbines.",
     elements: ["Preburner or gas-generation device (generic)", "Turbine inlet", "Turbine outlet"],
     measured: ["Preburner pressure", "Turbine inlet pressure", "Turbine outlet pressure", "Turbine inlet temperature"],
     hidden: ["Turbine pressure ratio", "Turbine power", "Preburner mixture ratio"],
-    twin: "Turbine power must balance pump power. A pressure ratio that no longer matches shaft speed is a turbine performance change.",
+    twin: "On an engine, turbine power must balance pump power, and a pressure ratio that no longer matches shaft speed is a turbine performance change. On this page that balance is not solved: the hot-gas pressures are prescribed from chamber pressure and shaft speed, they are watched as residual channels only, and no turbine or preburner fault is modelled.",
   },
   {
     id: "cooling",

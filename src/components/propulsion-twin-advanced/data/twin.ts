@@ -65,7 +65,7 @@ export const ESTIMATORS: readonly (Concept & { demo: "kalman" | "ekf" | "ukf" | 
     simple: "Average the last few readings and the jitter cancels. The cost is that the average always runs behind when the real value changes.",
     engineering: "A moving average or first-order low-pass trades noise reduction for lag: a window of N samples cuts white noise by √N and delays the signal by about N/2 samples.",
     math: { equation: "ȳ_k = (1/N) · Σ y_(k−i),  i = 0 … N−1        or        ȳ_k = ȳ_(k−1) + α · (y_k − ȳ_(k−1))", where: "y raw sample · N window length · α smoothing factor" },
-    twin: "Used for display and for slowly varying quantities. Not used alone where a transient matters, because the lag looks like a residual.",
+    twin: "Used for display and for slowly varying quantities. Not used alone where a transient matters, because the lag looks like a residual. On this page: the “filtered pressure” line of the demonstration. The live twin does not use it.",
     failure: "A filtered chamber pressure lags a throttle step by a quarter of a second, and a limit check on the filtered value trips late.",
   },
   {
@@ -76,7 +76,7 @@ export const ESTIMATORS: readonly (Concept & { demo: "kalman" | "ekf" | "ukf" | 
     simple: "Make a prediction from what you know about the system. Take a measurement. Believe each in proportion to how reliable it is. Repeat.",
     engineering: "It carries a state and its covariance. The gain is computed, not tuned by hand, from process noise Q and measurement noise R. It is optimal for linear systems with Gaussian noise.",
     math: { equation: "predict:  x⁻ = A·x + B·u,  P⁻ = A·P·Aᵀ + Q        update:  K = P⁻·Hᵀ·(H·P⁻·Hᵀ + R)⁻¹,  x = x⁻ + K·(z − H·x⁻),  P = (I − K·H)·P⁻", where: "x state · P its covariance · u input · z measurement · K gain · Q, R process and measurement noise" },
-    twin: "One per measured channel here: the model's own step is the prediction, the sensor is the correction. The estimate is smoother than the sensor without lagging the transient.",
+    twin: "One per measured channel here: the model's own step is the prediction, the sensor is the correction. The estimate is smoother than the sensor without lagging the transient. This is the estimator the live twin runs.",
     failure: "If R is set too small the filter trusts a drifting sensor and follows it. Estimation does not remove the need to validate sensors.",
   },
   {
@@ -87,7 +87,7 @@ export const ESTIMATORS: readonly (Concept & { demo: "kalman" | "ekf" | "ukf" | 
     simple: "Real engines are not straight lines. The extended filter treats the curve as a straight line just around where it thinks the engine is now, and redraws that line every step.",
     engineering: "The nonlinear model propagates the state; its Jacobian propagates the covariance. It is the usual choice for propulsion models, whose flow and pump relations are quadratic. It can diverge if the linearisation is poor.",
     math: { equation: "x⁻ = f(x, u)        P⁻ = F·P·Fᵀ + Q,   F = ∂f/∂x evaluated at x", where: "f the nonlinear model · F its Jacobian" },
-    twin: "Appropriate for estimating states and parameters together, for instance chamber pressure with pump head coefficient, through the nonlinear pressure network.",
+    twin: "Appropriate for estimating states and parameters together, for instance chamber pressure with pump head coefficient, through the nonlinear pressure network. On this page: implemented in the demonstration only, on one state, chamber pressure. The live twin does not run it, and nothing here estimates states and parameters jointly.",
     failure: "Linearised about a wrong estimate after a large transient, the filter becomes overconfident and stops correcting: model divergence.",
   },
   {
@@ -98,7 +98,7 @@ export const ESTIMATORS: readonly (Concept & { demo: "kalman" | "ekf" | "ukf" | 
     simple: "Instead of approximating the curve, push a handful of sample states through the real model and see where they end up.",
     engineering: "2n+1 sigma points capture mean and covariance to second order. No Jacobian is needed, which helps when the model is a black box or has switches such as cavitation onset.",
     math: { equation: "χ_i = x ± √((n+κ)·P)_i        x⁻ = Σ w_i · f(χ_i)        P⁻ = Σ w_i · (f(χ_i) − x⁻)(f(χ_i) − x⁻)ᵀ + Q", where: "χ_i sigma points · w_i their weights · n number of states · κ a spread parameter" },
-    twin: "Preferred over the extended filter where the model is strongly nonlinear across the uncertainty, such as near cavitation or choking boundaries.",
+    twin: "Preferred over the extended filter where the model is strongly nonlinear across the uncertainty, such as near cavitation or choking boundaries. On this page: implemented in the demonstration only, on one state. The live twin does not run it.",
     failure: "With a covariance that has collapsed, the sigma points sit on top of each other and the filter is blind to anything the model does not expect.",
   },
   {
@@ -109,7 +109,7 @@ export const ESTIMATORS: readonly (Concept & { demo: "kalman" | "ekf" | "ukf" | 
     simple: "Run hundreds of slightly different copies of the engine. After each measurement, keep more of the copies that agree with it and fewer of those that do not.",
     engineering: "It handles multi-modal and non-Gaussian distributions, such as noise with outliers, or two hypotheses that explain the data equally. Cost grows with the number of particles and of states.",
     math: { equation: "x_i ~ f(x_i, u) + w        w_i ∝ w_i · p(z | x_i)        resample when the effective sample size falls", where: "x_i particle i · w_i its weight · p(z | x) likelihood of the measurement" },
-    twin: "Used where the question is which of several regimes the system is in, or where sensor noise has spikes that a Gaussian model handles badly.",
+    twin: "Used where the question is which of several regimes the system is in, or where sensor noise has spikes that a Gaussian model handles badly. On this page: implemented in the demonstration only, with 300 particles on one state. The live twin does not run it.",
     failure: "Too few particles near the true state and the filter degenerates: every particle but one carries negligible weight.",
   },
 ];

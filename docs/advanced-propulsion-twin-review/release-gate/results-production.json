@@ -1,0 +1,4005 @@
+{
+  "base": "https://aerospace.ev.engineer",
+  "started": "2026-10-12T05:43:47.709Z",
+  "responsive": [
+    {
+      "viewport": "mobile-320",
+      "width": 320,
+      "height": 568,
+      "modules": {
+        "overview": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.31,
+          "canvases": 0
+        },
+        "system": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.31,
+          "canvases": 0
+        },
+        "pressure": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.31,
+          "canvases": 0
+        },
+        "physics": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.31,
+          "canvases": 0
+        },
+        "data": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.31,
+          "canvases": 0
+        },
+        "twin": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.31,
+          "canvases": 0
+        },
+        "ai": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.31,
+          "canvases": 0
+        },
+        "fdir": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.31,
+          "canvases": 0
+        },
+        "health": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.31,
+          "canvases": 0
+        },
+        "lab": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.31,
+          "canvases": 0
+        },
+        "architecture": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.31,
+          "canvases": 0
+        },
+        "weeks": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.31,
+          "canvases": 0
+        }
+      },
+      "hero": {
+        "overflow": 0,
+        "schematicTextPx": 10.8
+      }
+    },
+    {
+      "viewport": "mobile-360",
+      "width": 360,
+      "height": 740,
+      "modules": {
+        "overview": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.24,
+          "canvases": 0
+        },
+        "system": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.24,
+          "canvases": 0
+        },
+        "pressure": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.24,
+          "canvases": 0
+        },
+        "physics": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.24,
+          "canvases": 0
+        },
+        "data": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.24,
+          "canvases": 0
+        },
+        "twin": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.24,
+          "canvases": 0
+        },
+        "ai": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.24,
+          "canvases": 0
+        },
+        "fdir": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.24,
+          "canvases": 0
+        },
+        "health": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.24,
+          "canvases": 0
+        },
+        "lab": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.24,
+          "canvases": 0
+        },
+        "architecture": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.24,
+          "canvases": 0
+        },
+        "weeks": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.24,
+          "canvases": 0
+        }
+      },
+      "hero": {
+        "overflow": 0,
+        "schematicTextPx": 11.7
+      }
+    },
+    {
+      "viewport": "mobile-375",
+      "width": 375,
+      "height": 667,
+      "modules": {
+        "overview": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.26,
+          "canvases": 0
+        },
+        "system": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.26,
+          "canvases": 0
+        },
+        "pressure": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.26,
+          "canvases": 0
+        },
+        "physics": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.26,
+          "canvases": 0
+        },
+        "data": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.26,
+          "canvases": 0
+        },
+        "twin": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.26,
+          "canvases": 0
+        },
+        "ai": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.26,
+          "canvases": 0
+        },
+        "fdir": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.26,
+          "canvases": 0
+        },
+        "health": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.26,
+          "canvases": 0
+        },
+        "lab": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.26,
+          "canvases": 0
+        },
+        "architecture": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.26,
+          "canvases": 0
+        },
+        "weeks": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.26,
+          "canvases": 0
+        }
+      },
+      "hero": {
+        "overflow": 0,
+        "schematicTextPx": 11.7
+      }
+    },
+    {
+      "viewport": "mobile-390",
+      "width": 390,
+      "height": 844,
+      "modules": {
+        "overview": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.21,
+          "canvases": 0
+        },
+        "system": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.21,
+          "canvases": 0
+        },
+        "pressure": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.21,
+          "canvases": 0
+        },
+        "physics": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.21,
+          "canvases": 0
+        },
+        "data": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.21,
+          "canvases": 0
+        },
+        "twin": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.21,
+          "canvases": 0
+        },
+        "ai": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.21,
+          "canvases": 0
+        },
+        "fdir": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.21,
+          "canvases": 0
+        },
+        "health": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.21,
+          "canvases": 0
+        },
+        "lab": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.21,
+          "canvases": 0
+        },
+        "architecture": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.21,
+          "canvases": 0
+        },
+        "weeks": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.21,
+          "canvases": 0
+        }
+      },
+      "hero": {
+        "overflow": 0,
+        "schematicTextPx": 11.7
+      }
+    },
+    {
+      "viewport": "mobile-430",
+      "width": 430,
+      "height": 932,
+      "modules": {
+        "overview": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.19,
+          "canvases": 0
+        },
+        "system": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.19,
+          "canvases": 0
+        },
+        "pressure": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.19,
+          "canvases": 0
+        },
+        "physics": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.19,
+          "canvases": 0
+        },
+        "data": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.19,
+          "canvases": 0
+        },
+        "twin": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.19,
+          "canvases": 0
+        },
+        "ai": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.19,
+          "canvases": 0
+        },
+        "fdir": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.19,
+          "canvases": 0
+        },
+        "health": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.19,
+          "canvases": 0
+        },
+        "lab": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.19,
+          "canvases": 0
+        },
+        "architecture": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.19,
+          "canvases": 0
+        },
+        "weeks": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.19,
+          "canvases": 0
+        }
+      },
+      "hero": {
+        "overflow": 0,
+        "schematicTextPx": 11.7
+      }
+    },
+    {
+      "viewport": "mobile-landscape-568",
+      "width": 568,
+      "height": 320,
+      "modules": {
+        "overview": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.34,
+          "canvases": 0
+        },
+        "system": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.34,
+          "canvases": 0
+        },
+        "pressure": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.34,
+          "canvases": 0
+        },
+        "physics": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.34,
+          "canvases": 0
+        },
+        "data": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.34,
+          "canvases": 0
+        },
+        "twin": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.34,
+          "canvases": 0
+        },
+        "ai": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.34,
+          "canvases": 0
+        },
+        "fdir": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.34,
+          "canvases": 0
+        },
+        "health": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.34,
+          "canvases": 0
+        },
+        "lab": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.34,
+          "canvases": 0
+        },
+        "architecture": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.34,
+          "canvases": 0
+        },
+        "weeks": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.34,
+          "canvases": 0
+        }
+      },
+      "hero": {
+        "overflow": 0,
+        "schematicTextPx": 13.3
+      }
+    },
+    {
+      "viewport": "mobile-landscape-844",
+      "width": 844,
+      "height": 390,
+      "modules": {
+        "overview": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.28,
+          "canvases": 0
+        },
+        "system": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.28,
+          "canvases": 0
+        },
+        "pressure": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.28,
+          "canvases": 0
+        },
+        "physics": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.28,
+          "canvases": 0
+        },
+        "data": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.28,
+          "canvases": 0
+        },
+        "twin": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.28,
+          "canvases": 0
+        },
+        "ai": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.28,
+          "canvases": 0
+        },
+        "fdir": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.28,
+          "canvases": 0
+        },
+        "health": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.28,
+          "canvases": 0
+        },
+        "lab": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.28,
+          "canvases": 0
+        },
+        "architecture": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.28,
+          "canvases": 0
+        },
+        "weeks": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.28,
+          "canvases": 0
+        }
+      },
+      "hero": {
+        "overflow": 0,
+        "schematicTextPx": 12.5
+      }
+    },
+    {
+      "viewport": "tablet-768",
+      "width": 768,
+      "height": 1024,
+      "modules": {
+        "overview": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.17,
+          "canvases": 0
+        },
+        "system": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.17,
+          "canvases": 0
+        },
+        "pressure": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.17,
+          "canvases": 0
+        },
+        "physics": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.17,
+          "canvases": 0
+        },
+        "data": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.17,
+          "canvases": 0
+        },
+        "twin": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.17,
+          "canvases": 0
+        },
+        "ai": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.17,
+          "canvases": 0
+        },
+        "fdir": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.17,
+          "canvases": 0
+        },
+        "health": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.17,
+          "canvases": 0
+        },
+        "lab": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.17,
+          "canvases": 0
+        },
+        "architecture": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.17,
+          "canvases": 0
+        },
+        "weeks": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.17,
+          "canvases": 0
+        }
+      },
+      "hero": {
+        "overflow": 0,
+        "schematicTextPx": 11.7
+      }
+    },
+    {
+      "viewport": "tablet-820",
+      "width": 820,
+      "height": 1180,
+      "modules": {
+        "overview": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.15,
+          "canvases": 0
+        },
+        "system": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.15,
+          "canvases": 0
+        },
+        "pressure": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.15,
+          "canvases": 0
+        },
+        "physics": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.15,
+          "canvases": 0
+        },
+        "data": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.15,
+          "canvases": 0
+        },
+        "twin": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.15,
+          "canvases": 0
+        },
+        "ai": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.15,
+          "canvases": 0
+        },
+        "fdir": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.15,
+          "canvases": 0
+        },
+        "health": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.15,
+          "canvases": 0
+        },
+        "lab": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.15,
+          "canvases": 0
+        },
+        "architecture": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.15,
+          "canvases": 0
+        },
+        "weeks": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.15,
+          "canvases": 0
+        }
+      },
+      "hero": {
+        "overflow": 0,
+        "schematicTextPx": 11.7
+      }
+    },
+    {
+      "viewport": "tablet-landscape-1024",
+      "width": 1024,
+      "height": 768,
+      "modules": {
+        "overview": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.15,
+          "canvases": 0
+        },
+        "system": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.15,
+          "canvases": 0
+        },
+        "pressure": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.15,
+          "canvases": 0
+        },
+        "physics": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.15,
+          "canvases": 0
+        },
+        "data": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.15,
+          "canvases": 0
+        },
+        "twin": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.15,
+          "canvases": 0
+        },
+        "ai": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.15,
+          "canvases": 0
+        },
+        "fdir": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.15,
+          "canvases": 0
+        },
+        "health": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.15,
+          "canvases": 0
+        },
+        "lab": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.15,
+          "canvases": 0
+        },
+        "architecture": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.15,
+          "canvases": 0
+        },
+        "weeks": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.15,
+          "canvases": 0
+        }
+      },
+      "hero": {
+        "overflow": 0,
+        "schematicTextPx": 13.3
+      }
+    },
+    {
+      "viewport": "tablet-landscape-1180",
+      "width": 1180,
+      "height": 820,
+      "modules": {
+        "overview": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "system": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "pressure": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "physics": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "data": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "twin": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "ai": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "fdir": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "health": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "lab": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "architecture": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "weeks": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        }
+      },
+      "hero": {
+        "overflow": 0,
+        "schematicTextPx": 13.3
+      }
+    },
+    {
+      "viewport": "desktop-1024",
+      "width": 1024,
+      "height": 768,
+      "modules": {
+        "overview": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "system": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "pressure": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "physics": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "data": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "twin": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "ai": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "fdir": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "health": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "lab": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "architecture": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "weeks": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        }
+      },
+      "hero": {
+        "overflow": 0,
+        "schematicTextPx": 13.3
+      }
+    },
+    {
+      "viewport": "desktop-1280",
+      "width": 1280,
+      "height": 800,
+      "modules": {
+        "overview": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "system": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "pressure": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "physics": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "data": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "twin": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "ai": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "fdir": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "health": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "lab": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "architecture": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        },
+        "weeks": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.14,
+          "canvases": 0
+        }
+      },
+      "hero": {
+        "overflow": 0,
+        "schematicTextPx": 11.7
+      }
+    },
+    {
+      "viewport": "desktop-1440",
+      "width": 1440,
+      "height": 900,
+      "modules": {
+        "overview": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.13,
+          "canvases": 0
+        },
+        "system": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.12,
+          "canvases": 0
+        },
+        "pressure": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.12,
+          "canvases": 0
+        },
+        "physics": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.12,
+          "canvases": 0
+        },
+        "data": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.12,
+          "canvases": 0
+        },
+        "twin": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.12,
+          "canvases": 0
+        },
+        "ai": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.12,
+          "canvases": 0
+        },
+        "fdir": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.12,
+          "canvases": 0
+        },
+        "health": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.12,
+          "canvases": 0
+        },
+        "lab": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.12,
+          "canvases": 0
+        },
+        "architecture": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.12,
+          "canvases": 0
+        },
+        "weeks": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.12,
+          "canvases": 0
+        }
+      },
+      "hero": {
+        "overflow": 0,
+        "schematicTextPx": 11.7
+      }
+    },
+    {
+      "viewport": "desktop-1920",
+      "width": 1920,
+      "height": 1080,
+      "modules": {
+        "overview": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.11,
+          "canvases": 0
+        },
+        "system": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.1,
+          "canvases": 0
+        },
+        "pressure": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.1,
+          "canvases": 0
+        },
+        "physics": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.1,
+          "canvases": 0
+        },
+        "data": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.1,
+          "canvases": 0
+        },
+        "twin": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.1,
+          "canvases": 0
+        },
+        "ai": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.1,
+          "canvases": 0
+        },
+        "fdir": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.1,
+          "canvases": 0
+        },
+        "health": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.1,
+          "canvases": 0
+        },
+        "lab": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.1,
+          "canvases": 0
+        },
+        "architecture": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.1,
+          "canvases": 0
+        },
+        "weeks": {
+          "overflow": 0,
+          "outside": [],
+          "smallTargets": 0,
+          "smallTargetSamples": [],
+          "tinySvgText": 0,
+          "smallestSvgTextPx": null,
+          "tinyText": [],
+          "wideTables": 0,
+          "tabsWrap": false,
+          "activeTabVisible": true,
+          "toolsInViewport": true,
+          "headingObscured": false,
+          "stickyShare": 0.1,
+          "canvases": 0
+        }
+      },
+      "hero": {
+        "overflow": 0,
+        "schematicTextPx": 11.7
+      }
+    }
+  ],
+  "performance": {
+    "htmlBytes": 1063721,
+    "conditions": "390×844, 4× CPU slowdown, 1.6 Mbps down / 150 ms latency, cold cache",
+    "htmlKB": 153,
+    "jsKB": 283,
+    "cssKB": 52,
+    "lcpMs": 1632,
+    "tbtMs": 27,
+    "cls": 0,
+    "domNodes": 6559,
+    "threeLoaded": false,
+    "worstInteractionMs": 120,
+    "interactions": 12,
+    "clsAfterLoad": 0,
+    "longTaskMsWhileRunning": 464
+  },
+  "accessibility": {
+    "desktop": {},
+    "liveRegionChangesIn5s": 0,
+    "liveRegionChangesIn8sOfFault": 1,
+    "announcedDuringFault": [
+      "Probable Oxidiser pump degradation"
+    ],
+    "mobile": {}
+  },
+  "simulation": {
+    "rate": 1,
+    "rateAfterSwitching": 1,
+    "faults": [
+      {
+        "id": "pump_degradation",
+        "isolated": true,
+        "verdict": "Probable Oxidiser pump degradation — 91 %",
+        "health": "HEALTH ▲ MONITOR Index 89",
+        "quality": "DATA QUALITY ● GOOD 18 ms latency",
+        "history": "Fault history 6.7 sDETECTEDAnomaly detected by residual, multivariate 3.6 sINJECTEDFault injected: Oxidiser pump degradation"
+      },
+      {
+        "id": "valve_restriction",
+        "isolated": true,
+        "verdict": "Probable Main fuel valve restriction — 98 %",
+        "health": "HEALTH ▲ MONITOR Index 93",
+        "quality": "DATA QUALITY ● GOOD 18 ms latency",
+        "history": "Fault history 5.5 sISOLATEDProbable cause: Main fuel valve restriction (97 %) 4.3 sDETECTEDAnomaly detected by residual, multivariate 3.6 sINJECTEDFault injected: Main fuel valve restriction"
+      },
+      {
+        "id": "cooling_restriction",
+        "isolated": true,
+        "verdict": "Probable Cooling-channel restriction — 41 %",
+        "health": "HEALTH ● NOMINAL Index 96",
+        "quality": "DATA QUALITY ● GOOD 18 ms latency",
+        "history": "Fault history 4.0 sINJECTEDFault injected: Cooling-channel restriction"
+      },
+      {
+        "id": "feed_pressure_reduction",
+        "isolated": true,
+        "verdict": "Probable Oxidiser feed pressure reduction — 85 %",
+        "health": "HEALTH ▲ MONITOR Index 74",
+        "quality": "DATA QUALITY ● GOOD 18 ms latency",
+        "history": "Fault history 5.0 sDETECTEDAnomaly detected by residual, ml 4.8 sDETECTEDAnomaly detected by residual, ml 3.6 sINJECTEDFault injected: Oxidiser feed pressure reduction"
+      },
+      {
+        "id": "injector_restriction",
+        "isolated": true,
+        "verdict": "Probable Oxidiser injector restriction — 85 %",
+        "health": "HEALTH ▲ MONITOR Index 92",
+        "quality": "DATA QUALITY ● GOOD 18 ms latency",
+        "history": "Fault history 5.2 sDETECTEDAnomaly detected by cusum, multivariate 3.6 sINJECTEDFault injected: Oxidiser injector restriction"
+      },
+      {
+        "id": "combustion_loss",
+        "isolated": true,
+        "verdict": "Probable Combustion performance loss — 98 %",
+        "health": "HEALTH ▲ DEGRADED Index 68",
+        "quality": "DATA QUALITY ● GOOD 18 ms latency",
+        "history": "Fault history 9.1 sISOLATEDProbable cause: Combustion performance loss (88 %) 7.8 sDETECTEDAnomaly detected by cusum, multivariate 3.6 sINJECTEDFault injected: Combustion performance loss"
+      },
+      {
+        "id": "pc_sensor_drift",
+        "isolated": true,
+        "verdict": "Probable Chamber pressure sensor A drift — 85 %",
+        "health": "HEALTH ● NOMINAL Index 100",
+        "quality": "DATA QUALITY ● GOOD 18 ms latency",
+        "history": "Fault history 3.6 sINJECTEDFault injected: Chamber pressure sensor A drift"
+      },
+      {
+        "id": "sensor_noise",
+        "isolated": true,
+        "verdict": "Probable Noisy pressure sensor — 90 %",
+        "health": "HEALTH ● NOMINAL Index 100",
+        "quality": "DATA QUALITY ▲ DEGRADED 18 ms latency",
+        "history": "Fault history 5.1 sISOLATEDProbable cause: Noisy pressure sensor (90 %) 3.9 sDATAData quality DEGRADED: Oxidiser pump discharge pressure: noise is 2.2× its calibrated level. 3.6 sINJECTEDFault injected: Noisy pressure sensor"
+      },
+      {
+        "id": "packet_delay",
+        "isolated": true,
+        "verdict": "Probable Telemetry packet delay — 95 %",
+        "health": "HEALTH ● NOMINAL Index 100",
+        "quality": "DATA QUALITY ▲ DEGRADED 668 ms latency",
+        "history": "Fault history 4.7 sISOLATEDProbable cause: Telemetry packet delay (95 %) 3.7 sDATAData quality DEGRADED: Telemetry is arriving 668 ms after it was sampled. 3.6 sINJECTEDFault injected: Telemetry packet delay"
+      },
+      {
+        "id": "timestamp_error",
+        "isolated": true,
+        "verdict": "Probable Timestamp misalignment — 95 %",
+        "health": "HEALTH ● NOMINAL Index 100",
+        "quality": "DATA QUALITY ▲ DEGRADED 18 ms latency",
+        "history": "Fault history 4.7 sISOLATEDProbable cause: Timestamp misalignment (95 %) 3.7 sDATAData quality DEGRADED: The turbomachinery node's clock is 400 ms off the reference. 3.6 sINJECTEDFault injected: Timestamp misalignment"
+      },
+      {
+        "id": "telemetry_replay",
+        "isolated": true,
+        "verdict": "Probable Replayed telemetry — 97 %",
+        "health": "HEALTH ▲ MONITOR Index 100",
+        "quality": "DATA QUALITY ◆ BAD 18 ms latency",
+        "history": "Fault history 4.7 sISOLATEDProbable cause: Replayed telemetry (97 %) 3.7 sDETECTEDAnomaly detected: data integrity check 3.7 sDATAData quality BAD: Sequence counters are repeating: the stream is a replay of earlier data. 3.6 sINJECTEDFault injected: Replayed telemetry"
+      }
+    ],
+    "rateDetector": {
+      "gradual": "Anomaly detected by residual, cusum, multivariate ",
+      "abruptFirstAlarmSeconds": 0.5
+    },
+    "memory": {
+      "before": {
+        "nodes": 7014,
+        "heap": 23
+      },
+      "after": {
+        "nodes": 7014,
+        "heap": 23
+      }
+    }
+  },
+  "console": [],
+  "estimatorGap": 0.0002,
+  "inducedFailure": {
+    "failedRequests": 2
+  },
+  "finished": "2026-10-12T05:52:44.796Z",
+  "passed": 159,
+  "failed": 0,
+  "results": [
+    {
+      "section": "server",
+      "name": "Route responds 200 with one H1, the brief's title and a canonical URL",
+      "status": "pass"
+    },
+    {
+      "section": "server",
+      "name": "Open Graph and Twitter tags are present and the social image is a 1200×630 PNG",
+      "status": "pass"
+    },
+    {
+      "section": "server",
+      "name": "Structured data parses: WebPage, LearningResource, Course, FAQPage, BreadcrumbList, with every @id reference resolved",
+      "status": "pass"
+    },
+    {
+      "section": "server",
+      "name": "Educational content of every module is in the server HTML, whichever module is showing",
+      "status": "pass"
+    },
+    {
+      "section": "server",
+      "name": "Listed in the sitemap once; linked from the Space page and from the fundamentals page",
+      "status": "pass"
+    },
+    {
+      "section": "server",
+      "name": "External links open safely; no inline event handlers or javascript: URLs in the document",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-320 (320×568): no horizontal page overflow in any module",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-320: nothing extends outside the viewport without a scroll container",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-320: module tabs stay on one line, the active tab is in view and the tools fit",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-320: the sticky bars do not cover a module heading, and leave most of the screen for content",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-320: interactive targets are at least 44px",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-320: diagram and chart text renders at 9px or more; body text at 11px or more",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-320: no table is wider than the screen",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-320: no WebGL canvas is created on a phone",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-360 (360×740): no horizontal page overflow in any module",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-360: nothing extends outside the viewport without a scroll container",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-360: module tabs stay on one line, the active tab is in view and the tools fit",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-360: the sticky bars do not cover a module heading, and leave most of the screen for content",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-360: interactive targets are at least 44px",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-360: diagram and chart text renders at 9px or more; body text at 11px or more",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-360: no table is wider than the screen",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-360: no WebGL canvas is created on a phone",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-375 (375×667): no horizontal page overflow in any module",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-375: nothing extends outside the viewport without a scroll container",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-375: module tabs stay on one line, the active tab is in view and the tools fit",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-375: the sticky bars do not cover a module heading, and leave most of the screen for content",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-375: interactive targets are at least 44px",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-375: diagram and chart text renders at 9px or more; body text at 11px or more",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-375: no table is wider than the screen",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-375: no WebGL canvas is created on a phone",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-390 (390×844): no horizontal page overflow in any module",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-390: nothing extends outside the viewport without a scroll container",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-390: module tabs stay on one line, the active tab is in view and the tools fit",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-390: the sticky bars do not cover a module heading, and leave most of the screen for content",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-390: interactive targets are at least 44px",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-390: diagram and chart text renders at 9px or more; body text at 11px or more",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-390: no table is wider than the screen",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-390: no WebGL canvas is created on a phone",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-430 (430×932): no horizontal page overflow in any module",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-430: nothing extends outside the viewport without a scroll container",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-430: module tabs stay on one line, the active tab is in view and the tools fit",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-430: the sticky bars do not cover a module heading, and leave most of the screen for content",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-430: interactive targets are at least 44px",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-430: diagram and chart text renders at 9px or more; body text at 11px or more",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-430: no table is wider than the screen",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-430: no WebGL canvas is created on a phone",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-landscape-568 (568×320): no horizontal page overflow in any module",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-landscape-568: nothing extends outside the viewport without a scroll container",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-landscape-568: module tabs stay on one line, the active tab is in view and the tools fit",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-landscape-568: the sticky bars do not cover a module heading, and leave most of the screen for content",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-landscape-568: interactive targets are at least 44px",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-landscape-568: diagram and chart text renders at 9px or more; body text at 11px or more",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-landscape-568: no table is wider than the screen",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-landscape-568: no WebGL canvas is created on a phone",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-landscape-844 (844×390): no horizontal page overflow in any module",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-landscape-844: nothing extends outside the viewport without a scroll container",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-landscape-844: module tabs stay on one line, the active tab is in view and the tools fit",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-landscape-844: the sticky bars do not cover a module heading, and leave most of the screen for content",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-landscape-844: interactive targets are at least 44px",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "mobile-landscape-844: diagram and chart text renders at 9px or more; body text at 11px or more",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "tablet-768 (768×1024): no horizontal page overflow in any module",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "tablet-768: nothing extends outside the viewport without a scroll container",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "tablet-768: module tabs stay on one line, the active tab is in view and the tools fit",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "tablet-768: the sticky bars do not cover a module heading, and leave most of the screen for content",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "tablet-768: interactive targets are at least 44px",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "tablet-768: diagram and chart text renders at 9px or more; body text at 11px or more",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "tablet-820 (820×1180): no horizontal page overflow in any module",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "tablet-820: nothing extends outside the viewport without a scroll container",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "tablet-820: module tabs stay on one line, the active tab is in view and the tools fit",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "tablet-820: the sticky bars do not cover a module heading, and leave most of the screen for content",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "tablet-820: interactive targets are at least 44px",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "tablet-820: diagram and chart text renders at 9px or more; body text at 11px or more",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "tablet-landscape-1024 (1024×768): no horizontal page overflow in any module",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "tablet-landscape-1024: nothing extends outside the viewport without a scroll container",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "tablet-landscape-1024: module tabs stay on one line, the active tab is in view and the tools fit",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "tablet-landscape-1024: the sticky bars do not cover a module heading, and leave most of the screen for content",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "tablet-landscape-1024: interactive targets are at least 44px",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "tablet-landscape-1024: diagram and chart text renders at 9px or more; body text at 11px or more",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "tablet-landscape-1180 (1180×820): no horizontal page overflow in any module",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "tablet-landscape-1180: nothing extends outside the viewport without a scroll container",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "tablet-landscape-1180: module tabs stay on one line, the active tab is in view and the tools fit",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "tablet-landscape-1180: the sticky bars do not cover a module heading, and leave most of the screen for content",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "tablet-landscape-1180: interactive targets are at least 44px",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "tablet-landscape-1180: diagram and chart text renders at 9px or more; body text at 11px or more",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "desktop-1024 (1024×768): no horizontal page overflow in any module",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "desktop-1024: nothing extends outside the viewport without a scroll container",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "desktop-1024: module tabs stay on one line, the active tab is in view and the tools fit",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "desktop-1024: the sticky bars do not cover a module heading, and leave most of the screen for content",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "desktop-1024: interactive targets are at least 24px",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "desktop-1024: diagram and chart text renders at 9px or more; body text at 11px or more",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "desktop-1280 (1280×800): no horizontal page overflow in any module",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "desktop-1280: nothing extends outside the viewport without a scroll container",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "desktop-1280: module tabs stay on one line, the active tab is in view and the tools fit",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "desktop-1280: the sticky bars do not cover a module heading, and leave most of the screen for content",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "desktop-1280: interactive targets are at least 24px",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "desktop-1280: diagram and chart text renders at 9px or more; body text at 11px or more",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "desktop-1440 (1440×900): no horizontal page overflow in any module",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "desktop-1440: nothing extends outside the viewport without a scroll container",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "desktop-1440: module tabs stay on one line, the active tab is in view and the tools fit",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "desktop-1440: the sticky bars do not cover a module heading, and leave most of the screen for content",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "desktop-1440: interactive targets are at least 24px",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "desktop-1440: diagram and chart text renders at 9px or more; body text at 11px or more",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "desktop-1920 (1920×1080): no horizontal page overflow in any module",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "desktop-1920: nothing extends outside the viewport without a scroll container",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "desktop-1920: module tabs stay on one line, the active tab is in view and the tools fit",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "desktop-1920: the sticky bars do not cover a module heading, and leave most of the screen for content",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "desktop-1920: interactive targets are at least 24px",
+      "status": "pass"
+    },
+    {
+      "section": "responsive",
+      "name": "desktop-1920: diagram and chart text renders at 9px or more; body text at 11px or more",
+      "status": "pass"
+    },
+    {
+      "section": "controls",
+      "name": "Learn / Engineer / Architect switch changes what is showing, with one option selected",
+      "status": "pass"
+    },
+    {
+      "section": "controls",
+      "name": "CTO / Architect View opens the architecture module at architect depth and reports once per click",
+      "status": "pass"
+    },
+    {
+      "section": "controls",
+      "name": "Module navigation: click, arrow keys, address fragment, and the \"Next\" button agree on the module showing",
+      "status": "pass"
+    },
+    {
+      "section": "controls",
+      "name": "Hero calls to action and in-page #module links switch module; breadcrumb and fundamentals links resolve",
+      "status": "pass"
+    },
+    {
+      "section": "controls",
+      "name": "Checkpoint: reasoning appears only after an answer; the answer survives switching modules",
+      "status": "pass"
+    },
+    {
+      "section": "controls",
+      "name": "Twelve-week tracker: opening, completing and a reload keep progress",
+      "status": "pass"
+    },
+    {
+      "section": "controls",
+      "name": "Maturity ladder, physics concepts, estimators, model cards and the twelve steps each show the panel chosen",
+      "status": "pass"
+    },
+    {
+      "section": "controls",
+      "name": "Propulsion explorer: a subsystem selection updates the schematic caption and the explanation together",
+      "status": "pass"
+    },
+    {
+      "section": "controls",
+      "name": "3D engineering mode: loads on demand, draws, switches views and overlays, selects a sensor, closes and releases its canvas",
+      "status": "pass"
+    },
+    {
+      "section": "controls",
+      "name": "Pressure map: selecting a sensor shows its measurement detail where it can be seen, with all seven signal stages",
+      "status": "pass"
+    },
+    {
+      "section": "controls",
+      "name": "Charts: lettering is drawn at 11px, and pointing or arrow keys read out every line at that moment",
+      "status": "pass"
+    },
+    {
+      "section": "controls",
+      "name": "Pressure path trace walks all eleven steps and reports start and completion once",
+      "status": "pass"
+    },
+    {
+      "section": "controls",
+      "name": "Physics model: the sliders re-solve the pressure network (pump head down → chamber pressure down; healthy point restored)",
+      "status": "pass"
+    },
+    {
+      "section": "controls",
+      "name": "State estimator: each estimator, the noise level and the model error change the computed errors",
+      "status": "pass"
+    },
+    {
+      "section": "controls",
+      "name": "Diagnostic reasoning panel: adding evidence changes the ranked cause",
+      "status": "pass"
+    },
+    {
+      "section": "controls",
+      "name": "Fault tree, knowledge graph and readiness score respond to their controls",
+      "status": "pass"
+    },
+    {
+      "section": "controls",
+      "name": "PHONE: the full tutorial without WebGL: a schematic, the desktop note, no canvas, no three.js",
+      "status": "pass"
+    },
+    {
+      "section": "controls",
+      "name": "PHONE: a pressure sensor can be chosen by touch on a readable schematic, and its detail opens as a sheet that closes",
+      "status": "pass"
+    },
+    {
+      "section": "controls",
+      "name": "A live instrument that cannot be downloaded fails alone: the page, its text and the other modules stay",
+      "status": "pass"
+    },
+    {
+      "section": "simulation",
+      "name": "Simulated time advances at one second per second: one clock, not several",
+      "status": "pass"
+    },
+    {
+      "section": "simulation",
+      "name": "Leaving and re-entering the lab ten times does not multiply the clock",
+      "status": "pass"
+    },
+    {
+      "section": "simulation",
+      "name": "Pause stops simulated time; Step advances it by half a second; Live resumes",
+      "status": "pass"
+    },
+    {
+      "section": "simulation",
+      "name": "Reset restores the same healthy baseline every time",
+      "status": "pass"
+    },
+    {
+      "section": "simulation",
+      "name": "Throttle and Compare change the plots; start and shutdown move the engine through its modes",
+      "status": "pass"
+    },
+    {
+      "section": "simulation",
+      "name": "Fault pump_degradation: injected, then detected or flagged, and isolated as \"Oxidiser pump degradation\"; removing it returns the twin to nominal",
+      "status": "pass"
+    },
+    {
+      "section": "simulation",
+      "name": "Fault valve_restriction: injected, then detected or flagged, and isolated as \"Main fuel valve restriction\"; removing it returns the twin to nominal",
+      "status": "pass"
+    },
+    {
+      "section": "simulation",
+      "name": "Fault cooling_restriction: injected, then detected or flagged, and isolated as \"Cooling-channel restriction\"; removing it returns the twin to nominal",
+      "status": "pass"
+    },
+    {
+      "section": "simulation",
+      "name": "Fault feed_pressure_reduction: injected, then detected or flagged, and isolated as \"Oxidiser feed pressure reduction\"; removing it returns the twin to nominal",
+      "status": "pass"
+    },
+    {
+      "section": "simulation",
+      "name": "Fault injector_restriction: injected, then detected or flagged, and isolated as \"Oxidiser injector restriction\"; removing it returns the twin to nominal",
+      "status": "pass"
+    },
+    {
+      "section": "simulation",
+      "name": "Fault combustion_loss: injected, then detected or flagged, and isolated as \"Combustion performance loss\"; removing it returns the twin to nominal",
+      "status": "pass"
+    },
+    {
+      "section": "simulation",
+      "name": "Fault pc_sensor_drift: injected, then detected or flagged, and isolated as \"Chamber pressure sensor A drift\"; removing it returns the twin to nominal",
+      "status": "pass"
+    },
+    {
+      "section": "simulation",
+      "name": "Fault sensor_noise: injected, then detected or flagged, and isolated as \"Noisy pressure sensor\"; removing it returns the twin to nominal",
+      "status": "pass"
+    },
+    {
+      "section": "simulation",
+      "name": "Fault packet_delay: injected, then detected or flagged, and isolated as \"Telemetry packet delay\"; removing it returns the twin to nominal",
+      "status": "pass"
+    },
+    {
+      "section": "simulation",
+      "name": "Fault timestamp_error: injected, then detected or flagged, and isolated as \"Timestamp misalignment\"; removing it returns the twin to nominal",
+      "status": "pass"
+    },
+    {
+      "section": "simulation",
+      "name": "Fault telemetry_replay: injected, then detected or flagged, and isolated as \"Replayed telemetry\"; removing it returns the twin to nominal",
+      "status": "pass"
+    },
+    {
+      "section": "simulation",
+      "name": "Rate-of-change detector: silent on a fault that grows slowly, and among the first to fire on one that arrives at once",
+      "status": "pass"
+    },
+    {
+      "section": "simulation",
+      "name": "Switching straight from one fault to another leaves no stale diagnosis, and each scenario is detected on its own clock",
+      "status": "pass"
+    },
+    {
+      "section": "simulation",
+      "name": "Instruments in other modules show the same twin: a fault injected in the lab is the one diagnosed in FDIR, AI/ML and Health",
+      "status": "pass"
+    },
+    {
+      "section": "simulation",
+      "name": "A minute of simulation leaks neither DOM nodes nor memory, and raises no page error",
+      "status": "pass"
+    },
+    {
+      "section": "simulation",
+      "name": "Analytics receives only fixed ids: no telemetry values, no free text",
+      "status": "pass"
+    },
+    {
+      "section": "simulation",
+      "name": "Reduced motion: the simulation starts paused and can be stepped or started by hand",
+      "status": "pass"
+    },
+    {
+      "section": "performance",
+      "name": "Initial load: LCP under 2.5 s, no layout shift, and neither the simulation nor three.js in the first load",
+      "status": "pass",
+      "detail": {
+        "htmlKB": 153,
+        "jsKB": 283,
+        "cssKB": 52,
+        "lcpMs": 1632,
+        "tbtMs": 27,
+        "cls": 0,
+        "domNodes": 6559,
+        "threeLoaded": false
+      }
+    },
+    {
+      "section": "performance",
+      "name": "Interaction: opening modules and injecting a fault respond within 200 ms, without layout jumps",
+      "status": "pass",
+      "detail": {
+        "worstInteractionMs": 120,
+        "interactions": 12,
+        "clsAfterLoad": 0,
+        "longTaskMsWhileRunning": 464
+      }
+    },
+    {
+      "section": "accessibility",
+      "name": "desktop: no WCAG 2.2 A/AA violations found by axe in any module",
+      "status": "pass"
+    },
+    {
+      "section": "accessibility",
+      "name": "Headings descend in order; one H1; every module has an H2",
+      "status": "pass"
+    },
+    {
+      "section": "accessibility",
+      "name": "Keyboard: skip link first, a visible focus ring, tabs by arrow keys, panels reachable",
+      "status": "pass"
+    },
+    {
+      "section": "accessibility",
+      "name": "Live regions do not announce at the simulation's frame rate",
+      "status": "pass"
+    },
+    {
+      "section": "accessibility",
+      "name": "Visible labels are part of each control's accessible name",
+      "status": "pass"
+    },
+    {
+      "section": "accessibility",
+      "name": "mobile: no WCAG 2.2 A/AA violations found by axe in any module",
+      "status": "pass"
+    },
+    {
+      "section": "integration",
+      "name": "Space page: the advanced card sits beside the fundamentals card and leads here",
+      "status": "pass"
+    },
+    {
+      "section": "integration",
+      "name": "Fundamentals page: still renders its 3D twin, and its call to action leads here",
+      "status": "pass"
+    }
+  ]
+}

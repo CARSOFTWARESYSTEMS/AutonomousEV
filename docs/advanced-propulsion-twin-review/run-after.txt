@@ -1,0 +1,161 @@
+PASS [server] Route responds 200 with one H1, the brief's title and a canonical URL
+PASS [server] Open Graph and Twitter tags are present and the social image is a 1200×630 PNG
+PASS [server] Structured data parses: WebPage, LearningResource, Course, FAQPage, BreadcrumbList, with every @id reference resolved
+PASS [server] Educational content of every module is in the server HTML, whichever module is showing
+PASS [server] Listed in the sitemap once; linked from the Space page and from the fundamentals page
+PASS [server] External links open safely; no inline event handlers or javascript: URLs in the document
+PASS [responsive] mobile-320 (320×568): no horizontal page overflow in any module
+PASS [responsive] mobile-320: nothing extends outside the viewport without a scroll container
+PASS [responsive] mobile-320: module tabs stay on one line, the active tab is in view and the tools fit
+PASS [responsive] mobile-320: the sticky bars do not cover a module heading, and leave most of the screen for content
+PASS [responsive] mobile-320: interactive targets are at least 44px
+PASS [responsive] mobile-320: diagram and chart text renders at 9px or more; body text at 11px or more
+PASS [responsive] mobile-320: no table is wider than the screen
+PASS [responsive] mobile-320: no WebGL canvas is created on a phone
+PASS [responsive] mobile-360 (360×740): no horizontal page overflow in any module
+PASS [responsive] mobile-360: nothing extends outside the viewport without a scroll container
+PASS [responsive] mobile-360: module tabs stay on one line, the active tab is in view and the tools fit
+PASS [responsive] mobile-360: the sticky bars do not cover a module heading, and leave most of the screen for content
+PASS [responsive] mobile-360: interactive targets are at least 44px
+PASS [responsive] mobile-360: diagram and chart text renders at 9px or more; body text at 11px or more
+PASS [responsive] mobile-360: no table is wider than the screen
+PASS [responsive] mobile-360: no WebGL canvas is created on a phone
+PASS [responsive] mobile-375 (375×667): no horizontal page overflow in any module
+PASS [responsive] mobile-375: nothing extends outside the viewport without a scroll container
+PASS [responsive] mobile-375: module tabs stay on one line, the active tab is in view and the tools fit
+PASS [responsive] mobile-375: the sticky bars do not cover a module heading, and leave most of the screen for content
+PASS [responsive] mobile-375: interactive targets are at least 44px
+PASS [responsive] mobile-375: diagram and chart text renders at 9px or more; body text at 11px or more
+PASS [responsive] mobile-375: no table is wider than the screen
+PASS [responsive] mobile-375: no WebGL canvas is created on a phone
+PASS [responsive] mobile-390 (390×844): no horizontal page overflow in any module
+PASS [responsive] mobile-390: nothing extends outside the viewport without a scroll container
+PASS [responsive] mobile-390: module tabs stay on one line, the active tab is in view and the tools fit
+PASS [responsive] mobile-390: the sticky bars do not cover a module heading, and leave most of the screen for content
+PASS [responsive] mobile-390: interactive targets are at least 44px
+PASS [responsive] mobile-390: diagram and chart text renders at 9px or more; body text at 11px or more
+PASS [responsive] mobile-390: no table is wider than the screen
+PASS [responsive] mobile-390: no WebGL canvas is created on a phone
+PASS [responsive] mobile-430 (430×932): no horizontal page overflow in any module
+PASS [responsive] mobile-430: nothing extends outside the viewport without a scroll container
+PASS [responsive] mobile-430: module tabs stay on one line, the active tab is in view and the tools fit
+PASS [responsive] mobile-430: the sticky bars do not cover a module heading, and leave most of the screen for content
+PASS [responsive] mobile-430: interactive targets are at least 44px
+PASS [responsive] mobile-430: diagram and chart text renders at 9px or more; body text at 11px or more
+PASS [responsive] mobile-430: no table is wider than the screen
+PASS [responsive] mobile-430: no WebGL canvas is created on a phone
+PASS [responsive] mobile-landscape-568 (568×320): no horizontal page overflow in any module
+PASS [responsive] mobile-landscape-568: nothing extends outside the viewport without a scroll container
+PASS [responsive] mobile-landscape-568: module tabs stay on one line, the active tab is in view and the tools fit
+PASS [responsive] mobile-landscape-568: the sticky bars do not cover a module heading, and leave most of the screen for content
+PASS [responsive] mobile-landscape-568: interactive targets are at least 44px
+PASS [responsive] mobile-landscape-568: diagram and chart text renders at 9px or more; body text at 11px or more
+PASS [responsive] mobile-landscape-568: no table is wider than the screen
+PASS [responsive] mobile-landscape-568: no WebGL canvas is created on a phone
+PASS [responsive] mobile-landscape-844 (844×390): no horizontal page overflow in any module
+PASS [responsive] mobile-landscape-844: nothing extends outside the viewport without a scroll container
+PASS [responsive] mobile-landscape-844: module tabs stay on one line, the active tab is in view and the tools fit
+PASS [responsive] mobile-landscape-844: the sticky bars do not cover a module heading, and leave most of the screen for content
+PASS [responsive] mobile-landscape-844: interactive targets are at least 44px
+PASS [responsive] mobile-landscape-844: diagram and chart text renders at 9px or more; body text at 11px or more
+PASS [responsive] tablet-768 (768×1024): no horizontal page overflow in any module
+PASS [responsive] tablet-768: nothing extends outside the viewport without a scroll container
+PASS [responsive] tablet-768: module tabs stay on one line, the active tab is in view and the tools fit
+PASS [responsive] tablet-768: the sticky bars do not cover a module heading, and leave most of the screen for content
+PASS [responsive] tablet-768: interactive targets are at least 44px
+PASS [responsive] tablet-768: diagram and chart text renders at 9px or more; body text at 11px or more
+PASS [responsive] tablet-820 (820×1180): no horizontal page overflow in any module
+PASS [responsive] tablet-820: nothing extends outside the viewport without a scroll container
+PASS [responsive] tablet-820: module tabs stay on one line, the active tab is in view and the tools fit
+PASS [responsive] tablet-820: the sticky bars do not cover a module heading, and leave most of the screen for content
+PASS [responsive] tablet-820: interactive targets are at least 44px
+PASS [responsive] tablet-820: diagram and chart text renders at 9px or more; body text at 11px or more
+PASS [responsive] tablet-landscape-1024 (1024×768): no horizontal page overflow in any module
+PASS [responsive] tablet-landscape-1024: nothing extends outside the viewport without a scroll container
+PASS [responsive] tablet-landscape-1024: module tabs stay on one line, the active tab is in view and the tools fit
+PASS [responsive] tablet-landscape-1024: the sticky bars do not cover a module heading, and leave most of the screen for content
+PASS [responsive] tablet-landscape-1024: interactive targets are at least 44px
+PASS [responsive] tablet-landscape-1024: diagram and chart text renders at 9px or more; body text at 11px or more
+PASS [responsive] tablet-landscape-1180 (1180×820): no horizontal page overflow in any module
+PASS [responsive] tablet-landscape-1180: nothing extends outside the viewport without a scroll container
+PASS [responsive] tablet-landscape-1180: module tabs stay on one line, the active tab is in view and the tools fit
+PASS [responsive] tablet-landscape-1180: the sticky bars do not cover a module heading, and leave most of the screen for content
+PASS [responsive] tablet-landscape-1180: interactive targets are at least 44px
+PASS [responsive] tablet-landscape-1180: diagram and chart text renders at 9px or more; body text at 11px or more
+PASS [responsive] desktop-1024 (1024×768): no horizontal page overflow in any module
+PASS [responsive] desktop-1024: nothing extends outside the viewport without a scroll container
+PASS [responsive] desktop-1024: module tabs stay on one line, the active tab is in view and the tools fit
+PASS [responsive] desktop-1024: the sticky bars do not cover a module heading, and leave most of the screen for content
+PASS [responsive] desktop-1024: interactive targets are at least 24px
+PASS [responsive] desktop-1024: diagram and chart text renders at 9px or more; body text at 11px or more
+PASS [responsive] desktop-1280 (1280×800): no horizontal page overflow in any module
+PASS [responsive] desktop-1280: nothing extends outside the viewport without a scroll container
+PASS [responsive] desktop-1280: module tabs stay on one line, the active tab is in view and the tools fit
+PASS [responsive] desktop-1280: the sticky bars do not cover a module heading, and leave most of the screen for content
+PASS [responsive] desktop-1280: interactive targets are at least 24px
+PASS [responsive] desktop-1280: diagram and chart text renders at 9px or more; body text at 11px or more
+PASS [responsive] desktop-1440 (1440×900): no horizontal page overflow in any module
+PASS [responsive] desktop-1440: nothing extends outside the viewport without a scroll container
+PASS [responsive] desktop-1440: module tabs stay on one line, the active tab is in view and the tools fit
+PASS [responsive] desktop-1440: the sticky bars do not cover a module heading, and leave most of the screen for content
+PASS [responsive] desktop-1440: interactive targets are at least 24px
+PASS [responsive] desktop-1440: diagram and chart text renders at 9px or more; body text at 11px or more
+PASS [responsive] desktop-1920 (1920×1080): no horizontal page overflow in any module
+PASS [responsive] desktop-1920: nothing extends outside the viewport without a scroll container
+PASS [responsive] desktop-1920: module tabs stay on one line, the active tab is in view and the tools fit
+PASS [responsive] desktop-1920: the sticky bars do not cover a module heading, and leave most of the screen for content
+PASS [responsive] desktop-1920: interactive targets are at least 24px
+PASS [responsive] desktop-1920: diagram and chart text renders at 9px or more; body text at 11px or more
+PASS [controls] Learn / Engineer / Architect switch changes what is showing, with one option selected
+PASS [controls] CTO / Architect View opens the architecture module at architect depth and reports once per click
+PASS [controls] Module navigation: click, arrow keys, address fragment, and the "Next" button agree on the module showing
+PASS [controls] Hero calls to action and in-page #module links switch module; breadcrumb and fundamentals links resolve
+PASS [controls] Checkpoint: reasoning appears only after an answer; the answer survives switching modules
+PASS [controls] Twelve-week tracker: opening, completing and a reload keep progress
+PASS [controls] Maturity ladder, physics concepts, estimators, model cards and the twelve steps each show the panel chosen
+PASS [controls] Propulsion explorer: a subsystem selection updates the schematic caption and the explanation together
+PASS [controls] 3D engineering mode: loads on demand, draws, switches views and overlays, selects a sensor, closes and releases its canvas
+PASS [controls] Pressure map: selecting a sensor shows its measurement detail where it can be seen, with all seven signal stages
+PASS [controls] Charts: lettering is drawn at 11px, and pointing or arrow keys read out every line at that moment
+PASS [controls] Pressure path trace walks all eleven steps and reports start and completion once
+PASS [controls] Physics model: the sliders re-solve the pressure network (pump head down → chamber pressure down; healthy point restored)
+PASS [controls] State estimator: each estimator, the noise level and the model error change the computed errors
+PASS [controls] Diagnostic reasoning panel: adding evidence changes the ranked cause
+PASS [controls] Fault tree, knowledge graph and readiness score respond to their controls
+PASS [controls] PHONE: the full tutorial without WebGL: a schematic, the desktop note, no canvas, no three.js
+PASS [controls] PHONE: a pressure sensor can be chosen by touch on a readable schematic, and its detail opens as a sheet that closes
+PASS [controls] A live instrument that cannot be downloaded fails alone: the page, its text and the other modules stay
+PASS [simulation] Simulated time advances at one second per second: one clock, not several
+PASS [simulation] Leaving and re-entering the lab ten times does not multiply the clock
+PASS [simulation] Pause stops simulated time; Step advances it by half a second; Live resumes
+PASS [simulation] Reset restores the same healthy baseline every time
+PASS [simulation] Throttle and Compare change the plots; start and shutdown move the engine through its modes
+PASS [simulation] Fault pump_degradation: injected, then detected or flagged, and isolated as "Oxidiser pump degradation"; removing it returns the twin to nominal
+PASS [simulation] Fault valve_restriction: injected, then detected or flagged, and isolated as "Main fuel valve restriction"; removing it returns the twin to nominal
+PASS [simulation] Fault cooling_restriction: injected, then detected or flagged, and isolated as "Cooling-channel restriction"; removing it returns the twin to nominal
+PASS [simulation] Fault feed_pressure_reduction: injected, then detected or flagged, and isolated as "Oxidiser feed pressure reduction"; removing it returns the twin to nominal
+PASS [simulation] Fault injector_restriction: injected, then detected or flagged, and isolated as "Oxidiser injector restriction"; removing it returns the twin to nominal
+PASS [simulation] Fault combustion_loss: injected, then detected or flagged, and isolated as "Combustion performance loss"; removing it returns the twin to nominal
+PASS [simulation] Fault pc_sensor_drift: injected, then detected or flagged, and isolated as "Chamber pressure sensor A drift"; removing it returns the twin to nominal
+PASS [simulation] Fault sensor_noise: injected, then detected or flagged, and isolated as "Noisy pressure sensor"; removing it returns the twin to nominal
+PASS [simulation] Fault packet_delay: injected, then detected or flagged, and isolated as "Telemetry packet delay"; removing it returns the twin to nominal
+PASS [simulation] Fault timestamp_error: injected, then detected or flagged, and isolated as "Timestamp misalignment"; removing it returns the twin to nominal
+PASS [simulation] Fault telemetry_replay: injected, then detected or flagged, and isolated as "Replayed telemetry"; removing it returns the twin to nominal
+PASS [simulation] Rate-of-change detector: silent on a fault that grows slowly, and among the first to fire on one that arrives at once
+PASS [simulation] Switching straight from one fault to another leaves no stale diagnosis, and each scenario is detected on its own clock
+PASS [simulation] Instruments in other modules show the same twin: a fault injected in the lab is the one diagnosed in FDIR, AI/ML and Health
+PASS [simulation] A minute of simulation leaks neither DOM nodes nor memory, and raises no page error
+PASS [simulation] Analytics receives only fixed ids: no telemetry values, no free text
+PASS [simulation] Reduced motion: the simulation starts paused and can be stepped or started by hand
+PASS [performance] Initial load: LCP under 2.5 s, no layout shift, and neither the simulation nor three.js in the first load
+PASS [performance] Interaction: opening modules and injecting a fault respond within 200 ms, without layout jumps
+PASS [accessibility] desktop: no WCAG 2.2 A/AA violations found by axe in any module
+PASS [accessibility] Headings descend in order; one H1; every module has an H2
+PASS [accessibility] Keyboard: skip link first, a visible focus ring, tabs by arrow keys, panels reachable
+PASS [accessibility] Live regions do not announce at the simulation's frame rate
+PASS [accessibility] Visible labels are part of each control's accessible name
+PASS [accessibility] mobile: no WCAG 2.2 A/AA violations found by axe in any module
+PASS [integration] Space page: the advanced card sits beside the fundamentals card and leads here
+PASS [integration] Fundamentals page: still renders its 3D twin, and its call to action leads here
+
+159 of 159 checks passed, 0 failed. Evidence: <working directory>/final

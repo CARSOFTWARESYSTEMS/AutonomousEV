@@ -1,0 +1,6 @@
+ ❯ src/components/satellite-explorer/ui/ui.test.tsx (39 tests | 1 failed) 1583ms
+     × offers EXPLODE, a 0–100 scrubber and X-RAY 21ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+ ❯ src/components/satellite-explorer/ui/ui.test.tsx:234:21
+ Test Files  1 failed | 110 passed (111)
+      Tests  1 failed | 1669 passed (1670)

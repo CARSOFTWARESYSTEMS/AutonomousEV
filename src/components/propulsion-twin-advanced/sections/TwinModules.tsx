@@ -27,12 +27,14 @@ import Picker from "../ui/Picker";
 import { Block, Callout, Chain, ConceptCard, Rows, Tag, Terms } from "../ui/primitives";
 import FusionPanel from "../widgets/FusionPanel";
 import css from "../advancedTwin.module.css";
+import { IMPLEMENTATION_STATUS } from "../data/status";
 
 export function DataModule() {
   return (
     <ModulePanel id="data">
       <Block title={TRANSFORMATION_HEADING}>
         <p className={css.definition}>{TRANSFORMATION_INTRO}</p>
+        <p className={css.note}>{IMPLEMENTATION_STATUS.pipeline}</p>
         <Picker
           label="The twelve steps from physical system to Digital Twin"
           layout="steps"
@@ -167,6 +169,7 @@ export function TwinModule() {
 
       <Block title="State estimation">
         <p className={css.definition}>{ESTIMATION_DEFINITION}</p>
+        <p className={css.note}>{IMPLEMENTATION_STATUS.estimation}</p>
         <LiveSlot widget="estimatorLab" module="twin">
           <p>An interactive chamber-pressure example through a throttle step. It compares the raw sensor, a filtered pressure, the physics prediction and the estimated true state for a Kalman, extended Kalman, unscented Kalman or particle filter, with adjustable sensor noise, non-Gaussian spikes and a deliberate model error, and reports each signal&apos;s error against the simulated truth.</p>
         </LiveSlot>
@@ -178,6 +181,7 @@ export function TwinModule() {
         <p className={css.prose}>Sources combined: {FUSION_SOURCES.join(", ").toLowerCase()}.</p>
         <FusionPanel />
         <Terms items={REDUNDANCY_KINDS.map((k) => ({ id: k.id, term: k.name, text: k.text }))} columns={3} />
+        <p className={css.note}>{IMPLEMENTATION_STATUS.redundancy}</p>
       </Block>
 
       <Block title="Uncertainty">
@@ -262,6 +266,7 @@ export function TwinModule() {
           ))}
         </div>
         <Callout>{VV_RULE}</Callout>
+        <Callout kind="caution">{IMPLEMENTATION_STATUS.validation}</Callout>
       </Block>
 
       <Checkpoint data={CHECKPOINT_BY_MODULE.twin!} />
@@ -323,6 +328,7 @@ export function AiModule() {
       </Block>
 
       <Block title="Digital Twin AI architecture" intro="The AI architecture of a Digital Twin places learned models in parallel with the physics model and the estimator, downstream of a data-quality layer and upstream of evidence fusion. No learned model sits alone between the data and a decision.">
+        <p className={css.note}>{IMPLEMENTATION_STATUS.aiArchitecture}</p>
         <ol className={css.flow} aria-label="Digital Twin AI architecture, from the physical system to engineering review">
           {AI_ARCHITECTURE.map((stage) => (
             <li key={stage.id} data-parallel={stage.parallel ? "" : undefined}>
@@ -364,6 +370,7 @@ export function AiModule() {
 
       <Block title="AI safety and MLOps">
         <p className={css.definition}>{MLOPS_INTRO}</p>
+        <Callout kind="caution">{IMPLEMENTATION_STATUS.mlops}</Callout>
         <Terms items={MLOPS_PRACTICES.map((p) => ({ id: p.id, term: p.name, text: p.text }))} columns={3} />
         <div className={css.tableWrap} data-stack="" role="region" aria-label="Where AI can be trusted and where physics is mandatory" tabIndex={0}>
           <table className={css.table} role="table" data-stack="">

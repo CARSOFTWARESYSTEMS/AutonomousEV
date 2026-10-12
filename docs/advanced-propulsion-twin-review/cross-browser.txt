@@ -1,0 +1,21 @@
+PASS webkit phone 390: hero schematic is the portrait arrangement, lettered at 11px or more 14 labels, smallest 11.0px (box 13px)
+PASS webkit phone 390: no horizontal overflow; tables fit 
+PASS webkit phone 390: pressure map: choose a sensor → detail focused and in view; Escape closes and returns focus 
+PASS webkit phone 390: lab: charts lettered at 11px; a fault is injected, replaced, detected and isolated Probable Cooling-channel restriction — 100 %
+PASS webkit phone 390: no console or page errors 
+PASS webkit desktop 1280: hero schematic is the landscape arrangement, lettered at 11px or more 14 labels, smallest 11.0px (box 13px)
+PASS webkit desktop 1280: no horizontal overflow; tables fit 
+PASS webkit desktop 1280: pressure map: choose a sensor → detail focused and in view; Escape closes and returns focus 
+PASS webkit desktop 1280: lab: charts lettered at 11px; a fault is injected, replaced, detected and isolated Probable Cooling-channel restriction — 100 %
+PASS webkit desktop 1280: no console or page errors 
+PASS firefox phone 390: hero schematic is the portrait arrangement, lettered at 11px or more 14 labels, smallest 11.0px (box 16px)
+PASS firefox phone 390: no horizontal overflow; tables fit 
+PASS firefox phone 390: pressure map: choose a sensor → detail focused and in view; Escape closes and returns focus 
+PASS firefox phone 390: lab: charts lettered at 11px; a fault is injected, replaced, detected and isolated Probable Cooling-channel restriction — 100 %
+PASS firefox phone 390: no console or page errors 
+PASS firefox desktop 1280: hero schematic is the landscape arrangement, lettered at 11px or more 14 labels, smallest 11.0px (box 16px)
+PASS firefox desktop 1280: no horizontal overflow; tables fit 
+PASS firefox desktop 1280: pressure map: choose a sensor → detail focused and in view; Escape closes and returns focus 
+PASS firefox desktop 1280: lab: charts lettered at 11px; a fault is injected, replaced, detected and isolated Probable Cooling-channel restriction — 100 %
+PASS firefox desktop 1280: no console or page errors 
+ALL PASSED

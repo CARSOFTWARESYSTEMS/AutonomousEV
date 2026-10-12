@@ -4,7 +4,195 @@ Page: `/space/rocket-engine-digital-twin-advanced`. Audit of 11–12 October 202
 Issue register, with reproduction steps and root causes: [advanced-propulsion-twin-audit.md](advanced-propulsion-twin-audit.md).
 Evidence: [advanced-propulsion-twin-review/](advanced-propulsion-twin-review/).
 
-**Recommendation: GO**, for the changes in the working tree, once the owner has reviewed the visible changes listed in section 12. Nothing has been committed, pushed or deployed. Production still serves the baseline.
+**Release decision (gate of 12 October 2026): GO WITH CONDITIONS.** See [Release gate](#release-gate-12-october-2026) below. Sections 1 to 12 are the audit report as written before the audited work was committed; where the gate supersedes them, it says so.
+
+## Release gate, 12 October 2026
+
+An independent re-verification of the audited state, run after the audit.
+
+### What "GO" means here
+
+Suitable to release as the declared educational and research **simulated** Advanced Rocket Propulsion Digital Twin learning environment. It does **not** mean validated for a physical rocket engine, and nothing in this document should be read that way.
+
+| Question | Status | Basis |
+| --- | --- | --- |
+| **Software verification.** Does the application work? | **PASS** | 159 of 159 browser checks on a local build, on production, and on the target address; WebKit and Firefox; unit and component tests; zero axe violations |
+| **Model verification.** Does the implementation correctly execute its declared mathematical model? | **PASS, within the declared reduced-order assumptions** | Pressure budget closes at every step; step-size convergence; exact first-order lags; detectors and isolation over a 63-run matrix; consistency check |
+| **Model validation.** Has the model been compared with independent physical evidence? | **SIMULATION-ONLY** | Every model is identified, trained and scored on this page's own simulator |
+| **Physical validation** | **NOT PERFORMED** | No physical engine, test stand or experimental telemetry has been used |
+| **Operational qualification.** Is it suitable for real propulsion-system decisions? | **NOT CLAIMED** | The page says so in its credibility notice, its model cards and its limits |
+
+### State found
+
+The gate's brief describes an uncommitted working tree to be verified before commit. That is not the state of the repository:
+
+- The audited implementation was **already committed and pushed** by the site owner as `308e2bd` ("Fixed Model Rocketry issues"), and the Space branding migration as `73fad51`. `HEAD` = `origin/main` = `73fad51`.
+- Production is serving that build. This gate is therefore a verification **after** release, and it was run against the deployed site as well as locally.
+- `git diff --check`: clean. No debug, probe or generated file is in either commit. Two things were found and are reported, not changed: `scratchpad/model-rocketry-dev-report.html` and `.md` are tracked from an earlier, unrelated commit (`917d516`); and five evidence logs named in this report were never committed because `.gitignore` excludes `*.log`. They are now `.txt` files and can be tracked.
+
+What the gate itself changed is uncommitted and listed at the end of this section. Nothing was committed, pushed or deployed by it.
+
+### Results reproduced
+
+Every figure below was re-run for this gate; none is carried over from the audit.
+
+| Check | Final working tree (local production build) | Deployed build, `aerospace.ev.engineer` | Deployed build, target `aerospace.ishavasyam.org` |
+| --- | --- | --- | --- |
+| Browser audit, Chromium, 159 checks | 159 passed, 0 failed | 159 passed, 0 failed | 159 passed, 0 failed |
+| Console errors, page errors, failed requests | none | none | none |
+| axe WCAG 2.2 A and AA, 12 modules × desktop and phone | 0 violations | 0 | 0 |
+| Live-region updates: 5 s healthy / 8 s of a developing fault | 0 / 1 | 0 / 1 | 0 / 1 |
+| Largest contentful paint, emulated phone | 1,076 ms | 1,632 ms | 1,696 ms |
+| Layout shift during load / after load | 0 / 0 | 0 / 0 | 0 / 0 |
+| WebKit, 10 checks | 10 passed | – | – |
+| Firefox, 10 checks | 10 passed | – | – |
+| Fundamentals page regression | 16 passed | – | – |
+| Unit and component tests (`npm test`) | 1,669 passed, 1 failed | – | – |
+| of which this page | 209 passed, 0 failed | – | – |
+| Type-check | clean | – | – |
+| Lint, files changed | 0 errors (one warning that predates the audit, `<img>` in `SpaceLanding.tsx`) | – | – |
+| Production build | succeeds | – | – |
+
+**Where the numbers differ from the brief, and why.** The brief quotes 1,626 unit tests. The count is now 1,669: the branding migration added 25 (commit `73fad51`), and this gate added 18 (twelve on the start hold and the fault-to-recommendation chain, six on claims, transparency and hierarchy). The one failing test is unchanged: `satellite-explorer/ui/ui.test.tsx` › "offers EXPLODE, a 0–100 scrubber and X-RAY", which fails on every commit back to before this page existed.
+
+### The seven former P1 areas
+
+| # | Area | Verified by | Evidence |
+| --- | --- | --- | --- |
+| 1 | A failed instrument download does not take the page down | Browser check "A live instrument that cannot be downloaded fails alone…" (chunk requests aborted; module bar, H1 and other modules remain; no file name shown); two component tests | `release-gate/desktop-1280-instrument-load-failure.png` |
+| 2 | Switching faults clears and restarts | Browser check "Switching straight from one fault to another…" (one active fault, t < 3 s, no latched latency); four engine tests, including identical snapshots after different histories | `release-gate/run-local.txt` |
+| 3 | A pressure schematic exists and is usable below 900 px | Browser check on a 390 px phone (portrait arrangement, 44 px targets, sheet opens, focuses, closes); responsive checks at 320, 360, 375, 390, 430, 768 and 820 px | `release-gate/mobile-320-pressure-figure.png`, `mobile-390-pressure-sheet.png` |
+| 4 | Schematic and chart lettering is readable | Lettering at 11 px or more at all fifteen viewports, and in WebKit and Firefox; label-fit test | `release-gate/desktop-1440-pressure-figure.png`, `mobile-390-lab-figure.png` |
+| 5 | Sensor details stay inside the viewport | Browser check on desktop (in view, focused, Escape returns focus) and on a phone; WebKit and Firefox | `release-gate/cross-browser.txt` |
+| 6 | Two turbopumps in schematic and 3D; one-state assumption disclosed | Component test on both arrangements; note shown under the System and Pressure schematics. **The gate found text that still said "the turbine" and credited the twin with a turbine model it does not have. Corrected, uncommitted: see below** | `release-gate/desktop-1440-3d.png`, `after/desktop-1440-hero-schematic.png` |
+| 7 | An unmodelled fault is not named with confidence | Nine unmodelled conditions: all detected, all end `unrecognised`, LOW confidence, no cause declared; the highest look-alike score, 88 %, is shown as a look-alike and not as a diagnosis | `release-gate/diagnosis-integrity.md` |
+
+### Transients
+
+| Transition | Result |
+| --- | --- |
+| Healthy running, 120 s | No detector fires |
+| Throttle 100 → 60 → 85 → 100 % | No detector fires; rate of change peaks under 0.6 of its threshold |
+| Shutdown | No anomaly; twin reports HOLDING |
+| Restart, then 60 s of running | No detector fires at any step. Health checks are held for 2.75 s after mainstage is reached (five model shaft time constants), measured at 2.75 s |
+| A real fault present before the restart, each of the seven modelled faults at 80 % | Not declared during the hold. Detected 0.15–0.20 s after the hold ends and isolated 1.1 s after it. **The hold delays a real fault by the hold and no more; it does not hide one** |
+| A fault arriving during the hold | Detected within 2 s of the hold ending |
+| Fault during nominal running, gradual | Detected in 0.75–4.75 s, isolated in 1.55–5.95 s |
+| Fault during nominal running, abrupt | Detected in 0.25–1.35 s, isolated in 1.45–4.45 s |
+| Fault A → fault B | Run restarts from the healthy baseline; B detected once, on its own clock |
+| Reset | t = 0 and an identical read-out every time |
+| Pause, step, resume | Simulated time stops; a step adds 0.5 s; one clock after ten module changes |
+
+Per-detector latency for all 42 modelled runs is in `release-gate/diagnosis-integrity.md`.
+
+### Rate-of-change detector
+
+Reproduced as the audit concluded: the detector is correct and the original faults did not excite it. Its threshold was not changed.
+
+- **Gradual faults: quiet, correctly.** 0 of 21 gradual runs. Peak score on a 24 s pump-degradation ramp is under 0.6 of the threshold.
+- **Abrupt faults: responds where the step moves chamber pressure.** 10 of 21 abrupt runs, in 0.20–0.35 s: pump degradation, feed-pressure reduction, injector restriction and combustion loss from 60 % severity; cooling restriction and sensor drift at 100 %.
+- **Where it stays quiet on an abrupt fault, and why.** At 30 % severity the step is below its alarm rate. For the main fuel valve restriction at any severity, the fault changes fuel flow and coolant temperature and barely moves chamber pressure, which is the one residual this detector watches. Both are left to the residual and cumulative detectors, which caught every one of those runs.
+
+### Diagnosis integrity
+
+Full table, one row per run, with expected class, predicted class, score, confidence, consistency result, detection and isolation latency: `release-gate/diagnosis-integrity.md`.
+
+| Group | Runs | Predicted class correct | Wrong class declared at any point | Confidence at end | Consistency check |
+| --- | --- | --- | --- | --- | --- |
+| Seven modelled physical and sensor faults × gradual and abrupt × 30, 60, 100 % | 42 | 42 | 0 | HIGH in all | `explained` in all; fitted severity within 0.01 of injected |
+| Four data-path faults × 30, 60, 100 % | 12 | 12 | 0 never an engine fault | MEDIUM at 30 % for two, HIGH otherwise | not applicable: established by a direct check on the data |
+| Unmodelled: seven single conditions, two double faults | 9 | none declared, as intended | 1: in one double fault, one of its two real components was named for a few seconds and then withdrawn | LOW in all | `unrecognised` in all |
+
+The chain from fault to recommendation was followed for every modelled run: physical effect, sensor response, residual, detection, isolation, confidence and recommended investigation are reached in all 42. The eighth stage, prediction, is reached in 36; the six without it are the sensor-drift runs, where the engine is healthy and there is no degrading parameter to project. The recommendation shown is the one written for the fault isolated. For an unrecognised pattern the chain stops before isolation and the recommendation is not to act on the ranking.
+
+### Claims checked against the code
+
+| Topic | In the simulator | What the page said | Action in this gate |
+| --- | --- | --- | --- |
+| Range and rate plausibility checks | Not implemented | Marked "Not implemented" in the data-quality table (audit). The AI-architecture diagram still listed them without that mark | Status line added to the AI architecture |
+| Sensor-health checking | Latency, clock skew, repeated sequence, noise, missing sample, flat-line; a two-sensor vote with a virtual sensor, for chamber pressure only | Accurate | Status line added: redundancy exists for chamber pressure only |
+| Kalman filter | One scalar filter per channel in the live twin | Accurate | – |
+| EKF, UKF, particle filter | In the estimator demonstration only, on one state | Described generically; a reader could take them as part of the live twin | Each now says "implemented in the demonstration only… The live twin does not run it" |
+| PCA anomaly detector; classifier | Implemented; trained and scored on simulated data | Accurate, labelled SYNTHETIC DATA ONLY (audit) | – |
+| Hot-gas pressures: preburner, turbine inlet, turbine outlet | Prescribed outputs; watched as residual channels and by the PCA detector | **"Boundary of the turbine model", "Input to the turbine power estimate that is balanced against pump power", "Input to the turbine pressure-ratio check". None of these exists** | Corrected for all three sensors and for the hot-gas subsystem |
+| Turbine arrangement in text | Two turbopumps drawn | "the turbine", "a turbine", "Turbine", "Shaft" in the System module | Corrected to two turbopumps, each with its own turbine |
+| FDIR | Detection and isolation | "Recovery" defined without saying the simulator has none | Status line: recovery is not implemented; the simulator commands nothing |
+| Prognostics | Linear trend through model sensitivities, with a widening band | Accurate: "a concept demonstration, not a life estimate" | – |
+| Uncertainty | Bands computed, not checked against outcomes | Accurate | – |
+| Cybersecurity controls | None. One attack, replayed telemetry, is simulated and is caught by a data-quality check | Sixteen controls described with no statement that none exists here | Section marked CONCEPTUAL with "Concept described — not implemented in this educational simulator." |
+| MLOps | None. Models are rebuilt in the browser on each load | Nine practices described with no such statement | Same |
+| Data architecture; digital thread | None. Telemetry never leaves the browser tab | Layers described; APIs were already marked conceptual | Both marked CONCEPTUAL, same statement |
+| Twelve-step pipeline | Ten of twelve steps carried out on a simulated asset | No statement of which steps are not real | Status line: no acquisition hardware; validation not done |
+| Model validation | None against a physical engine | Model cards: "None. Not compared with any physical engine." | Statement added to the verification-and-validation section |
+
+Every status statement is held by a test, so it cannot be dropped silently.
+
+### Transparency statements, confirmed present and unweakened
+
+Telemetry is simulated; reference values are not flight-engine measurements; no proprietary engine is represented; no physical engine has validated the models; the page is educational and research oriented; it is not flight-certification evidence; it is not a flight-safety authority; no AI on the page certifies propulsion safety; and demonstrating the methods of levels 4 to 6 does not make the simulation a physically connected level 4 to 6 Digital Twin ("as a whole it is a level 2 system"). The credibility notice is unchanged, word for word, and shown twice. A test asserts each of these.
+
+### Branding
+
+| Where | Says | Role | Action |
+| --- | --- | --- | --- |
+| Header mark, hero eyebrow, foot line, title suffix, social card | EV.ENGINEER™ | Platform and tutorial owner | Kept |
+| Metadata author and creator; Course provider in JSON-LD | EV.ENGINEER | Tutorial owner and platform | Kept |
+| Metadata and JSON-LD publisher | iTelematics Software Private Limited | Operator of the site | Kept |
+| Model cards, "owner" | EV.ENGINEER tutorial | Tutorial owner | Kept |
+| Initiative | Not stated anywhere on the page | – | One sentence added to the attribution note: "It is published within Space, an ISHAVASYAM.ORG education, research and engineering initiative. EV.ENGINEER™ is the engineering and learning platform it is built and hosted on. Commercial engineering, where applicable, is handled separately by iTelematics Software Private Limited under explicit agreements." |
+| EV Society | Not named | – | – |
+
+No ownership statement on the page was incorrect. The page did not place itself in the hierarchy at all, and now does. Not changed, for the owner to decide: the canonical URL is `aerospace.ev.engineer`, not the `aerospace.ishavasyam.org` address the gate names; the page's JSON-LD has no ISHAVASYAM.ORG node; and the Fundamentals page has no such sentence.
+
+### Deferred to a later version, on purpose
+
+Not attempted in this release, and not to be read as done:
+
+1. Validation against a physical engine.
+2. Integration of experimental telemetry.
+3. Recalibration of the classifier.
+4. A complete range and rate plausibility layer.
+5. Implemented, production cybersecurity controls.
+6. Verification with a screen reader by a person.
+7. A site-wide Content-Security-Policy.
+8. Operational or flight integration.
+
+### Unresolved
+
+- The gate's own changes are **not in production**. Until they are, the deployed page still credits the twin with a turbine power estimate and a turbine pressure-ratio check, and still describes security controls, MLOps and a data architecture without saying they are not implemented.
+- `satellite-explorer/ui/ui.test.tsx`: one failing test, unrelated, older than this page.
+- `scratchpad/model-rocketry-dev-report.*` is tracked in the repository from an earlier commit. It looks accidental; it is not part of this work and was left.
+- Repository-wide `npm run lint` reports problems in files this work did not touch.
+- No physical device and no human screen-reader pass.
+
+### Decision
+
+**GO WITH CONDITIONS.**
+
+The audited implementation is sound as what it declares itself to be, and has been verified again locally, on production and on the target address. The conditions are:
+
+1. **Commit and deploy the gate's changes.** They are text, status labels, one attribution sentence, a date and tests; no simulation code, threshold, layout or style changed. Without them the deployed page overstates what the simulator does in the places listed under "Unresolved", which is the one thing this gate may not pass.
+2. **Owner confirms the attribution sentence** added under "Branding", and decides the three items left open there.
+
+Not conditions: the eight deferred items. They are the difference between this release and a validated twin, and the page says so.
+
+### Files changed by the gate (uncommitted)
+
+| File | Change |
+| --- | --- |
+| `src/components/propulsion-twin-advanced/data/status.ts` (new) | The implementation-status statements |
+| `…/data/pressure.ts`, `data/system.ts`, `data/twin.ts` | Hot-gas sensor and subsystem statements; two turbopumps in the text; what each estimator is on this page |
+| `…/data/product.ts` | The attribution sentence; review date 12 October 2026 |
+| `…/sections/Operations.tsx`, `sections/TwinModules.tsx` | Show the status statements; three sections tagged CONCEPTUAL |
+| `…/simulation/verification.test.ts`, `AdvancedTwinPage.audit.test.tsx` | 18 tests; the matrix also records the chain reached and latency after the start hold |
+| `src/app/sitemap.ts`, `…/rocket-engine-digital-twin-advanced/integration.test.tsx` | Last-modified date |
+| `docs/advanced-propulsion-twin-review/` | `release-gate/` (results, logs, screenshots, `diagnosis-integrity.md`); matrix regenerated; five logs renamed `.txt` |
+| This report and the register | This section; status lines |
+
+Also uncommitted, from the task before this one: `docs/space-ishavasyam-migration.md` and `docs/space-ishavasyam-migration-review/rendered-routes-production.json`.
+
+---
+
 
 ## 1. Baseline status and final status
 
@@ -106,7 +294,7 @@ In `advanced-propulsion-twin-review/`. "Before" is production; "after" is the lo
 | An instrument that cannot be downloaded | `before/desktop-1280-instrument-load-failure.png` | `after/desktop-1280-instrument-load-failure.png` |
 | Sensor sheet on a phone; 3D view with a sensor selected | – | `after/mobile-390-pressure-sheet.png`, `after/desktop-1440-3d.png` |
 
-Machine-readable: `results-before.json` and `results-after.json` (every check, with measurements per viewport and module, and the axe findings), `run-before.log`, `run-after.log`, `run-after-simulation-rerun.log`, `fault-coverage-matrix.json`, `cross-browser.log`, `fundamentals-regression.log`, `page-weight.json`.
+Machine-readable: `results-before.json` and `results-after.json` (every check, with measurements per viewport and module, and the axe findings), `run-before.txt`, `run-after.txt`, `run-after-simulation-rerun.txt`, `fault-coverage-matrix.json`, `cross-browser.txt`, `fundamentals-regression.txt`, `page-weight.json`.
 
 ## 6. Test commands and results
 
@@ -125,7 +313,7 @@ Run on 12 October 2026 on the final working tree.
 | WebKit and Firefox pass (script kept with the audit's working files, log in the review folder) | 20 passed, 0 failed |
 | `npm run test:rocket-engine-twin:e2e` | 16 passed, 0 failed |
 
-One correction after the full run: an assertion inside the rate-of-change check looked for the label "Sensor noise", which the page never shows (the fault is called "Noisy pressure sensor"), so it could not have failed. It was corrected and the simulation section re-run on the same build: 22 of 22 (`run-after-simulation-rerun.log`). The property it guards is also asserted by fault id in the unit tests.
+One correction after the full run: an assertion inside the rate-of-change check looked for the label "Sensor noise", which the page never shows (the fault is called "Noisy pressure sensor"), so it could not have failed. It was corrected and the simulation section re-run on the same build: 22 of 22 (`run-after-simulation-rerun.txt`). The property it guards is also asserted by fault id in the unit tests.
 
 No test was skipped, and none was mocked away: the unit tests run the real simulation, and the browser checks run a production build. Two things are simulated on purpose and named as such: the download failure in APT-01's check, and the unmodelled faults and telemetry gaps in `verification.test.ts`, which are applied through seams in the engine (`physicalSystem`, `acquire`) because the Lab cannot inject them.
 

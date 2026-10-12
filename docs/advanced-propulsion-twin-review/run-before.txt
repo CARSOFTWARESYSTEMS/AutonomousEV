@@ -1,0 +1,210 @@
+PASS [server] Route responds 200 with one H1, the brief's title and a canonical URL
+PASS [server] Open Graph and Twitter tags are present and the social image is a 1200×630 PNG
+PASS [server] Structured data parses: WebPage, LearningResource, Course, FAQPage, BreadcrumbList, with every @id reference resolved
+PASS [server] Educational content of every module is in the server HTML, whichever module is showing
+PASS [server] Listed in the sitemap once; linked from the Space page and from the fundamentals page
+PASS [server] External links open safely; no inline event handlers or javascript: URLs in the document
+PASS [responsive] mobile-320 (320×568): no horizontal page overflow in any module
+PASS [responsive] mobile-320: nothing extends outside the viewport without a scroll container
+FAIL [responsive] mobile-320: module tabs stay on one line, the active tab is in view and the tools fit
+     overview: wrap=false activeVisible=true toolsFit=false || system: wrap=false activeVisible=true toolsFit=false || pressure: wrap=false activeVisible=true toolsFit=false || physics: wrap=false activeVisible=true toolsFit=false || data: wrap=false activeVisible=true toolsFit=false || twin: wrap=false activeVisible=true toolsFit=false || ai: wrap=false activeVisible=true toolsFit=false || fdir: wrap=false activeVisible=true toolsFit=false || health: wrap=false activeVisible=true toolsFit=false || lab: wrap=false activeVisible=true toolsFit=false || architecture: wrap=false activeVisible=true tool
+PASS [responsive] mobile-320: the sticky bars do not cover a module heading, and leave most of the screen for content
+FAIL [responsive] mobile-320: interactive targets are at least 44px
+     overview: 1 (a.textLink 280×43) || physics: 4 (input.range 280×28) || data: 1 (a.textLink 184×32) || fdir: 20 (button.ghost 181×32) || health: 13 (input.range 250×28) || lab: 3 (button. 37×44; button. 40×44; input.range 246×28) || weeks: 25 (a.textLink 69×32; a.textLink 78×32; a.textLink 44×32; a.textLink 51×32; a.textLink 71×32) |  | 7 !== 0 | 
+FAIL [responsive] mobile-320: diagram and chart text renders at 9px or more; body text at 11px or more
+     hero schematic labels 3.3px || overview: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; dt. 10.5px; span.questionKind 10.5px || system: 34 svg labels (smallest 3.3px), text p.moduleCount 10.5px; span.tag 9.5px; li. 9.5px; dt. 10.5px || pressure: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; p.groupLabel 10.5px; span.ladderTag 10.5px; span.tag 9.5px || physics: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; span.groupLabel 10.5px; dt. 10.5px || data: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; p.groupLabel 10.5p
+FAIL [responsive] mobile-320: no table is wider than the screen
+     system: 1 || data: 3 || twin: 1 || ai: 2 || fdir: 1 || lab: 1 || architecture: 2 |  | 7 !== 0 | 
+PASS [responsive] mobile-320: no WebGL canvas is created on a phone
+PASS [responsive] mobile-360 (360×740): no horizontal page overflow in any module
+PASS [responsive] mobile-360: nothing extends outside the viewport without a scroll container
+PASS [responsive] mobile-360: module tabs stay on one line, the active tab is in view and the tools fit
+PASS [responsive] mobile-360: the sticky bars do not cover a module heading, and leave most of the screen for content
+FAIL [responsive] mobile-360: interactive targets are at least 44px
+     overview: 1 (a.textLink 320×43) || physics: 4 (input.range 320×28) || data: 1 (a.textLink 184×32) || fdir: 20 (button.ghost 181×32) || health: 13 (input.range 290×28) || lab: 3 (button. 37×44; button. 40×44; input.range 286×28) || weeks: 25 (a.textLink 69×32; a.textLink 78×32; a.textLink 44×32; a.textLink 51×32; a.textLink 71×32) |  | 7 !== 0 | 
+FAIL [responsive] mobile-360: diagram and chart text renders at 9px or more; body text at 11px or more
+     hero schematic labels 3.3px || overview: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; dt. 10.5px; span.questionKind 10.5px || system: 34 svg labels (smallest 3.3px), text p.moduleCount 10.5px; span.tag 9.5px; li. 9.5px; dt. 10.5px || pressure: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; p.groupLabel 10.5px; span.ladderTag 10.5px; span.tag 9.5px || physics: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; span.groupLabel 10.5px; dt. 10.5px || data: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; p.groupLabel 10.5p
+FAIL [responsive] mobile-360: no table is wider than the screen
+     system: 1 || data: 3 || twin: 1 || ai: 2 || fdir: 1 || lab: 1 || architecture: 2 |  | 7 !== 0 | 
+PASS [responsive] mobile-360: no WebGL canvas is created on a phone
+PASS [responsive] mobile-375 (375×667): no horizontal page overflow in any module
+PASS [responsive] mobile-375: nothing extends outside the viewport without a scroll container
+PASS [responsive] mobile-375: module tabs stay on one line, the active tab is in view and the tools fit
+PASS [responsive] mobile-375: the sticky bars do not cover a module heading, and leave most of the screen for content
+FAIL [responsive] mobile-375: interactive targets are at least 44px
+     overview: 1 (a.textLink 335×43) || physics: 4 (input.range 335×28) || data: 1 (a.textLink 184×32) || fdir: 20 (button.ghost 181×32) || health: 13 (input.range 305×28) || lab: 3 (button. 37×44; button. 40×44; input.range 301×28) || weeks: 25 (a.textLink 69×32; a.textLink 78×32; a.textLink 44×32; a.textLink 51×32; a.textLink 71×32) |  | 7 !== 0 | 
+FAIL [responsive] mobile-375: diagram and chart text renders at 9px or more; body text at 11px or more
+     hero schematic labels 3.3px || overview: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; dt. 10.5px; span.questionKind 10.5px || system: 34 svg labels (smallest 3.3px), text p.moduleCount 10.5px; span.tag 9.5px; li. 9.5px; dt. 10.5px || pressure: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; p.groupLabel 10.5px; span.ladderTag 10.5px; span.tag 9.5px || physics: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; span.groupLabel 10.5px; dt. 10.5px || data: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; p.groupLabel 10.5p
+FAIL [responsive] mobile-375: no table is wider than the screen
+     system: 1 || data: 3 || twin: 1 || ai: 2 || fdir: 1 || lab: 1 || architecture: 2 |  | 7 !== 0 | 
+PASS [responsive] mobile-375: no WebGL canvas is created on a phone
+PASS [responsive] mobile-390 (390×844): no horizontal page overflow in any module
+PASS [responsive] mobile-390: nothing extends outside the viewport without a scroll container
+PASS [responsive] mobile-390: module tabs stay on one line, the active tab is in view and the tools fit
+PASS [responsive] mobile-390: the sticky bars do not cover a module heading, and leave most of the screen for content
+FAIL [responsive] mobile-390: interactive targets are at least 44px
+     overview: 1 (a.textLink 350×43) || physics: 4 (input.range 350×28) || data: 1 (a.textLink 184×32) || fdir: 20 (button.ghost 181×32) || health: 13 (input.range 320×28) || lab: 3 (button. 37×44; button. 40×44; input.range 316×28) || weeks: 25 (a.textLink 69×32; a.textLink 78×32; a.textLink 44×32; a.textLink 51×32; a.textLink 71×32) |  | 7 !== 0 | 
+FAIL [responsive] mobile-390: diagram and chart text renders at 9px or more; body text at 11px or more
+     hero schematic labels 4.2px || overview: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; dt. 10.5px; span.questionKind 10.5px || system: 34 svg labels (smallest 4.2px), text p.moduleCount 10.5px; span.tag 9.5px; li. 9.5px; dt. 10.5px || pressure: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; p.groupLabel 10.5px; span.ladderTag 10.5px; span.tag 9.5px || physics: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; span.groupLabel 10.5px; dt. 10.5px || data: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; p.groupLabel 10.5p
+FAIL [responsive] mobile-390: no table is wider than the screen
+     system: 1 || data: 3 || twin: 1 || ai: 2 || fdir: 1 || lab: 1 || architecture: 2 |  | 7 !== 0 | 
+PASS [responsive] mobile-390: no WebGL canvas is created on a phone
+PASS [responsive] mobile-430 (430×932): no horizontal page overflow in any module
+PASS [responsive] mobile-430: nothing extends outside the viewport without a scroll container
+PASS [responsive] mobile-430: module tabs stay on one line, the active tab is in view and the tools fit
+PASS [responsive] mobile-430: the sticky bars do not cover a module heading, and leave most of the screen for content
+FAIL [responsive] mobile-430: interactive targets are at least 44px
+     overview: 1 (a.textLink 390×32) || physics: 4 (input.range 390×28) || data: 1 (a.textLink 184×32) || fdir: 20 (button.ghost 181×32) || health: 13 (input.range 360×28) || lab: 3 (button. 37×44; button. 40×44; input.range 356×28) || weeks: 25 (a.textLink 69×32; a.textLink 78×32; a.textLink 44×32; a.textLink 51×32; a.textLink 71×32) |  | 7 !== 0 | 
+FAIL [responsive] mobile-430: diagram and chart text renders at 9px or more; body text at 11px or more
+     hero schematic labels 4.2px || overview: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; dt. 10.5px; span.questionKind 10.5px || system: 34 svg labels (smallest 4.2px), text p.moduleCount 10.5px; span.tag 9.5px; li. 9.5px; dt. 10.5px || pressure: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; p.groupLabel 10.5px; span.ladderTag 10.5px; span.tag 9.5px || physics: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; span.groupLabel 10.5px; dt. 10.5px || data: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; p.groupLabel 10.5p
+FAIL [responsive] mobile-430: no table is wider than the screen
+     system: 1 || data: 3 || twin: 1 || ai: 2 || fdir: 1 || lab: 1 || architecture: 2 |  | 7 !== 0 | 
+PASS [responsive] mobile-430: no WebGL canvas is created on a phone
+PASS [responsive] mobile-landscape-568 (568×320): no horizontal page overflow in any module
+PASS [responsive] mobile-landscape-568: nothing extends outside the viewport without a scroll container
+PASS [responsive] mobile-landscape-568: module tabs stay on one line, the active tab is in view and the tools fit
+FAIL [responsive] mobile-landscape-568: the sticky bars do not cover a module heading, and leave most of the screen for content
+     sticky header and navigation cover 54 % of the viewport height
+FAIL [responsive] mobile-landscape-568: interactive targets are at least 44px
+     overview: 1 (a.textLink 528×32) || physics: 4 (input.range 528×28) || data: 1 (a.textLink 184×32) || fdir: 20 (button.ghost 181×32) || health: 13 (input.range 498×28) || lab: 3 (button. 37×44; button. 40×44; input.range 494×28) || weeks: 25 (a.textLink 69×32; a.textLink 78×32; a.textLink 44×32; a.textLink 51×32; a.textLink 71×32) |  | 7 !== 0 | 
+FAIL [responsive] mobile-landscape-568: diagram and chart text renders at 9px or more; body text at 11px or more
+     hero schematic labels 5px || overview: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; dt. 10.5px; span.questionKind 10.5px || system: 34 svg labels (smallest 5px), text p.moduleCount 10.5px; span.tag 9.5px; li. 9.5px; dt. 10.5px || pressure: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; p.groupLabel 10.5px; span.ladderTag 10.5px; span.tag 9.5px || physics: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; span.groupLabel 10.5px; dt. 10.5px || data: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; p.groupLabel 10.5px; d
+FAIL [responsive] mobile-landscape-568: no table is wider than the screen
+     system: 1 || data: 2 || twin: 1 || ai: 2 || lab: 1 || architecture: 2 |  | 6 !== 0 | 
+PASS [responsive] mobile-landscape-568: no WebGL canvas is created on a phone
+PASS [responsive] mobile-landscape-844 (844×390): no horizontal page overflow in any module
+PASS [responsive] mobile-landscape-844: nothing extends outside the viewport without a scroll container
+PASS [responsive] mobile-landscape-844: module tabs stay on one line, the active tab is in view and the tools fit
+FAIL [responsive] mobile-landscape-844: the sticky bars do not cover a module heading, and leave most of the screen for content
+     sticky header and navigation cover 45 % of the viewport height
+FAIL [responsive] mobile-landscape-844: interactive targets are at least 44px
+     overview: 1 (a.textLink 780×32) || physics: 4 (input.range 780×28) || data: 1 (a.textLink 184×32) || fdir: 20 (button.ghost 181×32) || health: 13 (input.range 356×28; input.range 356×35) || lab: 3 (button. 37×44; button. 40×44; input.range 746×28) || weeks: 25 (a.textLink 69×32; a.textLink 78×32; a.textLink 44×32; a.textLink 51×32; a.textLink 71×32) |  | 7 !== 0 | 
+FAIL [responsive] mobile-landscape-844: diagram and chart text renders at 9px or more; body text at 11px or more
+     hero schematic labels 8.3px || overview: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; dt. 10.5px; span.questionKind 10.5px || system: 1 svg labels (smallest 8.3px), text p.moduleCount 10.5px; span.tag 9.5px; li. 9.5px; dt. 10.5px || pressure: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; p.groupLabel 10.5px; span.ladderTag 10.5px; span.tag 9.5px || physics: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; span.groupLabel 10.5px; dt. 10.5px || data: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; p.groupLabel 10.5px
+PASS [responsive] tablet-768 (768×1024): no horizontal page overflow in any module
+PASS [responsive] tablet-768: nothing extends outside the viewport without a scroll container
+PASS [responsive] tablet-768: module tabs stay on one line, the active tab is in view and the tools fit
+PASS [responsive] tablet-768: the sticky bars do not cover a module heading, and leave most of the screen for content
+FAIL [responsive] tablet-768: interactive targets are at least 44px
+     overview: 1 (a.textLink 704×32) || physics: 4 (input.range 704×28) || data: 1 (a.textLink 184×32) || fdir: 20 (button.ghost 181×32) || health: 13 (input.range 318×28; input.range 318×35) || lab: 3 (button. 37×44; button. 40×44; input.range 670×28) || weeks: 25 (a.textLink 69×32; a.textLink 78×32; a.textLink 44×32; a.textLink 51×32; a.textLink 71×32) |  | 7 !== 0 | 
+FAIL [responsive] tablet-768: diagram and chart text renders at 9px or more; body text at 11px or more
+     hero schematic labels 7.5px || overview: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; dt. 10.5px; span.questionKind 10.5px || system: 34 svg labels (smallest 7.5px), text p.moduleCount 10.5px; span.tag 9.5px; li. 9.5px; dt. 10.5px || pressure: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; p.groupLabel 10.5px; span.ladderTag 10.5px; span.tag 9.5px || physics: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; span.groupLabel 10.5px; dt. 10.5px || data: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; p.groupLabel 10.5p
+PASS [responsive] tablet-820 (820×1180): no horizontal page overflow in any module
+PASS [responsive] tablet-820: nothing extends outside the viewport without a scroll container
+PASS [responsive] tablet-820: module tabs stay on one line, the active tab is in view and the tools fit
+PASS [responsive] tablet-820: the sticky bars do not cover a module heading, and leave most of the screen for content
+FAIL [responsive] tablet-820: interactive targets are at least 44px
+     overview: 1 (a.textLink 756×32) || physics: 4 (input.range 756×28) || data: 1 (a.textLink 184×32) || fdir: 20 (button.ghost 181×32) || health: 13 (input.range 344×28; input.range 344×35) || lab: 3 (button. 37×44; button. 40×44; input.range 722×28) || weeks: 25 (a.textLink 69×32; a.textLink 78×32; a.textLink 44×32; a.textLink 51×32; a.textLink 71×32) |  | 7 !== 0 | 
+FAIL [responsive] tablet-820: diagram and chart text renders at 9px or more; body text at 11px or more
+     hero schematic labels 8.3px || overview: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; dt. 10.5px; span.questionKind 10.5px || system: 16 svg labels (smallest 8.3px), text p.moduleCount 10.5px; span.tag 9.5px; li. 9.5px; dt. 10.5px || pressure: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; p.groupLabel 10.5px; span.ladderTag 10.5px; span.tag 9.5px || physics: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; span.groupLabel 10.5px; dt. 10.5px || data: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; p.groupLabel 10.5p
+PASS [responsive] tablet-landscape-1024 (1024×768): no horizontal page overflow in any module
+PASS [responsive] tablet-landscape-1024: nothing extends outside the viewport without a scroll container
+PASS [responsive] tablet-landscape-1024: module tabs stay on one line, the active tab is in view and the tools fit
+PASS [responsive] tablet-landscape-1024: the sticky bars do not cover a module heading, and leave most of the screen for content
+FAIL [responsive] tablet-landscape-1024: interactive targets are at least 44px
+     overview: 1 (a.textLink 960×32) || pressure: 15 (g. 47×20; g. 48×20; g. 31×24; g. 30×24; g. 52×20) || physics: 4 (input.range 472×28) || data: 1 (a.textLink 184×32) || fdir: 20 (button.ghost 181×32) || health: 13 (input.range 446×28; input.range 446×35) || lab: 3 (button. 37×44; button. 40×44; input.range 440×28) || weeks: 25 (a.textLink 69×32; a.textLink 78×32; a.textLink 44×32; a.textLink 51×32; a.textLink 71×32) |  | 8 !== 0 | 
+FAIL [responsive] tablet-landscape-1024: diagram and chart text renders at 9px or more; body text at 11px or more
+     hero schematic labels 4.2px || overview: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; dt. 10.5px; span.questionKind 10.5px || system: 34 svg labels (smallest 5px), text p.moduleCount 10.5px; span.tag 9.5px; li. 9.5px; dt. 10.5px || pressure: 34 svg labels (smallest 5px), text p.moduleCount 10.5px; li. 9.5px; p.groupLabel 10.5px; span.ladderTag 10.5px || physics: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; span.groupLabel 10.5px; dt. 10.5px || data: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; p.groupLabel 10.5px; dt. 10
+PASS [responsive] tablet-landscape-1180 (1180×820): no horizontal page overflow in any module
+PASS [responsive] tablet-landscape-1180: nothing extends outside the viewport without a scroll container
+PASS [responsive] tablet-landscape-1180: module tabs stay on one line, the active tab is in view and the tools fit
+PASS [responsive] tablet-landscape-1180: the sticky bars do not cover a module heading, and leave most of the screen for content
+FAIL [responsive] tablet-landscape-1180: interactive targets are at least 44px
+     overview: 1 (a.textLink 1116×32) || pressure: 15 (g. 55×24; g. 54×24; g. 56×24; g. 36×27; g. 35×29) || physics: 4 (input.range 550×28) || data: 1 (a.textLink 184×32) || fdir: 20 (button.ghost 181×32) || health: 13 (input.range 524×28; input.range 524×35) || lab: 3 (button. 37×44; button. 40×44; input.range 236×28) || weeks: 25 (a.textLink 69×32; a.textLink 78×32; a.textLink 44×32; a.textLink 51×32; a.textLink 71×32) |  | 8 !== 0 | 
+FAIL [responsive] tablet-landscape-1180: diagram and chart text renders at 9px or more; body text at 11px or more
+     hero schematic labels 5px || overview: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; dt. 10.5px; span.questionKind 10.5px || system: 34 svg labels (smallest 6.7px), text p.moduleCount 10.5px; span.tag 9.5px; li. 9.5px; dt. 10.5px || pressure: 34 svg labels (smallest 6.7px), text p.moduleCount 10.5px; li. 9.5px; p.groupLabel 10.5px; span.ladderTag 10.5px || physics: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; span.groupLabel 10.5px; dt. 10.5px || data: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; p.groupLabel 10.5px; dt. 
+PASS [responsive] desktop-1024 (1024×768): no horizontal page overflow in any module
+PASS [responsive] desktop-1024: nothing extends outside the viewport without a scroll container
+PASS [responsive] desktop-1024: module tabs stay on one line, the active tab is in view and the tools fit
+PASS [responsive] desktop-1024: the sticky bars do not cover a module heading, and leave most of the screen for content
+FAIL [responsive] desktop-1024: interactive targets are at least 24px
+     pressure: 12 (g. 47×20; g. 48×20; g. 52×20; g. 49×20) |  | 1 !== 0 | 
+FAIL [responsive] desktop-1024: diagram and chart text renders at 9px or more; body text at 11px or more
+     hero schematic labels 4.2px || overview: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; dt. 10.5px; span.questionKind 10.5px || system: 34 svg labels (smallest 5px), text p.moduleCount 10.5px; span.tag 9.5px; li. 9.5px; dt. 10.5px || pressure: 34 svg labels (smallest 5px), text p.moduleCount 10.5px; li. 9.5px; p.groupLabel 10.5px; span.ladderTag 10.5px || physics: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; span.groupLabel 10.5px; dt. 10.5px || data: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; p.groupLabel 10.5px; dt. 10
+PASS [responsive] desktop-1280 (1280×800): no horizontal page overflow in any module
+PASS [responsive] desktop-1280: nothing extends outside the viewport without a scroll container
+PASS [responsive] desktop-1280: module tabs stay on one line, the active tab is in view and the tools fit
+PASS [responsive] desktop-1280: the sticky bars do not cover a module heading, and leave most of the screen for content
+PASS [responsive] desktop-1280: interactive targets are at least 24px
+FAIL [responsive] desktop-1280: diagram and chart text renders at 9px or more; body text at 11px or more
+     hero schematic labels 5.8px || overview: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; dt. 10.5px; span.questionKind 10.5px || system: 34 svg labels (smallest 6.7px), text p.moduleCount 10.5px; span.tag 9.5px; li. 9.5px; dt. 10.5px || pressure: 34 svg labels (smallest 6.7px), text p.moduleCount 10.5px; li. 9.5px; p.groupLabel 10.5px; span.ladderTag 10.5px || physics: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; span.groupLabel 10.5px; dt. 10.5px || data: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; p.groupLabel 10.5px; dt
+PASS [responsive] desktop-1440 (1440×900): no horizontal page overflow in any module
+PASS [responsive] desktop-1440: nothing extends outside the viewport without a scroll container
+PASS [responsive] desktop-1440: module tabs stay on one line, the active tab is in view and the tools fit
+PASS [responsive] desktop-1440: the sticky bars do not cover a module heading, and leave most of the screen for content
+PASS [responsive] desktop-1440: interactive targets are at least 24px
+FAIL [responsive] desktop-1440: diagram and chart text renders at 9px or more; body text at 11px or more
+     hero schematic labels 5.8px || overview: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; dt. 10.5px; span.questionKind 10.5px || system: 34 svg labels (smallest 6.7px), text p.moduleCount 10.5px; span.tag 9.5px; li. 9.5px; dt. 10.5px || pressure: 34 svg labels (smallest 6.7px), text p.moduleCount 10.5px; li. 9.5px; p.groupLabel 10.5px; span.ladderTag 10.5px || physics: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; span.groupLabel 10.5px; dt. 10.5px || data: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; p.groupLabel 10.5px; dt
+PASS [responsive] desktop-1920 (1920×1080): no horizontal page overflow in any module
+PASS [responsive] desktop-1920: nothing extends outside the viewport without a scroll container
+PASS [responsive] desktop-1920: module tabs stay on one line, the active tab is in view and the tools fit
+PASS [responsive] desktop-1920: the sticky bars do not cover a module heading, and leave most of the screen for content
+PASS [responsive] desktop-1920: interactive targets are at least 24px
+FAIL [responsive] desktop-1920: diagram and chart text renders at 9px or more; body text at 11px or more
+     hero schematic labels 5.8px || overview: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; dt. 10.5px; span.questionKind 10.5px || system: 34 svg labels (smallest 6.7px), text p.moduleCount 10.5px; span.tag 9.5px; li. 9.5px; dt. 10.5px || pressure: 34 svg labels (smallest 6.7px), text p.moduleCount 10.5px; li. 9.5px; p.groupLabel 10.5px; span.ladderTag 10.5px || physics: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; span.tag 9.5px; span.groupLabel 10.5px; dt. 10.5px || data: 0 svg labels (smallest nullpx), text p.moduleCount 10.5px; p.groupLabel 10.5px; dt
+PASS [controls] Learn / Engineer / Architect switch changes what is showing, with one option selected
+PASS [controls] CTO / Architect View opens the architecture module at architect depth and reports once per click
+PASS [controls] Module navigation: click, arrow keys, address fragment, and the "Next" button agree on the module showing
+PASS [controls] Hero calls to action and in-page #module links switch module; breadcrumb and fundamentals links resolve
+PASS [controls] Checkpoint: reasoning appears only after an answer; the answer survives switching modules
+PASS [controls] Twelve-week tracker: opening, completing and a reload keep progress
+PASS [controls] Maturity ladder, physics concepts, estimators, model cards and the twelve steps each show the panel chosen
+PASS [controls] Propulsion explorer: a subsystem selection updates the schematic caption and the explanation together
+FAIL [controls] 3D engineering mode: loads on demand, draws, switches views and overlays, selects a sensor, closes and releases its canvas
+     locator.click: Timeout 30000ms exceeded. | Call log: |   - waiting for locator('#system[role="tabpanel"]').getByRole('button', { name: 'Cooling flow', exact: true }) | 
+FAIL [controls] Pressure map: selecting a sensor shows its measurement detail where it can be seen, with all seven signal stages
+     the detail opened outside the viewport (y=1402)
+FAIL [controls] Charts: lettering is drawn at 11px, and pointing or arrow keys read out every line at that moment
+     locator.boundingBox: Timeout 30000ms exceeded. | Call log: |   - waiting for locator('#twin[role="tabpanel"]').locator('figure').first().getByRole('group').first() | 
+PASS [controls] Pressure path trace walks all eleven steps and reports start and completion once
+PASS [controls] Physics model: the sliders re-solve the pressure network (pump head down → chamber pressure down; healthy point restored)
+FAIL [controls] State estimator: each estimator, the noise level and the model error change the computed errors
+     no statement of how far the EKF and the UKF differ
+PASS [controls] Diagnostic reasoning panel: adding evidence changes the ranked cause
+FAIL [controls] Fault tree, knowledge graph and readiness score respond to their controls
+     locator.textContent: Timeout 30000ms exceeded. | Call log: |   - waiting for locator('#architecture[role="tabpanel"]').locator('[data-graph-live="f_drift"]') | 
+PASS [controls] PHONE: the full tutorial without WebGL: a schematic, the desktop note, no canvas, no three.js
+FAIL [controls] PHONE: a pressure sensor can be chosen by touch on a readable schematic, and its detail opens as a sheet that closes
+     no pressure schematic is shown on a phone
+FAIL [controls] A live instrument that cannot be downloaded fails alone: the page, its text and the other modules stay
+     the page was replaced by an error screen |  | 0 !== 1 | 
+PASS [simulation] Simulated time advances at one second per second: one clock, not several
+PASS [simulation] Leaving and re-entering the lab ten times does not multiply the clock
+PASS [simulation] Pause stops simulated time; Step advances it by half a second; Live resumes
+PASS [simulation] Reset restores the same healthy baseline every time
+FAIL [simulation] Throttle and Compare change the plots; start and shutdown move the engine through its modes
+     the start transient raised an anomaly: t=13 ANOMALIES ◆ 2 Anomaly declared | + actual - expected |  | + 't=13 ANOMALIES ◆ 2 Anomaly declared'
+PASS [simulation] Fault pump_degradation: injected, then detected or flagged, and isolated as "Oxidiser pump degradation"; removing it returns the twin to nominal
+PASS [simulation] Fault valve_restriction: injected, then detected or flagged, and isolated as "Main fuel valve restriction"; removing it returns the twin to nominal
+PASS [simulation] Fault cooling_restriction: injected, then detected or flagged, and isolated as "Cooling-channel restriction"; removing it returns the twin to nominal
+PASS [simulation] Fault feed_pressure_reduction: injected, then detected or flagged, and isolated as "Oxidiser feed pressure reduction"; removing it returns the twin to nominal
+PASS [simulation] Fault injector_restriction: injected, then detected or flagged, and isolated as "Oxidiser injector restriction"; removing it returns the twin to nominal
+PASS [simulation] Fault combustion_loss: injected, then detected or flagged, and isolated as "Combustion performance loss"; removing it returns the twin to nominal
+PASS [simulation] Fault pc_sensor_drift: injected, then detected or flagged, and isolated as "Chamber pressure sensor A drift"; removing it returns the twin to nominal
+PASS [simulation] Fault sensor_noise: injected, then detected or flagged, and isolated as "Noisy pressure sensor"; removing it returns the twin to nominal
+PASS [simulation] Fault packet_delay: injected, then detected or flagged, and isolated as "Telemetry packet delay"; removing it returns the twin to nominal
+PASS [simulation] Fault timestamp_error: injected, then detected or flagged, and isolated as "Timestamp misalignment"; removing it returns the twin to nominal
+PASS [simulation] Fault telemetry_replay: injected, then detected or flagged, and isolated as "Replayed telemetry"; removing it returns the twin to nominal
+FAIL [simulation] Rate-of-change detector: silent on a fault that grows slowly, and among the first to fire on one that arrives at once
+     locator.getAttribute: Timeout 30000ms exceeded. | Call log: |   - waiting for locator('#lab[role="tabpanel"]').getByRole('group', { name: 'Onset' }).getByRole('button', { name: /^Gradual/ }) | 
+FAIL [simulation] Switching straight from one fault to another leaves no stale diagnosis, and each scenario is detected on its own clock
+     the previous fault is still active: INJECTED Main fuel valve restriction · severity 80 % of 80 % INJECTED Chamber pressure sensor A drift · severity 7 % of 80 %
+PASS [simulation] Instruments in other modules show the same twin: a fault injected in the lab is the one diagnosed in FDIR, AI/ML and Health
+PASS [simulation] A minute of simulation leaks neither DOM nodes nor memory, and raises no page error
+PASS [simulation] Analytics receives only fixed ids: no telemetry values, no free text
+PASS [simulation] Reduced motion: the simulation starts paused and can be stepped or started by hand
+PASS [performance] Initial load: LCP under 2.5 s, no layout shift, and neither the simulation nor three.js in the first load
+PASS [performance] Interaction: opening modules and injecting a fault respond within 200 ms, without layout jumps
+FAIL [accessibility] desktop: no WCAG 2.2 A/AA violations found by axe in any module
+     Expected values to be strictly deep-equal: | + actual - expected |  | + [
+PASS [accessibility] Headings descend in order; one H1; every module has an H2
+PASS [accessibility] Keyboard: skip link first, a visible focus ring, tabs by arrow keys, panels reachable
+FAIL [accessibility] Live regions do not announce at the simulation's frame rate
+     34 live-region updates in 8 s of a developing fault: Nominal — 90 % | Nominal — 89 % | Nominal — 87 % | Nominal — 85 % | Nominal — 81 % | Nominal — 77 % | Nominal — 72 % | Nominal — 65 % | Nominal — 60 % | Nominal — 54 % | Nominal — 47 % | Nominal — 40 % | Probable Oxidiser pump degradation — 42 % | Probable Oxidiser pump degradation — 51 % | Probable Oxidiser pump degradation — 60 % | Probable Oxidiser pump degradation — 67 % | Probable Oxidiser pump degradation — 72 % | Probable Oxidiser pump degradation — 76 % | Probable Oxidiser pump degradation — 79 % | Probable Oxidiser pump degradation 
+PASS [accessibility] Visible labels are part of each control's accessible name
+FAIL [accessibility] mobile: no WCAG 2.2 A/AA violations found by axe in any module
+     Expected values to be strictly deep-equal: | + actual - expected |  | + [
+PASS [integration] Space page: the advanced card sits beside the fundamentals card and leads here
+PASS [integration] Fundamentals page: still renders its 3D twin, and its call to action leads here
+
+110 of 159 checks passed, 49 failed. Evidence: <working directory>/before-final

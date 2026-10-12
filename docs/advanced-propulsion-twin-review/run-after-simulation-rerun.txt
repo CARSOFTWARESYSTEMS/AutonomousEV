@@ -1,0 +1,24 @@
+PASS [simulation] Simulated time advances at one second per second: one clock, not several
+PASS [simulation] Leaving and re-entering the lab ten times does not multiply the clock
+PASS [simulation] Pause stops simulated time; Step advances it by half a second; Live resumes
+PASS [simulation] Reset restores the same healthy baseline every time
+PASS [simulation] Throttle and Compare change the plots; start and shutdown move the engine through its modes
+PASS [simulation] Fault pump_degradation: injected, then detected or flagged, and isolated as "Oxidiser pump degradation"; removing it returns the twin to nominal
+PASS [simulation] Fault valve_restriction: injected, then detected or flagged, and isolated as "Main fuel valve restriction"; removing it returns the twin to nominal
+PASS [simulation] Fault cooling_restriction: injected, then detected or flagged, and isolated as "Cooling-channel restriction"; removing it returns the twin to nominal
+PASS [simulation] Fault feed_pressure_reduction: injected, then detected or flagged, and isolated as "Oxidiser feed pressure reduction"; removing it returns the twin to nominal
+PASS [simulation] Fault injector_restriction: injected, then detected or flagged, and isolated as "Oxidiser injector restriction"; removing it returns the twin to nominal
+PASS [simulation] Fault combustion_loss: injected, then detected or flagged, and isolated as "Combustion performance loss"; removing it returns the twin to nominal
+PASS [simulation] Fault pc_sensor_drift: injected, then detected or flagged, and isolated as "Chamber pressure sensor A drift"; removing it returns the twin to nominal
+PASS [simulation] Fault sensor_noise: injected, then detected or flagged, and isolated as "Noisy pressure sensor"; removing it returns the twin to nominal
+PASS [simulation] Fault packet_delay: injected, then detected or flagged, and isolated as "Telemetry packet delay"; removing it returns the twin to nominal
+PASS [simulation] Fault timestamp_error: injected, then detected or flagged, and isolated as "Timestamp misalignment"; removing it returns the twin to nominal
+PASS [simulation] Fault telemetry_replay: injected, then detected or flagged, and isolated as "Replayed telemetry"; removing it returns the twin to nominal
+PASS [simulation] Rate-of-change detector: silent on a fault that grows slowly, and among the first to fire on one that arrives at once
+PASS [simulation] Switching straight from one fault to another leaves no stale diagnosis, and each scenario is detected on its own clock
+PASS [simulation] Instruments in other modules show the same twin: a fault injected in the lab is the one diagnosed in FDIR, AI/ML and Health
+PASS [simulation] A minute of simulation leaks neither DOM nodes nor memory, and raises no page error
+PASS [simulation] Analytics receives only fixed ids: no telemetry values, no free text
+PASS [simulation] Reduced motion: the simulation starts paused and can be stepped or started by hand
+
+22 of 22 checks passed, 0 failed. Evidence: <working directory>/final-sim

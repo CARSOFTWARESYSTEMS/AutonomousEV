@@ -4,6 +4,7 @@
 // The propulsion system is a generic educational reference architecture.
 // Nothing here is a dimension, a rating or a figure from a real engine.
 import type { LevelId, ModuleId } from "../types";
+import { SPACE_INITIATIVE } from "@/data/space-initiative";
 
 export const PRODUCT = {
   name: "Advanced Rocket Propulsion System Digital Twin",
@@ -25,9 +26,12 @@ export const PRODUCT = {
 } as const;
 
 export const PREPARED_BY = {
-  notes: ["Advanced Rocket Propulsion System Digital Twin is an EV.ENGINEER™ interactive engineering tutorial. It is an independent educational and research-oriented work, and is not affiliated with or endorsed by NASA, SpaceX, ISRO or any other agency or launch provider."],
-  reviewed: "2026-10-11",
-  reviewedLabel: "11 October 2026",
+  notes: [
+    "Advanced Rocket Propulsion System Digital Twin is an EV.ENGINEER™ interactive engineering tutorial. It is an independent educational and research-oriented work, and is not affiliated with or endorsed by NASA, SpaceX, ISRO or any other agency or launch provider.",
+    `It is published within Space, ${SPACE_INITIATIVE.descriptor.charAt(0).toLowerCase()}${SPACE_INITIATIVE.descriptor.slice(1)} EV.ENGINEER™ is the engineering and learning platform it is built and hosted on. Commercial engineering, where applicable, is handled separately by iTelematics Software Private Limited under explicit agreements.`,
+  ],
+  reviewed: "2026-10-12",
+  reviewedLabel: "12 October 2026",
   imageAlt: "Sudarshana Karkala — EV.ENGINEER",
 } as const;
 

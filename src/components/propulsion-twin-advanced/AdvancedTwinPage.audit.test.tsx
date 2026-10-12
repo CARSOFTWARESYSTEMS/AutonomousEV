@@ -10,7 +10,12 @@ import { PHYSICS_CONCEPTS } from "./data/physics";
 import { QUALITY_CHECKS, TRANSFORMATION_STEPS } from "./data/pipeline";
 import { PRESSURE_SENSORS, PRESSURE_UNIT_NOTE } from "./data/pressure";
 import { FAQ } from "./data/faq";
-import { PRODUCT } from "./data/product";
+import { PREPARED_BY, PRODUCT, CREDIBILITY_NOTICE, VALUE_NOTE } from "./data/product";
+import { IMPLEMENTATION_STATUS, NOT_IMPLEMENTED } from "./data/status";
+import { ESTIMATORS, MATURITY_HERE } from "./data/twin";
+import { AI_BOUNDARY } from "./data/aiml";
+import { PROGNOSTICS_LIMIT, READINESS_CAVEAT } from "./data/course";
+import { SUBSYSTEMS } from "./data/system";
 import EstimatorLab from "./live/EstimatorLab";
 import { Diagnosis, FaultPicker, SCORE_NOTE, TwinPending } from "./live/shared";
 import type { TwinSnapshot } from "./simulation/twinTypes";
@@ -432,6 +437,85 @@ describe("what the page says about its own model", () => {
     render(<AdvancedTwinPage />);
     open("Data");
     expect(within(screen.getByRole("region", { name: "Data-quality checks" })).getByRole("columnheader", { name: "In this simulation" })).toBeInTheDocument();
+  });
+});
+
+describe("claims held to what the simulator runs", () => {
+  const text = () => renderToStaticMarkup(<AdvancedTwinPage />).replace(/<[^>]+>/g, " ").replace(/&#x27;/g, "'").replace(/&amp;/g, "&").replace(/\s+/g, " ");
+
+  it("says, beside each part it only describes, that the simulator does not implement it", () => {
+    const page = text();
+    for (const [part, statement] of Object.entries(IMPLEMENTATION_STATUS)) expect(page, part).toContain(statement);
+    // The four parts that are concept only say so in the same words, and carry the CONCEPTUAL status on their heading.
+    for (const part of ["mlops", "dataArchitecture", "digitalThread", "cybersecurity"] as const) expect(IMPLEMENTATION_STATUS[part].startsWith(NOT_IMPLEMENTED), part).toBe(true);
+    expect(NOT_IMPLEMENTED).toBe("Concept described — not implemented in this educational simulator.");
+    render(<AdvancedTwinPage />);
+    open("Architecture");
+    for (const title of ["Data architecture", "The digital thread", "Digital Twin Cybersecurity"]) expect(screen.getByRole("region", { name: title }).querySelector("h3")).toHaveTextContent("CONCEPTUAL");
+  });
+
+  it("does not let the live twin be credited with an estimator it does not run", () => {
+    const by = Object.fromEntries(ESTIMATORS.map((e) => [e.id, e.twin]));
+    expect(by.kalman).toMatch(/This is the estimator the live twin runs\./);
+    for (const id of ["ekf", "ukf", "particle"]) expect(by[id], id).toMatch(/On this page: implemented in the demonstration only.*The live twin does not run it/);
+    expect(IMPLEMENTATION_STATUS.estimation).toMatch(/one scalar Kalman filter per measured channel/);
+  });
+
+  it("does not credit the twin with a turbine model: the hot-gas pressures are residual channels and nothing more", () => {
+    for (const id of ["pPb", "pTi", "pTo"] as const) {
+      const use = PRESSURE_SENSORS.find((s) => s.id === id)!.twinUse;
+      expect(use, id).toMatch(/^On this page: .*residual channel/);
+      expect(use, id).not.toMatch(/turbine power estimate that is balanced|Boundary of the turbine model|^Input to the turbine pressure-ratio check/);
+    }
+    const hotGas = SUBSYSTEMS.find((s) => s.id === "hot_gas")!;
+    expect(hotGas.twin).toMatch(/On this page that balance is not solved.*no turbine or preburner fault is modelled/);
+    // And the words agree with the drawing: two turbopumps, each with its own turbine.
+    expect(SUBSYSTEMS.find((s) => s.id === "turbomachinery")!.role).toMatch(/^Two turbopumps .* each using shaft power from its own turbine/);
+    expect(hotGas.role).toMatch(/drives both turbines/);
+  });
+
+  it("says that recovery, range and rate checks, security controls and validation are not there", () => {
+    expect(IMPLEMENTATION_STATUS.recovery).toMatch(/Recovery is not\..*it commands nothing/);
+    expect(IMPLEMENTATION_STATUS.aiArchitecture).toMatch(/range and rate plausibility checks are described, not implemented/);
+    expect(IMPLEMENTATION_STATUS.cybersecurity).toMatch(/None of the controls below exists on this page/);
+    expect(IMPLEMENTATION_STATUS.validation).toMatch(/No physical engine has been used to calibrate or validate any model here/);
+    expect(IMPLEMENTATION_STATUS.mlops).toMatch(/no drift monitoring/);
+  });
+});
+
+describe("what the page is, and is not", () => {
+  it("keeps every statement that keeps it honest about being a simulation", () => {
+    const page = renderToStaticMarkup(<AdvancedTwinPage />).replace(/<[^>]+>/g, " ").replace(/&#x27;/g, "'").replace(/&amp;/g, "&").replace(/\s+/g, " ");
+    // Simulated telemetry; no proprietary engine; educational and research; not a certification or flight-safety authority.
+    expect(CREDIBILITY_NOTICE).toBe(
+      "This experience is an educational and research-oriented Digital Twin engineering environment. Generic propulsion architecture, simulated telemetry, reference models and illustrative failure scenarios are used unless explicitly identified otherwise. It does not reproduce a proprietary flight engine and is not a flight-certification or flight-safety authority.",
+    );
+    expect(page.split(CREDIBILITY_NOTICE).length - 1).toBeGreaterThanOrEqual(2);
+    // Reference values are not flight-engine measurements.
+    expect(VALUE_NOTE).toMatch(/SIMULATED or a REFERENCE VALUE.*None is a value from a flight engine\./);
+    expect(page).toContain(VALUE_NOTE);
+    // No physical engine has validated these models; not flight-certification evidence.
+    expect(page).toContain("None. Not compared with any physical engine.");
+    expect(page).toContain("nothing on this page is flight-certification evidence or a basis for a flight-safety decision");
+    expect(page).toContain(PROGNOSTICS_LIMIT);
+    expect(PROGNOSTICS_LIMIT).toMatch(/cannot certify that hardware is safe to fly/);
+    expect(page).toContain(READINESS_CAVEAT);
+    expect(page).toContain(AI_BOUNDARY);
+    expect(AI_BOUNDARY).toMatch(/autonomously certifies propulsion safety/);
+    // Demonstrating the methods of levels 4 to 6 does not make this a physically connected level 4 to 6 twin.
+    expect(MATURITY_HERE).toBe("The twin on this page implements the methods of levels 4 to 6 against a simulated asset. Because its telemetry is simulated, as a whole it is a level 2 system: an instrumented simulation that demonstrates how a level 6 twin works.");
+    expect(page).toContain(MATURITY_HERE);
+  });
+
+  it("places the tutorial in the hierarchy: ISHAVASYAM.ORG's initiative, EV.ENGINEER's platform, iTelematics for commerce", () => {
+    expect(PREPARED_BY.notes).toHaveLength(2);
+    expect(PREPARED_BY.notes[0]).toMatch(/is an EV\.ENGINEER™ interactive engineering tutorial\..*not affiliated with or endorsed by NASA, SpaceX, ISRO/);
+    expect(PREPARED_BY.notes[1]).toBe(
+      "It is published within Space, an ISHAVASYAM.ORG education, research and engineering initiative. EV.ENGINEER™ is the engineering and learning platform it is built and hosted on. Commercial engineering, where applicable, is handled separately by iTelematics Software Private Limited under explicit agreements.",
+    );
+    render(<AdvancedTwinPage />);
+    expect(document.body.textContent).toContain(PREPARED_BY.notes[1]);
+    expect(document.body.textContent).not.toMatch(/EV Society/);
   });
 });
 

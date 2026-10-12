@@ -1,0 +1,20 @@
+PASS Route, metadata, structured data and a single H1, all in the server HTML
+PASS HERO: the engine dominates the opening view, with minimal interface
+PASS Enter Digital Twin brings in the navigation without a hard cut, and reports once
+PASS ENGINE: a component is selected, the camera moves to it, and a small panel opens
+PASS TURBOMACHINERY: the housing is cut away, the rotor turns, and energy transfer is shown
+PASS BUILD: Open Engine separates the systems and cuts them open; the exploded view is proportional
+PASS FLOW: fuel, oxidiser, coolant and hot gas follow the engine, with pressure and a cooling comparison
+PASS TEST: the environment changes and the run goes from system check to mainstage in sequence
+PASS TEST: throttle changes the engine, and shutdown leads to the review
+PASS HEALTH: states are on the systems, sensors filter, and a sensor can be traced
+PASS FAULT: bearing degradation starts healthy on the component and becomes an anomaly, then a diagnosis
+PASS TWIN: observed, estimated, expected, residual and predicted, with a timeline and model credibility
+PASS ARCHITECTURE: the layers sit around the engine, and choosing one is reported
+PASS GUIDED TOUR: twelve stages, pause, back, and an exit that leaves the scene whole
+PASS The long-form content sits below the application and links back into it
+PASS MOBILE: the same subject at the same address, without WebGL or three.js
+
+16 checks passed. Screenshots: <working directory>/final-fundamentals
+Renderer: ANGLE (Apple, ANGLE Metal Renderer: Apple M1, Unspecified Version)
+Frames per second at 1440 × 900: engine 60, test 60, twin 60

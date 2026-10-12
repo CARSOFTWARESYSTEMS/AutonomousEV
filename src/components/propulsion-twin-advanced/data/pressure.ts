@@ -326,7 +326,7 @@ export const PRESSURE_SENSORS: readonly PressureSensor[] = [
     trend: "Rises with throttle, ahead of chamber pressure during start.",
     physics: "Its own small combustion balance, fed from both pump discharges.",
     failureSignature: "An unexpected transient, or a level that does not match the valve commanding it.",
-    twinUse: "Boundary of the turbine model.",
+    twinUse: "On this page: compared with its expected value as a residual channel, and one input of the learned anomaly detector. The preburner is not modelled: this pressure is prescribed from turbine inlet pressure and shaft speed, and no injectable fault acts on it.",
     faults: [],
   },
   {
@@ -344,7 +344,7 @@ export const PRESSURE_SENSORS: readonly PressureSensor[] = [
     trend: "Just below preburner pressure.",
     physics: "Preburner pressure minus duct loss.",
     failureSignature: "A pressure ratio that no longer matches shaft speed: turbine performance has changed.",
-    twinUse: "Input to the turbine power estimate that is balanced against pump power.",
+    twinUse: "On this page: a residual channel and one input of the learned anomaly detector. No turbine power estimate is computed and no turbine fault is modelled: this pressure is prescribed from chamber pressure and shaft speed.",
     faults: [],
   },
   {
@@ -362,7 +362,7 @@ export const PRESSURE_SENSORS: readonly PressureSensor[] = [
     trend: "Sits above chamber pressure by the hot-gas injector drop.",
     physics: "Chamber pressure plus the loss of the path the exhaust takes into the chamber.",
     failureSignature: "A changed ratio to turbine inlet at the same speed.",
-    twinUse: "Input to the turbine pressure-ratio check.",
+    twinUse: "On this page: a residual channel and one input of the learned anomaly detector. No turbine pressure-ratio check is implemented.",
     faults: [],
   },
 ];

@@ -153,7 +153,7 @@ describe("Advanced Rocket Propulsion Digital Twin metadata", () => {
   it("is listed in the sitemap, once, with its review date", () => {
     const entries = sitemap().filter((entry) => entry.url === CANONICAL);
     expect(entries).toHaveLength(1);
-    expect(entries[0]).toMatchObject({ lastModified: "2026-10-11" });
+    expect(entries[0]).toMatchObject({ lastModified: "2026-10-12" });
   });
 
   it("is described in llms.txt without overstating what it is", () => {
@@ -208,7 +208,7 @@ describe("Advanced Rocket Propulsion Digital Twin structured data", () => {
   it("attributes the page to Sudarshana Karkala using only the site's verified profile facts", () => {
     const page = find("WebPage");
     expect(page.author).toEqual({ "@id": PERSON_ID });
-    expect(page.dateModified).toBe("2026-10-11");
+    expect(page.dateModified).toBe("2026-10-12");
     const person = find("Person");
     expect(person).toMatchObject({ "@id": PERSON_ID, name: SUDARSHANA_KARKALA.name, url: SUDARSHANA_KARKALA.canonicalUrl });
     for (const key of ["jobTitle", "honorificPrefix", "hasCredential"]) expect(person).not.toHaveProperty(key);

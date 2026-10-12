@@ -17,6 +17,7 @@ import KnowledgeGraph from "../widgets/KnowledgeGraph";
 import ReadinessScore from "../widgets/ReadinessScore";
 import WeekTracker from "../widgets/WeekTracker";
 import css from "../advancedTwin.module.css";
+import { IMPLEMENTATION_STATUS } from "../data/status";
 
 const INJECTABLE = DIAGNOSES.filter((d) => d.id !== "nominal");
 
@@ -25,6 +26,7 @@ export function FdirModule() {
     <ModulePanel id="fdir">
       <Block title="What FDIR is">
         <p className={css.definition}>{FDIR_DEFINITION}</p>
+        <p className={css.note}>{IMPLEMENTATION_STATUS.recovery}</p>
       </Block>
 
       <Block title="Fault detection methods" intro="Fault detection decides that behaviour is no longer nominal. There are several ways to decide, each with strengths, limitations and its own kind of false alarm.">
@@ -218,6 +220,7 @@ export function ArchitectureModule() {
       </Block>
 
       <Block title="North-star architecture" intro="The north-star architecture is the complete flow of a propulsion Digital Twin, from the physical system to validated decision support.">
+        <p className={css.note}>{IMPLEMENTATION_STATUS.northStar}</p>
         <ol className={css.northStar} aria-label="North-star architecture, top to bottom">
           {NORTH_STAR.map((row, i) => (
             <li key={i} data-parallel={typeof row === "string" ? undefined : ""}>
@@ -235,7 +238,8 @@ export function ArchitectureModule() {
         </ol>
       </Block>
 
-      <Block title="Data architecture" intro="A Digital Twin data architecture separates acquisition at the edge, transport, storage, stateless model services and the state store that holds each asset's estimated condition, with APIs as the only way in or out.">
+      <Block title="Data architecture" tag="CONCEPTUAL" intro="A Digital Twin data architecture separates acquisition at the edge, transport, storage, stateless model services and the state store that holds each asset's estimated condition, with APIs as the only way in or out.">
+        <Callout kind="caution">{IMPLEMENTATION_STATUS.dataArchitecture}</Callout>
         <div className={css.layersStack}>
           {DATA_ARCHITECTURE.map((layer) => (
             <div key={layer.id} className={css.layerRow}>
@@ -276,8 +280,9 @@ export function ArchitectureModule() {
         </div>
       </Block>
 
-      <Block title="The digital thread">
+      <Block title="The digital thread" tag="CONCEPTUAL">
         <p className={css.definition}>{DIGITAL_THREAD_INTRO}</p>
+        <Callout kind="caution">{IMPLEMENTATION_STATUS.digitalThread}</Callout>
         <ol className={css.thread}>
           {DIGITAL_THREAD.map((stage) => (
             <li key={stage.id} data-twin={stage.id === "twin" || undefined}>
@@ -288,8 +293,9 @@ export function ArchitectureModule() {
         </ol>
       </Block>
 
-      <Block title={CYBER_HEADING}>
+      <Block title={CYBER_HEADING} tag="CONCEPTUAL">
         <p className={css.definition}>{CYBER_INTRO}</p>
+        <Callout kind="caution">{IMPLEMENTATION_STATUS.cybersecurity}</Callout>
         <Terms items={CYBER_CONTROLS.map((c) => ({ id: c.id, term: c.name, text: c.text }))} columns={4} />
         <div className={css.tableWrap} data-stack="" role="region" aria-label="Digital Twin-specific attacks" tabIndex={0}>
           <table className={css.table} role="table" data-stack="">

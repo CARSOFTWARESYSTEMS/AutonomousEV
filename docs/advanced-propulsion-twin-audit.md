@@ -6,7 +6,7 @@ Audit dates: 11–12 October 2026. Baseline: `main` = `origin/main` = `8c47939`,
 
 This file records every defect the audit found: how to reproduce it, what should happen, what did happen, why, what was changed, and the test that now guards it. The results of running those tests, the measurements and the release recommendation are in [advanced-propulsion-twin-audit-report.md](advanced-propulsion-twin-audit-report.md). Screenshots and machine-readable results are in [advanced-propulsion-twin-review/](advanced-propulsion-twin-review/).
 
-Nothing here has been committed, pushed or deployed.
+Status on 12 October 2026: the fixes recorded here were committed by the site owner as `308e2bd` and are deployed. A release gate was then run; what it found and changed is in the report under "Release gate", and is summarised at the end of this file.
 
 ## How the audit was done
 
@@ -377,3 +377,17 @@ Every control on the page and the check that exercises it. "E" checks run in a r
 | | Instruments in FDIR, AI/ML, Health | Same twin as the Lab | E[simulation] "Instruments in other modules show the same twin…" |
 | Architecture | Knowledge graph nodes, "Open on the pressure map", "Inject in the Lab" | Live state shown; links act on the twin | E[controls] "Fault tree, knowledge graph and readiness score…" |
 | | Readiness: this page / your own, thirteen sliders | Weakest category limits; evidence shown | same |
+
+## Found by the release gate, 12 October 2026
+
+Uncommitted at the time of writing. Reproduction, action and evidence are in the report.
+
+| ID | Sev. | Finding | Root cause | Fix | Verified by |
+| --- | --- | --- | --- | --- | --- |
+| APT-30 | P2 | Three hot-gas sensors and the hot-gas subsystem credited the twin with a turbine model, a turbine power estimate balanced against pump power, and a pressure-ratio check. None exists: those pressures are prescribed outputs watched as residual channels | Text written for a model with a turbine, never reconciled with the reduced-order model | Statements rewritten to say what the simulator does | A "does not credit the twin with a turbine model…" |
+| APT-31 | P2 | The System module's text still described one turbine and one shaft after the schematic was redrawn with two turbopumps (APT-06) | APT-06 corrected the drawing and its alt text, not the surrounding prose | Text corrected | same test |
+| APT-32 | P2 | Cybersecurity controls, MLOps practices, the data architecture and the digital thread were described with no statement that this simulator implements none of them; FDIR "recovery" likewise; the estimator descriptions did not say which one the live twin runs | Reference material and implementation were not told apart on the page | `data/status.ts`: one statement per part, shown beside it; three sections tagged CONCEPTUAL | A "says, beside each part it only describes, that the simulator does not implement it", "does not let the live twin be credited with an estimator it does not run", "says that recovery, range and rate checks, security controls and validation are not there" |
+| APT-33 | P3 | The page did not say whose initiative it belongs to | Written before the Space initiative's ownership was settled | One attribution sentence | A "places the tutorial in the hierarchy…" |
+| APT-34 | P3 | Five evidence logs cited by the report were not in the repository: `.gitignore` excludes `*.log` | – | Renamed `.txt` | – |
+
+Verification added without a defect behind it: the post-start hold measured at 2.75 s; a real fault present before a restart is declared 0.15–0.20 s after the hold and isolated 1.1 s after it, for all seven modelled faults; every modelled fault is carried from physical effect to recommended investigation (`simulation/verification.test.ts`, twelve tests).

@@ -9,11 +9,11 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { CH, CHANNEL_IDS, type ChannelId, N_CH } from "./channels";
 import { runEstimatorDemo } from "./estimators";
 import { FAULT_DEFS, type Severities } from "./faults";
-import { DATA_DIAGNOSES, FAULT_IDS, type FaultId, PHYSICAL_DIAGNOSES } from "./isolation";
+import { DATA_DIAGNOSES, DIAGNOSIS_BY_ID, FAULT_IDS, type FaultId, PHYSICAL_DIAGNOSES } from "./isolation";
 import { acceptsFeatures } from "./ml";
 import { AS_BUILT } from "./calibration";
 import { DESIGN, type PlantParams, type PlantState, lagFraction, scheduleSpeed, solveFlows, steadyState, stepPlant, writeOutputs } from "./plant";
-import { DT, FLAT_LINE, MAX_STEPS, THROTTLE_RANGE, UNRECOGNISED_AFTER } from "./twinCore";
+import { DT, FLAT_LINE, MAX_STEPS, SETTLE_TIME_CONSTANTS, THROTTLE_RANGE, UNRECOGNISED_AFTER } from "./twinCore";
 import { TwinEngine } from "./twinEngine";
 import type { DetectorId, FaultOnset, TwinSnapshot } from "./twinTypes";
 
@@ -398,6 +398,115 @@ describe("detectors: built to fire, and built not to", () => {
   });
 });
 
+/** What the hold after a start costs a real fault: seconds from health checks resuming to detection and to isolation. */
+const afterHold: { fault: string; holdSeconds: number; detectedAfterHold: number; isolatedAfterHold: number }[] = [];
+
+describe("start, restart and the hold on health checks that follows a start", () => {
+  /** Stops the engine and starts it again. Returns the time mainstage was reached. */
+  const restart = (e: Rig): number => {
+    e.shutdown();
+    while (e.snapshot().mode !== "ready") e.step(1);
+    e.step(seconds(2));
+    e.start();
+    while (e.snapshot().mode === "start") e.step(1);
+    return e.snapshot().t;
+  };
+  /** Steps until health checks resume, and returns that time. */
+  const untilMonitoring = (e: Rig): number => {
+    for (let k = 0; k < seconds(20) && !e.snapshot().monitoring; k++) e.step(1);
+    return e.snapshot().t;
+  };
+
+  it("holds health checks for five model shaft time constants after mainstage is reached, and no longer", () => {
+    const e = fresh();
+    e.step(seconds(3));
+    const mainstage = restart(e);
+    expect(e.snapshot().monitoring).toBe(false);
+    expect(e.snapshot().status.twin).toBe("HOLDING");
+    const resumed = untilMonitoring(e);
+    const hold = SETTLE_TIME_CONSTANTS * e.model.tauN;
+    expect(hold).toBeCloseTo(2.75, 6);
+    expect(resumed - mainstage).toBeGreaterThanOrEqual(hold - DT);
+    expect(resumed - mainstage).toBeLessThanOrEqual(hold + 2 * DT);
+  });
+
+  it("raises nothing on a healthy engine through the start and for a minute after it", () => {
+    const e = fresh();
+    e.step(seconds(3));
+    restart(e);
+    for (let k = 0; k < seconds(60); k++) {
+      e.step(1);
+      const s = e.snapshot();
+      expect(s.detectors.filter((d) => d.active).map((d) => d.id), `t ${s.t.toFixed(2)}`).toEqual([]);
+    }
+    expect(e.snapshot().events.filter((ev) => ev.kind === "detected")).toEqual([]);
+    expect(e.snapshot().ranking[0].id).toBe("nominal");
+  });
+
+  it.each(["pump_degradation", "valve_restriction", "cooling_restriction", "feed_pressure_reduction", "injector_restriction", "combustion_loss", "pc_sensor_drift"] as const)(
+    "does not hide a real fault behind the hold: %s, present before the start, is declared and isolated once the hold ends",
+    (fault) => {
+      const e = fresh();
+      e.step(seconds(3));
+      e.shutdown();
+      while (e.snapshot().mode !== "ready") e.step(1);
+      e.inject(fault, 0.8, "abrupt");
+      e.step(seconds(2));
+      e.start();
+      while (e.snapshot().mode === "start") e.step(1);
+      // Held: no health verdict while the start transient settles.
+      while (!e.snapshot().monitoring) {
+        expect(e.snapshot().anomaly, `${fault}: anomaly declared during the hold`).toBe(false);
+        e.step(1);
+      }
+      const resumed = e.snapshot().t;
+      let detected: number | null = null;
+      let isolated: number | null = null;
+      for (let k = 0; k < seconds(20) && isolated === null; k++) {
+        e.step(1);
+        const s = e.snapshot();
+        if (detected === null && s.anomaly) detected = s.t - resumed;
+        if (s.events.some((ev) => ev.kind === "isolated" && ev.id === fault)) isolated = s.t - resumed;
+      }
+      // The fault costs the hold and no more: declared within two seconds of health checks resuming, and named within ten.
+      expect(detected, `${fault}: detection after the hold`).not.toBeNull();
+      expect(detected!).toBeLessThanOrEqual(2);
+      expect(isolated, `${fault}: isolation after the hold`).not.toBeNull();
+      expect(isolated!).toBeLessThanOrEqual(10);
+      expect(e.snapshot().ranking[0].id).toBe(fault);
+      afterHold.push({ fault, holdSeconds: SETTLE_TIME_CONSTANTS * e.model.tauN, detectedAfterHold: Number(detected!.toFixed(2)), isolatedAfterHold: Number(isolated!.toFixed(2)) });
+    },
+  );
+
+  it("detects a fault that arrives during the hold as soon as the hold ends", () => {
+    const e = fresh();
+    e.step(seconds(3));
+    restart(e);
+    e.step(seconds(0.5));
+    expect(e.snapshot().monitoring).toBe(false);
+    e.inject("injector_restriction", 1, "abrupt");
+    const resumed = untilMonitoring(e);
+    expect(e.snapshot().anomaly).toBe(false);
+    e.step(seconds(2));
+    expect(e.snapshot().anomaly).toBe(true);
+    e.step(seconds(8));
+    expect(e.snapshot().ranking[0].id).toBe("injector_restriction");
+    expect(e.snapshot().t - resumed).toBeLessThanOrEqual(10.1);
+  });
+
+  it("holds through shutdown as well: a commanded shutdown is not reported as a fault", () => {
+    const e = fresh();
+    e.step(seconds(3));
+    e.shutdown();
+    for (let k = 0; k < seconds(6); k++) {
+      e.step(1);
+      expect(e.snapshot().anomaly).toBe(false);
+    }
+    expect(e.snapshot().mode).toBe("ready");
+    expect(e.snapshot().status.twin).toBe("HOLDING");
+  });
+});
+
 describe("running a fault as a scenario", () => {
   it("replaces the active fault and restarts from the healthy baseline, so nothing is carried over", () => {
     const e = fresh();
@@ -491,6 +600,9 @@ interface Row {
   detectorSeconds: Record<string, number | null>;
   isolatedAs: string | null;
   isolationSeconds: number | null;
+  /** Stages of the chain from physical effect to recommended investigation that were reached by the end of the run. */
+  chainReached: string[];
+  recommendation: string;
   wronglyIsolatedAs: string[];
   finalLeading: string;
   finalProbability: number;
@@ -530,6 +642,8 @@ function observe(e: Rig, fault: string, kind: Row["kind"], onset: FaultOnset, se
     // The standing conclusion: the last thing declared. A declaration with no cause is "not recognised".
     isolatedAs: declared.at(-1)?.id ?? null,
     isolationSeconds: right ? Number((right.t - start).toFixed(2)) : null,
+    chainReached: s.chain.filter((stage) => stage.reached).map((stage) => stage.id),
+    recommendation: s.prognosis.recommendation,
     wronglyIsolatedAs: [...new Set(named.filter((ev) => ev.id !== fault).map((ev) => ev.id!))],
     finalLeading: s.ranking[0].id,
     finalProbability: Number(s.ranking[0].p.toFixed(3)),
@@ -595,7 +709,7 @@ describe("fault coverage: the envelope the twin was tested over", () => {
     const out = process.env.ADV_TWIN_MATRIX_OUT;
     if (!out) return;
     mkdirSync(dirname(out), { recursive: true });
-    writeFileSync(out, `${JSON.stringify({ note: "SIMULATED. One seeded run per row, 60 s after injection at 100 % throttle. Not failure data from any engine.", runSeconds: RUN_SECONDS, rows }, null, 2)}\n`);
+    writeFileSync(out, `${JSON.stringify({ note: "SIMULATED. One seeded run per row, 60 s after injection at 100 % throttle. Not failure data from any engine.", runSeconds: RUN_SECONDS, rows, startHold: { note: "A fault at 80 % severity present before a restart. Health checks are held for five model shaft time constants after mainstage is reached; these are the seconds from the end of that hold.", rows: afterHold } }, null, 2)}\n`);
   });
 
   const select = (kind: Row["kind"], minSeverity = 0) => rows.filter((r) => r.kind === kind && r.severity >= minSeverity);
@@ -631,6 +745,22 @@ describe("fault coverage: the envelope the twin was tested over", () => {
     for (const r of abrupt) expect(r.detectorSeconds.cusum ?? Infinity, `${r.fault} @${r.severity}: cusum`).toBeGreaterThanOrEqual(r.detectorSeconds.rate!);
     // Too small a step, or one that barely moves chamber pressure, is left to the other detectors: that is its stated blind spot.
     for (const r of select("physical").filter((x) => x.onset === "abrupt" && (x.severity === 0.3 || x.fault === "valve_restriction"))) expect(r.detectorSeconds.rate, `${r.fault} @${r.severity}`).toBeNull();
+  });
+
+  it("carries every modelled fault the whole way: effect, sensor response, residual, detection, isolation, confidence, recommended investigation", () => {
+    for (const r of select("physical")) {
+      const label = `${r.fault} ${r.onset} @${r.severity}`;
+      expect(r.chainReached, label).toEqual(expect.arrayContaining(["effect", "sensor", "residual", "detection", "isolation", "confidence", "investigation"]));
+      // The recommendation is the investigation written for that fault, not a generic one.
+      expect(r.recommendation.startsWith(DIAGNOSIS_BY_ID[r.fault as FaultId].investigation), label).toBe(true);
+    }
+    // An unrecognised pattern stops before isolation, and is told not to act on the ranking.
+    for (const r of select("unmodelled")) {
+      // (The first two stages describe an injected fault by name; these conditions are applied behind the twin's back, so it has none to describe.)
+      expect(r.chainReached, r.fault).toEqual(expect.arrayContaining(["residual", "detection"]));
+      expect(r.chainReached, r.fault).not.toContain("isolation");
+      expect(r.recommendation, r.fault).toMatch(/^No modelled fault explains this pattern/);
+    }
   });
 
   it("at 30 % severity, leads with the right fault even where it is too small to raise an alarm", () => {
