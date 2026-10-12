@@ -47,7 +47,7 @@ export default function ModuleNav() {
     const bar = list.current;
     if (!tab || !bar) return;
     const left = tab.offsetLeft - bar.clientWidth / 2 + tab.clientWidth / 2;
-    bar.scrollTo({ left, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    bar.scrollTo?.({ left, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   }, [active]);
 
   const onKey = (event: KeyboardEvent<HTMLButtonElement>) => {

@@ -43,7 +43,8 @@ export default function SystemExplorer() {
   };
 
   return (
-    <div className={css.explorer}>
+    // In 3D the view takes the full width, and the subsystem notes move beneath it.
+    <div className={css.explorer} data-view={in3D && capable ? "3d" : "schematic"}>
       <div className={css.stage}>
         <ul className={css.stageTags} aria-label="Model status">
           <li>REFERENCE MODEL</li>

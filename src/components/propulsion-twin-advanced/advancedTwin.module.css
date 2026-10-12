@@ -270,7 +270,7 @@
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid var(--rt-line);
-  background: rgba(5, 7, 11, 0.92);
+  background: rgba(5, 7, 11, 0.97);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
@@ -2604,6 +2604,12 @@ button.ladderRow[aria-pressed="true"] {
   .explorer > .stage {
     position: sticky;
     top: calc(var(--rt-header) + var(--at-nav) + 12px);
+  }
+  .explorer[data-view="3d"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .explorer[data-view="3d"] > .stage {
+    position: static;
   }
   .fusion,
   .tree,
