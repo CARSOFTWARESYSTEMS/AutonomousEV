@@ -3,7 +3,7 @@
 // Kalman, unscented Kalman and particle filter) so their behaviour can be
 // compared against a truth that only a simulation can show.
 import { createRng } from "./channels";
-import { DESIGN, type PlantParams, chamberTarget, scheduleSpeed, solveFlows } from "./plant";
+import { DESIGN, type PlantParams, chamberTarget, lagFraction, scheduleSpeed, solveFlows } from "./plant";
 
 export type EstimatorId = "kalman" | "ekf" | "ukf" | "particle";
 
@@ -48,7 +48,7 @@ const throttleAt = (t: number) => (t < 5 ? 1 : t < 11 ? 0.8 : 1);
 
 /** One step of the chamber: pressure moves toward what the flows at this speed would sustain. Nonlinear in pressure through the flow equation. */
 function advance(p: PlantParams, pc: number, speed: number): number {
-  return pc + (DT / TAU) * (chamberTarget(p, solveFlows(p, speed, pc), true) - pc);
+  return pc + lagFraction(DT, TAU) * (chamberTarget(p, solveFlows(p, speed, pc), true) - pc);
 }
 
 const rmse = (a: readonly number[], b: readonly number[]) => Math.sqrt(a.reduce((sum, value, i) => sum + (value - b[i]) ** 2, 0) / a.length);
@@ -80,7 +80,7 @@ export function runEstimatorDemo(options: EstimatorDemoOptions): EstimatorDemoRe
 
   for (let k = 0; k < STEPS; k++) {
     const t = k * DT;
-    speed += ((scheduleSpeed(throttleAt(t)) - speed) * DT) / DESIGN.tauN;
+    speed += (scheduleSpeed(throttleAt(t)) - speed) * lagFraction(DT, DESIGN.tauN);
     truth = advance(truthParams, truth, speed) + q * rng.gauss();
     const spike = options.spikes && rng.next() < SPIKE_RATE;
     const z = truth + r * (spike ? SPIKE_SCALE : 1) * rng.gauss();

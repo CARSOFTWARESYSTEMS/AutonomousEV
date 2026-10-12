@@ -7,6 +7,7 @@ import dynamic from "next/dynamic";
 import type { ReactNode } from "react";
 import { useLabStore } from "../state/labStore";
 import type { ModuleId } from "../types";
+import Boundary from "./Boundary";
 import css from "../advancedTwin.module.css";
 
 function Loading() {
@@ -39,7 +40,13 @@ export default function LiveSlot({ widget, module, children }: { widget: WidgetI
   const Widget = WIDGETS[widget];
   return (
     <div className={css.live} data-widget={widget}>
-      {active ? <Widget /> : <div className={css.liveFallback}>{children}</div>}
+      {active ? (
+        <Boundary what="This live instrument" fallback={<div className={css.liveFallback}>{children}</div>}>
+          <Widget />
+        </Boundary>
+      ) : (
+        <div className={css.liveFallback}>{children}</div>
+      )}
     </div>
   );
 }

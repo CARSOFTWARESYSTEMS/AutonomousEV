@@ -13,7 +13,7 @@
 import { CH, CHANNELS, N_CH, type Rng } from "./channels";
 import { type Severities, applyPhysicalFaults, driftBias } from "./faults";
 import { PHYSICAL_DIAGNOSES, type PhysicalDiagnosis, SYMPTOM_IDS, type SymptomId, grade } from "./isolation";
-import { type PcaModel, type SoftmaxModel, accuracy, confusionMatrix, trainPca, trainSoftmax } from "./ml";
+import { type CalibrationReport, type PcaModel, type SoftmaxModel, accuracy, calibrationReport, confusionMatrix, trainPca, trainSoftmax } from "./ml";
 import { DESIGN, type PlantParams, W_FU, W_OX, cStarFactor, scheduleSpeed, steadyState } from "./plant";
 import { healthDeviations, npshRatio, symptomArray, symptomDeviations, virtualChamberPressure } from "./symptoms";
 
@@ -188,6 +188,8 @@ export interface ClassifierReport {
   validationAccuracy: number;
   /** Rows are the true class, columns the predicted class, on the validation set. */
   confusion: number[][];
+  /** How far the stated probabilities can be taken at face value, on the same simulated validation set. */
+  calibration: CalibrationReport;
 }
 
 export function trainClassifier(ctx: FeatureContext, trainRng: Rng, validationRng: Rng): ClassifierReport {
@@ -196,7 +198,7 @@ export function trainClassifier(ctx: FeatureContext, trainRng: Rng, validationRn
   const classes = PHYSICAL_DIAGNOSES.length;
   const model = trainSoftmax(training.x, training.y, classes, trainRng, { epochs: 120, decay: 2e-5 });
   const confusion = confusionMatrix(model, validation.x, validation.y, classes);
-  return { model, trainingSamples: training.x.length, validationSamples: validation.x.length, trainingAccuracy: accuracy(confusionMatrix(model, training.x, training.y, classes)), validationAccuracy: accuracy(confusion), confusion };
+  return { model, trainingSamples: training.x.length, validationSamples: validation.x.length, trainingAccuracy: accuracy(confusionMatrix(model, training.x, training.y, classes)), validationAccuracy: accuracy(confusion), confusion, calibration: calibrationReport(model, validation.x, validation.y) };
 }
 
 /** The anomaly detector: principal components of healthy telemetry across the throttle range. It is given no physics. */

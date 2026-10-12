@@ -137,12 +137,20 @@ export function chamberTarget(p: PlantParams, flows: Flows, ignited: boolean): n
 /** The coolant temperature rise these conditions would settle at: heat load grows with chamber pressure, and is shared by the fuel flow. */
 const coolantTarget = (pc: number, mFu: number, ignited: boolean) => (ignited ? clamp((100 * Math.pow(Math.max(pc, 0) / 100, 0.8)) / Math.max(mFu, 0.08), 0, 400) : 0);
 
+/**
+ * Fraction of the way a first-order lag moves toward its target in `dt` seconds.
+ * This is the exact solution for a target that holds still over the step, so the
+ * fraction never exceeds one and a long step cannot overshoot, which the explicit
+ * `dt / tau` form does as soon as `dt` exceeds `tau`.
+ */
+export const lagFraction = (dt: number, tau: number) => (dt > 0 && tau > 0 ? 1 - Math.exp(-dt / tau) : 0);
+
 /** Advances the state by `dt` seconds toward the commanded shaft speed, and returns the flows of the new state. */
 export function stepPlant(p: PlantParams, s: PlantState, speedCommand: number, ignited: boolean, dt: number): Flows {
-  s.speed += ((speedCommand - s.speed) * dt) / p.tauN;
+  s.speed += (speedCommand - s.speed) * lagFraction(dt, p.tauN);
   const flows = solveFlows(p, s.speed, s.pc);
-  s.pc += ((chamberTarget(p, flows, ignited) - s.pc) * Math.min(1, dt / p.tauC));
-  s.tCool += ((coolantTarget(s.pc, flows.mFu, ignited) - s.tCool) * dt) / p.tauT;
+  s.pc += (chamberTarget(p, flows, ignited) - s.pc) * lagFraction(dt, p.tauC);
+  s.tCool += (coolantTarget(s.pc, flows.mFu, ignited) - s.tCool) * lagFraction(dt, p.tauT);
   return solveFlows(p, s.speed, s.pc);
 }
 

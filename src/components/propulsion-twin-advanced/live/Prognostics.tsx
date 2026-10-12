@@ -10,6 +10,7 @@ import { useLabStore } from "../state/labStore";
 import { useTwin } from "../state/useTwin";
 import { ShareBar, TraceChart, fmt, signed } from "../ui/charts";
 import { InjectFault } from "../widgets/actions";
+import { TwinPending } from "./shared";
 import css from "../advancedTwin.module.css";
 
 /** History of the quantity the outlook is about, rebuilt from the channels it is made of. */
@@ -34,9 +35,7 @@ export default function Prognostics() {
   useEffect(() => trackAdvancedTwinOnce("prediction_opened"), []);
   if (!snapshot || !engine) {
     return (
-      <p className={css.loading} role="status">
-        Calibrating the twin…
-      </p>
+      <TwinPending>Calibrating the twin…</TwinPending>
     );
   }
   const p = snapshot.prognosis;
@@ -82,7 +81,11 @@ export default function Prognostics() {
               </span>
             </li>
           </ul>
-          <dl className={css.rows} role="status">
+          {/* Only the health level is announced. The trend and the time to the limit change twice a second. */}
+          <p className={css.srOnly} role="status">
+            Health {snapshot.status.health}
+          </p>
+          <dl className={css.rows}>
             <div>
               <dt>Degradation trend</dt>
               <dd>{driver ? `${driver.label}: ${signed(100 * p.rate, 2)} ± ${(100 * p.rateError).toFixed(2)} % per second` : "No inferred parameter is outside its healthy scatter."}</dd>

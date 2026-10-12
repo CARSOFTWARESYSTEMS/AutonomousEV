@@ -5,15 +5,14 @@ import { useTwin } from "../state/useTwin";
 import { PRESSURE_UNIT } from "../data/pressure";
 import { VV_RULE } from "../data/twin";
 import { ShareBar } from "../ui/charts";
+import { TwinPending } from "./shared";
 import css from "../advancedTwin.module.css";
 
 export default function Identification() {
   const { engine } = useTwin();
   if (!engine) {
     return (
-      <p className={css.loading} role="status">
-        Identifying parameters…
-      </p>
+      <TwinPending>Identifying parameters…</TwinPending>
     );
   }
   const { evidence } = engine;

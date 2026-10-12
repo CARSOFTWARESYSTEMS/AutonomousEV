@@ -7,7 +7,7 @@ import { GitCompare, Pause, Play, Power, RotateCcw, SkipForward } from "lucide-r
 import { VALUE_NOTE } from "../data/product";
 import { useLabStore } from "../state/labStore";
 import { useTwin } from "../state/useTwin";
-import { ChamberChart, ChannelChart, DeltaChart, Diagnosis, FaultPicker } from "./shared";
+import { ChamberChart, ChannelChart, DeltaChart, Diagnosis, FaultPicker, TwinPending } from "./shared";
 import css from "../advancedTwin.module.css";
 
 const THROTTLES = [100, 80, 60] as const;
@@ -22,9 +22,7 @@ export default function ControlRoom() {
 
   if (!snapshot) {
     return (
-      <p className={css.loading} role="status">
-        Calibrating the twin: identifying parameters and training its models on simulated data…
-      </p>
+      <TwinPending>Calibrating the twin: identifying parameters and training its models on simulated data…</TwinPending>
     );
   }
 
@@ -59,7 +57,7 @@ export default function ControlRoom() {
         ))}
       </ul>
 
-      <div className={css.toolbar} role="toolbar" aria-label="Simulation controls">
+      <div className={css.toolbar} role="toolbar" aria-label="Simulation controls" data-sim-time={snapshot.t.toFixed(2)} data-sim-mode={snapshot.mode}>
         <button type="button" className={running ? css.ghost : css.primary} onClick={() => setRunning(!running)} aria-pressed={running}>
           {running ? <Pause size={14} aria-hidden="true" /> : <Play size={14} aria-hidden="true" />} {running ? "Pause" : "Live simulation"}
         </button>

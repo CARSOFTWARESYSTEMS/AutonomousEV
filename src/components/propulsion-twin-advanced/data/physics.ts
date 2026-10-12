@@ -34,7 +34,7 @@ export const PHYSICS_CONCEPTS: readonly Concept[] = [
     simple: "Energy changes form but is never lost. The pump puts work into the liquid as pressure; burning turns chemical energy into heat; the nozzle turns heat and pressure into speed.",
     engineering: "On a closed cycle the turbine's power must equal the pumps' power: that balance sets shaft speed. In the cooling jacket, the heat the coolant gains equals the heat the wall loses.",
     math: { equation: "P_turbine · η_mech = P_pumps        P_pump = ṁ · Δp / (ρ · η_pump)        Q̇_wall = ṁ_coolant · c_p · ΔT", where: "P power · η efficiency · ρ density · Q̇ heat rate · c_p specific heat · ΔT coolant temperature rise" },
-    twin: "The power balance gives the model its shaft speed. The coolant heat balance turns a temperature rise and a flow into the heat load on the wall, which no sensor measures directly.",
+    twin: "The coolant heat balance is in the model: it turns a temperature rise and a flow into the heat load on the wall, which no sensor measures directly. The turbine power balance is not. This reduced-order model schedules shaft speed from the throttle command and lets it follow with a first-order lag, and it prescribes the hot-gas pressures from chamber pressure and speed. A fault that acts through turbine power is therefore outside what it can represent.",
     failure: "Coolant temperature rise climbs while chamber pressure is unchanged. The heat load is the same, so less coolant must be carrying it: the cooling circuit is restricted.",
   },
   {

@@ -154,26 +154,26 @@ export function LabModule() {
       </Block>
 
       <Block title="Faults you can inject" intro="Eleven educational faults: six in the physical system, two in sensors and three in the data path. Each changes the simulated system or its telemetry; the twin is never told which.">
-        <div className={css.tableWrap} role="region" aria-label="Injectable faults" tabIndex={0}>
-          <table className={css.table}>
-            <thead>
-              <tr>
-                <th scope="col">Fault</th>
-                <th scope="col">Where</th>
-                <th scope="col">Physical effect</th>
-                <th scope="col">Recommended engineering investigation</th>
+        <div className={css.tableWrap} data-stack="" role="region" aria-label="Injectable faults" tabIndex={0}>
+          <table className={css.table} role="table" data-stack="">
+            <thead role="rowgroup">
+              <tr role="row">
+                <th scope="col" role="columnheader">Fault</th>
+                <th scope="col" role="columnheader">Where</th>
+                <th scope="col" role="columnheader">Physical effect</th>
+                <th scope="col" role="columnheader">Recommended engineering investigation</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody role="rowgroup">
               {INJECTABLE.map((d) => (
-                <tr key={d.id}>
-                  <th scope="row">
+                <tr role="row" key={d.id}>
+                  <th scope="row" role="rowheader">
                     {d.name}
                     <Tag>{d.cls.toUpperCase()}</Tag>
                   </th>
-                  <td>{d.location}</td>
-                  <td>{d.effect}</td>
-                  <td>{d.investigation}</td>
+                  <td role="cell" data-label="Where">{d.location}</td>
+                  <td role="cell" data-label="Physical effect">{d.effect}</td>
+                  <td role="cell" data-label="Recommended engineering investigation">{d.investigation}</td>
                 </tr>
               ))}
             </tbody>
@@ -249,26 +249,26 @@ export function ArchitectureModule() {
             </div>
           ))}
         </div>
-        <div className={css.tableWrap} role="region" aria-label="Conceptual APIs" tabIndex={0} data-lens="engineer architect">
-          <table className={css.table}>
+        <div className={css.tableWrap} data-stack="" role="region" aria-label="Conceptual APIs" tabIndex={0} data-lens="engineer architect">
+          <table className={css.table} role="table" data-stack="">
             <caption className={css.caption}>Conceptual APIs. Paths illustrate the shape of each interface; they are not a published specification.</caption>
-            <thead>
-              <tr>
-                <th scope="col">API</th>
-                <th scope="col">Purpose</th>
-                <th scope="col">Example</th>
-                <th scope="col">Returns</th>
+            <thead role="rowgroup">
+              <tr role="row">
+                <th scope="col" role="columnheader">API</th>
+                <th scope="col" role="columnheader">Purpose</th>
+                <th scope="col" role="columnheader">Example</th>
+                <th scope="col" role="columnheader">Returns</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody role="rowgroup">
               {APIS.map((api) => (
-                <tr key={api.id}>
-                  <th scope="row">{api.name}</th>
-                  <td>{api.purpose}</td>
-                  <td>
+                <tr role="row" key={api.id}>
+                  <th scope="row" role="rowheader">{api.name}</th>
+                  <td role="cell" data-label="Purpose">{api.purpose}</td>
+                  <td role="cell" data-label="Example">
                     <code className={css.code}>{api.example}</code>
                   </td>
-                  <td>{api.returns}</td>
+                  <td role="cell" data-label="Returns">{api.returns}</td>
                 </tr>
               ))}
             </tbody>
@@ -291,22 +291,22 @@ export function ArchitectureModule() {
       <Block title={CYBER_HEADING}>
         <p className={css.definition}>{CYBER_INTRO}</p>
         <Terms items={CYBER_CONTROLS.map((c) => ({ id: c.id, term: c.name, text: c.text }))} columns={4} />
-        <div className={css.tableWrap} role="region" aria-label="Digital Twin-specific attacks" tabIndex={0}>
-          <table className={css.table}>
+        <div className={css.tableWrap} data-stack="" role="region" aria-label="Digital Twin-specific attacks" tabIndex={0}>
+          <table className={css.table} role="table" data-stack="">
             <caption className={css.caption}>Attacks specific to a Digital Twin</caption>
-            <thead>
-              <tr>
-                <th scope="col">Attack</th>
-                <th scope="col">Effect on the twin</th>
-                <th scope="col">Defence</th>
+            <thead role="rowgroup">
+              <tr role="row">
+                <th scope="col" role="columnheader">Attack</th>
+                <th scope="col" role="columnheader">Effect on the twin</th>
+                <th scope="col" role="columnheader">Defence</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody role="rowgroup">
               {CYBER_ATTACKS.map((attack) => (
-                <tr key={attack.id}>
-                  <th scope="row">{attack.name}</th>
-                  <td>{attack.effect}</td>
-                  <td>{attack.defence}</td>
+                <tr role="row" key={attack.id}>
+                  <th scope="row" role="rowheader">{attack.name}</th>
+                  <td role="cell" data-label="Effect on the twin">{attack.effect}</td>
+                  <td role="cell" data-label="Defence">{attack.defence}</td>
                 </tr>
               ))}
             </tbody>
@@ -314,21 +314,21 @@ export function ArchitectureModule() {
         </div>
         <h4 className={css.h4}>{CYBER_CHALLENGE.question}</h4>
         <p className={css.prose}>{CYBER_CHALLENGE.text}</p>
-        <div className={css.tableWrap} role="region" aria-label="Engine anomaly or cyber-induced data anomaly" tabIndex={0}>
-          <table className={css.table}>
-            <thead>
-              <tr>
-                <th scope="col">Ask</th>
-                <th scope="col">Engine anomaly</th>
-                <th scope="col">Cyber-induced data anomaly</th>
+        <div className={css.tableWrap} data-stack="" role="region" aria-label="Engine anomaly or cyber-induced data anomaly" tabIndex={0}>
+          <table className={css.table} role="table" data-stack="">
+            <thead role="rowgroup">
+              <tr role="row">
+                <th scope="col" role="columnheader">Ask</th>
+                <th scope="col" role="columnheader">Engine anomaly</th>
+                <th scope="col" role="columnheader">Cyber-induced data anomaly</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody role="rowgroup">
               {CYBER_CHALLENGE.tests.map((test) => (
-                <tr key={test.check}>
-                  <th scope="row">{test.check}</th>
-                  <td>{test.engine}</td>
-                  <td>{test.cyber}</td>
+                <tr role="row" key={test.check}>
+                  <th scope="row" role="rowheader">{test.check}</th>
+                  <td role="cell" data-label="Engine anomaly">{test.engine}</td>
+                  <td role="cell" data-label="Cyber-induced data anomaly">{test.cyber}</td>
                 </tr>
               ))}
             </tbody>

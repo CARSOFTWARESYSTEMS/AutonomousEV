@@ -6,18 +6,18 @@ import { DIAGNOSIS_BY_ID, PHYSICAL_DIAGNOSES } from "../simulation/isolation";
 import { useTwin } from "../state/useTwin";
 import { ScoreBar, ShareBar } from "../ui/charts";
 import { InjectFault } from "../widgets/actions";
-import { Diagnosis } from "./shared";
+import { Diagnosis, TwinPending } from "./shared";
 import css from "../advancedTwin.module.css";
 
 const SHORT = ["Nominal", "Pump", "Valve", "Cooling", "Feed", "Injector", "Combustion", "Sensor"] as const;
+/** Column heads short enough for eight columns to fit a phone. The row heads beside them spell each one out. */
+const ABBREVIATED = ["Nom", "Pmp", "Vlv", "Clg", "Fed", "Inj", "Cmb", "Sns"] as const;
 
 export default function AiLive() {
   const { snapshot, engine } = useTwin();
   if (!snapshot || !engine) {
     return (
-      <p className={css.loading} role="status">
-        Training the anomaly detector and the fault classifier on simulated data…
-      </p>
+      <TwinPending>Training the anomaly detector and the fault classifier on simulated data…</TwinPending>
     );
   }
   const { classifier, anomaly } = engine.evidence;
@@ -74,6 +74,16 @@ export default function AiLive() {
               {classifier.validationSamples} separate conditions · accuracy {(100 * classifier.validationAccuracy).toFixed(1)} %
             </dd>
           </div>
+          <div>
+            <dt>Calibration</dt>
+            <dd>
+              Expected calibration error {classifier.calibration.ece.toFixed(3)} · Brier score {classifier.calibration.brier.toFixed(3)}, on the same validation set. {classifier.calibration.bins.filter((b) => b.count > 0).map((b) => `Stated ${Math.round(b.confidence * 100)} %: right ${Math.round(b.accuracy * 100)} % of ${b.count}`).join(" · ")}.
+            </dd>
+          </div>
+          <div>
+            <dt>Classes</dt>
+            <dd>Eight: nominal and seven modelled faults. There is no class for &ldquo;something else&rdquo;.</dd>
+          </div>
         </dl>
         <div className={css.tableWrap} role="region" aria-label="Confusion matrix on the validation set" tabIndex={0}>
           <table className={css.confusion}>
@@ -81,9 +91,9 @@ export default function AiLive() {
             <thead>
               <tr>
                 <td />
-                {SHORT.map((name) => (
+                {SHORT.map((name, i) => (
                   <th key={name} scope="col">
-                    {name}
+                    <abbr title={name}>{ABBREVIATED[i]}</abbr>
                   </th>
                 ))}
               </tr>
@@ -102,7 +112,9 @@ export default function AiLive() {
             </tbody>
           </table>
         </div>
-        <p className={css.note}>High accuracy on a simulator&apos;s own faults is evidence that the method works, not that it would work on an engine.</p>
+        <p className={css.note}>
+          SYNTHETIC DATA ONLY. Both sets come from this page&apos;s simulator. High accuracy on a simulator&apos;s own faults is evidence that the method works, not that it would work on an engine, and the calibration figures say nothing about real hardware. Given a fault outside its eight classes, the classifier still answers with one of them, sometimes confidently: the consistency check beside the verdict is what says &ldquo;none of these&rdquo;.
+        </p>
       </section>
 
       <section className={css.labCol} aria-label="Explanation of the current verdict">

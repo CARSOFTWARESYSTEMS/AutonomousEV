@@ -7,16 +7,14 @@ import { PRESSURE_UNIT } from "../data/pressure";
 import { useTwin } from "../state/useTwin";
 import { fmt, signed } from "../ui/charts";
 import { InjectFault } from "../widgets/actions";
-import { ChamberChart } from "./shared";
+import { ChamberChart, TwinPending } from "./shared";
 import css from "../advancedTwin.module.css";
 
 export default function TwinStates() {
   const { snapshot } = useTwin();
   if (!snapshot) {
     return (
-      <p className={css.loading} role="status">
-        Calibrating the twin…
-      </p>
+      <TwinPending>Calibrating the twin…</TwinPending>
     );
   }
   const { chamber, prognosis } = snapshot;
@@ -45,7 +43,9 @@ export default function TwinStates() {
             </div>
           ))}
         </dl>
-        <p className={css.note}>Chamber pressure, {PRESSURE_UNIT} · SIMULATED. The virtual sensor reads {fmt(chamber.virtual)}.</p>
+        <p className={css.note}>
+          Chamber pressure, {PRESSURE_UNIT} · SIMULATED. The virtual sensor reads {fmt(chamber.virtual)}. The residual is estimated − expected; the raw residual of sensor A, observed − expected, is {signed(snapshot.channels.pcA.rawResidual)}.
+        </p>
         <div className={css.options}>
           <InjectFault fault="pc_sensor_drift">Make the observed leave the estimated</InjectFault>
           <InjectFault fault="pump_degradation">Make the estimated leave the expected</InjectFault>

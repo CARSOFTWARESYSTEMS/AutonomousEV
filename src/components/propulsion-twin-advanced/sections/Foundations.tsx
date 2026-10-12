@@ -76,7 +76,7 @@ export function OverviewModule() {
 
       <Block title="Who this is for, and how each idea is taught">
         <p className={css.prose}>
-          Written for: {AUDIENCE.roles.join(", ").toLowerCase()}. It assumes one reader in particular: {AUDIENCE.persona.charAt(0).toLowerCase() + AUDIENCE.persona.slice(1)}
+          Written for: {AUDIENCE.roles.join(", ")}. It assumes one reader in particular: {AUDIENCE.persona.charAt(0).toLowerCase() + AUDIENCE.persona.slice(1)}
         </p>
         <p className={css.prose}>Every advanced concept is therefore taught at five depths, and the Learn, Engineer and Architect switch above chooses how many are showing:</p>
         <Chain items={AUDIENCE.depth} label="The five depths at which each concept is taught" />
@@ -150,21 +150,21 @@ export function SystemModule() {
       </Block>
 
       <Block title="Operating modes" intro="An engine is a different system in each of its operating modes, and the twin has to know which one it is in: limits, expected values and what counts as a residual all depend on it.">
-        <div className={css.tableWrap} role="region" aria-label="Operating modes" tabIndex={0}>
-          <table className={css.table}>
-            <thead>
-              <tr>
-                <th scope="col">Mode</th>
-                <th scope="col">The engine</th>
-                <th scope="col">The twin</th>
+        <div className={css.tableWrap} data-stack="" role="region" aria-label="Operating modes" tabIndex={0}>
+          <table className={css.table} role="table" data-stack="">
+            <thead role="rowgroup">
+              <tr role="row">
+                <th scope="col" role="columnheader">Mode</th>
+                <th scope="col" role="columnheader">The engine</th>
+                <th scope="col" role="columnheader">The twin</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody role="rowgroup">
               {OPERATING_MODES.map((mode) => (
-                <tr key={mode.id}>
-                  <th scope="row">{mode.name}</th>
-                  <td>{mode.text}</td>
-                  <td>{mode.twin}</td>
+                <tr role="row" key={mode.id}>
+                  <th scope="row" role="rowheader">{mode.name}</th>
+                  <td role="cell" data-label="The engine">{mode.text}</td>
+                  <td role="cell" data-label="The twin">{mode.twin}</td>
                 </tr>
               ))}
             </tbody>

@@ -204,7 +204,7 @@
 }
 .noticeLabel {
   margin-bottom: 4px;
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -218,6 +218,38 @@
   height: auto;
   font-family: var(--rt-sans);
 }
+.schematicFrame {
+  container-type: inline-size;
+}
+.schematicBox {
+  width: 100%;
+}
+.schematicBox[data-arrangement="wide"] {
+  aspect-ratio: 840 / 524;
+}
+.schematicBox[data-arrangement="compact"] {
+  display: none;
+  aspect-ratio: 360 / 590;
+  /* A portrait drawing in a wide column would be taller than the screen. */
+  max-width: 440px;
+  margin-inline: auto;
+}
+@container (max-width: 527px) {
+  .schematicBox[data-arrangement="wide"] {
+    display: none;
+  }
+  .schematicBox[data-arrangement="compact"] {
+    display: block;
+  }
+}
+/* Once the script has measured the box it draws one arrangement only, and that one always shows. */
+.schematicBox[data-chosen] {
+  display: block;
+}
+.stageCaption + .stageCaption {
+  padding-top: 0;
+  color: var(--rt-muted);
+}
 .stageTags {
   display: flex;
   flex-wrap: wrap;
@@ -230,7 +262,7 @@
   padding: 2px 7px;
   border: 1px solid var(--rt-line-strong);
   border-radius: 4px;
-  font-size: 9.5px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.12em;
   line-height: 1.5;
@@ -366,15 +398,9 @@
 .ctoButton:hover {
   border-color: #fff;
 }
-/* On a phone the button carries a shorter label, so the row never wraps or runs off the screen. */
-.ctoLong {
-  display: none;
-}
-@media (min-width: 480px) {
-  .ctoLong {
-    display: inline;
-  }
-  .ctoShort {
+/* On a phone the button shows the first word of its name. Its accessible name is the whole of it at every width. */
+@media (max-width: 479px) {
+  .ctoRest {
     display: none;
   }
 }
@@ -382,6 +408,42 @@
   .level {
     padding: 0 10px;
   }
+}
+
+/* A part of the page that could not be loaded says so, where it would have been. */
+.failure {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--rt-line-strong);
+  border-left: 3px solid var(--rt-caution);
+  border-radius: var(--rt-radius-small);
+  background: var(--rt-bg-soft);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--rt-body);
+}
+.failure strong {
+  color: #fff;
+}
+/* What the consistency check found, beside the verdict it qualifies. */
+.recognition {
+  padding: 8px 12px;
+  border-left: 3px solid var(--rt-line-strong);
+  background: var(--rt-bg-soft);
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--rt-body);
+}
+.recognition[data-status="explained"] {
+  border-left-color: var(--rt-accent);
+}
+.recognition[data-status="unexplained"],
+.recognition[data-status="unrecognised"] {
+  border-left-color: var(--rt-caution);
+  color: #fff;
 }
 
 /* ── Modules ── */
@@ -404,7 +466,7 @@
 .moduleCount,
 .kicker,
 .groupLabel {
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -601,7 +663,7 @@
 .chain[data-numbered] li::before {
   content: counter(at-chain);
   font-family: var(--rt-mono);
-  font-size: 10.5px;
+  font-size: 11px;
   color: var(--rt-muted);
 }
 .chain li {
@@ -709,7 +771,7 @@
   border-top: 1px solid var(--rt-line);
 }
 .rows dt {
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.13em;
   text-transform: uppercase;
@@ -741,7 +803,7 @@
 .table thead th,
 .miniTable thead th {
   border-top: 0;
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.13em;
   text-transform: uppercase;
@@ -776,7 +838,8 @@
   font-weight: 700;
 }
 .confusion {
-  min-width: 520px;
+  /* Eight columns of counts under three-letter heads: it fits its column at every width, so it never scrolls sideways. */
+  table-layout: fixed;
   font-family: var(--rt-mono);
   font-size: 11.5px;
 }
@@ -788,9 +851,18 @@
 }
 .confusion th {
   font-family: var(--rt-sans);
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--rt-muted);
+}
+.confusion tr > :first-child {
+  width: 88px;
+  overflow: hidden;
+  text-align: left;
+  white-space: nowrap;
+}
+.confusion abbr {
+  text-decoration: none;
 }
 .confusion td[data-diagonal] {
   background: var(--at-accent-soft);
@@ -858,7 +930,7 @@
 }
 .layer dt {
   margin-bottom: 4px;
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1191,15 +1263,12 @@
   align-items: center;
   gap: 7px;
   margin-bottom: 6px;
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.13em;
   color: #fff;
 }
-/* The schematic is a desktop instrument; on a phone the ladder and the sensor list do its job. */
-.stage[data-desktop-only] {
-  display: none;
-}
+/* The pressure schematic is on every screen. A phone gets the portrait arrangement, above the list. */
 .ladderHead {
   display: flex;
   flex-wrap: wrap;
@@ -1264,7 +1333,7 @@ button.ladderRow[aria-pressed="true"] {
 }
 .ladderTag {
   font-family: var(--rt-mono);
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 400;
   color: var(--rt-muted);
 }
@@ -1348,7 +1417,7 @@ button.ladderRow[aria-pressed="true"] {
   background: var(--rt-bg-soft);
 }
 .stateCell span {
-  font-size: 9.5px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.13em;
   color: var(--rt-muted);
@@ -1388,7 +1457,7 @@ button.ladderRow[aria-pressed="true"] {
   color: var(--rt-muted);
 }
 .signalLabel {
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.13em;
   text-transform: uppercase;
@@ -1737,7 +1806,7 @@ button.ladderRow[aria-pressed="true"] {
   padding: 2px 7px;
   border: 1px solid var(--rt-line-strong);
   border-radius: 4px;
-  font-size: 9.5px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -1816,7 +1885,7 @@ button.ladderRow[aria-pressed="true"] {
 .questionKind {
   display: block;
   margin-bottom: 4px;
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1912,7 +1981,7 @@ button.ladderRow[aria-pressed="true"] {
   border-color: var(--rt-caution);
 }
 .tileLabel {
-  font-size: 9.5px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.14em;
   color: var(--rt-muted);
@@ -1981,14 +2050,51 @@ button.ladderRow[aria-pressed="true"] {
   color: #fff;
 }
 .chartUnit {
-  font-size: 10px;
-  letter-spacing: 0.08em;
+  font-size: 11px;
+  letter-spacing: 0.06em;
   color: var(--rt-muted);
+}
+/* The plot is drawn at its own size in pixels, so nothing in it is scaled. */
+.chartPlot {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 4px;
+  /* A sideways drag inspects the plot; an up-and-down one still scrolls the page. */
+  touch-action: pan-y;
+  cursor: crosshair;
+}
+.chartPlot:focus-visible {
+  outline: 2px solid var(--rt-accent);
+  outline-offset: 2px;
 }
 .chartSvg {
   display: block;
-  width: 100%;
-  height: auto;
+  max-width: none;
+}
+.chartAxis {
+  stroke: rgba(255, 255, 255, 0.28);
+  stroke-width: 1;
+}
+.chartCursor {
+  stroke: #fff;
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+}
+.chartDot {
+  fill: #fff;
+  stroke: var(--rt-bg);
+  stroke-width: 1.5;
+}
+.chartInspect {
+  min-height: 2.9em;
+  font-family: var(--rt-mono);
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--rt-muted);
+}
+.chartInspect[data-inspecting] {
+  color: #fff;
 }
 .chartGrid {
   stroke: rgba(255, 255, 255, 0.07);
@@ -1996,9 +2102,9 @@ button.ladderRow[aria-pressed="true"] {
 }
 .chartTick,
 .chartLimitLabel {
-  fill: var(--rt-muted);
+  fill: var(--rt-body);
   font-family: var(--rt-mono);
-  font-size: 7.5px;
+  font-size: 11px;
 }
 .chartLimit {
   stroke: var(--rt-caution);
@@ -2023,11 +2129,11 @@ button.ladderRow[aria-pressed="true"] {
   fill: none;
   stroke-linejoin: round;
   stroke: var(--rt-muted);
-  stroke-width: 0.9;
+  stroke-width: 1;
 }
 .line[data-kind="estimated"] {
   stroke: #fff;
-  stroke-width: 1.9;
+  stroke-width: 2;
 }
 .line[data-kind="expected"],
 .line[data-kind="physics"] {
@@ -2074,7 +2180,7 @@ button.ladderRow[aria-pressed="true"] {
 }
 .readout {
   font-family: var(--rt-mono);
-  font-size: 11px;
+  font-size: 11.5px;
   color: var(--rt-muted);
 }
 .lab,
@@ -2236,7 +2342,7 @@ button.ladderRow[aria-pressed="true"] {
   border-top: 1px solid var(--rt-line);
 }
 .stateList dt {
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.13em;
   line-height: 1.9;
@@ -2596,8 +2702,7 @@ button.ladderRow[aria-pressed="true"] {
     grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
     align-items: start;
   }
-  .stage[data-desktop-only] {
-    display: block;
+  .stage[data-sticky] {
     position: sticky;
     top: calc(var(--rt-header) + var(--at-nav) + 12px);
   }
@@ -2701,7 +2806,7 @@ button.ladderRow[aria-pressed="true"] {
   }
 }
 
-/* Touch screens: every control is at least 44px tall. */
+/* Touch screens: every control is at least 44px tall, and the small ones at least 44px wide. */
 @media (pointer: coarse) {
   .navTab,
   .level,
@@ -2710,8 +2815,148 @@ button.ladderRow[aria-pressed="true"] {
   .ghost,
   .primary,
   .pickerTab,
-  .ctoButton {
+  .ctoButton,
+  .faultList .ghost,
+  .pickerPanel > .ghost,
+  .range,
+  .select,
+  .ladderRow {
     min-height: 44px;
+  }
+  .textLink {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  .iconButton {
+    width: 44px;
+    height: 44px;
+  }
+  .level,
+  .segment button {
+    min-width: 44px;
+  }
+}
+
+/*
+ * A phone on its side has little height to give. The module bar becomes one row
+ * (tabs that scroll, tools beside them), so the bars that stay on screen never
+ * take more than about a third of it.
+ */
+@media (max-height: 520px) and (max-width: 899px) {
+  .nav {
+    flex-direction: row;
+    align-items: center;
+  }
+  .navTabs {
+    flex: 1;
+    min-width: 0;
+    padding-block: 4px;
+  }
+  .navTools {
+    flex-shrink: 0;
+    padding: 0 var(--rt-inset) 0 6px;
+    gap: 6px;
+  }
+  .ctoRest {
+    display: none;
+  }
+  /* The measurement sheet leaves the top of the page visible. */
+  .sheet {
+    max-height: 86dvh;
+  }
+}
+
+/*
+ * Tables on a phone. A table wider than the screen is read by scrolling
+ * sideways, losing the row heading on the way. Under 640px each row becomes a
+ * card: its heading on top, and every cell under the name of its column. The
+ * roles are written on the elements, so it is still a table to a screen reader.
+ */
+@media (max-width: 639px) {
+  .table[data-stack],
+  .table[data-stack] tbody,
+  .table[data-stack] tr,
+  .table[data-stack] th,
+  .table[data-stack] td,
+  .miniTable[data-stack],
+  .miniTable[data-stack] tbody,
+  .miniTable[data-stack] tr,
+  .miniTable[data-stack] th,
+  .miniTable[data-stack] td {
+    display: block;
+    width: auto;
+    min-width: 0;
+  }
+  .table[data-stack],
+  .miniTable[data-stack] {
+    min-width: 0;
+  }
+  .table[data-stack] thead,
+  .miniTable[data-stack] thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .table[data-stack] tr,
+  .miniTable[data-stack] tr {
+    margin-bottom: 10px;
+    padding: 12px 14px;
+    border: 1px solid var(--rt-line);
+    border-radius: var(--rt-radius-small);
+    background: var(--rt-bg-soft);
+  }
+  .table[data-stack] tbody th,
+  .table[data-stack] td,
+  .miniTable[data-stack] tbody th,
+  .miniTable[data-stack] td {
+    padding: 0;
+    border: 0;
+    text-align: left;
+  }
+  .table[data-stack] tbody th,
+  .miniTable[data-stack] tbody th {
+    margin-bottom: 6px;
+    font-size: 14.5px;
+    color: #fff;
+  }
+  .table[data-stack] td + td,
+  .miniTable[data-stack] td + td {
+    margin-top: 8px;
+  }
+  .table[data-stack] td[data-label]::before,
+  .miniTable[data-stack] td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 1px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--rt-muted);
+  }
+  .table[data-stack] td,
+  .miniTable[data-stack] td {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .miniTable[data-stack] caption {
+    display: block;
+  }
+  .tableWrap[data-stack] {
+    overflow: visible;
+  }
+  /* Eight columns of counts fit when the columns share the width evenly. */
+  .confusion th,
+  .confusion td {
+    padding: 5px 1px;
+    font-size: 11px;
+  }
+  .confusion tr > :first-child {
+    width: 78px;
+    padding-left: 4px;
   }
 }
 

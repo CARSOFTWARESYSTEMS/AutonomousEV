@@ -1,8 +1,12 @@
+"use client";
 // Charts for the twin: thin-lined, labelled, and readable without colour. Each
 // twin state has its own line style everywhere it is drawn: observed thin and
 // solid, estimated heavy and solid, expected dashed, predicted dotted with a
 // band. Every chart carries a text read-out of what it shows.
-import type { ReactNode } from "react";
+//
+// A chart is drawn at the size it is shown: one drawing unit is one CSS pixel,
+// so its lettering is the same size in a phone's column and across a desktop.
+import { type KeyboardEvent, type PointerEvent, type ReactNode, useEffect, useId, useRef, useState } from "react";
 import css from "../advancedTwin.module.css";
 
 export type LineKind = "observed" | "estimated" | "expected" | "predicted" | "truth" | "filtered" | "physics";
@@ -22,9 +26,10 @@ export interface Future {
 
 export const LINE_LABEL: Record<LineKind, string> = { observed: "Observed", estimated: "Estimated", expected: "Expected", predicted: "Predicted", truth: "True (simulation only)", filtered: "Filtered", physics: "Physics prediction" };
 
-const W = 320;
-const H = 132;
-const PAD = { left: 34, right: 8, top: 8, bottom: 18 };
+/** Width a chart is drawn at until it has been measured, and its height, in CSS pixels. */
+const DEFAULT_WIDTH = 320;
+const HEIGHT = 168;
+const PAD = { left: 46, right: 10, top: 10, bottom: 26 };
 
 /** Formats a value with as many decimals as its size warrants. */
 export function fmt(value: number, digits?: number): string {
@@ -33,7 +38,7 @@ export function fmt(value: number, digits?: number): string {
   return value.toFixed(d).replace("-", "−");
 }
 
-export const signed = (value: number, digits = 2) => `${value > 0 ? "+" : value < 0 ? "−" : ""}${Math.abs(value).toFixed(digits)}`;
+export const signed = (value: number, digits = 2) => (Number.isFinite(value) ? `${value > 0 ? "+" : value < 0 ? "−" : ""}${Math.abs(value).toFixed(digits)}` : "–");
 
 interface TraceChartProps {
   title: string;
@@ -53,6 +58,23 @@ interface TraceChartProps {
 
 /** A history of one quantity in up to four states, with an optional projection into the future. */
 export function TraceChart({ title, unit, lines, band, future, limit, span, minRange = 2, children, tag = "SIMULATED" }: TraceChartProps) {
+  const plot = useRef<HTMLDivElement>(null);
+  const [W, setW] = useState(DEFAULT_WIDTH);
+  /** The sample being inspected, by pointer or by keyboard; null when the chart is simply being watched. */
+  const [cursor, setCursor] = useState<number | null>(null);
+  const hintId = useId();
+  useEffect(() => {
+    const element = plot.current;
+    if (!element) return;
+    const measure = () => setW(Math.max(220, Math.round(element.clientWidth) || DEFAULT_WIDTH));
+    measure();
+    if (typeof ResizeObserver === "undefined") return;
+    const observer = new ResizeObserver(measure);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  const H = HEIGHT;
   const n = Math.max(2, ...lines.map((l) => l.values.length));
   let lo = Number.POSITIVE_INFINITY;
   let hi = Number.NEGATIVE_INFINITY;
@@ -79,10 +101,40 @@ export function TraceChart({ title, unit, lines, band, future, limit, span, minR
   const x = (i: number) => PAD.left + (i / (n - 1)) * (nowX - PAD.left);
   const xf = (h: number) => nowX + (h / (future?.horizon.at(-1) || 1)) * (W - PAD.right - nowX);
   const y = (v: number) => PAD.top + (1 - (v - lo) / (hi - lo)) * plotH;
-  const path = (values: readonly number[], px: (i: number) => number) => values.map((v, i) => `${i ? "L" : "M"}${px(i).toFixed(1)},${y(v).toFixed(1)}`).join("");
+  // A sample that is not a number (a gap in the telemetry) breaks the line instead of being drawn somewhere.
+  const path = (values: readonly number[], px: (i: number) => number) => {
+    let d = "";
+    let pen = false;
+    values.forEach((v, i) => {
+      if (!Number.isFinite(v)) {
+        pen = false;
+        return;
+      }
+      d += `${pen ? "L" : "M"}${px(i).toFixed(1)},${y(v).toFixed(1)}`;
+      pen = true;
+    });
+    return d;
+  };
   const area = (upper: readonly number[], lower: readonly number[], px: (i: number) => number) => `${path(upper, px)}${[...lower].map((v, i) => `L${px(lower.length - 1 - i).toFixed(1)},${y(lower[lower.length - 1 - i]).toFixed(1)}`).join("")}Z`;
   const ticks = [lo + range * 0.1, middle, hi - range * 0.1];
+  const digits = range < 4 ? 1 : 0;
   const summary = `${title}, ${unit}. ${lines.map((l) => `${l.label} ${fmt(l.values.at(-1) ?? NaN)}`).join(", ")}${limit ? `. ${limit.label} ${fmt(limit.value)}` : ""}${future ? `. Predicted ${fmt(future.mean.at(-1) ?? NaN)} plus or minus ${fmt(2 * (future.sigma.at(-1) ?? 0))} in ${future.horizon.at(-1)} seconds` : ""}.`;
+
+  const at = cursor === null ? null : Math.min(n - 1, Math.max(0, cursor));
+  const secondsAgo = at === null ? 0 : ((n - 1 - at) / (n - 1)) * span;
+  const onPointer = (event: PointerEvent<HTMLDivElement>) => {
+    const box = event.currentTarget.getBoundingClientRect();
+    const fraction = (event.clientX - box.left - PAD.left) / Math.max(1, nowX - PAD.left);
+    setCursor(Math.round(Math.min(1, Math.max(0, fraction)) * (n - 1)));
+  };
+  const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    const stride = Math.max(1, Math.round(n / 30));
+    const from = at ?? n - 1;
+    const next = event.key === "ArrowLeft" ? from - stride : event.key === "ArrowRight" ? from + stride : event.key === "Home" ? 0 : event.key === "End" ? n - 1 : event.key === "Escape" ? null : undefined;
+    if (next === undefined) return;
+    event.preventDefault();
+    setCursor(next === null ? null : Math.min(n - 1, Math.max(0, next)));
+  };
 
   return (
     <figure className={css.chart}>
@@ -92,44 +144,58 @@ export function TraceChart({ title, unit, lines, band, future, limit, span, minR
           {unit} · {tag}
         </span>
       </figcaption>
-      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={summary} className={css.chartSvg}>
-        {ticks.map((t) => (
-          <g key={t}>
-            <line x1={PAD.left} x2={W - PAD.right} y1={y(t)} y2={y(t)} className={css.chartGrid} />
-            <text x={PAD.left - 5} y={y(t) + 3} className={css.chartTick} textAnchor="end">
-              {fmt(t, range < 4 ? 1 : 0)}
-            </text>
-          </g>
-        ))}
-        {limit && (
-          <>
-            <line x1={PAD.left} x2={W - PAD.right} y1={y(limit.value)} y2={y(limit.value)} className={css.chartLimit} />
-            <text x={W - PAD.right - 2} y={y(limit.value) - 3} className={css.chartLimitLabel} textAnchor="end">
-              {limit.label}
-            </text>
-          </>
-        )}
-        {band && estimated && <path d={area(estimated.values.map((v, i) => v + 2 * band[i]), estimated.values.map((v, i) => v - 2 * band[i]), x)} className={css.chartBand} />}
-        {future && (
-          <>
-            <path d={area(future.mean.map((m, i) => m + 2 * future.sigma[i]), future.mean.map((m, i) => m - 2 * future.sigma[i]), (i) => xf(future.horizon[i]))} className={css.chartBandFuture} />
-            <path d={path(future.mean, (i) => xf(future.horizon[i]))} className={css.line} data-kind="predicted" />
-            <line x1={nowX} x2={nowX} y1={PAD.top} y2={H - PAD.bottom} className={css.chartNow} />
-            <text x={nowX} y={H - 5} className={css.chartTick} textAnchor="middle">
-              now
-            </text>
-            <text x={W - PAD.right} y={H - 5} className={css.chartTick} textAnchor="end">
-              +{future.horizon.at(-1)} s
-            </text>
-          </>
-        )}
-        {lines.map((l) => (
-          <path key={l.kind} d={path(l.values, x)} className={css.line} data-kind={l.kind} />
-        ))}
-        <text x={PAD.left} y={H - 5} className={css.chartTick}>
-          −{span} s
-        </text>
-      </svg>
+      {/* Pointing at the plot, or focusing it and using the arrow keys, reads out every line at that moment. */}
+      <div ref={plot} className={css.chartPlot} role="group" tabIndex={0} aria-label={`${title}: chart. Arrow keys read values back through time; Escape returns to now.`} aria-describedby={hintId} onPointerMove={onPointer} onPointerDown={onPointer} onPointerLeave={() => setCursor(null)} onBlur={() => setCursor(null)} onKeyDown={onKeyDown}>
+        <svg viewBox={`0 0 ${W} ${H}`} width={W} height={H} role="img" aria-label={summary} className={css.chartSvg}>
+          {ticks.map((t) => (
+            <g key={t}>
+              <line x1={PAD.left} x2={W - PAD.right} y1={y(t)} y2={y(t)} className={css.chartGrid} />
+              <text x={PAD.left - 6} y={y(t) + 4} className={css.chartTick} textAnchor="end">
+                {fmt(t, digits)}
+              </text>
+            </g>
+          ))}
+          <line x1={PAD.left} x2={W - PAD.right} y1={H - PAD.bottom} y2={H - PAD.bottom} className={css.chartAxis} />
+          <line x1={PAD.left} x2={PAD.left} y1={PAD.top} y2={H - PAD.bottom} className={css.chartAxis} />
+          {limit && (
+            <>
+              <line x1={PAD.left} x2={W - PAD.right} y1={y(limit.value)} y2={y(limit.value)} className={css.chartLimit} />
+              <text x={W - PAD.right - 2} y={y(limit.value) - 4} className={css.chartLimitLabel} textAnchor="end">
+                {limit.label}
+              </text>
+            </>
+          )}
+          {band && estimated && <path d={area(estimated.values.map((v, i) => v + 2 * band[i]), estimated.values.map((v, i) => v - 2 * band[i]), x)} className={css.chartBand} />}
+          {future && (
+            <>
+              <path d={area(future.mean.map((m, i) => m + 2 * future.sigma[i]), future.mean.map((m, i) => m - 2 * future.sigma[i]), (i) => xf(future.horizon[i]))} className={css.chartBandFuture} />
+              <path d={path(future.mean, (i) => xf(future.horizon[i]))} className={css.line} data-kind="predicted" />
+              <line x1={nowX} x2={nowX} y1={PAD.top} y2={H - PAD.bottom} className={css.chartNow} />
+              <text x={W - PAD.right} y={H - 8} className={css.chartTick} textAnchor="end">
+                +{future.horizon.at(-1)} s
+              </text>
+            </>
+          )}
+          {lines.map((l) => (
+            <path key={l.kind} d={path(l.values, x)} className={css.line} data-kind={l.kind} />
+          ))}
+          <text x={PAD.left} y={H - 8} className={css.chartTick}>
+            −{span} s
+          </text>
+          <text x={nowX} y={H - 8} className={css.chartTick} textAnchor={future ? "middle" : "end"}>
+            now
+          </text>
+          {at !== null && (
+            <g data-cursor="">
+              <line x1={x(at)} x2={x(at)} y1={PAD.top} y2={H - PAD.bottom} className={css.chartCursor} />
+              {lines.map((l) => (Number.isFinite(l.values[at]) ? <circle key={l.kind} cx={x(at)} cy={y(l.values[at])} r={3} className={css.chartDot} /> : null))}
+            </g>
+          )}
+        </svg>
+      </div>
+      <p id={hintId} className={css.chartInspect} data-inspecting={at !== null || undefined}>
+        {at === null ? `Time in seconds across, ${unit} up. Point at the plot, or focus it and press ←/→, to read values.` : `${secondsAgo < span / (n - 1) / 2 ? "Now" : `${secondsAgo.toFixed(1)} s ago`}: ${lines.map((l) => `${l.label} ${fmt(l.values[at] ?? NaN)}`).join(" · ")}`}
+      </p>
       <ul className={css.legend}>
         {lines.map((l) => (
           <li key={l.kind}>

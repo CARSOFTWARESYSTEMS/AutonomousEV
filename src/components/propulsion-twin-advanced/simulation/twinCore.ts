@@ -15,7 +15,7 @@ import { DIAGNOSIS_BY_ID, type DiagnosisId, type EvidenceLine, type FaultId, PHY
 import { type PcaModel, reconstructionError } from "./ml";
 import { DESIGN, type PlantParams, type PlantState, coldState, scheduleSpeed, steadyState, stepPlant, writeOutputs } from "./plant";
 import { HEALTH_PARAMS, HEALTH_PARAM_IDS, type HealthParamId, healthDeviations, npshRatio, symptomArray, symptomDeviations, virtualChamberPressure } from "./symptoms";
-import type { ActiveFault, DataQuality, DetectorId, EngineMode, ModelEvidence, Prognosis, TwinEvent, TwinSnapshot } from "./twinTypes";
+import type { ActiveFault, DataQuality, DetectorId, EngineMode, FaultOnset, ModelEvidence, Prognosis, Recognition, TwinEvent, TwinSnapshot } from "./twinTypes";
 
 export const DT = 0.05;
 export const HISTORY = 300;
@@ -38,6 +38,29 @@ export const TCOOL_LIMIT = 1.08;
 export const SYMPTOM_FLOOR: Partial<Record<SymptomId, number>> = { p_tank_ox: 0.05, p_in_ox: 0.06 };
 /** Throttle range the model was calibrated over. */
 export const ENVELOPE: readonly [number, number] = [0.58, 1.02];
+/** Throttle settings the controls accept. */
+export const THROTTLE_RANGE: readonly [number, number] = [0.6, 1];
+/** Most one sample may add to a sensor's noise estimate, as a multiple of the present estimate: a 5 σ jump, squared. */
+export const NOISE_SAMPLE_CAP = 25;
+/** Share of its calibrated sample-to-sample scatter below which a sensor is judged to have stopped responding. */
+export const FLAT_LINE = 0.05;
+/** Most steps one call may advance: five minutes of simulated time. */
+export const MAX_STEPS = 6000;
+/** Steps between runs of the consistency check and of the prognosis. */
+export const SLOW_EVERY = 10;
+/**
+ * Seconds the residuals must stay unexplained before the cause is called unrecognised. Longer than the
+ * estimate takes to settle after a full-severity fault arrives in one step, which is the slowest
+ * legitimate reason for a modelled fault to look unexplained.
+ */
+export const UNRECOGNISED_AFTER = 10;
+/**
+ * Shaft time constants the engine must hold mainstage for after a start before its health is judged. Five
+ * time constants is the usual measure of "settled": the start transient is the largest the engine sees, and the
+ * system's dynamics are not exactly the model's, so judging it earlier raises an alarm on a healthy engine.
+ */
+export const SETTLE_TIME_CONSTANTS = 5;
+export const NO_RECOGNITION: Recognition = { status: "idle", score: 0, fault: null, severity: 0, channel: null };
 
 /** Which model parameter each inferred parameter corresponds to, and the quantity its trend threatens. */
 export const DRIVES: Record<HealthParamId, { param: keyof PlantParams | null; concern: "pc" | "tCool" | "npsh" }> = {
@@ -83,6 +106,8 @@ export abstract class TwinCore {
   protected base = 1;
   protected exerciseClock = 0;
   protected ignited = true;
+  /** Simulated time at which a start is counted as settled. */
+  protected settledAt = 0;
   protected truth: PlantState = coldState();
   protected twin: PlantState = coldState();
   protected wander = new Map<keyof PlantParams, number>();
@@ -97,6 +122,8 @@ export abstract class TwinCore {
   protected est = new Float64Array(N_CH);
   protected variance = new Float64Array(N_CH);
   protected noiseRatio = new Float64Array(N_CH).fill(1);
+  /** 1 where this step's sample is a usable number. */
+  protected valid = new Uint8Array(N_CH).fill(1);
   protected buffer = CHANNEL_IDS.map(() => new Float64Array(BUFFER));
   protected replayData: Float64Array[] | null = null;
   protected replayStart = 0;
@@ -124,7 +151,9 @@ export abstract class TwinCore {
   protected explained: PhysicalDiagnosis = "nominal";
   protected mlScore = 0;
   protected outOfDistribution = false;
-  protected quality: TwinSnapshot["quality"] = { status: "GOOD", nodes: [], noisy: [], notes: [] };
+  protected recognition: Recognition = NO_RECOGNITION;
+  protected unexplainedFor = 0;
+  protected quality: TwinSnapshot["quality"] = { status: "GOOD", nodes: [], noisy: [], missing: [], frozen: [], notes: [] };
   protected prognosis!: Prognosis;
   protected healthTrail = Object.fromEntries(HEALTH_PARAM_IDS.map((id) => [id, [] as number[]])) as Record<HealthParamId, number[]>;
   protected trailTimes: number[] = [];
@@ -169,7 +198,7 @@ export abstract class TwinCore {
     // 2. The anomaly detector learns healthy telemetry. Then a separate healthy run measures the baseline and
     //    scatter of every piece of evidence, and sets the detector's alarm threshold on data it was not trained on.
     this.pca = trainAnomalyModel(AS_BUILT, createRng(seed + 2));
-    this.classifier = { model: { weights: [] }, trainingSamples: 0, validationSamples: 0, trainingAccuracy: 0, validationAccuracy: 0, confusion: [] };
+    this.classifier = { model: { weights: [] }, trainingSamples: 0, validationSamples: 0, trainingAccuracy: 0, validationAccuracy: 0, confusion: [], calibration: { ece: 0, brier: 0, bins: [] } };
     this.calibrate();
 
     // 3. The fault classifier, trained and validated on separate simulated sets.
@@ -188,17 +217,23 @@ export abstract class TwinCore {
   // ── Control ───────────────────────────────────────────────────────────────
 
   reset(): void {
+    this.restart(1);
+  }
+
+  /** Returns to the healthy, settled engine at a throttle setting. The same setting always gives the same run. */
+  protected restart(throttle: number): void {
     this.rng = createRng(this.seed + 7);
     this.k = 0;
     this.mode = "mainstage";
-    this.u = this.target = this.base = 1;
+    this.u = this.target = this.base = clamp(throttle, THROTTLE_RANGE[0], THROTTLE_RANGE[1]);
     this.exercise = false;
     this.exerciseClock = 0;
     this.ignited = true;
+    this.settledAt = 0;
     this.faults.clear();
     this.firstFaultAt = null;
     this.wander.clear();
-    const speed = scheduleSpeed(1);
+    const speed = scheduleSpeed(this.u);
     const truth = steadyState(AS_BUILT, speed);
     const twin = steadyState(this.model, speed);
     this.truth = { ...truth.state };
@@ -213,6 +248,7 @@ export abstract class TwinCore {
       this.hist.expected[i].fill(twin.values[i]);
     }
     this.noiseRatio.fill(1);
+    this.valid.fill(1);
     this.replayData = null;
     this.pc = this.virtual = truth.state.pc;
     this.pcVariance = 0.01;
@@ -236,21 +272,37 @@ export abstract class TwinCore {
     this.cusum.clear();
     for (const id of DETECTORS) this.det[id] = { score: 0, run: 0, active: false, first: null };
     this.events = [];
+    this.recognition = NO_RECOGNITION;
+    this.unexplainedFor = 0;
     this.wasAnomaly = false;
     this.isolated = null;
     this.isolatingFor = 0;
     this.lastQuality = "GOOD";
-    this.quality = { status: "GOOD", nodes: [], noisy: [], notes: [] };
+    this.quality = { status: "GOOD", nodes: [], noisy: [], missing: [], frozen: [], notes: [] };
     this.isolate();
     this.prognose();
   }
 
-  inject(id: FaultId, severity = 0.8): void {
+  inject(id: FaultId, severity = 0.8, onset: FaultOnset = "gradual"): void {
+    // Requests arrive from the interface and from the address bar: anything that is not a known fault at a real severity is dropped.
+    if (!Object.hasOwn(FAULT_DEFS, id) || !Number.isFinite(severity)) return;
     const target = clamp(severity, 0.1, 1);
-    const ramp = FAULT_DEFS[id].rampSeconds;
-    this.faults.set(id, { id, target, severity: ramp === 0 ? target : (this.faults.get(id)?.severity ?? 0), since: this.t });
+    const sudden = onset === "abrupt" || FAULT_DEFS[id].rampSeconds === 0;
+    this.faults.set(id, { id, target, severity: sudden ? target : (this.faults.get(id)?.severity ?? 0), since: this.t, onset: sudden ? "abrupt" : "gradual" });
     this.firstFaultAt ??= this.t;
-    this.log("injected", `Fault injected: ${DIAGNOSIS_BY_ID[id].name}`, id);
+    this.log("injected", `Fault injected: ${DIAGNOSIS_BY_ID[id].name}${sudden && FAULT_DEFS[id].rampSeconds > 0 ? " (abrupt onset)" : ""}`, id);
+  }
+
+  scenario(id: FaultId, severity = 0.8, onset: FaultOnset = "gradual"): void {
+    if (!Object.hasOwn(FAULT_DEFS, id) || !Number.isFinite(severity)) return;
+    // Evidence left over from an earlier fault would be credited to this one, so a scenario starts from the healthy baseline.
+    // An engine that is not in mainstage is left in its mode: monitoring is held there, and nothing carries over.
+    const clean = this.faults.size === 0 && !this.det.hybrid.active && this.isolated === null && this.quality.status === "GOOD" && this.ranking[0]?.id === "nominal";
+    if (!clean) {
+      if (this.mode === "mainstage") this.restart(this.base);
+      else this.clear();
+    }
+    this.inject(id, severity, onset);
   }
 
   clear(id?: FaultId): void {
@@ -259,12 +311,14 @@ export abstract class TwinCore {
     if (this.faults.size === 0) {
       this.firstFaultAt = null;
       this.cusum.clear();
+      this.unexplainedFor = 0;
       for (const d of DETECTORS) this.det[d].first = null;
     }
   }
 
   setThrottle(level: number): void {
-    this.base = this.target = clamp(level, 0.6, 1);
+    if (!Number.isFinite(level)) return;
+    this.base = this.target = clamp(level, THROTTLE_RANGE[0], THROTTLE_RANGE[1]);
   }
 
   setExercise(on: boolean): void {
@@ -290,7 +344,8 @@ export abstract class TwinCore {
   }
 
   step(count = 1): void {
-    for (let i = 0; i < count; i++) this.advance();
+    const steps = Number.isFinite(count) ? Math.min(MAX_STEPS, Math.floor(count)) : 0;
+    for (let i = 0; i < steps; i++) this.advance();
   }
 
   // ── One step ──────────────────────────────────────────────────────────────
@@ -310,7 +365,10 @@ export abstract class TwinCore {
       case "start":
         this.u = Math.min(this.target, this.u + DT * 0.35);
         if (this.u > 0.12) this.ignited = true;
-        if (this.u >= this.target) this.mode = "mainstage";
+        if (this.u >= this.target) {
+          this.mode = "mainstage";
+          this.settledAt = this.t + SETTLE_TIME_CONSTANTS * this.model.tauN;
+        }
         break;
       case "mainstage":
         if (this.exercise) {
@@ -344,28 +402,10 @@ export abstract class TwinCore {
       this.wander.set(key, w);
       system[key] = AS_BUILT[key] * (1 + w);
     }
-    const actual = applyPhysicalFaults(system, sev);
+    const actual = this.physicalSystem(system, sev);
     writeOutputs(actual, this.truth, stepPlant(actual, this.truth, speed, this.ignited, DT), this.truthValues);
-
-    // Sensors, then the path the samples travel before the twin sees them.
-    const slot = k % BUFFER;
-    for (let i = 0; i < N_CH; i++) {
-      const noise = CHANNELS[i].sigma * (i === CH.pOutOx ? noiseMultiplier(sev) : 1) * this.rng.gauss();
-      this.buffer[i][slot] = this.truthValues[i] + noise + (i === CH.pcA ? driftBias(sev) : 0);
-    }
-    if (replayActive(sev) && !this.replayData) {
-      this.replayData = this.buffer.map((channel) => Float64Array.from({ length: REPLAY_STEPS }, (_, j) => channel[(k - REPLAY_STEPS + j + BUFFER * 2) % BUFFER]));
-      this.replayStart = k;
-    } else if (!replayActive(sev)) {
-      this.replayData = null;
-    }
-    const delay = transportDelaySteps(sev);
-    const skew = clockSkewSteps(sev);
     this.obsPrev.set(this.obs);
-    for (let i = 0; i < N_CH; i++) {
-      const late = delay + (CHANNELS[i].node === SKEWED_NODE ? skew : 0);
-      this.obs[i] = this.replayData ? this.replayData[i][(k - this.replayStart) % REPLAY_STEPS] : this.buffer[i][(k - late + BUFFER * 2) % BUFFER];
-    }
+    this.acquire(k, sev);
 
     // Expected: the model, driven by the same commands.
     this.expPrev.set(this.exp);
@@ -374,18 +414,28 @@ export abstract class TwinCore {
     this.activity = Math.max(moved, this.activity * Math.exp(-DT / 0.5));
     this.inflate = 1 + 0.5 * this.activity;
     const steady = this.activity < 0.5;
-    this.monitoring = this.mode === "mainstage" && this.ignited && this.exp[CH.mOx] > 35;
+    this.monitoring = this.mode === "mainstage" && this.ignited && this.exp[CH.mOx] > 35 && this.t >= this.settledAt;
 
     // Estimated: each measurement is predicted by the model's own change, then corrected by what arrived.
+    // A sample that did not arrive, or is not a number, corrects nothing: the estimate coasts on the model and its uncertainty grows.
     for (let i = 0; i < N_CH; i++) {
       const sigma = CHANNELS[i].sigma;
       const step = this.exp[i] - this.expPrev[i];
-      if (steady) {
-        const jump = this.obs[i] - this.obsPrev[i] - step;
-        this.noiseRatio[i] += 0.04 * ((jump * jump) / (2 * sigma * sigma) - this.noiseRatio[i]);
-      }
       const predicted = this.est[i] + step;
       const p = this.variance[i] + (0.12 * sigma) ** 2;
+      this.valid[i] = Number.isFinite(this.obs[i]) ? 1 : 0;
+      if (!this.valid[i]) {
+        this.est[i] = predicted;
+        this.variance[i] = Math.min(p, (20 * sigma) ** 2);
+        continue;
+      }
+      if (steady && Number.isFinite(this.obsPrev[i])) {
+        // Noise is scatter that persists. One sample is allowed to count for no more than a 5 σ jump at the present
+        // noise level, so a single step in the signal (a fault arriving at once) is not read as a noisy sensor.
+        const jump = this.obs[i] - this.obsPrev[i] - step;
+        const sample = Math.min((jump * jump) / (2 * sigma * sigma), NOISE_SAMPLE_CAP * Math.max(1, this.noiseRatio[i]));
+        this.noiseRatio[i] += 0.04 * (sample - this.noiseRatio[i]);
+      }
       const gain = p / (p + sigma * sigma * Math.max(1, this.noiseRatio[i]));
       this.est[i] = predicted + gain * (this.obs[i] - predicted);
       this.variance[i] = (1 - gain) * p;
@@ -419,7 +469,10 @@ export abstract class TwinCore {
     this.assessQuality(sev, steady);
     this.detect(steady);
     if (k % 2 === 0) this.isolate();
-    if (k % 10 === 0) this.prognose();
+    if (k % SLOW_EVERY === 0) {
+      this.recognise(steady);
+      this.prognose();
+    }
     this.track();
     if (k % HISTORY_EVERY === 0) {
       this.head = (this.head + 1) % HISTORY;
@@ -430,6 +483,32 @@ export abstract class TwinCore {
       }
       this.histPc[this.head] = this.pc;
       this.histSigma[this.head] = Math.sqrt(this.pcVariance) * this.inflate;
+    }
+  }
+
+  /** The physical system this step: its parameters with the injected faults applied. */
+  protected physicalSystem(system: PlantParams, sev: Severities): PlantParams {
+    return applyPhysicalFaults(system, sev);
+  }
+
+  /** Sensors, then the path the samples travel before the twin sees them. Fills `obs`. */
+  protected acquire(k: number, sev: Severities): void {
+    const slot = k % BUFFER;
+    for (let i = 0; i < N_CH; i++) {
+      const noise = CHANNELS[i].sigma * (i === CH.pOutOx ? noiseMultiplier(sev) : 1) * this.rng.gauss();
+      this.buffer[i][slot] = this.truthValues[i] + noise + (i === CH.pcA ? driftBias(sev) : 0);
+    }
+    if (replayActive(sev) && !this.replayData) {
+      this.replayData = this.buffer.map((channel) => Float64Array.from({ length: REPLAY_STEPS }, (_, j) => channel[(k - REPLAY_STEPS + j + BUFFER * 2) % BUFFER]));
+      this.replayStart = k;
+    } else if (!replayActive(sev)) {
+      this.replayData = null;
+    }
+    const delay = transportDelaySteps(sev);
+    const skew = clockSkewSteps(sev);
+    for (let i = 0; i < N_CH; i++) {
+      const late = delay + (CHANNELS[i].node === SKEWED_NODE ? skew : 0);
+      this.obs[i] = this.replayData ? this.replayData[i][(k - this.replayStart) % REPLAY_STEPS] : this.buffer[i][(k - late + BUFFER * 2) % BUFFER];
     }
   }
 
@@ -475,9 +554,11 @@ export abstract class TwinCore {
       p *= 1 - gain;
     };
     const r = CHANNELS[CH.pcA].sigma ** 2;
-    if (!this.outA) update(this.obs[CH.pcA], r);
-    if (!this.outB) update(this.obs[CH.pcB], r);
-    if (this.outA && this.outB) update(this.virtual, 0.25);
+    const useA = !this.outA && this.valid[CH.pcA] === 1;
+    const useB = !this.outB && this.valid[CH.pcB] === 1;
+    if (useA) update(this.obs[CH.pcA], r);
+    if (useB) update(this.obs[CH.pcB], r);
+    if (!useA && !useB) update(this.virtual, 0.25);
     this.pc = x;
     this.pcVariance = p;
   }
@@ -487,13 +568,18 @@ export abstract class TwinCore {
     const skew = clockSkewSteps(sev) * DT * 1000;
     const nodes = (["feed", "turbo", "chamber"] as const).map((node) => ({ node, latencyMs: latency, skewMs: node === SKEWED_NODE ? skew : 0, sequenceOk: !this.replayData }));
     const noisy = CHANNEL_IDS.filter((_, i) => this.noiseRatio[i] > 5);
+    const missing = CHANNEL_IDS.filter((_, i) => this.valid[i] === 0);
+    // A healthy sensor is never perfectly still: one whose sample-to-sample scatter has all but vanished has stopped responding.
+    const frozen = CHANNEL_IDS.filter((_, i) => this.valid[i] === 1 && this.noiseRatio[i] < FLAT_LINE);
     const notes: string[] = [];
+    for (const id of frozen) notes.push(`${CHANNELS[CH[id]].label}: the reading has stopped changing (flat-line).`);
+    if (missing.length) notes.push(`${missing.length === 1 ? CHANNELS[CH[missing[0]]].label : `${missing.length} channels`}: no usable sample arrived. The estimate is coasting on the model.`);
     if (this.replayData) notes.push("Sequence counters are repeating: the stream is a replay of earlier data.");
     if (latency > 120) notes.push(`Telemetry is arriving ${Math.round(latency)} ms after it was sampled.`);
     if (skew > 40) notes.push(`The turbomachinery node's clock is ${Math.round(skew)} ms off the reference.`);
     for (const id of noisy) notes.push(`${CHANNELS[CH[id]].label}: noise is ${Math.sqrt(this.noiseRatio[CH[id]]).toFixed(1)}× its calibrated level.`);
     const status: DataQuality = this.replayData ? "BAD" : notes.length ? "DEGRADED" : "GOOD";
-    this.quality = { status, nodes, noisy, notes };
+    this.quality = { status, nodes, noisy, missing, frozen, notes };
     if (status !== this.lastQuality) {
       if (status !== "GOOD") this.log("data", `Data quality ${status}: ${notes[0]}`);
       this.lastQuality = status;
@@ -544,6 +630,7 @@ export abstract class TwinCore {
   // Interpretation of the evidence: see TwinEngine.
   protected abstract detect(steady: boolean): void;
   protected abstract isolate(): void;
+  protected abstract recognise(steady: boolean): void;
   protected abstract prognose(): void;
   protected abstract track(): void;
 }

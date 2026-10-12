@@ -30,7 +30,14 @@ import { SensorDetail } from "../widgets/PressureMap";
 import css from "../advancedTwin.module.css";
 
 type View = "assembled" | "exploded" | "cutaway";
-type Overlay = "none" | "pressure" | "signal";
+type Overlay = "none" | "pressure" | "cooling" | "hot_gas" | "signal";
+/** The flow each overlay draws on the engine, and what its button is called. */
+const OVERLAYS: readonly { id: Exclude<Overlay, "none">; flow: "propellant" | "cooling" | "hot_gas" | "data"; label: string }[] = [
+  { id: "pressure", flow: "propellant", label: "Pressure pathways" },
+  { id: "cooling", flow: "cooling", label: "Cooling flow" },
+  { id: "hot_gas", flow: "hot_gas", label: "Hot-gas flow" },
+  { id: "signal", flow: "data", label: "Signal pathways" },
+];
 
 const chamberWall = wallRadius(0.56);
 const mid = (a: V3, b: V3): V3 => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2, (a[2] + b[2]) / 2];
@@ -74,11 +81,13 @@ const COLOR = { normal: "#a9cdf7", selected: "#ffffff", alert: "#f5b041" } as co
 function Marker({ id, visible, alert, onHover }: { id: ChannelId; visible: boolean; alert: boolean; onHover: (id: ChannelId | null) => void }) {
   const mesh = useRef<Mesh>(null);
   const selected = useLabStore((s) => s.sensor === id);
+  const still = useRocketTwinStore((s) => s.reducedMotion);
   useFrame(({ clock }) => {
     if (!mesh.current) return;
-    mesh.current.scale.setScalar(selected ? 1.5 + 0.2 * Math.sin(clock.elapsedTime * 4) : 1);
+    // With reduced motion the selected marker is simply larger, and a sensor in alarm is told apart by its shape alone.
+    mesh.current.scale.setScalar(selected ? 1.5 + (still ? 0 : 0.2 * Math.sin(clock.elapsedTime * 4)) : 1);
     // A sensor in alarm turns, so it reads as different even without its colour.
-    if (alert) mesh.current.rotation.y = clock.elapsedTime * 2;
+    if (alert && !still) mesh.current.rotation.y = clock.elapsedTime * 2;
   });
   const onClick = (event: ThreeEvent<MouseEvent>) => {
     if (event.delta > 5) return;
@@ -106,10 +115,11 @@ function Marker({ id, visible, alert, onHover }: { id: ChannelId; visible: boole
 
 function FaultMarker({ fault }: { fault: FaultId }) {
   const ring = useRef<Mesh>(null);
+  const still = useRocketTwinStore((s) => s.reducedMotion);
   useFrame(({ clock, camera }) => {
     if (!ring.current) return;
     ring.current.quaternion.copy(camera.quaternion);
-    ring.current.scale.setScalar(1 + 0.22 * Math.sin(clock.elapsedTime * 3));
+    ring.current.scale.setScalar(still ? 1.1 : 1 + 0.22 * Math.sin(clock.elapsedTime * 3));
   });
   return (
     <mesh ref={ring} position={FAULT_3D[fault] as [number, number, number]} renderOrder={10}>
@@ -166,7 +176,7 @@ export default function Engine3D({ onClose }: { onClose: () => void }) {
     const s = useRocketTwinStore.getState();
     useRocketTwinStore.setState({
       mode: overlay === "none" ? "engine" : "flow",
-      flow: overlay === "pressure" ? "propellant" : overlay === "signal" ? "data" : null,
+      flow: OVERLAYS.find((o) => o.id === overlay)?.flow ?? null,
       pressure: overlay === "pressure",
       explodedAmount: view === "exploded" ? 0.5 : 0,
       cutaway: view === "cutaway" ? "all" : null,
@@ -228,12 +238,11 @@ export default function Engine3D({ onClose }: { onClose: () => void }) {
           <button type="button" aria-pressed={sensors} onClick={() => setSensors((v) => !v)}>
             Pressure sensors
           </button>
-          <button type="button" aria-pressed={overlay === "pressure"} onClick={() => setOverlay(overlay === "pressure" ? "none" : "pressure")}>
-            Pressure pathways
-          </button>
-          <button type="button" aria-pressed={overlay === "signal"} onClick={() => setOverlay(overlay === "signal" ? "none" : "signal")}>
-            Signal pathways
-          </button>
+          {OVERLAYS.map((o) => (
+            <button key={o.id} type="button" aria-pressed={overlay === o.id} onClick={() => setOverlay(overlay === o.id ? "none" : o.id)}>
+              {o.label}
+            </button>
+          ))}
         </span>
         <label className={css.threeSelect}>
           <span className={css.srOnly}>Select a pressure sensor</span>

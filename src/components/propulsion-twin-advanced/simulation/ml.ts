@@ -98,6 +98,11 @@ export interface SoftmaxModel {
   weights: number[][];
 }
 
+/** Whether a feature vector is one this model can score: the width it was trained on, and every value a real number. */
+export function acceptsFeatures(model: SoftmaxModel, x: readonly number[], classes: number): boolean {
+  return model.weights.length === classes && model.weights.every((w) => w.length === x.length + 1 && w.every(Number.isFinite)) && x.every(Number.isFinite);
+}
+
 export function predictProbabilities(model: SoftmaxModel, x: readonly number[]): number[] {
   const logits = model.weights.map((w) => {
     let sum = w[x.length];
@@ -157,6 +162,40 @@ export function confusionMatrix(model: SoftmaxModel, x: readonly (readonly numbe
     matrix[y[i]][argmax(predictProbabilities(model, sample))] += 1;
   });
   return matrix;
+}
+
+export interface CalibrationReport {
+  /** Expected calibration error: the mean gap between stated confidence and how often that confidence was right, weighted by bin size. 0 is perfectly calibrated. */
+  ece: number;
+  /** Multi-class Brier score: mean squared distance between the stated probabilities and what was true. 0 is perfect; 2 is the worst possible. */
+  brier: number;
+  /** Predictions grouped by the confidence stated for them. */
+  bins: { from: number; to: number; confidence: number; accuracy: number; count: number }[];
+}
+
+/** How well the stated probabilities match outcomes on a labelled set. */
+export function calibrationReport(model: SoftmaxModel, x: readonly (readonly number[])[], y: readonly number[], edges: readonly number[] = [0, 0.5, 0.7, 0.9, 1]): CalibrationReport {
+  const bins = edges.slice(0, -1).map((from, i) => ({ from, to: edges[i + 1], confidence: 0, accuracy: 0, count: 0 }));
+  let brier = 0;
+  x.forEach((sample, i) => {
+    const p = predictProbabilities(model, sample);
+    const top = argmax(p);
+    p.forEach((value, j) => {
+      brier += (value - (j === y[i] ? 1 : 0)) ** 2;
+    });
+    const bin = bins.find((b) => p[top] <= b.to) ?? bins[bins.length - 1];
+    bin.count += 1;
+    bin.confidence += p[top];
+    bin.accuracy += top === y[i] ? 1 : 0;
+  });
+  let ece = 0;
+  for (const bin of bins) {
+    if (!bin.count) continue;
+    ece += Math.abs(bin.confidence - bin.accuracy) / Math.max(1, x.length);
+    bin.confidence /= bin.count;
+    bin.accuracy /= bin.count;
+  }
+  return { ece, brier: brier / Math.max(1, x.length), bins };
 }
 
 export function accuracy(matrix: readonly (readonly number[])[]): number {

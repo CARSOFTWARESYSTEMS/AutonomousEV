@@ -7,7 +7,7 @@
 // Before the simulation has loaded the map shows REFERENCE VALUES from the
 // model's design point. Once it is running the same places show SIMULATED
 // live values from the twin.
-import { useState } from "react";
+import { type KeyboardEvent, type RefObject, useRef, useState } from "react";
 import { ArrowDown, ArrowUp, Minus, X } from "lucide-react";
 import { trackAdvancedTwin, trackAdvancedTwinOnce } from "../analytics";
 import { PRESSURE_PATH, PRESSURE_SENSORS, PRESSURE_UNIT, SENSOR_BY_ID, SENSOR_CLASSES, SIGNAL_CHAIN, type PathStep, type PressureSensor, type RangeClass } from "../data/pressure";
@@ -17,7 +17,7 @@ import { fitTrend } from "../simulation/prognostics";
 import type { TwinEngineApi, TwinSnapshot } from "../simulation/twinTypes";
 import { useLabStore } from "../state/labStore";
 import { useLiveTwin } from "../state/useTwin";
-import PropulsionSchematic from "../ui/PropulsionSchematic";
+import PropulsionSchematic, { SHAFT_NOTE } from "../ui/PropulsionSchematic";
 import { fmt, signed } from "../ui/charts";
 import { Rows, Tag } from "../ui/primitives";
 import { InjectInLab } from "./actions";
@@ -51,7 +51,12 @@ function stepValue(step: PathStep, read: (id: ChannelId) => number): { value: nu
   }
 }
 
-export function SensorDetail({ sensor, snapshot, engine, onClose }: { sensor: PressureSensor; snapshot: TwinSnapshot | null; engine: TwinEngineApi | null; onClose: () => void }) {
+export function SensorDetail({ sensor, snapshot, engine, onClose, panel }: { sensor: PressureSensor; snapshot: TwinSnapshot | null; engine: TwinEngineApi | null; onClose: () => void; panel?: RefObject<HTMLElement | null> }) {
+  const onKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.key !== "Escape") return;
+    event.stopPropagation();
+    onClose();
+  };
   const reading = snapshot?.channels[sensor.id];
   const cls = SENSOR_CLASSES[sensor.cls];
   const fullScale = FULL_SCALE[sensor.rangeClass];
@@ -81,12 +86,12 @@ export function SensorDetail({ sensor, snapshot, engine, onClose }: { sensor: Pr
     conditioned: `${counts.toLocaleString("en-US")} counts (16-bit), time-stamped`,
     engineering: `${fmt(observed)} ${PRESSURE_UNIT}`,
     twin: reading ? `Estimated ${fmt(reading.estimated)} · expected ${fmt(reading.expected)}` : `Reference ${fmt(sensor.reference)}`,
-    residual: reading ? `${signed(reading.residual)} ${PRESSURE_UNIT} (${signed(z, 1)} σ)` : "Not available until the twin is running",
+    residual: reading ? `Estimated − expected ${signed(reading.residual)} ${PRESSURE_UNIT} (${signed(z, 1)} σ) · raw, observed − expected ${signed(reading.rawResidual)}` : "Not available until the twin is running",
     health: status,
   };
 
   return (
-    <aside className={css.sheet} aria-label={`${sensor.name}: measurement detail`}>
+    <aside ref={panel} className={css.sheet} aria-label={`${sensor.name}: measurement detail`} tabIndex={-1} onKeyDown={onKeyDown} data-sensor-detail={sensor.id}>
       <div className={css.sheetHead}>
         <div>
           <p className={css.kicker}>
@@ -94,7 +99,7 @@ export function SensorDetail({ sensor, snapshot, engine, onClose }: { sensor: Pr
           </p>
           <p className={css.sheetTitle}>{sensor.name}</p>
         </div>
-        <button type="button" className={css.iconButton} onClick={onClose} aria-label="Close measurement detail">
+        <button type="button" className={css.iconButton} onClick={onClose} aria-label="Close measurement detail" title="Close (Esc)">
           <X size={16} aria-hidden="true" />
         </button>
       </div>
@@ -103,7 +108,7 @@ export function SensorDetail({ sensor, snapshot, engine, onClose }: { sensor: Pr
       <div className={css.states} role="group" aria-label="Digital Twin states at this measurement point">
         <div className={css.stateCell}>
           <span>OBSERVED</span>
-          <b>{fmt(observed)}</b>
+          <b>{reading && !Number.isFinite(reading.observed) ? "no sample" : fmt(observed)}</b>
         </div>
         <div className={css.stateCell}>
           <span>ESTIMATED</span>
@@ -179,6 +184,28 @@ export default function PressureMap() {
   const selected = useLabStore((s) => s.sensor);
   const selectSensor = useLabStore((s) => s.selectSensor);
   const [step, setStep] = useState<number | null>(null);
+  const detail = useRef<HTMLElement>(null);
+  const options = useRef<HTMLDivElement>(null);
+  const opener = useRef<HTMLElement | null>(null);
+
+  /** Chosen by hand: the detail is brought into view and takes focus, so the choice is never answered off screen. */
+  const choose = (id: ChannelId, from?: HTMLElement) => {
+    // Safari does not focus a button when it is clicked, so the control is taken from the click, not from where focus is.
+    opener.current = from ?? options.current?.querySelector<HTMLElement>(`[data-sensor-option="${id}"]`) ?? null;
+    selectSensor(id);
+    requestAnimationFrame(() => {
+      const panel = detail.current;
+      if (!panel) return;
+      panel.focus({ preventScroll: true });
+      panel.scrollIntoView?.({ block: "nearest", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    });
+  };
+  const close = () => {
+    selectSensor(null);
+    // Focus goes back to where the choice was made, if that control is still there.
+    const from = opener.current;
+    requestAnimationFrame(() => (from?.isConnected ? from.focus({ preventScroll: true }) : undefined));
+  };
 
   const read = (id: ChannelId) => snapshot?.channels[id].estimated ?? reference(id);
   const alerts = snapshot ? PRESSURE_SENSORS.filter((s) => Math.abs(snapshot.channels[s.id].z) >= ALERT_Z).map((s) => s.id) : [];
@@ -199,14 +226,18 @@ export default function PressureMap() {
 
   return (
     <div className={css.pressureMap}>
-      <div className={css.stage} data-desktop-only="">
+      <div className={css.stage} data-sticky="">
         <ul className={css.stageTags} aria-label="Value status">
           <li>{snapshot ? "SIMULATED" : "REFERENCE VALUE"}</li>
           <li>{PRESSURE_UNIT}</li>
         </ul>
-        <PropulsionSchematic className={css.schematic} selected={selected ?? current?.sensor ?? null} alerts={alerts} onSelectSensor={selectSensor} flowClassName={snapshot ? css.flowing : undefined} />
+        <PropulsionSchematic className={css.schematic} selected={selected ?? current?.sensor ?? null} alerts={alerts} onSelectSensor={(id) => choose(id)} flowClassName={snapshot ? css.flowing : undefined} />
         <p className={css.stageCaption} role="status">
           {alerts.length ? `${alerts.length} pressure ${alerts.length === 1 ? "sensor is" : "sensors are"} outside expectation, drawn as diamonds.` : "Select any pressure sensor. A diamond marks a sensor whose reading has left its expectation."}
+        </p>
+        <p className={css.stageCaption}>
+          {sensor ? `${sensor.tag} is selected. The dashed line is its signal path, from the transducer to the controller and the twin. ` : ""}
+          {SHAFT_NOTE}
         </p>
       </div>
 
@@ -257,7 +288,7 @@ export default function PressureMap() {
             return (
               <li key={item.id} className={css.ladderStep} data-kind={item.kind} data-current={isCurrent || undefined} aria-current={isCurrent ? "step" : undefined}>
                 {item.sensor ? (
-                  <button type="button" className={css.ladderRow} aria-pressed={selected === item.sensor} onClick={() => selectSensor(item.sensor ?? null)}>
+                  <button type="button" className={css.ladderRow} aria-pressed={selected === item.sensor} onClick={(event) => item.sensor && choose(item.sensor, event.currentTarget)}>
                     {body}
                   </button>
                 ) : (
@@ -272,14 +303,14 @@ export default function PressureMap() {
           })}
         </ol>
         <p className={css.note}>
-          ▲ a rise, ▼ a loss, in {PRESSURE_UNIT}. <Tag>{snapshot ? "SIMULATED" : "REFERENCE VALUE"}</Tag>
+          ▲ a rise, ▼ a loss, in {PRESSURE_UNIT}. <Tag>{snapshot ? "SIMULATED" : "REFERENCE VALUE"}</Tag> {snapshot ? "Live values are the twin's estimated state, with sensor noise filtered out, not raw readings." : "Design-point values of the model, until the simulation is running."}
         </p>
 
         <div className={css.group}>
           <p className={css.groupLabel}>All pressure sensors</p>
-          <div className={css.options} role="group" aria-label="Pressure sensors">
+          <div ref={options} className={css.options} role="group" aria-label="Pressure sensors">
             {PRESSURE_SENSORS.map((s) => (
-              <button key={s.id} type="button" className={css.option} aria-pressed={selected === s.id} data-alert={alerts.includes(s.id) || undefined} onClick={() => selectSensor(s.id)}>
+              <button key={s.id} type="button" className={css.option} aria-pressed={selected === s.id} data-alert={alerts.includes(s.id) || undefined} data-sensor-option={s.id} onClick={(event) => choose(s.id, event.currentTarget)}>
                 {alerts.includes(s.id) && <span aria-hidden="true">◆ </span>}
                 {s.name.replace(" pressure", "")}
                 <span className={css.optionValue}>{fmt(read(s.id))}</span>
@@ -289,7 +320,7 @@ export default function PressureMap() {
         </div>
       </div>
 
-      {sensor && <SensorDetail sensor={sensor} snapshot={snapshot} engine={engine} onClose={() => selectSensor(null)} />}
+      {sensor && <SensorDetail sensor={sensor} snapshot={snapshot} engine={engine} onClose={close} panel={detail} />}
     </div>
   );
 }

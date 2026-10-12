@@ -9,7 +9,7 @@ import { DIAGNOSIS_BY_ID, SYMPTOMS, SYMPTOM_BY_ID, type SymptomId } from "../sim
 import { useTwin } from "../state/useTwin";
 import { ShareBar, fmt, signed } from "../ui/charts";
 import { InjectFault } from "../widgets/actions";
-import { EvidenceList } from "./shared";
+import { EvidenceList, TwinPending } from "./shared";
 import css from "../advancedTwin.module.css";
 
 export default function RcaWorkbench() {
@@ -22,9 +22,7 @@ export default function RcaWorkbench() {
 
   if (!snapshot || !top) {
     return (
-      <p className={css.loading} role="status">
-        Calibrating the twin…
-      </p>
+      <TwinPending>Calibrating the twin…</TwinPending>
     );
   }
   const graded = SYMPTOMS.filter((s) => Math.abs(snapshot.symptoms[s.id]) >= 0.05).sort((a, b) => Math.abs(snapshot.symptomZ[b.id]) - Math.abs(snapshot.symptomZ[a.id]));

@@ -76,7 +76,9 @@ export default function PressureBudget() {
         <button type="button" className={css.ghost} onClick={() => setV(START)}>
           Restore the healthy design point
         </button>
-        <dl className={css.rows} role="status" aria-label="Solved operating point">
+        {/* The list is inside the live region, not the region itself: a definition list may only hold its own terms. */}
+        <div role="status" aria-label="Solved operating point">
+        <dl className={css.rows}>
           <div>
             <dt>Chamber pressure</dt>
             <dd>
@@ -98,6 +100,7 @@ export default function PressureBudget() {
             </dd>
           </div>
         </dl>
+        </div>
       </div>
       <div>
         <p className={css.groupLabel}>Oxidiser path</p>

@@ -45,28 +45,28 @@ export default function SensorChallenge() {
       <p className={css.lead}>
         {SENSOR_VS_ENGINE.scenario} <strong>{SENSOR_VS_ENGINE.question}</strong>
       </p>
-      <div className={css.tableWrap} role="region" aria-label="Evidence" tabIndex={0}>
-        <table className={css.miniTable}>
+      <div className={css.tableWrap} data-stack="" role="region" aria-label="Evidence" tabIndex={0}>
+        <table className={css.miniTable} role="table" data-stack="">
           <caption>
             Case {index + 1} of {CHALLENGE_CASES.length} · change from expectation · SIMULATED
           </caption>
-          <tbody>
+          <tbody role="rowgroup">
             {CHALLENGE_EVIDENCE.map((e) => {
               const change = evidence[e.id];
               const moved = Math.abs(change) >= 0.5;
               return (
-                <tr key={e.id} data-moved={moved || undefined}>
-                  <th scope="row">{e.label}</th>
-                  <td>
+                <tr role="row" key={e.id} data-moved={moved || undefined}>
+                  <th scope="row" role="rowheader">{e.label}</th>
+                  <td role="cell">
                     {moved ? (change < 0 ? "▼ " : "▲ ") : "● "}
                     {moved ? `${signed(change, 1)} %` : "as expected"}
                   </td>
                 </tr>
               );
             })}
-            <tr>
-              <th scope="row">Physics prediction</th>
-              <td>● unchanged: the command has not changed</td>
+            <tr role="row">
+              <th scope="row" role="rowheader">Physics prediction</th>
+              <td role="cell">● unchanged: the command has not changed</td>
             </tr>
           </tbody>
         </table>

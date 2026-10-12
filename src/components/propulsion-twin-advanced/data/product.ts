@@ -91,7 +91,8 @@ export const ENGINEERING_CHAIN = [
 
 export const AUDIENCE = {
   persona: "A technically experienced CTO who understands software and systems engineering but has never designed a rocket propulsion system or an aerospace Digital Twin.",
-  roles: ["CTO and chief architects", "Propulsion systems architects", "Digital Twin architects", "Space-agency and launch-industry engineers", "Aerospace R&D scientists", "Propulsion health-monitoring engineers", "AI/ML engineers entering aerospace", "Systems engineers", "Reliability, IVHM and PHM engineers", "Researchers and PhD scholars", "Senior engineering students"],
+  /** Written as they read inside a sentence, and shown exactly so: changing their case would undo the abbreviations. */
+  roles: ["CTO and Chief Architects", "propulsion systems architects", "Digital Twin architects", "space-agency and launch-industry engineers", "aerospace R&D scientists", "propulsion health-monitoring engineers", "AI/ML engineers entering aerospace", "systems engineers", "reliability, IVHM and PHM engineers", "researchers and PhD scholars", "senior engineering students"],
   depth: ["Simple explanation", "Engineering explanation", "Mathematical and physical relation", "Digital Twin implementation", "Failure use case"],
 } as const;
 

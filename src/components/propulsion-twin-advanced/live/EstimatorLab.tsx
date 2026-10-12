@@ -19,6 +19,12 @@ export default function EstimatorLab() {
   const [spikes, setSpikes] = useState(false);
   const [mismatch, setMismatch] = useState(false);
   const run = useMemo(() => runEstimatorDemo({ estimator, noise, spikes, mismatch }), [estimator, noise, spikes, mismatch]);
+  // The EKF and the UKF are different computations. Where they give the same answer, the page says by how little they differ, and why.
+  const twinGap = useMemo(() => {
+    if (estimator !== "ekf" && estimator !== "ukf") return null;
+    const other = runEstimatorDemo({ estimator: estimator === "ekf" ? "ukf" : "ekf", noise, spikes, mismatch });
+    return Math.max(...run.estimate.map((value, i) => Math.abs(value - other.estimate[i])));
+  }, [estimator, noise, spikes, mismatch, run]);
   const name = CHOICES.find((c) => c.demo === estimator)?.title ?? "";
   const rows = [
     { label: "Raw sensor", value: run.rmse.raw },
@@ -94,6 +100,11 @@ export default function EstimatorLab() {
               ? "Spikes break the Gaussian assumption. Try the particle filter, which is told that occasional large errors happen."
               : "The moving average lags the step; the estimators follow it, because their model already knows the step is coming."}
         </p>
+        {twinGap !== null && (
+          <p className={css.note} data-estimator-gap="">
+            On this run the extended and the unscented Kalman filter differ by at most {twinGap < 0.0001 ? twinGap.toExponential(1) : twinGap.toFixed(4)} {PRESSURE_UNIT}. They are computed differently (one linearises the model, the other passes sigma points through it), but over the width of the estimate&apos;s uncertainty this chamber model is almost a straight line, so they agree. They separate when the model curves within that width.
+          </p>
+        )}
       </div>
     </div>
   );

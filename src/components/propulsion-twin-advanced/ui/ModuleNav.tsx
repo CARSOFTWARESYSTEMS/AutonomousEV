@@ -13,6 +13,9 @@ import css from "../advancedTwin.module.css";
 /** Id of the element that carries the reading depth, as `data-level`. */
 export const ROOT_ID = "advanced-propulsion-twin";
 const CTO_FRAGMENT = "cto";
+/** The button's name, split after its first word: the first word always shows, the rest where there is room. */
+const CTO_FIRST = PRODUCT.ctoLabel.split(" ")[0];
+const CTO_REST = PRODUCT.ctoLabel.slice(CTO_FIRST.length).trim();
 
 export default function ModuleNav() {
   const active = useLabStore((s) => s.module);
@@ -77,10 +80,11 @@ export default function ModuleNav() {
             </button>
           ))}
         </div>
+        {/* One name at every width. Where space is short only its first word shows, and the name still begins with what is shown. */}
         <button type="button" className={css.ctoButton} onClick={openCto} aria-label={PRODUCT.ctoLabel}>
           <Compass size={14} aria-hidden="true" />
-          <span className={css.ctoLong}>{PRODUCT.ctoLabel}</span>
-          <span className={css.ctoShort}>CTO View</span>
+          <span>{CTO_FIRST}</span>
+          <span className={css.ctoRest}>{CTO_REST}</span>
         </button>
       </div>
     </div>

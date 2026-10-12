@@ -22,7 +22,7 @@ export const FAQ: readonly { id: string; q: string; a: string }[] = [
   {
     id: "residual",
     q: "What is model residual?",
-    a: "A model residual is the difference between what is observed and what a model expects for the same conditions: Residual = Observation − Model Expectation. A residual near zero means the system is behaving as the model says it should. A residual that grows, and stays outside its healthy scatter, is evidence that the system, a sensor or the model has changed.",
+    a: "A model residual is the difference between what is observed and what a model expects for the same conditions: Residual = Observation − Model Expectation, positive when the measurement is above the model. The twin on this page judges the filtered residual (estimated − expected) and also shows the raw one (observed − expected). A residual near zero means the system is behaving as the model says it should. A residual that grows, and stays outside its healthy scatter, is evidence that the system, a sensor or the model has changed.",
   },
   {
     id: "ai_models",

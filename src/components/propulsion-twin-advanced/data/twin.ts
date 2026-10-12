@@ -48,7 +48,7 @@ export const TWIN_STATES: readonly TwinStateDef[] = [
   { id: "estimated", label: "ESTIMATED", definition: "Best estimate of the physical state after sensor and model fusion.", source: "A state estimator: the model predicts, the measurement corrects. Includes states that no sensor measures.", line: "Heavy solid line" },
   { id: "expected", label: "EXPECTED", definition: "What physics predicts for the current command and operating environment.", source: "The physics model, driven by the same commands as the hardware, with calibrated nominal parameters.", line: "Dashed line" },
   { id: "predicted", label: "PREDICTED", definition: "Probable future state plus uncertainty.", source: "The estimated state and its trend, projected through the model. Always drawn with a band.", line: "Dotted line with a shaded band" },
-  { id: "residual", label: "RESIDUAL", definition: "Difference between observed or estimated behaviour and expected behaviour.", source: "Estimated minus expected, expressed in standard deviations of its healthy scatter.", line: "Shown as a number beside each chart" },
+  { id: "residual", label: "RESIDUAL", definition: "Difference between observed or estimated behaviour and expected behaviour.", source: "Estimated minus expected (the filtered residual), expressed in standard deviations of its healthy scatter. Observed minus expected is the raw residual: the same information with the sensor's noise still in it.", line: "Shown as a number beside each chart" },
   { id: "health", label: "HEALTH", definition: "Probabilistic health interpretation.", source: "Evidence fusion: residuals, inferred parameters, detectors and classifiers, reduced to a state and a confidence.", line: "A labelled state, never a colour alone" },
 ];
 

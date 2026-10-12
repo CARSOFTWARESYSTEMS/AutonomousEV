@@ -10,7 +10,7 @@ import type { FaultId } from "../simulation/isolation";
 import type { Concept, SubsystemId } from "../types";
 
 export const PRESSURE_UNIT = "% Pc,ref";
-export const PRESSURE_UNIT_NOTE = "Percent of reference chamber pressure. The reference chamber pressure is 100 by definition; no absolute pressure is implied.";
+export const PRESSURE_UNIT_NOTE = "Every pressure is an absolute pressure, measured from vacuum and not from ambient, given as a percentage of the reference chamber pressure, which is 100 by definition. A ΔP is the difference between two of them. No value in engineering units is implied.";
 
 /** Range classes stand in for operating ranges, which the page deliberately does not give. */
 export type RangeClass = "LOW" | "MEDIUM" | "HIGH" | "VERY HIGH";

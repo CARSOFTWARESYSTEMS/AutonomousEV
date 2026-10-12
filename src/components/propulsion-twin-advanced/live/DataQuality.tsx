@@ -4,6 +4,7 @@
 import { useTwin } from "../state/useTwin";
 import { CHANNEL_BY_ID } from "../simulation/channels";
 import { InjectFault } from "../widgets/actions";
+import { TwinPending } from "./shared";
 import css from "../advancedTwin.module.css";
 
 const NODE_NAME = { feed: "Feed node", turbo: "Turbomachinery node", chamber: "Chamber node" } as const;
@@ -12,38 +13,36 @@ export default function DataQuality() {
   const { snapshot } = useTwin();
   if (!snapshot) {
     return (
-      <p className={css.loading} role="status">
-        Starting acquisition…
-      </p>
+      <TwinPending>Starting acquisition…</TwinPending>
     );
   }
   const { quality } = snapshot;
   return (
     <div className={css.twoCol}>
-      <div className={css.tableWrap} role="region" aria-label="Acquisition node health" tabIndex={0}>
-        <table className={css.miniTable}>
+      <div className={css.tableWrap} data-stack="" role="region" aria-label="Acquisition node health" tabIndex={0}>
+        <table className={css.miniTable} role="table" data-stack="">
           <caption>
             Data quality: {quality.status} · SIMULATED
           </caption>
-          <thead>
-            <tr>
-              <th scope="col">Acquisition node</th>
-              <th scope="col">Latency</th>
-              <th scope="col">Clock skew</th>
-              <th scope="col">Sequence</th>
+          <thead role="rowgroup">
+            <tr role="row">
+              <th scope="col" role="columnheader">Acquisition node</th>
+              <th scope="col" role="columnheader">Latency</th>
+              <th scope="col" role="columnheader">Clock skew</th>
+              <th scope="col" role="columnheader">Sequence</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody role="rowgroup">
             {quality.nodes.map((node) => (
-              <tr key={node.node}>
-                <th scope="row">{NODE_NAME[node.node]}</th>
-                <td>
+              <tr role="row" key={node.node}>
+                <th scope="row" role="rowheader">{NODE_NAME[node.node]}</th>
+                <td role="cell" data-label="Latency">
                   {Math.round(node.latencyMs)} ms{node.latencyMs > 120 ? " · LATE" : ""}
                 </td>
-                <td>
+                <td role="cell" data-label="Clock skew">
                   {Math.round(node.skewMs)} ms{node.skewMs > 40 ? " · OFFSET" : ""}
                 </td>
-                <td>{node.sequenceOk ? "In order" : "REPEATING"}</td>
+                <td role="cell" data-label="Sequence">{node.sequenceOk ? "In order" : "REPEATING"}</td>
               </tr>
             ))}
           </tbody>
@@ -51,14 +50,18 @@ export default function DataQuality() {
       </div>
       <div>
         <p className={css.groupLabel}>Findings</p>
+        {/* Only the verdict is announced: the findings carry numbers that change with every sample. */}
+        <p className={css.srOnly} role="status">
+          Data quality {quality.status}
+        </p>
         {quality.notes.length ? (
-          <ul className={css.bullets} role="status">
+          <ul className={css.bullets}>
             {quality.notes.map((note) => (
               <li key={note}>{note}</li>
             ))}
           </ul>
         ) : (
-          <p className={css.hint} role="status">
+          <p className={css.hint}>
             Every check passes. {quality.noisy.length ? "" : "No channel is noisier than its calibration."}
           </p>
         )}

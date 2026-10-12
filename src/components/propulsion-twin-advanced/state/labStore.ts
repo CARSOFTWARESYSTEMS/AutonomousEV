@@ -8,7 +8,7 @@ import { create } from "zustand";
 import { trackAdvancedTwin, trackAdvancedTwinOnce } from "../analytics";
 import type { ChannelId } from "../simulation/channels";
 import type { FaultId } from "../simulation/isolation";
-import type { TwinEngineApi, TwinSnapshot } from "../simulation/twinTypes";
+import type { FaultOnset, TwinEngineApi, TwinSnapshot } from "../simulation/twinTypes";
 import { LEVEL_IDS, type LevelId, MODULE_IDS, type ModuleId } from "../types";
 
 export const WEEKS_STORAGE_KEY = "advanced-propulsion-twin:weeks";
@@ -23,6 +23,8 @@ export interface LabState {
   sensor: ChannelId | null;
   engine: TwinEngineApi | null;
   booting: boolean;
+  /** The simulation could not be fetched or built. The instruments say so, and offer to try again. */
+  bootFailed: boolean;
   snapshot: TwinSnapshot | null;
   /** Bumped every time the simulation advances, so charts know to redraw. */
   tick: number;
@@ -45,7 +47,8 @@ export interface LabActions {
   setSpeed: (speed: 1 | 4) => void;
   toggleCompare: () => void;
   step: () => void;
-  inject: (fault: FaultId, severity?: number) => void;
+  /** Runs one fault as a scenario: it replaces whatever was injected before. */
+  inject: (fault: FaultId, severity?: number, onset?: FaultOnset) => void;
   clearFaults: () => void;
   resetSimulation: () => void;
   setThrottle: (level: number) => void;
@@ -62,6 +65,7 @@ export const INITIAL_STATE: LabState = {
   sensor: null,
   engine: null,
   booting: false,
+  bootFailed: false,
   snapshot: null,
   tick: 0,
   running: true,
@@ -148,12 +152,17 @@ export const useLabStore = create<LabState & LabActions>((set, get) => {
 
     boot: async () => {
       if (get().engine || get().booting) return;
-      set({ booting: true });
-      const { createTwinEngine } = await import("../simulation/twinEngine");
-      const engine = createTwinEngine();
-      // A learner who asked for less motion starts with the simulation paused, and steps it by hand.
-      set({ engine, booting: false, snapshot: engine.snapshot(), running: !prefersReducedMotion() });
-      sync();
+      set({ booting: true, bootFailed: false });
+      try {
+        const { createTwinEngine } = await import("../simulation/twinEngine");
+        const engine = createTwinEngine();
+        // A learner who asked for less motion starts with the simulation paused, and steps it by hand.
+        set({ engine, booting: false, snapshot: engine.snapshot(), running: !prefersReducedMotion() });
+        sync();
+      } catch {
+        // The download failed, or the twin could not be built. Nothing else on the page depends on it.
+        set({ booting: false, bootFailed: true });
+      }
     },
 
     watch: () => {
@@ -175,11 +184,12 @@ export const useLabStore = create<LabState & LabActions>((set, get) => {
     toggleCompare: () => set((s) => ({ compare: !s.compare })),
     step: () => advance(10),
 
-    inject: (fault, severity = 0.8) => {
+    inject: (fault, severity = 0.8, onset = "gradual") => {
       const { engine } = get();
       if (!engine) return;
-      engine.inject(fault, severity);
-      if (NEEDS_TRANSIENT.includes(fault)) engine.setExercise(true);
+      engine.scenario(fault, severity, onset);
+      detected = null;
+      engine.setExercise(NEEDS_TRANSIENT.includes(fault));
       trackAdvancedTwin("fault_injected", { fault });
       refresh();
     },

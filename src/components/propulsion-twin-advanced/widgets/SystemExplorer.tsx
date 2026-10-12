@@ -10,7 +10,8 @@ import { trackAdvancedTwin } from "../analytics";
 import { MOBILE_NOTE } from "../data/product";
 import { DESKTOP_3D, SUBSYSTEMS, SUBSYSTEM_BY_ID } from "../data/system";
 import type { SubsystemId } from "../types";
-import PropulsionSchematic from "../ui/PropulsionSchematic";
+import Boundary from "../ui/Boundary";
+import PropulsionSchematic, { SHAFT_NOTE } from "../ui/PropulsionSchematic";
 import { Rows } from "../ui/primitives";
 import css from "../advancedTwin.module.css";
 
@@ -37,6 +38,8 @@ export default function SystemExplorer() {
   const capable = useSyncExternalStore(subscribe, canRun3D, () => false);
   const subsystem = focus ? SUBSYSTEM_BY_ID[focus] : null;
 
+  const schematic = <PropulsionSchematic className={css.schematic} focus={focus} onSelectSubsystem={setFocus} flowClassName={css.flowing} showSensors={focus === null || focus === "instrumentation"} />;
+
   const enter = () => {
     setIn3D(true);
     trackAdvancedTwin("desktop_3d_entered");
@@ -50,12 +53,19 @@ export default function SystemExplorer() {
           <li>REFERENCE MODEL</li>
           <li>NOT TO SCALE</li>
         </ul>
-        {in3D && capable ? <Engine3D onClose={() => setIn3D(false)} /> : <PropulsionSchematic className={css.schematic} focus={focus} onSelectSubsystem={setFocus} flowClassName={css.flowing} showSensors={focus === null || focus === "instrumentation"} />}
+        {in3D && capable ? (
+          <Boundary what="The 3D view" fallback={schematic}>
+            <Engine3D onClose={() => setIn3D(false)} />
+          </Boundary>
+        ) : (
+          schematic
+        )}
         {!in3D && (
           <p className={css.stageCaption} role="status">
             {subsystem ? `${subsystem.name}: the rest of the system is dimmed.` : "The complete system. Choose a subsystem to bring it forward."}
           </p>
         )}
+        {!in3D && <p className={css.stageCaption}>{SHAFT_NOTE}</p>}
       </div>
 
       <div className={css.explorerSide}>

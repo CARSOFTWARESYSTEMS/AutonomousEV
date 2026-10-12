@@ -65,21 +65,21 @@ export function DataModule() {
 
       <Block title="Data acquisition: from sensor to telemetry" intro="Data acquisition is the chain that carries a physical quantity from a sensor to a time-stamped engineering value that a model can use. Each link can fail in its own way, and the twin has to know every one of them.">
         <Chain items={ACQUISITION_CHAIN.map((link) => link.label)} label="The acquisition chain" />
-        <div className={css.tableWrap} role="region" aria-label="The acquisition chain, link by link" tabIndex={0}>
-          <table className={css.table}>
-            <thead>
-              <tr>
-                <th scope="col">Link</th>
-                <th scope="col">What it does</th>
-                <th scope="col">How it fails</th>
+        <div className={css.tableWrap} data-stack="" role="region" aria-label="The acquisition chain, link by link" tabIndex={0}>
+          <table className={css.table} role="table" data-stack="">
+            <thead role="rowgroup">
+              <tr role="row">
+                <th scope="col" role="columnheader">Link</th>
+                <th scope="col" role="columnheader">What it does</th>
+                <th scope="col" role="columnheader">How it fails</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody role="rowgroup">
               {ACQUISITION_CHAIN.map((link) => (
-                <tr key={link.id}>
-                  <th scope="row">{link.label}</th>
-                  <td>{link.text}</td>
-                  <td>{link.failure}</td>
+                <tr role="row" key={link.id}>
+                  <th scope="row" role="rowheader">{link.label}</th>
+                  <td role="cell" data-label="What it does">{link.text}</td>
+                  <td role="cell" data-label="How it fails">{link.failure}</td>
                 </tr>
               ))}
             </tbody>
@@ -94,21 +94,23 @@ export function DataModule() {
         <LiveSlot widget="dataQuality" module="data">
           <p>A live table of the three acquisition nodes, feed, turbomachinery and chamber, with each node&apos;s latency, clock skew and sequence status, the findings of the quality checks, and buttons that inject a packet delay, a timestamp error, sensor noise or replayed telemetry into the simulation.</p>
         </LiveSlot>
-        <div className={css.tableWrap} role="region" aria-label="Data-quality checks" tabIndex={0}>
-          <table className={css.table}>
-            <thead>
-              <tr>
-                <th scope="col">Check</th>
-                <th scope="col">Finds</th>
-                <th scope="col">How</th>
+        <div className={css.tableWrap} data-stack="" role="region" aria-label="Data-quality checks" tabIndex={0}>
+          <table className={css.table} role="table" data-stack="">
+            <thead role="rowgroup">
+              <tr role="row">
+                <th scope="col" role="columnheader">Check</th>
+                <th scope="col" role="columnheader">Finds</th>
+                <th scope="col" role="columnheader">How</th>
+                <th scope="col" role="columnheader">In this simulation</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody role="rowgroup">
               {QUALITY_CHECKS.map((check) => (
-                <tr key={check.id}>
-                  <th scope="row">{check.name}</th>
-                  <td>{check.finds}</td>
-                  <td>{check.how}</td>
+                <tr role="row" key={check.id}>
+                  <th scope="row" role="rowheader">{check.name}</th>
+                  <td role="cell" data-label="Finds">{check.finds}</td>
+                  <td role="cell" data-label="How">{check.how}</td>
+                  <td role="cell" data-label="In this simulation">{check.here}</td>
                 </tr>
               ))}
             </tbody>
@@ -180,21 +182,21 @@ export function TwinModule() {
 
       <Block title="Uncertainty">
         <p className={css.definition}>{UNCERTAINTY_DEFINITION}</p>
-        <div className={css.tableWrap} role="region" aria-label="Sources of uncertainty" tabIndex={0}>
-          <table className={css.table}>
-            <thead>
-              <tr>
-                <th scope="col">Source</th>
-                <th scope="col">What it is</th>
-                <th scope="col">On this page</th>
+        <div className={css.tableWrap} data-stack="" role="region" aria-label="Sources of uncertainty" tabIndex={0}>
+          <table className={css.table} role="table" data-stack="">
+            <thead role="rowgroup">
+              <tr role="row">
+                <th scope="col" role="columnheader">Source</th>
+                <th scope="col" role="columnheader">What it is</th>
+                <th scope="col" role="columnheader">On this page</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody role="rowgroup">
               {UNCERTAINTY_SOURCES.map((source) => (
-                <tr key={source.id}>
-                  <th scope="row">{source.name}</th>
-                  <td>{source.text}</td>
-                  <td>{source.here}</td>
+                <tr role="row" key={source.id}>
+                  <th scope="row" role="rowheader">{source.name}</th>
+                  <td role="cell" data-label="What it is">{source.text}</td>
+                  <td role="cell" data-label="On this page">{source.here}</td>
                 </tr>
               ))}
             </tbody>
@@ -363,24 +365,24 @@ export function AiModule() {
       <Block title="AI safety and MLOps">
         <p className={css.definition}>{MLOPS_INTRO}</p>
         <Terms items={MLOPS_PRACTICES.map((p) => ({ id: p.id, term: p.name, text: p.text }))} columns={3} />
-        <div className={css.tableWrap} role="region" aria-label="Where AI can be trusted and where physics is mandatory" tabIndex={0}>
-          <table className={css.table}>
+        <div className={css.tableWrap} data-stack="" role="region" aria-label="Where AI can be trusted and where physics is mandatory" tabIndex={0}>
+          <table className={css.table} role="table" data-stack="">
             <caption className={css.caption}>Where AI can be trusted, and where physics is mandatory</caption>
-            <thead>
-              <tr>
-                <th scope="col">Use</th>
-                <th scope="col">Verdict</th>
-                <th scope="col">Why</th>
+            <thead role="rowgroup">
+              <tr role="row">
+                <th scope="col" role="columnheader">Use</th>
+                <th scope="col" role="columnheader">Verdict</th>
+                <th scope="col" role="columnheader">Why</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody role="rowgroup">
               {AI_TRUST.map((row) => (
-                <tr key={row.where}>
-                  <th scope="row">{row.where}</th>
-                  <td>
+                <tr role="row" key={row.where}>
+                  <th scope="row" role="rowheader">{row.where}</th>
+                  <td role="cell" data-label="Verdict">
                     <Tag>{row.verdict.toUpperCase()}</Tag>
                   </td>
-                  <td>{row.why}</td>
+                  <td role="cell" data-label="Why">{row.why}</td>
                 </tr>
               ))}
             </tbody>

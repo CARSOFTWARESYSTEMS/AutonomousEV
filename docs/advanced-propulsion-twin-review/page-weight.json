@@ -1,0 +1,41 @@
+{
+  "note": "Document plus every script and stylesheet it references on first load. Uncompressed and gzip -9, measured identically for both origins on 12 October 2026.",
+  "before": {
+    "origin": "https://aerospace.ev.engineer",
+    "html": {
+      "rawKB": 1005.5,
+      "gzipKB": 180.2,
+      "brotliKB": 91.9,
+      "elements": 6593
+    },
+    "js": {
+      "files": 11,
+      "rawKB": 819.5,
+      "gzipKB": 245.7
+    },
+    "css": {
+      "files": 4,
+      "rawKB": 208.9,
+      "gzipKB": 30.4
+    }
+  },
+  "after": {
+    "origin": "http://localhost:3100",
+    "html": {
+      "rawKB": 1040.3,
+      "gzipKB": 182.3,
+      "brotliKB": 92.7,
+      "elements": 6878
+    },
+    "js": {
+      "files": 13,
+      "rawKB": 834.5,
+      "gzipKB": 252.5
+    },
+    "css": {
+      "files": 4,
+      "rawKB": 214.3,
+      "gzipKB": 31.1
+    }
+  }
+}

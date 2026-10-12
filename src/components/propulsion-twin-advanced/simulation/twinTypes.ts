@@ -2,6 +2,7 @@
 // file never pulls the simulation into a bundle.
 import type { ChannelId, DaqNode } from "./channels";
 import type { DiagnosisId, EvidenceLine, FaultId, PhysicalDiagnosis, RankedDiagnosis, SymptomId } from "./isolation";
+import type { CalibrationReport } from "./ml";
 import type { ProjectionPoint, ThresholdOutlook } from "./prognostics";
 import type { HealthParamId } from "./symptoms";
 
@@ -15,8 +16,10 @@ export interface ChannelReading {
   observed: number;
   estimated: number;
   expected: number;
-  /** Estimated minus expected. */
+  /** The residual the twin judges: estimated minus expected, so sensor noise is already filtered out of it. */
   residual: number;
+  /** The unfiltered residual: observed minus expected. */
+  rawResidual: number;
   /** The residual in standard deviations of its nominal scatter. */
   z: number;
   /** One standard deviation of the estimate. */
@@ -80,6 +83,27 @@ export interface TwinEvent {
   id?: DiagnosisId;
 }
 
+/**
+ * The consistency check behind a named cause: is there a modelled fault which,
+ * at some severity, accounts for the residuals? A classifier always answers
+ * with one of the classes it knows. This check is what says "none of them".
+ */
+export interface Recognition {
+  /**
+   * idle: nothing to explain. held: cannot be judged now (data suspect, or the engine is not in steady mainstage).
+   * explained: a modelled fault accounts for the residuals. unexplained: none does at this moment.
+   * unrecognised: none has for long enough to say the cause is outside the modelled set.
+   */
+  status: "idle" | "held" | "explained" | "unexplained" | "unrecognised";
+  /** Largest residual left once the best-fitting modelled fault is taken out, over the residual alarm threshold. Below 1 is explained. */
+  score: number;
+  /** The modelled fault that fits best, and the severity at which it fits, 0–1. */
+  fault: Exclude<PhysicalDiagnosis, "nominal"> | null;
+  severity: number;
+  /** The channel with the largest leftover residual. */
+  channel: ChannelId | null;
+}
+
 export type ChainStageId = "effect" | "sensor" | "residual" | "detection" | "isolation" | "confidence" | "prediction" | "investigation";
 
 export interface ChainStage {
@@ -89,11 +113,15 @@ export interface ChainStage {
   text: string;
 }
 
+/** How a fault arrives: growing over its ramp time, or present at full severity from one sample to the next. */
+export type FaultOnset = "gradual" | "abrupt";
+
 export interface ActiveFault {
   id: FaultId;
   severity: number;
   target: number;
   since: number;
+  onset: FaultOnset;
 }
 
 export interface TwinSnapshot {
@@ -119,7 +147,9 @@ export interface TwinSnapshot {
   evidence: EvidenceLine[];
   /** The physical candidate the evidence lines refer to. */
   explained: PhysicalDiagnosis;
-  quality: { status: DataQuality; nodes: NodeQuality[]; noisy: ChannelId[]; notes: string[] };
+  /** Whether the residuals are accounted for by a fault the twin has a model of. */
+  recognition: Recognition;
+  quality: { status: DataQuality; nodes: NodeQuality[]; noisy: ChannelId[]; /** Channels that delivered no usable sample this step. */ missing: ChannelId[]; /** Channels whose reading has stopped changing. */ frozen: ChannelId[]; notes: string[] };
   anomalyScore: { ml: number; physics: number; outOfDistribution: boolean };
   prognosis: Prognosis;
   status: { engine: string; twin: string; dataQuality: DataQuality; modelConfidence: Confidence; health: Level; anomalies: number };
@@ -134,7 +164,7 @@ export interface ModelEvidence {
   /** Mean model error across pressure channels before and after identification, % of reference chamber pressure. */
   errorBefore: number;
   errorAfter: number;
-  classifier: { trainingSamples: number; validationSamples: number; trainingAccuracy: number; validationAccuracy: number; confusion: number[][]; classes: readonly PhysicalDiagnosis[] };
+  classifier: { trainingSamples: number; validationSamples: number; trainingAccuracy: number; validationAccuracy: number; confusion: number[][]; calibration: CalibrationReport; classes: readonly PhysicalDiagnosis[] };
   anomaly: { trainingSamples: number; components: number; explained: number };
 }
 
@@ -152,7 +182,10 @@ export interface TwinEngineApi {
   /** Seconds between history samples, and how many are kept. */
   readonly historyStep: number;
   readonly historyLength: number;
-  inject(id: FaultId, severity?: number): void;
+  /** Adds a fault to whatever is already active. Severity outside 0.1–1 is clamped; a value that is not a number is ignored. */
+  inject(id: FaultId, severity?: number, onset?: FaultOnset): void;
+  /** Runs one fault as a scenario: if the twin is not at its healthy baseline, the run restarts from it (keeping the throttle setting) before the fault is injected. */
+  scenario(id: FaultId, severity?: number, onset?: FaultOnset): void;
   clear(id?: FaultId): void;
   setThrottle(level: number): void;
   setExercise(on: boolean): void;

@@ -2,17 +2,44 @@
 // Pieces the live instruments share: charts bound to the twin's history, the
 // ranked diagnosis with its evidence, and the fault picker.
 import { useState } from "react";
+import type { ReactNode } from "react";
 import { FlaskConical, RotateCcw } from "lucide-react";
 import { trackAdvancedTwinOnce } from "../analytics";
 import { PRESSURE_UNIT } from "../data/pressure";
 import { CHANNEL_BY_ID, type ChannelId } from "../simulation/channels";
+import { FAULT_DEFS } from "../simulation/faults";
 import { DIAGNOSES, DIAGNOSIS_BY_ID, type EvidenceLine, FAULT_IDS, type FaultClass, type FaultId } from "../simulation/isolation";
-import type { TwinSnapshot } from "../simulation/twinTypes";
+import type { FaultOnset, Recognition, TwinSnapshot } from "../simulation/twinTypes";
 import { useLabStore } from "../state/labStore";
 import { type Line, ShareBar, TraceChart, signed } from "../ui/charts";
 import css from "../advancedTwin.module.css";
 
 const CLASS_LABEL: Record<FaultClass, string> = { physical: "Physical faults", sensor: "Sensor faults", data: "Data-path faults", cyber: "Cyber-induced data faults" };
+
+/** What an instrument shows until the twin is ready, or when it could not be fetched at all. */
+export function TwinPending({ children = "Calibrating the twin…" }: { children?: ReactNode }) {
+  const failed = useLabStore((s) => s.bootFailed);
+  const boot = useLabStore((s) => s.boot);
+  if (failed) {
+    return (
+      <div className={css.failure}>
+        <div role="alert">
+          <p>
+            <strong>The simulation could not be loaded.</strong> The text and diagrams of the tutorial do not depend on it. Check the connection and try again; if that does not help, reload the page.
+          </p>
+        </div>
+        <button type="button" className={css.ghost} onClick={() => void boot()}>
+          <RotateCcw size={13} aria-hidden="true" /> Try again
+        </button>
+      </div>
+    );
+  }
+  return (
+    <p className={css.loading} role="status">
+      {children}
+    </p>
+  );
+}
 
 /** The recent history of one channel, in the twin states asked for. Redraws whenever the simulation advances. */
 export function ChannelChart({ channel, title, all = true, minRange, limit }: { channel: ChannelId; title?: string; all?: boolean; minRange?: number; limit?: { value: number; label: string } }) {
@@ -91,6 +118,9 @@ export function ChamberChart({ all }: { all: boolean }) {
   );
 }
 
+/** Shown wherever a diagnosis percentage is: what the number is, and what it is not. */
+export const SCORE_NOTE = "SIMULATED. The percentages are scores from models built and checked on simulated data only. They rank the faults this twin has a model of; they are not calibrated probabilities of a real engine's condition.";
+
 const EFFECT_LABEL = { supports: "Supports", contradicts: "Contradicts", unexplained: "Unexplained" } as const;
 
 export function EvidenceList({ lines, label, limit = 8 }: { lines: readonly EvidenceLine[]; label: string; limit?: number }) {
@@ -107,6 +137,24 @@ export function EvidenceList({ lines, label, limit = 8 }: { lines: readonly Evid
   );
 }
 
+/** What the consistency check found, in a sentence. */
+function recognitionText(r: Recognition): string | null {
+  const leftover = r.score >= 10 ? "more than ten times" : `${r.score.toFixed(1)} times`;
+  const channel = r.channel ? CHANNEL_BY_ID[r.channel].label.toLowerCase() : "";
+  switch (r.status) {
+    case "explained":
+      return `Consistency check passed: ${DIAGNOSIS_BY_ID[r.fault!].name.toLowerCase()} at about ${Math.round(Math.min(1, r.severity) * 100)} % severity accounts for the residuals. The largest left over is ${Math.round(r.score * 100)} % of the alarm level.`;
+    case "unexplained":
+      return `Consistency check not passed: no modelled fault accounts for the residuals at this moment. The largest left over, on ${channel}, is ${leftover} the alarm level. No cause is declared until one does.`;
+    case "unrecognised":
+      return `No modelled fault accounts for the residuals: the largest left over, on ${channel}, is ${leftover} the alarm level. The cause is outside the faults this twin has a model of. The ranking below is the nearest look-alike, not a diagnosis.`;
+    case "held":
+      return "Consistency check held: it needs good data and a steady engine.";
+    default:
+      return null;
+  }
+}
+
 /** The ranked causes, how physics-based and learned reasoning each see the leader, and the evidence behind it. */
 export function Diagnosis({ snapshot, count = 4 }: { snapshot: TwinSnapshot; count?: number }) {
   const top = snapshot.ranking[0];
@@ -116,20 +164,29 @@ export function Diagnosis({ snapshot, count = 4 }: { snapshot: TwinSnapshot; cou
     setWhy((w) => !w);
     trackAdvancedTwinOnce("diagnosis_opened", { fault: top.id });
   };
+  const unrecognised = snapshot.recognition.status === "unrecognised" && top.physics !== null;
+  const check = top.physics !== null ? recognitionText(snapshot.recognition) : null;
   return (
-    <div className={css.diagnosis}>
-      <p className={css.verdict} role="status">
-        {top.id === "nominal" ? "Nominal" : `Probable ${def.name}`} <span>— {Math.round(top.p * 100)} %</span>
+    <div className={css.diagnosis} data-recognition={snapshot.recognition.status}>
+      {/* Only the conclusion is announced. The percentage moves several times a second, and is read on demand. */}
+      <p className={css.verdict}>
+        <span role="status">{unrecognised ? "Unrecognised fault pattern" : top.id === "nominal" ? "Nominal" : `Probable ${def.name}`}</span> <span>— {unrecognised ? "nearest look-alike " : ""}{Math.round(top.p * 100)} %</span>
       </p>
       <p className={css.note}>
-        Confidence {snapshot.confidence} · {def.location}
-        {top.physics !== null && top.ml !== null ? ` · physics-based ${Math.round(top.physics * 100)} %, learned classifier ${Math.round(top.ml * 100)} %` : " · established by a direct check on the data"}
+        Confidence {snapshot.confidence} · {unrecognised ? `Nearest look-alike: ${def.name}` : def.location}
+        {top.physics !== null && top.ml !== null ? ` · physics-based ${Math.round(top.physics * 100)} %, learned classifier ${Math.round(top.ml * 100)} %` : top.physics !== null ? " · physics-based reasoning only: the classifier could not score this input" : " · established by a direct check on the data"}
       </p>
+      {check && (
+        <p className={css.recognition} data-status={snapshot.recognition.status}>
+          {check}
+        </p>
+      )}
       <div className={css.shares}>
         {snapshot.ranking.slice(0, count).map((r) => (
           <ShareBar key={r.id} label={DIAGNOSIS_BY_ID[r.id].name} value={r.p} strong={r.id === top.id} />
         ))}
       </div>
+      <p className={css.hint}>{SCORE_NOTE}</p>
       <button type="button" className={css.ghost} aria-expanded={why} onClick={toggle}>
         Why this diagnosis?
       </button>
@@ -149,7 +206,7 @@ export function Diagnosis({ snapshot, count = 4 }: { snapshot: TwinSnapshot; cou
           )}
           {top.id !== "nominal" && (
             <p>
-              <span className={css.groupLabel}>Recommended engineering investigation</span> {def.investigation}
+              <span className={css.groupLabel}>Recommended engineering investigation</span> {unrecognised ? snapshot.chain.find((stage) => stage.id === "investigation")?.text : def.investigation}
             </p>
           )}
         </div>
@@ -165,7 +222,9 @@ export function FaultPicker() {
   const active = useLabStore((s) => s.snapshot?.faults ?? []);
   const [fault, setFault] = useState<FaultId>("pump_degradation");
   const [severity, setSeverity] = useState(80);
+  const [onset, setOnset] = useState<FaultOnset>("gradual");
   const def = DIAGNOSIS_BY_ID[fault];
+  const ramp = FAULT_DEFS[fault].rampSeconds;
   const classes = [...new Set(DIAGNOSES.filter((d) => d.cls !== "none").map((d) => d.cls as FaultClass))];
   return (
     <div className={css.picker2}>
@@ -187,20 +246,36 @@ export function FaultPicker() {
         <span className={css.groupLabel}>Severity · {severity} %</span>
         <input type="range" min={20} max={100} step={10} value={severity} onChange={(e) => setSeverity(Number(e.target.value))} className={css.range} aria-valuetext={`${severity} percent of the illustrative full magnitude`} />
       </label>
-      <p className={css.hint}>{def.effect}</p>
+      <div className={css.field}>
+        <span className={css.groupLabel} id="fault-onset-label">
+          Onset
+        </span>
+        <span className={css.segment} role="group" aria-labelledby="fault-onset-label">
+          <button type="button" aria-pressed={ramp > 0 && onset === "gradual"} disabled={ramp === 0} onClick={() => setOnset("gradual")}>
+            Gradual{ramp > 0 ? ` · ${ramp} s` : ""}
+          </button>
+          <button type="button" aria-pressed={ramp === 0 || onset === "abrupt"} onClick={() => setOnset("abrupt")}>
+            Abrupt
+          </button>
+        </span>
+      </div>
+      <p className={css.hint}>
+        {def.effect} {ramp === 0 ? "A data-path fault is simply present or absent." : onset === "abrupt" ? "Abrupt: the full severity arrives between one sample and the next. This is the case the rate-of-change detector exists for; it fires when the step moves chamber pressure enough." : `Gradual: the fault grows to its severity over ${ramp} s. The rate-of-change detector is expected to stay silent; the cumulative and residual detectors catch it.`}
+      </p>
       <div className={css.options}>
-        <button type="button" className={css.primary} onClick={() => inject(fault, severity / 100)}>
+        <button type="button" className={css.primary} onClick={() => inject(fault, severity / 100, ramp === 0 ? "abrupt" : onset)}>
           <FlaskConical size={14} aria-hidden="true" /> Inject fault
         </button>
         <button type="button" className={css.ghost} onClick={clearFaults} disabled={active.length === 0}>
           <RotateCcw size={13} aria-hidden="true" /> Remove {active.length > 1 ? "faults" : "fault"}
         </button>
       </div>
+      <p className={css.hint}>One fault at a time: injecting replaces the active fault and, if the twin is not at its healthy baseline, restarts the run from it at the present throttle. Evidence from the last fault is never credited to the next.</p>
       {active.length > 0 && (
         <ul className={css.activeFaults} aria-label="Active faults">
           {active.map((f) => (
             <li key={f.id}>
-              <span className={css.tag}>INJECTED</span> {DIAGNOSIS_BY_ID[f.id].name} · severity {Math.round(f.severity * 100)} % of {Math.round(f.target * 100)} %
+              <span className={css.tag}>INJECTED</span> {DIAGNOSIS_BY_ID[f.id].name} · {f.onset} onset · severity {Math.round(f.severity * 100)} % of {Math.round(f.target * 100)} %
             </li>
           ))}
         </ul>
