@@ -6,24 +6,43 @@
 // contact data. The phone number and LinkedIn profile reused here are the
 // same values already published on his behalf across multiple existing
 // pages in this repo (si-ems, battery-fire-prevention, battery-pack-design,
-// the rocketry page's author block) and are now also visibly printed on
-// this profile page itself (see FounderContent.tsx's "Contact &
-// Collaboration" section) — see src/data/public-entities.ts for the
-// verification trail.
+// the rocketry page's author block) and are also visibly printed on this
+// profile page itself (see ProfileContent.tsx's "Contact / Consultation"
+// section) — see src/data/public-entities.ts for the verification trail.
+//
+// The graph says what the page says, and nothing the page does not:
+//   - ISHAVASYAM.ORG: he is its Founder. Said on the organisation (`founder`)
+//     and in his `jobTitle` and `affiliation`.
+//   - iTelematics Software Private Limited: he is a Consultant there. An
+//     `affiliation`, not `worksFor`: a consultant is not an employee.
+//   - EV.ENGINEER: the engineering identity of him, his team and their
+//     projects. A `brand` he maintains, never an employer and never a founder
+//     title.
+//   - CAR SOFTWARE SYSTEMS: an initiative the page lists. Named on the page
+//     node (`mentions`) and given no relationship the page does not state.
+//   - Thasmai InfoTech Private Limited is one line of the visible page and is
+//     not modelled here: see docs/ai-discoverability.md.
 
-import { SUDARSHANA_KARKALA, SITE_URL } from "@/data/public-entities";
+import { ISHAVASYAM, ITELEMATICS, SUDARSHANA_KARKALA, SITE_URL } from "@/data/public-entities";
 import {
   PERSON_ID,
   ITELEMATICS_ID,
+  ISHAVASYAM_ID,
   EV_ENGINEER_BRAND_ID,
   WEBSITE_ID,
   itelematicsOrgNode,
+  ishavasyamOrgNode,
   evEngineerBrandNode,
   websiteNode,
 } from "./entities";
 
 const PROFILE_URL = SUDARSHANA_KARKALA.canonicalUrl;
 const PROFILE_PAGE_ID = `${PROFILE_URL}#profilepage`;
+/** The address is the one the profile and the internships page already link to. */
+export const CAR_SOFTWARE_SYSTEMS_ID = "https://carsoftwaresystems.com/#organization";
+
+/** His two roles, as the hero writes them. */
+export const PROFILE_JOB_TITLES = [`Founder, ${ISHAVASYAM.name}`, `Consultant, ${ITELEMATICS.name}`];
 
 export interface ProfileGraphOptions {
   title: string;
@@ -36,6 +55,15 @@ export function buildProfileGraph({ title, description, dateModified }: ProfileG
     websiteNode(),
     evEngineerBrandNode(),
     itelematicsOrgNode(),
+    // Stated on this page only, where the Person node it points to is in the same graph.
+    { ...ishavasyamOrgNode(), founder: { "@id": PERSON_ID } },
+    {
+      "@type": "Organization",
+      "@id": CAR_SOFTWARE_SYSTEMS_ID,
+      name: "CAR SOFTWARE SYSTEMS",
+      url: "https://carsoftwaresystems.com/",
+      description: "Electric Vehicle Engineering and Agentic AI Development.",
+    },
     {
       "@type": "Person",
       "@id": PERSON_ID,
@@ -43,21 +71,15 @@ export function buildProfileGraph({ title, description, dateModified }: ProfileG
       url: PROFILE_URL,
       image: SUDARSHANA_KARKALA.imageUrl,
       description: SUDARSHANA_KARKALA.description,
-      // Matches the hero's primary positioning in FounderContent.tsx. He
-      // remains Founder of EV.ENGINEER (see worksFor/description below);
-      // jobTitle reflects the current professional headline rather than
-      // duplicating that relationship.
-      jobTitle: "Director of Engineering | Systems Architecture | Technology & R&D",
-      // Verified: FounderContent.tsx states he is founder of the
-      // EV.ENGINEER platform/brand and a Consultant at iTelematics.
-      worksFor: { "@id": EV_ENGINEER_BRAND_ID },
-      affiliation: [{ "@id": ITELEMATICS_ID }],
+      jobTitle: PROFILE_JOB_TITLES,
+      brand: { "@id": EV_ENGINEER_BRAND_ID },
+      affiliation: [{ "@id": ISHAVASYAM_ID }, { "@id": ITELEMATICS_ID }],
       // NITK Surathkal is his degree-granting alma mater (B.E. Information
       // Technology). Deliberately NOT modelled as a full node with its own
       // @id since this site has no verified canonical URL for NITK; an
       // inline Organization avoids fabricating one. IIT Madras (CODE) is a
       // certification program, not a degree, so it is intentionally left
-      // out of alumniOf — see FounderContent.tsx's Education section.
+      // out of alumniOf — see ProfileContent.tsx's Education section.
       alumniOf: { "@type": "CollegeOrUniversity", name: "National Institute of Technology Karnataka, Surathkal" },
       knowsAbout: SUDARSHANA_KARKALA.knowsAbout,
       sameAs: SUDARSHANA_KARKALA.sameAs,
@@ -75,6 +97,7 @@ export function buildProfileGraph({ title, description, dateModified }: ProfileG
       description,
       isPartOf: { "@id": WEBSITE_ID },
       mainEntity: { "@id": PERSON_ID },
+      mentions: [{ "@id": CAR_SOFTWARE_SYSTEMS_ID }],
       dateModified,
       inLanguage: "en",
       breadcrumb: {

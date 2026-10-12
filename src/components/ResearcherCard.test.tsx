@@ -27,6 +27,17 @@ describe("ResearcherCard", () => {
     expect(link).toHaveAttribute("data-track-placement", "prepared_by");
   });
 
+  it("credits him by his engineering identity unless a page gives the role it credits him in", () => {
+    const { unmount } = render(<ResearcherCard />);
+    expect(screen.getByText("EV.ENGINEER™")).toBeInTheDocument();
+    unmount();
+    render(<ResearcherCard role="Founder · ISHAVASYAM.ORG" />);
+    expect(screen.getByText("Founder · ISHAVASYAM.ORG")).toBeInTheDocument();
+    expect(screen.queryByText("EV.ENGINEER™")).toBeNull();
+    // Never as a founder of EV.ENGINEER.
+    expect(document.body.textContent).not.toMatch(/founder[^.]*EV\.ENGINEER/i);
+  });
+
   it("does not inline the full verified bio paragraph — only a short role line", () => {
     render(<ResearcherCard />);
     expect(screen.queryByText(SUDARSHANA_KARKALA.description)).not.toBeInTheDocument();

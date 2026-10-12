@@ -1,138 +1,116 @@
-// What the profile says about positioning and focus, in one place. The page,
-// its social image and its tests read it from here, so they cannot drift apart.
+// Everything the profile says, in one place. The page, its social image and
+// its tests read it from here, so they cannot drift apart.
 //
-// Wording rule for everything in this file: the Space and Aerospace work is
-// research, simulation and engineering development. Nothing here may imply
-// flight-qualified hardware, operational spacecraft, physical-engine validation
-// or a certification that the profile does not show.
+// The profile is a summary. It names the person, the initiatives and the work,
+// and links to the pages that are the evidence; it does not repeat them.
+//
+// Three relationships are fixed here and must read the same wherever they
+// appear (page, metadata, structured data, llms.txt):
+//   - EV.ENGINEER™ is the engineering identity of Sudarshana, his team and the
+//     projects they build. It is never written as a founder title on this page.
+//   - ISHAVASYAM.ORG is the primary initiative, and he is its Founder.
+//   - iTelematics Software Private Limited is where he is a Consultant.
+import { SPACE_INITIATIVE } from "@/data/space-initiative";
+import { ITELEMATICS } from "@/data/public-entities";
+
+/** EV.ENGINEER's own address, as the Space header gives it. Not "/": this page is also served on hosts whose root is another page. */
+export const EV_ENGINEER_URL = "https://ev.engineer/";
 
 export const HERO = {
-  positioning: "Director of Engineering | Systems Architecture | Technology & R&D",
-  primary: ["Space Systems Engineering", "Digital Twins", "IVHM/FDIR", "Avionics & Telemetry"],
-  supporting: ["Aerospace Cybersecurity", "AI/ML", "EV Battery & Energy Intelligence"],
+  name: "Sudarshana Karkala",
+  /** The engineering identity. Not a role. */
+  identity: "EV.ENGINEER™",
+  /** The primary role, shown larger than the one after it. */
+  primaryRole: { title: "Founder", organisation: SPACE_INITIATIVE.brand },
+  secondaryRole: { title: "Consultant", organisation: ITELEMATICS.name },
+  focus: ["Space Station Research", "Satellite & Rocket Engineering", "Digital Twins", "Cybersecurity"],
 } as const;
 
-/** Joins a line of areas so that a separator never starts a line: it stays with the item before it. */
-export const dotted = (items: readonly string[]) => items.join("\u00a0· ");
-/** The same for a line already written with " | " between its parts. */
-export const piped = (line: string) => line.replace(/ \| /g, "\u00a0| ");
+/** A role as it is written on the page: "Founder — ISHAVASYAM.ORG". */
+export const roleLine = (role: { title: string; organisation: string }) => `${role.title} — ${role.organisation}`;
 
-export const FOCUS_NOTE =
-  "Areas of current engineering work, research and study. The Space and Aerospace areas are research and engineering development, not flight or operational experience.";
+export const ABOUT = [
+  "Sudarshana Karkala is a technology leader and systems architect working across Space, Aerospace, Digital Twins, Cybersecurity, Electric Vehicles and intelligent energy systems.",
+  "His engineering background spans software architecture, cybersecurity, connected systems and advanced engineering R&D, with current research interests in Space Station systems, satellite engineering, rocket and propulsion systems, spacecraft health and Digital Twins.",
+] as const;
 
-export const FOCUS_AREAS = [
+export const PRIMARY_INITIATIVE = {
+  id: "ishavasyam",
+  eyebrow: "Primary initiative",
+  name: SPACE_INITIATIVE.brand,
+  subtitle: ["Research", "Engineering", "Experimentation"],
+  copy: "Space-focused research and engineering initiative exploring Space Station systems, Satellite Engineering, Rocket & Propulsion research, spacecraft Digital Twins and autonomous spacecraft health.",
+  links: [
+    { label: "ishavasyam.org", href: SPACE_INITIATIVE.url, external: true, destination: "ishavasyam.org" },
+    { label: "Space initiative", href: "/space", external: false, destination: "/space" },
+  ],
+} as const;
+
+export const INITIATIVES = [
   {
-    title: "Space Systems Engineering & Research",
-    items: [
-      "Satellite Systems Engineering",
-      "Spacecraft Architecture",
-      "Spacecraft Health Management",
-      "CubeSat Systems",
-      "Mission Engineering",
-      "Avionics & Telemetry",
-      "Mission/Ground Systems",
-      "Digital Twins",
-      "Model Rocketry",
-      "Verification & Validation",
-    ],
+    id: "ev_engineer",
+    name: "EV.ENGINEER™",
+    line: "Building World-Class Engineers to Solve Energy and EV Battery Challenges",
+    note: "EV.ENGINEER™ represents the engineering identity of our team and the projects we build together.",
+    link: { label: "ev.engineer", href: EV_ENGINEER_URL, destination: "ev.engineer" },
   },
   {
-    title: "Digital Twin & Engineering Intelligence",
-    items: [
-      "Physics-Based Modelling",
-      "Reduced-Order Models",
-      "Telemetry & State Estimation",
-      "Sensor Fusion",
-      "Residual Analysis",
-      "Fault Detection & Isolation",
-      "IVHM",
-      "FDIR",
-      "PHM",
-      "Prognostics",
-      "Model Verification & Validation",
-      "AI/ML-Assisted Diagnostics",
-    ],
-  },
-  {
-    title: "Avionics & Telemetry",
-    items: [
-      "CanSat Avionics",
-      "Sensors & Instrumentation",
-      "Telemetry",
-      "Data Acquisition",
-      "Connected Systems",
-      "Secure Communications",
-      "Ground-System Concepts",
-      "Health Monitoring",
-    ],
-  },
-  {
-    title: "Aerospace & Cyber-Physical Security",
-    items: [
-      "Aerospace Cybersecurity",
-      "Avionics & Telemetry Security",
-      "Connected-System Security",
-      "Secure Communications",
-      "Data Integrity",
-      "Authentication & Trust",
-      "Replay/Tampering Detection",
-      "Digital Twin Security",
-      "Automotive/EV Cybersecurity",
-    ],
-  },
-  {
-    title: "AI/ML for Engineering",
-    items: [
-      "AI/ML",
-      "Physics + Data Hybrid Models",
-      "Time-Series Analysis",
-      "Anomaly Detection",
-      "Fault Classification",
-      "Predictive Analytics",
-      "Uncertainty-Aware Engineering",
-      "AI-Assisted Engineering",
-    ],
-  },
-  {
-    title: "EV Battery & Energy Intelligence",
-    items: [
-      "BMS",
-      "Battery Safety",
-      "Diagnostics",
-      "Battery Digital Twins",
-      "Predictive Maintenance",
-      "Battery Cybersecurity",
-      "Energy Intelligence",
-    ],
+    id: "car_software_systems",
+    name: "CAR SOFTWARE SYSTEMS",
+    line: "Electric Vehicle Engineering · Agentic AI Development",
+    note: null,
+    link: { label: "carsoftwaresystems.com", href: "https://carsoftwaresystems.com/", destination: "carsoftwaresystems.com" },
   },
 ] as const;
 
-export const ADVANCED_TWIN_PROJECT = {
-  name: "Advanced Rocket Propulsion Digital Twin",
-  href: "/space/rocket-engine-digital-twin-advanced",
-  summary:
-    "Educational and research-oriented exploration of physics-based propulsion modelling, simulated telemetry, pressure instrumentation, state estimation, anomaly detection, fault diagnosis, FDIR, AI/ML-assisted diagnostics and prognostics.",
-  /** What it is not, said beside it. */
-  caveat: "A reduced-order simulation for learning; not validated against a physical engine.",
+export const FOCUS_AREAS = [
+  { title: "Space Systems", items: ["Space Station", "Satellite Engineering", "Rocket & Propulsion", "Spacecraft Health"] },
+  { title: "Digital Twins", items: ["Simulation", "Telemetry", "State Estimation", "FDIR", "Prognostics"] },
+  { title: "Cybersecurity", items: ["Aerospace", "Automotive", "Connected Systems", "Data Integrity"] },
+  { title: "EV & Energy", items: ["Battery Intelligence", "BMS", "Diagnostics", "Energy Systems"] },
+] as const;
+
+/** Said once on the page, and only here. What each project is, and how mature, is said on the project's own page. */
+export const SCOPE_NOTE = "Space and Aerospace activities include research, simulation, engineering development and education.";
+
+/** A title and a few words on what kind of thing it is. The page it links to is the evidence. */
+export const SELECTED_WORK = [
+  { id: "space_station", title: "Space Station Research", kind: "Research simulator", href: "/space/space-station" },
+  { id: "satellite_engineering", title: "Satellite Engineering", kind: "Course", href: "/space/satellite-engineering" },
+  { id: "advanced_propulsion_twin", title: "Advanced Rocket Propulsion Digital Twin", kind: "Engineering tutorial", href: "/space/rocket-engine-digital-twin-advanced" },
+  { id: "cubetwin", title: "CubeTwin — CubeSat Digital Twin", kind: "Educational simulator", href: "/space/cubesat" },
+  { id: "model_rocketry", title: "Model Rocketry", kind: "Learning programme", href: "/space/model-rocketry" },
+  { id: "ev_battery_intelligence", title: "EV Battery Intelligence", kind: "Research", href: "/si-ems" },
+] as const;
+
+export const BACKGROUND = {
+  roles: [
+    { title: "Consultant", organisation: ITELEMATICS.name },
+    { title: "Co-Founder", organisation: "Thasmai InfoTech Private Limited" },
+  ],
+  /** The long-standing experience, in the words the profile has always used for it. It names no Space or Aerospace experience. */
+  experience: "Over two decades of experience across software architecture, cybersecurity, connected systems, IoT, telematics, AI, mobility, EV and energy platforms.",
 } as const;
 
-export const CONSULTATION = {
-  /** The section's address fragment, for links that should land on it. */
-  id: "consultation",
-  heading: "Technical Consultation & Collaboration",
-  copy: "Available for technical discussions, engineering consultation and research collaboration in Space Systems Engineering, Digital Twins, Spacecraft Health Management, IVHM/FDIR, Avionics & Telemetry, Aerospace Cybersecurity, AI-assisted engineering and EV Battery & Energy Intelligence.",
-  tags: ["Space Systems", "Digital Twins", "IVHM / FDIR", "Avionics & Telemetry", "Aerospace Cybersecurity", "AI/ML", "EV Battery Intelligence"],
-  scope:
-    "Space and Aerospace engagements are research and engineering development: modelling, simulation, Digital Twins and study, not flight qualification or certification services.",
-  tutorials:
-    "Questions about the engineering tutorials published here, including the Advanced Rocket Propulsion Digital Twin, are welcome through the contact details below.",
+/** `status` marks what is not finished, so that it is never read as a credential already held. */
+export const EDUCATION: readonly { institution: string; programme: string; meta: string; status?: "in-progress" }[] = [
+  { institution: "NITK Surathkal", programme: "B.E. — Information Technology", meta: "Education" },
+  { institution: "IIT Madras — CODE", programme: "Electric Vehicle Engineering & Development", meta: "Professional certification" },
+  { institution: "IN-SPACe", programme: "Essentials of Model Rocketry", meta: "Workshop · Aug 2026" },
+  { institution: "EV Society™", programme: "Certified EV Technology Officer (EVTO™)", meta: "In progress · expected Mar 2028", status: "in-progress" },
+  { institution: "Business P.A.C.E.", programme: "Business & Entrepreneurship Development", meta: "Rajiv Talreja / QuantumLeap" },
+];
+
+export const CONTACT = {
+  id: "contact",
+  heading: "Contact / Consultation",
+  topics: ["Space Research", "Digital Twins", "Cybersecurity", "Systems Architecture", "Engineering Consultation"],
+  actions: [
+    { type: "linkedin", label: "LinkedIn", href: "https://www.linkedin.com/in/sudarshanakarkala/", destinationType: "external", ariaLabel: "Sudarshana Karkala on LinkedIn (opens in a new tab)" },
+    { type: "resume", label: "Resume (PDF)", href: "https://carsoftwaresystems.com/public/sudarshanakarkala.pdf", destinationType: "document", ariaLabel: "Resume (PDF) of Sudarshana Karkala (opens in a new tab)" },
+    { type: "consultation", label: "Consulting", href: "/consulting", destinationType: "internal", ariaLabel: null },
+  ],
 } as const;
-
-export const MISSION =
-  "To advance intelligent, secure and resilient engineering systems through systems architecture, Digital Twins, AI, cybersecurity and engineering research across Space, Aerospace and Energy.";
-
-export const VISION =
-  "To contribute to the development of safer, more autonomous and intelligence-driven Space, Aerospace and Energy systems through simulation, Digital Twins, health monitoring and secure engineering.";
 
 /** The day the profile was last reviewed: the date on the page and the page's `dateModified`. */
 export const LAST_REVIEWED = { iso: "2026-10-12", shown: "12 October 2026" } as const;

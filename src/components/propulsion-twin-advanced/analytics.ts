@@ -31,6 +31,8 @@ export interface AdvancedTwinEvents {
   week_module_completed: { week: string };
   desktop_3d_entered: NoParams;
   profile_clicked: { placement: "prepared_by" };
+  /** The header's Contact / Consultation link: the first step from a technical page towards the author. */
+  contact_consultation_click: { source_page: "advanced_propulsion_twin"; source_section: "header"; destination: "sudarshana_karkala_profile" };
 }
 
 export type AdvancedTwinEvent = keyof AdvancedTwinEvents;

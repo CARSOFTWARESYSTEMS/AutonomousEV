@@ -34,6 +34,7 @@ describe("advanced twin analytics", () => {
       "week_module_completed",
       "desktop_3d_entered",
       "profile_clicked",
+      "contact_consultation_click",
     ]);
   });
 

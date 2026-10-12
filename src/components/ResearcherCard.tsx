@@ -7,11 +7,13 @@ import styles from "./ResearcherCard.module.css";
 export interface ResearcherCardProps {
   /** Alt text for the portrait, where a page specifies its own. */
   imageAlt?: string;
+  /** The line under the name. EV.ENGINEER™, his engineering identity, unless a page credits him in a role. */
+  role?: string;
   /** `data-*` attributes for the profile link, e.g. a page's `data-track-event`. */
   profileLinkProps?: Record<`data-${string}`, string>;
 }
 
-export default function ResearcherCard({ imageAlt = `Portrait of ${SUDARSHANA_KARKALA.name}`, profileLinkProps }: ResearcherCardProps = {}) {
+export default function ResearcherCard({ imageAlt = `Portrait of ${SUDARSHANA_KARKALA.name}`, role = "EV.ENGINEER™", profileLinkProps }: ResearcherCardProps = {}) {
   return (
     <aside className={styles.card} aria-label="About the researcher">
       <div className={styles.identity}>
@@ -25,7 +27,7 @@ export default function ResearcherCard({ imageAlt = `Portrait of ${SUDARSHANA_KA
         <div className={styles.text}>
           <p className={styles.eyebrow}>Designed by</p>
           <h3 className={styles.name}>{SUDARSHANA_KARKALA.name}</h3>
-          <p className={styles.role}>EV.ENGINEER™</p>
+          <p className={styles.role}>{role}</p>
         </div>
       </div>
       <Link href="/about/sudarshana-karkala" className={styles.cta} {...profileLinkProps}>

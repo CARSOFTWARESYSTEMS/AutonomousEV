@@ -52,14 +52,10 @@ link below points to a canonical public page already listed in
   EV.ENGINEER™) — with links to public profiles and to the related
   cybersecurity programs.
 - [Sudarshana Karkala](https://autonomous.ev.engineer/about/sudarshana-karkala):
-  Canonical public professional profile — role, focus areas, projects,
-  technical consultation and contact channels. Research and engineering
-  focus: Space Systems Engineering, Digital Twins, spacecraft health
-  management (IVHM, FDIR, PHM), avionics and telemetry, aerospace
-  cybersecurity, AI/ML-assisted engineering and EV battery intelligence.
-  The Space and Aerospace work is research, simulation and engineering
-  development; it is not flight, operational-spacecraft or physical-engine
-  test experience.
+  Sudarshana Karkala — EV.ENGINEER™, Founder of ISHAVASYAM.ORG and
+  technology consultant working across Space research, Digital Twins,
+  Cybersecurity, EV and energy systems. Canonical public profile, with his
+  initiatives, selected work and contact channels.
 - [Contact](https://autonomous.ev.engineer/contact): Public business
   contact details for iTelematics Software Private Limited.
 - [Trust Center](https://autonomous.ev.engineer/trust-center): Verified
@@ -84,9 +80,10 @@ link below points to a canonical public page already listed in
   (https://ishavasyam.org/). Its legal form is not published on this site.
 - EV Society: a separate community initiative, not a registered Section 8
   company per any evidence published on this site.
-- Sudarshana Karkala: a person — founder of EV.ENGINEER, Co-Founder of
-  Thasmai Infotech Private Limited, and a consultant to iTelematics
-  Software Private Limited.
+- Sudarshana Karkala: a person — Founder of ISHAVASYAM.ORG, a consultant
+  to iTelematics Software Private Limited, and Co-Founder of Thasmai
+  InfoTech Private Limited. EV.ENGINEER is the engineering identity of his
+  team and the projects they build together; it is not a founder title.
 - IN-SPACe and ISRO: external government organisations referenced only as
   the publisher of the model-rocketry workshop this site's learning guide
   is based on. No endorsement, certification or partnership is implied.

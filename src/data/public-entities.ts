@@ -121,36 +121,30 @@ export const SUDARSHANA_KARKALA: PublicEntity = {
   id: `${SITE_URL}/about/sudarshana-karkala#person`,
   type: "Person",
   name: "Sudarshana Karkala",
+  // The same three relationships as his profile page: Founder of ISHAVASYAM.ORG, Consultant at
+  // iTelematics, and EV.ENGINEER as the engineering identity of his team. Not "founder of EV.ENGINEER".
   description:
-    "Sudarshana Karkala is an engineering and technology leader with over two decades of experience across software architecture, cybersecurity, connected systems and energy platforms. He founded the EV.ENGINEER platform and consults for iTelematics Software Private Limited. His current research and engineering development focus spans Space Systems Engineering, Digital Twins, spacecraft health management (IVHM, FDIR and PHM), avionics and telemetry, aerospace cybersecurity, AI/ML-assisted engineering and EV Battery & Energy Intelligence. The Space and Aerospace work is research, simulation and engineering development.",
+    "Sudarshana Karkala is a technology leader and systems architect working across Space, Aerospace, Digital Twins, Cybersecurity, Electric Vehicles and intelligent energy systems. He is the Founder of ISHAVASYAM.ORG and a Consultant at iTelematics Software Private Limited; EV.ENGINEER is the engineering identity of his team and the projects they build together. His engineering background spans software architecture, cybersecurity, connected systems and advanced engineering R&D.",
   canonicalUrl: `${SITE_URL}/about/sudarshana-karkala`,
   publicTelephone: "+91 9845561518",
   imageUrl: `${SITE_URL}/SudarshanaKarkala.jpg`,
   sameAs: ["https://www.linkedin.com/in/sudarshanakarkala/", "https://topmate.io/sudarshana_karkala"],
-  // Subjects he works on and studies. A subject listed here is not a claim of flight,
-  // operational-spacecraft or physical-engine experience: see the profile page's About section.
+  // A short list of subjects, each one named on his profile page. A subject here is not a claim of
+  // flight, operational-spacecraft or physical-engine experience: the project pages say how mature each piece of work is.
   knowsAbout: [
     "Space Systems Engineering",
-    "Satellite and CubeSat systems engineering",
-    "Spacecraft health management",
-    "Integrated Vehicle Health Management (IVHM)",
-    "Fault Detection, Isolation and Recovery (FDIR)",
-    "Prognostics and Health Management (PHM)",
-    "Digital Twin engineering",
-    "Spacecraft and CubeSat Digital Twins",
-    "Avionics & Telemetry",
+    "Space Station Research",
+    "Satellite Engineering",
+    "Rocket & Propulsion Systems",
+    "Digital Twins",
+    "Spacecraft Health Management",
+    "Cybersecurity",
     "Aerospace Cybersecurity",
-    "AI/ML-assisted engineering diagnostics",
-    "Space Research",
-    "CanSat Model Rocketry",
-    "EV battery intelligence and diagnostics",
-    "Battery Management Systems",
-    "EV battery safety and cybersecurity",
-    "eVTOL and air-taxi systems engineering",
-    "cloud and energy systems architecture",
-    "autonomous energy management systems",
+    "EV Engineering",
+    "Battery Intelligence",
+    "Systems Architecture",
   ],
-  affiliations: [EV_ENGINEER.canonicalUrl, ITELEMATICS.canonicalUrl],
+  affiliations: [ISHAVASYAM.canonicalUrl, ITELEMATICS.canonicalUrl, EV_ENGINEER.canonicalUrl],
 };
 
 /**

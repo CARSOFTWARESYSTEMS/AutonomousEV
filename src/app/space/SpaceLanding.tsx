@@ -841,7 +841,8 @@ export default function SpaceLanding({ entityGraph }: { entityGraph: object }) {
         </section>
 
         <section className={styles.section} style={{ maxWidth: 1280, margin: "0 auto", paddingTop: 0 }}>
-          <ResearcherCard />
+          {/* Space is an ISHAVASYAM.ORG initiative, so its designer is credited as that organisation's founder. */}
+          <ResearcherCard role={`Founder · ${SPACE_INITIATIVE.brand}`} />
         </section>
       </main>
 

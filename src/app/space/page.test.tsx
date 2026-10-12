@@ -32,6 +32,15 @@ describe("Space page", () => {
     inPage.forEach((link) => expect(link).toHaveAttribute("href", "/"));
   });
 
+  it("credits its designer as the founder of ISHAVASYAM.ORG, whose initiative Space is, and links to his profile", () => {
+    render(<SpacePage />);
+    const card = screen.getByRole("complementary", { name: "About the researcher" });
+    expect([...card.querySelectorAll("p, h3")].map((line) => line.textContent)).toEqual(["Designed by", "Sudarshana Karkala", "Founder · ISHAVASYAM.ORG"]);
+    expect(within(card).getByRole("link", { name: /View full profile/ })).toHaveAttribute("href", "/about/sudarshana-karkala");
+    // The line about who prepared the page is a different credit, and is unchanged.
+    expect(screen.getByText(/Prepared by the ISHAVASYAM\.ORG technical team\. Last reviewed: 14 August 2026\./)).toBeInTheDocument();
+  });
+
   it("labels the hero console as an illustrative simulation, not live telemetry", () => {
     render(<SpacePage />);
     expect(screen.getByText(/Illustrative Mission Simulation/)).toBeInTheDocument();

@@ -525,6 +525,14 @@ describe("the way to reach the author", () => {
     const header = container.querySelector("header")!;
     const link = within(header).getByRole("link", { name: /^Contact \/ Consultation/ });
     expect(link).toHaveAttribute("href", "https://aerospace.ishavasyam.org/about/sudarshana-karkala");
+    // Using it is reported once, by the site-wide listener, with where it was used and where it leads: fixed ids only.
+    expect(Object.fromEntries(link.getAttributeNames().filter((name) => name.startsWith("data-track-")).map((name) => [name, link.getAttribute(name)]))).toEqual({
+      "data-track-event": "contact_consultation_click",
+      "data-track-experience": "advanced_propulsion_twin",
+      "data-track-source_page": "advanced_propulsion_twin",
+      "data-track-source_section": "header",
+      "data-track-destination": "sudarshana_karkala_profile",
+    });
     expect(link).toHaveAttribute("target", "_blank");
     expect(link).toHaveAttribute("rel", "noopener noreferrer");
     // Spoken, it begins with the words on it, says what it is for, and says that it leaves the page.

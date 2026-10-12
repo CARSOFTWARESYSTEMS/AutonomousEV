@@ -56,13 +56,54 @@ describe("/about/sudarshana-karkala JSON-LD entity graph", () => {
     ]);
   });
 
-  it("worksFor points at the EV.ENGINEER brand, and never mentions Thasmai Infotech", () => {
+  it("names EV.ENGINEER as the brand he maintains: not an employer, not a founder title, and no employer is claimed at all", () => {
     const person = findByType("Person");
     const brand = graph.find(
       (n) => (n as Record<string, unknown>).name === "EV.ENGINEER" && (n as Record<string, unknown>)["@type"] === "Brand"
     ) as Record<string, unknown>;
-    expect(person.worksFor).toEqual({ "@id": brand["@id"] });
+    expect(person.brand).toEqual({ "@id": brand["@id"] });
+    expect(person.worksFor).toBeUndefined();
+    expect(brand.founder).toBeUndefined();
+    expect(JSON.stringify(graph)).not.toMatch(/founder of (the )?EV\.ENGINEER|founded (the )?EV\.ENGINEER|EV\.ENGINEER founder/i);
+  });
+
+  it("says he is the Founder of ISHAVASYAM.ORG, on the organisation and on the person", () => {
+    const person = findByType("Person");
+    const ishavasyam = graph.find((n) => (n as Record<string, unknown>).name === "ISHAVASYAM.ORG") as Record<string, unknown>;
+    expect(ishavasyam["@type"]).toBe("Organization");
+    expect(ishavasyam["@id"]).toBe("https://ishavasyam.org/#organization");
+    expect(ishavasyam.founder).toEqual({ "@id": person["@id"] });
+    expect(person.jobTitle).toEqual(["Founder, ISHAVASYAM.ORG", "Consultant, iTelematics Software Private Limited"]);
+    // ISHAVASYAM.ORG first: it is the primary initiative.
+    expect(person.affiliation).toEqual([{ "@id": ishavasyam["@id"] }, { "@id": "https://itelematics.com/#organization" }]);
+  });
+
+  it("says he is a Consultant at iTelematics by affiliation, which claims no employment", () => {
+    const itelematics = graph.find((n) => (n as Record<string, unknown>).name === "iTelematics Software Private Limited") as Record<string, unknown>;
+    expect(itelematics["@type"]).toBe("Organization");
+    expect(itelematics.founder).toBeUndefined();
+    expect(itelematics.employee).toBeUndefined();
+  });
+
+  it("names CAR SOFTWARE SYSTEMS as something the page mentions, and gives it no relationship the page does not state", () => {
+    const person = findByType("Person");
+    const car = graph.find((n) => (n as Record<string, unknown>).name === "CAR SOFTWARE SYSTEMS") as Record<string, unknown>;
+    expect(car).toMatchObject({ "@type": "Organization", url: "https://carsoftwaresystems.com/" });
+    expect(Object.keys(car).sort()).toEqual(["@id", "@type", "description", "name", "url"]);
+    expect(findByType("ProfilePage").mentions).toEqual([{ "@id": car["@id"] }]);
+    expect(JSON.stringify(person)).not.toContain(car["@id"] as string);
+  });
+
+  it("never mentions Thasmai: it is one line of the visible page and is not modelled", () => {
     expect(JSON.stringify(graph)).not.toMatch(/Thasmai/i);
+  });
+
+  it("has one Person, and no reference to a node that is not in the graph", () => {
+    expect(graph.filter((n) => (n as Record<string, unknown>)["@type"] === "Person")).toHaveLength(1);
+    const ids = new Set(graph.map((n) => (n as Record<string, unknown>)["@id"]));
+    const references = [...JSON.stringify(graph).matchAll(/\{"@id":"([^"]+)"\}/g)].map((m) => m[1]);
+    expect(references.length).toBeGreaterThanOrEqual(6);
+    for (const reference of references) expect(ids, reference).toContain(reference);
   });
 
   it("keeps EV.ENGINEER as a Brand node, not a legal Organization, among the affiliations", () => {
@@ -84,58 +125,45 @@ describe("/about/sudarshana-karkala JSON-LD entity graph", () => {
     expect(JSON.stringify(graph)).not.toMatch(/"alumniOf":\{[^}]*IIT Madras/);
   });
 
-  it("includes Space Research and CanSat Model Rocketry in knowsAbout", () => {
+  it("lists a short set of subjects in knowsAbout, each one named on the profile page", () => {
     const person = findByType("Person");
-    expect(person.knowsAbout).toContain("Space Research");
-    expect(person.knowsAbout).toContain("CanSat Model Rocketry");
-  });
-
-  it("includes Space Systems Engineering, health management, Digital Twins, avionics and aerospace cybersecurity in knowsAbout", () => {
-    const person = findByType("Person");
-    for (const subject of [
+    expect(person.knowsAbout).toEqual([
       "Space Systems Engineering",
-      "Satellite and CubeSat systems engineering",
-      "Spacecraft health management",
-      "Integrated Vehicle Health Management (IVHM)",
-      "Fault Detection, Isolation and Recovery (FDIR)",
-      "Prognostics and Health Management (PHM)",
-      "Digital Twin engineering",
-      "Spacecraft and CubeSat Digital Twins",
-      "Avionics & Telemetry",
+      "Space Station Research",
+      "Satellite Engineering",
+      "Rocket & Propulsion Systems",
+      "Digital Twins",
+      "Spacecraft Health Management",
+      "Cybersecurity",
       "Aerospace Cybersecurity",
-      "AI/ML-assisted engineering diagnostics",
-      "EV battery intelligence and diagnostics",
-    ]) {
-      expect(person.knowsAbout).toContain(subject);
-    }
+      "EV Engineering",
+      "Battery Intelligence",
+      "Systems Architecture",
+    ]);
   });
 
-  it("lists subjects, not credentials: nothing in knowsAbout claims propulsion expertise, flight, operations, validation or certification", () => {
+  it("lists subjects, not credentials: nothing in knowsAbout claims expertise, flight, operations, validation or certification", () => {
     const person = findByType("Person");
     const subjects = (person.knowsAbout as string[]).join(" | ");
-    expect(subjects).not.toMatch(/propulsion|rocket engine|flight|operational|validated|certif|qualif/i);
+    expect(subjects).not.toMatch(/expert|specialist|flight|operational|validated|certif|qualif/i);
     expect(new Set(person.knowsAbout as string[]).size).toBe((person.knowsAbout as string[]).length);
   });
 
-  it("sets jobTitle to the Director of Engineering positioning, and never puts the two decades of experience in the same sentence as space or aerospace", () => {
+  it("describes him as the page does: what he works on, his two roles, and EV.ENGINEER as an identity", () => {
     const person = findByType("Person");
-    expect(person.jobTitle).toBe("Director of Engineering | Systems Architecture | Technology & R&D");
-    // Bounded by the sentence: the description goes on to name the aerospace research focus, which is a different claim.
-    expect(JSON.stringify(person)).not.toMatch(/20\+? years?[^".]*(aerospace|space|satellite)/i);
-    expect(JSON.stringify(person)).not.toMatch(/two decades[^".]*(aerospace|space|satellite)/i);
-    expect(person.description).toMatch(/over two decades of experience across software architecture, cybersecurity, connected systems and energy platforms\./);
+    expect(person.description).toBe(
+      "Sudarshana Karkala is a technology leader and systems architect working across Space, Aerospace, Digital Twins, Cybersecurity, Electric Vehicles and intelligent energy systems. He is the Founder of ISHAVASYAM.ORG and a Consultant at iTelematics Software Private Limited; EV.ENGINEER is the engineering identity of his team and the projects they build together. His engineering background spans software architecture, cybersecurity, connected systems and advanced engineering R&D.",
+    );
   });
 
-  it("describes the Space and Aerospace work as research and development, and claims no flight, operational or certified experience", () => {
+  it("claims no length of space or aerospace experience, and no flight, operational or certified experience", () => {
     const person = findByType("Person");
-    expect(person.description).toMatch(/research and engineering development focus spans Space Systems Engineering, Digital Twins, spacecraft health management \(IVHM, FDIR and PHM\)/);
-    expect(person.description).toMatch(/The Space and Aerospace work is research, simulation and engineering development\.$/);
+    expect(JSON.stringify(person)).not.toMatch(/20\+? years?|two decades/i);
     expect(person.description).not.toMatch(/propulsion expert|flight[- ]qualified|flight heritage|operational spacecraft|validated|certified/i);
   });
 
-  it("never sets worksFor to IN-SPACe or ISRO", () => {
-    const person = findByType("Person");
-    expect(JSON.stringify(person.worksFor)).not.toMatch(/IN-SPACe|ISRO/i);
+  it("never ties him to IN-SPACe or ISRO as an employer, an affiliation or a school", () => {
+    expect(JSON.stringify(graph)).not.toMatch(/IN-SPACe|ISRO/i);
   });
 
   it("includes a three-item breadcrumb: Home, About, Sudarshana Karkala", () => {

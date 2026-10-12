@@ -47,7 +47,14 @@ export default function AdvancedTwinPage() {
         </nav>
         <div className={css.headerActions}>
           {/* One name at every width. Where the header is short of room only its first word shows, and the name still begins with what is shown. */}
-          <a href={CONTACT.href} target="_blank" rel="noopener noreferrer" className={css.contactLink} aria-label={CONTACT.ariaLabel}>
+          <a
+            href={CONTACT.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={css.contactLink}
+            aria-label={CONTACT.ariaLabel}
+            {...advancedTwinLinkTracking("contact_consultation_click", { source_page: "advanced_propulsion_twin", source_section: "header", destination: "sudarshana_karkala_profile" })}
+          >
             <span>
               {CONTACT_FIRST}
               <span className={css.contactRest}> {CONTACT_REST}</span>

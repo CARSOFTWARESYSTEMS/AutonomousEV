@@ -1,13 +1,15 @@
-import FounderContent from "./FounderContent";
+import ProfileContent from "./ProfileContent";
 import type { Metadata } from "next";
 import { JsonLd } from "@/lib/structured-data/JsonLd";
 import { buildProfileGraph } from "@/lib/structured-data/profileGraph";
 import { LAST_REVIEWED } from "./profile";
 
-const PAGE_TITLE = "Sudarshana Karkala | Space Systems Engineering & Digital Twins | EV.ENGINEER™";
-// Research and engineering focus, named as that: the description claims no flight, operational or certification experience.
+// The title names the person, then what he works on, then the engineering identity, as the site's titles do.
+const PAGE_TITLE = "Sudarshana Karkala | Space, Digital Twins & Cybersecurity | EV.ENGINEER™";
+// One sentence, with the same three relationships as the page: the identity, the initiative he founded, the consulting role.
 const PAGE_DESCRIPTION =
-  "Sudarshana Karkala is an engineering leader and technology consultant. Research and engineering focus: Space Systems Engineering, Digital Twins, spacecraft health management (IVHM/FDIR/PHM), avionics and telemetry, aerospace cybersecurity, AI/ML and EV Battery & Energy Intelligence.";
+  "Sudarshana Karkala — EV.ENGINEER™, Founder of ISHAVASYAM.ORG and technology consultant working across Space research, Digital Twins, Cybersecurity, EV and energy systems.";
+// One address for the profile on every host that serves it. Deliberately unchanged by the redesign.
 const PAGE_URL = "https://autonomous.ev.engineer/about/sudarshana-karkala";
 
 export const metadata: Metadata = {
@@ -16,25 +18,14 @@ export const metadata: Metadata = {
   keywords: [
     "Sudarshana Karkala",
     "EV.ENGINEER",
-    "Director of Engineering",
-    "Space Systems Engineering",
+    "ISHAVASYAM.ORG",
+    "Space Station Research",
     "Satellite Engineering",
+    "Rocket Propulsion Digital Twin",
     "Spacecraft Digital Twin",
-    "Digital Twin Engineering",
     "Spacecraft Health Management",
-    "IVHM",
-    "FDIR",
-    "PHM",
-    "Avionics",
-    "Telemetry",
     "Aerospace Cybersecurity",
-    "AI/ML Engineering",
-    "CubeSat",
-    "Model Rocketry",
     "EV Battery Intelligence",
-    "National Institute of Technology Karnataka",
-    "IIT Madras",
-    "IN-SPACe",
   ],
   alternates: {
     canonical: PAGE_URL,
@@ -55,6 +46,8 @@ export const metadata: Metadata = {
     description: PAGE_DESCRIPTION,
     url: PAGE_URL,
     type: "profile",
+    firstName: "Sudarshana",
+    lastName: "Karkala",
     siteName: "EV.ENGINEER",
   },
   twitter: {
@@ -73,11 +66,11 @@ const profileGraph = {
   }),
 };
 
-export default function FounderPage() {
+export default function ProfilePage() {
   return (
     <>
       <JsonLd data={profileGraph} />
-      <FounderContent />
+      <ProfileContent />
     </>
   );
 }

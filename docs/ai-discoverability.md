@@ -41,9 +41,16 @@ Karkala, the internship programme and the public contact point live in
 Private Limited (legal operator of EV.ENGINEER, verified via `/contact`), and EV Society (a separate
 community initiative — not described as a registered Section 8 company anywhere on this site).
 
-Sudarshana Karkala's public profile (`worksFor`) points at the EV.ENGINEER brand node. Thasmai
-Infotech Private Limited is no longer modelled as an entity in this registry or referenced in his
-profile — it was removed site-wide at the request of the profile owner.
+Sudarshana Karkala's public profile (redesigned 12 October 2026) states three relationships, and its
+graph states the same three: he is the **Founder of ISHAVASYAM.ORG** (`founder` on the organisation,
+`jobTitle` and `affiliation` on the person), a **Consultant at iTelematics Software Private Limited**
+(`affiliation`, not `worksFor`), and **EV.ENGINEER is the engineering identity** of him, his team and
+their projects (`brand` on the person). EV.ENGINEER is not written as a founder title on the profile.
+
+Thasmai InfoTech Private Limited is not modelled as an entity in this registry or in the profile's
+graph: it was removed site-wide earlier at the request of the profile owner. At the owner's later
+instruction the visible profile mentions it in one line of Professional Background ("Co-Founder —
+Thasmai InfoTech Private Limited") and nowhere else.
 
 `/space/2026-INSPACe-ROCKETRY-059` (the rocketry learning guide) is modelled as an independent
 `LearningResource`/`WebPage` with `isBasedOn` pointing at the official IN-SPACe workshop listing —
