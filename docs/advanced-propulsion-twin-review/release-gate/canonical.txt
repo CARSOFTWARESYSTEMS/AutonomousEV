@@ -1,0 +1,15 @@
+Canonical address of /space/rocket-engine-digital-twin-advanced, as served by each host on 12 October 2026.
+It is the same on all three and was not changed: the page has one address for search engines, whichever host serves it.
+
+https://aerospace.ev.engineer
+  status:    200
+  canonical: https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced
+  og:url:    https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced
+https://aerospace.ishavasyam.org
+  status:    200
+  canonical: https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced
+  og:url:    https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced
+https://autonomous.ev.engineer
+  status:    200
+  canonical: https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced
+  og:url:    https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced
