@@ -45,6 +45,26 @@ function Dotted({ items }: { items: readonly string[] }) {
   );
 }
 
+/**
+ * Text with a bracketed code in it, such as "(NW-ASHM 2026)", or a name joined by an en dash, such as
+ * "CSIR–National". Each of those stays in one piece when the line wraps; the rest wraps as usual.
+ */
+function Bracketed({ text }: { text: string }) {
+  return (
+    <>
+      {text.split(/(\([^)]*\)|\S+–\S+)/).map((part, index) =>
+        part.startsWith("(") || part.includes("–") ? (
+          <span key={index} className={styles.unbroken}>
+            {part}
+          </span>
+        ) : (
+          part
+        ),
+      )}
+    </>
+  );
+}
+
 type NameLinkTarget = { href: string; id: "ishavasyam" | "ev_engineer" | "itelematics" | "thasmai"; destination: string };
 
 /** An organisation's name that is also the way to its own site. A plain link: the name itself, underlined quietly. */
@@ -171,10 +191,21 @@ export default function ProfileContent() {
                 <h3 className={styles.initiativeName}>{initiative.name}</h3>
                 <p className={styles.initiativeLine}>{initiative.line}</p>
                 {initiative.note ? <p className={styles.initiativeNote}>{initiative.note}</p> : null}
-                <a href={initiative.link.href} {...NEW_TAB} className={`${styles.textLink} ${styles.initiativeLink}`} {...profileTracking("profile_initiative_click", { initiative_name: initiative.id, destination: initiative.link.destination, section: "initiatives" })}>
-                  {initiative.link.label}
-                  <Leaves />
-                </a>
+                <div className={styles.initiativeLinks}>
+                  {initiative.links.map((link) =>
+                    link.external ? (
+                      <a key={link.href} href={link.href} {...NEW_TAB} className={styles.textLink} {...profileTracking("profile_initiative_click", { initiative_name: initiative.id, destination: link.destination, section: "initiatives" })}>
+                        {link.label}
+                        <Leaves />
+                      </a>
+                    ) : (
+                      <Link key={link.href} href={link.href} className={styles.textLink} {...profileTracking("profile_initiative_click", { initiative_name: initiative.id, destination: link.destination, section: "initiatives" })}>
+                        {link.label}
+                        <ArrowRight size={15} aria-hidden="true" />
+                      </Link>
+                    ),
+                  )}
+                </div>
               </article>
             ))}
           </div>
@@ -267,8 +298,10 @@ export default function ProfileContent() {
           <ul className={styles.education} role="list">
             {WORKSHOPS.entries.map((entry) => (
               <li key={entry.institution}>
-                <span className={styles.eduInstitution}>{entry.institution}</span>{" "}
-                <span className={styles.eduProgramme}>{entry.areas ? <Dotted items={entry.areas} /> : entry.programme}</span>
+                <span className={styles.eduInstitution}>
+                  <Bracketed text={entry.institution} />
+                </span>{" "}
+                <span className={styles.eduProgramme}>{entry.areas ? <Dotted items={entry.areas} /> : <Bracketed text={entry.programme ?? ""} />}</span>
                 {entry.meta ? (
                   <>
                     {" "}

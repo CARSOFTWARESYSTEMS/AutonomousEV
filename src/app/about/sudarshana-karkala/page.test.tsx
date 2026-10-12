@@ -107,15 +107,25 @@ describe("/about/sudarshana-karkala: the initiatives", () => {
   it("lists EV.ENGINEER™ and CAR SOFTWARE SYSTEMS as two small cards, each with its established line and its address", () => {
     render(<ProfilePage />);
     const cards = within(section("Initiatives")).getAllByRole("article");
+    const links = (card: HTMLElement) => within(card).getAllByRole("link").map((a) => [a.textContent?.replace(/\s*\(opens in a new tab\)/, ""), a.getAttribute("href")]);
     expect(cards.map((card) => within(card).getByRole("heading", { level: 3 }).textContent)).toEqual(["EV.ENGINEER™", "CAR SOFTWARE SYSTEMS"]);
     expect(cards[0]).toHaveTextContent("Building World-Class Engineers to Solve Energy and EV Battery Challenges");
-    expect(within(cards[0]).getByRole("link")).toHaveAttribute("href", "https://ev.engineer/");
+    // Its own site, and beside it the gallery of its workshops.
+    expect(links(cards[0])).toEqual([
+      ["ev.engineer", "https://ev.engineer/"],
+      ["Workshop gallery", "/workshop-gallery"],
+    ]);
     expect(cards[1]).toHaveTextContent("Electric Vehicle Engineering · Agentic AI Development");
-    expect(within(cards[1]).getByRole("link")).toHaveAttribute("href", "https://carsoftwaresystems.com/");
+    expect(links(cards[1])).toEqual([["carsoftwaresystems.com", "https://carsoftwaresystems.com/"]]);
     for (const card of cards) {
-      expect(within(card).getByRole("link")).toHaveAttribute("rel", "noopener noreferrer");
-      // A card, not a corporate page: a name, a line, at most one sentence, one link.
+      for (const link of within(card).getAllByRole("link")) {
+        // A link that leaves the site opens in a new tab, safely; a page of this site opens in place.
+        if (link.getAttribute("href")?.startsWith("http")) expect(link).toHaveAttribute("rel", "noopener noreferrer");
+        else expect(link).not.toHaveAttribute("target");
+      }
+      // A card, not a corporate page: a name, a line, at most one sentence, at most two links.
       expect(card.querySelectorAll("p").length).toBeLessThanOrEqual(2);
+      expect(within(card).getAllByRole("link").length).toBeLessThanOrEqual(2);
     }
   });
 });
@@ -277,7 +287,7 @@ describe("/about/sudarshana-karkala: workshops and certifications", () => {
       "NITK Surathkal B.E. — Information Technology Education",
       "IIT Madras — CODE Electric Vehicle Engineering & Development Professional certification",
       "IN-SPACe Model Rocketry · CANSAT · Semiconductor · Aerospace & Space Systems Workshops & Certification",
-      "CSIR–National Aerospace Laboratories (CSIR-NAL) Aircraft Structural Health Monitoring (NW-ASHM 2026) Workshops & Certification",
+      "CSIR-NAL Aircraft Structural Health Monitoring (NW-ASHM 2026) from CSIR–National Aerospace Laboratories Workshops & Certification",
       "EV Society™ Certified EV Technology Officer (EVTO™) In progress · expected Mar 2028",
       "Business P.A.C.E. Business & Entrepreneurship Development Rajiv Talreja / QuantumLeap",
     ]);
@@ -309,14 +319,16 @@ describe("/about/sudarshana-karkala: workshops and certifications", () => {
     expect(JSON.stringify(graphOf(container))).not.toMatch(/semiconductor|cansat|IN-SPACe/i);
   });
 
-  it("lists the CSIR-NAL workshop directly after IN-SPACe, by its institution, its name and what kind of thing it is", () => {
+  it("lists the CSIR-NAL workshop directly after IN-SPACe: the short name, then the workshop and the laboratory in full, then what kind of thing it is", () => {
     const { container } = render(<ProfilePage />);
-    const row = screen.getByText("CSIR–National Aerospace Laboratories (CSIR-NAL)").closest("li")!;
+    const row = screen.getByText("CSIR-NAL").closest("li")!;
     expect([...row.children].map((cell) => cell.textContent)).toEqual([
-      "CSIR–National Aerospace Laboratories (CSIR-NAL)",
-      "Aircraft Structural Health Monitoring (NW-ASHM 2026)",
+      "CSIR-NAL",
+      "Aircraft Structural Health Monitoring (NW-ASHM 2026) from CSIR–National Aerospace Laboratories",
       "Workshops & Certification",
     ]);
+    // The code in brackets stays in one piece when the line wraps.
+    expect(row.querySelector("span span")).toHaveTextContent(/^\(NW-ASHM 2026\)$/);
     expect(row.previousElementSibling).toHaveTextContent(/^IN-SPACe/);
     expect(row.nextElementSibling).toHaveTextContent(/^EV Society™/);
     // Named as given, and nothing added to it: no title, no completion, no award.
@@ -470,8 +482,9 @@ describe("/about/sudarshana-karkala: the page as a whole", () => {
       "CANSAT",
       "Semiconductor",
       "Aerospace & Space Systems",
-      "CSIR–National Aerospace Laboratories (CSIR-NAL)",
-      "Aircraft Structural Health Monitoring (NW-ASHM 2026)",
+      "CSIR-NAL",
+      "Aircraft Structural Health Monitoring (NW-ASHM 2026) from CSIR–National Aerospace Laboratories",
+      "Workshop gallery",
       "Contact / Consultation",
     ]) {
       expect(html).toContain(fact);

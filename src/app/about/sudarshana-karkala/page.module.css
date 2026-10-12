@@ -353,8 +353,11 @@
   line-height: 1.6;
   color: var(--space-muted);
 }
-.initiativeLink {
-  align-self: flex-start;
+/* The card's links, side by side at its foot. */
+.initiativeLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 20px;
   margin-top: auto;
   padding-top: 6px;
 }
@@ -530,7 +533,8 @@
 }
 .education li {
   display: grid;
-  grid-template-columns: minmax(0, 190px) minmax(0, 1fr) auto;
+  /* The first column fits the longest short name ("IIT Madras — CODE"); the rest of the row is for what was studied. */
+  grid-template-columns: minmax(0, 150px) minmax(0, 1fr) auto;
   align-items: baseline;
   gap: 4px 20px;
   padding: 12px 0;
@@ -544,6 +548,7 @@
 .eduProgramme {
   font-size: 14.5px;
   color: var(--space-muted);
+  text-wrap: balance;
 }
 .eduMeta {
   font-size: 13px;

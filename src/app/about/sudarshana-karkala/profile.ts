@@ -52,14 +52,18 @@ export const INITIATIVES = [
     name: "EV.ENGINEER™",
     line: "Building World-Class Engineers to Solve Energy and EV Battery Challenges",
     note: "EV.ENGINEER™ represents the engineering identity of our team and the projects we build together.",
-    link: { label: "ev.engineer", href: EV_ENGINEER_URL, destination: "ev.engineer" },
+    links: [
+      { label: "ev.engineer", href: EV_ENGINEER_URL, external: true, destination: "ev.engineer" },
+      // The workshops, in pictures. A page of this site, so it opens in place on whichever host is being read.
+      { label: "Workshop gallery", href: "/workshop-gallery", external: false, destination: "/workshop-gallery" },
+    ],
   },
   {
     id: "car_software_systems",
     name: "CAR SOFTWARE SYSTEMS",
     line: "Electric Vehicle Engineering · Agentic AI Development",
     note: null,
-    link: { label: "carsoftwaresystems.com", href: "https://carsoftwaresystems.com/", destination: "carsoftwaresystems.com" },
+    links: [{ label: "carsoftwaresystems.com", href: "https://carsoftwaresystems.com/", external: true, destination: "carsoftwaresystems.com" }],
   },
 ] as const;
 
@@ -124,7 +128,7 @@ export const WORKSHOPS: {
     // states them. No lecture is listed as a certification of its own, and no title is claimed from it.
     { institution: "IN-SPACe", areas: ["Model Rocketry", "CANSAT", "Semiconductor", "Aerospace & Space Systems"], meta: "Workshops & Certification" },
     // The national workshop NW-ASHM 2026, named and described as the owner gives it.
-    { institution: "CSIR–National Aerospace Laboratories (CSIR-NAL)", programme: "Aircraft Structural Health Monitoring (NW-ASHM 2026)", meta: "Workshops & Certification" },
+    { institution: "CSIR-NAL", programme: "Aircraft Structural Health Monitoring (NW-ASHM 2026) from CSIR–National Aerospace Laboratories", meta: "Workshops & Certification" },
     { institution: "EV Society™", programme: "Certified EV Technology Officer (EVTO™)", meta: "In progress · expected Mar 2028", status: "in-progress" },
     { institution: "Business P.A.C.E.", programme: "Business & Entrepreneurship Development", meta: "Rajiv Talreja / QuantumLeap" },
   ],

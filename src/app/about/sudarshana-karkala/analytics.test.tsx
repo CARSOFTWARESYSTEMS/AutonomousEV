@@ -112,11 +112,13 @@ describe("profile analytics: what a visitor uses", () => {
     fireEvent.click(screen.getByRole("link", { name: /^ishavasyam\.org/ }));
     fireEvent.click(screen.getByRole("link", { name: "Space initiative" }));
     fireEvent.click(screen.getByRole("link", { name: /^ev\.engineer/ }));
+    fireEvent.click(screen.getByRole("link", { name: "Workshop gallery" }));
     fireEvent.click(screen.getByRole("link", { name: /^carsoftwaresystems\.com/ }));
     expect(trackEvent.mock.calls).toEqual([
       ["profile_initiative_click", { initiative_name: "ishavasyam", destination: "ishavasyam.org", section: "primary_initiative" }],
       ["profile_initiative_click", { initiative_name: "ishavasyam", destination: "/space", section: "primary_initiative" }],
       ["profile_initiative_click", { initiative_name: "ev_engineer", destination: "ev.engineer", section: "initiatives" }],
+      ["profile_initiative_click", { initiative_name: "ev_engineer", destination: "/workshop-gallery", section: "initiatives" }],
       ["profile_initiative_click", { initiative_name: "car_software_systems", destination: "carsoftwaresystems.com", section: "initiatives" }],
     ]);
   });
