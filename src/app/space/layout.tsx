@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SEO_TITLE as TITLE, SEO_DESCRIPTION as DESCRIPTION, SEO_CANONICAL as CANONICAL } from "./seo";
+import { SPACE_INITIATIVE } from "@/data/space-initiative";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -14,9 +15,9 @@ export const metadata: Metadata = {
     "spacecraft prognostics",
     "verified safe recovery",
   ],
-  authors: [{ name: "EV Society" }],
-  creator: "EV Society",
-  publisher: "EV Society",
+  authors: [{ name: SPACE_INITIATIVE.brand }],
+  creator: SPACE_INITIATIVE.brand,
+  publisher: SPACE_INITIATIVE.brand,
   alternates: {
     canonical: CANONICAL,
   },

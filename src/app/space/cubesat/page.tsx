@@ -31,6 +31,7 @@ import {
 } from "./components/LearningTools";
 import FaultLab from "./components/FaultLab";
 import styles from "./cubetwin.module.css";
+import { SPACE_INITIATIVE } from "@/data/space-initiative";
 export { metadata } from "./seo";
 function SectionHeading({
   eyebrow,
@@ -64,7 +65,7 @@ export default function CubeTwinPage() {
       <SimulationProvider>
         <main id="main-content" className={styles.container}>
           <div className={styles.printCover}>
-            <p>EV Society™ · EV.ENGINEER™</p>
+            <p>{SPACE_INITIATIVE.brand} · EV.ENGINEER™</p>
             <h2>CubeTwin</h2>
             <strong>The 12-week mission workbook</strong>
             <p>CubeSat energy, mission and reliability analysis</p>
@@ -155,9 +156,9 @@ export default function CubeTwinPage() {
                 calculates how orbit sunlight, eclipse, solar generation,
                 subsystem loads and battery characteristics affect State of
                 Charge, voltage, temperature, mission activities and safe-mode
-                decisions. The project is an EV Society™ initiative hosted on
-                EV.ENGINEER™, with commercial engineering handled separately by
-                iTelematics Software Private Limited.
+                decisions. CubeTwin is an {SPACE_INITIATIVE.brand} education and research initiative hosted within the
+                EV.ENGINEER™ engineering ecosystem. Commercial engineering, where applicable, is handled separately by
+                iTelematics Software Private Limited under explicit agreements.
               </p>
               <p className={styles.overviewNote}>
                 A <a href="#glossary">digital twin</a> represents a specific
@@ -491,19 +492,19 @@ export default function CubeTwinPage() {
             <SectionHeading
               eyebrow="PROJECT OWNERSHIP & RESPONSIBILITIES"
               title="Clear roles. An educational purpose."
-              description="CubeTwin is an EV Society™ education and research initiative hosted on EV.ENGINEER™."
+              description={`CubeTwin is an ${SPACE_INITIATIVE.brand} education and research initiative hosted within the EV.ENGINEER™ engineering ecosystem.`}
             />
             <div className={styles.ecosystemGrid}>
               <article className={styles.ecosystemCard}>
                 <span>EDUCATION & RESEARCH</span>
-                <h3>EV Society™</h3>
+                <h3>{SPACE_INITIATIVE.brand}</h3>
                 <p>The education and research initiative behind CubeTwin.</p>
                 <a
-                  href="https://www.evsociety.org/"
+                  href={SPACE_INITIATIVE.url}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  EV Society <ExternalLink size={14} />
+                  {SPACE_INITIATIVE.brand} <ExternalLink size={14} />
                 </a>
                 <br />
                 <Link href="/">

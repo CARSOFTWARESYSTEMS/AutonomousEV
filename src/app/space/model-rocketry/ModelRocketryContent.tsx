@@ -34,6 +34,7 @@ import RocketryVsCansat from "./components/RocketryVsCansat";
 import CompetitionExplorer from "./components/CompetitionExplorer";
 import CostAnatomy from "./components/CostAnatomy";
 import EnterpriseMap from "./components/EnterpriseMap";
+import { SPACE_INITIATIVE } from "@/data/space-initiative";
 
 function SectionHeading({ eyebrow, title, description }: { eyebrow: string; title: string; description: string }) {
   return (
@@ -348,7 +349,7 @@ export default function ModelRocketryContent() {
           <section className={styles.section} style={{ borderBottom: "none" }}>
             <p className={styles.formNote}>
               Content last reviewed: <time dateTime={LAST_REVIEWED}>14 September 2026</time>. Model Rocketry is an
-              EV Society™ educational initiative hosted on EV.ENGINEER™. Commercial engineering products and
+              {SPACE_INITIATIVE.brand} educational initiative hosted on EV.ENGINEER™. Commercial engineering products and
               services, where applicable, are handled separately by iTelematics Software Private Limited under
               explicit agreements. UFlight™ is referenced within the broader ecosystem for aerospace health and
               usage monitoring. These references do not imply a partnership, endorsement, certification, ISRO or

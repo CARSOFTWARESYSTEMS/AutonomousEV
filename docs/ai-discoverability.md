@@ -30,7 +30,8 @@ Karkala, the internship programme and the public contact point live in
 |---|---|---|---|
 | EV.ENGINEER | `https://autonomous.ev.engineer/#brand` | `Brand` | Home page, `/space` nav, layout metadata |
 | iTelematics Software Private Limited | `https://itelematics.com/#organization` | `Organization` | `/contact`, home page badge |
-| EV Society | `https://www.evsociety.org/#organization` | `Organization` | `/space` footer/nav, rocketry page attribution |
+| ISHAVASYAM.ORG | `https://ishavasyam.org/#organization` | `Organization` | Owner of the Space initiative: `/space/**` header, footer, metadata and JSON-LD, via `src/data/space-initiative.ts` |
+| EV Society | `https://www.evsociety.org/#organization` | `Organization` | Rocketry workshop guide attribution, workshop gallery, Trust Center, `/space` community link. Not the owner of Space |
 | Sudarshana Karkala | `https://autonomous.ev.engineer/about/sudarshana-karkala#person` | `Person` | `/about/sudarshana-karkala`, reused author blocks |
 | Internship programme | `https://autonomous.ev.engineer/internships#internship-program` | (CollectionPage) | `/internships` |
 | Public contact point | `https://autonomous.ev.engineer/contact#contact` | (ContactPage/ContactPoint) | `/contact` |

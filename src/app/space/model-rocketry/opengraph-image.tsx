@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-export const alt = "Model Rocketry · Interactive aerospace learning experience · EV Society & EV.ENGINEER";
+export const alt = "Model Rocketry · Interactive aerospace learning experience · ISHAVASYAM.ORG & EV.ENGINEER";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export default function Image() {
@@ -19,7 +19,7 @@ export default function Image() {
       >
         <div style={{ display: "flex", flexDirection: "column", width: 760, zIndex: 2 }}>
           <div style={{ display: "flex", color: "#67E8F9", fontSize: 20, letterSpacing: 3 }}>
-            EV SOCIETY™ · SPACE LEARNING LAB
+            ISHAVASYAM.ORG · SPACE LEARNING LAB
           </div>
           <div style={{ display: "flex", fontSize: 64, marginTop: 40 }}>Model Rocketry</div>
           <div style={{ display: "flex", fontSize: 32, fontWeight: 600, letterSpacing: -1, lineHeight: 1.2, marginTop: 20 }}>

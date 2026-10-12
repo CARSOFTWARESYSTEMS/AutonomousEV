@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 export const alt =
-  "CubeTwin · CubeSat energy and mission simulation · An EV Society initiative";
+  "CubeTwin · CubeSat energy and mission simulation · An ISHAVASYAM.ORG Initiative";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export default function Image() {
@@ -33,7 +33,7 @@ export default function Image() {
             letterSpacing: 3,
           }}
         >
-          EV SOCIETY™ · SPACE LEARNING LAB
+          ISHAVASYAM.ORG · SPACE LEARNING LAB
         </div>
         <div style={{ display: "flex", fontSize: 64, marginTop: 40 }}>
           CubeTwin

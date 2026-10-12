@@ -4,20 +4,20 @@
 // separate. Relationships are expressed only where they are already stated
 // elsewhere on the live site (see /contact, / and /space itself).
 //
-// The shared entity ids and node shapes (iTelematics, EV.ENGINEER brand, EV
-// Society, WebSite) are centralised in ./entities.ts, the single source of
+// The shared entity ids and node shapes (iTelematics, EV.ENGINEER brand,
+// ISHAVASYAM.ORG, WebSite) are centralised in ./entities.ts, the single source of
 // truth reused by every page's entity graph — see that file's own comment.
 
 import {
   SITE_URL,
   ITELEMATICS_ID,
   EV_ENGINEER_BRAND_ID,
-  EV_SOCIETY_ID,
+  ISHAVASYAM_ID,
   UFLIGHT_BRAND_ID,
   WEBSITE_ID,
   itelematicsOrgNode,
   evEngineerBrandNode,
-  evSocietyOrgNode,
+  ishavasyamOrgNode,
   uflightBrandNode,
   websiteNode,
 } from "./entities";
@@ -48,7 +48,7 @@ export function buildSpaceEntityGraph({
   return [
     itelematicsOrgNode(),
     evEngineerBrandNode(),
-    evSocietyOrgNode(),
+    ishavasyamOrgNode(),
     uflightBrandNode(),
     // Verified on-site: /contact and / both identify iTelematics Software
     // Private Limited as the operator of EV.ENGINEER (see websiteNode()).
@@ -59,7 +59,7 @@ export function buildSpaceEntityGraph({
       name: "Autonomous Spacecraft Health Mission 2040",
       url: SPACE_URL,
       description,
-      parentOrganization: { "@id": EV_SOCIETY_ID },
+      parentOrganization: { "@id": ISHAVASYAM_ID },
       keywords: [
         "autonomous spacecraft health management",
         "spacecraft fault detection isolation and recovery",
@@ -80,10 +80,10 @@ export function buildSpaceEntityGraph({
       description,
       isPartOf: { "@id": WEBSITE_ID },
       about: { "@id": MISSION_ID },
-      // Distinct from the WebSite's publisher: EV Society is the content
-      // steward for this specific initiative page (see the "Space · An EV
-      // Society initiative" footer line already on this page).
-      publisher: { "@id": EV_SOCIETY_ID },
+      // Distinct from the WebSite's publisher: ISHAVASYAM.ORG is the
+      // organisation this initiative belongs to (see the "Space · An
+      // ISHAVASYAM.ORG Initiative" footer line on this page).
+      publisher: { "@id": ISHAVASYAM_ID },
       mentions: [
         { "@id": EV_ENGINEER_BRAND_ID },
         { "@id": UFLIGHT_BRAND_ID },

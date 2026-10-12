@@ -115,7 +115,7 @@ describe("/space/space-station page", () => {
     expect(document.body.innerHTML).not.toMatch(/EV Society|evsociety/i);
   });
 
-  it("replaces EV.ENGINEER and UFlight with Ishavasyam.org and iTelematics in header, footer and page", async () => {
+  it("replaces EV.ENGINEER and UFlight with ISHAVASYAM.ORG and iTelematics in header, footer and page", async () => {
     const user = userEvent.setup();
     const { container } = render(<SpaceStationPage />);
     // EV.ENGINEER™ appears only as the attribution under the profile name — never in navigation.
@@ -125,18 +125,18 @@ describe("/space/space-station page", () => {
     expect(container.querySelector("main")?.textContent?.match(/EV\.ENGINEER/g)).toHaveLength(1);
     expect(within(container.querySelector("#direction") as HTMLElement).getByText("EV.ENGINEER™")).toBeInTheDocument();
     const header = container.querySelector("header") as HTMLElement;
-    expect(within(header).getByRole("link", { name: "Ishavasyam.org" })).toHaveAttribute("href", "https://ishavasyam.org/");
+    expect(within(header).getByRole("link", { name: "ISHAVASYAM.ORG" })).toHaveAttribute("href", "https://ishavasyam.org/");
     expect(within(header).getByRole("link", { name: "iTelematics" })).toHaveAttribute("href", "https://itelematics.com/");
     const footer = container.querySelector("footer") as HTMLElement;
-    expect(footer.textContent).toMatch(/Ishavasyam\.org · Space Research Organisation/);
+    expect(footer.textContent).toMatch(/ISHAVASYAM\.ORG · Space Research Organisation/);
     expect(footer.textContent).toMatch(/iTelematics Software Private Limited/);
     const direction = container.querySelector("#direction") as HTMLElement;
-    expect(within(direction).getByRole("heading", { name: "Ishavasyam.org" })).toBeInTheDocument();
+    expect(within(direction).getByRole("heading", { name: "ISHAVASYAM.ORG" })).toBeInTheDocument();
     expect(within(direction).getByRole("heading", { name: "iTelematics Software Private Limited" })).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Open menu" }));
     const menu = document.getElementById("space-mobile-menu") as HTMLElement;
     expect(menu.textContent).not.toMatch(/EV\.ENGINEER|UFlight/);
-    expect(within(menu).getByRole("link", { name: "Ishavasyam.org" })).toBeInTheDocument();
+    expect(within(menu).getByRole("link", { name: "ISHAVASYAM.ORG" })).toBeInTheDocument();
   });
 
   it("server-rendered markup contains no EV Society or UFlight string", async () => {

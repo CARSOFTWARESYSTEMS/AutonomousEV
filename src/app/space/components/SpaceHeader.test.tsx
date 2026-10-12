@@ -59,7 +59,7 @@ describe("Shared Space header", () => {
     expect(spy).toHaveBeenCalledWith(`(min-width: ${SPACE_HEADER_COMPACT_MAX + 1}px)`);
   });
 
-  it("keeps every destination — including UFlight, EV.ENGINEER, EV Society and Express Interest — in the compact menu", async () => {
+  it("keeps every destination — including UFlight, EV.ENGINEER, ISHAVASYAM.ORG and Express Interest — in the compact menu", async () => {
     const user = userEvent.setup();
     render(<SpaceHeader basePath="/space" />);
     const desktopNav = screen.getByRole("navigation", { name: "Space section navigation" });
@@ -79,7 +79,7 @@ describe("Shared Space header", () => {
       .getAllByRole("link")
       .map((a) => [a.textContent, a.getAttribute("href")]);
     desktop.forEach((entry) => expect(menuLinks).toContainEqual(entry));
-    ["Home", "Mission Path", "Research", "Labs", "Research Themes", "Vision & References", "Community", "UFlight", "EV.ENGINEER", "EV Society"].forEach(
+    ["Home", "Mission Path", "Research", "Labs", "Research Themes", "Vision & References", "Community", "UFlight", "EV.ENGINEER", "ISHAVASYAM.ORG"].forEach(
       (label) => expect(menuLinks.map(([l]) => l)).toContain(label),
     );
     expect(within(menu).getByRole("link", { name: /Express Interest/ })).toHaveAttribute("href", EOI_FORM_URL);

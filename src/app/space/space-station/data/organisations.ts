@@ -1,10 +1,11 @@
+import { SPACE_INITIATIVE } from "@/data/space-initiative";
 // Organisations named on /space/space-station (header, footer, schema and the
 // closing "Research & Project Direction" section). Single source of truth.
 
 export const ISHAVASYAM = {
-  name: "Ishavasyam.org",
+  name: SPACE_INITIATIVE.brand,
   descriptor: "Space Research Organisation",
-  url: "https://ishavasyam.org/",
+  url: SPACE_INITIATIVE.url,
 };
 
 export const ITELEMATICS_ORG = {

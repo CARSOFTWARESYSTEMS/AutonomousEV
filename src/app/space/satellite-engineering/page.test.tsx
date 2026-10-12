@@ -221,7 +221,7 @@ describe("Satellite Engineering V1.1 architecture rigour", () => {
     expect(text).toMatch(/required to architect complex satellite missions/);
     expect(text.match(/Satellite Systems Engineering Course in India/g)).toHaveLength(1);
     expect(screen.getByRole("heading", { name: "Engineering Tools & Open Technical Stack" })).toBeInTheDocument();
-    expect(text).toMatch(/EV\.ENGINEER™ professional program within the EV Society™ Space initiative/);
+    expect(text).toMatch(/EV\.ENGINEER™ professional program within the ISHAVASYAM\.ORG Space initiative/);
   });
 });
 

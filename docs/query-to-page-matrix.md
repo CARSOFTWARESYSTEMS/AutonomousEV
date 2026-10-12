@@ -24,7 +24,7 @@ see the "Guarantees and limitations" section of `docs/ai-discoverability.md`.
 | who is Sudarshana Karkala | `/about/sudarshana-karkala` | Yes | Nav/Footer → profile; Home → profile | `Person` (`#person`), `ProfilePage` | Yes | — |
 | Sudarshana Karkala EV.ENGINEER | `/about/sudarshana-karkala` | Yes | Profile → `/internships`, `/space`, `/si-ems` | `Person.affiliation` → EV.ENGINEER `Brand` node | Yes | — |
 | contact EV.ENGINEER | `/contact` | Yes | Nav/Footer → `/contact`; Profile → `/contact` | `ContactPage`/`ContactPoint` | Yes | Only the exact email/phone printed on `/contact` are in JSON-LD |
-| EV Society space initiative | `/space` | Yes | `/space` nav → evsociety.org (external); rocketry page attribution | `Organization` (`evsociety.org/#organization`) | Yes | EV Society kept as a plain `Organization`, no Section 8/CIN claim |
+| ISHAVASYAM.ORG space initiative | `/space` | Yes | `/space` nav and footer → ishavasyam.org (external); ownership wording from `src/data/space-initiative.ts` | `Organization` (`ishavasyam.org/#organization`) | Yes | Space is an ISHAVASYAM.ORG initiative (migrated from EV Society on 12 October 2026). EV Society remains a separate plain `Organization`, no Section 8/CIN claim; it keeps the rocketry workshop guide's attribution and the `/space` community link |
 
 ## How to keep this matrix current
 

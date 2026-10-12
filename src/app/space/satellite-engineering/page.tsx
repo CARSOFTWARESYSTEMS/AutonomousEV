@@ -58,6 +58,7 @@ import {
   LAST_REVIEWED,
   LAST_REVIEWED_LABEL,
 } from "./programData";
+import { SPACE_INITIATIVE } from "@/data/space-initiative";
 
 export { metadata } from "./seo";
 
@@ -891,7 +892,7 @@ export default function SatelliteEngineeringPage() {
           <div className={styles.container}>
             <ResearcherCard />
             <p className={styles.providerNote}>
-              Satellite Engineering is an EV.ENGINEER™ professional program within the EV Society™ Space initiative. Commercial arrangements,
+              Satellite Engineering is an EV.ENGINEER™ professional program within the {SPACE_INITIATIVE.brand} Space initiative. Commercial arrangements,
               where applicable, are handled by iTelematics Software Private Limited.
             </p>
             <p className={styles.reviewed}>

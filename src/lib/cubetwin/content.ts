@@ -96,7 +96,7 @@ export const FAQ = [
   },
   {
     q: "Who is responsible for CubeTwin?",
-    a: "CubeTwin is an EV Society™ education and research initiative hosted on EV.ENGINEER™. Commercial engineering is handled separately by iTelematics Software Private Limited under explicit agreements. UFlight™ is referenced for the broader aerospace HUMS ecosystem.",
+    a: "CubeTwin is an ISHAVASYAM.ORG education and research initiative hosted within the EV.ENGINEER engineering ecosystem. Commercial engineering, where applicable, is handled separately by iTelematics Software Private Limited under explicit agreements. UFlight™ is referenced for the broader aerospace HUMS ecosystem.",
   },
 ];
 export const CALCULATIONS = [

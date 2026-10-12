@@ -158,10 +158,15 @@ describe("Space page", () => {
     expect(bareIndex).toBeGreaterThan(fullTermIndex);
   });
 
-  it("includes an Ecosystem and Responsibilities section linking EV Society, EV.ENGINEER, UFlight and iTelematics", () => {
+  it("includes an Ecosystem and Responsibilities section linking ISHAVASYAM.ORG, EV.ENGINEER, UFlight, iTelematics and the EV Society community", () => {
     render(<SpacePage />);
     const section = document.getElementById("ecosystem") as HTMLElement;
     expect(section).not.toBeNull();
+
+    // The initiative belongs to ISHAVASYAM.ORG. EV Society keeps its separate, community role and nothing more.
+    expect(within(section).getByRole("link", { name: "ISHAVASYAM.ORG" })).toHaveAttribute("href", "https://ishavasyam.org/");
+    expect(section.textContent).toMatch(/Space is an ISHAVASYAM\.ORG education, research and engineering initiative, hosted within the EV\.ENGINEER engineering ecosystem\./);
+    expect(section.textContent).toMatch(/Community membership is offered through EV Society, a separate community initiative\./);
 
     const evSociety = within(section).getByRole("link", { name: "EV Society" });
     expect(evSociety).toHaveAttribute("href", "https://www.evsociety.org/");
@@ -211,10 +216,10 @@ describe("Space page", () => {
     expect(img.closest("figure")?.querySelector("figcaption")).not.toBeNull();
   });
 
-  it("shows an editorial freshness line naming the EV Society technical team and a real review date", () => {
+  it("shows an editorial freshness line naming the ISHAVASYAM.ORG technical team and a real review date", () => {
     render(<SpacePage />);
     expect(
-      screen.getByText(/Prepared by the EV Society technical team\. Last reviewed: .+\./)
+      screen.getByText(/Prepared by the ISHAVASYAM\.ORG technical team\. Last reviewed: .+\./)
     ).toBeInTheDocument();
   });
 

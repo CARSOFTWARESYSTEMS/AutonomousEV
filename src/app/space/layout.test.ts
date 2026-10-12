@@ -12,9 +12,9 @@ const BATTERY_TERMS = [
 
 describe("/space metadata", () => {
   it("has the specified title, description and canonical URL", () => {
-    expect(metadata.title).toBe("Spacecraft Health Management Mission 2040 | EV Society");
+    expect(metadata.title).toBe("Spacecraft Health Management Mission 2040 | ISHAVASYAM.ORG");
     expect(metadata.description).toBe(
-      "Explore EV Society's Mission 2040 for autonomous spacecraft health management, telemetry, digital twins, FDIR, prognostics and verified safe recovery."
+      "Explore ISHAVASYAM.ORG's Mission 2040 for autonomous spacecraft health management, telemetry, digital twins, FDIR, prognostics and verified safe recovery."
     );
     expect(metadata.alternates?.canonical).toBe("https://autonomous.ev.engineer/space");
   });
@@ -49,12 +49,13 @@ describe("/space metadata", () => {
     expect(keywords).toContain("spacecraft fdir");
   });
 
-  it("attributes the page to EV Society rather than inheriting the root layout's individual author", () => {
+  it("attributes the page to ISHAVASYAM.ORG rather than inheriting the root layout's individual author", () => {
     const authors = metadata.authors as { name: string }[];
-    expect(authors.some((a) => a.name === "EV Society")).toBe(true);
+    expect(authors.some((a) => a.name === "ISHAVASYAM.ORG")).toBe(true);
     expect(authors.some((a) => a.name === "Sudarshana Karkala")).toBe(false);
-    expect(metadata.creator).toBe("EV Society");
-    expect(metadata.publisher).toBe("EV Society");
+    expect(metadata.creator).toBe("ISHAVASYAM.ORG");
+    expect(metadata.publisher).toBe("ISHAVASYAM.ORG");
+    expect(JSON.stringify(metadata)).not.toMatch(/EV Society/);
   });
 
   it("sets Open Graph type, site name, url and Twitter card", () => {

@@ -3,6 +3,7 @@ import { Orbit, Mail } from "lucide-react";
 import { FONT_MANROPE } from "../fonts";
 import type { BrandLink } from "./SpaceHeader";
 import styles from "../space.module.css";
+import { SPACE_INITIATIVE } from "@/data/space-initiative";
 const CONTACT_HREF = "/contact";
 export default function SpaceFooter({
   basePath = "",
@@ -10,9 +11,9 @@ export default function SpaceFooter({
   organisationLine,
 }: {
   basePath?: string;
-  /** Replaces the default EV.ENGINEER / UFlight / EV Society / iTelematics links. */
+  /** Replaces the default EV.ENGINEER / UFlight / ISHAVASYAM.ORG / iTelematics links. */
   brandLinks?: BrandLink[];
-  /** Replaces the default "An EV Society initiative" credit line. */
+  /** Replaces the default "An ISHAVASYAM.ORG Initiative" credit line. */
   organisationLine?: string;
 }) {
   const custom = brandLinks !== undefined;
@@ -70,7 +71,7 @@ export default function SpaceFooter({
                 maxWidth: 320,
               }}
             >
-              {organisationLine ?? <>Space &middot; An EV Society initiative.</>}
+              {organisationLine ?? `${SPACE_INITIATIVE.line}.`}
             </p>
             <p
               style={{
@@ -202,7 +203,7 @@ export default function SpaceFooter({
                     UFlight
                   </a>
                   <a
-                    href="https://www.evsociety.org/"
+                    href={SPACE_INITIATIVE.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
@@ -211,7 +212,7 @@ export default function SpaceFooter({
                       textDecoration: "none",
                     }}
                   >
-                    EV Society
+                    {SPACE_INITIATIVE.brand}
                   </a>
                   <a
                     href="https://itelematics.com"
@@ -253,7 +254,7 @@ export default function SpaceFooter({
           }}
         >
           <span style={{ color: "#B5B8C9", fontSize: 13 }}>
-            &copy; 2026 Space &middot; {organisationLine ?? "An EV Society initiative"}
+            &copy; 2026 Space &middot; {organisationLine ?? SPACE_INITIATIVE.label}
           </span>
           <span style={{ color: "#B5B8C9", fontSize: 13 }}>
             Commercial products and services, where applicable, are handled

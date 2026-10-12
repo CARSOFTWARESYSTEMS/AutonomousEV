@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import {
   WEBSITE_ID,
-  EV_SOCIETY_ID,
+  ISHAVASYAM_ID,
   EV_ENGINEER_BRAND_ID,
   websiteNode,
-  evSocietyOrgNode,
+  ishavasyamOrgNode,
   evEngineerBrandNode,
   itelematicsOrgNode,
 } from "@/lib/structured-data/entities";
 import { PREPARED_BY, SATELLITE_REFERENCE, SUBSYSTEMS, SUBSYSTEM_ORDER } from "@/components/satellite-explorer/data/satelliteReference";
+import { SPACE_INITIATIVE } from "@/data/space-initiative";
 
 export const CANONICAL = "https://aerospace.ev.engineer/space/satellite-engineering/interactive-3d";
 const PARENT = "https://aerospace.ev.engineer/space/satellite-engineering";
@@ -37,9 +38,9 @@ export const metadata: Metadata = {
     "satellite payload",
     "space engineering education",
   ],
-  authors: [{ name: "EV Society" }],
-  creator: "EV Society",
-  publisher: "EV Society",
+  authors: [{ name: SPACE_INITIATIVE.brand }],
+  creator: SPACE_INITIATIVE.brand,
+  publisher: SPACE_INITIATIVE.brand,
   alternates: { canonical: CANONICAL },
   robots: {
     index: true,
@@ -75,7 +76,7 @@ export const structuredData = {
     // websiteNode() references the brand and its publisher, so both must be in this graph.
     evEngineerBrandNode(),
     itelematicsOrgNode(),
-    evSocietyOrgNode(),
+    ishavasyamOrgNode(),
     {
       "@type": "WebPage",
       "@id": WEBPAGE_ID,
@@ -87,7 +88,7 @@ export const structuredData = {
       isPartOf: { "@id": WEBSITE_ID },
       about: { "@id": APP_ID },
       mainEntity: { "@id": APP_ID },
-      publisher: { "@id": EV_SOCIETY_ID },
+      publisher: { "@id": ISHAVASYAM_ID },
       mentions: [{ "@id": EV_ENGINEER_BRAND_ID }],
       breadcrumb: { "@id": BREADCRUMB_ID },
       primaryImageOfPage: { "@type": "ImageObject", url: OG_IMAGE, width: 1200, height: 630, caption: OG_ALT },
@@ -102,7 +103,7 @@ export const structuredData = {
       browserRequirements: "Requires WebGL. The full interactive experience is designed for laptop and desktop screens.",
       description: `Interactive 3D model of an educational ${SATELLITE_REFERENCE.name}. Reference and simulated values; not flight hardware or a real mission.`,
       isAccessibleForFree: true,
-      creator: { "@id": EV_SOCIETY_ID },
+      creator: { "@id": ISHAVASYAM_ID },
     },
     {
       "@type": "LearningResource",
@@ -114,7 +115,7 @@ export const structuredData = {
       inLanguage: "en",
       teaches: SUBSYSTEM_ORDER.map((id) => SUBSYSTEMS[id].name),
       isPartOf: { "@id": WEBPAGE_ID },
-      creator: { "@id": EV_SOCIETY_ID },
+      creator: { "@id": ISHAVASYAM_ID },
     },
     {
       "@type": "BreadcrumbList",

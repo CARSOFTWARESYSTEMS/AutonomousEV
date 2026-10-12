@@ -6,6 +6,7 @@ import { useMobileMenuLock } from "@/hooks/useMobileMenuLock";
 import { EOI_FORM_URL } from "@/lib/eoi";
 import { FONT_MANROPE } from "../fonts";
 import styles from "../space.module.css";
+import { SPACE_INITIATIVE } from "@/data/space-initiative";
 const navItems = [
   { label: "Home", href: "#home" },
   { label: "Mission Path", href: "#pathway" },
@@ -16,7 +17,8 @@ const navItems = [
   { label: "Community", href: "#community" },
   { label: "UFlight", href: "https://www.uflight.in/" },
   { label: "EV.ENGINEER", href: "/" },
-  { label: "EV Society", href: "https://www.evsociety.org" },
+  // The organisation the initiative belongs to.
+  { label: SPACE_INITIATIVE.brand, href: SPACE_INITIATIVE.url },
 ];
 
 export type BrandLink = { label: string; href: string };
@@ -34,7 +36,7 @@ export default function SpaceHeader({
   brandLinks,
 }: {
   basePath?: string;
-  /** Replaces the default brand links (UFlight, EV.ENGINEER, EV Society) for pages with their own attribution. */
+  /** Replaces the default brand links (UFlight, EV.ENGINEER, ISHAVASYAM.ORG) for pages with their own attribution. */
   brandLinks?: BrandLink[];
 }) {
   const items = brandLinks ? [...navItems.filter((item) => item.href.startsWith("#")), ...brandLinks] : navItems;

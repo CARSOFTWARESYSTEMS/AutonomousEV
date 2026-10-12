@@ -2,16 +2,17 @@ import type { Metadata } from "next";
 import {
   WEBSITE_ID,
   EV_ENGINEER_BRAND_ID,
-  EV_SOCIETY_ID,
+  ISHAVASYAM_ID,
   ITELEMATICS_ID,
   UFLIGHT_BRAND_ID,
   PERSON_ID,
-  evSocietyOrgNode,
+  ishavasyamOrgNode,
   evEngineerBrandNode,
   itelematicsOrgNode,
   uflightBrandNode,
   websiteNode,
 } from "@/lib/structured-data/entities";
+import { SPACE_INITIATIVE } from "@/data/space-initiative";
 
 export const CANONICAL = "https://aerospace.ev.engineer/space/model-rocketry";
 export const TITLE = "Model Rocketry: Beginner to Advanced Aerospace Learning | EV.ENGINEER";
@@ -24,9 +25,9 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: CANONICAL },
-  authors: [{ name: "EV Society" }],
-  creator: "EV Society",
-  publisher: "EV Society",
+  authors: [{ name: SPACE_INITIATIVE.brand }],
+  creator: SPACE_INITIATIVE.brand,
+  publisher: SPACE_INITIATIVE.brand,
   robots: { index: true, follow: true },
   openGraph: {
     title: TITLE,
@@ -55,7 +56,7 @@ export const structuredData = {
   "@context": "https://schema.org",
   "@graph": [
     websiteNode(),
-    evSocietyOrgNode(),
+    ishavasyamOrgNode(),
     evEngineerBrandNode(),
     itelematicsOrgNode(),
     uflightBrandNode(),
@@ -68,7 +69,7 @@ export const structuredData = {
       inLanguage: "en",
       dateModified: LAST_REVIEWED,
       isPartOf: { "@id": WEBSITE_ID },
-      publisher: { "@id": EV_SOCIETY_ID },
+      publisher: { "@id": ISHAVASYAM_ID },
       learningResourceType: ["Interactive Resource", "Reference"],
       educationalLevel: ["Beginner", "Intermediate", "Advanced"],
       about: "Model rocketry and aerospace systems engineering",

@@ -184,7 +184,7 @@ export const faqs: { q: string; a: string }[] = [
   },
   {
     q: "Is this an official ISRO or government programme?",
-    a: "No. This is an independent EV Society initiative. References to national space goals are provided for educational context and do not imply endorsement, affiliation or partnership with ISRO, IN-SPACe, NSIL or the Department of Space.",
+    a: "No. This is an independent ISHAVASYAM.ORG initiative. References to national space goals are provided for educational context and do not imply endorsement, affiliation or partnership with ISRO, IN-SPACe, NSIL or the Department of Space.",
   },
   {
     q: "Who can participate?",
@@ -199,8 +199,8 @@ export const faqs: { q: string; a: string }[] = [
     a: "Paid training and internships are distinct. Internships are merit-based and governed by the published terms of each cohort; sponsored or stipended opportunities will be identified explicitly when available.",
   },
   {
-    q: "Does EV Society own student or startup intellectual property?",
-    a: "No. Student, academic, EV Society, iTelematics and startup intellectual-property rights are governed through transparent written agreements. Participation does not automatically transfer a participant's IP to iTelematics.",
+    q: "Does ISHAVASYAM.ORG own student or startup intellectual property?",
+    a: "No. Student, academic, ISHAVASYAM.ORG, iTelematics and startup intellectual-property rights are governed through transparent written agreements. Participation does not automatically transfer a participant's IP to iTelematics.",
   },
   {
     q: "Are the labs and digital twin already operational?",
@@ -216,6 +216,6 @@ export const faqs: { q: string; a: string }[] = [
   },
   {
     q: "Where do commercial products and services belong?",
-    a: "Commercial products and services, where applicable, are handled separately by iTelematics Software Private Limited under explicit agreements — not by EV Society, which focuses on the public-interest education, research and pre-incubation mission.",
+    a: "Commercial products and services, where applicable, are handled separately by iTelematics Software Private Limited under explicit agreements — not by ISHAVASYAM.ORG, which focuses on the public-interest education, research and pre-incubation mission.",
   },
 ];

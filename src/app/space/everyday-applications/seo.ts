@@ -2,20 +2,21 @@ import type { Metadata } from "next";
 import {
   WEBSITE_ID,
   EV_ENGINEER_BRAND_ID,
-  EV_SOCIETY_ID,
+  ISHAVASYAM_ID,
   ITELEMATICS_ID,
   UFLIGHT_BRAND_ID,
   PERSON_ID,
-  evSocietyOrgNode,
+  ishavasyamOrgNode,
   evEngineerBrandNode,
   itelematicsOrgNode,
   uflightBrandNode,
   websiteNode,
 } from "@/lib/structured-data/entities";
 import { QUESTIONS } from "./applicationsData";
+import { SPACE_INITIATIVE } from "@/data/space-initiative";
 
 export const CANONICAL = "https://aerospace.ev.engineer/space/everyday-applications";
-export const TITLE = "Space Applications for Everyday India | EV Society, UFlight & EV.ENGINEER";
+export const TITLE = "Space Applications for Everyday India | ISHAVASYAM.ORG, UFlight & EV.ENGINEER";
 export const DESCRIPTION =
   "How satellites and space technology already help everyday life in India — weather, navigation, agriculture, fisheries, disaster response, connectivity, healthcare and education — explained without jargon.";
 export const LAST_REVIEWED = "2026-09-14";
@@ -25,9 +26,9 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: CANONICAL },
-  authors: [{ name: "EV Society" }],
-  creator: "EV Society",
-  publisher: "EV Society",
+  authors: [{ name: SPACE_INITIATIVE.brand }],
+  creator: SPACE_INITIATIVE.brand,
+  publisher: SPACE_INITIATIVE.brand,
   robots: { index: true, follow: true },
   openGraph: {
     title: TITLE,
@@ -56,7 +57,7 @@ export const structuredData = {
   "@context": "https://schema.org",
   "@graph": [
     websiteNode(),
-    evSocietyOrgNode(),
+    ishavasyamOrgNode(),
     evEngineerBrandNode(),
     itelematicsOrgNode(),
     uflightBrandNode(),
@@ -69,7 +70,7 @@ export const structuredData = {
       inLanguage: "en",
       dateModified: LAST_REVIEWED,
       isPartOf: { "@id": WEBSITE_ID },
-      publisher: { "@id": EV_SOCIETY_ID },
+      publisher: { "@id": ISHAVASYAM_ID },
       learningResourceType: ["Interactive Resource", "Reference"],
       educationalLevel: ["Beginner", "General Public"],
       about: "Space applications and satellite technology in everyday Indian life",

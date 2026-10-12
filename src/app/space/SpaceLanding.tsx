@@ -23,6 +23,7 @@ import {
 } from "./spaceData";
 import { EOI_FORM_URL } from "@/lib/eoi";
 import { JsonLd } from "@/lib/structured-data/JsonLd";
+import { SPACE_INITIATIVE } from "@/data/space-initiative";
 
 const CONTACT_HREF = "/contact";
 
@@ -169,8 +170,8 @@ export default function SpaceLanding({ entityGraph }: { entityGraph: object }) {
                 background: "rgba(124,58,237,0.12)", border: "1px solid rgba(124,58,237,0.3)",
                 borderRadius: 999, padding: "7px 16px", marginBottom: 28,
               }}>
-                <Shield size={14} color="#7C3AED" />
-                <span style={{ color: "#B39DDB", fontSize: 13, fontWeight: 500 }}>EV Society · Autonomous Spacecraft Health Mission 2040</span>
+                <Shield size={14} color="#7C3AED" style={{ flexShrink: 0 }} />
+                <span style={{ color: "#B39DDB", fontSize: 13, fontWeight: 500 }}>{SPACE_INITIATIVE.brand} · Autonomous Spacecraft Health Mission 2040</span>
               </div>
 
               <h1 style={{
@@ -398,7 +399,7 @@ export default function SpaceLanding({ entityGraph }: { entityGraph: object }) {
             </div>
 
             <p style={{ marginTop: 16, textAlign: "center", color: "#8B8FA3", fontSize: 12.5 }}>
-              Prepared by the EV Society technical team. Last reviewed: 14 August 2026.
+              Prepared by the {SPACE_INITIATIVE.brand} technical team. Last reviewed: 14 August 2026.
             </p>
           </div>
         </section>
@@ -787,10 +788,11 @@ export default function SpaceLanding({ entityGraph }: { entityGraph: object }) {
             <h2 style={sectionH2}>Ecosystem and Responsibilities</h2>
             <p style={{ ...sectionDesc, textAlign: "left" }}>
               Space is an{" "}
-              <a href="https://www.evsociety.org/" target="_blank" rel="noopener noreferrer" style={{ color: "#93C5FD", fontWeight: 600, textDecoration: "none" }}>EV Society</a> education and research initiative hosted on{" "}
-              <Link href="/" style={{ color: "#93C5FD", fontWeight: 600, textDecoration: "none" }}>EV.ENGINEER</Link>.{" "}
+              <a href={SPACE_INITIATIVE.url} target="_blank" rel="noopener noreferrer" style={{ color: "#93C5FD", fontWeight: 600, textDecoration: "none" }}>{SPACE_INITIATIVE.brand}</a> education, research and engineering initiative, hosted within the{" "}
+              <Link href="/" style={{ color: "#93C5FD", fontWeight: 600, textDecoration: "none" }}>EV.ENGINEER</Link> engineering ecosystem.{" "}
               <a href="https://www.uflight.in/" target="_blank" rel="noopener noreferrer" style={{ color: "#93C5FD", fontWeight: 600, textDecoration: "none" }}>UFlight</a> focuses on health and usage monitoring technologies for aerospace and autonomous platforms. Commercial engineering products and services, where applicable, are handled separately by{" "}
-              <a href="https://itelematics.com/" target="_blank" rel="noopener noreferrer" style={{ color: "#93C5FD", fontWeight: 600, textDecoration: "none" }}>iTelematics Software Private Limited</a> under explicit agreements.
+              <a href="https://itelematics.com/" target="_blank" rel="noopener noreferrer" style={{ color: "#93C5FD", fontWeight: 600, textDecoration: "none" }}>iTelematics Software Private Limited</a> under explicit agreements. Community membership is offered through{" "}
+              <a href="https://www.evsociety.org/" target="_blank" rel="noopener noreferrer" style={{ color: "#93C5FD", fontWeight: 600, textDecoration: "none" }}>EV Society</a>, a separate community initiative.
             </p>
           </div>
         </section>

@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { buildSpaceEntityGraph } from "./spaceGraph";
 
 const graph = buildSpaceEntityGraph({
-  title: "Spacecraft Health Management Mission 2040 | EV Society",
+  title: "Spacecraft Health Management Mission 2040 | ISHAVASYAM.ORG",
   description: "test description",
   datePublished: "2026-08-14",
   dateModified: "2026-08-14",
@@ -70,9 +70,18 @@ describe("/space JSON-LD entity graph", () => {
     expect(strings).not.toMatch(/"sameAs"/);
   });
 
-  it("marks EV Society as a plain Organization, not NonprofitOrganization, with no CIN", () => {
+  it("names ISHAVASYAM.ORG as the initiative's organisation and publisher, and EV Society nowhere", () => {
+    const nodes = graph as Record<string, unknown>[];
+    expect(JSON.stringify(graph)).not.toMatch(/EV Society|evsociety/i);
+    const owner = nodes.find((node) => node.name === "ISHAVASYAM.ORG")!;
+    expect(owner["@id"]).toBe("https://ishavasyam.org/#organization");
+    expect(nodes.find((node) => node["@type"] === "ResearchProject")!.parentOrganization).toEqual({ "@id": owner["@id"] });
+    expect(nodes.find((node) => node["@type"] === "WebPage")!.publisher).toEqual({ "@id": owner["@id"] });
+  });
+
+  it("marks ISHAVASYAM.ORG as a plain Organization, not NonprofitOrganization, with no CIN", () => {
     const evSociety = graph.find(
-      (node) => (node as Record<string, unknown>).name === "EV Society"
+      (node) => (node as Record<string, unknown>).name === "ISHAVASYAM.ORG"
     ) as Record<string, unknown>;
     expect(evSociety).toBeDefined();
     expect(evSociety["@type"]).toBe("Organization");

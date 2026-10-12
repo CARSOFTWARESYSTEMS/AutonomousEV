@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
 import { FAQ } from "@/lib/cubetwin/content";
 import {
-  EV_SOCIETY_ID,
+  ISHAVASYAM_ID,
   ITELEMATICS_ID,
   UFLIGHT_BRAND_ID,
   EV_ENGINEER_BRAND_ID,
-  evSocietyOrgNode,
+  ishavasyamOrgNode,
   itelematicsOrgNode,
   uflightBrandNode,
   evEngineerBrandNode,
 } from "@/lib/structured-data/entities";
+import { SPACE_INITIATIVE } from "@/data/space-initiative";
 export const CANONICAL = "https://aerospace.ev.engineer/space/cubesat";
 export const TITLE = "CubeTwin | CubeSat Battery & Energy Digital Twin";
 export const DESCRIPTION =
@@ -20,9 +21,9 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: CANONICAL },
-  authors: [{ name: "EV Society" }],
-  creator: "EV Society",
-  publisher: "EV Society",
+  authors: [{ name: SPACE_INITIATIVE.brand }],
+  creator: SPACE_INITIATIVE.brand,
+  publisher: SPACE_INITIATIVE.brand,
   robots: { index: true, follow: true },
   openGraph: {
     title: TITLE,
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
         url: `${CANONICAL}/opengraph-image`,
         width: 1200,
         height: 630,
-        alt: "CubeTwin · CubeSat energy simulation · An EV Society initiative",
+        alt: `CubeTwin · CubeSat energy simulation · ${SPACE_INITIATIVE.label}`,
       },
     ],
   },
@@ -49,7 +50,7 @@ export const metadata: Metadata = {
 export const structuredData = {
   "@context": "https://schema.org",
   "@graph": [
-    evSocietyOrgNode(),
+    ishavasyamOrgNode(),
     itelematicsOrgNode(),
     uflightBrandNode(),
     evEngineerBrandNode(),
@@ -60,7 +61,7 @@ export const structuredData = {
       name: TITLE,
       description: DESCRIPTION,
       dateModified: LAST_REVIEWED,
-      publisher: { "@id": EV_SOCIETY_ID },
+      publisher: { "@id": ISHAVASYAM_ID },
       about: { "@id": `${CANONICAL}#simulator` },
       mentions: [
         { "@id": ITELEMATICS_ID },
@@ -79,7 +80,7 @@ export const structuredData = {
       softwareVersion: "0.01",
       description:
         "Educational R&D prototype using simulated data. Not flight software or a validated operational twin.",
-      creator: { "@id": EV_SOCIETY_ID },
+      creator: { "@id": ISHAVASYAM_ID },
     },
     {
       "@type": "LearningResource",
@@ -91,7 +92,7 @@ export const structuredData = {
       inLanguage: "en",
       timeRequired: "P12W",
       isPartOf: { "@id": `${CANONICAL}#webpage` },
-      creator: { "@id": EV_SOCIETY_ID },
+      creator: { "@id": ISHAVASYAM_ID },
     },
     {
       "@type": "BreadcrumbList",

@@ -27,7 +27,7 @@ describe("Space Station metadata", () => {
 
   it("overrides inherited authorship so no EV Society attribution applies", () => {
     expect(JSON.stringify(metadata)).not.toMatch(/EV Society|evsociety|EV\.ENGINEER|UFlight/);
-    expect(metadata.publisher).toBe("Ishavasyam.org");
+    expect(metadata.publisher).toBe("ISHAVASYAM.ORG");
     expect(metadata.authors).toEqual([expect.objectContaining({ name: "Sudarshana Karkala" })]);
     expect(metadata.creator).toBe("Sudarshana Karkala");
     expect(metadata.publisher).toBeDefined();
@@ -57,7 +57,7 @@ describe("Space Station structured data", () => {
     expect(bc.itemListElement.at(-1)).toMatchObject({ name: "Space Station", item: CANONICAL });
     expect(html).not.toMatch(/EV Society|evsociety|EV\.ENGINEER|UFlight|aggregateRating/);
     const orgs = json["@graph"].filter((n: { "@type": string }) => n["@type"] === "Organization").map((n: { name: string }) => n.name);
-    expect(orgs).toEqual(expect.arrayContaining(["Ishavasyam.org", "iTelematics Software Private Limited"]));
+    expect(orgs).toEqual(expect.arrayContaining(["ISHAVASYAM.ORG", "iTelematics Software Private Limited"]));
   });
 });
 

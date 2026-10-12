@@ -24,6 +24,7 @@ import SatelliteToPhone from "./components/SatelliteToPhone";
 import ClosernessStrip from "./components/ClosernessStrip";
 import HeroVisual from "./components/HeroVisual";
 import type { Persona } from "./applicationsData";
+import { SPACE_INITIATIVE } from "@/data/space-initiative";
 
 function SectionHeading({ eyebrow, title, description }: { eyebrow: string; title: string; description: string }) {
   return (
@@ -152,7 +153,7 @@ export default function EverydayApplicationsContent() {
 
           <section className={styles.section}>
             <p className={styles.formNote}>
-              An EV Society™ initiative, hosted on EV.ENGINEER™. UFlight™ supports aerospace health and
+              {SPACE_INITIATIVE.label}, hosted on EV.ENGINEER™. UFlight™ supports aerospace health and
               mission-intelligence research. Commercial engineering products and services are handled by iTelematics
               Software Private Limited. Content last reviewed {LAST_REVIEWED}.
             </p>

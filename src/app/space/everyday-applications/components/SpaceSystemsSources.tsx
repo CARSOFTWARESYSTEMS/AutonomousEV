@@ -62,7 +62,7 @@ export default function SpaceSystemsSources() {
       <div className={styles.card} style={{ padding: 20, marginTop: 8, borderLeft: "3px solid var(--space-amber)" }}>
         <p style={{ margin: 0 }}>
           Information about ISRO, IN-SPACe, MOSDAC, Bhuvan, INCOIS, NDMA and related systems above is presented for
-          educational reference. EV Society / EV.ENGINEER does not claim affiliation, endorsement or partnership with
+          educational reference. ISHAVASYAM.ORG / EV.ENGINEER does not claim affiliation, endorsement or partnership with
           ISRO, IN-SPACe, the Department of Space, or any other agency named above, unless explicitly documented.
           Official communications and documentation from each agency always take precedence over this page.
         </p>

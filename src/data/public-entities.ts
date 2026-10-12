@@ -75,18 +75,34 @@ export const ITELEMATICS: PublicEntity = {
 };
 
 /**
- * EV Society — verified as a separate community/educational initiative via
- * /space (footer credits "Space · An EV Society initiative"; nav links to
- * evsociety.org as an external, distinct site) and the rocketry page's own
- * "EV Society / EV.ENGINEER" attribution. Not described as a registered
- * Section 8 company anywhere on this site, so it is not claimed here either.
+ * ISHAVASYAM.ORG — the organisation the Space initiative belongs to. The name
+ * is always written exactly so. The URL is the one already published on
+ * /space/space-station. Nothing further (legal form, contact) is recorded,
+ * because nothing further is published on this site.
+ */
+export const ISHAVASYAM: PublicEntity = {
+  id: "https://ishavasyam.org/#organization",
+  type: "Organization",
+  name: "ISHAVASYAM.ORG",
+  description:
+    "ISHAVASYAM.ORG is the organisation behind the Space initiative published on this site: an education, research and engineering initiative.",
+  canonicalUrl: "https://ishavasyam.org/",
+};
+
+/**
+ * EV Society — a separate community/educational initiative, credited on the
+ * workshop gallery, the Trust Center and the rocketry workshop guide's own
+ * "EV Society / EV.ENGINEER" attribution. It does not own or operate the
+ * Space initiative, which is an ISHAVASYAM.ORG initiative (see above). Not
+ * described as a registered Section 8 company anywhere on this site, so it is
+ * not claimed here either.
  */
 export const EV_SOCIETY: PublicEntity = {
   id: "https://www.evsociety.org/#organization",
   type: "Organization",
   name: "EV Society",
   description:
-    "EV Society is a community initiative, distinct from EV.ENGINEER, that stewards the Space Initiative and related educational content published on this site.",
+    "EV Society is a community and educational initiative, distinct from EV.ENGINEER, credited on this site's workshop and community content.",
   canonicalUrl: "https://www.evsociety.org/",
 };
 

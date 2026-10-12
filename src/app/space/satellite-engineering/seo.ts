@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import {
   WEBSITE_ID,
-  EV_SOCIETY_ID,
+  ISHAVASYAM_ID,
   EV_ENGINEER_BRAND_ID,
   ITELEMATICS_ID,
   PERSON_ID,
   websiteNode,
-  evSocietyOrgNode,
+  ishavasyamOrgNode,
   evEngineerBrandNode,
   itelematicsOrgNode,
 } from "@/lib/structured-data/entities";
@@ -22,6 +22,7 @@ import {
   readiness,
   teaches,
 } from "./programData";
+import { SPACE_INITIATIVE } from "@/data/space-initiative";
 
 export const CANONICAL = "https://aerospace.ev.engineer/space/satellite-engineering";
 export const TITLE = "Satellite Engineering Course | Spacecraft Systems Architecture | EV.ENGINEER";
@@ -50,7 +51,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: SUDARSHANA_KARKALA.name, url: SUDARSHANA_KARKALA.canonicalUrl }],
   creator: SUDARSHANA_KARKALA.name,
-  publisher: "EV Society",
+  publisher: SPACE_INITIATIVE.brand,
   alternates: { canonical: CANONICAL },
   robots: {
     index: true,
@@ -99,8 +100,8 @@ export const structuredData = {
     // provider (same pattern as /internships/AegisCAN). It stays a Brand node:
     // the entity registry deliberately does not model it as a legal entity.
     evEngineerBrandNode(),
-    // EV Society stewards the /space initiative that publishes this page.
-    evSocietyOrgNode(),
+    // ISHAVASYAM.ORG is the organisation behind the /space initiative that publishes this page.
+    ishavasyamOrgNode(),
     PERSON_NODE,
     {
       "@type": "WebPage",
@@ -115,7 +116,7 @@ export const structuredData = {
       about: { "@id": COURSE_ID },
       mainEntity: { "@id": COURSE_ID },
       author: { "@id": PERSON_ID },
-      publisher: { "@id": EV_SOCIETY_ID },
+      publisher: { "@id": ISHAVASYAM_ID },
       mentions: [{ "@id": EV_ENGINEER_BRAND_ID }, { "@id": ITELEMATICS_ID }],
       breadcrumb: { "@id": BREADCRUMB_ID },
       primaryImageOfPage: { "@type": "ImageObject", url: OG_IMAGE, width: 1200, height: 630, caption: OG_ALT },

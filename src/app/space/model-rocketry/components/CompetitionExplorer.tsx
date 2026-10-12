@@ -61,8 +61,8 @@ export default function CompetitionExplorer() {
 
       <div className={styles.card} style={{ padding: 20, marginTop: 28, borderLeft: "3px solid var(--space-amber)" }}>
         <p style={{ margin: 0 }}>
-          IN-SPACe and international competition information above is presented for educational reference. EV
-          Society / EV.ENGINEER does not claim affiliation, endorsement or partnership with IN-SPACe, ISRO, DLR,
+          IN-SPACe and international competition information above is presented for educational reference.
+          ISHAVASYAM.ORG / EV.ENGINEER does not claim affiliation, endorsement or partnership with IN-SPACe, ISRO, DLR,
           KAIST, the Portuguese Space Agency, ESRA/AIAA, the American Astronautical Society, NASA or any other
           competition organiser, unless explicitly documented. Official competition rules, requirements, dates and
           communications from each organiser always take precedence over this page.

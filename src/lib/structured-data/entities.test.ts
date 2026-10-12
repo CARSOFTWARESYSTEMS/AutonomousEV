@@ -8,6 +8,8 @@ import {
   evEngineerBrandNode,
   itelematicsOrgNode,
   evSocietyOrgNode,
+  ishavasyamOrgNode,
+  ISHAVASYAM_ID,
   websiteNode,
 } from "./entities";
 import { EV_ENGINEER, ITELEMATICS, EV_SOCIETY, SUDARSHANA_KARKALA } from "@/data/public-entities";
@@ -24,6 +26,8 @@ describe("shared entity node builders", () => {
     expect(evEngineerBrandNode()["@id"]).toBe(EV_ENGINEER_BRAND_ID);
     expect(itelematicsOrgNode()["@id"]).toBe(ITELEMATICS_ID);
     expect(evSocietyOrgNode()["@id"]).toBe(EV_SOCIETY_ID);
+    expect(ishavasyamOrgNode()).toMatchObject({ "@type": "Organization", "@id": ISHAVASYAM_ID, name: "ISHAVASYAM.ORG", url: "https://ishavasyam.org/" });
+    expect(ISHAVASYAM_ID).not.toBe(EV_SOCIETY_ID);
     expect(websiteNode()["@id"]).toBe(WEBSITE_ID);
   });
 

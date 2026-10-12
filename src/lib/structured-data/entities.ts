@@ -15,6 +15,7 @@ import {
   EV_ENGINEER,
   ITELEMATICS,
   EV_SOCIETY,
+  ISHAVASYAM,
   SUDARSHANA_KARKALA,
   TANUJA_JADHAV,
   BHAVYA_KSHATRI,
@@ -29,6 +30,7 @@ export const WEBSITE_ID = `${SITE_URL}/#website`;
 export const EV_ENGINEER_BRAND_ID = EV_ENGINEER.id;
 export const ITELEMATICS_ID = ITELEMATICS.id;
 export const EV_SOCIETY_ID = EV_SOCIETY.id;
+export const ISHAVASYAM_ID = ISHAVASYAM.id;
 export const PERSON_ID = SUDARSHANA_KARKALA.id;
 export const TANUJA_JADHAV_ID = TANUJA_JADHAV.id;
 export const BHAVYA_KSHATRI_ID = BHAVYA_KSHATRI.id;
@@ -66,6 +68,17 @@ export function evSocietyOrgNode() {
     "@id": EV_SOCIETY_ID,
     name: EV_SOCIETY.name,
     url: EV_SOCIETY.canonicalUrl,
+  };
+}
+
+/** The organisation the Space initiative belongs to. */
+export function ishavasyamOrgNode() {
+  return {
+    "@type": "Organization",
+    "@id": ISHAVASYAM_ID,
+    name: ISHAVASYAM.name,
+    url: ISHAVASYAM.canonicalUrl,
+    description: ISHAVASYAM.description,
   };
 }
 

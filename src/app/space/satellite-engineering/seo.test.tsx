@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 import { JsonLd } from "@/lib/structured-data/JsonLd";
-import { EV_ENGINEER_BRAND_ID, EV_SOCIETY_ID, PERSON_ID } from "@/lib/structured-data/entities";
+import { EV_ENGINEER_BRAND_ID, ISHAVASYAM_ID, PERSON_ID } from "@/lib/structured-data/entities";
 import sitemap from "@/app/sitemap";
 import { metadata, structuredData, CANONICAL, DESCRIPTION, TITLE } from "./seo";
 import { COURSE_NAME } from "./programData";
@@ -46,12 +46,13 @@ describe("Satellite Engineering metadata and structured data", () => {
     const graph = parseGraph();
     const course = graph.find((n) => n["@type"] === "Course") as Node;
     expect(course.name).toBe(COURSE_NAME);
-    // EV.ENGINEER is the program provider; EV Society remains the page publisher.
+    // EV.ENGINEER is the program provider; ISHAVASYAM.ORG, whose initiative this is, is the page publisher.
     expect(course.provider).toEqual({ "@id": EV_ENGINEER_BRAND_ID });
     const providerNode = graph.find((n) => n["@id"] === EV_ENGINEER_BRAND_ID) as Node;
     expect(providerNode.name).toBe("EV.ENGINEER");
     const webpage = graph.find((n) => n["@type"] === "WebPage") as Node;
-    expect(webpage.publisher).toEqual({ "@id": EV_SOCIETY_ID });
+    expect(webpage.publisher).toEqual({ "@id": ISHAVASYAM_ID });
+    expect(JSON.stringify(graph)).not.toMatch(/EV Society|evsociety/i);
     expect(JSON.stringify(course)).not.toMatch(/accredit|university|government/i);
     expect(course.author).toEqual({ "@id": PERSON_ID });
     expect(course.timeRequired).toBe("P12W");
