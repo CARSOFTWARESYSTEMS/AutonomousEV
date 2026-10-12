@@ -50,7 +50,8 @@ their projects (`brand` on the person). EV.ENGINEER is not written as a founder 
 Thasmai InfoTech Private Limited is not modelled as an entity in this registry or in the profile's
 graph: it was removed site-wide earlier at the request of the profile owner. At the owner's later
 instruction the visible profile mentions it in one line of Professional Background ("Co-Founder —
-Thasmai InfoTech Private Limited") and nowhere else.
+Thasmai InfoTech Private Limited", the name linking to `https://www.thasmaiinfotech.com/space-research`)
+and nowhere else.
 
 `/space/2026-INSPACe-ROCKETRY-059` (the rocketry learning guide) is modelled as an independent
 `LearningResource`/`WebPage` with `isBasedOn` pointing at the official IN-SPACe workshop listing —

@@ -138,7 +138,7 @@
   }
 }
 
-/* ── Hero ── five lines, each quieter than the one before */
+/* ── Hero ── four lines, each quieter than the one before */
 .hero {
   padding: clamp(104px, 15vw, 148px) var(--space-inset) clamp(40px, 7vw, 76px);
 }
@@ -174,7 +174,7 @@
   color: var(--space-blue-text);
 }
 .rolePrimary {
-  margin-top: 24px;
+  margin-top: 12px;
   font-size: clamp(16px, 1.9vw, 19px);
   line-height: 1.45;
   color: var(--profile-soft);
@@ -183,20 +183,24 @@
   font-weight: 700;
   color: #fff;
 }
-.roleSecondary {
-  margin-top: 6px;
-  font-size: 14.5px;
-  line-height: 1.5;
-  color: var(--space-muted);
+/* An organisation's name that leads to its own site: in the hero, and in Professional Background.
+   It keeps the colour and weight of its line; a fine underline says it is a link, and firms up when pointed at. */
+.nameLink {
+  padding-block: 5px;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+  text-underline-offset: 5px;
+  transition: text-decoration-color 0.2s ease;
 }
-.roleSecondary strong {
-  font-weight: 500;
-  color: var(--space-muted);
+.nameLink:hover {
+  color: #fff;
+  text-decoration-color: currentColor;
 }
 .focusLine {
   max-width: 600px;
-  margin-top: 24px;
-  padding-top: 18px;
+  margin-top: 14px;
+  padding-top: 12px;
   border-top: 1px solid var(--profile-rule);
   font-size: 14px;
   line-height: 1.75;
@@ -458,21 +462,69 @@
   }
 }
 
-/* ── Professional background ── */
-.roles {
-  font-size: 15.5px;
+/* ── Professional background ── a short line of what and how long, then one row for each place */
+.eyebrow {
+  margin-bottom: 14px;
+  font-size: 12px;
+  font-weight: 600;
   line-height: 1.6;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   color: var(--space-muted);
 }
-.roles li + li {
-  margin-top: 8px;
+.history {
+  border-top: 1px solid var(--profile-rule);
 }
-.roles strong {
+.history li {
+  display: grid;
+  grid-template-columns: minmax(0, 150px) minmax(0, 1fr);
+  align-items: baseline;
+  gap: 2px 24px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--profile-rule);
+}
+/* The role, or the years. Always quieter than the name beside it. */
+.historyMeta {
+  font-size: 13.5px;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+  color: var(--space-muted);
+}
+.historyName {
+  font-size: 15.5px;
   font-weight: 600;
+  line-height: 1.5;
   color: #fff;
 }
+/* Where he worked before: the same row, a step quieter than the current roles. */
+.history li[data-kind="previous"] .historyMeta {
+  color: var(--profile-faint);
+}
+.history li[data-kind="previous"] .historyName {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--profile-soft);
+}
+/* A link in a row is as tall as a comfortable touch target. */
+.history .nameLink {
+  padding-block: 14px;
+}
+@media (max-width: 599px) {
+  .history li {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
 
-/* ── Education ── one line each */
+/* One line under a list that sums it up in a few words. Secondary to the list. */
+.quietLine {
+  margin-top: 18px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--profile-faint);
+  text-wrap: balance;
+}
+
+/* ── Workshops & certifications ── one line each */
 .education {
   border-top: 1px solid var(--profile-rule);
 }

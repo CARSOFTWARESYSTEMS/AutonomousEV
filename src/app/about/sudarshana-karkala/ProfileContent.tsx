@@ -13,7 +13,7 @@ import theme from "@/app/space/spaceTheme.module.css";
 import JumpLink from "./JumpLink";
 import ProfileAnalytics from "./ProfileAnalytics";
 import { profileTracking } from "./analytics";
-import { ABOUT, BACKGROUND, CONTACT, EDUCATION, EV_ENGINEER_URL, FOCUS_AREAS, HERO, INITIATIVES, LAST_REVIEWED, PRIMARY_INITIATIVE, SCOPE_NOTE, SELECTED_WORK } from "./profile";
+import { ABOUT, BACKGROUND, CONTACT, EV_ENGINEER_URL, FOCUS_AREAS, HERO, INITIATIVES, LAST_REVIEWED, PRIMARY_INITIATIVE, SCOPE_NOTE, SELECTED_WORK, WORKSHOPS } from "./profile";
 import styles from "./page.module.css";
 
 /** The element the profile's analytics listens on. `data-track-manual` on it tells the site-wide click listener to leave these links to it. */
@@ -45,10 +45,26 @@ function Dotted({ items }: { items: readonly string[] }) {
   );
 }
 
-function Role({ role, className }: { role: { title: string; organisation: string }; className: string }) {
+type NameLinkTarget = { href: string; id: "ishavasyam" | "ev_engineer" | "itelematics" | "thasmai"; destination: string };
+
+/** An organisation's name that is also the way to its own site. A plain link: the name itself, underlined quietly. */
+function NameLink({ link, section, children }: { link: NameLinkTarget; section: "hero" | "background"; children: string }) {
+  return (
+    <a href={link.href} {...NEW_TAB} className={styles.nameLink} aria-label={`${children} (opens in a new tab)`} {...profileTracking("profile_initiative_click", { initiative_name: link.id, destination: link.destination, section })}>
+      {children}
+    </a>
+  );
+}
+
+function Role({ role, className }: { role: { title: string; organisation: string; link: NameLinkTarget }; className: string }) {
   return (
     <p className={className}>
-      {role.title} — <strong>{role.organisation}</strong>
+      {role.title} —{" "}
+      <strong>
+        <NameLink link={role.link} section="hero">
+          {role.organisation}
+        </NameLink>
+      </strong>
     </p>
   );
 }
@@ -99,9 +115,12 @@ export default function ProfileContent() {
               <h1 id="profile-name" className={styles.name}>
                 {HERO.name}
               </h1>
-              <p className={styles.identity}>{HERO.identity}</p>
+              <p className={styles.identity}>
+                <NameLink link={HERO.identityLink} section="hero">
+                  {HERO.identity}
+                </NameLink>
+              </p>
               <Role role={HERO.primaryRole} className={styles.rolePrimary} />
-              <Role role={HERO.secondaryRole} className={styles.roleSecondary} />
               <p className={styles.focusLine}>
                 <Dotted items={HERO.focus} />
               </p>
@@ -129,12 +148,12 @@ export default function ProfileContent() {
               <div className={styles.links}>
                 {PRIMARY_INITIATIVE.links.map((link) =>
                   link.external ? (
-                    <a key={link.href} href={link.href} {...NEW_TAB} className={styles.textLink} {...profileTracking("profile_initiative_click", { initiative_name: PRIMARY_INITIATIVE.id, destination: link.destination })}>
+                    <a key={link.href} href={link.href} {...NEW_TAB} className={styles.textLink} {...profileTracking("profile_initiative_click", { initiative_name: PRIMARY_INITIATIVE.id, destination: link.destination, section: "primary_initiative" })}>
                       {link.label}
                       <Leaves />
                     </a>
                   ) : (
-                    <Link key={link.href} href={link.href} className={styles.textLink} {...profileTracking("profile_initiative_click", { initiative_name: PRIMARY_INITIATIVE.id, destination: link.destination })}>
+                    <Link key={link.href} href={link.href} className={styles.textLink} {...profileTracking("profile_initiative_click", { initiative_name: PRIMARY_INITIATIVE.id, destination: link.destination, section: "primary_initiative" })}>
                       {link.label}
                       <ArrowRight size={15} aria-hidden="true" />
                     </Link>
@@ -152,7 +171,7 @@ export default function ProfileContent() {
                 <h3 className={styles.initiativeName}>{initiative.name}</h3>
                 <p className={styles.initiativeLine}>{initiative.line}</p>
                 {initiative.note ? <p className={styles.initiativeNote}>{initiative.note}</p> : null}
-                <a href={initiative.link.href} {...NEW_TAB} className={`${styles.textLink} ${styles.initiativeLink}`} {...profileTracking("profile_initiative_click", { initiative_name: initiative.id, destination: initiative.link.destination })}>
+                <a href={initiative.link.href} {...NEW_TAB} className={`${styles.textLink} ${styles.initiativeLink}`} {...profileTracking("profile_initiative_click", { initiative_name: initiative.id, destination: initiative.link.destination, section: "initiatives" })}>
                   {initiative.link.label}
                   <Leaves />
                 </a>
@@ -192,25 +211,72 @@ export default function ProfileContent() {
         </Section>
 
         <Section id="background" label="Professional Background">
-          <ul className={styles.roles} role="list">
+          <p className={styles.eyebrow}>{BACKGROUND.eyebrow}</p>
+          {/* One list: the current roles first, then where he worked before, quieter. A name and a year, and nothing claimed beyond them. */}
+          <ul className={styles.history} role="list">
             {BACKGROUND.roles.map((role) => (
-              <li key={role.organisation}>
-                <strong>{role.title}</strong> — {role.organisation}
+              <li key={role.organisation} data-kind="current">
+                <span className={styles.historyMeta}>{role.title}</span>
+                <span className={styles.srOnly}> — </span>
+                <span className={styles.historyName}>
+                  <NameLink link={role.link} section="background">
+                    {role.organisation}
+                  </NameLink>
+                </span>
+              </li>
+            ))}
+            {BACKGROUND.previous.map((period) => (
+              <li key={period.from} data-kind="previous">
+                <span className={styles.historyMeta}>
+                  <time dateTime={period.from}>{period.from.slice(0, 4)}</time> — <time dateTime={period.to}>{period.to.slice(0, 4)}</time>
+                </span>{" "}
+                <span className={styles.historyName}>
+                  {period.organisations.map((organisation, index) => {
+                    const last = index === period.organisations.length - 1;
+                    // Not one of the profile's tracked organisations: an ordinary link out, with no event of its own.
+                    const name = organisation.href ? (
+                      <a href={organisation.href} {...NEW_TAB} className={styles.nameLink} aria-label={`${organisation.name} (opens in a new tab)`}>
+                        {organisation.name}
+                      </a>
+                    ) : (
+                      organisation.name
+                    );
+                    // A single name wraps as it needs to. Several on one line break between names, and a dot never starts a line.
+                    return period.organisations.length === 1 ? (
+                      <span key={organisation.name}>{name}</span>
+                    ) : (
+                      <span key={organisation.name}>
+                        <span className={styles.unbroken}>
+                          {name}
+                          {last ? null : " ·"}
+                        </span>
+                        {last ? null : " "}
+                      </span>
+                    );
+                  })}
+                </span>
               </li>
             ))}
           </ul>
-          <p className={styles.text}>{BACKGROUND.experience}</p>
+          <p className={styles.quietLine}>
+            <Dotted items={BACKGROUND.domains} />
+          </p>
         </Section>
 
-        <Section id="education" label="Education & Professional Development">
+        <Section id={WORKSHOPS.id} label={WORKSHOPS.heading}>
           <ul className={styles.education} role="list">
-            {EDUCATION.map((entry) => (
+            {WORKSHOPS.entries.map((entry) => (
               <li key={entry.institution}>
                 <span className={styles.eduInstitution}>{entry.institution}</span>{" "}
-                <span className={styles.eduProgramme}>{entry.programme}</span>{" "}
-                <span className={styles.eduMeta} data-status={entry.status}>
-                  {entry.meta}
-                </span>
+                <span className={styles.eduProgramme}>{entry.areas ? <Dotted items={entry.areas} /> : entry.programme}</span>
+                {entry.meta ? (
+                  <>
+                    {" "}
+                    <span className={styles.eduMeta} data-status={entry.status}>
+                      {entry.meta}
+                    </span>
+                  </>
+                ) : null}
               </li>
             ))}
           </ul>

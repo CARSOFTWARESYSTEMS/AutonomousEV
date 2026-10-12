@@ -12,7 +12,6 @@ const BACKGROUND = "#090B1D";
 const BLUE = "#93C5FD";
 const TEXT = "#FFFFFF";
 const SOFT = "#D5D8E6";
-const MUTED = "#B5B8C9";
 
 const NO_BREAK_SPACE = String.fromCharCode(160);
 /** One line of the card: it may wrap between its parts and never inside one, and a separator never starts a line. */
@@ -53,7 +52,6 @@ export default async function OpengraphImage() {
           <div style={{ display: "flex", fontSize: 64, fontWeight: 800, color: TEXT, letterSpacing: -2 }}>{HERO.name}</div>
           <div style={{ display: "flex", fontSize: 32, fontWeight: 700, color: BLUE, marginTop: 6 }}>{HERO.identity}</div>
           <div style={{ display: "flex", fontSize: 30, fontWeight: 600, color: TEXT, marginTop: 34 }}>{roleLine(HERO.primaryRole)}</div>
-          <div style={{ display: "flex", fontSize: 23, color: MUTED, marginTop: 10 }}>{roleLine(HERO.secondaryRole)}</div>
           <div style={{ display: "flex", fontSize: 22, color: SOFT, marginTop: 34, maxWidth: 740 }}>{line(HERO.focus, "·")}</div>
         </div>
       </div>

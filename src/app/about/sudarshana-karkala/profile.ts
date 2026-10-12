@@ -20,9 +20,9 @@ export const HERO = {
   name: "Sudarshana Karkala",
   /** The engineering identity. Not a role. */
   identity: "EV.ENGINEER™",
-  /** The primary role, shown larger than the one after it. */
-  primaryRole: { title: "Founder", organisation: SPACE_INITIATIVE.brand },
-  secondaryRole: { title: "Consultant", organisation: ITELEMATICS.name },
+  identityLink: { href: EV_ENGINEER_URL, id: "ev_engineer", destination: "ev.engineer" },
+  /** The one role the hero states. The name is a link to the organisation's own site. The consulting role is in Professional Background. */
+  primaryRole: { title: "Founder", organisation: SPACE_INITIATIVE.brand, link: { href: SPACE_INITIATIVE.url, id: "ishavasyam", destination: "ishavasyam.org" } },
   focus: ["Space Station Research", "Satellite & Rocket Engineering", "Digital Twins", "Cybersecurity"],
 } as const;
 
@@ -84,22 +84,51 @@ export const SELECTED_WORK = [
 ] as const;
 
 export const BACKGROUND = {
+  /** How long, and in what: engineering and technology. It is not a length of Space or Aerospace experience. */
+  eyebrow: "20+ Years · Engineering & Technology",
+  /** The current roles. Each organisation's name is a link to its own site; for Thasmai, to its Space research page. */
   roles: [
-    { title: "Consultant", organisation: ITELEMATICS.name },
-    { title: "Co-Founder", organisation: "Thasmai InfoTech Private Limited" },
+    { title: "Consultant", organisation: ITELEMATICS.name, link: { href: ITELEMATICS.canonicalUrl, id: "itelematics", destination: "itelematics.com" } },
+    { title: "Co-Founder", organisation: "Thasmai InfoTech Private Limited", link: { href: "https://www.thasmaiinfotech.com/space-research", id: "thasmai", destination: "thasmaiinfotech.com/space-research" } },
   ],
-  /** The long-standing experience, in the words the profile has always used for it. It names no Space or Aerospace experience. */
-  experience: "Over two decades of experience across software architecture, cybersecurity, connected systems, IoT, telematics, AI, mobility, EV and energy platforms.",
+  /**
+   * Previous employers, most recent first. Names and dates only, as the owner gave them: no title,
+   * responsibility or achievement is claimed for any of them, and none is presented as a Space or
+   * Aerospace employer. `from` and `to` keep the month; the page shows the years.
+   */
+  previous: [
+    { from: "2021-07", to: "2024-12", organisations: [{ name: "Enphase Solar Energy Private Limited" }] },
+    { from: "2011-10", to: "2021-07", organisations: [{ name: "McAfee Software India Private Limited" }] },
+    { from: "2005-05", to: "2011-09", organisations: [{ name: "NMS Communications", href: "https://www.nmscommunications.com/" }, { name: "Ness Digital Engineering" }, { name: "eNovate Media Solutions" }] },
+  ] as readonly { from: string; to: string; organisations: readonly { name: string; href?: string }[] }[],
+  /** The domains the work has moved through, in order. A line of breadth: it says nothing about what was done at which employer. */
+  domains: ["Software", "Cybersecurity", "Connected Systems", "Energy", "EV", "Space & Aerospace"],
 } as const;
 
-/** `status` marks what is not finished, so that it is never read as a credential already held. */
-export const EDUCATION: readonly { institution: string; programme: string; meta: string; status?: "in-progress" }[] = [
-  { institution: "NITK Surathkal", programme: "B.E. — Information Technology", meta: "Education" },
-  { institution: "IIT Madras — CODE", programme: "Electric Vehicle Engineering & Development", meta: "Professional certification" },
-  { institution: "IN-SPACe", programme: "Essentials of Model Rocketry", meta: "Workshop · Aug 2026" },
-  { institution: "EV Society™", programme: "Certified EV Technology Officer (EVTO™)", meta: "In progress · expected Mar 2028", status: "in-progress" },
-  { institution: "Business P.A.C.E.", programme: "Business & Entrepreneurship Development", meta: "Rajiv Talreja / QuantumLeap" },
-];
+/**
+ * The degree, the certifications and the continuing professional learning, one row each.
+ * A row has either the name of a programme or, for learning that spans several subjects, its areas.
+ * `status` marks what is not finished, so that it is never read as a credential already held.
+ */
+export const WORKSHOPS: {
+  id: string;
+  heading: string;
+  entries: readonly { institution: string; programme?: string; areas?: readonly string[]; meta?: string; status?: "in-progress" }[];
+} = {
+  id: "workshops",
+  heading: "Workshops & Certifications",
+  entries: [
+    { institution: "NITK Surathkal", programme: "B.E. — Information Technology", meta: "Education" },
+    { institution: "IIT Madras — CODE", programme: "Electric Vehicle Engineering & Development", meta: "Professional certification" },
+    // The areas of his continuing learning with IN-SPACe and what kind of thing it is, both as the owner
+    // states them. No lecture is listed as a certification of its own, and no title is claimed from it.
+    { institution: "IN-SPACe", areas: ["Model Rocketry", "CANSAT", "Semiconductor", "Aerospace & Space Systems"], meta: "Workshops & Certification" },
+    // The national workshop NW-ASHM 2026, named and described as the owner gives it.
+    { institution: "CSIR–National Aerospace Laboratories (CSIR-NAL)", programme: "Aircraft Structural Health Monitoring (NW-ASHM 2026)", meta: "Workshops & Certification" },
+    { institution: "EV Society™", programme: "Certified EV Technology Officer (EVTO™)", meta: "In progress · expected Mar 2028", status: "in-progress" },
+    { institution: "Business P.A.C.E.", programme: "Business & Entrepreneurship Development", meta: "Rajiv Talreja / QuantumLeap" },
+  ],
+};
 
 export const CONTACT = {
   id: "contact",

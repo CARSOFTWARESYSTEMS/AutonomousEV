@@ -25,27 +25,40 @@ const statements = (container: Element) => [...container.querySelectorAll("p, li
 const section = (name: string | RegExp) => screen.getByRole("region", { name });
 
 describe("/about/sudarshana-karkala: who he is", () => {
-  it("leads with the name, then the engineering identity, then the two roles, then one line of focus", () => {
+  it("leads with the name, then the engineering identity, then the one role, then one line of focus", () => {
     render(<ProfilePage />);
     const hero = section("Sudarshana Karkala");
     expect(within(hero).getByRole("heading", { level: 1, name: "Sudarshana Karkala" })).toBeInTheDocument();
     expect([...hero.querySelectorAll("p")].map((p) => p.textContent?.replace(/\s+/g, " "))).toEqual([
       "EV.ENGINEER™",
       "Founder — ISHAVASYAM.ORG",
-      "Consultant — iTelematics Software Private Limited",
       "Space Station Research · Satellite & Rocket Engineering · Digital Twins · Cybersecurity",
     ]);
     expect(within(hero).getByRole("img", { name: "Portrait of Sudarshana Karkala" })).toBeInTheDocument();
-    // The hero holds no button and no further title.
-    expect(within(hero).queryAllByRole("link")).toHaveLength(0);
+    // The hero holds no button and no further title. Its two names are the links to those organisations' own sites.
+    expect(within(hero).queryAllByRole("button")).toHaveLength(0);
+    expect(within(hero).getAllByRole("link").map((a) => [a.textContent, a.getAttribute("href")])).toEqual([
+      ["EV.ENGINEER™", "https://ev.engineer/"],
+      ["ISHAVASYAM.ORG", "https://ishavasyam.org/"],
+    ]);
+    for (const link of within(hero).getAllByRole("link")) {
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(link).toHaveAttribute("rel", "noopener noreferrer");
+      // Its name begins with the words on it, and says that it leaves the page.
+      expect(link).toHaveAccessibleName(`${link.textContent} (opens in a new tab)`);
+      // A link and nothing more: the name itself, with no arrow or badge added to the hero.
+      expect(link.children).toHaveLength(0);
+    }
   });
 
-  it("gives ISHAVASYAM.ORG more weight than iTelematics: the two roles are different elements with different styles", () => {
+  it("states one role in the hero, Founder of ISHAVASYAM.ORG; the consulting role is in Professional Background and not here", () => {
     render(<ProfilePage />);
-    const primary = screen.getByText((_, element) => element?.tagName === "P" && element.textContent === "Founder — ISHAVASYAM.ORG");
-    const secondary = screen.getByText((_, element) => element?.tagName === "P" && element.textContent === "Consultant — iTelematics Software Private Limited");
-    expect(primary.className).not.toBe(secondary.className);
-    expect(primary.compareDocumentPosition(secondary) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    const hero = section("Sudarshana Karkala");
+    expect(hero).toHaveTextContent("Founder — ISHAVASYAM.ORG");
+    expect(hero).not.toHaveTextContent(/Consultant|iTelematics/);
+    expect(within(section("Professional Background")).getAllByRole("listitem")[0]).toHaveTextContent("Consultant — iTelematics Software Private Limited");
+    // Said once on the page.
+    expect(screen.getAllByText("Consultant")).toHaveLength(1);
   });
 
   it("never presents EV.ENGINEER™ as a founder title, on the page or in its data", () => {
@@ -150,48 +163,176 @@ describe("/about/sudarshana-karkala: what he works on", () => {
   });
 });
 
-describe("/about/sudarshana-karkala: background and education", () => {
-  it("names the consulting role and the Thasmai co-founder role quietly, in Professional Background and nowhere else", () => {
-    const { container } = render(<ProfilePage />);
+describe("/about/sudarshana-karkala: professional background", () => {
+  const rows = () => within(section("Professional Background")).getAllByRole("listitem");
+  const text = (element: Element) => (element.textContent ?? "").replace(/\s+/g, " ").trim();
+
+  it("opens with how long and in what, then lists the current roles above where he worked before", () => {
+    render(<ProfilePage />);
     const background = section("Professional Background");
-    expect(within(background).getAllByRole("listitem").map((li) => li.textContent)).toEqual([
+    expect(background.querySelector("p")).toHaveTextContent("20+ Years · Engineering & Technology");
+    expect(rows().map(text)).toEqual([
       "Consultant — iTelematics Software Private Limited",
       "Co-Founder — Thasmai InfoTech Private Limited",
+      "2021 — 2024 Enphase Solar Energy Private Limited",
+      "2011 — 2021 McAfee Software India Private Limited",
+      "2005 — 2011 NMS Communications · Ness Digital Engineering · eNovate Media Solutions",
     ]);
-    // Thasmai is one line of text: not in the hero, not a card, not a heading, not a link, not in the structured data.
+    // Current roles first, previous employers after them and marked as the quieter rows.
+    expect(rows().map((row) => row.getAttribute("data-kind"))).toEqual(["current", "current", "previous", "previous", "previous"]);
+  });
+
+  it("keeps the dates as they were given: the years on the page, the months in the markup", () => {
+    render(<ProfilePage />);
+    const dates = rows().slice(2).map((row) => [...row.querySelectorAll("time")].map((time) => [time.textContent, time.getAttribute("datetime")]));
+    expect(dates).toEqual([
+      [["2021", "2021-07"], ["2024", "2024-12"]],
+      [["2011", "2011-10"], ["2021", "2021-07"]],
+      [["2005", "2005-05"], ["2011", "2011-09"]],
+    ]);
+    // Most recent first, with no gap or overlap of more than the month one ended and the next began.
+    const starts = dates.map(([from]) => from[1]);
+    expect([...starts].sort().reverse()).toEqual(starts);
+  });
+
+  it("shows a name and the years for a previous employer, and nothing else: no title, no duties, no achievements", () => {
+    render(<ProfilePage />);
+    for (const row of rows().slice(2)) {
+      expect(row.children).toHaveLength(2);
+      expect(text(row)).not.toMatch(/engineer\b|architect|manager|director|lead\b|led\b|responsib|built|delivered|head of|principal|senior/i);
+    }
+    // The name is stronger than the date beside it: they are different elements, the name second.
+    const [meta, name] = [...rows()[2].children];
+    expect(meta.querySelector("time")).not.toBeNull();
+    expect(name).toHaveTextContent("Enphase Solar Energy Private Limited");
+    expect(meta.className).not.toBe(name.className);
+  });
+
+  it("never presents a previous employer as a Space or Aerospace employer", () => {
+    render(<ProfilePage />);
+    for (const row of rows().slice(2)) expect(text(row)).not.toMatch(/space|aerospace|satellite|rocket|orbit/i);
+    // The domains are one separate line of breadth, in order, ending where the work is now. It names no employer.
+    const domains = [...section("Professional Background").querySelectorAll("p")].at(-1)!;
+    expect(text(domains)).toBe("Software · Cybersecurity · Connected Systems · Energy · EV · Space & Aerospace");
+    expect(text(domains)).not.toMatch(/Enphase|McAfee|NMS|Ness|eNovate|iTelematics|Thasmai|\d{4}|years|decades/i);
+  });
+
+  it("links the organisations that have an address on record, and invents none for the others", () => {
+    render(<ProfilePage />);
+    const links = within(section("Professional Background")).getAllByRole("link");
+    expect(links.map((a) => [a.textContent, a.getAttribute("href")])).toEqual([
+      ["iTelematics Software Private Limited", "https://itelematics.com/"],
+      ["Thasmai InfoTech Private Limited", "https://www.thasmaiinfotech.com/space-research"],
+      ["NMS Communications", "https://www.nmscommunications.com/"],
+    ]);
+    for (const link of links) {
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(link).toHaveAttribute("rel", "noopener noreferrer");
+      expect(link).toHaveAccessibleName(`${link.textContent} (opens in a new tab)`);
+    }
+    // A former employer's link is an ordinary link out: it declares no analytics event of its own.
+    expect(links[2].getAttributeNames().filter((name) => name.startsWith("data-"))).toEqual([]);
+  });
+
+  it("keeps Thasmai quiet: one line, in this section only, and not in the structured data", () => {
+    const { container } = render(<ProfilePage />);
     expect(visibleText(container).match(/Thasmai/g)).toHaveLength(1);
     expect(section("Sudarshana Karkala")).not.toHaveTextContent(/Thasmai/);
     expect(screen.queryByRole("heading", { name: /Thasmai/ })).toBeNull();
-    expect(screen.queryByRole("link", { name: /Thasmai/ })).toBeNull();
+    expect(screen.getAllByRole("link", { name: /Thasmai/ })).toHaveLength(1);
     expect(JSON.stringify(graphOf(container))).not.toMatch(/Thasmai/i);
   });
 
-  it("never implies two decades of space or aerospace experience: that figure is for software, security, EV and energy", () => {
+  it("does not add the former employers to the structured data, and leaves the approved relationships as they were", () => {
     const { container } = render(<ProfilePage />);
-    expect(section("Professional Background")).toHaveTextContent(
-      "Over two decades of experience across software architecture, cybersecurity, connected systems, IoT, telematics, AI, mobility, EV and energy platforms.",
-    );
-    expect(document.body.textContent).not.toMatch(/two decades[^.]*(aerospace|space|satellite|rocket)/i);
-    expect(document.body.textContent).not.toMatch(/20\+? years[^.]*(aerospace|space)/i);
-    expect(JSON.stringify(personNode(container))).not.toMatch(/two decades|20\+? years/i);
+    const data = JSON.stringify(graphOf(container));
+    expect(data).not.toMatch(/Enphase|McAfee|NMS Communications|Ness Digital|eNovate/);
+    const person = personNode(container);
+    expect(person.jobTitle).toEqual(["Founder, ISHAVASYAM.ORG", "Consultant, iTelematics Software Private Limited"]);
+    expect(person.worksFor).toBeUndefined();
+    expect(person.alumniOf).toEqual({ "@type": "CollegeOrUniversity", name: "National Institute of Technology Karnataka, Surathkal" });
   });
 
-  it("keeps education to one line each, and says exactly what each item is", () => {
+  it("never puts a length of experience and Space or Aerospace in the same statement", () => {
+    const { container } = render(<ProfilePage />);
+    // "20+ Years" is said of engineering and technology, in a statement of its own.
+    expect(statements(container)).toContain("20+ Years · Engineering & Technology");
+    for (const statement of statements(container)) {
+      expect(statement).not.toMatch(/(two decades|20\+? years|\d+\+? years)[^.]*(aerospace|space|satellite|rocket)/i);
+      expect(statement).not.toMatch(/(aerospace|space|satellite|rocket)[^.]*(two decades|20\+? years|\d+\+? years)/i);
+    }
+    expect(JSON.stringify(personNode(container))).not.toMatch(/two decades|20\+? years/i);
+  });
+});
+
+describe("/about/sudarshana-karkala: workshops and certifications", () => {
+  const learning = () => section("Workshops & Certifications");
+  const rows = () => within(learning()).getAllByRole("listitem").map((li) => li.textContent?.replace(/\s+/g, " ").trim());
+
+  it("is named Workshops & Certifications, with the degree first, then the certification, then IN-SPACe and CSIR-NAL", () => {
     render(<ProfilePage />);
-    const rows = within(section("Education & Professional Development")).getAllByRole("listitem").map((li) => li.textContent?.replace(/\s+/g, " ").trim());
-    expect(rows).toEqual([
+    expect(within(learning()).getByRole("heading", { level: 2, name: "Workshops & Certifications" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: /Education & Professional Development/ })).toBeNull();
+    expect(rows()).toEqual([
       "NITK Surathkal B.E. — Information Technology Education",
       "IIT Madras — CODE Electric Vehicle Engineering & Development Professional certification",
-      "IN-SPACe Essentials of Model Rocketry Workshop · Aug 2026",
+      "IN-SPACe Model Rocketry · CANSAT · Semiconductor · Aerospace & Space Systems Workshops & Certification",
+      "CSIR–National Aerospace Laboratories (CSIR-NAL) Aircraft Structural Health Monitoring (NW-ASHM 2026) Workshops & Certification",
       "EV Society™ Certified EV Technology Officer (EVTO™) In progress · expected Mar 2028",
       "Business P.A.C.E. Business & Entrepreneurship Development Rajiv Talreja / QuantumLeap",
     ]);
-    // The IIT Madras programme is a certification and never a degree; the workshop is a workshop.
-    expect(document.body.textContent).not.toMatch(/IIT Madras[^.]*(degree|B\.Tech|M\.Tech)/i);
-    // What is not finished is marked as that, in words and for the stylesheet.
-    const evto = screen.getByText("In progress · expected Mar 2028");
-    expect(evto).toHaveAttribute("data-status", "in-progress");
+  });
+
+  it("gives IN-SPACe one row with its four areas of learning: no date, no lecture list, no separate Semiconductor row, no line beneath", () => {
+    const { container } = render(<ProfilePage />);
+    const text = visibleText(container);
+    expect(text).not.toMatch(/Workshop · Aug 2026|Aug 2026|Upcoming Workshop|Essentials of Model Rocketry/);
+    for (const lecture of ["Mission Design", "Structures & Aerodynamics", "RF & Communications", "Separation & Deployment", "Recovery Systems", "Manufacturing & Quality Assurance"]) expect(text).not.toContain(lecture);
+    // The areas are said once, on the IN-SPACe row, and the section ends with its list.
+    expect(text.match(/CANSAT/g)).toHaveLength(1);
+    expect(text.match(/Semiconductor/g)).toHaveLength(1);
+    expect(text.match(/Aerospace & Space Systems/g)).toHaveLength(1);
+    expect(learning().querySelectorAll("p")).toHaveLength(0);
+    expect(within(learning()).getAllByRole("listitem")).toHaveLength(6);
+  });
+
+  it("labels the IN-SPACe row as the owner does, and claims no title, award or completion from it", () => {
+    const { container } = render(<ProfilePage />);
+    const row = screen.getByText("IN-SPACe").closest("li")!;
+    // What kind of thing it is, in the row's third place, like "Education" and "Professional certification" on the rows above.
+    expect([...row.children].at(-1)).toHaveTextContent(/^Workshops & Certification$/);
+    expect(row.children).toHaveLength(3);
+    // Nothing more is said of it: no "certified", no completion, no award, no title.
+    expect(row.textContent).not.toMatch(/certified|complet|attended|awarded|earned|passed|qualified/i);
+    expect(visibleText(container)).not.toMatch(/ISRO Certified|IN-SPACe Certified|Certified by IN-SPACe|Rocket Scientist|Aerospace Engineer certification/i);
+    // It is not a credential in the structured data.
+    expect(JSON.stringify(graphOf(container))).not.toMatch(/semiconductor|cansat|IN-SPACe/i);
+  });
+
+  it("lists the CSIR-NAL workshop directly after IN-SPACe, by its institution, its name and what kind of thing it is", () => {
+    const { container } = render(<ProfilePage />);
+    const row = screen.getByText("CSIR–National Aerospace Laboratories (CSIR-NAL)").closest("li")!;
+    expect([...row.children].map((cell) => cell.textContent)).toEqual([
+      "CSIR–National Aerospace Laboratories (CSIR-NAL)",
+      "Aircraft Structural Health Monitoring (NW-ASHM 2026)",
+      "Workshops & Certification",
+    ]);
+    expect(row.previousElementSibling).toHaveTextContent(/^IN-SPACe/);
+    expect(row.nextElementSibling).toHaveTextContent(/^EV Society™/);
+    // Named as given, and nothing added to it: no title, no completion, no award.
+    expect(row.textContent).not.toMatch(/certified|complet|attended|awarded|earned|passed|qualified|expert/i);
+    // Like the rest of the learning, it is not a credential in the structured data.
+    expect(JSON.stringify(graphOf(container))).not.toMatch(/CSIR|Aerospace Laboratories|Structural Health|NW-ASHM/i);
+  });
+
+  it("marks what is not finished, and says what kind of thing each of the others is", () => {
+    render(<ProfilePage />);
+    expect(screen.getByText("In progress · expected Mar 2028")).toHaveAttribute("data-status", "in-progress");
+    expect(screen.getByText("Professional certification")).not.toHaveAttribute("data-status");
+    for (const label of screen.getAllByText("Workshops & Certification")) expect(label).not.toHaveAttribute("data-status");
     expect(screen.getByText("Education")).not.toHaveAttribute("data-status");
+    // The IIT Madras programme is a certification and never a degree.
+    expect(document.body.textContent).not.toMatch(/IIT Madras[^.]*(degree|B\.Tech|M\.Tech)/i);
   });
 });
 
@@ -277,7 +418,7 @@ describe("/about/sudarshana-karkala: the page as a whole", () => {
       "Research & Engineering",
       "Selected Work",
       "Professional Background",
-      "Education & Professional Development",
+      "Workshops & Certifications",
       "Contact / Consultation",
     ]);
     expect(screen.queryByRole("heading", { name: /^(Mission|Vision)$/ })).toBeNull();
@@ -296,7 +437,7 @@ describe("/about/sudarshana-karkala: the page as a whole", () => {
     const { container } = render(<ProfilePage />);
     const words = visibleText(container.querySelector("main")!).trim().split(/\s+/).length;
     expect(words).toBeLessThan(420);
-    expect(container.querySelectorAll("main a").length).toBeLessThanOrEqual(16);
+    expect(container.querySelectorAll("main a").length).toBeLessThanOrEqual(20);
   });
 
   it("puts who he is, his roles, his focus, his initiatives and his background in the server's HTML, with no script needed to read them", () => {
@@ -318,6 +459,19 @@ describe("/about/sudarshana-karkala: the page as a whole", () => {
       "ISHAVASYAM.ORG",
       "CAR SOFTWARE SYSTEMS",
       "Co-Founder — Thasmai InfoTech Private Limited",
+      // The employment history and the learning are text too, not pictures.
+      "Enphase Solar Energy Private Limited",
+      "McAfee Software India Private Limited",
+      "NMS Communications",
+      "Ness Digital Engineering",
+      "eNovate Media Solutions",
+      "IN-SPACe",
+      "Model Rocketry",
+      "CANSAT",
+      "Semiconductor",
+      "Aerospace & Space Systems",
+      "CSIR–National Aerospace Laboratories (CSIR-NAL)",
+      "Aircraft Structural Health Monitoring (NW-ASHM 2026)",
       "Contact / Consultation",
     ]) {
       expect(html).toContain(fact);
@@ -337,9 +491,17 @@ describe("/about/sudarshana-karkala: the page as a whole", () => {
     const { container } = render(<ProfilePage />);
     const external = [...container.querySelectorAll<HTMLAnchorElement>('main a[href^="http"]')];
     expect(external.map((a) => a.getAttribute("href"))).toEqual([
+      // The hero's two names.
+      "https://ev.engineer/",
+      "https://ishavasyam.org/",
+      // The cards and the contact actions.
       "https://ishavasyam.org/",
       "https://ev.engineer/",
       "https://carsoftwaresystems.com/",
+      // Professional Background.
+      "https://itelematics.com/",
+      "https://www.thasmaiinfotech.com/space-research",
+      "https://www.nmscommunications.com/",
       "https://www.linkedin.com/in/sudarshanakarkala/",
       "https://carsoftwaresystems.com/public/sudarshanakarkala.pdf",
     ]);
@@ -404,10 +566,10 @@ describe("/about/sudarshana-karkala: structured data", () => {
     expect(page.name).toBe(metadata.title);
   });
 
-  it("states the roles the hero states, in the same words", () => {
+  it("states the roles the page states, in the same words: the hero's, and the consulting role of Professional Background", () => {
     const { container } = render(<ProfilePage />);
-    const hero = [...section("Sudarshana Karkala").querySelectorAll("p")].map((p) => p.textContent?.replace(" — ", ", "));
-    for (const title of personNode(container).jobTitle as string[]) expect(hero).toContain(title);
+    const stated = [...section("Sudarshana Karkala").querySelectorAll("p"), ...within(section("Professional Background")).getAllByRole("listitem")].map((line) => line.textContent?.replace(/\s+/g, " ").replace(" — ", ", "));
+    for (const title of personNode(container).jobTitle as string[]) expect(stated).toContain(title);
     expect(personNode(container).jobTitle).toEqual(["Founder, ISHAVASYAM.ORG", "Consultant, iTelematics Software Private Limited"]);
   });
 

@@ -114,11 +114,32 @@ describe("profile analytics: what a visitor uses", () => {
     fireEvent.click(screen.getByRole("link", { name: /^ev\.engineer/ }));
     fireEvent.click(screen.getByRole("link", { name: /^carsoftwaresystems\.com/ }));
     expect(trackEvent.mock.calls).toEqual([
-      ["profile_initiative_click", { initiative_name: "ishavasyam", destination: "ishavasyam.org" }],
-      ["profile_initiative_click", { initiative_name: "ishavasyam", destination: "/space" }],
-      ["profile_initiative_click", { initiative_name: "ev_engineer", destination: "ev.engineer" }],
-      ["profile_initiative_click", { initiative_name: "car_software_systems", destination: "carsoftwaresystems.com" }],
+      ["profile_initiative_click", { initiative_name: "ishavasyam", destination: "ishavasyam.org", section: "primary_initiative" }],
+      ["profile_initiative_click", { initiative_name: "ishavasyam", destination: "/space", section: "primary_initiative" }],
+      ["profile_initiative_click", { initiative_name: "ev_engineer", destination: "ev.engineer", section: "initiatives" }],
+      ["profile_initiative_click", { initiative_name: "car_software_systems", destination: "carsoftwaresystems.com", section: "initiatives" }],
     ]);
+  });
+
+  it("reports a name used in the hero as the same event, and says that it was the hero", () => {
+    const hero = screen.getByRole("region", { name: "Sudarshana Karkala" });
+    for (const link of hero.querySelectorAll("a")) fireEvent.click(link);
+    expect(trackEvent.mock.calls).toEqual([
+      ["profile_initiative_click", { initiative_name: "ev_engineer", destination: "ev.engineer", section: "hero" }],
+      ["profile_initiative_click", { initiative_name: "ishavasyam", destination: "ishavasyam.org", section: "hero" }],
+    ]);
+  });
+
+  it("reports a name used in Professional Background likewise, with the page of Thasmai's site it leads to", () => {
+    const background = screen.getByRole("region", { name: "Professional Background" });
+    for (const link of background.querySelectorAll("a")) fireEvent.click(link);
+    expect(trackEvent.mock.calls).toEqual([
+      ["profile_initiative_click", { initiative_name: "itelematics", destination: "itelematics.com", section: "background" }],
+      ["profile_initiative_click", { initiative_name: "thasmai", destination: "thasmaiinfotech.com/space-research", section: "background" }],
+    ]);
+    // The link to a former employer was clicked too, and reported nothing: there is no event for an employer.
+    expect(background.querySelectorAll("a")).toHaveLength(3);
+    expect(everythingSent()).not.toMatch(/nms|enphase|mcafee|employer/i);
   });
 
   it("reports a contact action by its kind, and never sends the telephone number, an address or the text of a link", () => {

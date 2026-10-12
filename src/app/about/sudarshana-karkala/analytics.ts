@@ -11,7 +11,8 @@ import { trackEvent } from "@/utils/analytics";
 export interface ProfileEvents {
   /** The profile was shown. Not a second `page_view`: the site's own page view is reported by GoogleAnalytics.tsx. */
   profile_view: { page_type: "profile"; profile_name: "sudarshana_karkala" };
-  profile_initiative_click: { initiative_name: "ishavasyam" | "ev_engineer" | "car_software_systems"; destination: string };
+  /** A link to one of the organisations the profile names. `section` says which of its places on the page was used. */
+  profile_initiative_click: { initiative_name: "ishavasyam" | "ev_engineer" | "car_software_systems" | "itelematics" | "thasmai"; destination: string; section: "hero" | "primary_initiative" | "initiatives" | "background" };
   profile_project_click: { project_name: string; destination: string; section: "selected_work" };
   /** `destination_type` says what kind of place the action leads to, never the place itself. */
   profile_contact_click: { contact_type: "linkedin" | "resume" | "consultation" | "phone" | "contact_page"; destination_type: "external" | "document" | "internal" | "telephone" };
