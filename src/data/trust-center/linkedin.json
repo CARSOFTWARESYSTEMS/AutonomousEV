@@ -37,6 +37,25 @@
     "search": { "indexable": true }
   },
   {
+    "id": "linkedin-7516389862820769792",
+    "type": "social-post",
+    "title": "Internship Completion",
+    "source": "linkedin",
+    "sourceLabel": "LinkedIn",
+    "sourceUrl": "https://www.linkedin.com/posts/harsh-yadav-871a0a26b_itelematics-startupjourney-productdevelopment-share-7516389862820769792-iP8D/",
+    "embedUrl": "https://www.linkedin.com/embed/feed/update/urn:li:share:7516389862820769792?collapsed=1",
+    "media": { "type": "iframe", "width": 504, "height": 623 },
+    "author": { "name": "Harsh yadav" },
+    "featured": false,
+    "enabled": true,
+    "verificationStatus": "externally-published",
+    "tags": ["linkedin", "professional-recognition", "internship"],
+    "audiences": [],
+    "products": [],
+    "domains": [],
+    "search": { "indexable": true }
+  },
+  {
     "id": "linkedin-7461320513945169920",
     "type": "social-post",
     "title": "Professional Feedback",
