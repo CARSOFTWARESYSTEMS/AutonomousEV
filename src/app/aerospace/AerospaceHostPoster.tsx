@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
-import { ArrowRight, X } from "lucide-react";
+import { X } from "lucide-react";
 import styles from "./AerospaceHostPoster.module.css";
 
 /** The only host the poster is shown on. aerospace.ev.engineer/ redirects to /aerospace (next.config.ts). */
@@ -140,7 +140,7 @@ function PosterDialog({ onClose, onProfile }: { onClose: () => void; onProfile: 
             onClick={onProfile}
             data-track-event="aerospace_poster_profile_click"
           >
-            Profile <ArrowRight size={18} aria-hidden="true" />
+            Profile
           </Link>
           <a
             href={WHATSAPP_URL}
@@ -149,7 +149,7 @@ function PosterDialog({ onClose, onProfile }: { onClose: () => void; onProfile: 
             className={`${styles.action} ${styles.whatsapp}`}
             data-track-event="aerospace_poster_whatsapp_click"
           >
-            WhatsApp <ArrowRight size={18} aria-hidden="true" />
+            WhatsApp
           </a>
           {/* Same as the close button: dismisses the poster and shows the page. */}
           <button
@@ -158,7 +158,7 @@ function PosterDialog({ onClose, onProfile }: { onClose: () => void; onProfile: 
             onClick={onClose}
             data-track-event="aerospace_poster_continue"
           >
-            Continue <ArrowRight size={18} aria-hidden="true" />
+            Continue
           </button>
         </div>
       </div>

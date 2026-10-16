@@ -42,6 +42,8 @@ describe("AerospaceHostPoster", () => {
     expect(proceed).toHaveAttribute("type", "button");
     expect(profile.compareDocumentPosition(whatsapp) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(whatsapp.compareDocumentPosition(proceed) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    // Text labels only, no arrow icons.
+    [profile, whatsapp, proceed].forEach((el) => expect(el.querySelector("svg")).toBeNull());
 
     expect(within(dialog).getByRole("button", { name: "Close" })).toHaveFocus();
   });
