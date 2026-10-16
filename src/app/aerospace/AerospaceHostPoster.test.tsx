@@ -21,7 +21,7 @@ describe("AerospaceHostPoster", () => {
   beforeEach(() => visit("https://aerospace.ev.engineer/aerospace"));
   afterAll(() => visit("http://localhost:3000/"));
 
-  it("opens on aerospace.ev.engineer with the poster, the profile link and the WhatsApp contact", async () => {
+  it("opens on aerospace.ev.engineer with the poster and Profile, WhatsApp and Continue, in that order", async () => {
     const { default: AerospaceHostPoster, WHATSAPP_URL } = await loadPoster();
     render(<AerospaceHostPoster />);
 
@@ -29,13 +29,19 @@ describe("AerospaceHostPoster", () => {
     expect(dialog).toHaveAttribute("aria-modal", "true");
     expect(within(dialog).getByRole("img", { name: /Sudarshana Karkala, Aerospace Quality Intelligence/ })).toBeInTheDocument();
 
-    expect(within(dialog).getByRole("link", { name: /Know More \/ Profile/ })).toHaveAttribute("href", "/about/sudarshana-karkala");
+    const profile = within(dialog).getByRole("link", { name: "Profile" });
+    expect(profile).toHaveAttribute("href", "/about/sudarshana-karkala");
 
-    const whatsapp = within(dialog).getByRole("link", { name: /Contact on WhatsApp/ });
+    const whatsapp = within(dialog).getByRole("link", { name: "WhatsApp" });
     expect(whatsapp).toHaveAttribute("href", WHATSAPP_URL);
     expect(WHATSAPP_URL).toMatch(/^https:\/\/wa\.me\/919845561518\?text=/);
     expect(whatsapp).toHaveAttribute("target", "_blank");
     expect(whatsapp).toHaveAttribute("rel", "noopener noreferrer");
+
+    const proceed = within(dialog).getByRole("button", { name: "Continue" });
+    expect(proceed).toHaveAttribute("type", "button");
+    expect(profile.compareDocumentPosition(whatsapp) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(whatsapp.compareDocumentPosition(proceed) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
 
     expect(within(dialog).getByRole("button", { name: "Close" })).toHaveFocus();
   });
@@ -63,6 +69,20 @@ describe("AerospaceHostPoster", () => {
     expect(screen.queryByRole("dialog")).toBeNull();
 
     // Coming back to /aerospace in the same page load, e.g. Back from the profile.
+    first.unmount();
+    render(<AerospaceHostPoster />);
+    expect(screen.queryByRole("dialog")).toBeNull();
+  });
+
+  it("Continue closes it, the same as the close button", async () => {
+    const user = userEvent.setup();
+    const { default: AerospaceHostPoster } = await loadPoster();
+    const first = render(<AerospaceHostPoster />);
+
+    await user.click(screen.getByRole("button", { name: "Continue" }));
+    expect(screen.queryByRole("dialog")).toBeNull();
+    expect(document.body.style.overflow).toBe("");
+
     first.unmount();
     render(<AerospaceHostPoster />);
     expect(screen.queryByRole("dialog")).toBeNull();
@@ -105,9 +125,9 @@ describe("AerospaceHostPoster", () => {
     expect(document.body.style.overflow).toBe("hidden");
 
     const close = screen.getByRole("button", { name: "Close" });
-    const whatsapp = screen.getByRole("link", { name: /Contact on WhatsApp/ });
+    const proceed = screen.getByRole("button", { name: "Continue" });
     await user.tab({ shift: true });
-    expect(whatsapp).toHaveFocus();
+    expect(proceed).toHaveFocus();
     await user.tab();
     expect(close).toHaveFocus();
 
