@@ -15,6 +15,7 @@ import styles from "./aerospace.module.css";
 import { useMobileMenuLock } from "@/hooks/useMobileMenuLock";
 import { EOI_FORM_URL } from "@/lib/eoi";
 import ResearcherCard from "@/components/ResearcherCard";
+import AerospaceHostPoster from "./AerospaceHostPoster";
 import { POSTER, PRODUCT } from "@/components/uflight-3d/data/uflightReferenceAircraft";
 
 const manrope = Manrope({
@@ -248,6 +249,8 @@ export default function AerospacePage() {
   return (
     <div className={`${styles.root} ${manrope.variable} ${inter.variable}`} style={{ background: "#090B1D", minHeight: "100vh", fontFamily: FONT_INTER, overflowX: "hidden" }}>
       <a href="#main-content" className={styles.skipLink}>Skip to content</a>
+      {/* Shown only on aerospace.ev.engineer; renders nothing on every other host. */}
+      <AerospaceHostPoster />
 
       {/* ── Navbar ── */}
       <header className={styles.headerBar} style={{

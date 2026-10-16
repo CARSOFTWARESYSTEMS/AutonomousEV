@@ -56,6 +56,12 @@ describe("Aerospace page", () => {
     });
   });
 
+  it("does not show the aerospace.ev.engineer poster on other hosts", () => {
+    render(<AerospacePage />);
+    expect(screen.queryByRole("dialog")).toBeNull();
+    expect(screen.queryByRole("link", { name: /Contact on WhatsApp/ })).toBeNull();
+  });
+
   it("leaves Join Community pointed at /contact, unaffected by the EOI change", () => {
     render(<AerospacePage />);
     const joinLink = screen.getByRole("link", { name: "Join Community" });
