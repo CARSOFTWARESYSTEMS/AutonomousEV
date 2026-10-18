@@ -46,6 +46,16 @@ link below points to a canonical public page already listed in
   (Co-Researcher · EV.ENGINEER™, aerospace cybersecurity research and
   AS9102 First Article Inspection engineering focus) and Sudarshana Karkala
   (Co-Researcher · EV.ENGINEER™).
+- [EV Battery Health & Diagnostics Toolkit](https://aerospace.ev.engineer/internships/ev-battery-health-diagnostics-toolkit):
+  EV.ENGINEER™ interactive 3D workspace for electric-scooter battery
+  diagnosis: Owner Mode (symptoms and safe next steps only) and Technician
+  Mode, a vehicle battery locator, fixed / swappable / serviceable
+  architectures, a 3D battery explorer, a BMS digital twin, simulated fault
+  injection, an evidence-gated real vehicle diagnosis workflow, repair
+  decisions, post-repair verification and a diagnostic report. Simulated
+  values are labelled SIMULATED; vehicle battery specifications are shown as
+  not verified until a source is recorded. It does not replace manufacturer
+  service documentation.
 - [Cybersecurity Engineers](https://autonomous.ev.engineer/internships/cybersecurity-engineers):
   Profiles of engineers and researchers contributing to cybersecurity research
   at EV.ENGINEER — Bhavya Naga Sai Parvathi Kshatri (Cybersecurity Researcher ·

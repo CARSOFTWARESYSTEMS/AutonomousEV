@@ -8,7 +8,7 @@ import TrackCard from "./TrackCard";
 import trackStyles from "./TrackCard.module.css";
 import type { LucideIcon } from "lucide-react";
 
-function ProjectCard({ title, desc, link, pricingLink, secondaryLink, secondaryLinkLabel, tertiaryLink, tertiaryLinkLabel, quaternaryLink, quaternaryLinkLabel, quinaryLink, quinaryLinkLabel, category, badge, tags, ctaLabel, trackProps, icon: Icon }: { title: string, desc?: string, link: string, pricingLink?: string, secondaryLink?: string, secondaryLinkLabel?: string, tertiaryLink?: string, tertiaryLinkLabel?: string, quaternaryLink?: string, quaternaryLinkLabel?: string, quinaryLink?: string, quinaryLinkLabel?: string, category?: string, badge?: string, tags?: string[], ctaLabel?: string, trackProps?: Record<`data-${string}`, string>, icon?: LucideIcon }) {
+function ProjectCard({ title, desc, note, link, pricingLink, secondaryLink, secondaryLinkLabel, tertiaryLink, tertiaryLinkLabel, quaternaryLink, quaternaryLinkLabel, quinaryLink, quinaryLinkLabel, category, badge, tags, ctaLabel, trackProps, icon: Icon }: { title: string, desc?: string, note?: string, link: string, pricingLink?: string, secondaryLink?: string, secondaryLinkLabel?: string, tertiaryLink?: string, tertiaryLinkLabel?: string, quaternaryLink?: string, quaternaryLinkLabel?: string, quinaryLink?: string, quinaryLinkLabel?: string, category?: string, badge?: string, tags?: string[], ctaLabel?: string, trackProps?: Record<`data-${string}`, string>, icon?: LucideIcon }) {
   const isExternal = link.startsWith('http');
   const sLink = pricingLink || secondaryLink;
   const sLabel = pricingLink ? "Pricing" : secondaryLinkLabel;
@@ -195,7 +195,8 @@ function ProjectCard({ title, desc, link, pricingLink, secondaryLink, secondaryL
           {badge}
         </div>
       )}
-      {desc && <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', flexGrow: 1, marginBottom: '16px' }}>{desc}</p>}
+      {desc && <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', flexGrow: note ? 0 : 1, marginBottom: note ? '8px' : '16px' }}>{desc}</p>}
+      {note && <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', flexGrow: 1, marginBottom: '16px' }}>{note}</p>}
 
       {tags && (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '24px' }}>
@@ -505,6 +506,19 @@ export default function InternshipsClient() {
               link="/internships/AegisCAN"
               badge="12-Week E&C / EEE Mini Project"
               ctaLabel="Explore AegisCAN"
+            />
+            <ProjectCard
+              title="EV.ENGINEER™ — EV Battery Health & Diagnostics Toolkit"
+              desc="Interactive 3D toolkit for electric-scooter battery health analysis, BMS diagnostics, fault isolation and guided battery repair workflows."
+              note="Explore fixed and swappable battery architectures, cells, modules, BMS, thermal behaviour and common battery faults through an interactive 3D diagnostic workspace."
+              link="/internships/ev-battery-health-diagnostics-toolkit"
+              tags={["3D Battery Diagnostics", "BMS", "SOC / SOH", "Fault Isolation", "Battery Repair", "Thermal Analysis"]}
+              ctaLabel="Explore Toolkit"
+              trackProps={{
+                "data-track-event": "ev_battery_toolkit_card_clicked",
+                "data-track-source": "internships_design_development",
+                "data-track-destination": "/internships/ev-battery-health-diagnostics-toolkit",
+              }}
             />
           </Section>
 

@@ -25,7 +25,7 @@ describe("ChromeGate", () => {
     expect(screen.getByRole("contentinfo")).toBeInTheDocument();
   });
 
-  it.each(["/internships/aerospace-quality-intelligence-platform", "/aerospace", "/aerospace/uflight-3d", "/space", "/space/rocket-engine-digital-twin", "/ishavasyam-space", "/about/sudarshana-karkala"])("leaves %s to draw its own header and footer", (path) => {
+  it.each(["/internships/aerospace-quality-intelligence-platform", "/internships/ev-battery-health-diagnostics-toolkit", "/aerospace", "/aerospace/uflight-3d", "/space", "/space/rocket-engine-digital-twin", "/ishavasyam-space", "/about/sudarshana-karkala"])("leaves %s to draw its own header and footer", (path) => {
     const { container } = renderAt(path);
     expect(screen.queryByRole("navigation", { name: "Site" })).toBeNull();
     expect(screen.queryByRole("main")).toBeNull();

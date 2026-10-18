@@ -1,0 +1,151 @@
+// What each part of a scooter battery does, how it commonly fails and how a
+// technician checks it. Generic engineering knowledge, not any manufacturer's
+// pack: vehicle-specific construction is shown only where verified.
+import type { ComponentDefinition, ComponentId, RepairDepth } from "@/lib/ev-battery-toolkit/types";
+
+export const COMPONENTS: ComponentDefinition[] = [
+  {
+    id: "enclosure",
+    name: "Battery enclosure",
+    function: "Holds and protects the pack mechanically, keeps water and dust out and carries the mounting loads into the frame.",
+    commonFaults: ["Impact damage or cracks", "Seal failure leading to water ingress", "Corroded mounting points"],
+    measurements: ["Visual inspection", "Water / corrosion inspection", "Insulation resistance (workshop)"],
+    repairDepth: "basic",
+  },
+  {
+    id: "cover",
+    name: "Enclosure cover",
+    function: "Closes the enclosure and compresses the gasket. Opening it exposes live parts.",
+    commonFaults: ["Distortion that unloads the gasket", "Missing or wrong fasteners", "Tamper evidence"],
+    measurements: ["Visual inspection", "Seal-line inspection"],
+    repairDepth: "expert",
+  },
+  {
+    id: "gasket",
+    name: "Gasket / seal",
+    function: "Seals the cover joint and cable glands to the enclosure's ingress rating.",
+    commonFaults: ["Compression set or tears", "Displaced seal after a previous opening", "Damaged cable glands"],
+    measurements: ["Visual inspection", "Moisture and corrosion marks inside the seal line"],
+    repairDepth: "expert",
+  },
+  {
+    id: "modules",
+    name: "Modules",
+    function: "Groups of cell groups built as a unit with their own interconnects, sensing points and mechanical frame.",
+    commonFaults: ["One module ageing faster than the rest", "Loose module interconnect", "Damaged module frame"],
+    measurements: ["Module voltage", "Cell-group comparison within the module", "Interconnect temperature"],
+    repairDepth: "advanced",
+  },
+  {
+    id: "cells",
+    name: "Cells and cell groups",
+    function: "Store the energy. Cells in parallel form a group; groups in series set the pack voltage.",
+    commonFaults: ["Weak or low-capacity group", "High internal resistance", "Self-discharge", "Swelling"],
+    measurements: ["Cell-group voltage (via BMS)", "Cell delta", "Voltage sag under load", "Capacity test", "Internal resistance"],
+    repairDepth: "advanced",
+  },
+  {
+    id: "cell-holders",
+    name: "Cell holders",
+    function: "Locate cylindrical cells, keep spacing for insulation and cooling, and resist vibration.",
+    commonFaults: ["Cracked holders", "Cells moving and rubbing", "Heat-damaged plastic near a hot cell"],
+    measurements: ["Visual inspection", "Thermal inspection"],
+    repairDepth: "advanced",
+  },
+  {
+    id: "busbars",
+    name: "Busbars / interconnects",
+    function: "Carry pack current between cells, groups and modules.",
+    commonFaults: ["Weld or bolted-joint resistance", "Loose fastener", "Corrosion", "Discolouration from heat"],
+    measurements: ["Voltage drop across the joint under load", "Thermal inspection", "Torque check (bolted)"],
+    repairDepth: "advanced",
+  },
+  {
+    id: "fuse",
+    name: "Main fuse",
+    function: "Opens the main current path on a short circuit or severe overcurrent.",
+    commonFaults: ["Open fuse", "Loose fuse holder", "Wrong rating fitted"],
+    measurements: ["Continuity with the pack isolated", "Voltage either side of the fuse (expert)"],
+    repairDepth: "expert",
+  },
+  {
+    id: "current-sensor",
+    name: "Current sensor (shunt / Hall)",
+    function: "Measures pack current for SOC counting, protection and power limiting.",
+    commonFaults: ["Offset drift giving SOC error", "Open sense lead", "Hall sensor failure"],
+    measurements: ["BMS current at zero load (offset)", "Compare BMS current with a clamp meter"],
+    repairDepth: "expert",
+  },
+  {
+    id: "sense-harness",
+    name: "Voltage-sense harness",
+    function: "Carries each cell-group voltage to the BMS for monitoring and balancing.",
+    commonFaults: ["Broken sense wire showing a false group voltage", "Corroded sense terminal", "Chafed harness"],
+    measurements: ["Compare BMS group voltage with a meter reading at the group", "Harness continuity"],
+    repairDepth: "expert",
+  },
+  {
+    id: "temp-sensors",
+    name: "Temperature sensors (NTC)",
+    function: "Measure pack temperature at chosen points so the BMS can limit current and stop charging when too hot or too cold.",
+    commonFaults: ["Open or shorted sensor reading an extreme value", "Sensor detached from the cell", "Too few sensors to see a local hot spot"],
+    measurements: ["BMS temperature per channel", "Compare with a thermal camera", "Sensor resistance (expert)"],
+    repairDepth: "expert",
+  },
+  {
+    id: "bms",
+    name: "BMS PCB",
+    function: "Measures voltages, temperatures and current; balances groups; switches charge and discharge; reports state over CAN, UART or BLE.",
+    commonFaults: ["BMS offline", "Stuck protection state", "Balancing failure", "Damaged MOSFETs", "Communication fault"],
+    measurements: ["BMS status and fault codes", "Charge / discharge enable state", "Communication check"],
+    repairDepth: "expert",
+  },
+  {
+    id: "charge-connector",
+    name: "Charge connector",
+    function: "Takes charger power into the pack, often through a separate protected path.",
+    commonFaults: ["Burnt or loose pins", "Corrosion", "Damaged latch", "Charger mismatch"],
+    measurements: ["Visual and thermal inspection", "Charger output voltage", "Charge current"],
+    repairDepth: "basic",
+  },
+  {
+    id: "discharge-connector",
+    name: "Discharge connector",
+    function: "Carries traction current to the motor controller.",
+    commonFaults: ["High contact resistance and heating", "Loose crimp", "Arcing marks", "Incomplete engagement"],
+    measurements: ["Visual inspection", "Thermal inspection after a load run", "Voltage drop under load"],
+    repairDepth: "basic",
+  },
+  {
+    id: "insulation",
+    name: "Insulation",
+    function: "Separates live parts from each other and from the enclosure.",
+    commonFaults: ["Abrasion through to a conductor", "Moisture tracking", "Heat damage"],
+    measurements: ["Insulation resistance with suitable equipment", "Visual inspection"],
+    repairDepth: "expert",
+  },
+  {
+    id: "tim",
+    name: "Thermal interface material",
+    function: "Conducts heat from the cells to the enclosure or a heat spreader.",
+    commonFaults: ["Gaps after vibration", "Dried-out paste", "Missing pad after a previous repair"],
+    measurements: ["Thermal gradient across the pack", "Visual inspection"],
+    repairDepth: "advanced",
+  },
+  {
+    id: "vent",
+    name: "Pressure vent",
+    function: "Equalises pressure while keeping water out; in an abnormal event it lets gas escape in a controlled direction.",
+    commonFaults: ["Blocked or damaged membrane", "Evidence of venting"],
+    measurements: ["Visual inspection", "Smell / residue check"],
+    repairDepth: "expert",
+  },
+];
+
+export const COMPONENT_BY_ID = Object.fromEntries(COMPONENTS.map((c) => [c.id, c])) as Record<ComponentId, ComponentDefinition>;
+
+export const REPAIR_DEPTH: Record<RepairDepth, { name: string; summary: string }> = {
+  basic: { name: "Basic Diagnostic", summary: "Locate, inspect, read data and measure from outside the pack." },
+  expert: { name: "Expert Service", summary: "Isolation, enclosure, fuse, connectors, BMS and sensing — trained workshop staff." },
+  advanced: { name: "Advanced Battery Repair", summary: "Module and cell-group work inside the pack — specialist battery technicians only." },
+};

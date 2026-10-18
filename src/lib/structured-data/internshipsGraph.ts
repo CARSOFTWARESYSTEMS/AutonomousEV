@@ -47,6 +47,11 @@ const PROGRAMME_TRACKS: { name: string; url: string; description: string }[] = [
     description: "Learn Battery, BMS, BESS, CAN communication, system validation and embedded cybersecurity by building an intelligent CAN monitoring and anomaly-detection prototype.",
   },
   {
+    name: "EV.ENGINEER™ — EV Battery Health & Diagnostics Toolkit",
+    url: "https://aerospace.ev.engineer/internships/ev-battery-health-diagnostics-toolkit",
+    description: "Interactive 3D toolkit for electric-scooter battery health analysis, BMS diagnostics, fault isolation and guided battery repair workflows.",
+  },
+  {
     name: "EV Help Agent",
     url: "https://help.ev.engineer/",
     description: "AI voice agent design and real-world dialog projects for EV support.",

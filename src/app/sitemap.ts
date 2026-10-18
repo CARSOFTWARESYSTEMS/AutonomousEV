@@ -64,5 +64,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: "https://aerospace.ev.engineer/aerospace/uflight-3d", lastModified: "2026-10-01", changeFrequency: "monthly", priority: 0.8 },
     { url: "https://aerospace.ev.engineer/space/rocket-engine-digital-twin", lastModified: "2026-10-03", changeFrequency: "monthly", priority: 0.8 },
     { url: "https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced", lastModified: "2026-10-12", changeFrequency: "monthly", priority: 0.8 },
+    { url: "https://aerospace.ev.engineer/internships/ev-battery-health-diagnostics-toolkit", lastModified: "2026-10-18", changeFrequency: "monthly", priority: 0.8 },
   ];
 }

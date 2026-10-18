@@ -170,3 +170,43 @@ describe("/internships Space & Aerospace Engineering", () => {
     expect(section()).toHaveAttribute("id", "space-aerospace-engineering");
   });
 });
+
+describe("/internships EV Battery Health & Diagnostics Toolkit card", () => {
+  const TITLE = "EV.ENGINEER™ — EV Battery Health & Diagnostics Toolkit";
+
+  it("sits directly after AegisCAN in Design & Development, with GenAI & Agentic AI Projects next", () => {
+    render(<InternshipsPage />);
+    const heading = screen.getByRole("heading", { level: 2, name: "Design & Development" });
+    const grid = heading.nextElementSibling as HTMLElement;
+    expect(within(grid).getAllByRole("heading", { level: 3 }).map((h) => h.textContent)).toEqual([
+      "EV Battery Intelligence Platform",
+      "EV Battery Pack Design",
+      "Battery Pack Aadhaar System",
+      "AegisCAN — CAN & BMS Cybersecurity",
+      TITLE,
+    ]);
+    const nextSection = heading.parentElement!.nextElementSibling!;
+    expect(within(nextSection as HTMLElement).getByRole("heading", { level: 2 })).toHaveTextContent("GenAI & Agentic AI Projects");
+  });
+
+  it("links to the toolkit with its description, highlights, CTA and analytics event", () => {
+    render(<InternshipsPage />);
+    const link = screen.getByRole("link", { name: new RegExp(TITLE) });
+    expect(link).toHaveAttribute("href", "/internships/ev-battery-health-diagnostics-toolkit");
+    expect(link).toHaveAttribute("data-track-event", "ev_battery_toolkit_card_clicked");
+    expect(link).toHaveTextContent("Interactive 3D toolkit for electric-scooter battery health analysis, BMS diagnostics, fault isolation and guided battery repair workflows.");
+    expect(link).toHaveTextContent("Explore fixed and swappable battery architectures, cells, modules, BMS, thermal behaviour and common battery faults through an interactive 3D diagnostic workspace.");
+    for (const tag of ["3D Battery Diagnostics", "BMS", "SOC / SOH", "Fault Isolation", "Battery Repair", "Thermal Analysis"]) expect(within(link).getByText(tag)).toBeInTheDocument();
+    expect(link).toHaveTextContent(/Explore Toolkit\s*→/);
+  });
+
+  it("leaves the AegisCAN card unchanged", () => {
+    render(<InternshipsPage />);
+    const aegis = screen.getByRole("link", { name: /AegisCAN — CAN & BMS Cybersecurity/ });
+    expect(aegis).toHaveAttribute("href", "/internships/AegisCAN");
+    expect(aegis).toHaveAttribute("data-track-event", "internship_card_click");
+    expect(aegis).toHaveTextContent("12-Week E&C / EEE Mini Project");
+    expect(aegis).toHaveTextContent("Explore AegisCAN");
+  });
+});
+

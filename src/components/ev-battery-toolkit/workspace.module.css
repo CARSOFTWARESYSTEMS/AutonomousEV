@@ -1,0 +1,672 @@
+/* The 3D workspace, the locator, the workbench and the 2D schematics.
+   Uses the page tokens from toolkit.module.css (.page). */
+
+.workspace {
+  display: grid;
+  gap: 14px;
+}
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+}
+.config,
+.inspector {
+  padding: 16px;
+  border: 1px solid var(--bt-line);
+  border-radius: var(--bt-radius);
+  background: var(--bt-surface);
+}
+.panelTitle {
+  margin: 0 0 10px;
+  font-size: 16px;
+  font-weight: 800;
+}
+.panelEyebrow {
+  margin: 0 0 4px;
+  color: #93c5fd;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.panelText {
+  margin: 0 0 10px;
+  color: var(--bt-muted);
+  font-size: 14px;
+}
+.panelSub {
+  margin: 12px 0 4px;
+  color: #b8c4e8;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.panelMeta {
+  margin: 10px 0 0;
+  color: var(--bt-note);
+  font-size: 13px;
+}
+.panelMeta strong {
+  color: #fff;
+}
+.bullets {
+  list-style: disc !important;
+  padding-left: 18px !important;
+  color: var(--bt-body);
+  font-size: 14px;
+}
+.ownerNote {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(252, 211, 77, 0.35);
+  border-radius: 10px;
+  color: #fde68a;
+  font-size: 14px;
+}
+.fine {
+  margin: 8px 0 0;
+  color: var(--bt-note);
+  font-size: 13px;
+  line-height: 1.55;
+}
+.muted {
+  margin: 0;
+  color: var(--bt-muted);
+}
+
+/* Chips */
+.chipSet {
+  margin: 0 0 12px;
+  padding: 0;
+  border: 0;
+}
+.chipSet legend {
+  margin-bottom: 6px;
+  padding: 0;
+  color: var(--bt-note);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.chip {
+  min-height: 34px;
+  padding: 5px 10px;
+  border: 1px solid var(--bt-line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--bt-muted);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.chip[aria-pressed="true"] {
+  border-color: rgba(147, 197, 253, 0.6);
+  background: rgba(37, 99, 235, 0.18);
+  color: #fff;
+}
+
+.field,
+.fieldInline {
+  display: grid;
+  gap: 5px;
+  color: var(--bt-note);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.fieldInline {
+  grid-auto-flow: row;
+}
+.field select,
+.field input,
+.fieldInline select {
+  min-height: 42px;
+  padding: 8px 10px;
+  border: 1px solid var(--bt-line-2);
+  border-radius: 9px;
+  background: #0b1129;
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.field select:disabled {
+  opacity: 0.5;
+}
+
+.resolved {
+  margin-top: 6px;
+  padding: 12px;
+  border: 1px dashed rgba(165, 180, 252, 0.4);
+  border-radius: 10px;
+}
+.resolvedLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--bt-note);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.resolvedValue {
+  margin: 6px 0 2px;
+  color: #fff;
+  font-family: var(--bt-mono);
+  font-size: 14px;
+  font-weight: 700;
+}
+.resolvedNote {
+  margin: 0;
+  color: var(--bt-muted);
+  font-size: 13px;
+}
+
+/* Viewport */
+.viewportCol {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+.toolbar,
+.controls,
+.loadRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.loadRow span {
+  margin-right: 4px;
+  color: var(--bt-note);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.tool {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 38px;
+  min-width: 38px;
+  justify-content: center;
+  padding: 6px 11px;
+  border: 1px solid var(--bt-line);
+  border-radius: 9px;
+  background: rgba(13, 19, 48, 0.8);
+  color: var(--bt-body);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.tool:hover:not(:disabled) {
+  border-color: rgba(147, 197, 253, 0.45);
+  color: #fff;
+}
+.tool[aria-pressed="true"] {
+  border-color: rgba(147, 197, 253, 0.65);
+  background: rgba(37, 99, 235, 0.22);
+  color: #fff;
+}
+.tool:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.sep {
+  width: 1px;
+  height: 22px;
+  margin: 0 4px;
+  background: var(--bt-line);
+}
+.viewport,
+.viewportSmall {
+  position: relative;
+  min-height: 300px;
+  border: 1px solid var(--bt-line-2);
+  border-radius: var(--bt-radius);
+  background: #060914;
+  overflow: hidden;
+}
+.viewport {
+  height: clamp(420px, 56vh, 620px);
+}
+.viewportSmall {
+  height: clamp(320px, 44vh, 460px);
+}
+.canvas {
+  position: absolute;
+  inset: 0;
+}
+.canvas canvas {
+  touch-action: none;
+}
+.loading {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  min-height: 300px;
+  margin: 0;
+  color: var(--bt-muted);
+  font-size: 14px;
+}
+.modelTag {
+  position: absolute;
+  left: 12px;
+  bottom: 10px;
+  margin: 0;
+  padding: 3px 9px;
+  border: 1px solid var(--bt-line);
+  border-radius: 7px;
+  background: rgba(7, 10, 23, 0.8);
+  color: var(--bt-note);
+  font-size: 11px;
+  pointer-events: none;
+}
+.fallbackNote {
+  margin: 0;
+  padding: 0 16px 14px;
+  color: var(--bt-muted);
+  font-size: 13px;
+}
+.describe {
+  margin: 0;
+  color: var(--bt-muted);
+  font-size: 14px;
+}
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--bt-muted);
+}
+.legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.legend span {
+  display: inline-block;
+  width: 14px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+/* Inspector */
+.miniDl {
+  display: grid;
+  gap: 4px;
+  margin: 0 0 8px;
+  font-size: 14px;
+}
+.miniDl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+.miniDl dt {
+  color: var(--bt-note);
+}
+.miniDl dd {
+  margin: 0;
+  color: #fff;
+  font-weight: 600;
+}
+.componentList {
+  display: grid;
+  gap: 2px;
+  max-height: 420px;
+  overflow-y: auto;
+}
+.componentList button,
+.linkButton {
+  width: 100%;
+  min-height: 34px;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--bt-body);
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+.componentList button:hover {
+  background: rgba(59, 130, 246, 0.12);
+  color: #fff;
+}
+.linkButton {
+  margin-top: 10px;
+  color: #93c5fd;
+  font-weight: 600;
+}
+
+.formatLab {
+  padding: 14px 16px;
+  border: 1px solid var(--bt-line);
+  border-radius: var(--bt-radius);
+  background: var(--bt-surface);
+}
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.tagList li {
+  padding: 3px 9px;
+  border: 1px solid var(--bt-line-2);
+  border-radius: 7px;
+  font-size: 13px;
+}
+
+/* Workbench */
+.workbench {
+  display: grid;
+  gap: 12px;
+}
+.benchTools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.benchTab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 8px 14px;
+  border: 1px solid var(--bt-line);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--bt-muted);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+.benchTab[aria-selected="true"] {
+  border-color: rgba(147, 197, 253, 0.6);
+  background: rgba(37, 99, 235, 0.16);
+  color: #fff;
+}
+.benchPanel {
+  display: grid;
+  gap: 10px;
+  max-width: 720px;
+  padding: 16px;
+  border: 1px solid var(--bt-line);
+  border-radius: var(--bt-radius);
+  background: var(--bt-surface);
+}
+.primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  justify-self: start;
+  min-height: 42px;
+  padding: 8px 16px;
+  border: 1px solid rgba(147, 197, 253, 0.4);
+  border-radius: 10px;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+}
+.primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.reading {
+  padding: 12px;
+  border: 1px dashed rgba(196, 181, 253, 0.45);
+  border-radius: 10px;
+  background: rgba(7, 10, 23, 0.5);
+}
+.readingLabel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--bt-muted);
+  font-size: 13px;
+}
+.readingValue {
+  margin: 4px 0 0;
+  color: #fff;
+  font-family: var(--bt-mono);
+  font-size: 22px;
+  font-weight: 700;
+}
+.toolGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+}
+.toolGrid li {
+  display: grid;
+  gap: 2px;
+  padding: 10px 12px;
+  border: 1px solid var(--bt-line);
+  border-radius: 10px;
+}
+.toolName {
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+}
+.toolUse {
+  color: var(--bt-muted);
+  font-size: 13px;
+}
+.toolState {
+  color: var(--bt-note);
+  font: 600 10px var(--bt-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Locator */
+.locator {
+  display: grid;
+  gap: 16px;
+}
+.locatorForm {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 10px;
+  align-items: end;
+  padding: 16px;
+  border: 1px solid var(--bt-line);
+  border-radius: var(--bt-radius);
+  background: var(--bt-surface);
+}
+.locatorForm .primary {
+  justify-self: stretch;
+}
+.locatorBody {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+}
+.locatorView {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+.locatorBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 10px;
+}
+.specPanel {
+  padding: 16px;
+  border: 1px solid var(--bt-line);
+  border-radius: var(--bt-radius);
+  background: var(--bt-surface);
+}
+.specList {
+  display: grid;
+  gap: 8px;
+  margin: 8px 0 0;
+  font-size: 14px;
+}
+.specList div {
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--bt-line);
+}
+.specList dt {
+  color: var(--bt-note);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.specList dd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 3px 0 0;
+  color: var(--bt-body);
+}
+
+/* Schematics */
+.schematic {
+  margin: 0;
+  padding: 14px;
+}
+.schematic svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 520px;
+}
+.svgLabel {
+  fill: #cbd5e1;
+  font: 600 11px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+.svgNote {
+  fill: #8f96b0;
+  font: 500 11px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+.svgModule {
+  fill: rgba(39, 50, 79, 0.35);
+  stroke: rgba(147, 197, 253, 0.35);
+}
+.svgGroup {
+  cursor: pointer;
+}
+.svgGroup:focus-visible rect {
+  stroke: #fff;
+  stroke-width: 2;
+}
+.svgGroupText {
+  fill: #fff;
+  font: 700 10px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  pointer-events: none;
+}
+.svgBus {
+  stroke: #aab4c8;
+  stroke-width: 3;
+}
+.svgSense {
+  stroke: rgba(147, 197, 253, 0.35);
+}
+.svgSenseBright {
+  stroke: #a5f3fc;
+  stroke-width: 1.5;
+}
+.svgBms {
+  fill: #0f2f3d;
+  stroke: rgba(34, 211, 238, 0.4);
+}
+.svgBmsBright {
+  fill: #155e75;
+  stroke: #67e8f9;
+}
+.svgFuse {
+  fill: #2a3245;
+  stroke: #dfe3ea;
+}
+.svgGround {
+  stroke: #334155;
+}
+.svgWheel {
+  fill: #0f131d;
+  stroke: #4a5675;
+  stroke-width: 6;
+}
+.svgBody {
+  fill: #323d5c;
+  stroke: #51608a;
+}
+.svgBodyXray {
+  fill: rgba(50, 61, 92, 0.18);
+  stroke: #5f7bb5;
+  stroke-dasharray: 4 3;
+}
+.svgSeat {
+  fill: #1a2135;
+}
+.svgFork {
+  stroke: #3a4563;
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+.svgBattery {
+  fill: #27324f;
+  stroke: #51608a;
+}
+.svgBatteryOn {
+  fill: #2563eb;
+  stroke: #bfdbfe;
+  stroke-width: 2;
+}
+
+@media (min-width: 1024px) {
+  .layout {
+    grid-template-columns: 250px minmax(0, 1fr) 290px;
+    align-items: start;
+  }
+  .locatorBody {
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+@media (min-width: 1280px) {
+  .layout {
+    grid-template-columns: 270px minmax(0, 1fr) 310px;
+  }
+}
+@media (max-width: 1023px) {
+  .viewport {
+    height: auto;
+    min-height: 0;
+  }
+  .viewportSmall {
+    height: auto;
+    min-height: 0;
+  }
+  .modelTag {
+    position: static;
+    display: inline-block;
+    margin: 0 14px 12px;
+  }
+}

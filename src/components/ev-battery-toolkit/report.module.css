@@ -1,0 +1,215 @@
+/* The Battery Diagnostic Report: a light, print-ready document in a dialog.
+   Rendered outside the page root, so colours are literal. */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  justify-content: center;
+  padding: 24px 16px;
+  background: rgba(3, 5, 12, 0.82);
+  overflow-y: auto;
+  font-family: Inter, system-ui, sans-serif;
+}
+.dialog {
+  width: 100%;
+  max-width: 880px;
+  height: max-content;
+}
+.dialogBar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding: 10px 12px;
+  border: 1px solid rgba(147, 197, 253, 0.25);
+  border-radius: 12px;
+  background: #0d1330;
+  color: #fff;
+}
+.dialogBar p {
+  margin: 0;
+  font-weight: 700;
+}
+.dialogActions {
+  display: flex;
+  gap: 8px;
+}
+.barButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 6px 14px;
+  border: 1px solid rgba(147, 197, 253, 0.4);
+  border-radius: 9px;
+  background: rgba(59, 130, 246, 0.15);
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.barButton:focus-visible {
+  outline: 2px solid #93c5fd;
+  outline-offset: 2px;
+}
+
+.doc {
+  padding: 36px 40px;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #111827;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.docHead {
+  padding-bottom: 14px;
+  border-bottom: 2px solid #1d4ed8;
+}
+.docBrand {
+  margin: 0;
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+.docTitle {
+  margin: 4px 0 10px;
+  color: #0b1020;
+  font-size: 22px;
+  font-weight: 800;
+}
+.docMeta,
+.docFinal,
+.quality {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+  margin: 10px 0 0;
+}
+.docMeta dt,
+.docFinal dt,
+.quality dt {
+  color: #6b7280;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.docMeta dd,
+.docFinal dd,
+.quality dd {
+  margin: 2px 0 0;
+  color: #111827;
+  font-weight: 700;
+}
+.docFinal {
+  margin-top: 18px;
+  padding: 12px;
+  border: 1px solid #c7d2fe;
+  border-radius: 8px;
+  background: #eef2ff;
+}
+.docSection {
+  margin-top: 18px;
+  break-inside: avoid;
+}
+.docH3 {
+  margin: 0 0 6px;
+  color: #1e3a8a;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+.docTable {
+  width: 100%;
+  margin-top: 12px;
+  border-collapse: collapse;
+}
+.docTable caption {
+  padding-bottom: 4px;
+  color: #6b7280;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-align: left;
+  text-transform: uppercase;
+}
+.docTable th,
+.docTable td {
+  padding: 5px 6px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+  vertical-align: top;
+}
+.docTable th {
+  width: 36%;
+  color: #374151;
+  font-weight: 600;
+}
+.docTable td:last-child {
+  width: 1%;
+  white-space: nowrap;
+}
+.docText {
+  margin: 6px 0 0;
+}
+.docFooter {
+  margin-top: 22px;
+  padding-top: 10px;
+  border-top: 1px solid #e5e7eb;
+  color: #6b7280;
+  font-size: 11px;
+}
+
+/* Inside the white document, badges need dark text to stay legible. */
+.doc :global(span[data-family]) {
+  color: #1f2937 !important;
+  background: #f3f4f6 !important;
+  border-color: #9ca3af !important;
+}
+.doc :global(div[data-context]) {
+  color: #111827 !important;
+  background: #f5f3ff !important;
+  border-color: #8b5cf6 !important;
+  margin: 8px 0 0;
+}
+.doc :global(div[data-context="real"]) {
+  background: #ecfeff !important;
+  border-color: #0891b2 !important;
+}
+.doc :global(div[data-context]) :global(span) {
+  color: #374151 !important;
+}
+
+@media (max-width: 600px) {
+  .doc {
+    padding: 22px 16px;
+  }
+}
+
+@media print {
+  .overlay {
+    position: static;
+    padding: 0;
+    background: #fff;
+    overflow: visible;
+  }
+  .dialog {
+    max-width: none;
+  }
+  .dialogBar {
+    display: none;
+  }
+  .doc {
+    padding: 0;
+    border-radius: 0;
+  }
+}
