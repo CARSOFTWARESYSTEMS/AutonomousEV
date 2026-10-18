@@ -48,7 +48,7 @@ const PROGRAMME_TRACKS: { name: string; url: string; description: string }[] = [
   },
   {
     name: "EV.ENGINEER™ — EV Battery Health & Diagnostics Toolkit",
-    url: "https://aerospace.ev.engineer/internships/ev-battery-health-diagnostics-toolkit",
+    url: `${SITE_URL}/internships/ev-battery-health-diagnostics-toolkit`,
     description: "Interactive 3D toolkit for electric-scooter battery health analysis, BMS diagnostics, fault isolation and guided battery repair workflows.",
   },
   {

@@ -158,8 +158,15 @@
   width: 1%;
   white-space: nowrap;
 }
+/* Explicit colours: the site's global p rule is a light tint meant for its dark pages. */
 .docText {
   margin: 6px 0 0;
+  color: #1f2937;
+}
+.doc p,
+.doc td,
+.doc dd {
+  color: #1f2937;
 }
 .docFooter {
   margin-top: 22px;
@@ -195,7 +202,35 @@
   }
 }
 
+@page {
+  size: A4 portrait;
+  margin: 14mm 12mm 16mm;
+}
+
 @media print {
+  .doc {
+    font-size: 10.5pt;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .docH3,
+  .docTitle,
+  .docTable caption {
+    break-after: avoid;
+  }
+  /* Sections flow across pages; rows, headings and summary blocks stay whole. */
+  .docSection {
+    break-inside: auto;
+  }
+  .docTable tr,
+  .docMeta,
+  .docFinal,
+  .quality {
+    break-inside: avoid;
+  }
+  .docTable td {
+    overflow-wrap: anywhere;
+  }
   .overlay {
     position: static;
     padding: 0;

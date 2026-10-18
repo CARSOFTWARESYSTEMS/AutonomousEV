@@ -1,13 +1,15 @@
 // Priority South India EV scooter battery platforms for V1.
 //
 // Rule for this data: a technical value appears only when it is verified from a
-// source recorded here. The EV.ENGINEER repository holds no verified battery
-// specification for these platforms, so every technical field is UNKNOWN and
-// the interface shows "Technical specification not verified." Variant names are
+// source recorded here. For Ola, TVS, Ather and River no source is recorded
+// yet, so every technical field is UNKNOWN and the interface shows "Technical
+// specification not verified." EVeium's published values carry their sources
+// (eveium.ts). Variant names are
 // the manufacturers' public model names, listed to identify the vehicle in a
 // job card; they carry no battery data. The list is an order of priority for
 // the toolkit, not a ranking of reliability or failures.
 import { unknown } from "@/lib/ev-battery-toolkit/provenance";
+import { EVEIUM_VEHICLES } from "./eveium";
 import type { SourceReference, Vehicle, VehicleBatterySpec, VehicleVariant } from "@/lib/ev-battery-toolkit/types";
 
 const UNVERIFIED_SPEC = (): VehicleBatterySpec => ({
@@ -24,6 +26,10 @@ const UNVERIFIED_SPEC = (): VehicleBatterySpec => ({
   bmsCommunication: unknown(),
   connectorType: unknown(),
   thermalSystem: unknown(),
+  batteryType: unknown(),
+  motorPowerW: unknown(),
+  claimedRange: unknown(),
+  chargingTime: unknown(),
 });
 
 const variant = (id: string, name: string): VehicleVariant => ({ id, name, modelYears: [], battery: UNVERIFIED_SPEC() });
@@ -86,18 +92,8 @@ export const VEHICLES: Vehicle[] = [
     lastVerifiedDate: null,
     confidence: "LOW",
   },
-  {
-    id: "eveium",
-    manufacturer: "EVeium",
-    model: "Cosmo / Comet / Czar",
-    family: "EVeium Cosmo / Comet / Czar family",
-    variants: [variant("cosmo", "Cosmo"), variant("comet", "Comet"), variant("czar", "Czar")],
-    serviceNotes: SERVICE_NOTES,
-    source: NO_VERIFIED_SOURCE,
-    verificationStatus: "UNKNOWN",
-    lastVerifiedDate: null,
-    confidence: "LOW",
-  },
+  // Cosmo, Comet and Czar: publicly documented battery data with sources (see eveium.ts).
+  ...EVEIUM_VEHICLES,
 ];
 
 export const VEHICLE_BY_ID: Record<string, Vehicle> = Object.fromEntries(VEHICLES.map((v) => [v.id, v]));
@@ -109,7 +105,7 @@ export const MANUFACTURERS = Array.from(new Set(VEHICLES.map((v) => v.manufactur
  * "TVS Motor Company iQube S", "Ather Energy 450X" — never "S1 S1 Pro".
  */
 export function vehicleLabel(vehicle: Vehicle, variant?: VehicleVariant | null): string {
-  if (!variant) return `${vehicle.manufacturer} ${vehicle.model}`;
+  if (!variant || variant.id === "not-specified") return `${vehicle.manufacturer} ${vehicle.model}`;
   const name = variant.name.startsWith(vehicle.model) || vehicle.model.includes("/") ? variant.name : `${vehicle.model} ${variant.name}`;
   return `${vehicle.manufacturer} ${name}`;
 }
@@ -135,4 +131,8 @@ export const SPEC_FIELDS: { key: keyof VehicleBatterySpec; label: string }[] = [
   { key: "bmsCommunication", label: "BMS Communication" },
   { key: "connectorType", label: "Connector" },
   { key: "thermalSystem", label: "Thermal System" },
+  { key: "batteryType", label: "Battery Type (published)" },
+  { key: "motorPowerW", label: "Motor Power" },
+  { key: "claimedRange", label: "Claimed Range" },
+  { key: "chargingTime", label: "Charging Time" },
 ];

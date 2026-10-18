@@ -13,6 +13,7 @@ import Link from "next/link";
 import { ArrowRight, BatteryCharging, ChevronRight, ExternalLink, Laptop, ShieldCheck } from "lucide-react";
 import ResearcherCard from "@/components/ResearcherCard";
 import { ANSWERS, EXTERNAL_EQUIPMENT, EXTERNAL_LABEL, FAQ, FLOW, TOOLKIT } from "@/data/ev-battery-toolkit/content";
+import { EVEIUM_DATA_QUALITY } from "@/data/ev-battery-toolkit/eveium";
 import { SPEC_FIELDS, VEHICLES } from "@/data/ev-battery-toolkit/vehicles";
 import { LINK_EVENTS } from "@/lib/ev-battery-toolkit/analytics";
 import { UNVERIFIED_SPEC } from "@/lib/ev-battery-toolkit/provenance";
@@ -41,6 +42,23 @@ const NAV = [
   { href: "#report", label: "Report" },
   { href: "#faq", label: "FAQ" },
 ];
+
+/** One row per platform family; a family's models are listed together. */
+const PLATFORM_FAMILIES = Array.from(new Set(VEHICLES.map((v) => v.family))).map((family) => {
+  const members = VEHICLES.filter((v) => v.family === family);
+  const sourced = new Set(SPEC_FIELDS.filter((f) => members.some((m) => m.variants.some((x) => x.battery[f.key].value !== null || x.battery[f.key].conflict))).map((f) => f.key));
+  return {
+    family,
+    manufacturer: members[0].manufacturer,
+    variants: members.flatMap((m) => (m.variants.length === 1 && m.variants[0].id === "not-specified" ? [m.model] : m.variants.map((x) => x.name))),
+    verified: sourced.size,
+    total: SPEC_FIELDS.length,
+    sourced,
+    verificationStatus: members[0].verificationStatus,
+    confidence: members[0].confidence,
+    page: members[0].manufacturer === "EVeium" ? `${TOOLKIT.route}/vehicles/eveium` : null,
+  };
+});
 
 function HeroVisual() {
   const cols = 10;
@@ -273,29 +291,44 @@ export default function BatteryToolkitPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {VEHICLES.map((v) => (
-                    <tr key={v.id}>
+                  {PLATFORM_FAMILIES.map((f) => (
+                    <tr key={f.family}>
                       <th scope="row">
-                        {v.family}
-                        <span className={css.cellSub}>{v.manufacturer}</span>
+                        {f.family}
+                        <span className={css.cellSub}>{f.manufacturer}</span>
                       </th>
-                      <td>{v.variants.map((x) => x.name).join(", ")}</td>
+                      <td>{f.variants.join(", ")}</td>
                       <td>
-                        {UNVERIFIED_SPEC} <ProvenanceBadge provenance="UNKNOWN" />
+                        {f.verified > 0 ? (
+                          <>
+                            {EVEIUM_DATA_QUALITY} <ProvenanceBadge provenance="MANUFACTURER_VERIFIED" />
+                            {f.page ? (
+                              <Link href={f.page} className={css.inlineLink}>
+                                Open {f.manufacturer} battery diagnostics →
+                              </Link>
+                            ) : null}
+                          </>
+                        ) : (
+                          <>
+                            {UNVERIFIED_SPEC} <ProvenanceBadge provenance="UNKNOWN" />
+                          </>
+                        )}
                         <details className={css.specDetails}>
-                          <summary>0 of {SPEC_FIELDS.length} fields verified</summary>
+                          <summary>
+                            {f.verified} of {f.total} fields published with a source
+                          </summary>
                           <ul>
-                            {SPEC_FIELDS.map((f) => (
-                              <li key={f.key}>
-                                {f.label}: <span>UNKNOWN</span>
+                            {SPEC_FIELDS.map((field) => (
+                              <li key={field.key}>
+                                {field.label}: <span>{f.sourced.has(field.key) ? "SOURCED" : "UNKNOWN"}</span>
                               </li>
                             ))}
                           </ul>
                         </details>
                       </td>
-                      <td>{v.verificationStatus}</td>
+                      <td>{f.verificationStatus}</td>
                       <td>
-                        <Pill family="warning">{v.confidence}</Pill>
+                        <Pill family="warning">{f.confidence}</Pill>
                       </td>
                     </tr>
                   ))}

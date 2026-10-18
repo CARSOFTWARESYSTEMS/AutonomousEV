@@ -273,6 +273,15 @@
   color: var(--bt-note);
   font-size: 13px;
 }
+.referenceNotice {
+  margin: 10px 0 0;
+  padding: 9px 12px;
+  border-left: 2px solid rgba(252, 211, 77, 0.55);
+  border-radius: 0 8px 8px 0;
+  background: rgba(245, 158, 11, 0.07);
+  color: #fde68a !important;
+  font-size: 13px;
+}
 .warnNote {
   margin: 0;
   padding: 10px 12px;
@@ -552,6 +561,17 @@
 }
 
 /* Guided case */
+.caseTag {
+  display: inline-block;
+  margin: 0 0 10px;
+  padding: 3px 10px;
+  border: 1px dashed rgba(196, 181, 253, 0.6);
+  border-radius: 7px;
+  background: rgba(139, 92, 246, 0.1);
+  color: #ddd6fe;
+  font: 700 11px var(--bt-mono);
+  letter-spacing: 0.08em;
+}
 .complaint {
   margin: 0 0 14px;
   padding: 12px 14px;
@@ -697,4 +717,221 @@
   .guided {
     padding: 14px;
   }
+}
+
+/* ── Guided flow, published specification, configuration, decision ── */
+.sideColumn {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  min-width: 0;
+}
+.flow {
+  padding: 12px;
+  border: 1px solid var(--bt-line);
+  border-radius: 12px;
+  background: rgba(7, 10, 23, 0.45);
+}
+.flow ol {
+  display: grid;
+  gap: 4px;
+  margin-top: 6px !important;
+}
+.flow li {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  color: var(--bt-muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+.flow li svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--bt-note);
+}
+.flow li[data-done] {
+  color: #cbd5e1;
+}
+.flow li[data-done] svg {
+  color: #67e8f9;
+}
+.flowEmpty {
+  margin: 0;
+  color: var(--bt-note);
+  font-size: 13px;
+}
+.flowNext {
+  margin: 10px 0 0;
+  padding-top: 8px;
+  border-top: 1px solid var(--bt-line);
+  color: #fff;
+  font-size: 13px;
+}
+.flowNext span {
+  display: block;
+  color: #67e8f9;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.published {
+  padding: 12px 14px;
+  border: 1px solid var(--bt-line-2);
+  border-radius: 12px;
+  background: rgba(13, 19, 48, 0.6);
+}
+.publishedList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 8px 16px;
+  margin: 6px 0 0;
+}
+.publishedList dt {
+  color: var(--bt-note);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.publishedList dd {
+  margin: 2px 0 0;
+}
+.specValue {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  color: #fff;
+  font-size: 14px;
+}
+.claimDetails summary {
+  margin-top: 2px;
+  color: #93c5fd;
+  font-size: 12px;
+  cursor: pointer;
+}
+.claims ul {
+  display: grid;
+  gap: 2px;
+  margin-top: 4px !important;
+  font-size: 12px;
+}
+.claims a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #93c5fd;
+}
+.claimValue {
+  color: #e2e8f0;
+  font-weight: 600;
+}
+.claimCategory {
+  padding: 0 5px;
+  border: 1px solid var(--bt-line-2);
+  border-radius: 5px;
+  color: var(--bt-note);
+  font: 600 9px var(--bt-mono);
+  letter-spacing: 0.04em;
+}
+.groupTableWrap {
+  overflow-x: auto;
+}
+.groupTableWrap tr[data-flag] td:last-child {
+  color: #fcd34d;
+  font-weight: 600;
+}
+.configAssistant {
+  padding: 12px 14px;
+  border: 1px dashed var(--bt-line-2);
+  border-radius: 12px;
+}
+.configAssistant summary {
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+.configAssistant[open] summary {
+  margin-bottom: 8px;
+}
+.expectations {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px;
+  margin: 12px 0 0;
+}
+.expectations dt {
+  color: var(--bt-note);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.expectations dd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 2px 0 0;
+  color: #fff;
+  font-size: 14px;
+}
+.rootSelect {
+  display: grid;
+  gap: 2px;
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  border: 1px solid var(--bt-line);
+  border-radius: 10px;
+}
+.rootSelect legend {
+  padding: 0 6px;
+  color: #fff;
+  font-weight: 700;
+}
+.advancedGate {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid rgba(252, 211, 77, 0.45);
+  border-radius: 12px;
+  background: rgba(120, 53, 15, 0.12);
+}
+.advancedGate legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 6px;
+  color: #fcd34d;
+  font: 800 12px var(--bt-mono);
+  letter-spacing: 0.08em;
+}
+.concepts ol {
+  display: grid;
+  gap: 4px;
+  padding-left: 18px !important;
+  list-style: decimal !important;
+  font-size: 14px;
+}
+.candidate details > summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  list-style: none;
+}
+.candidate details > summary::-webkit-details-marker {
+  display: none;
+}
+.candidate details > summary h4 {
+  margin: 0;
+  margin-right: auto;
+  font-size: 16px;
+}
+.candidate details[open] > summary {
+  margin-bottom: 10px;
 }

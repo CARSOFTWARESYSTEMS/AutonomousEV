@@ -24,7 +24,7 @@ export type AssetSource =
     };
 
 export const MODEL_REGISTRY: Record<AssetId, AssetSource> = {
-  "generic-scooter": { kind: "procedural", label: "Generic procedural scooter — not OEM geometry" },
+  "generic-scooter": { kind: "procedural", label: "Generic procedural scooter — NOT OEM GEOMETRY" },
   "pack-fixed-floor": { kind: "procedural", label: "Procedural fixed floor pack — educational representation" },
   "pack-swappable": { kind: "procedural", label: "Procedural swappable pack — educational representation" },
   "pack-serviceable": { kind: "procedural", label: "Procedural serviceable pack — educational representation" },

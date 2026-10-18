@@ -6,10 +6,10 @@ import { FAULT_BY_ID, FAULT_CATEGORIES, FAULTS } from "@/data/ev-battery-toolkit
 import { SPEC_FIELDS, VEHICLES, VEHICLE_BY_ID, vehicleLabel } from "@/data/ev-battery-toolkit/vehicles";
 import { sanitizeParams, trackToolkit } from "./analytics";
 import { FutureLiveBmsSource, SimulationSource, canMergeIntoRealJob, parseDiagnosticFile } from "./dataSources";
-import { INSUFFICIENT, compareBeforeAfter, deltaOf, newJobCard, repairDecision, rootCauseCandidates, verifyRepair } from "./diagnosis";
+import { INSUFFICIENT, REFERENCE_LOGIC_NOTICE, compareBeforeAfter, deltaOf, newJobCard, repairDecision, rootCauseCandidates, verifyRepair } from "./diagnosis";
 import { assessHealth } from "./health";
 import { applyLayout, layoutPack, resolvePack } from "./pack";
-import { formatNumber, formatSourced, UNVERIFIED_SPEC } from "./provenance";
+import { PROVENANCE, formatNumber, formatSourced, UNVERIFIED_SPEC } from "./provenance";
 import { buildRealReport, buildSimulationReport } from "./report";
 import { simulate } from "./simulation";
 import type { BatteryConfig, JobCard, MeasurementKey, ObservationKey, Provenance } from "./types";
@@ -258,7 +258,7 @@ describe("reports", () => {
     const allRows = [...report.header, ...report.sections.flatMap((s) => s.rows)];
     expect(allRows.some((r) => r.provenance === "SIMULATED")).toBe(false);
     expect(allRows.find((r) => r.label === "SOC")?.value).toBe("NOT MEASURED");
-    expect(allRows.find((r) => r.label === "Chemistry")?.value).toBe(UNVERIFIED_SPEC);
+    expect(allRows.find((r) => r.label === "Cell Chemistry")?.value).toBe(UNVERIFIED_SPEC);
     expect(report.quality.measured).toBe(1);
     expect(report.quality.manufacturerVerified).toBe(0);
     expect(report.quality.unknown).toBeGreaterThan(0);
@@ -321,9 +321,9 @@ describe("analytics privacy", () => {
 });
 
 describe("data honesty", () => {
-  it("shows every priority platform with all technical fields UNKNOWN, never invented", () => {
-    expect(VEHICLES.map((v) => v.family)).toEqual(["Ola S1 family", "TVS iQube family", "Ather 450 / Rizta family", "River Indie", "EVeium Cosmo / Comet / Czar family"]);
-    for (const v of VEHICLES) {
+  it("shows every platform without a recorded source with all technical fields UNKNOWN, never invented", () => {
+    expect(Array.from(new Set(VEHICLES.map((v) => v.family)))).toEqual(["Ola S1 family", "TVS iQube family", "Ather 450 / Rizta family", "River Indie", "EVeium Cosmo / Comet / Czar family"]);
+    for (const v of VEHICLES.filter((x) => x.manufacturer !== "EVeium")) {
       expect(v.verificationStatus).toBe("UNKNOWN");
       for (const variant of v.variants) {
         for (const f of SPEC_FIELDS) {
@@ -341,7 +341,7 @@ describe("data honesty", () => {
     expect(label("tvs-iqube", "iqube-s")).toBe("TVS Motor Company iQube S");
     expect(label("ather-450-rizta", "450x")).toBe("Ather Energy 450X");
     expect(label("river-indie", "indie")).toBe("River Indie");
-    expect(label("eveium", "czar")).toBe("EVeium Czar");
+    expect(label("eveium-czar", "not-specified")).toBe("EVeium Czar");
   });
 
   it("formats missing numbers as words, never undefined, NaN or Infinity", () => {
@@ -367,3 +367,105 @@ describe("data honesty", () => {
     }
   });
 });
+
+describe("release gate: evidence integrity", () => {
+  const simulatedImbalance = () => {
+    const job = newJobCard(new Date(2026, 9, 18));
+    job.complaintCategory = "shutdown-load";
+    job.vehicleId = "ola-s1";
+    job.variantId = "s1-pro";
+    measured(job, "packVoltage", 78.2, "SIMULATED");
+    measured(job, "cellMax", 4.08, "SIMULATED");
+    measured(job, "cellMin", 3.74, "SIMULATED");
+    job.observations.bmsStatus = { key: "bmsStatus", value: "Normal", provenance: "SIMULATED" };
+    job.observations.loadBehaviour = { key: "loadBehaviour", value: "Shuts down under load", provenance: "SIMULATED" };
+    return job;
+  };
+
+  it("ignores SIMULATED values in the real context: no evidence, no repair, nothing in the report", () => {
+    const job = simulatedImbalance();
+    const real = rootCauseCandidates(job);
+    expect(real.every((c) => c.gate === "INSUFFICIENT" && c.supporting.length === 0)).toBe(true);
+    expect(repairDecision(job).status).toBe("INSUFFICIENT_EVIDENCE");
+    const report = buildRealReport(job, new Date(2026, 9, 18));
+    const rows = [...report.header, ...report.sections.flatMap((sec) => sec.rows)];
+    expect(rows.some((r) => r.provenance === "SIMULATED")).toBe(false);
+    expect(rows.find((r) => r.label === "Cell Maximum")?.value).toBe("NOT MEASURED");
+    expect(report.quality.simulated).toBe(0);
+    expect(JSON.stringify(report)).not.toContain("4.080");
+  });
+
+  it("uses SIMULATED values only when the simulation context asks for them", () => {
+    const job = simulatedImbalance();
+    const sim = rootCauseCandidates(job, "simulation").find((c) => c.id === "imbalance")!;
+    expect(sim.gate).toBe("MET");
+    expect(sim.confidence).toBe("HIGH");
+    measured(job, "cellMax", 4.08, "MEASURED");
+    expect(rootCauseCandidates(job, "simulation").find((c) => c.id === "imbalance")!.gate).toBe("INSUFFICIENT");
+  });
+
+  it("never recommends a repair from a complaint and a selected vehicle alone", () => {
+    for (const complaint of ["shutdown-load", "reduced-range", "not-charging", "overheating", "after-rain", "storage", "bms-comm", "no-output", "connector-heating"]) {
+      const job = newJobCard(new Date());
+      job.complaintCategory = complaint;
+      job.vehicleId = "ather-450-rizta";
+      job.variantId = "450x";
+      job.architecture = "fixed-floor";
+      expect(repairDecision(job).status).toBe("INSUFFICIENT_EVIDENCE");
+    }
+  });
+
+  it("keeps UNKNOWN and NOT MEASURED as valid states that never count as evidence", () => {
+    const job = newJobCard(new Date());
+    job.before.cellMax = { key: "cellMax", value: null, provenance: "UNKNOWN" };
+    job.before.cellMin = { key: "cellMin", value: null, provenance: "NOT_MEASURED" };
+    expect(deltaOf(job.before).value).toBeNull();
+    expect(repairDecision(job).status).toBe("INSUFFICIENT_EVIDENCE");
+  });
+
+  it("stops at a recorded severe overheating and on every hazard flag", () => {
+    const hot = newJobCard(new Date());
+    measured(hot, "tempMax", 64);
+    expect(repairDecision(hot).status).toBe("UNSAFE_QUARANTINE");
+    for (const flag of ["Puncture", "Electrolyte leakage", "Smoke", "Flood damage", "Suspected internal short", "Thermal runaway indicators (venting, hissing, rapidly rising temperature)"]) {
+      const job = newJobCard(new Date());
+      job.safetyFlags = [flag];
+      expect(repairDecision(job).status).toBe("UNSAFE_QUARANTINE");
+      expect(verifyRepair(job).outcome).toBe("UNSAFE_DO_NOT_RETURN");
+    }
+  });
+
+  it("puts the reference-logic notice in the real report's recommendation", () => {
+    const report = buildRealReport(newJobCard(new Date()), new Date());
+    expect(report.sections.find((sec) => sec.id === "recommendation")!.text).toContain(REFERENCE_LOGIC_NOTICE);
+  });
+});
+
+describe("release gate: provenance", () => {
+  it("distinguishes all ten data origins", () => {
+    expect(Object.keys(PROVENANCE).sort()).toEqual(["CALCULATED", "ESTIMATED", "MANUFACTURER_VERIFIED", "MEASURED", "NOT_AVAILABLE", "NOT_MEASURED", "SIMULATED", "THIRD_PARTY_DOCUMENTED", "UNKNOWN", "USER_ENTERED"]);
+    expect(new Set(Object.values(PROVENANCE).map((p) => p.label)).size).toBe(10);
+  });
+
+  it("never shows a value attached to an UNKNOWN, NOT MEASURED or NOT AVAILABLE field", () => {
+    expect(formatSourced({ value: 72, provenance: "UNKNOWN", unit: "V" })).toBe(UNVERIFIED_SPEC);
+    expect(formatSourced({ value: 72, provenance: "NOT_MEASURED", unit: "V" })).toBe("NOT MEASURED");
+    expect(formatSourced({ value: 72, provenance: "NOT_AVAILABLE", unit: "V" })).toBe("Not available.");
+  });
+
+  it("publishes no model-level battery value without a recorded, non-UNKNOWN source", () => {
+    for (const v of VEHICLES) {
+      const sourced = v.source.some((src) => src.sourceType !== "UNKNOWN" && Boolean(src.url));
+      for (const variant of v.variants) {
+        for (const f of SPEC_FIELDS) {
+          const item = variant.battery[f.key];
+          if (item.value !== null) {
+            expect(sourced, `${v.id}/${variant.id}/${f.key}`).toBe(true);
+            expect(["MANUFACTURER_VERIFIED", "THIRD_PARTY_DOCUMENTED", "CALCULATED", "ESTIMATED"]).toContain(item.provenance);
+          }
+        }
+      }
+    }
+  });
+});
+

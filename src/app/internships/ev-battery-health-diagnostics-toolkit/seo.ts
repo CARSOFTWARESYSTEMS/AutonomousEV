@@ -3,7 +3,8 @@ import { SITE_URL } from "@/data/public-entities";
 import { ANSWERS, FAQ, KEYWORDS, TOOLKIT } from "@/data/ev-battery-toolkit/content";
 import { EV_ENGINEER_BRAND_ID, ITELEMATICS_ID, PERSON_ID, WEBSITE_ID, evEngineerBrandNode, itelematicsOrgNode, sudarshanaKarkalaPersonNode, websiteNode } from "@/lib/structured-data/entities";
 
-export const CANONICAL = `https://aerospace.ev.engineer${TOOLKIT.route}`;
+// The site is autonomous.ev.engineer (SITE_URL), like every other /internships route.
+export const CANONICAL = `${SITE_URL}${TOOLKIT.route}`;
 export const TITLE = "EV Battery Health & Diagnostics Toolkit — 3D Battery Repair & BMS Diagnostics | EV.ENGINEER™";
 export const DESCRIPTION =
   "Interactive 3D EV battery diagnostics toolkit for electric-scooter technicians. Explore battery packs, BMS, cells, SOC, SOH, thermal behaviour, faults and guided repair workflows.";
@@ -12,7 +13,6 @@ export const DATE_PUBLISHED = "2026-10-18";
 const OG_IMAGE = `${CANONICAL}/opengraph-image`;
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://aerospace.ev.engineer"),
   title: TITLE,
   description: DESCRIPTION,
   keywords: [...KEYWORDS],

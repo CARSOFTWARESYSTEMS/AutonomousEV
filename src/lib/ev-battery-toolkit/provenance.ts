@@ -3,19 +3,26 @@
 // "NaN" or "Infinity".
 import type { Provenance, Sourced } from "./types";
 
-export const PROVENANCE: Record<Provenance, { label: string; family: "measured" | "user" | "manufacturer" | "simulated" | "estimated" | "unknown" }> = {
+export const PROVENANCE: Record<Provenance, { label: string; family: "measured" | "user" | "manufacturer" | "thirdparty" | "simulated" | "estimated" | "calculated" | "unknown" }> = {
   MEASURED: { label: "MEASURED", family: "measured" },
   USER_ENTERED: { label: "USER ENTERED", family: "user" },
   MANUFACTURER_VERIFIED: { label: "MANUFACTURER VERIFIED", family: "manufacturer" },
+  THIRD_PARTY_DOCUMENTED: { label: "THIRD-PARTY DOCUMENTED", family: "thirdparty" },
   SIMULATED: { label: "SIMULATED", family: "simulated" },
   ESTIMATED: { label: "ESTIMATED", family: "estimated" },
+  CALCULATED: { label: "CALCULATED", family: "calculated" },
   NOT_MEASURED: { label: "NOT MEASURED", family: "unknown" },
   NOT_AVAILABLE: { label: "NOT AVAILABLE", family: "unknown" },
   UNKNOWN: { label: "UNKNOWN", family: "unknown" },
 };
 
-/** The states a technician can give a real-vehicle field. */
+/** The states a technician can give a real-vehicle reading. */
 export const REAL_FIELD_PROVENANCE: readonly Provenance[] = ["MEASURED", "USER_ENTERED", "NOT_MEASURED", "NOT_AVAILABLE", "UNKNOWN"];
+
+/** Specification fields (nominal voltage, rated capacity) may also come from documentation. */
+export const SPEC_FIELD_PROVENANCE: readonly Provenance[] = ["USER_ENTERED", "MANUFACTURER_VERIFIED", "THIRD_PARTY_DOCUMENTED", "NOT_MEASURED", "NOT_AVAILABLE", "UNKNOWN"];
+
+export const SOURCE_CONFLICT = "Sources disagree — confirm on the pack label.";
 
 export const UNVERIFIED_SPEC = "Technical specification not verified.";
 export const NOT_AVAILABLE = "Not available.";
@@ -49,7 +56,9 @@ export function formatNumber(value: unknown, unit = "", digits = 0, empty = NOT_
 export function formatSourced(item: Sourced<unknown> | undefined, digits = 0): string {
   if (!item) return NOT_AVAILABLE;
   const { value, provenance, unit } = item;
-  if (value === null || value === undefined) {
+  if (item.conflict) return SOURCE_CONFLICT;
+  // A value without a trustworthy origin is never shown, even if one was attached.
+  if (value === null || value === undefined || provenance === "UNKNOWN" || provenance === "NOT_MEASURED" || provenance === "NOT_AVAILABLE") {
     if (provenance === "NOT_MEASURED") return NOT_MEASURED;
     if (provenance === "UNKNOWN") return UNVERIFIED_SPEC;
     return NOT_AVAILABLE;

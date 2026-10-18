@@ -46,7 +46,7 @@ link below points to a canonical public page already listed in
   (Co-Researcher · EV.ENGINEER™, aerospace cybersecurity research and
   AS9102 First Article Inspection engineering focus) and Sudarshana Karkala
   (Co-Researcher · EV.ENGINEER™).
-- [EV Battery Health & Diagnostics Toolkit](https://aerospace.ev.engineer/internships/ev-battery-health-diagnostics-toolkit):
+- [EV Battery Health & Diagnostics Toolkit](https://autonomous.ev.engineer/internships/ev-battery-health-diagnostics-toolkit):
   EV.ENGINEER™ interactive 3D workspace for electric-scooter battery
   diagnosis: Owner Mode (symptoms and safe next steps only) and Technician
   Mode, a vehicle battery locator, fixed / swappable / serviceable

@@ -4,37 +4,87 @@
 // field is NOT MEASURED, a safety screen comes before everything else, and a
 // repair is recommended only when the evidence gate is met.
 //
-// Everything typed here stays in this browser tab. No job-card value is ever
-// sent to analytics (see lib/ev-battery-toolkit/analytics.ts).
+// Everything typed here stays in this browser tab. Analytics receive only event
+// names and fixed ids (stage, field or candidate ids) through `track`; no value
+// a technician types or measures is ever passed to it.
 import { useCallback, useMemo, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, Check, Lock, RotateCcw, Upload } from "lucide-react";
-import { ARCHITECTURES, ARCHITECTURE_ORDER } from "@/data/ev-battery-toolkit/architectures";
 import { AFTER_MEASUREMENTS, AFTER_OBSERVATIONS, COMPLAINTS, MEASUREMENTS, REAL_STAGES, SAFETY_HAZARDS, STAGE_FIELDS, VERIFICATION_CHECKS } from "@/data/ev-battery-toolkit/fields";
-import { MANUFACTURERS, VEHICLES, selectableYears, vehicleLabel } from "@/data/ev-battery-toolkit/vehicles";
+import { ARCHITECTURES } from "@/data/ev-battery-toolkit/architectures";
+import { VEHICLES, vehicleLabel } from "@/data/ev-battery-toolkit/vehicles";
 import { toId, trackToolkit } from "@/lib/ev-battery-toolkit/analytics";
 import { canMergeIntoRealJob, parseDiagnosticFile } from "@/lib/ev-battery-toolkit/dataSources";
-import { INSUFFICIENT, REPAIR_STATUS_LABEL, VERIFICATION_LABEL, compareBeforeAfter, deltaOf, newJobCard, repairDecision, rootCauseCandidates, verifyRepair } from "@/lib/ev-battery-toolkit/diagnosis";
-import { formatNumber, round } from "@/lib/ev-battery-toolkit/provenance";
+import {
+  INSUFFICIENT,
+  REFERENCE_LOGIC_NOTICE,
+  REPAIR_STATUS_LABEL,
+  TREND_LABEL,
+  VERIFICATION_LABEL,
+  compareBeforeAfter,
+  deltaOf,
+  newJobCard,
+  repairDecision,
+  rootCauseCandidates,
+  verifyRepair,
+} from "@/lib/ev-battery-toolkit/diagnosis";
+import { formatNumber } from "@/lib/ev-battery-toolkit/provenance";
 import { buildRealReport } from "@/lib/ev-battery-toolkit/report";
-import type { ArchitectureId, CheckResult, DiagnosticMeasurement, DiagnosticObservation, JobCard, MeasurementKey, ObservationKey, Report } from "@/lib/ev-battery-toolkit/types";
+import type { CheckResult, DiagnosticMeasurement, DiagnosticObservation, JobCard, MeasurementKey, ObservationKey, Report } from "@/lib/ev-battery-toolkit/types";
 import { ContextBanner, Pill, SAFETY_STOP_ACTIONS, SafetyBanner } from "../ui/Badges";
 import { ReportDialog, printReport } from "../report/ReportDocument";
 import { MeasurementInput, ObservationInput } from "./FieldInputs";
+import { AnalysisStage, CellsStage, DecisionStage, FlowPanel, IdentifyStage, RepairStage } from "./stages";
 import css from "../diagnosis.module.css";
 
-const CONFIDENCE_FAMILY = { LOW: "neutral", MEDIUM: "warning", HIGH: "ok" } as const;
 const TREND_FAMILY = { improved: "ok", unchanged: "neutral", worsened: "critical", changed: "info", "not-comparable": "neutral" } as const;
 const OUTCOME_FAMILY = { PASS: "ok", CONDITIONAL_PASS: "warning", FURTHER_DIAGNOSIS_REQUIRED: "service", UNSAFE_DO_NOT_RETURN: "critical" } as const;
 
-export default function RealDiagnosis() {
+export type RealEvent =
+  | "started"
+  | "safety_completed"
+  | "measurement_entered"
+  | "bms_entered"
+  | "candidate_opened"
+  | "gate_failed"
+  | "root_cause_selected"
+  | "decision_completed"
+  | "repair_started"
+  | "repair_completed"
+  | "report_preview"
+  | "report_generated";
+
+/** Receives an event and, at most, a fixed id (never a typed or measured value). */
+export type RealTracker = (event: RealEvent, id?: string) => void;
+
+/** The main toolkit's mapping onto its declared events. */
+export const toolkitTracker: RealTracker = (event, id) => {
+  switch (event) {
+    case "started":
+      return trackToolkit("diagnosis_started", { context: "real" });
+    case "decision_completed":
+      return trackToolkit("diagnosis_completed", { context: "real", status: toId(id ?? "") });
+    case "repair_started":
+      return trackToolkit("repair_workflow_started");
+    case "repair_completed":
+      return trackToolkit("repair_workflow_completed", { outcome: toId(id ?? "") });
+    case "report_preview":
+      return trackToolkit("report_preview_opened", { context: "real" });
+    case "report_generated":
+      return trackToolkit("report_generated", { context: "real" });
+  }
+};
+
+const RECORDED = new Set(["MEASURED", "USER_ENTERED", "MANUFACTURER_VERIFIED", "THIRD_PARTY_DOCUMENTED"]);
+const BMS_FIELDS = new Set<string>([...STAGE_FIELDS.bms.measurements, ...STAGE_FIELDS.bms.observations]);
+
+export default function RealDiagnosis({ lockManufacturer, presetVehicleId, track = toolkitTracker, intro }: { lockManufacturer?: string; presetVehicleId?: string | null; track?: RealTracker; intro?: React.ReactNode }) {
   const [job, setJob] = useState<JobCard | null>(null);
   const [stage, setStage] = useState(0);
   const [screened, setScreened] = useState(false);
   const [importNote, setImportNote] = useState<string | null>(null);
   const [groupText, setGroupText] = useState("");
   const [report, setReport] = useState<Report | null>(null);
-  const tracked = useRef({ decision: "", repairStarted: false, completed: "" });
-  const years = useMemo(() => selectableYears(new Date()), []);
+  const tracked = useRef({ decision: "", repairStarted: false, completed: "", fields: new Set<string>() });
 
   const candidates = useMemo(() => (job ? rootCauseCandidates(job) : []), [job]);
   const decision = useMemo(() => (job ? repairDecision(job, candidates) : null), [job, candidates]);
@@ -57,16 +107,25 @@ export default function RealDiagnosis() {
             ))}
           </ol>
           <div className={css.introSide}>
-            <p>Nothing is pre-filled. Every field starts as NOT MEASURED until you record it, and each value keeps its origin: MEASURED, USER ENTERED, NOT MEASURED, NOT AVAILABLE or UNKNOWN.</p>
+            {intro}
+            <p>Nothing is pre-filled. Every field starts as NOT MEASURED until you record it, and each value keeps its origin: MEASURED, USER ENTERED, NOT MEASURED, NOT AVAILABLE or UNKNOWN — and, for rated values, MANUFACTURER VERIFIED or THIRD-PARTY DOCUMENTED.</p>
             <p>No customer personal details are needed. Everything you enter stays in this browser tab.</p>
+            <p className={css.referenceNotice}>{REFERENCE_LOGIC_NOTICE}</p>
             <button
               type="button"
               className={css.primary}
               onClick={() => {
-                setJob(newJobCard(new Date()));
+                const fresh = newJobCard(new Date());
+                const preset = presetVehicleId ? VEHICLES.find((v) => v.id === presetVehicleId) : undefined;
+                if (preset) {
+                  fresh.vehicleId = preset.id;
+                  fresh.variantId = preset.variants.length === 1 ? preset.variants[0].id : null;
+                }
+                setJob(fresh);
                 setStage(0);
                 setScreened(false);
-                trackToolkit("diagnosis_started", { context: "real" });
+                tracked.current = { decision: "", repairStarted: false, completed: "", fields: new Set() };
+                track("started");
               }}
             >
               Start real vehicle diagnosis
@@ -80,8 +139,20 @@ export default function RealDiagnosis() {
   const unlocked = screened || job.safetyAcknowledged;
   const hazards = job.safetyFlags;
   const update = (patch: Partial<JobCard>) => setJob((j) => (j ? { ...j, ...patch } : j));
-  const setBefore = (m: DiagnosticMeasurement) => setJob((j) => (j ? { ...j, before: { ...j.before, [m.key]: m } } : j));
-  const setObs = (o: DiagnosticObservation) => setJob((j) => (j ? { ...j, observations: { ...j.observations, [o.key]: o } } : j));
+  /** Reports a field the first time it holds a recorded value: its id only, never the value. */
+  const noteField = (key: string, recorded: boolean) => {
+    if (!recorded || tracked.current.fields.has(key)) return;
+    tracked.current.fields.add(key);
+    track(BMS_FIELDS.has(key) ? "bms_entered" : "measurement_entered", toId(key));
+  };
+  const setBefore = (m: DiagnosticMeasurement) => {
+    noteField(m.key, m.value !== null && RECORDED.has(m.provenance));
+    setJob((j) => (j ? { ...j, before: { ...j.before, [m.key]: m } } : j));
+  };
+  const setObs = (o: DiagnosticObservation) => {
+    noteField(o.key, Boolean(o.value) && RECORDED.has(o.provenance));
+    setJob((j) => (j ? { ...j, observations: { ...j.observations, [o.key]: o } } : j));
+  };
   const setAfter = (m: DiagnosticMeasurement) => setJob((j) => (j ? { ...j, after: { ...j.after, [m.key]: m } } : j));
   const setAfterObs = (o: DiagnosticObservation) => setJob((j) => (j ? { ...j, afterObservations: { ...j.afterObservations, [o.key]: o } } : j));
   const current = REAL_STAGES[stage];
@@ -92,18 +163,20 @@ export default function RealDiagnosis() {
     if (locked(i) && !unlockedNow) return;
     setStage(i);
     const id = REAL_STAGES[i].id;
-    if (id === "decision" && decision && decision.status !== "INSUFFICIENT_EVIDENCE" && tracked.current.decision !== decision.status) {
-      tracked.current.decision = decision.status;
-      trackToolkit("diagnosis_completed", { context: "real", status: toId(decision.status) });
+    if (id === "decision" && decision) {
+      if (decision.status === "INSUFFICIENT_EVIDENCE") track("gate_failed", decision.candidateId ?? "none");
+      else if (tracked.current.decision !== decision.status) {
+        tracked.current.decision = decision.status;
+        track("decision_completed", decision.status);
+      }
     }
     if (id === "repair" && !tracked.current.repairStarted) {
       tracked.current.repairStarted = true;
-      trackToolkit("repair_workflow_started");
+      track("repair_started");
     }
   };
 
   const vehicle = VEHICLES.find((v) => v.id === job.vehicleId);
-  const manufacturer = vehicle?.manufacturer ?? "";
 
   const onImport = async (file: File) => {
     try {
@@ -113,6 +186,7 @@ export default function RealDiagnosis() {
         setImportNote("This file is simulation data and cannot enter a real diagnosis.");
         return;
       }
+      for (const key of [...Object.keys(data.measurements), ...Object.keys(data.observations)]) noteField(key, true);
       setJob((j) => (j ? { ...j, before: { ...j.before, ...data.measurements }, observations: { ...j.observations, ...data.observations }, groupVoltages: data.groupVoltages.length ? data.groupVoltages : j.groupVoltages } : j));
       const n = Object.keys(data.measurements).length + Object.keys(data.observations).length;
       setImportNote(`${n} field${n === 1 ? "" : "s"} imported as MEASURED${data.groupVoltages.length ? `, ${data.groupVoltages.length} group voltages` : ""}.${data.ignored.length ? ` Not recognised: ${data.ignored.slice(0, 6).join(", ")}.` : ""}`);
@@ -121,29 +195,34 @@ export default function RealDiagnosis() {
     }
   };
 
-  const fieldStage = STAGE_FIELDS[current.id];
+  const genericStage = ["visual", "electrical", "bms", "thermal"].includes(current.id) ? STAGE_FIELDS[current.id] : null;
 
   return (
     <div className={css.real}>
       <ContextBanner context="real" detail={`Job ${job.jobId} · ${job.date}`} />
       {hazards.length > 0 ? (
         <SafetyBanner level="stop" title="SAFETY CONDITION RECORDED">
-          <p className={css.safetyText}>{hazards.join(" · ")}. {job.safetyAcknowledged ? "Acknowledged: documentation only — quarantine and escalate." : "Acknowledge the safety state in the Safety Screen before continuing."}</p>
+          <p className={css.safetyText}>
+            {hazards.join(" · ")}. {job.safetyAcknowledged ? "Acknowledged: documentation only — quarantine and escalate." : "Acknowledge the safety state in the Safety Screen before continuing."}
+          </p>
         </SafetyBanner>
       ) : null}
       <div className={css.workflow}>
-        <nav className={css.stageNav} aria-label="Diagnosis stages">
-          <ol>
-            {REAL_STAGES.map((s, i) => (
-              <li key={s.id}>
-                <button type="button" className={css.stageButton} aria-current={i === stage ? "step" : undefined} disabled={locked(i)} onClick={() => go(i)}>
-                  <span className={css.stageNum}>{locked(i) ? <Lock size={12} aria-label="Locked until the safety screen is complete" /> : i < stage ? <Check size={12} aria-hidden="true" /> : i + 1}</span>
-                  {s.title}
-                </button>
-              </li>
-            ))}
-          </ol>
-        </nav>
+        <div className={css.sideColumn}>
+          <nav className={css.stageNav} aria-label="Diagnosis stages">
+            <ol>
+              {REAL_STAGES.map((s, i) => (
+                <li key={s.id}>
+                  <button type="button" className={css.stageButton} aria-current={i === stage ? "step" : undefined} disabled={locked(i)} onClick={() => go(i)}>
+                    <span className={css.stageNum}>{locked(i) ? <Lock size={12} aria-label="Locked until the safety screen is complete" /> : i < stage ? <Check size={12} aria-hidden="true" /> : i + 1}</span>
+                    {s.title}
+                  </button>
+                </li>
+              ))}
+            </ol>
+          </nav>
+          <FlowPanel job={job} screened={screened} />
+        </div>
 
         <div className={css.stagePanel}>
           <p className={css.stageEyebrow}>
@@ -173,7 +252,10 @@ export default function RealDiagnosis() {
                 </label>
                 <textarea id="complaint-text" rows={3} maxLength={500} value={job.complaint} onChange={(e) => update({ complaint: e.target.value })} placeholder="e.g. Battery shows 60%, but scooter shuts down during acceleration." />
               </div>
-              <p className={css.note}>A complaint suggests where to look. It is never enough on its own to name a root cause.</p>
+              {STAGE_FIELDS.complaint.observations.map((k) => (
+                <ObservationInput key={k} name={k} value={job.observations[k]} onChange={setObs} />
+              ))}
+              <p className={css.note}>A complaint suggests where to look. It never creates a repair decision on its own.</p>
             </div>
           ) : null}
 
@@ -198,9 +280,16 @@ export default function RealDiagnosis() {
               </fieldset>
               {hazards.length ? (
                 <>
-                  <SafetyBanner level="stop" />
+                  <SafetyBanner level="stop" title="UNSAFE — QUARANTINE / ESCALATE" />
                   <label className={css.ack}>
-                    <input type="checkbox" checked={job.safetyAcknowledged} onChange={(e) => update({ safetyAcknowledged: e.target.checked })} />
+                    <input
+                      type="checkbox"
+                      checked={job.safetyAcknowledged}
+                      onChange={(e) => {
+                        update({ safetyAcknowledged: e.target.checked });
+                        if (e.target.checked) track("safety_completed", "hazard");
+                      }}
+                    />
                     I acknowledge the safety state. The pack is isolated and will be quarantined and escalated. I will continue only to document it.
                   </label>
                 </>
@@ -210,6 +299,7 @@ export default function RealDiagnosis() {
                   className={css.primary}
                   onClick={() => {
                     setScreened(true);
+                    track("safety_completed", "clear");
                     go(2, true);
                   }}
                 >
@@ -220,91 +310,9 @@ export default function RealDiagnosis() {
             </div>
           ) : null}
 
-          {current.id === "identify" ? (
-            <div className={css.fields}>
-              <div className={css.fieldGrid}>
-                <div className={css.fieldRow}>
-                  <label htmlFor="id-make" className={css.fieldLabel}>
-                    Manufacturer
-                  </label>
-                  <select id="id-make" value={manufacturer} onChange={(e) => update({ vehicleId: VEHICLES.find((v) => v.manufacturer === e.target.value)?.id ?? null, variantId: null })}>
-                    <option value="">Select</option>
-                    {MANUFACTURERS.map((m) => (
-                      <option key={m} value={m}>
-                        {m}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className={css.fieldRow}>
-                  <label htmlFor="id-variant" className={css.fieldLabel}>
-                    Model / variant
-                  </label>
-                  <select id="id-variant" value={job.variantId ?? ""} disabled={!vehicle} onChange={(e) => update({ variantId: e.target.value || null })}>
-                    <option value="">Select</option>
-                    {vehicle?.variants.map((v) => (
-                      <option key={v.id} value={v.id}>
-                        {v.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className={css.fieldRow}>
-                  <label htmlFor="id-year" className={css.fieldLabel}>
-                    Model year
-                  </label>
-                  <select id="id-year" value={job.modelYear ?? ""} onChange={(e) => update({ modelYear: e.target.value ? Number(e.target.value) : null })}>
-                    <option value="">Not recorded</option>
-                    {years.map((y) => (
-                      <option key={y} value={y}>
-                        {y}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className={css.fieldRow}>
-                  <label htmlFor="id-odo" className={css.fieldLabel}>
-                    Odometer (km)
-                  </label>
-                  <input id="id-odo" type="number" min={0} value={job.odometerKm ?? ""} onChange={(e) => update({ odometerKm: e.target.value === "" ? null : Math.max(0, Number(e.target.value)) })} />
-                </div>
-                <div className={css.fieldRow}>
-                  <label htmlFor="id-battery" className={css.fieldLabel}>
-                    Battery ID (optional)
-                  </label>
-                  <input id="id-battery" type="text" maxLength={60} value={job.batteryId} onChange={(e) => update({ batteryId: e.target.value })} />
-                </div>
-                <div className={css.fieldRow}>
-                  <label htmlFor="id-serial" className={css.fieldLabel}>
-                    Battery serial (optional)
-                  </label>
-                  <input id="id-serial" type="text" maxLength={60} value={job.batterySerial} onChange={(e) => update({ batterySerial: e.target.value })} />
-                </div>
-                <div className={css.fieldRow}>
-                  <label htmlFor="id-arch" className={css.fieldLabel}>
-                    Battery architecture (as seen)
-                  </label>
-                  <select id="id-arch" value={job.architecture ?? ""} onChange={(e) => update({ architecture: (e.target.value || null) as ArchitectureId | null })}>
-                    <option value="">Not recorded</option>
-                    {ARCHITECTURE_ORDER.map((id) => (
-                      <option key={id} value={id}>
-                        {ARCHITECTURES[id].name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className={css.fieldRow}>
-                  <label htmlFor="id-tech" className={css.fieldLabel}>
-                    Technician
-                  </label>
-                  <input id="id-tech" type="text" maxLength={60} value={job.technician} onChange={(e) => update({ technician: e.target.value })} />
-                </div>
-              </div>
-              <p className={css.note}>Battery specification for the selected platform: Technical specification not verified. Record what you read on the pack label as observations.</p>
-            </div>
-          ) : null}
+          {current.id === "identify" ? <IdentifyStage job={job} update={update} setBefore={setBefore} setObs={setObs} lockManufacturer={lockManufacturer} /> : null}
 
-          {fieldStage ? (
+          {genericStage ? (
             <div className={css.fields}>
               {current.id === "electrical" ? (
                 <div className={css.importRow}>
@@ -321,146 +329,33 @@ export default function RealDiagnosis() {
                   )}
                 </div>
               ) : null}
-              {fieldStage.measurements.map((k) => (
+              {current.id === "bms" ? <p className={css.note}>BMS communication protocol for this vehicle: UNKNOWN / NOT VERIFIED unless you confirm it physically below. Values read here are MEASURED or USER ENTERED — never manufacturer data.</p> : null}
+              {genericStage.measurements.map((k) => (
                 <MeasurementInput key={k} name={k} value={job.before[k]} onChange={setBefore} />
               ))}
-              {fieldStage.observations.map((k) => (
+              {genericStage.observations.map((k) => (
                 <ObservationInput key={k} name={k} value={job.observations[k]} onChange={setObs} />
               ))}
-              {current.id === "cells" ? (
-                <div className={css.groupEntry}>
-                  <label htmlFor="group-values" className={css.fieldLabel}>
-                    Individual cell-group values (V), separated by commas or spaces
-                  </label>
-                  <textarea id="group-values" rows={2} value={groupText} onChange={(e) => setGroupText(e.target.value)} placeholder="e.g. 4.06, 4.07, 3.74, 4.08" />
-                  <button
-                    type="button"
-                    className={css.secondary}
-                    onClick={() => {
-                      const values = groupText
-                        .split(/[\s,;]+/)
-                        .map(Number)
-                        .filter((v) => Number.isFinite(v) && v > 0 && v < 6);
-                      if (!values.length) return;
-                      setJob((j) =>
-                        j
-                          ? {
-                              ...j,
-                              groupVoltages: values,
-                              before: {
-                                ...j.before,
-                                cellMin: { key: "cellMin", value: round(Math.min(...values), 3), provenance: "MEASURED" },
-                                cellMax: { key: "cellMax", value: round(Math.max(...values), 3), provenance: "MEASURED" },
-                              },
-                            }
-                          : j,
-                      );
-                    }}
-                  >
-                    Use these values for minimum and maximum
-                  </button>
-                  {job.groupVoltages.length ? (
-                    <p className={css.note}>
-                      {job.groupVoltages.length} group values recorded · derived delta {formatNumber(deltaOf(job.before).value, "mV", 0, "NOT MEASURED")}
-                    </p>
-                  ) : null}
-                </div>
-              ) : null}
             </div>
           ) : null}
 
-          {current.id === "analysis" ? (
-            <div className={css.candidates}>
-              {candidates.length === 0 ? <p className={css.note}>No candidates yet. Record the complaint and measurements first.</p> : null}
-              {candidates.map((c) => (
-                <article key={c.id} className={css.candidate} aria-label={c.name}>
-                  <header>
-                    <h4>{c.name}</h4>
-                    <Pill family={CONFIDENCE_FAMILY[c.confidence]}>{c.confidence} confidence</Pill>
-                    {c.gate === "MET" ? <Pill family="info">Evidence gate met</Pill> : <Pill family="warning">{INSUFFICIENT}</Pill>}
-                  </header>
-                  <div className={css.evidenceGrid}>
-                    <div>
-                      <p className={css.evLabel}>Supporting evidence</p>
-                      <ul>{c.supporting.length ? c.supporting.map((x) => <li key={x}>{x}</li>) : <li className={css.none}>None recorded</li>}</ul>
-                    </div>
-                    <div>
-                      <p className={css.evLabel}>Conflicting evidence</p>
-                      <ul>{c.conflicting.length ? c.conflicting.map((x) => <li key={x}>{x}</li>) : <li className={css.none}>None recorded</li>}</ul>
-                    </div>
-                    <div>
-                      <p className={css.evLabel}>Missing evidence</p>
-                      <ul>{c.missing.length ? c.missing.map((x) => <li key={x}>{x}</li>) : <li className={css.none}>None</li>}</ul>
-                    </div>
-                  </div>
-                  <p className={css.next}>
-                    <span>Recommended next measurement</span> {c.nextMeasurement}
-                  </p>
-                </article>
-              ))}
-              <p className={css.note}>Confidence counts measured and observed evidence only. Thresholds are illustrative toolkit references, not manufacturer limits.</p>
-            </div>
-          ) : null}
+          {current.id === "cells" ? <CellsStage job={job} update={update} setBefore={setBefore} setObs={setObs} groupText={groupText} setGroupText={setGroupText} /> : null}
+
+          {current.id === "analysis" ? <AnalysisStage candidates={candidates} onOpen={(id) => track("candidate_opened", id)} /> : null}
 
           {current.id === "decision" && decision ? (
-            <div className={css.decision} data-status={decision.status}>
-              {decision.status === "UNSAFE_QUARANTINE" ? (
-                <SafetyBanner level="stop" title="UNSAFE — QUARANTINE / ESCALATE" />
-              ) : null}
-              <p className={css.decisionStatus}>{REPAIR_STATUS_LABEL[decision.status]}</p>
-              <dl className={css.decisionList}>
-                <div>
-                  <dt>Reason</dt>
-                  <dd>{decision.reason}</dd>
-                </div>
-                <div>
-                  <dt>Evidence</dt>
-                  <dd>
-                    <ul>{decision.evidence.length ? decision.evidence.map((e) => <li key={e}>{e}</li>) : <li>None recorded</li>}</ul>
-                  </dd>
-                </div>
-                <div>
-                  <dt>Required repair depth</dt>
-                  <dd>{decision.repairDepth ? { basic: "Basic Diagnostic", expert: "Expert Service", advanced: "Advanced Battery Repair" }[decision.repairDepth] : "—"}</dd>
-                </div>
-                <div>
-                  <dt>Verification required</dt>
-                  <dd>
-                    <ul>
-                      {decision.verificationRequired.map((v) => (
-                        <li key={v}>{v}</li>
-                      ))}
-                    </ul>
-                  </dd>
-                </div>
-              </dl>
-              <p className={css.note}>Vehicle-specific repair procedures must follow verified manufacturer service information.</p>
-            </div>
+            <DecisionStage
+              job={job}
+              candidates={candidates}
+              decision={decision}
+              onSelect={(id) => {
+                update({ selectedRootCause: id });
+                track("root_cause_selected", id ?? "ranking");
+              }}
+            />
           ) : null}
 
-          {current.id === "repair" ? (
-            <div className={css.fields}>
-              {decision?.status === "UNSAFE_QUARANTINE" ? (
-                <SafetyBanner level="stop" title="NORMAL REPAIR WORKFLOW SUSPENDED">
-                  <p className={css.safetyText}>Record the quarantine location and the escalation only.</p>
-                </SafetyBanner>
-              ) : decision?.status === "INSUFFICIENT_EVIDENCE" ? (
-                <p className={css.warnNote}>{INSUFFICIENT}. Complete the next test before repairing.</p>
-              ) : null}
-              <div className={css.fieldRow}>
-                <label htmlFor="repair-done" className={css.fieldLabel}>
-                  {decision?.status === "UNSAFE_QUARANTINE" ? "Action taken (isolation, quarantine, escalation)" : "Repair performed"}
-                </label>
-                <textarea id="repair-done" rows={3} maxLength={600} value={job.repairPerformed} onChange={(e) => update({ repairPerformed: e.target.value })} />
-              </div>
-              <div className={css.fieldRow}>
-                <label htmlFor="repair-parts" className={css.fieldLabel}>
-                  Parts replaced
-                </label>
-                <input id="repair-parts" type="text" maxLength={200} value={job.partsReplaced} onChange={(e) => update({ partsReplaced: e.target.value })} />
-              </div>
-            </div>
-          ) : null}
+          {current.id === "repair" && decision ? <RepairStage job={job} update={update} decision={decision} /> : null}
 
           {current.id === "post" && verification ? (
             <div className={css.fields}>
@@ -510,7 +405,7 @@ export default function RealDiagnosis() {
                       const outcome = verifyRepair({ ...job, technicianConfirmed: true }).outcome;
                       if (tracked.current.completed !== outcome) {
                         tracked.current.completed = outcome;
-                        trackToolkit("repair_workflow_completed", { outcome: toId(outcome) });
+                        track("repair_completed", outcome);
                       }
                     }
                   }}
@@ -543,7 +438,7 @@ export default function RealDiagnosis() {
                       <td>{r.before}</td>
                       <td>{r.after}</td>
                       <td>
-                        <Pill family={TREND_FAMILY[r.trend]}>{r.trend.replace("-", " ")}</Pill>
+                        <Pill family={TREND_FAMILY[r.trend]}>{TREND_LABEL[r.trend]}</Pill>
                       </td>
                     </tr>
                   ))}
@@ -588,11 +483,13 @@ export default function RealDiagnosis() {
                 </div>
                 <div>
                   <dt>Measurements</dt>
-                  <dd>{Object.values(job.before).filter((m) => m && m.value !== null).length} of {Object.keys(MEASUREMENTS).length} recorded</dd>
+                  <dd>
+                    {Object.values(job.before).filter((m) => m && m.value !== null).length} of {Object.keys(MEASUREMENTS).length} recorded
+                  </dd>
                 </div>
                 <div>
                   <dt>Diagnosis</dt>
-                  <dd>{candidates.find((c) => c.gate === "MET" && c.confidence !== "LOW")?.name ?? INSUFFICIENT}</dd>
+                  <dd>{(decision.candidateId && candidates.find((c) => c.id === decision.candidateId && c.gate === "MET" && c.confidence !== "LOW")?.name) || INSUFFICIENT}</dd>
                 </div>
                 <div>
                   <dt>Repair performed</dt>
@@ -617,7 +514,7 @@ export default function RealDiagnosis() {
                   className={css.primary}
                   onClick={() => {
                     setReport(buildRealReport(job, new Date()));
-                    trackToolkit("report_preview_opened", { context: "real" });
+                    track("report_preview");
                   }}
                 >
                   Preview diagnostic report
@@ -630,7 +527,6 @@ export default function RealDiagnosis() {
                       setJob(null);
                       setGroupText("");
                       setImportNote(null);
-                      tracked.current = { decision: "", repairStarted: false, completed: "" };
                     }
                   }}
                 >
@@ -655,7 +551,7 @@ export default function RealDiagnosis() {
           report={report}
           onClose={closeReport}
           onPrint={() => {
-            trackToolkit("report_generated", { context: "real" });
+            track("report_generated");
             printReport();
           }}
         />

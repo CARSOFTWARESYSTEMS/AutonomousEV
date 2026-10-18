@@ -12,8 +12,10 @@ export type Provenance =
   | "MEASURED"
   | "SIMULATED"
   | "MANUFACTURER_VERIFIED"
+  | "THIRD_PARTY_DOCUMENTED"
   | "USER_ENTERED"
   | "ESTIMATED"
+  | "CALCULATED"
   | "NOT_MEASURED"
   | "NOT_AVAILABLE"
   | "UNKNOWN";
@@ -25,6 +27,33 @@ export interface Sourced<T> {
   unit?: string;
   /** Free-text source note, e.g. a document title. Never shown as manufacturer data unless provenance says so. */
   note?: string;
+  /** How far the value can be trusted, from its sources. */
+  confidence?: Confidence;
+  /** Every source claim behind the value, including ones that disagree with it. */
+  claims?: SourceClaim[];
+  /** True when sources disagree and no single value is published. */
+  conflict?: boolean;
+}
+
+/** Source categories for published specification data. */
+export type SourceCategory = "MANUFACTURER" | "INDUSTRY_REPORT" | "TECHNICAL_PUBLICATION" | "THIRD_PARTY" | "ESTIMATE" | "UNKNOWN";
+
+/** One source's statement of a value, kept even when another source disagrees. */
+export interface SourceClaim {
+  value: string;
+  sourceId: string;
+}
+
+export interface SpecSource {
+  id: string;
+  title: string;
+  publisher: string;
+  url: string;
+  category: SourceCategory;
+  /** When the source was published, if stated. */
+  published?: string;
+  /** When EV.ENGINEER last read it. */
+  verifiedDate: string;
 }
 
 // ── Vehicles ──
@@ -55,6 +84,11 @@ export interface VehicleBatterySpec {
   bmsCommunication: Sourced<string>;
   connectorType: Sourced<string>;
   thermalSystem: Sourced<string>;
+  /** Battery type as published (e.g. "Lithium-ion"); not the cell chemistry subtype. */
+  batteryType: Sourced<string>;
+  motorPowerW: Sourced<number>;
+  claimedRange: Sourced<string>;
+  chargingTime: Sourced<string>;
 }
 
 export interface VehicleVariant {
@@ -266,7 +300,12 @@ export type MeasurementKey =
   | "tempSpread"
   | "ambientTemp"
   | "voltageDuringCharge"
-  | "insulationResistance";
+  | "insulationResistance"
+  | "loadedPackVoltage"
+  | "connectorVoltageDrop"
+  | "tempSensorCount"
+  | "batteryNominalVoltage"
+  | "ratedCapacityAh";
 
 export type ObservationKey =
   | "bmsStatus"
@@ -280,11 +319,18 @@ export type ObservationKey =
   | "waterIngress"
   | "swelling"
   | "enclosureDamage"
-  | "smellOrHeat"
+  | "abnormalSmell"
+  | "abnormalHeat"
   | "hotspotLocation"
   | "loadBehaviour"
   | "capacityTest"
-  | "internalResistanceTest";
+  | "internalResistanceTest"
+  | "chargeResponse"
+  | "dischargeResponse"
+  | "chargerLed"
+  | "bmsProtocol"
+  | "currentProtection"
+  | "storageHistory";
 
 /** A numeric field in the real workflow. NOT_MEASURED until the technician records a value. */
 export interface DiagnosticMeasurement {
@@ -321,20 +367,41 @@ export interface RootCauseCandidate {
 export type RepairStatus =
   | "NO_REPAIR_REQUIRED"
   | "SERVICEABLE"
+  | "CONNECTOR_WIRING_SERVICE"
   | "COMPONENT_REPAIR"
   | "BMS_SERVICE"
   | "MODULE_REPAIR"
   | "ADVANCED_CELL_REPAIR"
   | "PACK_REPLACEMENT_RECOMMENDED"
   | "UNSAFE_QUARANTINE"
+  | "SPECIALIST_EVALUATION_REQUIRED"
   | "INSUFFICIENT_EVIDENCE";
 
 export interface RepairDecision {
   status: RepairStatus;
   reason: string;
   evidence: string[];
+  missingEvidence: string[];
+  risk: string;
+  nextAction: string;
   repairDepth: RepairDepth | null;
   verificationRequired: string[];
+  /** The candidate the decision rests on, if any. */
+  candidateId: string | null;
+  /** Whether the technician chose the root cause (true) or the engine's ranking did. */
+  technicianSelected: boolean;
+}
+
+/** The pack configuration a technician has physically confirmed. Every field is USER ENTERED or unknown. */
+export interface CellConfiguration {
+  chemistry: "NMC" | "LFP" | "Other" | "Unknown";
+  format: "Cylindrical" | "Prismatic" | "Pouch" | "Unknown";
+  series: number | null;
+  parallel: number | null;
+  modules: number | null;
+  cellNominalV: number | null;
+  cellMaxV: number | null;
+  cellMinV: number | null;
 }
 
 export type VerificationOutcome = "PASS" | "CONDITIONAL_PASS" | "FURTHER_DIAGNOSIS_REQUIRED" | "UNSAFE_DO_NOT_RETURN";
@@ -370,6 +437,11 @@ export interface JobCard {
   verification: Record<string, CheckResult>;
   technicianConfirmed: boolean;
   notes: string;
+  cellConfig: CellConfiguration;
+  /** Root cause chosen by the technician from the evidence-gated candidates; null = follow the ranking. */
+  selectedRootCause: string | null;
+  /** Acknowledgements required before advanced (internal) repair concepts are shown. */
+  advancedAck: string[];
 }
 
 export interface ReportRow {
@@ -389,6 +461,8 @@ export interface DataQualitySummary {
   measured: number;
   userEntered: number;
   manufacturerVerified: number;
+  thirdPartyDocumented: number;
+  calculated: number;
   simulated: number;
   estimated: number;
   unknown: number;

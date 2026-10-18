@@ -147,7 +147,7 @@ export function ScooterSchematic({ architecture, located, title }: { architectur
           </g>
         ) : null}
         <text x={12} y={22} className={css.svgNote}>
-          Generic scooter schematic — not OEM geometry
+          Generic scooter schematic — NOT OEM GEOMETRY
         </text>
       </svg>
     </figure>

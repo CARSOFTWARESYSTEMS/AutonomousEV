@@ -40,15 +40,20 @@ export default function DiagnosisSection() {
   return (
     <div>
       <div className={css.tabs} role="tablist" aria-label="Diagnostic workflow">
-        <button type="button" role="tab" id="tab-real" aria-selected={tab === "real"} aria-controls="panel-diagnosis" className={css.tab} onClick={() => setTab("real")}>
+        <button type="button" role="tab" id="tab-real" aria-selected={tab === "real"} aria-controls="panel-real" className={css.tab} onClick={() => setTab("real")}>
           Real Vehicle Diagnosis <span className={css.tabNote}>Primary</span>
         </button>
-        <button type="button" role="tab" id="tab-guided" aria-selected={tab === "guided"} aria-controls="panel-diagnosis" className={css.tab} onClick={() => setTab("guided")}>
+        <button type="button" role="tab" id="tab-guided" aria-selected={tab === "guided"} aria-controls="panel-guided" className={css.tab} onClick={() => setTab("guided")}>
           Guided Simulation <span className={css.tabNote}>Training</span>
         </button>
       </div>
-      <div id="panel-diagnosis" role="tabpanel" aria-labelledby={tab === "real" ? "tab-real" : "tab-guided"}>
-        {tab === "real" ? <RealDiagnosis /> : <GuidedCase />}
+      {/* Both stay mounted so switching tabs never discards a real job card in progress.
+          They share no state: the real job lives in RealDiagnosis, the guided case in GuidedCase. */}
+      <div id="panel-real" role="tabpanel" aria-labelledby="tab-real" hidden={tab !== "real"}>
+        <RealDiagnosis />
+      </div>
+      <div id="panel-guided" role="tabpanel" aria-labelledby="tab-guided" hidden={tab !== "guided"}>
+        <GuidedCase />
       </div>
     </div>
   );

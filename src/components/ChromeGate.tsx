@@ -17,7 +17,8 @@ export default function ChromeGate({ children }: { children: React.ReactNode }) 
     // AQIP has its own header and its own footer, rendered by the page itself.
     pathname === "/internships/aerospace-quality-intelligence-platform" ||
     // So does the EV Battery Health & Diagnostics Toolkit, in the Space visual family.
-    pathname === "/internships/ev-battery-health-diagnostics-toolkit";
+    pathname === "/internships/ev-battery-health-diagnostics-toolkit" ||
+    pathname?.startsWith("/internships/ev-battery-health-diagnostics-toolkit/");
 
   if (isSelfContained) {
     return <>{children}</>;

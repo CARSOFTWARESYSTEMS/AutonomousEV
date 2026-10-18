@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import { ArrowRight, Copy, Mail } from "lucide-react";
 import { TOOLKIT } from "@/data/ev-battery-toolkit/content";
+import { SITE_URL } from "@/data/public-entities";
 import { trackToolkit } from "@/lib/ev-battery-toolkit/analytics";
 import { scrollToAndFocus } from "../state/device";
 import { startWorkspace } from "../workspace/Workspace";
@@ -33,7 +34,7 @@ export function LaunchButton() {
 
 export function DesktopCta() {
   const [copied, setCopied] = useState(false);
-  const url = `https://aerospace.ev.engineer${TOOLKIT.route}`;
+  const url = `${SITE_URL}${TOOLKIT.route}`;
   return (
     <div className={css.desktopCta}>
       <button

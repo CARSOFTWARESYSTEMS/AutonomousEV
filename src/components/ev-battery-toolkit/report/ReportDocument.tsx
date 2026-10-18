@@ -114,8 +114,20 @@ const PRINT_FLAG = "data-ebt-print";
 export function printReport() {
   const root = document.documentElement;
   root.setAttribute(PRINT_FLAG, "");
+  // The dialog locks scrolling with overflow:hidden on <body>; some browsers clip a multi-page print to it.
+  // The site's dark page background would also print when "Background graphics" is on.
+  const saved = { overflow: document.body.style.overflow, body: document.body.style.background, root: root.style.background };
+  document.body.style.overflow = "visible";
+  document.body.style.background = "#fff";
+  root.style.background = "#fff";
+  let finished = false;
   const done = () => {
+    if (finished) return;
+    finished = true;
     root.removeAttribute(PRINT_FLAG);
+    document.body.style.overflow = saved.overflow;
+    document.body.style.background = saved.body;
+    root.style.background = saved.root;
     window.removeEventListener("afterprint", done);
   };
   window.addEventListener("afterprint", done);
@@ -143,7 +155,8 @@ export function ReportDialog({ report, onClose, onPrint }: { report: Report; onC
   }, [onClose]);
 
   return createPortal(
-    <div className={css.overlay} role="dialog" aria-modal="true" aria-label={report.title}>
+    // data-track-manual: the dialog sits outside the page root, so it opts out of the site-wide click tracking itself.
+    <div className={css.overlay} role="dialog" aria-modal="true" aria-label={report.title} data-track-manual="">
       <div className={css.dialog}>
         <div className={css.dialogBar}>
           <p>{report.context === "real" ? "Report preview" : "Sample report preview"}</p>

@@ -34,6 +34,17 @@ export interface ToolkitEvents {
   report_preview_opened: { context: "real" | "simulation" };
   report_generated: { context: "real" | "simulation" };
   mobile_desktop_cta_clicked: { action: string };
+  // EVeium vehicle page: ids only — never measurements, serials, notes or fault-code payloads.
+  eveium_model_selected: { model: string };
+  eveium_real_diagnosis_started: NoParams;
+  eveium_safety_screen_completed: { result: string };
+  eveium_measurement_entered: { field: string };
+  eveium_bms_data_entered: { field: string };
+  eveium_fault_candidate_opened: { candidate: string };
+  eveium_evidence_gate_failed: { candidate: string };
+  eveium_root_cause_selected: { candidate: string };
+  eveium_repair_decision_completed: { status: string };
+  eveium_report_generated: NoParams;
 }
 
 export type ToolkitEvent = keyof ToolkitEvents;

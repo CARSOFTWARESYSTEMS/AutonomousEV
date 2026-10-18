@@ -42,6 +42,7 @@ export default function ArchitectureLabs() {
   const [tab, setTab] = useState<ArchitectureId>("fixed-floor");
   const [scenario, setScenario] = useState<SwapScenarioId>("normal");
   const setArchitecture = useToolkit((s) => s.setArchitecture);
+  const owner = useToolkit((s) => s.audience === "owner");
   const current = SWAP_SCENARIOS.find((s) => s.id === scenario)!;
   const arch = ARCHITECTURES[tab];
 
@@ -96,7 +97,13 @@ export default function ArchitectureLabs() {
           </button>
         </div>
 
-        {tab === "swappable" ? (
+        {owner && tab !== "swappable" ? (
+          <div className={css.lab}>
+            <p className={css.notice}>
+              Workshop only. Removing or opening a fixed or serviceable battery is work for trained technicians following the manufacturer&apos;s procedure. As an owner, book a professional inspection.
+            </p>
+          </div>
+        ) : tab === "swappable" ? (
           <div className={css.lab}>
             <ol className={css.labSteps} aria-label="Removable / swappable battery service steps">
               {SWAP_LAB.map((s, i) => (

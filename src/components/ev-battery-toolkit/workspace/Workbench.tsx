@@ -28,6 +28,7 @@ export default function Workbench() {
   const [point, setPoint] = useState("pack");
   const [iface, setIface] = useState<CommInterface>("CAN");
   const [reading, setReading] = useState<Reading | null>(null);
+  const owner = useToolkit((st) => st.audience === "owner");
 
   const points: { id: string; label: string }[] = [
     { id: "pack", label: "Pack + to Pack − (output terminals)" },
@@ -79,6 +80,14 @@ export default function Workbench() {
     }
     trackToolkit("measurement_completed", { tool });
   };
+
+  if (owner) {
+    return (
+      <div className={css.workbench}>
+        <p className={css.ownerNote}>Owner Mode: the diagnostic workbench is for trained technicians. Do not measure or open a battery yourself; book a professional inspection.</p>
+      </div>
+    );
+  }
 
   return (
     <div className={css.workbench}>

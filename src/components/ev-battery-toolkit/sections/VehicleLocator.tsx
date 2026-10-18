@@ -185,7 +185,7 @@ export default function VehicleLocator() {
               ) : (
                 <ScooterSchematic architecture={architecture || null} located={located} title={`Generic scooter schematic for ${vehicleLabel(vehicle, variant)}`} />
               )}
-              <p className={css.modelTag}>Generic procedural scooter — not OEM geometry</p>
+              <p className={css.modelTag}>Generic procedural scooter — NOT OEM GEOMETRY</p>
             </div>
             <div className={css.controls} role="toolbar" aria-label="Vehicle view controls">
               <button type="button" className={css.tool} aria-label="Rotate left" disabled={!can3D} onClick={() => sendCamera("rotate-left", "locator")}>

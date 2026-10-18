@@ -197,7 +197,7 @@ export default function Workspace() {
                 </p>
               </>
             )}
-            {canRender3D && near ? <p className={css.modelTag}>{showScooter ? "Generic procedural scooter — not OEM geometry" : "Educational pack representation — not an OEM pack"}</p> : null}
+            {canRender3D && near ? <p className={css.modelTag}>{showScooter ? "Generic procedural scooter — NOT OEM GEOMETRY" : "Educational pack representation — NOT AN OEM PACK"}</p> : null}
           </div>
           <div className={css.controls} role="toolbar" aria-label="3D controls">
             <button type="button" className={css.tool} onClick={control(() => s.sendCamera("rotate-left"))} aria-label="Rotate left" disabled={!canRender3D}>

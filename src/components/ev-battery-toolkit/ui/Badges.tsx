@@ -28,7 +28,7 @@ export function ContextBanner({ context, detail }: { context: DiagnosticContext;
   );
 }
 
-export const SAFETY_STOP_ACTIONS = ["STOP DIAGNOSIS", "DO NOT CHARGE", "DO NOT CONTINUE DISASSEMBLY", "ISOLATE / QUARANTINE / ESCALATE"] as const;
+export const SAFETY_STOP_ACTIONS = ["STOP DIAGNOSIS", "DO NOT CHARGE", "DO NOT CONTINUE DISASSEMBLY", "ISOLATE FROM COMBUSTIBLE MATERIALS", "FOLLOW APPROVED BATTERY SAFETY PROCEDURE", "ISOLATE / QUARANTINE / ESCALATE"] as const;
 
 export function SafetyBanner({ level, title, children }: { level: Exclude<SafetyLevel, "none">; title?: string; children?: React.ReactNode }) {
   const stop = level === "stop";

@@ -3,16 +3,17 @@
 // state; an empty field is NOT MEASURED, never a demo value.
 import { useId } from "react";
 import { MEASUREMENTS, OBSERVATIONS } from "@/data/ev-battery-toolkit/fields";
-import { PROVENANCE, REAL_FIELD_PROVENANCE } from "@/lib/ev-battery-toolkit/provenance";
+import { PROVENANCE, REAL_FIELD_PROVENANCE, SPEC_FIELD_PROVENANCE } from "@/lib/ev-battery-toolkit/provenance";
 import type { DiagnosticMeasurement, DiagnosticObservation, MeasurementKey, ObservationKey, Provenance } from "@/lib/ev-battery-toolkit/types";
 import css from "../diagnosis.module.css";
 
 const EMPTY: Provenance[] = ["NOT_MEASURED", "NOT_AVAILABLE", "UNKNOWN"];
 
-function ProvenanceSelect({ id, value, onChange, label }: { id: string; value: Provenance; onChange: (p: Provenance) => void; label: string }) {
+function ProvenanceSelect({ id, value, onChange, label, spec }: { id: string; value: Provenance; onChange: (p: Provenance) => void; label: string; spec?: boolean }) {
+  const options = spec ? SPEC_FIELD_PROVENANCE : REAL_FIELD_PROVENANCE;
   return (
     <select id={id} className={css.provSelect} value={value} onChange={(e) => onChange(e.target.value as Provenance)} aria-label={`${label} — data origin`} data-family={PROVENANCE[value].family}>
-      {REAL_FIELD_PROVENANCE.map((p) => (
+      {(options.includes(value) ? options : [value, ...options]).map((p) => (
         <option key={p} value={p}>
           {PROVENANCE[p].label}
         </option>
@@ -44,10 +45,10 @@ export function MeasurementInput({ name, value, onChange }: { name: MeasurementK
             const raw = e.target.value;
             const n = raw === "" ? null : Number(raw);
             if (n === null || !Number.isFinite(n)) return onChange({ key: name, value: null, provenance: "NOT_MEASURED" });
-            onChange({ key: name, value: n, provenance: EMPTY.includes(provenance) ? "MEASURED" : provenance });
+            onChange({ key: name, value: n, provenance: EMPTY.includes(provenance) ? (f.spec ? "USER_ENTERED" : "MEASURED") : provenance });
           }}
         />
-        <ProvenanceSelect id={`${id}-p`} label={f.label} value={provenance} onChange={(p) => onChange({ key: name, value: EMPTY.includes(p) ? null : (value?.value ?? null), provenance: p })} />
+        <ProvenanceSelect id={`${id}-p`} label={f.label} spec={f.spec} value={provenance} onChange={(p) => onChange({ key: name, value: EMPTY.includes(p) ? null : (value?.value ?? null), provenance: p })} />
       </div>
     </div>
   );

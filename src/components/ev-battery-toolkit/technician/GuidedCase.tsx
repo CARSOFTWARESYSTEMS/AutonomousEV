@@ -20,6 +20,7 @@ import { startWorkspace } from "../workspace/Workspace";
 import css from "../diagnosis.module.css";
 
 const CASE_FAULT = "weak-cell";
+export const CASE_TAG = "SIMULATED DIAGNOSTIC CASE";
 const BMS_LABEL = { NORMAL: "Normal", WARNING: "Warning", PROTECTION: "Protection", OFFLINE: "Offline / no data" } as const;
 
 function loadBehaviour(load: SimulationResult) {
@@ -78,8 +79,9 @@ export default function GuidedCase() {
   const rest = useMemo(() => simulate({ pack, fault, load: "rest" }), [pack, fault]);
   const load = useMemo(() => simulate({ pack, fault, load: "load" }), [pack, fault]);
   const job = useMemo(() => evidenceJob(done, rest, load), [done, rest, load]);
-  const candidates = useMemo(() => rootCauseCandidates(job), [job]);
-  const decision = useMemo(() => repairDecision(job, candidates), [job, candidates]);
+  // Simulation context: only SIMULATED evidence counts here, and nothing here reaches the real workflow.
+  const candidates = useMemo(() => rootCauseCandidates(job, "simulation"), [job]);
+  const decision = useMemo(() => repairDecision(job, candidates, "simulation"), [job, candidates]);
   const s = rest.snapshot;
   const nextIndex = GUIDED_STEPS.findIndex((st) => !done.has(st.id));
 
@@ -121,6 +123,7 @@ export default function GuidedCase() {
     return (
       <div className={css.guided}>
         <ContextBanner context="simulation" />
+        <p className={css.caseTag}>{CASE_TAG}</p>
         <p className={css.complaint}>
           <span>Example complaint</span> “{GUIDED_COMPLAINT}”
         </p>
@@ -144,6 +147,7 @@ export default function GuidedCase() {
   return (
     <div className={css.guided}>
       <ContextBanner context="simulation" detail="The pack in the 3D explorer now carries this case's hidden fault." />
+      <p className={css.caseTag}>{CASE_TAG}</p>
       <p className={css.complaint}>
         <span>Complaint</span> “{GUIDED_COMPLAINT}”
       </p>
@@ -193,6 +197,7 @@ export default function GuidedCase() {
           <p className={css.evLabel}>Technician conclusion</p>
           {done.has("decision") ? (
             <div className={css.conclusion}>
+              <p className={css.caseTag}>{CASE_TAG} · not a decision for a real vehicle</p>
               <p className={css.decisionStatus}>{REPAIR_STATUS_LABEL[decision.status]}</p>
               <p>{decision.reason}</p>
               {decision.status !== "INSUFFICIENT_EVIDENCE" ? (

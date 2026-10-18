@@ -72,8 +72,8 @@ describe("SEO", () => {
     expect(metadata.description).toBe(
       "Interactive 3D EV battery diagnostics toolkit for electric-scooter technicians. Explore battery packs, BMS, cells, SOC, SOH, thermal behaviour, faults and guided repair workflows.",
     );
-    expect(metadata.alternates?.canonical).toBe("https://aerospace.ev.engineer/internships/ev-battery-health-diagnostics-toolkit");
-    expect(metadata.openGraph).toMatchObject({ title: metadata.title, url: "https://aerospace.ev.engineer/internships/ev-battery-health-diagnostics-toolkit" });
+    expect(metadata.alternates?.canonical).toBe("https://autonomous.ev.engineer/internships/ev-battery-health-diagnostics-toolkit");
+    expect(metadata.openGraph).toMatchObject({ title: metadata.title, url: "https://autonomous.ev.engineer/internships/ev-battery-health-diagnostics-toolkit" });
     expect(metadata.twitter).toMatchObject({ card: "summary_large_image" });
     expect(metadata.keywords).toEqual(expect.arrayContaining(["EV battery diagnostics", "BMS diagnostics", "72V battery diagnostics", "LFP battery diagnostics"]));
   });
@@ -153,7 +153,7 @@ describe("Vehicle Battery Locator", () => {
     expect(within(locator).getAllByText("Technical specification not verified.").length).toBeGreaterThanOrEqual(4);
     expect(within(locator).getAllByText("UNKNOWN").length).toBeGreaterThanOrEqual(4);
     expect(within(locator).getByText("LOW")).toBeInTheDocument();
-    expect(within(locator).getByText("Generic procedural scooter — not OEM geometry")).toBeInTheDocument();
+    expect(within(locator).getByText("Generic procedural scooter — NOT OEM GEOMETRY")).toBeInTheDocument();
     const locate = within(locator).getByRole("button", { name: /LOCATE BATTERY/ });
     expect(locate).toBeDisabled();
     await user.selectOptions(within(locator).getByLabelText("Architecture seen on the vehicle"), "swappable");
@@ -286,7 +286,10 @@ describe("platforms, equipment and report", () => {
     const rows = within(platforms).getAllByRole("row").slice(1);
     expect(rows.map((r) => within(r).getByRole("rowheader").firstChild!.textContent)).toEqual(["Ola S1 family", "TVS iQube family", "Ather 450 / Rizta family", "River Indie", "EVeium Cosmo / Comet / Czar family"]);
     expect(platforms.textContent).not.toMatch(/most battery failures/i);
-    expect(within(platforms).getAllByText("Technical specification not verified.", { exact: false })).toHaveLength(5);
+    expect(within(platforms).getAllByText("Technical specification not verified.", { exact: false })).toHaveLength(4);
+    expect(rows[4]).toHaveTextContent("PUBLIC SPECIFICATION PARTIALLY VERIFIED");
+    expect(within(rows[4]).getByRole("link", { name: /Open EVeium battery diagnostics/ })).toHaveAttribute("href", "/internships/ev-battery-health-diagnostics-toolkit/vehicles/eveium");
+    expect(rows[4]).toHaveTextContent("Cosmo, Comet, Czar");
   });
 
   it("keeps commercial tools in the equipment section with the external-product label", () => {
@@ -349,25 +352,24 @@ describe("Real Vehicle Diagnosis", () => {
     await user.click(within(diagnosis).getByRole("button", { name: /Electrical Measurements/ }));
     const pack = within(diagnosis).getByRole("spinbutton", { name: /Measured pack voltage/ });
     expect(pack).toHaveValue(null);
-    expect(within(diagnosis).getByLabelText("Measured pack voltage — data origin")).toHaveValue("NOT_MEASURED");
+    expect(within(diagnosis).getByLabelText("Measured pack voltage (open circuit) — data origin")).toHaveValue("NOT_MEASURED");
     await user.type(pack, "77.9");
-    expect(within(diagnosis).getByLabelText("Measured pack voltage — data origin")).toHaveValue("MEASURED");
+    expect(within(diagnosis).getByLabelText("Measured pack voltage (open circuit) — data origin")).toHaveValue("MEASURED");
 
     await user.click(within(diagnosis).getByRole("button", { name: /Cell \/ Module Comparison/ }));
     await user.type(within(diagnosis).getByRole("spinbutton", { name: /Maximum cell-group voltage/ }), "4.08");
     await user.type(within(diagnosis).getByRole("spinbutton", { name: /Minimum cell-group voltage/ }), "3.74");
-    await user.selectOptions(within(diagnosis).getByLabelText("Load behaviour"), "Shuts down under load");
 
-    // Without the BMS status the imbalance gate is not met.
+    // Minimum and maximum alone do not meet the imbalance gate: SOC or load context is required.
     await user.click(within(diagnosis).getByRole("button", { name: /Root-Cause Analysis/ }));
-    const imbalance = within(diagnosis).getByRole("article", { name: "Cell-group imbalance" });
+    const imbalance = within(diagnosis).getByRole("article", { name: "Cell imbalance" });
     expect(imbalance).toHaveTextContent("INSUFFICIENT EVIDENCE — PERFORM NEXT TEST");
-    expect(imbalance).toHaveTextContent("BMS status — required");
+    expect(imbalance).toHaveTextContent("SOC or load context — required");
 
-    await user.click(within(diagnosis).getByRole("button", { name: /BMS \/ Diagnostic Data/ }));
-    await user.selectOptions(within(diagnosis).getByLabelText("BMS status"), "Normal");
+    await user.click(within(diagnosis).getByRole("button", { name: /Cell \/ Module Comparison/ }));
+    await user.selectOptions(within(diagnosis).getByLabelText("Load behaviour"), "Shuts down under load");
     await user.click(within(diagnosis).getByRole("button", { name: /Root-Cause Analysis/ }));
-    expect(within(diagnosis).getByRole("article", { name: "Cell-group imbalance" })).toHaveTextContent("HIGH confidence");
+    expect(within(diagnosis).getByRole("article", { name: "Cell imbalance" })).toHaveTextContent("HIGH confidence");
 
     await user.click(within(diagnosis).getByRole("button", { name: /Repair Decision/ }));
     expect(within(diagnosis).getByText("ADVANCED CELL REPAIR")).toBeInTheDocument();

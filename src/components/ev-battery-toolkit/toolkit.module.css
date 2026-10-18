@@ -562,6 +562,18 @@
   border-color: rgba(196, 181, 253, 0.55);
   background: rgba(139, 92, 246, 0.1);
 }
+.prov[data-family="thirdparty"] {
+  color: #5eead4;
+  border-style: dashed;
+  border-color: rgba(94, 234, 212, 0.45);
+  background: rgba(20, 184, 166, 0.08);
+}
+.prov[data-family="calculated"] {
+  color: #c7d2fe;
+  border-style: dotted;
+  border-color: rgba(199, 210, 254, 0.5);
+  background: rgba(99, 102, 241, 0.1);
+}
 .prov[data-family="estimated"] {
   color: #a5b4fc;
   border-style: dotted;
@@ -1419,6 +1431,12 @@
   color: var(--bt-note);
   font-size: 13px;
   font-weight: 500;
+}
+.inlineLink {
+  display: block;
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 600;
 }
 .specDetails {
   margin-top: 6px;
