@@ -241,8 +241,12 @@ function FooterCol({ title, links }: { title: string; links: string[] }) {
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
-/** Which brand owns the top menu's home button: EV.ENGINEER by default, Gamyaa.in on aerospace.gamyaa.in. */
+/** Which brand owns the top menu's brand button: EV.ENGINEER by default, Gamyaa (gamyaa.in) on aerospace.gamyaa.in. */
 export type AerospaceBrand = "ev-engineer" | "gamyaa";
+
+const GAMYAA_URL = "https://gamyaa.in/";
+/** Gamyaa is an external site: like the other external menu links, it opens in a new tab. */
+const gamyaaLinkProps = { target: "_blank", rel: "noopener noreferrer" } as const;
 
 export default function AerospacePage({ brand = "ev-engineer" }: { brand?: AerospaceBrand }) {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -299,13 +303,13 @@ export default function AerospacePage({ brand = "ev-engineer" }: { brand?: Aeros
             border: "1px solid rgba(124,58,237,0.4)", color: "#B39DDB",
             textDecoration: "none", display: "block", marginLeft: 8
           }}>UFlight</a>
-          {/* On aerospace.gamyaa.in the home button is Gamyaa.in (that host's /aerospace), not EV.ENGINEER. */}
-          <Link href={brand === "gamyaa" ? "/aerospace" : "/"} style={{
+          {/* On aerospace.gamyaa.in this button is Gamyaa (gamyaa.in), not EV.ENGINEER. */}
+          <Link href={brand === "gamyaa" ? GAMYAA_URL : "/"} {...(brand === "gamyaa" ? gamyaaLinkProps : {})} style={{
             padding: "6px 14px", borderRadius: 8, fontWeight: 600, fontSize: 13,
             background: "linear-gradient(135deg, rgba(124,58,237,0.3), rgba(59,130,246,0.2))",
             border: "1px solid rgba(124,58,237,0.4)", color: "#B39DDB",
             textDecoration: "none", display: "block", marginLeft: 8
-          }}>{brand === "gamyaa" ? "Gamyaa.in" : "EV.ENGINEER"}</Link>
+          }}>{brand === "gamyaa" ? "Gamyaa" : "EV.ENGINEER"}</Link>
           <a href="https://www.evsociety.org" target="_blank" rel="noopener noreferrer" style={{
             padding: "6px 14px", borderRadius: 8, fontWeight: 600, fontSize: 13,
             background: "linear-gradient(135deg, rgba(124,58,237,0.3), rgba(59,130,246,0.2))",
@@ -374,13 +378,13 @@ export default function AerospacePage({ brand = "ev-engineer" }: { brand?: Aeros
                     }}>
                     UFlight
                   </a>
-                  <Link href={brand === "gamyaa" ? "/aerospace" : "/"} onClick={() => setMobileOpen(false)} style={{
+                  <Link href={brand === "gamyaa" ? GAMYAA_URL : "/"} {...(brand === "gamyaa" ? gamyaaLinkProps : {})} onClick={() => setMobileOpen(false)} style={{
                     marginTop: 4, padding: "10px 16px", borderRadius: 10, fontWeight: 600,
                     background: "linear-gradient(135deg, rgba(124,58,237,0.3), rgba(59,130,246,0.2))",
                     border: "1px solid rgba(124,58,237,0.4)", color: "#B39DDB", fontSize: 15,
                     textDecoration: "none", textAlign: "center"
                   }}>
-                    {brand === "gamyaa" ? "Gamyaa.in" : "EV.ENGINEER"}
+                    {brand === "gamyaa" ? "Gamyaa" : "EV.ENGINEER"}
                   </Link>
                   <a href="https://www.evsociety.org" target="_blank" rel="noopener noreferrer"
                     onClick={() => setMobileOpen(false)} style={{
@@ -1080,6 +1084,9 @@ export default function AerospacePage({ brand = "ev-engineer" }: { brand?: Aeros
             <a href="https://www.uflight.in/" target="_blank" rel="noopener noreferrer" style={{ color: "#B5B8C9", fontSize: 13, textDecoration: "none" }}>UFlight</a>
             <a href="https://www.evsociety.org/" target="_blank" rel="noopener noreferrer" style={{ color: "#B5B8C9", fontSize: 13, textDecoration: "none" }}>EV Society</a>
             <a href="https://itelematics.com" target="_blank" rel="noopener noreferrer" style={{ color: "#B5B8C9", fontSize: 13, textDecoration: "none" }}>iTelematics</a>
+            {brand === "gamyaa" ? (
+              <a href={GAMYAA_URL} {...gamyaaLinkProps} style={{ color: "#B5B8C9", fontSize: 13, textDecoration: "none" }}>Gamyaa</a>
+            ) : null}
           </div>
         </div>
       </footer>

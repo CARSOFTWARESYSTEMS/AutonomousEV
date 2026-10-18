@@ -31,15 +31,18 @@ describe("aerospace.gamyaa.in routing", () => {
 });
 
 describe("Aerospace top menu by host", () => {
-  it("shows Gamyaa.in instead of EV.ENGINEER on aerospace.gamyaa.in, on desktop and in the mobile menu", async () => {
+  it("shows Gamyaa (linking to gamyaa.in) instead of EV.ENGINEER on aerospace.gamyaa.in, on desktop and in the mobile menu", async () => {
     const user = userEvent.setup();
     render(<GamyaaAerospacePage />);
     const nav = screen.getByRole("navigation", { name: "Aerospace section navigation" });
-    expect(within(nav).getByRole("link", { name: "Gamyaa.in" })).toHaveAttribute("href", "/aerospace");
+    const gamyaa = within(nav).getByRole("link", { name: "Gamyaa" });
+    expect(gamyaa).toHaveAttribute("href", "https://gamyaa.in/");
+    expect(gamyaa).toHaveAttribute("target", "_blank");
+    expect(gamyaa).toHaveAttribute("rel", "noopener noreferrer");
     expect(within(nav).queryByRole("link", { name: "EV.ENGINEER" })).toBeNull();
     await user.click(screen.getByRole("button", { name: "Open menu" }));
     const menu = document.getElementById("aerospace-mobile-menu")!;
-    expect(within(menu).getByRole("link", { name: "Gamyaa.in" })).toHaveAttribute("href", "/aerospace");
+    expect(within(menu).getByRole("link", { name: "Gamyaa" })).toHaveAttribute("href", "https://gamyaa.in/");
     expect(within(menu).queryByRole("link", { name: "EV.ENGINEER" })).toBeNull();
     expect(metadata.robots).toEqual({ index: false, follow: false });
   });
@@ -48,6 +51,18 @@ describe("Aerospace top menu by host", () => {
     render(<AerospacePage />);
     const nav = screen.getByRole("navigation", { name: "Aerospace section navigation" });
     expect(within(nav).getByRole("link", { name: "EV.ENGINEER" })).toHaveAttribute("href", "/");
-    expect(within(nav).queryByRole("link", { name: "Gamyaa.in" })).toBeNull();
+    expect(within(nav).queryByRole("link", { name: "Gamyaa" })).toBeNull();
+    expect(within(screen.getByRole("contentinfo")).queryByRole("link", { name: "Gamyaa" })).toBeNull();
+  });
+
+  it("lists Gamyaa after UFlight, EV Society and iTelematics in the footer on aerospace.gamyaa.in", () => {
+    render(<GamyaaAerospacePage />);
+    const footer = screen.getByRole("contentinfo");
+    const names = within(footer).getAllByRole("link").map((a) => a.textContent);
+    expect(names.slice(-4)).toEqual(["UFlight", "EV Society", "iTelematics", "Gamyaa"]);
+    const gamyaa = within(footer).getByRole("link", { name: "Gamyaa" });
+    expect(gamyaa).toHaveAttribute("href", "https://gamyaa.in/");
+    expect(gamyaa).toHaveAttribute("target", "_blank");
+    expect(gamyaa).toHaveAttribute("rel", "noopener noreferrer");
   });
 });
