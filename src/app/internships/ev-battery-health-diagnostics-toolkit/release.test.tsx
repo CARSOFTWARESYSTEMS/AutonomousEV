@@ -60,7 +60,8 @@ describe("one authoritative domain", () => {
   it("lists the same URL in the sitemap, the internships graph and llms.txt", () => {
     const urls = sitemap().map((e) => e.url);
     expect(urls).toContain(CANONICAL);
-    expect(urls.filter((u) => u.includes("ev-battery-health-diagnostics-toolkit"))).toEqual([CANONICAL]);
+    expect(urls.filter((u) => u === CANONICAL)).toHaveLength(1);
+    expect(urls.filter((u) => u.includes("ev-battery-health-diagnostics-toolkit")).every((u) => u.startsWith(CANONICAL))).toBe(true);
     const graph = JSON.stringify(buildInternshipsGraph({ title: "t", description: "d", dateModified: "2026-10-18" }));
     expect(graph).toContain(CANONICAL);
     expect(graph).not.toContain("aerospace.ev.engineer/internships");

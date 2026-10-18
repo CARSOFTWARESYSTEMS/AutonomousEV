@@ -78,10 +78,10 @@ export function IdentifyStage({ job, update, setBefore, lockManufacturer }: Stag
   const models = VEHICLES.filter((v) => v.manufacturer === manufacturer);
   const variant = vehicle?.variants.find((v) => v.id === job.variantId);
   const spec = (variant ?? vehicle?.variants[0])?.battery;
-  const usePublished = (key: "batteryNominalVoltage" | "ratedCapacityAh", item: { value: number | null; provenance: DiagnosticMeasurement["provenance"]; conflict?: boolean }) =>
+  const publishedSetter = (key: "batteryNominalVoltage" | "ratedCapacityAh", item: { value: number | null; provenance: DiagnosticMeasurement["provenance"]; conflict?: boolean }) =>
     item.value !== null && !item.conflict && (item.provenance === "MANUFACTURER_VERIFIED" || item.provenance === "THIRD_PARTY_DOCUMENTED") ? () => setBefore({ key, value: item.value, provenance: item.provenance }) : null;
-  const pubV = spec ? usePublished("batteryNominalVoltage", spec.nominalVoltage) : null;
-  const pubAh = spec ? usePublished("ratedCapacityAh", spec.capacityAh) : null;
+  const pubV = spec ? publishedSetter("batteryNominalVoltage", spec.nominalVoltage) : null;
+  const pubAh = spec ? publishedSetter("ratedCapacityAh", spec.capacityAh) : null;
 
   return (
     <div className={css.fields}>

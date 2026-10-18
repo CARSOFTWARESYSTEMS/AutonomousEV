@@ -38,6 +38,18 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        // aerospace.gamyaa.in opens on the Aerospace page (served as its Gamyaa.in variant, see rewrites).
+        source: "/",
+        has: [
+          {
+            type: "host",
+            value: "aerospace\\.gamyaa\\.in",
+          },
+        ],
+        destination: "/aerospace",
+        permanent: true,
+      },
+      {
         // Corrected route spelling (evAutoRiksha -> evAutoRickshaw). Query
         // parameters on the incoming request are passed through automatically.
         source: "/internships/evAutoRiksha",
@@ -69,6 +81,17 @@ const nextConfig: NextConfig = {
             },
           ],
           destination: '/ishavasyam-space',
+        },
+        {
+          // On aerospace.gamyaa.in, /aerospace shows Gamyaa.in in the top menu in place of EV.ENGINEER.
+          source: '/aerospace',
+          has: [
+            {
+              type: 'host',
+              value: 'aerospace\\.gamyaa\\.in',
+            },
+          ],
+          destination: '/gamyaa-aerospace',
         },
       ],
       afterFiles: [

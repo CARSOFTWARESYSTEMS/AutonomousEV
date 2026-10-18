@@ -56,6 +56,13 @@ link below points to a canonical public page already listed in
   values are labelled SIMULATED; vehicle battery specifications are shown as
   not verified until a source is recorded. It does not replace manufacturer
   service documentation.
+- [EVeium Battery Diagnostics](https://autonomous.ev.engineer/internships/ev-battery-health-diagnostics-toolkit/vehicles/eveium):
+  Real-vehicle battery diagnosis for EVeium Cosmo, Comet and Czar within the
+  toolkit. Publicly documented 72 V lithium-ion specifications with sources
+  (Cosmo 30 Ah, Comet 50 Ah; Czar capacity sources disagree: 40 Ah per the
+  manufacturer website, 42 Ah per 2022 launch coverage). Cell chemistry,
+  format, BMS protocol, connector and battery location are listed as not
+  verified. No live BMS connection.
 - [Cybersecurity Engineers](https://autonomous.ev.engineer/internships/cybersecurity-engineers):
   Profiles of engineers and researchers contributing to cybersecurity research
   at EV.ENGINEER — Bhavya Naga Sai Parvathi Kshatri (Cybersecurity Researcher ·
