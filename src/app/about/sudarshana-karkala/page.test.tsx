@@ -197,7 +197,7 @@ describe("/about/sudarshana-karkala: professional background", () => {
     );
     expect(entries().map(text)).toEqual([
       "Nov 2025 — Nov 2026 Thasmai InfoTech Private Limited Co-Founder · Director Technology entrepreneurship, engineering R&D and aerospace / space research initiatives.",
-      "Dec 2024 — Nov 2026 Gamyaa AeroSystems Co-Founder · Director Defence and Aerospace Engineering Intelligence initiatives, with a focus on quality, engineering workflows and emerging aerospace technologies.",
+      "Dec 2024 — Nov 2026 Gamyaa AeroSystems Co-Founder Defence and Aerospace Engineering Intelligence initiatives, with a focus on quality, engineering workflows and emerging aerospace technologies.",
       "Jul 2021 — Dec 2024 Enphase Solar Energy Private Limited Senior Engineering Manager Software Engineering · Mobile Platforms · Connected Energy Systems · Cybersecurity",
       "Oct 2011 — Jul 2021 McAfee Software India Private Limited Engineering Manager Software Engineering · Mobile Security · Cybersecurity · Developer Ecosystems",
       "May 2005 — Sep 2011 NMS Communications · Ness Digital Engineering · eNovate Media Solutions",
@@ -212,7 +212,7 @@ describe("/about/sudarshana-karkala: professional background", () => {
     expect(parts(entries()[2])).toEqual(["Jul 2021 — Dec 2024", "Enphase Solar Energy Private Limited", "Senior Engineering Manager", "Software Engineering · Mobile Platforms · Connected Energy Systems · Cybersecurity"]);
     expect(parts(entries()[3])).toEqual(["Oct 2011 — Jul 2021", "McAfee Software India Private Limited", "Engineering Manager", "Software Engineering · Mobile Security · Cybersecurity · Developer Ecosystems"]);
     expect(parts(entries()[0]).slice(1, 3)).toEqual(["Thasmai InfoTech Private Limited", "Co-Founder · Director"]);
-    expect(parts(entries()[1]).slice(1, 3)).toEqual(["Gamyaa AeroSystems", "Co-Founder · Director"]);
+    expect(parts(entries()[1]).slice(1, 3)).toEqual(["Gamyaa AeroSystems", "Co-Founder"]);
     // The earlier career has no title on record, so none is written: the names and the dates, and nothing more.
     expect(parts(entries()[4])).toEqual(["May 2005 — Sep 2011", "NMS Communications · Ness Digital Engineering · eNovate Media Solutions"]);
     // The organisation is set apart from the role beneath it.

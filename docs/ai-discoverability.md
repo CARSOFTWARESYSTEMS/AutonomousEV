@@ -54,7 +54,7 @@ the page, the person's `description`, `jobTitle` and `affiliation`. Its node sta
 website's `publisher`. No consulting organisation is given a relationship to the person in the graph.
 
 Thasmai InfoTech Private Limited and Gamyaa AeroSystems are rows of the profile's career timeline
-(Co-Founder · Director of each), and neither is modelled as an entity in this registry or in the
+(Co-Founder · Director of Thasmai, Co-Founder of Gamyaa), and neither is modelled as an entity in this registry or in the
 profile's graph. Thasmai was removed site-wide earlier at the request of the profile owner and is
 mentioned again only on the profile, at the owner's later instruction. Gamyaa AeroSystems is written
 without "Private Limited" because no incorporation is recorded in this repository. The former

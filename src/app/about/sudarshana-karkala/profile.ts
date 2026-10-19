@@ -147,7 +147,7 @@ export const BACKGROUND: {
       current: true,
       // No legal status is on record for it in this repository, so it is named without "Private Limited".
       organisations: [{ name: "Gamyaa AeroSystems", href: "https://aerosystems.gamyaa.in/", tracked: { id: "gamyaa", destination: "aerosystems.gamyaa.in" } }],
-      role: "Co-Founder · Director",
+      role: "Co-Founder",
       context: "Defence and Aerospace Engineering Intelligence initiatives, with a focus on quality, engineering workflows and emerging aerospace technologies.",
     },
     {
