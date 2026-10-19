@@ -1,0 +1,459 @@
+/* System explorer, interface matrix and the engine functional view. */
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.segmented {
+  display: inline-flex;
+  border: 1px solid var(--apex-line-strong);
+  border-radius: 2px;
+  padding: 3px;
+  gap: 3px;
+}
+
+.segmented button {
+  min-height: 40px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 1px;
+  background: transparent;
+  color: var(--apex-text-2);
+  font-family: var(--apex-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.segmented button[aria-pressed="true"] {
+  background: var(--apex-text);
+  color: var(--apex-bg);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.layers {
+  display: grid;
+  gap: 28px;
+}
+
+@media (min-width: 1100px) {
+  .layers {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0;
+    border-top: 1px solid var(--apex-line-strong);
+  }
+}
+
+.layer {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-width: 0;
+}
+
+@media (min-width: 1100px) {
+  .layer {
+    padding: 18px 14px 0;
+    border-left: 1px solid var(--apex-line);
+  }
+  .layer:first-child {
+    border-left: none;
+    padding-left: 0;
+  }
+}
+
+.layerTitle {
+  font-family: var(--apex-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--apex-text-3);
+  padding-bottom: 6px;
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+@media (min-width: 640px) {
+  .tiles {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  .tiles {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.tile {
+  position: relative;
+  display: grid;
+  gap: 10px;
+  align-content: space-between;
+  min-height: 96px;
+  padding: 14px;
+  border: 1px solid var(--apex-line);
+  background: var(--apex-surface);
+  text-align: left;
+  cursor: pointer;
+  min-width: 0;
+  transition: border-color 0.16s ease, background-color 0.16s ease;
+}
+
+.tile:hover {
+  border-color: var(--apex-line-strong);
+  background: var(--apex-surface-hover);
+}
+
+.tile[data-status="BUILT"] {
+  border-color: var(--apex-accent);
+  background: rgba(255, 106, 26, 0.07);
+}
+
+.tileName {
+  font-family: var(--apex-display);
+  font-stretch: 108%;
+  font-weight: 640;
+  font-size: 16px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.tileMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  align-items: center;
+  font-family: var(--apex-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--apex-text-3);
+}
+
+.tileMeta .badgeSlot {
+  transform-origin: left center;
+}
+
+/* ── N² interface matrix ── */
+.matrixWrap {
+  margin-top: 40px;
+  overflow-x: auto;
+  border: 1px solid var(--apex-line);
+  -webkit-overflow-scrolling: touch;
+}
+
+.matrix {
+  border-collapse: collapse;
+  min-width: 760px;
+  width: 100%;
+  font-family: var(--apex-mono);
+  font-size: 11px;
+}
+
+.matrix th,
+.matrix td {
+  border: 1px solid var(--apex-line);
+  text-align: center;
+  padding: 0;
+}
+
+.matrix thead th {
+  height: 96px;
+  vertical-align: bottom;
+  padding: 6px 0;
+  font-weight: 500;
+  color: var(--apex-text-3);
+  letter-spacing: 0.08em;
+}
+
+.colHead {
+  display: inline-block;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+}
+
+.matrix tbody th {
+  text-align: left;
+  padding: 0 12px;
+  height: 30px;
+  white-space: nowrap;
+  font-weight: 500;
+  color: var(--apex-text-2);
+  letter-spacing: 0.06em;
+}
+
+.rowButton {
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+  padding: 6px 0;
+  text-transform: uppercase;
+}
+
+.rowButton:hover {
+  color: var(--apex-accent);
+}
+
+.cell {
+  width: 30px;
+  height: 30px;
+}
+
+.cellOn::after {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--apex-amber);
+}
+
+.cellSelf {
+  background: var(--apex-hover-strong);
+}
+
+.matrix [data-hl="true"] {
+  background: rgba(255, 106, 26, 0.08);
+  color: var(--apex-text);
+}
+
+/* ── Engine functional view ── */
+.engine {
+  display: grid;
+  gap: 18px;
+}
+
+@media (min-width: 960px) {
+  .engine {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+    gap: 40px;
+    align-items: stretch;
+  }
+}
+
+.flowCol {
+  display: grid;
+  gap: 0;
+  align-content: start;
+}
+
+.flowBlock {
+  display: grid;
+  gap: 6px;
+  padding: 18px 18px;
+  border: 1px solid var(--apex-line-strong);
+  background: var(--apex-surface);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.16s ease, background-color 0.16s ease;
+}
+
+.flowBlock:hover,
+.crossBlock:hover {
+  border-color: var(--apex-accent);
+  background: rgba(255, 106, 26, 0.06);
+}
+
+.flowConnector {
+  display: flex;
+  justify-content: center;
+  height: 28px;
+  position: relative;
+}
+
+.flowConnector::before {
+  content: "";
+  width: 1px;
+  height: 100%;
+  background: var(--apex-amber);
+}
+
+.flowConnector::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top: 7px solid var(--apex-amber);
+  border-bottom: 0;
+}
+
+.flowBlockTitle {
+  font-family: var(--apex-display);
+  font-stretch: 116%;
+  font-weight: 700;
+  font-size: clamp(17px, 1.6vw, 21px);
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+.crossCol {
+  display: grid;
+  gap: 10px;
+  align-content: stretch;
+  position: relative;
+}
+
+.crossBlock {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  padding: 16px 18px;
+  border: 1px dashed var(--apex-line-strong);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.16s ease, background-color 0.16s ease;
+}
+
+.crossIcon {
+  font-family: var(--apex-mono);
+  font-size: 16px;
+  color: var(--apex-accent);
+}
+
+.engineLegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 18px;
+  font-family: var(--apex-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--apex-text-3);
+}
+
+.engineLegend span {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.keySolid,
+.keyDashed {
+  width: 18px;
+  height: 12px;
+  border: 1px solid var(--apex-line-strong);
+}
+
+.keyDashed {
+  border-style: dashed;
+}
+
+/* ── Review gates ── */
+.gates {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  border-top: 1px solid var(--apex-line-strong);
+}
+
+@media (min-width: 640px) {
+  .gates {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  .gates {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+.gate {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 22px 18px 24px 0;
+  border-bottom: 1px solid var(--apex-line);
+  min-width: 0;
+}
+
+@media (min-width: 1100px) {
+  .gate {
+    padding: 24px 18px 28px;
+    border-bottom: none;
+    border-left: 1px solid var(--apex-line);
+  }
+  .gate:first-child {
+    border-left: none;
+    padding-left: 0;
+  }
+}
+
+.gateAcronym {
+  font-family: var(--apex-display);
+  font-stretch: 125%;
+  font-weight: 780;
+  font-size: clamp(30px, 3.4vw, 44px);
+  line-height: 1;
+}
+
+.gateMarker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gateDiamond {
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid var(--apex-text-2);
+  transform: rotate(45deg);
+}
+
+/* ── Q&A lists ── */
+.qa {
+  display: grid;
+  border-top: 1px solid var(--apex-line-strong);
+}
+
+@media (min-width: 900px) {
+  .qa {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 48px;
+  }
+}
+
+.qaItem {
+  display: grid;
+  gap: 6px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--apex-line);
+}
+
+.qaQ {
+  font-family: var(--apex-display);
+  font-stretch: 108%;
+  font-weight: 640;
+  font-size: 17px;
+  line-height: 1.3;
+}
+
+.qaA {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--apex-text-2);
+}

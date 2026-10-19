@@ -374,7 +374,7 @@ it("shows the flagship Satellite Engineering card immediately after Space Applic
     const { container } = render(<SpacePage />);
     const simulations = container.querySelector("#simulations") as HTMLElement;
     const titles = within(simulations).getAllByRole("heading", { level: 3 }).map((h) => h.textContent);
-    expect(titles).toEqual(["Space Applications", "Satellite Engineering", "Model Rocketry", "CubeTwin", "Space Station", "Next-Generation Rocket Engine Digital Twin", "Advanced Rocket Propulsion Digital Twin"]);
+    expect(titles).toEqual(["Space Applications", "Satellite Engineering", "Model Rocketry", "CubeTwin", "Space Station", "APEX Rocket Systems", "Next-Generation Rocket Engine Digital Twin", "Advanced Rocket Propulsion Digital Twin"]);
 
     const satelliteLink = within(simulations).getByRole("link", { name: /Explore Satellite Engineering/ });
     expect(satelliteLink).toHaveAttribute("href", "/space/satellite-engineering");
@@ -395,8 +395,42 @@ it("links to the Next-Generation Rocket Engine Digital Twin from the simulations
     const card = link.parentElement as HTMLElement;
     expect(within(card).getByRole("heading", { level: 3 })).toHaveTextContent("Next-Generation Rocket Engine Digital Twin");
     expect(within(card).getByText("Educational demonstrator · Reference and simulated data · Not a real engine.")).toBeInTheDocument();
-    // The card follows Space Station.
-    expect(within(simulations).getByRole("link", { name: /Explore Space Station/ }).parentElement?.nextElementSibling).toBe(card);
+    // The card follows Space Station and the APEX partner card next to it.
+    const apexCard = within(simulations).getByRole("link", { name: /Explore APEX Collaboration Concept/ }).parentElement as HTMLElement;
+    expect(within(simulations).getByRole("link", { name: /Explore Space Station/ }).parentElement?.nextElementSibling).toBe(apexCard);
+    expect(apexCard.nextElementSibling).toBe(card);
+  });
+
+it("places the APEX Rocket Systems card next to Space Station, linking to the APEX microsite and to APEX's official website", () => {
+    const { container } = render(<SpacePage />);
+    const simulations = container.querySelector("#simulations") as HTMLElement;
+    const link = within(simulations).getByRole("link", { name: /Explore APEX Collaboration Concept/ });
+    expect(link).toHaveAttribute("href", "/space/partners/apexrocketsystems");
+    expect(link).toHaveAttribute("data-track-event", "space_project_card_click");
+    expect(link).toHaveAttribute("data-track-project", "apex_rocket_systems");
+    const card = link.parentElement as HTMLElement;
+    expect(within(card).getByRole("heading", { level: 3 })).toHaveTextContent("APEX Rocket Systems");
+    expect(within(card).getByText("Rocket Propulsion · Integrated Launch Systems")).toBeInTheDocument();
+    const official = within(card).getByRole("link", { name: /Official website/ });
+    expect(official).toHaveAttribute("href", "https://www.apexrocketsystems.com/");
+    expect(official).toHaveAttribute("target", "_blank");
+    expect(official).toHaveAttribute("rel", "noopener noreferrer");
+    expect(card.textContent).toMatch(/Engineering collaboration concept/);
+    expect(card.textContent).not.toMatch(/hot-fired|flight-qualified|launch-ready|ishavasyam/i);
+  });
+
+it("lists the proposed partners in a Partners & Engineering Ecosystem section, each in its own role", () => {
+    const { container } = render(<SpacePage />);
+    const section = container.querySelector("#partners") as HTMLElement;
+    expect(within(section).getByRole("heading", { level: 2 })).toHaveTextContent("Partners & Engineering Ecosystem");
+    const text = section.textContent ?? "";
+    expect(text).toMatch(/Rocket Propulsion · Integrated Launch Systems/);
+    expect(text).toMatch(/Digital Engineering · Digital Twin · Quality/);
+    expect(text).toMatch(/Embedded Systems · Firmware/);
+    expect(text).toMatch(/Cybersecurity · AI/);
+    expect(text).toMatch(/Skills · Internships · Academia/);
+    expect(text).toMatch(/no formal agreement is implied/);
+    expect(text).not.toMatch(/official technology partner/i);
   });
 
 it("places the Advanced Rocket Propulsion Digital Twin card immediately next to the Rocket Engine Digital Twin card", () => {

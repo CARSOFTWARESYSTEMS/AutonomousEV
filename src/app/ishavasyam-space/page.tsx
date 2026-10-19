@@ -20,5 +20,5 @@ const entityGraph = {
 };
 
 export default function IshavasyamSpacePage() {
-  return <SpaceLanding entityGraph={entityGraph} />;
+  return <SpaceLanding entityGraph={entityGraph} showPartners={false} />;
 }

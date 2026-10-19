@@ -1,0 +1,831 @@
+/* APEX — ENGINEERING EVIDENCE
+   The microsite's own theme. Nothing here depends on the host site's styles;
+   the root resets the few global element rules (headings, paragraphs, lists)
+   that would otherwise leak in. */
+
+.root {
+  --apex-graphite: #050607;
+  --apex-black: #0d0f11;
+  --apex-titanium: #24272b;
+  --apex-metal: #6d7278;
+  --apex-silver: #d6d8da;
+  --apex-white: #f5f5f2;
+  --apex-amber: #ff6a1a;
+  --apex-amber-muted: #a85a2a;
+  /* Amber dark enough for text on the paper sections (4.9:1). */
+  --apex-amber-ink: #b4470c;
+
+  /* Theme tokens. Components use these, never the raw palette, so the light theme is a token swap. */
+  --apex-bg: var(--apex-graphite);
+  --apex-bg-alt: var(--apex-black);
+  --apex-surface: var(--apex-graphite);
+  --apex-surface-hover: #0b0d0f;
+  --apex-hover: rgba(214, 216, 218, 0.04);
+  --apex-hover-strong: rgba(214, 216, 218, 0.08);
+  --apex-text: var(--apex-white);
+  --apex-text-2: #b9bdc1;
+  --apex-text-3: #8e9399;
+  --apex-line: rgba(214, 216, 218, 0.13);
+  --apex-line-strong: rgba(214, 216, 218, 0.3);
+  --apex-panel: #0a0c0e;
+  /* Amber as text: full amber on dark; the darker ink on light, for contrast. */
+  --apex-accent: var(--apex-amber);
+  /* Neutral data marks (proposed partners, bars, links). */
+  --apex-mark: var(--apex-silver);
+  --apex-chart-predicted: #4f95d6;
+  --apex-chart-measured: #e8661e;
+  /* "Partner required" text: a capability gap. */
+  --apex-gap: #e0915f;
+
+  --apex-display: var(--font-apex-display), "Archivo", system-ui, sans-serif;
+  --apex-body: var(--font-inter), "Inter", system-ui, -apple-system, sans-serif;
+  --apex-mono: var(--font-apex-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --apex-gutter: clamp(16px, 4.2vw, 56px);
+  --apex-max: 1320px;
+  /* Fixed header height: one band on phones and tablets, the two-band masthead from 1180px. */
+  --apex-header-h: 73px;
+
+  position: relative;
+  min-height: 100vh;
+  background: var(--apex-bg);
+  color: var(--apex-text);
+  font-family: var(--apex-body);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (min-width: 1180px) {
+  .root {
+    --apex-header-h: 130px;
+  }
+}
+
+/* ── Light theme: the engineering-report page. Chosen by the visitor; dark is the default. ── */
+.root[data-apex-theme="light"] {
+  --apex-bg: #f5f5f2;
+  --apex-bg-alt: #ebebe6;
+  --apex-surface: #ffffff;
+  --apex-surface-hover: #fafaf7;
+  --apex-hover: rgba(13, 15, 17, 0.035);
+  --apex-hover-strong: rgba(13, 15, 17, 0.08);
+  --apex-text: #0d0f11;
+  --apex-text-2: #3e4247;
+  --apex-text-3: #5d6268;
+  --apex-line: rgba(13, 15, 17, 0.13);
+  --apex-line-strong: rgba(13, 15, 17, 0.3);
+  --apex-panel: #ffffff;
+  /* A step darker than the paper ink: amber-tinted cards sit on the off-white background here. */
+  --apex-accent: #9f3d08;
+  --apex-mark: #3e4247;
+  --apex-chart-predicted: #2563eb;
+  --apex-chart-measured: #c2410c;
+  --apex-gap: #8a4413;
+  color-scheme: light;
+}
+
+/* Areas that stay dark in both themes: the masthead, the footer, the hero photograph, the menu and the photo viewer. */
+.forceDark {
+  --apex-bg: var(--apex-graphite);
+  --apex-bg-alt: var(--apex-black);
+  --apex-surface: var(--apex-graphite);
+  --apex-surface-hover: #0b0d0f;
+  --apex-hover: rgba(214, 216, 218, 0.04);
+  --apex-hover-strong: rgba(214, 216, 218, 0.08);
+  --apex-text: var(--apex-white);
+  --apex-text-2: #b9bdc1;
+  --apex-text-3: #8e9399;
+  --apex-line: rgba(214, 216, 218, 0.13);
+  --apex-line-strong: rgba(214, 216, 218, 0.3);
+  --apex-panel: #0a0c0e;
+  --apex-accent: var(--apex-amber);
+  --apex-mark: var(--apex-silver);
+  --apex-gap: #e0915f;
+  color: var(--apex-text);
+  color-scheme: dark;
+}
+
+.root :where(h1, h2, h3, h4, h5, h6, p, li, dt, dd, figcaption, blockquote) {
+  color: inherit;
+  margin: 0;
+  letter-spacing: normal;
+}
+
+.root :where(ul, ol) {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.root :where(a) {
+  color: inherit;
+  text-decoration: none;
+}
+
+.root :where(button) {
+  font: inherit;
+  color: inherit;
+}
+
+.root ::selection {
+  background: var(--apex-amber);
+  color: var(--apex-graphite);
+}
+
+.root :where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--apex-accent);
+  outline-offset: 3px;
+}
+
+/* ── Skip link ── */
+.skipLink {
+  position: absolute;
+  left: 12px;
+  top: -60px;
+  z-index: 200;
+  padding: 10px 16px;
+  background: var(--apex-amber);
+  color: var(--apex-graphite);
+  font-family: var(--apex-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.skipLink:focus {
+  top: 12px;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Layout ── */
+.container {
+  width: 100%;
+  max-width: var(--apex-max);
+  margin-inline: auto;
+  padding-inline: var(--apex-gutter);
+}
+
+.section {
+  position: relative;
+  padding-block: clamp(72px, 10vw, 136px);
+  border-top: 1px solid var(--apex-line);
+  scroll-margin-top: var(--apex-header-h);
+}
+
+.sectionTight {
+  padding-block: clamp(56px, 7vw, 96px);
+}
+
+.sectionAlt {
+  background: var(--apex-bg-alt);
+}
+
+/* A paper section: the engineering report page. */
+.paper {
+  --apex-text: #0d0f11;
+  --apex-text-2: #3e4247;
+  --apex-text-3: #5d6268;
+  --apex-line: rgba(13, 15, 17, 0.14);
+  --apex-line-strong: rgba(13, 15, 17, 0.32);
+  --apex-bg: var(--apex-white);
+  --apex-surface: #ffffff;
+  --apex-hover: rgba(13, 15, 17, 0.035);
+  --apex-accent: var(--apex-amber-ink);
+  --apex-mark: #3e4247;
+  --apex-gap: #8a4413;
+  background: var(--apex-white);
+  color: var(--apex-text);
+  border-top: none;
+}
+
+/* In the light theme the paper sections become white sheets, set apart by hairlines. */
+.root[data-apex-theme="light"] .paper {
+  background: #ffffff;
+  border-top: 1px solid var(--apex-line);
+  --apex-bg: #ffffff;
+}
+
+.sectionHead {
+  display: grid;
+  gap: 18px;
+  max-width: 880px;
+  margin-bottom: clamp(36px, 5vw, 64px);
+}
+
+.sectionHeadCentered {
+  margin-inline: auto;
+  text-align: center;
+  justify-items: center;
+}
+
+.sectionHeadSplit {
+  max-width: none;
+  grid-template-columns: minmax(0, 1fr);
+}
+@media (min-width: 960px) {
+  .sectionHeadSplit {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    align-items: end;
+    column-gap: 64px;
+  }
+}
+
+/* ── Type ── */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--apex-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--apex-text-3);
+}
+
+.eyebrowIndex {
+  color: var(--apex-accent);
+}
+.paper .eyebrowIndex {
+  color: var(--apex-amber-ink);
+}
+
+.eyebrowRule {
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.6;
+}
+
+.display {
+  font-family: var(--apex-display);
+  font-stretch: 125%;
+  font-weight: 760;
+  font-size: clamp(30px, 10vw, 116px);
+  line-height: 0.94;
+  letter-spacing: -0.012em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.h2 {
+  font-family: var(--apex-display);
+  font-stretch: 122%;
+  font-weight: 720;
+  font-size: clamp(25px, calc(5vw + 9px), 66px);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.h2Small {
+  font-size: clamp(23px, calc(3.6vw + 7px), 44px);
+}
+
+.h3 {
+  font-family: var(--apex-display);
+  font-stretch: 108%;
+  font-weight: 640;
+  font-size: clamp(19px, 1.7vw, 23px);
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+}
+
+.h4 {
+  font-family: var(--apex-display);
+  font-stretch: 112%;
+  font-weight: 640;
+  font-size: 15px;
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.lead {
+  font-size: clamp(17px, 1.5vw, 20px);
+  line-height: 1.55;
+  color: var(--apex-text-2);
+  max-width: 62ch;
+  text-wrap: pretty;
+}
+
+.body {
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--apex-text-2);
+  max-width: 64ch;
+  text-wrap: pretty;
+}
+
+.small {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--apex-text-3);
+}
+
+.mono {
+  font-family: var(--apex-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.amber {
+  color: var(--apex-accent);
+}
+
+.textLink {
+  color: var(--apex-text);
+  text-decoration: underline;
+  text-decoration-color: var(--apex-accent);
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+.textLink:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* ── Buttons ── */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 12px 22px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  font-family: var(--apex-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn svg {
+  flex-shrink: 0;
+}
+
+.btnPrimary {
+  background: var(--apex-amber);
+  color: var(--apex-graphite);
+}
+.btnPrimary:hover {
+  background: #ff8240;
+}
+
+.btnSecondary {
+  background: transparent;
+  color: var(--apex-text);
+  border-color: var(--apex-line-strong);
+}
+.btnSecondary:hover {
+  border-color: var(--apex-text);
+}
+
+.btnGhost {
+  min-height: 44px;
+  padding-inline: 0;
+  background: none;
+  color: var(--apex-text);
+  border: none;
+}
+.btnGhost:hover {
+  color: var(--apex-accent);
+}
+
+.paper .btnPrimary {
+  background: var(--apex-graphite);
+  color: var(--apex-white);
+}
+.paper .btnPrimary:hover {
+  background: #24272b;
+}
+
+/* ── Status badges: shape and text carry the status, colour only reinforces it ── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 26px;
+  padding: 3px 10px;
+  border: 1px solid var(--apex-line-strong);
+  border-radius: 2px;
+  font-family: var(--apex-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.3;
+  color: var(--apex-text);
+  text-align: left;
+  background: transparent;
+}
+
+.badgeMark {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  background: currentColor;
+}
+
+.badge[data-status="BUILT"] {
+  border-color: var(--apex-accent);
+  color: var(--apex-accent);
+}
+.paper .badge[data-status="BUILT"] {
+  border-color: var(--apex-amber-ink);
+  color: var(--apex-amber-ink);
+}
+.badge[data-status="ACTIVE"] .badgeMark {
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+.badge[data-status="PLANNED"] .badgeMark {
+  background: none;
+  border: 1.5px solid currentColor;
+  transform: rotate(45deg) scale(0.82);
+}
+.badge[data-status="CONCEPT"] {
+  border-style: dashed;
+  color: var(--apex-text-2);
+}
+.badge[data-status="CONCEPT"] .badgeMark {
+  background: none;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+}
+.badge[data-status="PARTNER_REQUIRED"] {
+  border-style: dashed;
+  border-color: var(--apex-gap);
+  color: var(--apex-gap);
+}
+.badge[data-status="PARTNER_REQUIRED"] .badgeMark {
+  background: none;
+  width: 9px;
+  height: 9px;
+  background-image: linear-gradient(currentColor, currentColor), linear-gradient(currentColor, currentColor);
+  background-size: 100% 1.5px, 1.5px 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.badge[data-status="EVIDENCE_REQUIRED"] {
+  color: var(--apex-text-2);
+}
+.badge[data-status="EVIDENCE_REQUIRED"] .badgeMark {
+  background: repeating-linear-gradient(135deg, currentColor 0 1.5px, transparent 1.5px 3.5px);
+  border: 1px solid currentColor;
+}
+
+/* Capability coverage badges reuse the same shapes. */
+.badge[data-status="CORE"] {
+  border-color: var(--apex-accent);
+  color: var(--apex-accent);
+}
+.badge[data-status="PROPOSED"] .badgeMark {
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+.badge[data-status="SUPPORTED"] .badgeMark {
+  border-radius: 50%;
+}
+
+/* ── Evidence frame: registration marks at the corners ── */
+.frame {
+  --frame-c: var(--apex-line-strong);
+  --frame-l: 16px;
+  position: relative;
+  padding: 10px;
+  background:
+    linear-gradient(var(--frame-c), var(--frame-c)) top left / var(--frame-l) 1px no-repeat,
+    linear-gradient(var(--frame-c), var(--frame-c)) top left / 1px var(--frame-l) no-repeat,
+    linear-gradient(var(--frame-c), var(--frame-c)) top right / var(--frame-l) 1px no-repeat,
+    linear-gradient(var(--frame-c), var(--frame-c)) top right / 1px var(--frame-l) no-repeat,
+    linear-gradient(var(--frame-c), var(--frame-c)) bottom left / var(--frame-l) 1px no-repeat,
+    linear-gradient(var(--frame-c), var(--frame-c)) bottom left / 1px var(--frame-l) no-repeat,
+    linear-gradient(var(--frame-c), var(--frame-c)) bottom right / var(--frame-l) 1px no-repeat,
+    linear-gradient(var(--frame-c), var(--frame-c)) bottom right / 1px var(--frame-l) no-repeat;
+}
+
+.figure {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+}
+
+.figureMedia {
+  position: relative;
+  overflow: hidden;
+  background: var(--apex-titanium);
+}
+
+.figureMedia img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.figcaption {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--apex-text-3);
+}
+
+.figLabel {
+  flex-shrink: 0;
+  font-family: var(--apex-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--apex-text-2);
+}
+
+.picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.picture img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.pictureCover img {
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── Hairline cards and grids ── */
+.ruleGrid {
+  display: grid;
+  border-top: 1px solid var(--apex-line);
+  border-left: 1px solid var(--apex-line);
+}
+.ruleGrid > * {
+  border-right: 1px solid var(--apex-line);
+  border-bottom: 1px solid var(--apex-line);
+}
+
+.cell {
+  padding: clamp(20px, 2.4vw, 32px);
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  min-width: 0;
+}
+
+.cellButton {
+  text-align: left;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.18s ease;
+}
+.cellButton:hover {
+  background: var(--apex-hover);
+}
+
+.cols2 { grid-template-columns: minmax(0, 1fr); }
+.cols3 { grid-template-columns: minmax(0, 1fr); }
+.cols4 { grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 640px) {
+  .cols2, .cols3, .cols4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  .cols3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .cols4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+.list {
+  display: grid;
+  gap: 8px;
+}
+.list li {
+  position: relative;
+  padding-left: 18px;
+  color: var(--apex-text-2);
+  font-size: 15px;
+  line-height: 1.5;
+}
+.list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.68em;
+  width: 8px;
+  height: 1px;
+  background: var(--apex-amber);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 5px 12px;
+  border: 1px solid var(--apex-line-strong);
+  border-radius: 2px;
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--apex-text);
+  background: transparent;
+}
+
+button.chip {
+  cursor: pointer;
+}
+button.chip:hover {
+  border-color: var(--apex-text);
+}
+.chip[aria-pressed="true"] {
+  background: var(--apex-amber);
+  border-color: var(--apex-amber);
+  color: var(--apex-graphite);
+}
+
+.divider {
+  height: 1px;
+  background: var(--apex-line);
+  border: 0;
+  margin: 0;
+}
+
+/* Horizontal scrollers for phones; content stays in normal flow on desktop. */
+.scroller {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  padding-bottom: 8px;
+  overscroll-behavior-x: contain;
+}
+.scroller > * {
+  scroll-snap-align: start;
+  flex: 0 0 auto;
+}
+
+.note {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  border-left: 2px solid var(--apex-amber);
+  background: rgba(255, 106, 26, 0.06);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--apex-text-2);
+}
+.paper .note {
+  border-left-color: var(--apex-amber-ink);
+  background: rgba(180, 71, 12, 0.06);
+}
+
+.source {
+  font-family: var(--apex-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--apex-text-3);
+}
+.source a {
+  color: var(--apex-text-2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--apex-line-strong);
+}
+.source a:hover {
+  color: var(--apex-text);
+}
+
+/* ── Page hero (inner pages) ── */
+.pageHero {
+  position: relative;
+  padding-top: calc(var(--apex-header-h) + clamp(56px, 9vw, 120px));
+  padding-bottom: clamp(56px, 7vw, 96px);
+  overflow: hidden;
+}
+
+.pageHeroGrid {
+  display: grid;
+  gap: 40px;
+  align-items: end;
+}
+@media (min-width: 1024px) {
+  .pageHeroGrid {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+    gap: 64px;
+  }
+}
+
+.pageHeroCopy {
+  display: grid;
+  gap: 22px;
+  min-width: 0;
+}
+
+.pageTitle {
+  font-family: var(--apex-display);
+  font-stretch: 125%;
+  font-weight: 740;
+  font-size: clamp(26px, 8.4vw, 40px);
+  line-height: 0.98;
+  letter-spacing: -0.012em;
+  text-transform: uppercase;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+@media (min-width: 640px) {
+  .pageTitle {
+    font-size: clamp(40px, 5vw, 76px);
+  }
+}
+
+.pageHeroMedia {
+  min-width: 0;
+}
+
+.pageHeroStrip {
+  margin-top: clamp(40px, 6vw, 72px);
+}
+
+/* ── Spec rows ── */
+.specRow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid var(--apex-line-strong);
+}
+@media (min-width: 900px) {
+  .specRow {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.specItem {
+  display: grid;
+  gap: 6px;
+  padding: 18px 16px 18px 0;
+  border-bottom: 1px solid var(--apex-line);
+  min-width: 0;
+}
+.specValue {
+  font-family: var(--apex-display);
+  font-stretch: 118%;
+  font-weight: 700;
+  font-size: clamp(18px, 2.2vw, 28px);
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+.specLabel {
+  font-family: var(--apex-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--apex-text-3);
+}
+
+/* ── Reduced motion: no transitions or animation anywhere in the microsite ── */
+@media (prefers-reduced-motion: reduce) {
+  .root *,
+  .root *::before,
+  .root *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,200 @@
+/* The detail panel: a right-hand drawer on wide screens, a bottom sheet on phones. */
+
+.panel {
+  position: fixed;
+  inset: auto 0 0 0;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  max-height: 88dvh;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-top: 1px solid var(--apex-line-strong);
+  background: var(--apex-panel);
+  color: var(--apex-text);
+  overflow: hidden;
+  opacity: 1;
+  transform: none;
+  transition: transform 0.28s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.2s ease, overlay 0.28s allow-discrete, display 0.28s allow-discrete;
+}
+
+@starting-style {
+  .panel[open] {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .panel {
+    inset: 0 0 0 auto;
+    width: min(600px, 100vw);
+    height: 100dvh;
+    max-height: 100dvh;
+    border-top: none;
+    border-left: 1px solid var(--apex-line-strong);
+  }
+  @starting-style {
+    .panel[open] {
+      transform: translateX(32px);
+      opacity: 0;
+    }
+  }
+}
+
+.panel::backdrop {
+  background: rgba(5, 6, 7, 0.72);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+
+.panelInner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: inherit;
+}
+
+.panelTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px clamp(18px, 4vw, 32px) 16px;
+  border-bottom: 1px solid var(--apex-line);
+}
+
+.panelHandle {
+  display: block;
+  width: 40px;
+  height: 3px;
+  margin: 8px auto 0;
+  background: var(--apex-line-strong);
+}
+@media (min-width: 768px) {
+  .panelHandle {
+    display: none;
+  }
+}
+
+.panelTitles {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.panelTitle {
+  font-family: var(--apex-display);
+  font-stretch: 116%;
+  font-weight: 700;
+  font-size: clamp(22px, 3vw, 30px);
+  line-height: 1.08;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.closeButton {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--apex-line-strong);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--apex-text);
+  cursor: pointer;
+}
+.closeButton:hover {
+  border-color: var(--apex-text);
+}
+
+.panelBody {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 8px clamp(18px, 4vw, 32px) max(28px, env(safe-area-inset-bottom));
+  -webkit-overflow-scrolling: touch;
+}
+
+.block {
+  display: grid;
+  gap: 10px;
+  padding-block: 18px;
+  border-bottom: 1px solid var(--apex-line);
+}
+.block:last-child {
+  border-bottom: none;
+}
+
+.blockTitle {
+  font-family: var(--apex-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--apex-text-3);
+}
+
+.blockText {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--apex-text-2);
+}
+
+.partnerRow {
+  display: grid;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 1px solid var(--apex-line);
+  text-align: left;
+  background: transparent;
+  width: 100%;
+}
+
+button.partnerRow {
+  cursor: pointer;
+}
+button.partnerRow:hover {
+  border-color: var(--apex-line-strong);
+  background: var(--apex-hover);
+}
+
+.partnerRowHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.partnerName {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--apex-text);
+}
+
+.partnerRole {
+  font-family: var(--apex-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--apex-text-3);
+}
+
+.openSlot {
+  display: grid;
+  gap: 6px;
+  padding: 12px 14px;
+  border: 1px dashed var(--apex-amber-muted);
+  color: var(--apex-text-2);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.rows {
+  display: grid;
+  gap: 8px;
+}

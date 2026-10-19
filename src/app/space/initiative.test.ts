@@ -74,9 +74,11 @@ describe("no Space page presents the initiative as EV Society's", () => {
     expect(offenders).toEqual([]);
   });
 
-  it("and mentions EV Society only where it has a role of its own: the community link on /space", () => {
+  it("and mentions EV Society only where it has a role of its own: the community link on /space, and its skills role among the proposed partners", () => {
     const mentioning = files.filter((path) => /EV Society|evsociety/i.test(read(path))).map((path) => relative(ROOT, path));
-    expect(mentioning).toEqual(["src/app/space/SpaceLanding.tsx"]);
+    expect(mentioning).toEqual(["src/app/space/SpaceLanding.tsx", "src/app/space/components/PartnersEcosystem.tsx"]);
+    // The partners section names EV Society only by its partner id; its words come from the partner registry (Skills & Workforce Development).
+    expect(read(join(SPACE, "components", "PartnersEcosystem.tsx")).match(/EV Society|evsociety/gi)).toEqual(["evsociety"]);
     const landing = read(join(SPACE, "SpaceLanding.tsx"));
     expect(landing.match(/EV Society|evsociety/gi)).toHaveLength(3);
     expect(landing).toMatch(/Community membership is offered through/);

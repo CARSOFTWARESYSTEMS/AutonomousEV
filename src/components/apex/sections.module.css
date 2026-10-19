@@ -1,0 +1,1025 @@
+/* Section layouts for the APEX microsite. */
+
+/* ── 01 Hero ── */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  max-height: 1080px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background: var(--apex-graphite);
+}
+
+@media (min-height: 1080px) {
+  .hero {
+    min-height: 1080px;
+  }
+}
+
+.heroMedia {
+  position: absolute;
+  inset: 0;
+}
+
+/* Phones: the photograph on top, the headline below it, so text never sits on the bright part of the image. */
+@media (max-width: 767px) {
+  .hero {
+    display: block;
+    min-height: 0;
+    max-height: none;
+  }
+  .heroMedia {
+    position: relative;
+    height: 58svh;
+    min-height: 320px;
+    max-height: 560px;
+  }
+  .heroContent {
+    padding-top: 0;
+    margin-top: -88px;
+  }
+}
+
+.heroMedia picture,
+.heroMedia img {
+  width: 100%;
+  height: 100%;
+}
+
+.heroMedia img {
+  object-fit: cover;
+  object-position: 50% 30%;
+}
+
+@media (min-width: 768px) {
+  .heroMedia img {
+    object-position: 70% 50%;
+  }
+}
+
+.heroShade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(5, 6, 7, 0.7) 0%, rgba(5, 6, 7, 0) 24%),
+    linear-gradient(0deg, rgba(5, 6, 7, 1) 2%, rgba(5, 6, 7, 0.7) 26%, rgba(5, 6, 7, 0) 58%);
+}
+
+@media (min-width: 768px) {
+  .heroShade {
+    background:
+      linear-gradient(180deg, rgba(5, 6, 7, 0.6) 0%, rgba(5, 6, 7, 0) 18%),
+      linear-gradient(0deg, rgba(5, 6, 7, 1) 0%, rgba(5, 6, 7, 0) 34%),
+      linear-gradient(90deg, rgba(5, 6, 7, 0.97) 0%, rgba(5, 6, 7, 0.88) 34%, rgba(5, 6, 7, 0.25) 66%, rgba(5, 6, 7, 0) 100%);
+  }
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding-top: calc(var(--apex-header-h) + 48px);
+  padding-bottom: 28px;
+}
+
+.heroCopy {
+  display: grid;
+  gap: 22px;
+  max-width: 860px;
+}
+
+.heroLine {
+  font-size: clamp(18px, 1.9vw, 24px);
+  line-height: 1.45;
+  color: var(--apex-silver);
+  max-width: 36ch;
+}
+
+.heroStatus {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+}
+
+.heroStrip {
+  margin-top: clamp(40px, 7vh, 80px);
+}
+
+.onlyNarrow {
+  display: inline;
+}
+
+.onlyWide {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .onlyNarrow {
+    display: none;
+  }
+  .onlyWide {
+    display: inline;
+  }
+}
+
+.heroFig {
+  margin-top: 14px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* ── 02 Built at APEX ── */
+.builtGrid {
+  display: grid;
+  gap: clamp(32px, 5vw, 72px);
+  align-items: center;
+}
+
+@media (min-width: 960px) {
+  .builtGrid {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  }
+}
+
+.builtCopy {
+  display: grid;
+  gap: 22px;
+  min-width: 0;
+}
+
+.builtSpecs {
+  display: grid;
+  border-top: 1px solid var(--apex-line-strong);
+}
+
+.builtSpecs > div {
+  display: grid;
+  grid-template-columns: minmax(110px, 0.4fr) minmax(0, 1fr);
+  align-items: baseline;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--apex-line);
+}
+
+.tripleValue {
+  font-family: var(--apex-display);
+  font-stretch: 116%;
+  font-weight: 720;
+  font-size: clamp(18px, 2vw, 26px);
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+/* ── Gallery ── */
+.gallery {
+  margin-top: clamp(48px, 6vw, 80px);
+  display: grid;
+  gap: 16px;
+}
+
+.galleryHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.thumbs {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent);
+  mask-image: linear-gradient(90deg, #000 88%, transparent);
+  scroll-snap-type: x mandatory;
+  padding-bottom: 10px;
+  scrollbar-width: thin;
+}
+
+.thumb {
+  flex: 0 0 auto;
+  width: clamp(150px, 22vw, 220px);
+  scroll-snap-align: start;
+  display: grid;
+  gap: 8px;
+  padding: 0;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: zoom-in;
+  color: var(--apex-text-3);
+}
+
+.thumbMedia {
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: var(--apex-titanium);
+  outline: 1px solid var(--apex-line);
+  outline-offset: -1px;
+}
+
+.thumbMedia img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease, filter 0.4s ease;
+  filter: saturate(0.85);
+}
+
+.thumb:hover .thumbMedia img,
+.thumb:focus-visible .thumbMedia img {
+  transform: scale(1.03);
+  filter: none;
+}
+
+.thumbLabel {
+  font-family: var(--apex-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: rgba(5, 6, 7, 0.97);
+  color: var(--apex-text);
+}
+
+.lightbox::backdrop {
+  background: rgba(5, 6, 7, 0.9);
+}
+
+.lightboxInner {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+.lightboxTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px var(--apex-gutter);
+  border-bottom: 1px solid var(--apex-line);
+}
+
+.lightboxStage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px var(--apex-gutter);
+  min-height: 0;
+}
+
+.lightboxStage picture {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.lightboxStage img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.lightboxFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px var(--apex-gutter) max(14px, env(safe-area-inset-bottom));
+  border-top: 1px solid var(--apex-line);
+}
+
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border: 1px solid var(--apex-line-strong);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--apex-text);
+  cursor: pointer;
+}
+
+.iconButton:hover {
+  border-color: var(--apex-text);
+}
+
+/* ── 03 Engine → system ── */
+.problemGrid {
+  display: grid;
+  gap: clamp(40px, 6vw, 80px);
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .problemGrid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+.scaleRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  border-top: 1px solid var(--apex-line-strong);
+}
+
+@media (min-width: 420px) {
+  .scaleRow {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 419px) {
+  .scaleItem {
+    grid-template-columns: 96px minmax(0, 1fr);
+    align-items: center;
+    border-bottom: 1px solid var(--apex-line);
+  }
+  .scaleItem + .scaleItem {
+    padding-left: 0 !important;
+    border-left: none !important;
+  }
+}
+
+.scaleItem {
+  padding: 20px 10px 20px 0;
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.scaleItem + .scaleItem {
+  padding-left: 16px;
+  border-left: 1px solid var(--apex-line);
+}
+
+.scaleNumber {
+  font-family: var(--apex-display);
+  font-stretch: 125%;
+  font-weight: 760;
+  font-size: clamp(32px, 7vw, 88px);
+  line-height: 0.9;
+}
+
+.scaleNumber[data-accent] {
+  color: var(--apex-accent);
+}
+
+.dependencyCloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.dependency {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--apex-line);
+  font-family: var(--apex-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--apex-text-3);
+  transition: color 0.5s ease, border-color 0.5s ease, background-color 0.5s ease;
+  transition-delay: calc(var(--i, 0) * 110ms);
+}
+
+.dependency::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: var(--apex-line-strong);
+  transition: background-color 0.5s ease;
+  transition-delay: inherit;
+}
+
+.dependency[data-core] {
+  color: var(--apex-graphite);
+  background: var(--apex-amber);
+  border-color: var(--apex-amber);
+}
+
+.dependency[data-core]::before {
+  background: var(--apex-graphite);
+}
+
+[data-inview="true"] .dependency {
+  color: var(--apex-text);
+  border-color: var(--apex-line-strong);
+}
+
+[data-inview="true"] .dependency::before {
+  background: var(--apex-amber);
+}
+
+[data-inview="true"] .dependency[data-core] {
+  color: var(--apex-graphite);
+}
+
+[data-inview="true"] .dependency[data-core]::before {
+  background: var(--apex-graphite);
+}
+
+/* ── Where APEX fits ── */
+.fit {
+  position: relative;
+  margin-top: clamp(56px, 7vw, 96px);
+  padding: clamp(24px, 4vw, 48px);
+  padding-top: clamp(44px, 5vw, 56px);
+  border: 1px dashed var(--apex-line-strong);
+}
+
+.fitOuterLabel {
+  position: absolute;
+  top: -10px;
+  left: clamp(16px, 3vw, 32px);
+  padding: 0 10px;
+  background: var(--apex-bg);
+  font-family: var(--apex-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--apex-text-3);
+}
+
+.sectionAltBg .fitOuterLabel {
+  background: var(--apex-bg-alt);
+}
+
+.fitGrid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 560px) {
+  .fitGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.fitCore {
+  grid-column: 1 / -1;
+  order: -1;
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  text-align: center;
+  padding: 28px 18px;
+  border: 1px solid var(--apex-amber);
+  background: rgba(255, 106, 26, 0.07);
+}
+
+.fitCoreTitle {
+  font-family: var(--apex-display);
+  font-stretch: 122%;
+  font-weight: 760;
+  font-size: clamp(22px, 2.6vw, 34px);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.fitItem {
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  padding: 16px;
+  border: 1px solid var(--apex-line-strong);
+  background: var(--apex-surface);
+  min-width: 0;
+}
+
+.fitItem strong {
+  overflow-wrap: anywhere;
+  font-family: var(--apex-display);
+  font-stretch: 110%;
+  font-weight: 650;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+@media (min-width: 900px) {
+  .fitGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(3, auto);
+    gap: 14px;
+  }
+  .fitCore {
+    grid-column: 2;
+    grid-row: 2;
+    order: 0;
+    align-content: center;
+    min-height: 180px;
+  }
+}
+
+.fitStatement {
+  margin-top: 28px;
+  display: grid;
+  gap: 8px;
+  max-width: 70ch;
+}
+
+/* ── 05 Engineer → Build → Prove → Improve (paper) ── */
+.phases {
+  display: grid;
+  gap: 0;
+  border-top: 2px solid var(--apex-text);
+}
+
+@media (min-width: 900px) {
+  .phases {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.phase {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  padding: 28px 22px 32px 0;
+  border-bottom: 1px solid var(--apex-line);
+  min-width: 0;
+}
+
+@media (min-width: 900px) {
+  .phase {
+    padding: 32px 28px 40px;
+    border-bottom: none;
+    border-left: 1px solid var(--apex-line);
+  }
+  .phase:first-child {
+    border-left: none;
+    padding-left: 0;
+  }
+}
+
+.phaseNumber {
+  font-family: var(--apex-mono);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  color: var(--apex-amber-ink);
+}
+
+.phaseName {
+  font-family: var(--apex-display);
+  font-stretch: 120%;
+  font-weight: 780;
+  font-size: clamp(32px, 8vw, 48px);
+  line-height: 0.92;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.phaseArrow {
+  color: var(--apex-amber-ink);
+  flex-shrink: 0;
+}
+
+@media (min-width: 900px) {
+  .phaseName {
+    font-size: clamp(20px, 2.1vw, 32px);
+    font-stretch: 100%;
+    gap: 8px;
+  }
+  .phaseArrow {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+.phaseItems {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--apex-line);
+}
+
+.phaseItems li {
+  padding: 9px 0;
+  border-bottom: 1px solid var(--apex-line);
+  font-size: 15px;
+  color: var(--apex-text-2);
+}
+
+.returnPath {
+  margin-top: 28px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--apex-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--apex-text-2);
+}
+
+.returnLine {
+  flex: 1;
+  height: 1px;
+  background: var(--apex-line-strong);
+  position: relative;
+}
+
+.returnLine::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -4px;
+  border: 4.5px solid transparent;
+  border-right: 7px solid var(--apex-line-strong);
+  border-left: 0;
+}
+
+/* ── 06 Physical + digital ── */
+.pairGrid {
+  display: grid;
+  gap: 24px;
+  align-items: stretch;
+}
+
+@media (min-width: 1024px) {
+  .pairGrid {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 28px;
+  }
+}
+
+.pairCard {
+  display: grid;
+  gap: 18px;
+  align-content: start;
+  padding: clamp(18px, 2.4vw, 28px);
+  border: 1px solid var(--apex-line);
+  background: var(--apex-surface);
+  min-width: 0;
+}
+
+.pairPlus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--apex-display);
+  font-weight: 300;
+  font-size: 56px;
+  line-height: 1;
+  color: var(--apex-accent);
+}
+
+.pairMedia {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--apex-titanium);
+}
+
+.pairMedia img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── 08 Equation ── */
+.equation {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--apex-line-strong);
+  border-bottom: 1px solid var(--apex-line-strong);
+}
+
+@media (min-width: 1100px) {
+  .equation {
+    grid-template-columns: repeat(4, minmax(0, 1fr) auto) minmax(0, 1.2fr);
+    align-items: stretch;
+  }
+}
+
+.term {
+  display: grid;
+  gap: 6px;
+  align-content: center;
+  padding: 22px 0;
+  min-width: 0;
+}
+
+@media (min-width: 1100px) {
+  .term {
+    padding: 28px 12px 28px 0;
+  }
+}
+
+.termTitle {
+  font-family: var(--apex-display);
+  font-stretch: 112%;
+  font-weight: 740;
+  font-size: clamp(20px, 5vw, 26px);
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+@media (min-width: 1100px) {
+  .termTitle {
+    font-size: clamp(16px, 1.45vw, 21px);
+    font-stretch: 104%;
+  }
+}
+
+.operator {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-family: var(--apex-display);
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 1;
+  color: var(--apex-accent);
+  border-top: 1px solid var(--apex-line);
+  padding: 10px 0;
+}
+
+@media (min-width: 1100px) {
+  .operator {
+    border-top: none;
+    padding: 0 18px;
+    justify-content: center;
+  }
+}
+
+.result {
+  display: grid;
+  gap: 6px;
+  align-content: center;
+  padding: 24px;
+  background: var(--apex-amber);
+  color: var(--apex-graphite);
+}
+
+.result .termTitle {
+  font-size: clamp(20px, 5vw, 26px);
+}
+
+@media (min-width: 1100px) {
+  .result .termTitle {
+    font-size: clamp(16px, 1.45vw, 21px);
+  }
+}
+
+/* ── Partner cards ── */
+.partnerGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  border-top: 1px solid var(--apex-line);
+  border-left: 1px solid var(--apex-line);
+}
+
+@media (min-width: 640px) {
+  .partnerGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  .partnerGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.partnerCard {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  padding: clamp(20px, 2.4vw, 30px);
+  border: none;
+  border-right: 1px solid var(--apex-line);
+  border-bottom: 1px solid var(--apex-line);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  min-width: 0;
+  transition: background-color 0.18s ease;
+}
+
+.partnerCard:hover {
+  background: var(--apex-hover);
+}
+
+.partnerCard[data-core] {
+  background: rgba(255, 106, 26, 0.06);
+}
+
+.partnerCard[data-open] {
+  background-image: repeating-linear-gradient(135deg, var(--apex-hover-strong) 0 1px, transparent 1px 9px);
+}
+
+.partnerCardHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.partnerFocus {
+  font-family: var(--apex-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--apex-text-3);
+}
+
+.partnerMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  font-size: 13px;
+  color: var(--apex-text-3);
+}
+
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  border-top: 1px solid var(--apex-line-strong);
+}
+
+@media (min-width: 900px) {
+  .statsRow {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.stat {
+  padding: 20px 16px 20px 0;
+  display: grid;
+  gap: 4px;
+  border-bottom: 1px solid var(--apex-line);
+}
+
+.statValue {
+  font-family: var(--apex-display);
+  font-stretch: 125%;
+  font-weight: 760;
+  font-size: clamp(34px, 4.6vw, 60px);
+  line-height: 0.95;
+}
+
+/* ── 09 Roadmap summary ── */
+.roadmapCols {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  border-top: 1px solid var(--apex-line-strong);
+}
+
+@media (min-width: 720px) {
+  .roadmapCols {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  .roadmapCols {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.roadmapCol {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  padding: 24px 20px 28px 0;
+  border-bottom: 1px solid var(--apex-line);
+  min-width: 0;
+}
+
+@media (min-width: 1100px) {
+  .roadmapCol {
+    padding: 28px 24px 32px;
+    border-bottom: none;
+    border-left: 1px solid var(--apex-line);
+  }
+  .roadmapCol:first-child {
+    border-left: none;
+    padding-left: 0;
+  }
+}
+
+.roadmapItem {
+  display: grid;
+  gap: 6px;
+  padding: 14px 0;
+  border-top: 1px solid var(--apex-line);
+}
+
+.roadmapItemTitle {
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--apex-text);
+}
+
+.roadmapDate {
+  font-family: var(--apex-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--apex-text-3);
+}
+
+/* ── 10 Founders ── */
+.founders {
+  display: grid;
+  gap: 16px;
+}
+
+@media (min-width: 720px) {
+  .founders {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.founderCard {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 20px;
+  padding: clamp(20px, 3vw, 32px);
+  border: 1px solid var(--apex-line);
+  min-width: 0;
+}
+
+.monogram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(64px, 9vw, 88px);
+  aspect-ratio: 1;
+  border: 1px solid var(--apex-line-strong);
+  font-family: var(--apex-display);
+  font-stretch: 125%;
+  font-weight: 760;
+  font-size: clamp(20px, 2.6vw, 28px);
+  letter-spacing: 0.04em;
+  color: var(--apex-text-2);
+  background:
+    linear-gradient(var(--apex-amber), var(--apex-amber)) left bottom / 100% 3px no-repeat,
+    var(--apex-bg-alt);
+}
+
+.founderName {
+  font-family: var(--apex-display);
+  font-stretch: 112%;
+  font-weight: 680;
+  font-size: clamp(20px, 2.2vw, 26px);
+  line-height: 1.1;
+}
+
+/* ── 11 CTA ── */
+.cta {
+  position: relative;
+  overflow: hidden;
+}
+
+.ctaInner {
+  display: grid;
+  gap: 28px;
+  justify-items: start;
+}
+
+.ctaTitle {
+  font-family: var(--apex-display);
+  font-stretch: 125%;
+  font-weight: 780;
+  font-size: clamp(34px, 11vw, 128px);
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+/* ── Shared: in-view helper for diagrams ── */
+.inView {
+  display: contents;
+}

@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { APEX_ROUTES, apexUrl } from "@/data/apex/site";
 
 const BASE_URL = "https://autonomous.ev.engineer";
 
@@ -66,5 +67,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: "https://aerospace.ev.engineer/aerospace/uflight-3d", lastModified: "2026-10-01", changeFrequency: "monthly", priority: 0.8 },
     { url: "https://aerospace.ev.engineer/space/rocket-engine-digital-twin", lastModified: "2026-10-03", changeFrequency: "monthly", priority: 0.8 },
     { url: "https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced", lastModified: "2026-10-12", changeFrequency: "monthly", priority: 0.8 },
+    // The APEX Rocket Systems microsite, at its own canonical host (src/data/apex/site.ts).
+    ...APEX_ROUTES.map((path) => ({
+      url: apexUrl(path),
+      lastModified: "2026-10-19",
+      changeFrequency: "monthly" as const,
+      priority: path === "/" ? 0.8 : 0.7,
+    })),
   ];
 }

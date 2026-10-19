@@ -1,0 +1,381 @@
+/* Header, footer and mobile menu of the APEX microsite. */
+
+.header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  background: rgba(5, 6, 7, 0.86);
+  -webkit-backdrop-filter: saturate(140%) blur(16px);
+  backdrop-filter: saturate(140%) blur(16px);
+  border-bottom: 1px solid var(--apex-line);
+}
+
+/* The masthead: the full logo on its own band, the navigation on the band below. */
+.topBand {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+@media (min-width: 1180px) {
+  .topBand {
+    height: 84px;
+  }
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 1;
+  min-width: 0;
+  min-height: 44px;
+}
+
+/* Logo height by screen: phones, tablets, laptops and larger. Width follows the logo's proportions. */
+.brandLogo img {
+  height: 26px;
+  width: auto;
+  max-width: 100%;
+}
+
+@media (min-width: 400px) {
+  .brandLogo img {
+    height: 28px;
+  }
+}
+
+@media (min-width: 640px) {
+  .brandLogo img {
+    height: 34px;
+  }
+}
+
+@media (min-width: 1180px) {
+  .brandLogo img {
+    height: 46px;
+  }
+}
+
+.status {
+  display: none;
+}
+
+@media (min-width: 1180px) {
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+    font-family: var(--apex-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--apex-text-3);
+    white-space: nowrap;
+  }
+  .status::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border: 1.5px solid currentColor;
+    border-radius: 50%;
+  }
+}
+
+.navBand {
+  display: none;
+}
+
+@media (min-width: 1180px) {
+  .navBand {
+    display: block;
+    border-top: 1px solid var(--apex-line);
+  }
+}
+
+.navList {
+  display: flex;
+  align-items: center;
+  gap: clamp(20px, 2.4vw, 40px);
+  height: 44px;
+}
+
+.navLink {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: var(--apex-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--apex-text-2);
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+
+.navLink:hover {
+  color: var(--apex-text);
+}
+
+.navLink[aria-current="page"] {
+  color: var(--apex-text);
+}
+
+.navLink[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--apex-amber);
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.officialLink {
+  display: none !important;
+}
+
+@media (min-width: 760px) {
+  .officialLink {
+    display: inline-flex !important;
+  }
+}
+
+.themeToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border: 1px solid var(--apex-line-strong);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--apex-text);
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.themeToggle:hover {
+  border-color: var(--apex-text);
+}
+
+.menuButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 12px;
+  background: transparent;
+  border: 1px solid var(--apex-line-strong);
+  border-radius: 2px;
+  color: var(--apex-text);
+  font-family: var(--apex-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.menuLabel {
+  display: none;
+}
+
+@media (min-width: 420px) {
+  .menuLabel {
+    display: inline;
+  }
+}
+
+@media (min-width: 1180px) {
+  .menuButton {
+    display: none;
+  }
+}
+
+/* ── Mobile menu ── */
+.menu {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: var(--apex-graphite);
+  color: var(--apex-text);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.menu::backdrop {
+  background: rgba(5, 6, 7, 0.9);
+}
+
+.menuInner {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: max(24px, env(safe-area-inset-bottom));
+}
+
+.menuTop {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--apex-line);
+}
+
+.menuList {
+  display: grid;
+  padding-block: 12px;
+}
+
+.menuLink {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  min-height: 56px;
+  padding-block: 12px;
+  border-bottom: 1px solid var(--apex-line);
+  font-family: var(--apex-display);
+  font-stretch: 120%;
+  font-weight: 680;
+  font-size: clamp(22px, 7vw, 30px);
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+.menuLink[aria-current="page"] {
+  color: var(--apex-accent);
+}
+
+.menuIndex {
+  font-family: var(--apex-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--apex-text-3);
+  font-stretch: normal;
+  font-weight: 400;
+}
+
+.menuFoot {
+  margin-top: auto;
+  display: grid;
+  gap: 16px;
+  padding-top: 28px;
+}
+
+/* ── Footer ── */
+.footer {
+  border-top: 1px solid var(--apex-line);
+  background: var(--apex-graphite);
+  padding-top: clamp(56px, 7vw, 96px);
+  padding-bottom: max(32px, env(safe-area-inset-bottom));
+}
+
+.footerGrid {
+  display: grid;
+  gap: 40px;
+}
+
+@media (min-width: 900px) {
+  .footerGrid {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr);
+    gap: 56px;
+  }
+}
+
+.footerBrand {
+  display: grid;
+  gap: 18px;
+  align-content: start;
+}
+
+.footerLogo img {
+  height: 34px;
+  width: auto;
+  max-width: 100%;
+}
+
+@media (min-width: 900px) {
+  .footerLogo img {
+    height: 40px;
+  }
+}
+
+.footerHeading {
+  font-family: var(--apex-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--apex-text-3);
+  margin-bottom: 14px;
+}
+
+.footerLinks {
+  display: grid;
+  gap: 2px;
+}
+
+.footerLinks a,
+.footerLinks button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  color: var(--apex-text-2);
+  font-size: 15px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.footerLinks a:hover,
+.footerLinks button:hover {
+  color: var(--apex-text);
+}
+
+.footerBase {
+  margin-top: clamp(40px, 6vw, 72px);
+  padding-top: 24px;
+  border-top: 1px solid var(--apex-line);
+  display: grid;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--apex-text-3);
+}
+
+@media (min-width: 900px) {
+  .footerBase {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 32px;
+  }
+}
+
+.footerBase a {
+  color: var(--apex-text-2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--apex-line-strong);
+}

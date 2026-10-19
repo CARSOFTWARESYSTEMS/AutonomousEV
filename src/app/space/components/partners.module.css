@@ -1,0 +1,140 @@
+/* Partners & Engineering Ecosystem on /space, and the APEX project card. */
+
+/* The official-website link in a card note: the note's own colour, underlined. */
+.noteLink {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(181, 184, 201, 0.5);
+}
+
+.noteLink:hover {
+  color: #fff;
+}
+
+/* ── Section ── */
+.featured {
+  display: grid;
+  gap: 24px;
+  padding: clamp(20px, 3vw, 32px);
+  margin-bottom: 14px;
+}
+
+@media (min-width: 900px) {
+  .featured {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    align-items: center;
+    gap: 40px;
+  }
+}
+
+.featuredTitle {
+  color: #fff;
+  font-size: clamp(24px, 3vw, 30px);
+  line-height: 1.2;
+  margin: 14px 0 6px;
+}
+
+.featuredActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.facts {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.facts div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 14px;
+}
+
+.facts dt {
+  color: #8b8fa3;
+}
+
+.facts dd {
+  margin: 0;
+  color: #e4e6f5;
+  font-weight: 600;
+  text-align: right;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+}
+
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.partner {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  height: 100%;
+}
+
+.partnerName {
+  color: #fff;
+  font-size: 17px;
+  line-height: 1.3;
+  margin: 8px 0 0;
+}
+
+.partnerFocus {
+  color: #93c5fd;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.partnerDesc {
+  color: #b5b8c9;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.partnerLink {
+  margin-top: auto;
+  padding-top: 6px;
+  color: #b5b8c9;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.partnerLink:hover {
+  color: #fff;
+}
+
+.disclaimer {
+  margin: 18px 0 0;
+  color: #8b8fa3;
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: center;
+}

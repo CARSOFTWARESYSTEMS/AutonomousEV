@@ -6,6 +6,7 @@ import { manrope, inter, FONT_MANROPE, FONT_INTER } from "./fonts";
 import SpaceHeader from "./components/SpaceHeader";
 import SpaceFooter from "./components/SpaceFooter";
 import PropulsionTwinCardVisual from "./components/PropulsionTwinCardVisual";
+import { ApexProjectCard, PartnersEcosystem } from "./components/PartnersEcosystem";
 import ResearcherCard from "@/components/ResearcherCard";
 import theme from "./spaceTheme.module.css";
 import {
@@ -146,8 +147,10 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 }
 
 // The JSON-LD graph is a prop so each host's route (see ../ishavasyam-space)
-// can ship its own entity graph while sharing this page body.
-export default function SpaceLanding({ entityGraph }: { entityGraph: object }) {
+// can ship its own entity graph while sharing this page body. The APEX partner
+// card and the Partners & Engineering Ecosystem section are shown on /space
+// (aerospace.gamyaa.in) only; the aerospace.ishavasyam.org route leaves them out.
+export default function SpaceLanding({ entityGraph, showPartners = true }: { entityGraph: object; showPartners?: boolean }) {
 
   return (
     <div className={`${styles.root} ${theme.theme} ${manrope.variable} ${inter.variable}`} style={{ background: "var(--space-background)", minHeight: "100vh", fontFamily: FONT_INTER, overflowX: "hidden" }}>
@@ -606,6 +609,7 @@ export default function SpaceLanding({ entityGraph }: { entityGraph: object }) {
               <Link href="/space/space-station" className={`${theme.secondaryButton} ${styles.projectCta}`}>Explore Space Station <ArrowRight size={16} /></Link>
               <p className={styles.projectNote}>Educational models · Sourced programme facts · Not mission design data.</p>
             </div>
+            {showPartners && <ApexProjectCard pill={<StatusPill label="Partner Engineering Ecosystem" color="#06B6D4" />} />}
             {/* The two propulsion twins sit side by side as one learning progression: see .twinPairStart. */}
             <div className={`${styles.cardHover} ${theme.card} ${styles.projectCard} ${styles.twinPairStart}`}>
               <StatusPill label="Interactive Digital Twin" color="#F59E0B" />
@@ -780,6 +784,16 @@ export default function SpaceLanding({ entityGraph }: { entityGraph: object }) {
             </div>
           </div>
         </section>
+
+        {/* ── Partners & Engineering Ecosystem (#partners) ── */}
+        {showPartners && (
+          <PartnersEcosystem
+            label={<SectionLabel>Partners</SectionLabel>}
+            pill={(label, color) => <StatusPill label={label} color={color} />}
+            h2Style={sectionH2}
+            descStyle={sectionDesc}
+          />
+        )}
 
         {/* ── Ecosystem and Responsibilities (#ecosystem) ── */}
         <section id="ecosystem" className={styles.section} style={{ background: "rgba(17,21,46,0.4)", borderTop: "1px solid rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>

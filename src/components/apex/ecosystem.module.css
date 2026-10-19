@@ -1,0 +1,374 @@
+/* Ecosystem rings, capability explorer and contribution finder. */
+
+.rings {
+  display: grid;
+  gap: 28px;
+}
+
+@media (min-width: 1000px) {
+  .rings {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: 48px;
+    align-items: start;
+  }
+}
+
+.diagram {
+  display: none;
+}
+
+@media (min-width: 1000px) {
+  .diagram {
+    display: block;
+    position: relative;
+  }
+}
+
+.diagram svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+.sector {
+  cursor: pointer;
+  fill: var(--apex-hover);
+  stroke: var(--apex-line-strong);
+  stroke-width: 1;
+  transition: fill 0.2s ease;
+}
+
+.sector:hover,
+.sector:focus-visible {
+  fill: var(--apex-hover-strong);
+  outline: none;
+}
+
+.sector[data-active="true"] {
+  fill: rgba(255, 106, 26, 0.16);
+  stroke: var(--apex-amber);
+}
+
+.sectorLabel {
+  pointer-events: none;
+  fill: var(--apex-text);
+  font-family: var(--apex-mono);
+  font-size: 15px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.ringGuide {
+  fill: none;
+  stroke: var(--apex-line);
+  stroke-dasharray: 2 6;
+}
+
+.dot {
+  cursor: pointer;
+  transition: r 0.15s ease;
+}
+
+.dot:focus-visible {
+  outline: none;
+  stroke: var(--apex-white);
+  stroke-width: 2;
+}
+
+.dot[data-status="CORE"] {
+  fill: var(--apex-amber);
+}
+
+.dot[data-status="PROPOSED"],
+.dot[data-status="SUPPORTED"] {
+  fill: var(--apex-mark);
+}
+
+.dot[data-status="PARTNER_REQUIRED"] {
+  fill: var(--apex-bg-alt);
+  stroke: var(--apex-amber-muted);
+  stroke-width: 1.5;
+  stroke-dasharray: 2 2;
+}
+
+.dot[data-dim="true"] {
+  opacity: 0.28;
+}
+
+.link {
+  stroke: var(--apex-mark);
+  stroke-width: 1;
+  opacity: 0.12;
+  fill: none;
+  transition: opacity 0.2s ease;
+}
+
+.link[data-active="true"] {
+  opacity: 0.6;
+  stroke: var(--apex-amber);
+}
+
+.partnerNode {
+  cursor: pointer;
+}
+
+.partnerNode rect {
+  fill: var(--apex-surface);
+  stroke: var(--apex-line-strong);
+}
+
+.partnerNode:hover rect,
+.partnerNode:focus-visible rect {
+  stroke: var(--apex-text);
+}
+
+.partnerNode:focus-visible {
+  outline: none;
+}
+
+.partnerNode[data-active="true"] rect {
+  stroke: var(--apex-amber);
+}
+
+.partnerNode text {
+  fill: var(--apex-text);
+  font-family: var(--apex-body);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.core circle {
+  fill: rgba(255, 106, 26, 0.12);
+  stroke: var(--apex-amber);
+}
+
+.core text {
+  fill: var(--apex-text);
+  font-family: var(--apex-display);
+  font-weight: 760;
+  font-stretch: 122%;
+  font-size: 26px;
+  letter-spacing: 0.02em;
+}
+
+.coreSub {
+  font-family: var(--apex-mono) !important;
+  font-weight: 400 !important;
+  font-size: 11px !important;
+  letter-spacing: 0.14em !important;
+  fill: var(--apex-accent) !important;
+}
+
+.hoverInfo {
+  min-height: 22px;
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--apex-text-2);
+  text-align: center;
+}
+
+.sectorTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.sectorList {
+  display: grid;
+  gap: 8px;
+}
+
+.capRow {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--apex-line);
+  background: var(--apex-surface);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.capRow:hover,
+.capRow[data-hover="true"] {
+  border-color: var(--apex-line-strong);
+}
+
+.capRowHead {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+}
+
+.capName {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--apex-text);
+}
+
+.capPartners {
+  font-size: 13px;
+  color: var(--apex-text-3);
+}
+
+/* ── Capability explorer ── */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 24px;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+.filterGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.filterLabel {
+  font-family: var(--apex-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--apex-text-3);
+  margin-right: 4px;
+}
+
+.capGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+}
+
+@media (min-width: 640px) {
+  .capGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  .capGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.capCard {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 18px;
+  border: 1px solid var(--apex-line);
+  background: var(--apex-surface);
+  text-align: left;
+  cursor: pointer;
+  min-width: 0;
+  transition: border-color 0.15s ease;
+}
+
+.capCard:hover {
+  border-color: var(--apex-line-strong);
+}
+
+.capCard[data-status="CORE"] {
+  border-color: rgba(255, 106, 26, 0.55);
+}
+
+.capCard[data-status="PARTNER_REQUIRED"] {
+  border-style: dashed;
+}
+
+.capCategory {
+  font-family: var(--apex-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--apex-text-3);
+}
+
+.partnerChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.partnerChip {
+  font-size: 12px;
+  padding: 3px 8px;
+  border: 1px solid var(--apex-line-strong);
+  color: var(--apex-text-2);
+}
+
+.partnerChip[data-open] {
+  border-style: dashed;
+  border-color: var(--apex-amber-muted);
+  color: var(--apex-gap);
+}
+
+.count {
+  font-family: var(--apex-mono);
+  font-size: 12px;
+  color: var(--apex-text-3);
+  margin-top: 14px;
+}
+
+/* ── Contribution finder ── */
+.finder {
+  display: grid;
+  gap: 28px;
+}
+
+@media (min-width: 1000px) {
+  .finder {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: 48px;
+    align-items: start;
+  }
+}
+
+.finderResult {
+  display: grid;
+  gap: 0;
+  border: 1px solid var(--apex-line-strong);
+  background: var(--apex-surface);
+}
+
+.finderBlock {
+  display: grid;
+  gap: 10px;
+  padding: 20px 22px;
+  border-bottom: 1px solid var(--apex-line);
+}
+
+.finderBlock:last-child {
+  border-bottom: none;
+}
+
+.stageList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  counter-reset: none;
+}
+
+.stage {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border: 1px solid var(--apex-line);
+  font-size: 13px;
+  color: var(--apex-text);
+}
+
+.stage span {
+  font-family: var(--apex-mono);
+  font-size: 10.5px;
+  color: var(--apex-accent);
+}

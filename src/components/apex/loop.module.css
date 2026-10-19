@@ -1,0 +1,481 @@
+/* The signature loop, the twin loop and the predicted-vs-measured chart. */
+
+.loopSection {
+  display: grid;
+  gap: clamp(32px, 5vw, 64px);
+  align-items: center;
+}
+
+@media (min-width: 1100px) {
+  .loopSection {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  }
+}
+
+.sequence {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  font-family: var(--apex-display);
+  font-stretch: 122%;
+  font-weight: 740;
+  font-size: clamp(24px, 3.4vw, 46px);
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.sequence .arrow {
+  color: var(--apex-accent);
+  font-weight: 400;
+}
+
+/* ── Ring (wide screens) ── */
+.ringWrap {
+  display: none;
+}
+
+@media (min-width: 760px) {
+  .ringWrap {
+    display: block;
+    position: relative;
+    width: min(100%, 640px);
+    margin-inline: auto;
+    padding: 56px 116px;
+  }
+}
+
+.ring {
+  position: relative;
+  aspect-ratio: 1;
+}
+
+.ringSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.ringTrack {
+  fill: none;
+  stroke: var(--apex-line-strong);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.ringChevron {
+  fill: none;
+  stroke: var(--apex-text-3);
+  stroke-width: 1.4;
+  vector-effect: non-scaling-stroke;
+}
+
+.pulse {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+  animation: orbit 42s linear infinite;
+}
+
+.pulse circle {
+  fill: var(--apex-amber);
+}
+
+@keyframes orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.node {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px;
+  border: none;
+  background: none;
+  color: var(--apex-text-2);
+  cursor: pointer;
+  font-family: var(--apex-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+}
+
+.node[data-side="right"] {
+  flex-direction: row;
+  transform: translate(-13px, -50%);
+}
+
+.node[data-side="left"] {
+  flex-direction: row-reverse;
+  transform: translate(calc(-100% + 13px), -50%);
+}
+
+.node[data-side="top"] {
+  flex-direction: column-reverse;
+  transform: translate(-50%, calc(-100% + 13px));
+}
+
+.node[data-side="bottom"] {
+  flex-direction: column;
+  transform: translate(-50%, -13px);
+}
+
+.nodeMark {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid var(--apex-text-2);
+  background: var(--apex-bg);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.node:hover {
+  color: var(--apex-text);
+}
+
+.node[aria-pressed="true"] {
+  color: var(--apex-text);
+}
+
+.node[aria-pressed="true"] .nodeMark {
+  background: var(--apex-amber);
+  border-color: var(--apex-amber);
+}
+
+.ringCenter {
+  position: absolute;
+  inset: 22%;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  text-align: center;
+  gap: 10px;
+}
+
+.ringStep {
+  font-family: var(--apex-mono);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  color: var(--apex-accent);
+}
+
+.ringTitle {
+  font-family: var(--apex-display);
+  font-stretch: 125%;
+  font-weight: 780;
+  font-size: clamp(28px, 3.4vw, 44px);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.ringDetail {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--apex-text-2);
+  max-width: 30ch;
+}
+
+/* ── Stepper (phones) ── */
+.stepper {
+  display: grid;
+  position: relative;
+}
+
+@media (min-width: 760px) {
+  .stepper {
+    display: none;
+  }
+}
+
+.stepperItem {
+  position: relative;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 14px;
+  padding-bottom: 6px;
+}
+
+.stepperItem::before {
+  content: "";
+  position: absolute;
+  left: 13px;
+  top: 30px;
+  bottom: -2px;
+  width: 1px;
+  background: var(--apex-line-strong);
+}
+
+.stepperMark {
+  margin-top: 14px;
+  width: 14px;
+  height: 14px;
+  margin-left: 7px;
+  border: 1.5px solid var(--apex-text-2);
+  background: var(--apex-bg);
+}
+
+.stepperItem[data-active] .stepperMark {
+  background: var(--apex-amber);
+  border-color: var(--apex-amber);
+}
+
+.stepperButton {
+  display: grid;
+  gap: 6px;
+  min-height: 44px;
+  padding: 8px 0;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  color: var(--apex-text);
+}
+
+.stepperLabel {
+  font-family: var(--apex-display);
+  font-stretch: 118%;
+  font-weight: 700;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+.stepperBack {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 4px;
+  font-family: var(--apex-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--apex-accent);
+}
+
+/* ── Closed-loop strip ── */
+.strip {
+  margin-top: clamp(40px, 5vw, 64px);
+  display: grid;
+  gap: 12px;
+}
+
+.stripList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  counter-reset: step;
+}
+
+.stripList li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--apex-line);
+  font-size: 13px;
+  color: var(--apex-text-2);
+}
+
+.stripList li::before {
+  counter-increment: step;
+  content: counter(step, decimal-leading-zero);
+  font-family: var(--apex-mono);
+  font-size: 11px;
+  color: var(--apex-accent);
+}
+
+/* ── Twin loop ── */
+.twinLoop {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--apex-line-strong);
+}
+
+@media (min-width: 1100px) {
+  .twinLoop {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+}
+
+.twinStep {
+  position: relative;
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  padding: 18px 16px 22px 0;
+  border-bottom: 1px solid var(--apex-line);
+}
+
+@media (min-width: 1100px) {
+  .twinStep {
+    padding: 22px 14px 26px;
+    border-bottom: none;
+    border-left: 1px solid var(--apex-line);
+  }
+  .twinStep:first-child {
+    border-left: none;
+    padding-left: 0;
+  }
+}
+
+.twinStep[data-branch] {
+  background: repeating-linear-gradient(135deg, rgba(255, 106, 26, 0.06) 0 1px, transparent 1px 8px);
+}
+
+.twinIndex {
+  font-family: var(--apex-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--apex-text-3);
+}
+
+.twinLabel {
+  font-family: var(--apex-display);
+  font-stretch: 112%;
+  font-weight: 660;
+  font-size: 16px;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.twinActive {
+  animation: twinPulse 16s linear infinite;
+  animation-delay: calc(var(--i) * 2s);
+}
+
+@keyframes twinPulse {
+  0%,
+  10% {
+    box-shadow: inset 0 2px 0 var(--apex-amber);
+  }
+  12.5%,
+  100% {
+    box-shadow: inset 0 2px 0 transparent;
+  }
+}
+
+.twinReturn {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--apex-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--apex-text-2);
+}
+
+/* ── Chart ── */
+.chart {
+  display: grid;
+  gap: 12px;
+}
+
+.chartHead {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 16px;
+  align-items: baseline;
+}
+
+.chartLegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  font-size: 13px;
+  color: var(--apex-text-2);
+}
+
+.chartLegend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.keyLine {
+  width: 22px;
+  height: 0;
+  border-top: 2px solid;
+}
+
+.chartSvg {
+  width: 100%;
+  height: auto;
+  display: block;
+  touch-action: pan-y;
+}
+
+.grid line {
+  stroke: var(--apex-line);
+  stroke-width: 1;
+}
+
+.axisText {
+  fill: var(--apex-text-3);
+  font-family: var(--apex-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+}
+
+.directLabel {
+  fill: var(--apex-text-2);
+  font-family: var(--apex-body);
+  font-size: 12px;
+}
+
+.band {
+  fill: color-mix(in srgb, var(--apex-chart-predicted) 11%, transparent);
+}
+
+.tooltip {
+  pointer-events: none;
+}
+
+.tooltip rect {
+  fill: var(--apex-surface);
+  stroke: var(--apex-line-strong);
+}
+
+.tooltip text {
+  fill: var(--apex-text);
+  font-family: var(--apex-mono);
+  font-size: 10.5px;
+}
+
+.chartTable {
+  font-size: 13px;
+  color: var(--apex-text-2);
+}
+
+.chartTable summary {
+  cursor: pointer;
+  font-family: var(--apex-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--apex-text-3);
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+}
+
+.chartTable table {
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+
+.chartTable th,
+.chartTable td {
+  padding: 4px 14px 4px 0;
+  border-bottom: 1px solid var(--apex-line);
+  text-align: left;
+  font-variant-numeric: tabular-nums;
+}
