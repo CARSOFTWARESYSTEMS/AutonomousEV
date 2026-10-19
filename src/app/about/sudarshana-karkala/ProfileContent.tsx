@@ -1,9 +1,10 @@
 // The profile of Sudarshana Karkala, in the visual language of /space and
-// lighter than it. Rendered on the server: who he is, his roles, his focus,
-// the initiatives and the work are all text in the HTML. There are two small
+// lighter than it. Rendered on the server: who he is, his career, his
+// consulting and academic engagement, his focus, the initiatives and the work
+// are all text in the HTML. There are two small
 // scripts: ProfileAnalytics, which only reports what was shown and used, and
 // JumpLink, which scrolls to the contact section.
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
@@ -13,7 +14,8 @@ import theme from "@/app/space/spaceTheme.module.css";
 import JumpLink from "./JumpLink";
 import ProfileAnalytics from "./ProfileAnalytics";
 import { profileTracking } from "./analytics";
-import { ABOUT, BACKGROUND, CONTACT, EV_ENGINEER_URL, FOCUS_AREAS, HERO, INITIATIVES, LAST_REVIEWED, PRIMARY_INITIATIVE, SCOPE_NOTE, SELECTED_WORK, WORKSHOPS } from "./profile";
+import { ABOUT, ACADEMIC, BACKGROUND, CONSULTING, CONTACT, EV_ENGINEER_URL, FOCUS_AREAS, HERO, INITIATIVES, LAST_REVIEWED, PRIMARY_INITIATIVE, SCOPE_NOTE, SELECTED_WORK, WORKSHOPS, shownDate } from "./profile";
+import type { Organisation, TrackedOrganisation } from "./profile";
 import styles from "./page.module.css";
 
 /** The element the profile's analytics listens on. `data-track-manual` on it tells the site-wide click listener to leave these links to it. */
@@ -31,8 +33,12 @@ function Leaves() {
   );
 }
 
-/** A line of items with a dot between them. It wraps between items and never inside one, and a dot never starts a line. */
+/**
+ * A line of items with a dot between them. It wraps between items and never inside one, and a dot never starts a line.
+ * A single item has no dot to keep with it, so it wraps like any other text.
+ */
 function Dotted({ items }: { items: readonly string[] }) {
+  if (items.length === 1) return items[0];
   return (
     <>
       {items.map((item, index) => (
@@ -65,27 +71,62 @@ function Bracketed({ text }: { text: string }) {
   );
 }
 
-type NameLinkTarget = { href: string; id: "ishavasyam" | "ev_engineer" | "itelematics" | "thasmai"; destination: string };
+type NameLinkSection = "hero" | "background" | "consulting";
 
-/** An organisation's name that is also the way to its own site. A plain link: the name itself, underlined quietly. */
-function NameLink({ link, section, children }: { link: NameLinkTarget; section: "hero" | "background"; children: string }) {
+/**
+ * An organisation's name that is also the way to its own site. A plain link: the name itself, underlined quietly.
+ * Without `tracked` it is an ordinary link out that reports nothing, as a former employer's is.
+ */
+function NameLink({ href, tracked, section, children }: { href: string; tracked?: { id: TrackedOrganisation; destination: string }; section: NameLinkSection; children: string }) {
   return (
-    <a href={link.href} {...NEW_TAB} className={styles.nameLink} aria-label={`${children} (opens in a new tab)`} {...profileTracking("profile_initiative_click", { initiative_name: link.id, destination: link.destination, section })}>
+    <a
+      href={href}
+      {...NEW_TAB}
+      className={styles.nameLink}
+      aria-label={`${children} (opens in a new tab)`}
+      {...(tracked ? profileTracking("profile_initiative_click", { initiative_name: tracked.id, destination: tracked.destination, section }) : {})}
+    >
       {children}
     </a>
   );
 }
 
-function Role({ role, className }: { role: { title: string; organisation: string; link: NameLinkTarget }; className: string }) {
+/** From one date to another, or to the present: the dates as the page writes them, and as the owner gave them in the markup. */
+function When({ from, to }: { from: string; to?: string }) {
   return (
-    <p className={className}>
-      {role.title} —{" "}
-      <strong>
-        <NameLink link={role.link} section="hero">
-          {role.organisation}
-        </NameLink>
-      </strong>
-    </p>
+    <>
+      <time dateTime={from}>{shownDate(from)}</time> — {to ? <time dateTime={to}>{shownDate(to)}</time> : "Present"}
+    </>
+  );
+}
+
+/** The names of a row's organisations, each a link to its own site where one is on record. */
+function Organisations({ organisations, section }: { organisations: readonly Organisation[]; section: NameLinkSection }) {
+  return (
+    <>
+      {organisations.map((organisation, index) => {
+        const last = index === organisations.length - 1;
+        const name = organisation.href ? (
+          <NameLink href={organisation.href} tracked={organisation.tracked} section={section}>
+            {organisation.name}
+          </NameLink>
+        ) : (
+          organisation.name
+        );
+        // A single name wraps as it needs to. Several on one line break between names, and a dot never starts a line.
+        return organisations.length === 1 ? (
+          <span key={organisation.name}>{name}</span>
+        ) : (
+          <span key={organisation.name}>
+            <span className={styles.unbroken}>
+              {name}
+              {last ? null : " ·"}
+            </span>
+            {last ? null : " "}
+          </span>
+        );
+      })}
+    </>
   );
 }
 
@@ -135,12 +176,22 @@ export default function ProfileContent() {
               <h1 id="profile-name" className={styles.name}>
                 {HERO.name}
               </h1>
+              {/* The identity and the primary initiative, side by side. On a narrow screen the line breaks after the "@", never before it. */}
               <p className={styles.identity}>
-                <NameLink link={HERO.identityLink} section="hero">
-                  {HERO.identity}
-                </NameLink>
+                <span className={styles.unbroken}>
+                  <NameLink href={HERO.identityLink.href} tracked={HERO.identityLink} section="hero">
+                    {HERO.identity}
+                  </NameLink>{" "}
+                  <span className={styles.identitySeparator} aria-hidden="true">
+                    @
+                  </span>
+                </span>{" "}
+                <strong>
+                  <NameLink href={HERO.primaryRole.link.href} tracked={HERO.primaryRole.link} section="hero">
+                    {HERO.primaryRole.organisation}
+                  </NameLink>
+                </strong>
               </p>
-              <Role role={HERO.primaryRole} className={styles.rolePrimary} />
               <p className={styles.focusLine}>
                 <Dotted items={HERO.focus} />
               </p>
@@ -151,6 +202,112 @@ export default function ProfileContent() {
         <Section id="about" label="About">
           <p className={styles.lead}>{ABOUT[0]}</p>
           <p className={styles.text}>{ABOUT[1]}</p>
+        </Section>
+
+        <Section id="research" label="Research & Engineering">
+          <div className={styles.focus}>
+            {FOCUS_AREAS.map((area) => (
+              <div key={area.title} className={styles.focusArea}>
+                <h3 className={styles.focusTitle}>{area.title}</h3>
+                <ul className={styles.focusList} role="list">
+                  {area.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+          <p className={styles.scope}>{SCOPE_NOTE}</p>
+        </Section>
+
+        {/* ── The career, the consulting and the academic engagement: three kinds of relationship, in three sections, before the work ── */}
+        <Section id="background" label="Professional Background">
+          <p className={styles.eyebrow}>{BACKGROUND.eyebrow}</p>
+          <p className={styles.sectionIntro}>{BACKGROUND.intro}</p>
+          {/* One entry for each place, on a quiet rail: the date, then the organisation, then the role, then a few words of domain. */}
+          <ol className={styles.timeline} role="list">
+            {BACKGROUND.career.map((entry) => (
+              <li key={entry.organisations[0].name} data-kind={entry.current ? "current" : "previous"}>
+                <span className={styles.when}>
+                  <When from={entry.from} to={entry.to} />
+                </span>{" "}
+                <span className={styles.entry}>
+                  <span className={styles.entryName}>
+                    <Organisations organisations={entry.organisations} section="background" />
+                  </span>
+                  {entry.role ? (
+                    <>
+                      {" "}
+                      <span className={styles.entryRole}>{entry.role}</span>
+                    </>
+                  ) : null}
+                  {entry.context ? (
+                    <>
+                      {" "}
+                      <span className={styles.entryContext}>{typeof entry.context === "string" ? entry.context : <Dotted items={entry.context} />}</span>
+                    </>
+                  ) : null}
+                </span>
+              </li>
+            ))}
+          </ol>
+          {/* What the years are made of, and apart from it what the work has moved into: never one line. */}
+          <div className={styles.experience}>
+            {[BACKGROUND.established, BACKGROUND.emerging].map((group, index) => (
+              <div key={group.heading} className={styles.experienceGroup} data-kind={index === 0 ? "established" : "emerging"}>
+                <h3 className={styles.focusTitle}>{group.heading}</h3>
+                <p className={styles.experienceItems}>
+                  <Dotted items={group.items} />
+                </p>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        <Section id={CONSULTING.id} label={CONSULTING.heading}>
+          <p className={styles.eyebrow}>
+            <When from={CONSULTING.from} to={CONSULTING.to} />
+          </p>
+          <p className={styles.sectionIntro}>{CONSULTING.intro}</p>
+          <ul className={styles.engagements} role="list">
+            {CONSULTING.engagements.map((engagement) => (
+              <li key={engagement.organisation.name}>
+                <span className={styles.engagementName}>
+                  <Organisations organisations={[engagement.organisation]} section="consulting" />
+                </span>{" "}
+                <span className={styles.engagementRole}>{engagement.role}</span>{" "}
+                <span className={styles.engagementAreas}>
+                  <Dotted items={engagement.areas} />
+                </span>
+              </li>
+            ))}
+          </ul>
+        </Section>
+
+        <Section id={ACADEMIC.id} label={ACADEMIC.heading}>
+          <p className={styles.eyebrow}>
+            <When from={ACADEMIC.since} />
+          </p>
+          <p className={styles.sectionIntro}>{ACADEMIC.intro}</p>
+          <h3 className={styles.subTitle}>{ACADEMIC.institutionsHeading}</h3>
+          {/* In columns, read down: the order on screen is the order in the markup. */}
+          <ul className={styles.institutions} role="list" style={{ "--institution-rows": Math.ceil(ACADEMIC.institutions.length / 2) } as CSSProperties}>
+            {ACADEMIC.institutions.map((institution) => (
+              <li key={institution.name}>
+                <span className={styles.institutionName}>{institution.name}</span>
+                {institution.place ? <span className={styles.institutionPlace}>, {institution.place}</span> : null}
+              </li>
+            ))}
+          </ul>
+          <div className={styles.callout}>
+            <p className={styles.calloutEyebrow}>{ACADEMIC.initiative.eyebrow}</p>
+            <h3 className={styles.calloutName}>{ACADEMIC.initiative.name}</h3>
+            <p className={styles.calloutCopy}>{ACADEMIC.initiative.copy}</p>
+          </div>
+          <h3 className={styles.subTitle}>{ACADEMIC.areasHeading}</h3>
+          <p className={styles.experienceItems}>
+            <Dotted items={ACADEMIC.areas} />
+          </p>
         </Section>
 
         {/* ── The primary initiative: the one card on the page that is allowed to stand out ── */}
@@ -211,22 +368,6 @@ export default function ProfileContent() {
           </div>
         </Section>
 
-        <Section id="research" label="Research & Engineering">
-          <div className={styles.focus}>
-            {FOCUS_AREAS.map((area) => (
-              <div key={area.title} className={styles.focusArea}>
-                <h3 className={styles.focusTitle}>{area.title}</h3>
-                <ul className={styles.focusList} role="list">
-                  {area.items.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-          <p className={styles.scope}>{SCOPE_NOTE}</p>
-        </Section>
-
         <Section id="work" label="Selected Work">
           <ul className={styles.work} role="list">
             {SELECTED_WORK.map((project) => (
@@ -239,59 +380,6 @@ export default function ProfileContent() {
               </li>
             ))}
           </ul>
-        </Section>
-
-        <Section id="background" label="Professional Background">
-          <p className={styles.eyebrow}>{BACKGROUND.eyebrow}</p>
-          {/* One list: the current roles first, then where he worked before, quieter. A name and a year, and nothing claimed beyond them. */}
-          <ul className={styles.history} role="list">
-            {BACKGROUND.roles.map((role) => (
-              <li key={role.organisation} data-kind="current">
-                <span className={styles.historyMeta}>{role.title}</span>
-                <span className={styles.srOnly}> — </span>
-                <span className={styles.historyName}>
-                  <NameLink link={role.link} section="background">
-                    {role.organisation}
-                  </NameLink>
-                </span>
-              </li>
-            ))}
-            {BACKGROUND.previous.map((period) => (
-              <li key={period.from} data-kind="previous">
-                <span className={styles.historyMeta}>
-                  <time dateTime={period.from}>{period.from.slice(0, 4)}</time> — <time dateTime={period.to}>{period.to.slice(0, 4)}</time>
-                </span>{" "}
-                <span className={styles.historyName}>
-                  {period.organisations.map((organisation, index) => {
-                    const last = index === period.organisations.length - 1;
-                    // Not one of the profile's tracked organisations: an ordinary link out, with no event of its own.
-                    const name = organisation.href ? (
-                      <a href={organisation.href} {...NEW_TAB} className={styles.nameLink} aria-label={`${organisation.name} (opens in a new tab)`}>
-                        {organisation.name}
-                      </a>
-                    ) : (
-                      organisation.name
-                    );
-                    // A single name wraps as it needs to. Several on one line break between names, and a dot never starts a line.
-                    return period.organisations.length === 1 ? (
-                      <span key={organisation.name}>{name}</span>
-                    ) : (
-                      <span key={organisation.name}>
-                        <span className={styles.unbroken}>
-                          {name}
-                          {last ? null : " ·"}
-                        </span>
-                        {last ? null : " "}
-                      </span>
-                    );
-                  })}
-                </span>
-              </li>
-            ))}
-          </ul>
-          <p className={styles.quietLine}>
-            <Dotted items={BACKGROUND.domains} />
-          </p>
         </Section>
 
         <Section id={WORKSHOPS.id} label={WORKSHOPS.heading}>

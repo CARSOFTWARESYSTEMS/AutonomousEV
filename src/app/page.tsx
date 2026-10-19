@@ -41,7 +41,7 @@ export default function Home() {
 
             {/* ── Left Column ── */}
             <div className={styles.leftCol}>
-              <a href="https://iTelematics.com" target="_blank" rel="noopener noreferrer" className={styles.locationBadge} style={{ textDecoration: 'none' }}>iTelematics® Software Private Limited</a>
+              <a href="https://ishavasyam.org/" target="_blank" rel="noopener noreferrer" className={styles.locationBadge} style={{ textDecoration: 'none' }}>ISHAVASYAM.ORG - SPACE STATION</a>
 
               <h1 className={styles.headline}>
                 Lithium-Ion EV{" "}<br />

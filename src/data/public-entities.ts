@@ -58,8 +58,8 @@ export const EV_ENGINEER: PublicEntity = {
 /**
  * iTelematics Software Private Limited — verified as the legal operator of
  * the EV.ENGINEER platform via /contact (published company name, email,
- * phone and address) and the home page ("iTelematics® Software Private
- * Limited" badge, linking to iTelematics.com).
+ * phone and address). The home page names it in its closing call to action;
+ * its hero badge now names ISHAVASYAM.ORG - SPACE STATION instead.
  */
 export const ITELEMATICS: PublicEntity = {
   id: "https://itelematics.com/#organization",
@@ -121,10 +121,11 @@ export const SUDARSHANA_KARKALA: PublicEntity = {
   id: `${SITE_URL}/about/sudarshana-karkala#person`,
   type: "Person",
   name: "Sudarshana Karkala",
-  // The same three relationships as his profile page: Founder of ISHAVASYAM.ORG, Consultant at
-  // iTelematics, and EV.ENGINEER as the engineering identity of his team. Not "founder of EV.ENGINEER".
+  // The relationships of his profile page: Founder of ISHAVASYAM.ORG, and EV.ENGINEER as the engineering identity of
+  // his team (not "founder of EV.ENGINEER"). His consulting is work he does, not a position at any one organisation,
+  // so no organisation is named for it here. No length of experience is stated, so it cannot be read as Space or Aerospace experience.
   description:
-    "Sudarshana Karkala is a technology leader and systems architect working across Space, Aerospace, Digital Twins, Cybersecurity, Electric Vehicles and intelligent energy systems. He is the Founder of ISHAVASYAM.ORG and a Consultant at iTelematics Software Private Limited; EV.ENGINEER is the engineering identity of his team and the projects they build together. His engineering background spans software architecture, cybersecurity, connected systems and advanced engineering R&D.",
+    "Sudarshana Karkala is a technology leader and systems architect working across Space, Aerospace, Digital Twins, Cybersecurity, Electric Vehicles and intelligent energy systems. He is the Founder of ISHAVASYAM.ORG; EV.ENGINEER is the engineering identity of his team and the projects they build together. His background spans engineering leadership, software architecture, cybersecurity, connected systems and engineering consulting, and he mentors engineering students.",
   canonicalUrl: `${SITE_URL}/about/sudarshana-karkala`,
   publicTelephone: "+91 9845561518",
   imageUrl: `${SITE_URL}/SudarshanaKarkala.jpg`,
@@ -132,19 +133,27 @@ export const SUDARSHANA_KARKALA: PublicEntity = {
   // A short list of subjects, each one named on his profile page. A subject here is not a claim of
   // flight, operational-spacecraft or physical-engine experience: the project pages say how mature each piece of work is.
   knowsAbout: [
-    "Space Systems Engineering",
-    "Space Station Research",
-    "Satellite Engineering",
-    "Rocket & Propulsion Systems",
-    "Digital Twins",
-    "Spacecraft Health Management",
+    "Engineering Leadership",
+    "Systems Architecture",
+    "Software Engineering",
     "Cybersecurity",
     "Aerospace Cybersecurity",
-    "EV Engineering",
-    "Battery Intelligence",
-    "Systems Architecture",
+    "Embedded Systems",
+    "IoT",
+    "GenAI for Engineering",
+    "EV Battery Intelligence",
+    "Digital Twins",
+    "Space Systems Engineering",
+    "Satellite Engineering",
+    "Rocket & Propulsion Systems",
+    "Spacecraft Health Management",
+    "Aerospace Engineering Research",
+    "Engineering Consulting",
+    "Engineering Education",
+    "Student Mentorship",
   ],
-  affiliations: [ISHAVASYAM.canonicalUrl, ITELEMATICS.canonicalUrl, EV_ENGINEER.canonicalUrl],
+  // A consulting engagement is not an affiliation, so iTelematics is not one of his.
+  affiliations: [ISHAVASYAM.canonicalUrl, EV_ENGINEER.canonicalUrl],
 };
 
 /**

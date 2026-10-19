@@ -108,7 +108,11 @@ describe("links into the page", () => {
     expect(link).toHaveAttribute("data-track-source", "internships_miscellaneous");
     expect(link).toHaveAttribute("data-track-destination", ROUTE);
     // Every other card keeps the event it had.
-    expect(screen.getByRole("link", { name: /Explore Program →/ })).toHaveAttribute("data-track-event", "internship_card_click");
+    const selection = screen.getByRole("link", { name: /^Selection Process & Fees structure/ });
+    expect(selection).toHaveAttribute("data-track-event", "internship_card_click");
+    // The card draws its own arrow, so neither label carries one of its own: one arrow on each card.
+    expect(link.textContent?.match(/→/g)).toHaveLength(1);
+    expect(selection.textContent?.match(/→/g)).toHaveLength(1);
   });
 
   it("Battery Cybersecurity: a Cybersecurity Engineers CTA immediately before Gen Z, which is unchanged", () => {

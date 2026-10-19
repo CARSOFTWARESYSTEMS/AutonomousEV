@@ -641,12 +641,12 @@ export default function InternshipsClient() {
             <ProjectCard
               title="Selection Process & Fees structure"
               link="/internships/training-internship"
-              ctaLabel="Explore Program →"
+              ctaLabel="Explore Program"
             />
             <ProjectCard
               title="Cybersecurity Engineers"
               link="/internships/cybersecurity-engineers"
-              ctaLabel="Explore Engineers →"
+              ctaLabel="Explore Engineers"
               trackProps={{
                 "data-track-event": "cybersecurity_engineers_card_click",
                 "data-track-source": "internships_miscellaneous",
@@ -665,6 +665,10 @@ export default function InternshipsClient() {
               title="Projects @ iTelematics®"
               link="https://itelematics.com/"
               pricingLink="https://itelematics.com/public/iTelematics-FrequentlyAskedQuestions.pdf"
+            />
+            <ProjectCard
+              title="Projects @ Gamyaa™"
+              link="https://aerosystems.gamyaa.in/"
             />
             <ProjectCard
               title="Projects @ Thasmai Infotech"

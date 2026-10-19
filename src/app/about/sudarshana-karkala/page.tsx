@@ -6,9 +6,10 @@ import { LAST_REVIEWED } from "./profile";
 
 // The title names the person, then what he works on, then the engineering identity, as the site's titles do.
 const PAGE_TITLE = "Sudarshana Karkala | Space, Digital Twins & Cybersecurity | EV.ENGINEER™";
-// One sentence, with the same three relationships as the page: the identity, the initiative he founded, the consulting role.
+// One sentence, saying what the page says: the identity, the initiative he founded, the leadership and consulting, and what he works on.
+// "Consultant" is what he does, not a title at any one organisation.
 const PAGE_DESCRIPTION =
-  "Sudarshana Karkala — EV.ENGINEER™, Founder of ISHAVASYAM.ORG and technology consultant working across Space research, Digital Twins, Cybersecurity, EV and energy systems.";
+  "Sudarshana Karkala — EV.ENGINEER™, Founder of ISHAVASYAM.ORG, engineering leader and consultant across Space research, Digital Twins, Cybersecurity, EV and energy systems.";
 // One address for the profile on every host that serves it. Deliberately unchanged by the redesign.
 const PAGE_URL = "https://autonomous.ev.engineer/about/sudarshana-karkala";
 
@@ -19,13 +20,16 @@ export const metadata: Metadata = {
     "Sudarshana Karkala",
     "EV.ENGINEER",
     "ISHAVASYAM.ORG",
+    "Engineering Leadership",
+    "Systems Architecture",
     "Space Station Research",
     "Satellite Engineering",
-    "Rocket Propulsion Digital Twin",
     "Spacecraft Digital Twin",
-    "Spacecraft Health Management",
     "Aerospace Cybersecurity",
     "EV Battery Intelligence",
+    "GenAI for Engineering",
+    "Engineering Consulting",
+    "Student Mentorship",
   ],
   alternates: {
     canonical: PAGE_URL,

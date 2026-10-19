@@ -73,16 +73,20 @@ describe("/about/sudarshana-karkala JSON-LD entity graph", () => {
     expect(ishavasyam["@type"]).toBe("Organization");
     expect(ishavasyam["@id"]).toBe("https://ishavasyam.org/#organization");
     expect(ishavasyam.founder).toEqual({ "@id": person["@id"] });
-    expect(person.jobTitle).toEqual(["Founder, ISHAVASYAM.ORG", "Consultant, iTelematics Software Private Limited"]);
-    // ISHAVASYAM.ORG first: it is the primary initiative.
-    expect(person.affiliation).toEqual([{ "@id": ishavasyam["@id"] }, { "@id": "https://itelematics.com/#organization" }]);
+    expect(person.jobTitle).toBe("Founder, ISHAVASYAM.ORG");
+    expect(person.affiliation).toEqual({ "@id": ishavasyam["@id"] });
   });
 
-  it("says he is a Consultant at iTelematics by affiliation, which claims no employment", () => {
+  it("keeps iTelematics as the website's publisher only: no job title, affiliation or employment of his there", () => {
+    const person = findByType("Person");
     const itelematics = graph.find((n) => (n as Record<string, unknown>).name === "iTelematics Software Private Limited") as Record<string, unknown>;
     expect(itelematics["@type"]).toBe("Organization");
+    expect(findByType("WebSite").publisher).toEqual({ "@id": itelematics["@id"] });
     expect(itelematics.founder).toBeUndefined();
     expect(itelematics.employee).toBeUndefined();
+    // A consulting engagement is not a position: the person node does not point at it or name it.
+    expect(JSON.stringify(person)).not.toContain(itelematics["@id"] as string);
+    expect(JSON.stringify(person)).not.toMatch(/iTelematics|Consultant at|Consultant,/);
   });
 
   it("names CAR SOFTWARE SYSTEMS as something the page mentions, and gives it no relationship the page does not state", () => {
@@ -94,15 +98,15 @@ describe("/about/sudarshana-karkala JSON-LD entity graph", () => {
     expect(JSON.stringify(person)).not.toContain(car["@id"] as string);
   });
 
-  it("never mentions Thasmai: it is one line of the visible page and is not modelled", () => {
-    expect(JSON.stringify(graph)).not.toMatch(/Thasmai/i);
+  it("never mentions Thasmai or Gamyaa: they are rows of the visible career and are not modelled", () => {
+    expect(JSON.stringify(graph)).not.toMatch(/Thasmai|Gamyaa/i);
   });
 
   it("has one Person, and no reference to a node that is not in the graph", () => {
     expect(graph.filter((n) => (n as Record<string, unknown>)["@type"] === "Person")).toHaveLength(1);
     const ids = new Set(graph.map((n) => (n as Record<string, unknown>)["@id"]));
     const references = [...JSON.stringify(graph).matchAll(/\{"@id":"([^"]+)"\}/g)].map((m) => m[1]);
-    expect(references.length).toBeGreaterThanOrEqual(6);
+    expect(references.length).toBeGreaterThanOrEqual(5);
     for (const reference of references) expect(ids, reference).toContain(reference);
   });
 
@@ -125,20 +129,27 @@ describe("/about/sudarshana-karkala JSON-LD entity graph", () => {
     expect(JSON.stringify(graph)).not.toMatch(/"alumniOf":\{[^}]*IIT Madras/);
   });
 
-  it("lists a short set of subjects in knowsAbout, each one named on the profile page", () => {
+  it("lists the subjects of the profile in knowsAbout: the established ones, then the newer research, then consulting and education", () => {
     const person = findByType("Person");
     expect(person.knowsAbout).toEqual([
-      "Space Systems Engineering",
-      "Space Station Research",
-      "Satellite Engineering",
-      "Rocket & Propulsion Systems",
-      "Digital Twins",
-      "Spacecraft Health Management",
+      "Engineering Leadership",
+      "Systems Architecture",
+      "Software Engineering",
       "Cybersecurity",
       "Aerospace Cybersecurity",
-      "EV Engineering",
-      "Battery Intelligence",
-      "Systems Architecture",
+      "Embedded Systems",
+      "IoT",
+      "GenAI for Engineering",
+      "EV Battery Intelligence",
+      "Digital Twins",
+      "Space Systems Engineering",
+      "Satellite Engineering",
+      "Rocket & Propulsion Systems",
+      "Spacecraft Health Management",
+      "Aerospace Engineering Research",
+      "Engineering Consulting",
+      "Engineering Education",
+      "Student Mentorship",
     ]);
   });
 
@@ -149,11 +160,13 @@ describe("/about/sudarshana-karkala JSON-LD entity graph", () => {
     expect(new Set(person.knowsAbout as string[]).size).toBe((person.knowsAbout as string[]).length);
   });
 
-  it("describes him as the page does: what he works on, his two roles, and EV.ENGINEER as an identity", () => {
+  it("describes him as the page does: what he works on, the initiative he founded, EV.ENGINEER as an identity, and his background", () => {
     const person = findByType("Person");
     expect(person.description).toBe(
-      "Sudarshana Karkala is a technology leader and systems architect working across Space, Aerospace, Digital Twins, Cybersecurity, Electric Vehicles and intelligent energy systems. He is the Founder of ISHAVASYAM.ORG and a Consultant at iTelematics Software Private Limited; EV.ENGINEER is the engineering identity of his team and the projects they build together. His engineering background spans software architecture, cybersecurity, connected systems and advanced engineering R&D.",
+      "Sudarshana Karkala is a technology leader and systems architect working across Space, Aerospace, Digital Twins, Cybersecurity, Electric Vehicles and intelligent energy systems. He is the Founder of ISHAVASYAM.ORG; EV.ENGINEER is the engineering identity of his team and the projects they build together. His background spans engineering leadership, software architecture, cybersecurity, connected systems and engineering consulting, and he mentors engineering students.",
     );
+    // The standalone consulting statement is gone.
+    expect(person.description).not.toMatch(/Consultant at|iTelematics/);
   });
 
   it("claims no length of space or aerospace experience, and no flight, operational or certified experience", () => {

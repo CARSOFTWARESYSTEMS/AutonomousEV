@@ -13,20 +13,23 @@
 // The graph says what the page says, and nothing the page does not:
 //   - ISHAVASYAM.ORG: he is its Founder. Said on the organisation (`founder`)
 //     and in his `jobTitle` and `affiliation`.
-//   - iTelematics Software Private Limited: he is a Consultant there. An
-//     `affiliation`, not `worksFor`: a consultant is not an employee.
+//   - iTelematics Software Private Limited: one of five consulting
+//     engagements on the page, and the publisher of the website. Its node is
+//     here as the publisher. He is given no job title, affiliation or
+//     employment there: a consulting engagement is none of those.
 //   - EV.ENGINEER: the engineering identity of him, his team and their
 //     projects. A `brand` he maintains, never an employer and never a founder
 //     title.
 //   - CAR SOFTWARE SYSTEMS: an initiative the page lists. Named on the page
 //     node (`mentions`) and given no relationship the page does not state.
-//   - Thasmai InfoTech Private Limited is one line of the visible page and is
-//     not modelled here: see docs/ai-discoverability.md.
+//   - Thasmai InfoTech Private Limited and Gamyaa AeroSystems are rows of the
+//     visible career, and are not modelled here: see docs/ai-discoverability.md.
+//     Nor are the former employers, the consulting organisations or the
+//     institutions of the academic engagement.
 
-import { ISHAVASYAM, ITELEMATICS, SUDARSHANA_KARKALA, SITE_URL } from "@/data/public-entities";
+import { ISHAVASYAM, SUDARSHANA_KARKALA, SITE_URL } from "@/data/public-entities";
 import {
   PERSON_ID,
-  ITELEMATICS_ID,
   ISHAVASYAM_ID,
   EV_ENGINEER_BRAND_ID,
   WEBSITE_ID,
@@ -41,8 +44,8 @@ const PROFILE_PAGE_ID = `${PROFILE_URL}#profilepage`;
 /** The address is the one the profile and the internships page already link to. */
 export const CAR_SOFTWARE_SYSTEMS_ID = "https://carsoftwaresystems.com/#organization";
 
-/** His two roles, as the hero writes them. */
-export const PROFILE_JOB_TITLES = [`Founder, ${ISHAVASYAM.name}`, `Consultant, ${ITELEMATICS.name}`];
+/** His role, as the hero writes it. */
+export const PROFILE_JOB_TITLE = `Founder, ${ISHAVASYAM.name}`;
 
 export interface ProfileGraphOptions {
   title: string;
@@ -71,9 +74,9 @@ export function buildProfileGraph({ title, description, dateModified }: ProfileG
       url: PROFILE_URL,
       image: SUDARSHANA_KARKALA.imageUrl,
       description: SUDARSHANA_KARKALA.description,
-      jobTitle: PROFILE_JOB_TITLES,
+      jobTitle: PROFILE_JOB_TITLE,
       brand: { "@id": EV_ENGINEER_BRAND_ID },
-      affiliation: [{ "@id": ISHAVASYAM_ID }, { "@id": ITELEMATICS_ID }],
+      affiliation: { "@id": ISHAVASYAM_ID },
       // NITK Surathkal is his degree-granting alma mater (B.E. Information
       // Technology). Deliberately NOT modelled as a full node with its own
       // @id since this site has no verified canonical URL for NITK; an

@@ -111,15 +111,17 @@ describe("profile analytics: what a visitor uses", () => {
   it("reports which initiative attracted interest, and where its link leads", () => {
     fireEvent.click(screen.getByRole("link", { name: /^ishavasyam\.org/ }));
     fireEvent.click(screen.getByRole("link", { name: "Space initiative" }));
-    fireEvent.click(screen.getByRole("link", { name: /^ev\.engineer/ }));
+    fireEvent.click(screen.getByRole("link", { name: /^autonomous\.ev\.engineer/ }));
     fireEvent.click(screen.getByRole("link", { name: "Workshop gallery" }));
     fireEvent.click(screen.getByRole("link", { name: /^carsoftwaresystems\.com/ }));
+    fireEvent.click(screen.getByRole("link", { name: /^Workshop \/ Labs/ }));
     expect(trackEvent.mock.calls).toEqual([
       ["profile_initiative_click", { initiative_name: "ishavasyam", destination: "ishavasyam.org", section: "primary_initiative" }],
       ["profile_initiative_click", { initiative_name: "ishavasyam", destination: "/space", section: "primary_initiative" }],
-      ["profile_initiative_click", { initiative_name: "ev_engineer", destination: "ev.engineer", section: "initiatives" }],
+      ["profile_initiative_click", { initiative_name: "ev_engineer", destination: "autonomous.ev.engineer", section: "initiatives" }],
       ["profile_initiative_click", { initiative_name: "ev_engineer", destination: "/workshop-gallery", section: "initiatives" }],
       ["profile_initiative_click", { initiative_name: "car_software_systems", destination: "carsoftwaresystems.com", section: "initiatives" }],
+      ["profile_initiative_click", { initiative_name: "car_software_systems", destination: "labs.ev.engineer", section: "initiatives" }],
     ]);
   });
 
@@ -127,7 +129,7 @@ describe("profile analytics: what a visitor uses", () => {
     const hero = screen.getByRole("region", { name: "Sudarshana Karkala" });
     for (const link of hero.querySelectorAll("a")) fireEvent.click(link);
     expect(trackEvent.mock.calls).toEqual([
-      ["profile_initiative_click", { initiative_name: "ev_engineer", destination: "ev.engineer", section: "hero" }],
+      ["profile_initiative_click", { initiative_name: "ev_engineer", destination: "autonomous.ev.engineer", section: "hero" }],
       ["profile_initiative_click", { initiative_name: "ishavasyam", destination: "ishavasyam.org", section: "hero" }],
     ]);
   });
@@ -136,12 +138,18 @@ describe("profile analytics: what a visitor uses", () => {
     const background = screen.getByRole("region", { name: "Professional Background" });
     for (const link of background.querySelectorAll("a")) fireEvent.click(link);
     expect(trackEvent.mock.calls).toEqual([
-      ["profile_initiative_click", { initiative_name: "itelematics", destination: "itelematics.com", section: "background" }],
       ["profile_initiative_click", { initiative_name: "thasmai", destination: "thasmaiinfotech.com/space-research", section: "background" }],
+      ["profile_initiative_click", { initiative_name: "gamyaa", destination: "aerosystems.gamyaa.in", section: "background" }],
     ]);
     // The link to a former employer was clicked too, and reported nothing: there is no event for an employer.
     expect(background.querySelectorAll("a")).toHaveLength(3);
     expect(everythingSent()).not.toMatch(/nms|enphase|mcafee|employer/i);
+  });
+
+  it("reports the iTelematics link of Consulting Engagements as the same event, and says that it was the consulting", () => {
+    const consulting = screen.getByRole("region", { name: "Consulting Engagements" });
+    for (const link of consulting.querySelectorAll("a")) fireEvent.click(link);
+    expect(trackEvent.mock.calls).toEqual([["profile_initiative_click", { initiative_name: "itelematics", destination: "itelematics.com", section: "consulting" }]]);
   });
 
   it("reports a contact action by its kind, and never sends the telephone number, an address or the text of a link", () => {

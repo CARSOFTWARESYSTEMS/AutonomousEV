@@ -41,17 +41,26 @@ Karkala, the internship programme and the public contact point live in
 Private Limited (legal operator of EV.ENGINEER, verified via `/contact`), and EV Society (a separate
 community initiative — not described as a registered Section 8 company anywhere on this site).
 
-Sudarshana Karkala's public profile (redesigned 12 October 2026) states three relationships, and its
-graph states the same three: he is the **Founder of ISHAVASYAM.ORG** (`founder` on the organisation,
-`jobTitle` and `affiliation` on the person), a **Consultant at iTelematics Software Private Limited**
-(`affiliation`, not `worksFor`), and **EV.ENGINEER is the engineering identity** of him, his team and
-their projects (`brand` on the person). EV.ENGINEER is not written as a founder title on the profile.
+Sudarshana Karkala's public profile (redesigned 12 October 2026, professional background added
+19 October 2026) states two relationships in its graph: he is the **Founder of ISHAVASYAM.ORG**
+(`founder` on the organisation, `jobTitle` and `affiliation` on the person), and **EV.ENGINEER is the
+engineering identity** of him, his team and their projects (`brand` on the person). EV.ENGINEER is not
+written as a founder title on the profile.
 
-Thasmai InfoTech Private Limited is not modelled as an entity in this registry or in the profile's
-graph: it was removed site-wide earlier at the request of the profile owner. At the owner's later
-instruction the visible profile mentions it in one line of Professional Background ("Co-Founder —
-Thasmai InfoTech Private Limited", the name linking to `https://www.thasmaiinfotech.com/space-research`)
-and nowhere else.
+iTelematics Software Private Limited is one of five **consulting engagements** on the profile, listed
+with Skill-Lync, Schaeffler India, Crompton Greaves Consumer Electricals and iFab Innovations. It was
+previously stated as "Consultant at iTelematics"; at the owner's instruction that statement is gone from
+the page, the person's `description`, `jobTitle` and `affiliation`. Its node stays in the graph as the
+website's `publisher`. No consulting organisation is given a relationship to the person in the graph.
+
+Thasmai InfoTech Private Limited and Gamyaa AeroSystems are rows of the profile's career timeline
+(Co-Founder · Director of each), and neither is modelled as an entity in this registry or in the
+profile's graph. Thasmai was removed site-wide earlier at the request of the profile owner and is
+mentioned again only on the profile, at the owner's later instruction. Gamyaa AeroSystems is written
+without "Private Limited" because no incorporation is recorded in this repository. The former
+employers (Enphase, McAfee, NMS Communications, Ness Digital Engineering, eNovate Media Solutions) and
+the engineering institutions of the academic engagement are not modelled either: an institution is the
+place of student engagement, never an employer or a partner.
 
 `/space/2026-INSPACe-ROCKETRY-059` (the rocketry learning guide) is modelled as an independent
 `LearningResource`/`WebPage` with `isBasedOn` pointing at the official IN-SPACe workshop listing —
