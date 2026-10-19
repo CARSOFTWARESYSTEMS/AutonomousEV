@@ -152,6 +152,12 @@ describe("profile analytics: what a visitor uses", () => {
     expect(trackEvent.mock.calls).toEqual([["profile_initiative_click", { initiative_name: "itelematics", destination: "itelematics.com", section: "consulting" }]]);
   });
 
+  it("reports the EV Society™ link of Professional & Community Leadership as the same event, and says that it was the leadership", () => {
+    const leadership = screen.getByRole("region", { name: "Professional & Community Leadership" });
+    for (const link of leadership.querySelectorAll("a")) fireEvent.click(link);
+    expect(trackEvent.mock.calls).toEqual([["profile_initiative_click", { initiative_name: "ev_society", destination: "evsociety.org", section: "leadership" }]]);
+  });
+
   it("reports a contact action by its kind, and never sends the telephone number, an address or the text of a link", () => {
     const contact = screen.getByRole("region", { name: "Contact / Consultation" });
     for (const link of contact.querySelectorAll("a")) fireEvent.click(link);

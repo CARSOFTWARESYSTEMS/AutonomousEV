@@ -14,7 +14,7 @@ import theme from "@/app/space/spaceTheme.module.css";
 import JumpLink from "./JumpLink";
 import ProfileAnalytics from "./ProfileAnalytics";
 import { profileTracking } from "./analytics";
-import { ABOUT, ACADEMIC, BACKGROUND, CONSULTING, CONTACT, EV_ENGINEER_URL, FOCUS_AREAS, HERO, INITIATIVES, LAST_REVIEWED, PRIMARY_INITIATIVE, SCOPE_NOTE, SELECTED_WORK, WORKSHOPS, shownDate } from "./profile";
+import { ABOUT, ACADEMIC, BACKGROUND, CONSULTING, CONTACT, EV_ENGINEER_URL, FOCUS_AREAS, HERO, INITIATIVES, LAST_REVIEWED, LEADERSHIP, PRIMARY_INITIATIVE, SCOPE_NOTE, SELECTED_WORK, WORKSHOPS, shownDate } from "./profile";
 import type { Organisation, TrackedOrganisation } from "./profile";
 import styles from "./page.module.css";
 
@@ -220,7 +220,7 @@ export default function ProfileContent() {
           <p className={styles.scope}>{SCOPE_NOTE}</p>
         </Section>
 
-        {/* ── The career, the consulting and the academic engagement: three kinds of relationship, in three sections, before the work ── */}
+        {/* ── The career, the consulting, the community leadership and the academic engagement: four kinds of relationship, in four sections, before the work ── */}
         <Section id="background" label="Professional Background">
           <p className={styles.eyebrow}>{BACKGROUND.eyebrow}</p>
           <p className={styles.sectionIntro}>{BACKGROUND.intro}</p>
@@ -282,6 +282,35 @@ export default function ProfileContent() {
               </li>
             ))}
           </ul>
+        </Section>
+
+        {/* Two cards, in the style of the Initiatives: the organisation, the role, where, one sentence, and a link where there is one. */}
+        <Section id={LEADERSHIP.id} label={LEADERSHIP.heading}>
+          <div className={styles.initiatives}>
+            {LEADERSHIP.entries.map((entry) => (
+              <article key={entry.id} className={styles.initiative}>
+                <h3 className={styles.initiativeName}>{entry.organisation}</h3>
+                <p className={styles.leaderRole}>
+                  <Dotted items={entry.role} />
+                </p>
+                <p className={styles.leaderPlace}>{entry.place}</p>
+                <p className={styles.initiativeNote}>{entry.copy}</p>
+                {entry.link ? (
+                  <div className={styles.initiativeLinks}>
+                    <a
+                      href={entry.link.href}
+                      {...NEW_TAB}
+                      className={styles.textLink}
+                      {...profileTracking("profile_initiative_click", { initiative_name: entry.link.tracked.id, destination: entry.link.tracked.destination, section: "leadership" })}
+                    >
+                      {entry.link.label}
+                      <Leaves />
+                    </a>
+                  </div>
+                ) : null}
+              </article>
+            ))}
+          </div>
         </Section>
 
         <Section id={ACADEMIC.id} label={ACADEMIC.heading}>

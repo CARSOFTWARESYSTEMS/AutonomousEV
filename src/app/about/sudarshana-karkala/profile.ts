@@ -13,18 +13,20 @@
 //     engagements, listed with the others. It is not a position he holds, a
 //     job title or employment, and it is not stated on its own anywhere.
 //
-// Three kinds of relationship are kept apart on the page and never blur:
+// Four kinds of relationship are kept apart on the page and never blur:
 // the career (roles held), the consulting engagements (work done for an
-// organisation), and the academic engagement (students taught and mentored
-// at an institution, which is neither employment nor a partnership).
+// organisation), professional and community leadership (alumni and
+// ecosystem-building contributions), and the academic engagement (students
+// taught and mentored at an institution, which is neither employment nor a
+// partnership).
 import { SPACE_INITIATIVE } from "@/data/space-initiative";
-import { ITELEMATICS } from "@/data/public-entities";
+import { EV_SOCIETY, ITELEMATICS } from "@/data/public-entities";
 
 /** EV.ENGINEER's address: the platform's own site. Not "/": this page is also served on hosts whose root is another page. */
 export const EV_ENGINEER_URL = "https://autonomous.ev.engineer/";
 
 /** The organisations whose links the profile reports, by the id analytics sends. */
-export type TrackedOrganisation = "ishavasyam" | "ev_engineer" | "itelematics" | "thasmai" | "gamyaa";
+export type TrackedOrganisation = "ishavasyam" | "ev_engineer" | "itelematics" | "thasmai" | "gamyaa" | "ev_society";
 
 /**
  * An organisation as a row names it. `href` is its own site, where one is on record; `tracked` is set for the
@@ -204,6 +206,45 @@ export const CONSULTING: {
       organisation: { name: ITELEMATICS.name, href: ITELEMATICS.canonicalUrl, tracked: { id: "itelematics", destination: "itelematics.com" } },
       role: "Consulting Engagement",
       areas: ["EV Battery", "Engineering Research", "Space Research"],
+    },
+  ],
+};
+
+/**
+ * Alumni, professional-community and ecosystem-building contributions, outside any employment. Each card names the
+ * organisation once. No employment by NITK or by its Alumni Association is claimed, and no ownership of the
+ * Association's platform: he is a core team member of its digital ecosystem work.
+ */
+export const LEADERSHIP: {
+  id: string;
+  heading: string;
+  entries: readonly {
+    id: string;
+    organisation: string;
+    /** Written as one line with a dot between the parts; it wraps between them. */
+    role: readonly string[];
+    place: string;
+    copy: string;
+    link?: { label: string; href: string; tracked: { id: TrackedOrganisation; destination: string } };
+  }[];
+} = {
+  id: "community-leadership",
+  heading: "Professional & Community Leadership",
+  entries: [
+    {
+      id: "nitksaa",
+      organisation: "NITK Surathkal Alumni Association",
+      role: ["Core Team Member", "NITKSAA Alumni Digital Ecosystem"],
+      place: "National Institute of Technology Karnataka, Surathkal",
+      copy: "Contributing to the Association's digital ecosystem initiatives, supporting technology-enabled alumni engagement, events and community connectivity.",
+    },
+    {
+      id: "ev_society",
+      organisation: "EV Society™",
+      role: ["Founding Member"],
+      place: "Bengaluru, India",
+      copy: "Contributing to an engineering and innovation ecosystem focused on electric mobility, EV technologies, technical education, research and industry–academia engagement.",
+      link: { label: "Explore EV Society", href: EV_SOCIETY.canonicalUrl, tracked: { id: "ev_society", destination: "evsociety.org" } },
     },
   ],
 };

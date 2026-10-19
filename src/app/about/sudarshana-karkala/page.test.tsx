@@ -361,6 +361,75 @@ describe("/about/sudarshana-karkala: consulting engagements", () => {
   });
 });
 
+describe("/about/sudarshana-karkala: professional and community leadership", () => {
+  const leadership = () => section("Professional & Community Leadership");
+  const cards = () => within(leadership()).getAllByRole("article");
+  const text = (element: Element) => (element.textContent ?? "").replace(/\s+/g, " ").trim();
+  /** A card's lines in order: the organisation, the role, where, the sentence, and the link where there is one. */
+  const lines = (card: Element) => [...card.querySelectorAll("h3, p, a")].map((line) => text(line).replace(/\s*\(opens in a new tab\)$/, ""));
+
+  it("sits between the consulting and the academic engagement, as a section of its own", () => {
+    render(<ProfilePage />);
+    expect(section("Consulting Engagements").compareDocumentPosition(leadership()) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(leadership().compareDocumentPosition(section("Academic Engagement & Student Mentorship")) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it("shows two cards: the organisation strongest, then the role, then where, then one short sentence", () => {
+    render(<ProfilePage />);
+    expect(cards().map((card) => within(card).getByRole("heading", { level: 3 }).textContent)).toEqual(["NITK Surathkal Alumni Association", "EV Society™"]);
+    expect(lines(cards()[0])).toEqual([
+      "NITK Surathkal Alumni Association",
+      "Core Team Member · NITKSAA Alumni Digital Ecosystem",
+      "National Institute of Technology Karnataka, Surathkal",
+      "Contributing to the Association's digital ecosystem initiatives, supporting technology-enabled alumni engagement, events and community connectivity.",
+    ]);
+    expect(lines(cards()[1])).toEqual([
+      "EV Society™",
+      "Founding Member",
+      "Bengaluru, India",
+      "Contributing to an engineering and innovation ecosystem focused on electric mobility, EV technologies, technical education, research and industry–academia engagement.",
+      "Explore EV Society",
+    ]);
+  });
+
+  it("links EV Society™ to its own site, safely, in a new tab, and says so to a screen reader", () => {
+    render(<ProfilePage />);
+    const links = within(leadership()).getAllByRole("link");
+    expect(links).toHaveLength(1);
+    expect(links[0]).toHaveAttribute("href", "https://www.evsociety.org/");
+    expect(links[0]).toHaveAttribute("target", "_blank");
+    expect(links[0]).toHaveAttribute("rel", "noopener noreferrer");
+    expect(links[0]).toHaveAccessibleName(/^Explore EV Society\s*\(opens in a new tab\)$/);
+  });
+
+  it("names each community once, here, and presents neither as employment, ownership or a partnership", () => {
+    const { container } = render(<ProfilePage />);
+    expect(visibleText(container).match(/NITK Surathkal Alumni Association/g)).toHaveLength(1);
+    expect(visibleText(container).match(/Founding Member/g)).toHaveLength(1);
+    expect(visibleText(container).match(/Core Team Member/g)).toHaveLength(1);
+    expect(leadership()).not.toHaveTextContent(/employ|faculty|staff|professor|owner|owns|founded|partner|director|manager/i);
+    // None of it is in the other three sections.
+    for (const name of ["Professional Background", "Consulting Engagements", "Academic Engagement & Student Mentorship"]) {
+      expect(section(name)).not.toHaveTextContent(/Alumni Association|EV Society|Founding Member|Core Team Member/);
+    }
+  });
+
+  it("states both memberships in the structured data as roles, and neither as employment or affiliation", () => {
+    const { container } = render(<ProfilePage />);
+    const person = personNode(container);
+    expect(person.memberOf).toEqual([
+      {
+        "@type": "OrganizationRole",
+        roleName: "Core Team Member, NITKSAA Alumni Digital Ecosystem",
+        memberOf: { "@type": "Organization", name: "NITK Surathkal Alumni Association", alternateName: "NITKSAA", description: "The alumni association of the National Institute of Technology Karnataka, Surathkal." },
+      },
+      { "@type": "OrganizationRole", roleName: "Founding Member", memberOf: { "@id": "https://www.evsociety.org/#organization" } },
+    ]);
+    expect(person.worksFor).toBeUndefined();
+    expect(JSON.stringify(person.affiliation)).not.toMatch(/evsociety|Alumni/i);
+  });
+});
+
 describe("/about/sudarshana-karkala: academic engagement and student mentorship", () => {
   const academic = () => section("Academic Engagement & Student Mentorship");
   const text = (element: Element) => (element.textContent ?? "").replace(/\s+/g, " ").trim();
@@ -575,7 +644,7 @@ describe("/about/sudarshana-karkala: contact", () => {
 });
 
 describe("/about/sudarshana-karkala: the page as a whole", () => {
-  it("has eleven parts in one order: the career, the consulting and the academic engagement come before the initiatives and the work", () => {
+  it("has twelve parts in one order: the career, the consulting, the community leadership and the academic engagement come before the initiatives and the work", () => {
     const { container } = render(<ProfilePage />);
     const parts = [...container.querySelectorAll("main > section")].map((part) => document.getElementById(part.getAttribute("aria-labelledby")!)?.textContent);
     expect(parts).toEqual([
@@ -584,6 +653,7 @@ describe("/about/sudarshana-karkala: the page as a whole", () => {
       "Research & Engineering",
       "Professional Background",
       "Consulting Engagements",
+      "Professional & Community Leadership",
       "Academic Engagement & Student Mentorship",
       "ISHAVASYAM.ORG",
       "Initiatives",
@@ -606,10 +676,10 @@ describe("/about/sudarshana-karkala: the page as a whole", () => {
   it("stays short: a summary that links to the work, not a résumé", () => {
     const { container } = render(<ProfilePage />);
     const words = visibleText(container.querySelector("main")!).trim().split(/\s+/).length;
-    expect(words).toBeLessThan(860);
-    expect(container.querySelectorAll("main a").length).toBeLessThanOrEqual(22);
+    expect(words).toBeLessThan(930);
+    expect(container.querySelectorAll("main a").length).toBeLessThanOrEqual(23);
     // A line or two for each place, not paragraphs of duties: no paragraph of the career, consulting or academic sections is long.
-    for (const name of ["Professional Background", "Consulting Engagements", "Academic Engagement & Student Mentorship"]) {
+    for (const name of ["Professional Background", "Consulting Engagements", "Professional & Community Leadership", "Academic Engagement & Student Mentorship"]) {
       for (const block of section(name).querySelectorAll("p, li")) expect((block.textContent ?? "").split(/\s+/).length).toBeLessThan(45);
     }
   });
@@ -656,6 +726,10 @@ describe("/about/sudarshana-karkala: the page as a whole", () => {
       "Malnad College of Engineering",
       "VTU Constituent College",
       "McAfee Student Developer Program",
+      "NITK Surathkal Alumni Association",
+      "Core Team Member",
+      "Founding Member",
+      "Bengaluru, India",
       "IN-SPACe",
       "Model Rocketry",
       "CANSAT",
@@ -691,6 +765,8 @@ describe("/about/sudarshana-karkala: the page as a whole", () => {
       "https://aerosystems.gamyaa.in/",
       "https://www.nmscommunications.com/",
       "https://itelematics.com/",
+      // Professional & Community Leadership.
+      "https://www.evsociety.org/",
       // The cards and the contact actions.
       "https://ishavasyam.org/",
       "https://autonomous.ev.engineer/",
@@ -741,7 +817,7 @@ describe("/about/sudarshana-karkala: metadata", () => {
 
   it("keeps a short list of keywords, each a subject the page names, with none repeated", () => {
     const keywords = metadata.keywords as string[];
-    expect(keywords.length).toBeLessThanOrEqual(14);
+    expect(keywords.length).toBeLessThanOrEqual(16);
     expect(new Set(keywords).size).toBe(keywords.length);
     for (const keyword of ["Sudarshana Karkala", "EV.ENGINEER", "ISHAVASYAM.ORG", "Engineering Leadership", "Satellite Engineering", "Aerospace Cybersecurity", "EV Battery Intelligence", "Student Mentorship"]) expect(keywords).toContain(keyword);
   });
@@ -774,7 +850,7 @@ describe("/about/sudarshana-karkala: structured data", () => {
     const text = visibleText(container).toLowerCase();
     const subjects = personNode(container).knowsAbout as string[];
     expect(subjects.length).toBeGreaterThanOrEqual(8);
-    expect(subjects.length).toBeLessThanOrEqual(18);
+    expect(subjects.length).toBeLessThanOrEqual(20);
     for (const subject of subjects) {
       // Every word of the subject that carries meaning is on the page.
       for (const word of subject.toLowerCase().split(/[^a-z]+/).filter((w) => w.length > 3 && !["systems", "research", "engineering", "management"].includes(w))) {

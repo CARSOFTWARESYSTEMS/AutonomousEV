@@ -148,6 +148,8 @@ describe("/about/sudarshana-karkala JSON-LD entity graph", () => {
       "Spacecraft Health Management",
       "Aerospace Engineering Research",
       "Engineering Consulting",
+      "Engineering Ecosystem Development",
+      "Industry–Academia Engagement",
       "Engineering Education",
       "Student Mentorship",
     ]);

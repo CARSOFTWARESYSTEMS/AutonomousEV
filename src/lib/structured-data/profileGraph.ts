@@ -20,6 +20,11 @@
 //   - EV.ENGINEER: the engineering identity of him, his team and their
 //     projects. A `brand` he maintains, never an employer and never a founder
 //     title.
+//   - EV Society and the NITK Surathkal Alumni Association: the
+//     communities of Professional & Community Leadership. `memberOf`, each
+//     through an OrganizationRole naming his role as the page writes it, and
+//     never `worksFor` or `affiliation`. The Alumni Association has no
+//     address on record, so it is an inline node with no @id or URL.
 //   - CAR SOFTWARE SYSTEMS: an initiative the page lists. Named on the page
 //     node (`mentions`) and given no relationship the page does not state.
 //   - Thasmai InfoTech Private Limited and Gamyaa AeroSystems are rows of the
@@ -32,10 +37,12 @@ import {
   PERSON_ID,
   ISHAVASYAM_ID,
   EV_ENGINEER_BRAND_ID,
+  EV_SOCIETY_ID,
   WEBSITE_ID,
   itelematicsOrgNode,
   ishavasyamOrgNode,
   evEngineerBrandNode,
+  evSocietyOrgNode,
   websiteNode,
 } from "./entities";
 
@@ -58,6 +65,7 @@ export function buildProfileGraph({ title, description, dateModified }: ProfileG
     websiteNode(),
     evEngineerBrandNode(),
     itelematicsOrgNode(),
+    evSocietyOrgNode(),
     // Stated on this page only, where the Person node it points to is in the same graph.
     { ...ishavasyamOrgNode(), founder: { "@id": PERSON_ID } },
     {
@@ -77,6 +85,19 @@ export function buildProfileGraph({ title, description, dateModified }: ProfileG
       jobTitle: PROFILE_JOB_TITLE,
       brand: { "@id": EV_ENGINEER_BRAND_ID },
       affiliation: { "@id": ISHAVASYAM_ID },
+      memberOf: [
+        {
+          "@type": "OrganizationRole",
+          roleName: "Core Team Member, NITKSAA Alumni Digital Ecosystem",
+          memberOf: {
+            "@type": "Organization",
+            name: "NITK Surathkal Alumni Association",
+            alternateName: "NITKSAA",
+            description: "The alumni association of the National Institute of Technology Karnataka, Surathkal.",
+          },
+        },
+        { "@type": "OrganizationRole", roleName: "Founding Member", memberOf: { "@id": EV_SOCIETY_ID } },
+      ],
       // NITK Surathkal is his degree-granting alma mater (B.E. Information
       // Technology). Deliberately NOT modelled as a full node with its own
       // @id since this site has no verified canonical URL for NITK; an

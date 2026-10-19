@@ -73,9 +73,9 @@ link below points to a canonical public page already listed in
   leader and consultant across Space research, Digital Twins, Cybersecurity,
   EV and energy systems. Canonical public profile, with his professional
   background (20+ years in engineering and technology; Space and Aerospace
-  are his more recent research focus), consulting engagements, academic
-  engagement and student mentorship, initiatives, selected work and contact
-  channels.
+  are his more recent research focus), consulting engagements,
+  professional and community leadership, academic engagement and student
+  mentorship, initiatives, selected work and contact channels.
 - [Contact](https://autonomous.ev.engineer/contact): Public business
   contact details for iTelematics Software Private Limited.
 - [Trust Center](https://autonomous.ev.engineer/trust-center): Verified
@@ -107,7 +107,10 @@ link below points to a canonical public page already listed in
   India, Crompton Greaves Consumer Electricals and iFab Innovations is
   consulting engagements, not employment or partnership. The engineering
   institutions on his profile are places of student engagement and
-  mentoring, not employers or partners. EV.ENGINEER is the engineering
+  mentoring, not employers or partners. He is a Founding Member of EV
+  Society™ and a Core Team Member of the NITK Surathkal Alumni Association's
+  NITKSAA Alumni Digital Ecosystem: community and alumni contributions, not
+  employment by EV Society™, NITK or the Association. EV.ENGINEER is the engineering
   identity of his team and the projects they build together; it is not a
   founder title.
 - IN-SPACe and ISRO: external government organisations referenced only as

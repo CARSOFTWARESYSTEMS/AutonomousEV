@@ -62,6 +62,13 @@ employers (Enphase, McAfee, NMS Communications, Ness Digital Engineering, eNovat
 the engineering institutions of the academic engagement are not modelled either: an institution is the
 place of student engagement, never an employer or a partner.
 
+The profile's Professional & Community Leadership section (added 19 October 2026) names two communities,
+and the person's `memberOf` states both, each through an `OrganizationRole` with the role as the page
+writes it: **Founding Member** of EV Society (the existing `https://www.evsociety.org/#organization`
+node), and **Core Team Member, NITKSAA Alumni Digital Ecosystem** of the NITK Surathkal Alumni
+Association (an inline node with no `@id` or URL, as none is on record). Neither is `worksFor` or
+`affiliation`: they are community contributions, not employment by EV Society, NITK or the Association.
+
 `/space/2026-INSPACe-ROCKETRY-059` (the rocketry learning guide) is modelled as an independent
 `LearningResource`/`WebPage` with `isBasedOn` pointing at the official IN-SPACe workshop listing —
 never as a `Course` claiming EV.ENGINEER is the workshop's official provider, and never with an

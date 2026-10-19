@@ -29,6 +29,8 @@ export const metadata: Metadata = {
     "EV Battery Intelligence",
     "GenAI for Engineering",
     "Engineering Consulting",
+    "EV Society",
+    "NITK Surathkal Alumni Association",
     "Student Mentorship",
   ],
   alternates: {

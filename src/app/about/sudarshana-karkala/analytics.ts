@@ -13,9 +13,9 @@ export interface ProfileEvents {
   profile_view: { page_type: "profile"; profile_name: "sudarshana_karkala" };
   /** A link to one of the organisations the profile names. `section` says which of its places on the page was used. */
   profile_initiative_click: {
-    initiative_name: "ishavasyam" | "ev_engineer" | "car_software_systems" | "itelematics" | "thasmai" | "gamyaa";
+    initiative_name: "ishavasyam" | "ev_engineer" | "car_software_systems" | "itelematics" | "thasmai" | "gamyaa" | "ev_society";
     destination: string;
-    section: "hero" | "primary_initiative" | "initiatives" | "background" | "consulting";
+    section: "hero" | "primary_initiative" | "initiatives" | "background" | "consulting" | "leadership";
   };
   profile_project_click: { project_name: string; destination: string; section: "selected_work" };
   /** `destination_type` says what kind of place the action leads to, never the place itself. */
