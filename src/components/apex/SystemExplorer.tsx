@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import { DISPLAY_STATUS_LABEL, type DisplayStatus } from "@/data/apex/evidence";
-import { hasInterface, SYSTEM_DOMAINS, SYSTEM_LAYER_LABEL, SYSTEM_LAYERS } from "@/data/apex/system";
+import { hasInterface, SYSTEM_DOMAINS, SYSTEM_LAYER_LABEL, SYSTEM_LAYER_LINE, SYSTEM_LAYERS, type SystemLayer } from "@/data/apex/system";
 import { EvidenceBadge } from "./EvidenceBadge";
 import { trackApex } from "./analytics";
 import { usePanel } from "./panelContext";
@@ -33,13 +34,15 @@ const ABBR: Record<string, string> = {
 const LEGEND: DisplayStatus[] = ["BUILT", "CONCEPT", "PARTNER_REQUIRED", "EVIDENCE_REQUIRED"];
 
 /**
- * The rocket as a system of systems. Each domain opens the shared detail
+ * The rocket as a system of systems, in six expandable groups so the eighteen
+ * domains are never a wall of equal cards. Each domain opens the shared detail
  * panel. The technical view adds interface counts and the N² interface matrix.
  */
 export function SystemExplorer({ allowTechnical = false }: { allowTechnical?: boolean }) {
   const { open } = usePanel();
   const [technical, setTechnical] = useState(false);
   const [hover, setHover] = useState<{ row: string; col: string } | null>(null);
+  const [openGroups, setOpenGroups] = useState<SystemLayer[]>(["propulsion"]);
 
   const order = SYSTEM_LAYERS.flatMap((layer) => SYSTEM_DOMAINS.filter((domain) => domain.layer === layer));
 
@@ -72,39 +75,60 @@ export function SystemExplorer({ allowTechnical = false }: { allowTechnical?: bo
         )}
       </div>
 
-      <div className={explorer.layers}>
-        {SYSTEM_LAYERS.map((layer) => (
-          <div key={layer} className={explorer.layer}>
-            <h3 className={explorer.layerTitle}>{SYSTEM_LAYER_LABEL[layer]}</h3>
-            <ul className={explorer.tiles}>
-              {SYSTEM_DOMAINS.filter((domain) => domain.layer === layer).map((domain) => (
-                <li key={domain.id} style={{ display: "contents" }}>
-                  <button
-                    type="button"
-                    className={explorer.tile}
-                    data-status={domain.status}
-                    aria-haspopup="dialog"
-                    onClick={(event) => open({ kind: "domain", id: domain.id }, event.currentTarget)}
-                  >
-                    <span className={explorer.tileName}>{domain.name}</span>
-                    <span className={explorer.tileMeta}>
-                      <span className={styles.badgeMark} aria-hidden="true" style={{ width: 6, height: 6, background: domain.status === "BUILT" ? "var(--apex-amber)" : "var(--apex-line-strong)" }} />
-                      {DISPLAY_STATUS_LABEL[domain.status]}
-                      {technical && (
-                        <>
-                          <span aria-hidden="true">·</span>
-                          {domain.interfaces.length} interfaces
-                          <span aria-hidden="true">·</span>
-                          {domain.capabilityIds.length} capabilities
-                        </>
-                      )}
-                    </span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+      <div className={explorer.groups}>
+        {SYSTEM_LAYERS.map((layer) => {
+          const domains = SYSTEM_DOMAINS.filter((domain) => domain.layer === layer);
+          const expanded = openGroups.includes(layer);
+          return (
+            <div key={layer} className={explorer.group} data-expanded={expanded ? "true" : "false"}>
+              <h3 className={explorer.groupHeading}>
+                <button
+                  type="button"
+                  className={explorer.groupHead}
+                  aria-expanded={expanded}
+                  aria-controls={`group-${layer}`}
+                  onClick={() => setOpenGroups((current) => (current.includes(layer) ? current.filter((g) => g !== layer) : [...current, layer]))}
+                >
+                  <span className={explorer.groupName}>{SYSTEM_LAYER_LABEL[layer]}</span>
+                  <span className={explorer.groupLine}>{SYSTEM_LAYER_LINE[layer]}</span>
+                  <span className={explorer.groupCount}>
+                    {domains.length} {domains.length === 1 ? "domain" : "domains"}
+                  </span>
+                  <ChevronDown className={explorer.groupChevron} size={20} aria-hidden="true" />
+                </button>
+              </h3>
+              <ul id={`group-${layer}`} className={explorer.groupBody} hidden={!expanded}>
+                {domains.map((domain) => (
+                  <li key={domain.id}>
+                    <button
+                      type="button"
+                      className={explorer.domainRow}
+                      data-status={domain.status}
+                      aria-haspopup="dialog"
+                      onClick={(event) => open({ kind: "domain", id: domain.id }, event.currentTarget)}
+                    >
+                      <span className={explorer.tileName}>{domain.name}</span>
+                      <span className={explorer.domainPurpose}>{domain.purpose}</span>
+                      <span className={explorer.tileMeta}>
+                        <span className={styles.badgeMark} aria-hidden="true" style={{ width: 6, height: 6, background: domain.status === "BUILT" ? "var(--apex-amber)" : "var(--apex-line-strong)" }} />
+                        {DISPLAY_STATUS_LABEL[domain.status]}
+                        {technical && (
+                          <>
+                            <span aria-hidden="true">·</span>
+                            {domain.interfaces.length} interfaces
+                            <span aria-hidden="true">·</span>
+                            {domain.capabilityIds.length} capabilities
+                          </>
+                        )}
+                      </span>
+                      <ArrowRight className={explorer.domainArrow} size={16} aria-hidden="true" />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })}
       </div>
 
       {technical && (

@@ -68,10 +68,10 @@ export const APEX_PARENT_PORTAL: { name: string; href: string; url: string } | n
     ? null
     : { name: "Gamyaa Space", href: "/space", url: "https://aerospace.gamyaa.in/space" };
 
-/** Who hosts and prepared this concept experience. Shown discreetly in the footer only. */
+/** APEX's engineering-collaboration partner, who publishes this concept experience. Credited in the footer and metadata. */
 export const APEX_CONCEPT_HOST = {
-  name: "Gamyaa Aerospace",
-  url: "https://aerospace.gamyaa.in/aerospace",
+  name: "Gamyaa AeroSystems",
+  url: "https://www.gamyaa.in/",
 } as const;
 
 export const APEX_SITE = {
@@ -79,8 +79,22 @@ export const APEX_SITE = {
   shortName: "APEX",
   tagline: "Engineered to ascend.",
   supportingLine: "From propulsion hardware toward validated rocket systems.",
-  conceptStatus: "Concept · Engineering Collaboration Proposal",
-  disclosure: "Concept experience developed as an engineering collaboration proposal.",
+  conceptStatus: "Concept Experience · Engineering Collaboration",
+  /** The homepage's short form of the APEX–Gamyaa AeroSystems relationship. */
+  collaboration: {
+    title: "APEX Rocket Systems × Gamyaa AeroSystems",
+    line: "Engineering collaboration toward shared rocket-system development and validation goals.",
+  },
+  /**
+   * The full statement, shown in the footer and on the Company page with links
+   * to both organisations. APEX and Gamyaa AeroSystems are in an engineering
+   * collaboration: never call it merely "proposed", and never a joint venture,
+   * alliance, acquisition or exclusive partnership unless that is confirmed.
+   */
+  collaborationStatement: [
+    "This concept experience reflects an ongoing engineering collaboration between APEX Rocket Systems and Gamyaa AeroSystems. Both teams are working together toward shared engineering goals across rocket-system development, digital engineering, validation, quality, and ecosystem enablement.",
+    "APEX Rocket Systems retains ownership of its rocket-system and propulsion engineering direction, while Gamyaa AeroSystems contributes complementary digital-engineering and quality capabilities. Additional organizations shown in this experience represent supporting or proposed ecosystem capabilities unless otherwise confirmed.",
+  ],
   ownerRole: "Rocket System & Propulsion Program Owner",
   themeColor: "#050607",
 } as const;
@@ -90,14 +104,18 @@ export type ApexNavItem = { id: string; label: string; path: string };
 /** The microsite's navigation. Eight items, no more. */
 export const APEX_NAV: readonly ApexNavItem[] = [
   { id: "home", label: "APEX", path: "/" },
+  { id: "company", label: "Company", path: "/company" },
   { id: "engine", label: "Engine", path: "/engine" },
   { id: "system", label: "System", path: "/system" },
   { id: "build-validate", label: "Build & Validate", path: "/build-validate" },
   { id: "digital-twin", label: "Digital Twin", path: "/digital-twin" },
-  { id: "roadmap", label: "Roadmap", path: "/roadmap" },
   { id: "ecosystem", label: "Ecosystem", path: "/ecosystem" },
-  { id: "company", label: "Company", path: "/company" },
+  { id: "roadmap", label: "Roadmap", path: "/roadmap" },
 ];
+
+/** The masthead: Company first, then the engineering pages; Roadmap sits under "More". The logo leads home. */
+export const APEX_PRIMARY_NAV: readonly ApexNavItem[] = APEX_NAV.filter((item) => ["company", "engine", "system", "build-validate", "digital-twin", "ecosystem"].includes(item.id));
+export const APEX_MORE_NAV: readonly ApexNavItem[] = APEX_NAV.filter((item) => ["roadmap"].includes(item.id));
 
 /** Every route of the microsite, for the sitemap and the route tests. */
 export const APEX_ROUTES = APEX_NAV.map((item) => item.path);

@@ -12,7 +12,7 @@ export function EvidenceBadge({ status, label, className }: { status: DisplaySta
   );
 }
 
-/** How a capability is covered: APEX core, partner proposed, or partner required. */
+/** How a capability is covered: APEX core, the Gamyaa AeroSystems engineering collaboration, partner proposed, or partner required. */
 export function CapabilityBadge({ status }: { status: CapabilityStatus }) {
   return (
     <span className={styles.badge} data-status={status}>

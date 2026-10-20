@@ -43,13 +43,73 @@
   overflow-wrap: anywhere;
 }
 
+.vision {
+  display: grid;
+  gap: 24px;
+  margin-bottom: clamp(32px, 4vw, 56px);
+}
+
+@media (min-width: 900px) {
+  .vision {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 48px;
+  }
+}
+
+.quote {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding-left: 20px;
+  border-left: 2px solid var(--apex-amber);
+}
+
+.quote p {
+  font-family: var(--apex-display);
+  font-stretch: 104%;
+  font-weight: 500;
+  font-size: clamp(20px, 0.8vw + 14px, 26px);
+  line-height: 1.35;
+  color: var(--apex-text);
+}
+
 .ownership {
   display: grid;
   gap: 16px;
 }
 
 @media (min-width: 900px) {
-  .ownership {
+  .vision {
+  display: grid;
+  gap: 24px;
+  margin-bottom: clamp(32px, 4vw, 56px);
+}
+
+@media (min-width: 900px) {
+  .vision {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 48px;
+  }
+}
+
+.quote {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding-left: 20px;
+  border-left: 2px solid var(--apex-amber);
+}
+
+.quote p {
+  font-family: var(--apex-display);
+  font-stretch: 104%;
+  font-weight: 500;
+  font-size: clamp(20px, 0.8vw + 14px, 26px);
+  line-height: 1.35;
+  color: var(--apex-text);
+}
+
+.ownership {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -63,12 +123,121 @@
 }
 
 .ownBlock[data-apex] {
-  border-color: var(--apex-accent);
-  background: rgba(255, 106, 26, 0.05);
+  border-color: var(--apex-line-strong);
+  background: var(--apex-hover);
 }
 
 .ownBlock[data-partners] {
   border-style: dashed;
+}
+
+/* ── Partnership contacts ── */
+.contactCards {
+  display: grid;
+  gap: 16px;
+}
+
+@media (min-width: 900px) {
+  .contactCards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.contactCard {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: clamp(20px, 3vw, 32px);
+  border: 1px solid var(--apex-line);
+  background: var(--apex-surface);
+  min-width: 0;
+}
+
+/* APEX Rocket Systems: the program owner, bordered in the APEX accent. */
+.contactCard[data-contact="apex"] {
+  border: 1.5px solid var(--apex-accent);
+}
+
+/* Gamyaa AeroSystems: the partnership contact, set apart in light sky blue. */
+.contactCard[data-contact="gamyaa"] {
+  border: 1.5px solid var(--apex-sky);
+  background:
+    linear-gradient(160deg, var(--apex-sky-tint), transparent 55%),
+    var(--apex-surface);
+  box-shadow: 0 0 0 1px var(--apex-sky-tint), 0 24px 60px -32px var(--apex-sky-glow);
+}
+
+.partnerEyebrow {
+  color: var(--apex-sky-ink);
+}
+
+.partnerEyebrow::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--apex-sky);
+  box-shadow: 0 0 0 4px var(--apex-sky-tint);
+}
+
+/* The shared partnership email, under both cards. */
+.contactsAction {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  margin-top: 24px;
+}
+
+.contactsAction p {
+  margin: 0;
+}
+
+.skyButton {
+  background: var(--apex-sky-fill);
+  color: var(--apex-sky-on-fill);
+  border-color: var(--apex-sky-fill);
+}
+
+.skyButton:hover {
+  filter: brightness(1.08);
+}
+
+.contactCard .factList {
+  margin-top: 8px;
+}
+
+/* Phones: label above value, so addresses keep their full width. */
+@media (max-width: 519px) {
+  .contactCard .factList > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+}
+
+.contactCard[data-contact="gamyaa"] dd a {
+  text-decoration-color: var(--apex-sky);
+}
+
+/* The collaboration statement at the foot of the page. */
+.statement {
+  display: grid;
+  gap: 12px;
+  max-width: 88ch;
+  font-size: clamp(16px, 0.6vw + 9px, 17px);
+  line-height: 1.65;
+  color: var(--apex-text-2);
+}
+
+.statement a {
+  color: var(--apex-text);
+  text-decoration: underline;
+  text-decoration-color: var(--apex-accent);
+  text-underline-offset: 4px;
+}
+
+.statement a:hover {
+  text-decoration-thickness: 2px;
 }
 
 /* ── Contact ── */
@@ -119,7 +288,7 @@
   width: 100%;
   min-height: 48px;
   padding: 12px 14px;
-  border: 1px solid var(--apex-line-strong);
+  border: 1px solid var(--apex-field);
   border-radius: 2px;
   background: var(--apex-surface);
   color: var(--apex-text);

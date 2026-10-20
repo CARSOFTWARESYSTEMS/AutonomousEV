@@ -11,7 +11,7 @@ export function WhereApexFits({ headingLevel = 3, onAlt = false }: { headingLeve
   const after = items.slice(4);
   return (
     <div className={onAlt ? sections.sectionAltBg : undefined}>
-      <div className={sections.fit} role="group" aria-labelledby="where-apex-fits">
+      <div className={sections.fit} role="group" aria-labelledby="where-apex-fits" data-alt={onAlt ? "true" : undefined}>
         <span className={sections.fitOuterLabel} aria-hidden="true">
           Specialist ecosystem partners · capabilities
         </span>

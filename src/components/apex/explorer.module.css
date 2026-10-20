@@ -150,6 +150,142 @@
   transform-origin: left center;
 }
 
+/* ── Groups ── */
+.groups {
+  display: grid;
+  border-top: 1px solid var(--apex-line-strong);
+}
+
+.group {
+  border-bottom: 1px solid var(--apex-line);
+}
+
+.groupHeading {
+  margin: 0;
+}
+
+.groupHead {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-areas: "name count chevron" "line line line";
+  gap: 6px 20px;
+  align-items: center;
+  padding: 24px 0;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  color: var(--apex-text);
+}
+
+@media (min-width: 900px) {
+  .groupHead {
+    grid-template-columns: minmax(220px, 0.32fr) minmax(0, 1fr) auto auto;
+    grid-template-areas: "name line count chevron";
+  }
+}
+
+.groupName {
+  grid-area: name;
+  font-family: var(--apex-display);
+  font-stretch: 116%;
+  font-weight: 720;
+  font-size: clamp(20px, 1vw + 14px, 28px);
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+.groupLine {
+  grid-area: line;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--apex-text-2);
+}
+
+.groupCount {
+  grid-area: count;
+  font-family: var(--apex-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--apex-text-3);
+  white-space: nowrap;
+}
+
+.groupChevron {
+  grid-area: chevron;
+  color: var(--apex-text-3);
+  transition: transform 0.25s ease;
+}
+
+.group[data-expanded="true"] .groupChevron {
+  transform: rotate(180deg);
+}
+
+.groupBody {
+  display: grid;
+  gap: 0;
+  padding-bottom: 20px;
+}
+
+.groupBody[hidden] {
+  display: none;
+}
+
+.domainRow {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "name arrow" "purpose arrow" "meta arrow";
+  gap: 4px 16px;
+  align-items: center;
+  padding: 16px 0 16px 0;
+  border: none;
+  border-top: 1px solid var(--apex-line);
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  color: var(--apex-text);
+  transition: background-color 0.15s ease;
+}
+
+@media (min-width: 900px) {
+  .domainRow {
+    grid-template-columns: minmax(220px, 0.32fr) minmax(0, 1fr) auto auto;
+    grid-template-areas: "name purpose meta arrow";
+    padding-left: 0;
+  }
+}
+
+.domainRow:hover {
+  background: var(--apex-hover);
+}
+
+.domainRow .tileName {
+  grid-area: name;
+}
+
+.domainPurpose {
+  grid-area: purpose;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--apex-text-2);
+}
+
+.domainRow .tileMeta {
+  grid-area: meta;
+}
+
+.domainArrow {
+  grid-area: arrow;
+  color: var(--apex-text-3);
+}
+
+.domainRow[data-status="BUILT"] .tileName {
+  color: var(--apex-accent);
+}
+
 /* ── N² interface matrix ── */
 .matrixWrap {
   margin-top: 40px;

@@ -1,5 +1,5 @@
 /**
- * The founders of APEX Rocket Systems, as supplied by APEX for this proposal.
+ * The founders of APEX Rocket Systems, as supplied by APEX for this concept experience.
  * Titles, education, past employers and specialisations are not published
  * until APEX supplies them. No portrait has been supplied, so cards show the
  * founder's initials.
@@ -29,9 +29,3 @@ export const FOUNDERS: readonly Founder[] = [
     title: "Founder",
   },
 ];
-
-/**
- * APEX's published contact, split so the address is not written out whole in
- * the page source. ProtectedEmail.tsx joins it in the browser.
- */
-export const APEX_CONTACT_PARTS = { user: "vibbhav", domain: "apex-propulsion", tld: "com" } as const;

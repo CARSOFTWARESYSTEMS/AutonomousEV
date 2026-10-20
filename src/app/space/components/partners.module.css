@@ -35,11 +35,41 @@
   margin: 14px 0 6px;
 }
 
+.featured .featuredFocus {
+  margin-bottom: 12px;
+}
+
 .featuredActions {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 18px;
+  align-items: center;
+  gap: 8px 24px;
+  margin-top: 20px;
+}
+
+.featuredLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  color: #b5b8c9;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.featuredLink:hover {
+  color: #fff;
+}
+
+/* Phones: the button spans the card, compact like the project cards' buttons, so its label stays on one line. */
+@media (max-width: 519px) {
+  .featuredActions .featuredPrimary {
+    width: 100%;
+    justify-content: space-between;
+    padding: 12px 16px;
+    font-size: 14px;
+  }
 }
 
 .facts {
@@ -68,6 +98,18 @@
   text-align: right;
 }
 
+/* Phones: label above value, so long values are not squeezed into a right-aligned column. */
+@media (max-width: 519px) {
+  .facts div {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .facts dd {
+    text-align: left;
+  }
+}
+
 .grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -86,12 +128,26 @@
   }
 }
 
+/* The pill keeps its own width, and the link sits at the foot of the card. */
 .partner {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 8px;
   padding: 20px;
   height: 100%;
+}
+
+/* Cards in a row share row tracks, so names, capability lines and links line up even when one wraps. */
+@supports (grid-template-rows: subgrid) {
+  .partner {
+    display: grid;
+    grid-row: span 4;
+    grid-template-rows: subgrid;
+    row-gap: 8px;
+    justify-items: start;
+    height: auto;
+  }
 }
 
 .partnerName {
@@ -105,13 +161,6 @@
   color: #93c5fd;
   font-size: 13px;
   font-weight: 600;
-  margin: 0;
-}
-
-.partnerDesc {
-  color: #b5b8c9;
-  font-size: 14px;
-  line-height: 1.6;
   margin: 0;
 }
 

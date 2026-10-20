@@ -1,6 +1,6 @@
 import { JsonLd } from "@/lib/structured-data/JsonLd";
 import { BUSINESS_MODEL_CANVAS, CAPITAL_INTENSIVE, INVESTOR_QUESTIONS } from "@/data/apex/business";
-import { DISPLAY_STATUS_LABEL, EVIDENCE, evidence } from "@/data/apex/evidence";
+import { DISPLAY_STATUS_LABEL, DISPLAY_STATUS_MEANING, EVIDENCE, evidence } from "@/data/apex/evidence";
 import { CAPABILITIES, capabilityCoverage } from "@/data/apex/partner-capabilities";
 import { ROADMAP, ROADMAP_STATUS_ORDER, roadmapDateLabel } from "@/data/apex/roadmap";
 import { apexJsonLd } from "@/data/apex/seo";
@@ -14,6 +14,7 @@ import { apexTrack } from "../analytics";
 import styles from "../apex.module.css";
 import sections from "../sections.module.css";
 import roadmap from "../roadmap.module.css";
+import timeline from "../timeline.module.css";
 
 function evidenceLabel(ref: string): string {
   const record = EVIDENCE.find((item) => item.id === ref);
@@ -38,44 +39,36 @@ export function RoadmapPage() {
         eyebrow="Roadmap"
         title="Evidence first. Dates when confirmed."
         lead="Every item carries its status and the evidence it rests on. Built and active items come from APEX's own published information; planned items are APEX's stated future work; concept items are proposed in this collaboration."
-      >
-        <ul className={styles.chips}>
-          {ROADMAP_STATUS_ORDER.map((status) => (
-            <li key={status}>
-              <EvidenceBadge status={status} />
-            </li>
-          ))}
-        </ul>
-      </PageHero>
+      />
 
       <section className={`${styles.section} ${styles.sectionAlt}`} aria-labelledby="roadmap-title" id="roadmap-items">
         <div className={styles.container}>
-          <SectionHead eyebrow="Roadmap" id="roadmap-title" title="By status" lead="No date is guessed. When APEX confirms a year or quarter, it appears against the item." small />
-          <div className={roadmap.board}>
+          <SectionHead eyebrow="Roadmap" id="roadmap-title" title="One timeline" lead="From what exists to what is proposed. No date is guessed: until APEX confirms a year or quarter, each item reads “owner confirmation required”." small />
+          <ol className={timeline.roadmap}>
             {ROADMAP_STATUS_ORDER.map((status) => {
               const items = ROADMAP.filter((item) => item.status === status && item.publicSafe);
               return (
-                <div key={status} className={roadmap.column}>
-                  <div className={roadmap.columnHead}>
+                <li key={status} className={timeline.phase} data-status={status}>
+                  <div className={timeline.phaseTitle}>
                     <EvidenceBadge status={status} />
-                    <span className={styles.mono} style={{ color: "var(--apex-text-3)" }}>
-                      {items.length}
-                    </span>
+                    <span className={styles.small}>{DISPLAY_STATUS_MEANING[status]}</span>
                   </div>
-                  <ul className={roadmap.items}>
+                  <ul className={timeline.milestones}>
                     {items.map((item) => (
-                      <li key={item.id} className={roadmap.item} data-status={item.status}>
-                        <span className={roadmap.category}>{item.category}</span>
-                        <span className={roadmap.title}>{item.title}</span>
-                        <span className={roadmap.meta}>{roadmapDateLabel(item)}</span>
-                        <span className={roadmap.meta}>{evidenceLabel(item.evidence)}</span>
+                      <li key={item.id} className={timeline.milestone}>
+                        <span className={timeline.milestoneTitle}>{item.title}</span>
+                        <span className={timeline.milestoneMeta}>
+                          <span className={timeline.milestoneCategory}>{item.category}</span> · {roadmapDateLabel(item)}
+                          <br />
+                          {evidenceLabel(item.evidence)}
+                        </span>
                       </li>
                     ))}
                   </ul>
-                </div>
+                </li>
               );
             })}
-          </div>
+          </ol>
         </div>
       </section>
 
@@ -131,6 +124,10 @@ export function RoadmapPage() {
                     <span className={styles.specLabel}>Held by APEX</span>
                   </div>
                   <div className={sections.stat}>
+                    <span className={sections.statValue}>{coverage.collaboration}</span>
+                    <span className={styles.specLabel}>Engineering collaboration</span>
+                  </div>
+                  <div className={sections.stat}>
                     <span className={sections.statValue}>{coverage.proposed}</span>
                     <span className={styles.specLabel}>Partner proposed</span>
                   </div>
@@ -138,13 +135,20 @@ export function RoadmapPage() {
                     <span className={sections.statValue}>{coverage.partnerRequired}</span>
                     <span className={styles.specLabel}>Partner required</span>
                   </div>
-                  <div className={sections.stat}>
-                    <span className={sections.statValue}>{coverage.supported}</span>
-                    <span className={styles.specLabel}>Formally agreed</span>
-                  </div>
+                  {coverage.supported > 0 && (
+                    <div className={sections.stat}>
+                      <span className={sections.statValue}>{coverage.supported}</span>
+                      <span className={styles.specLabel}>Capability provider</span>
+                    </div>
+                  )}
                 </div>
-                <div className={roadmap.coverageBar} role="img" aria-label={`${coverage.core} of ${coverage.total} held by APEX, ${coverage.proposed} partner proposed, ${coverage.partnerRequired} open`}>
+                <div
+                  className={roadmap.coverageBar}
+                  role="img"
+                  aria-label={`${coverage.core} of ${coverage.total} held by APEX, ${coverage.collaboration} through the engineering collaboration with Gamyaa AeroSystems, ${coverage.proposed} partner proposed, ${coverage.partnerRequired} open`}
+                >
                   <span style={{ flex: coverage.core, background: "var(--apex-amber)" }} />
+                  <span style={{ flex: coverage.collaboration, background: "var(--apex-sky-ink)" }} />
                   <span style={{ flex: coverage.proposed, background: "var(--apex-silver)" }} />
                   <span style={{ flex: coverage.partnerRequired }} className={roadmap.hatched} />
                 </div>

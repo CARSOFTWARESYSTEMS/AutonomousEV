@@ -290,6 +290,51 @@
   color: var(--apex-accent);
 }
 
+/* ── Twin cycle: Predict · Test · Compare · Learn ── */
+.cycle {
+  display: grid;
+  border-top: 1px solid var(--apex-line-strong);
+}
+
+@media (min-width: 900px) {
+  .cycle {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.cycleStep {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 24px 24px 28px 0;
+  border-bottom: 1px solid var(--apex-line);
+}
+
+@media (min-width: 900px) {
+  .cycleStep {
+    padding: 28px 24px 32px;
+    border-bottom: none;
+    border-left: 1px solid var(--apex-line);
+  }
+  .cycleStep:first-child {
+    border-left: none;
+    padding-left: 0;
+  }
+}
+
+.cycleLabel {
+  font-family: var(--apex-display);
+  font-stretch: 120%;
+  font-weight: 760;
+  font-size: clamp(28px, 1.6vw + 18px, 44px);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.cycleStep:last-child .cycleLabel {
+  color: var(--apex-accent);
+}
+
 /* ── Twin loop ── */
 .twinLoop {
   display: grid;

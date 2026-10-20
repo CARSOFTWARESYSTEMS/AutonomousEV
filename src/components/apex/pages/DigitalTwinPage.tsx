@@ -1,34 +1,18 @@
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { JsonLd } from "@/lib/structured-data/JsonLd";
 import { apexImage } from "@/data/apex/images";
 import { apexJsonLd } from "@/data/apex/seo";
-import { DIGITAL_TWIN_RESPONSIBILITIES, MEASUREMENT_CLASSES } from "@/data/apex/validation";
+import { MEASUREMENT_CLASSES } from "@/data/apex/validation";
 import { ApexPageView } from "../ApexPageView";
 import { EvidenceBadge } from "../EvidenceBadge";
 import { EvidenceFigure } from "../EvidenceFigure";
 import { NextPage, PageHero } from "../PageHero";
+import { RelatedTwins } from "../RelatedTwins";
 import { SectionHead } from "../SectionHead";
 import { TwinCorrelationChart } from "../TwinCorrelationChart";
-import { ConfigurationRecord, InstrumentationChain, TestRecord, TwinLoop, TwinMaturity } from "../TwinSections";
-import { apexTrack } from "../analytics";
+import { HomeValidation } from "../HomeNarrative";
+import { ConfigurationRecord, InstrumentationChain, TestRecord, TwinCycle, TwinMaturity } from "../TwinSections";
 import styles from "../apex.module.css";
 import validation from "../validation.module.css";
-
-const RELATED = [
-  {
-    href: "/space/rocket-engine-digital-twin",
-    title: "Next-Generation Rocket Engine Digital Twin",
-    detail: "An educational reference architecture with simulated data — propellant feed, combustion, cooling, control and simulated testing.",
-    id: "rocket_engine_digital_twin",
-  },
-  {
-    href: "/space/rocket-engine-digital-twin-advanced",
-    title: "Advanced Rocket Propulsion Digital Twin",
-    detail: "A research-oriented reference for physics-based and data-driven twins: pressure monitoring, fault detection, diagnosis and prognostics.",
-    id: "rocket_propulsion_digital_twin_advanced",
-  },
-];
 
 export function DigitalTwinPage() {
   return (
@@ -47,25 +31,13 @@ export function DigitalTwinPage() {
         </div>
       </PageHero>
 
-      <section className={`${styles.section} ${styles.sectionAlt}`} aria-labelledby="responsibilities-title">
-        <div className={styles.container}>
-          <SectionHead eyebrow="What the twin does" id="responsibilities-title" title="Nine responsibilities" small />
-          <ul className={validation.measures}>
-            {DIGITAL_TWIN_RESPONSIBILITIES.map((item, i) => (
-              <li key={item.id} className={validation.measure}>
-                <span>{String(i + 1).padStart(2, "0")}</span>
-                {item.label}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
+      <HomeValidation showLink={false} />
 
       <section className={styles.section} aria-labelledby="twin-loop-title" id="twin-loop">
         <div className={styles.container}>
-          <SectionHead eyebrow="The twin loop" id="twin-loop-title" title="Predict. Test. Compare. Decide." lead="The loop runs once per test. Each pass leaves a prediction, a measurement and a decision on record." small />
-          <TwinLoop />
-          <div style={{ marginTop: 48, maxWidth: 820 }}>
+          <SectionHead eyebrow="The twin loop" id="twin-loop-title" title="Predict. Test. Compare. Learn." lead="The loop runs once per test. Each pass leaves a prediction, a measurement and a decision on record." small />
+          <TwinCycle />
+          <div style={{ marginTop: 56, maxWidth: 860 }}>
             <TwinCorrelationChart />
           </div>
         </div>
@@ -115,36 +87,14 @@ export function DigitalTwinPage() {
             eyebrow="Engineering test data"
             id="test-data-title"
             title="Every test, a traceable record"
-            lead="Each physical test becomes a digital record tied to its configuration. Proposed capability partner: Gamyaa Aerospace — digital engineering, test-data platform, model correlation and engineering evidence."
+            lead="Each physical test becomes a digital record tied to its configuration. Through the engineering collaboration, Gamyaa AeroSystems contributes digital-engineering, test-data, model-correlation and engineering-evidence capabilities."
             small
           />
           <TestRecord />
         </div>
       </section>
 
-      <section className={`${styles.section} ${styles.sectionAlt}`} aria-labelledby="related-title" id="related">
-        <div className={styles.container}>
-          <SectionHead
-            eyebrow="Related Gamyaa Aerospace Digital Engineering Capability"
-            id="related-title"
-            title="Reference work"
-            lead="Educational and research reference architectures published on this site. They are not APEX engine twins and use no APEX data."
-            small
-          />
-          <div className={validation.related}>
-            {RELATED.map((item) => (
-              <Link key={item.href} href={item.href} className={validation.relatedCard} {...apexTrack("apex_cta_click", { cta: item.id, placement: "related_capability" })}>
-                <span className={styles.specLabel}>Related Gamyaa Aerospace Digital Engineering Capability</span>
-                <span className={styles.h3}>{item.title}</span>
-                <span className={styles.small}>{item.detail}</span>
-                <span className={styles.mono} style={{ display: "inline-flex", alignItems: "center", gap: 8, color: "var(--apex-text)" }}>
-                  Open <ArrowRight size={14} aria-hidden="true" />
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+      <RelatedTwins />
       <NextPage current="digital-twin" />
     </>
   );

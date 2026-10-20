@@ -25,8 +25,9 @@
   --apex-text: var(--apex-white);
   --apex-text-2: #b9bdc1;
   --apex-text-3: #8e9399;
-  --apex-line: rgba(214, 216, 218, 0.13);
-  --apex-line-strong: rgba(214, 216, 218, 0.3);
+  --apex-line: rgba(214, 216, 218, 0.09);
+  --apex-line-strong: rgba(214, 216, 218, 0.22);
+  --apex-field: rgba(214, 216, 218, 0.4);
   --apex-panel: #0a0c0e;
   /* Amber as text: full amber on dark; the darker ink on light, for contrast. */
   --apex-accent: var(--apex-amber);
@@ -36,15 +37,23 @@
   --apex-chart-measured: #e8661e;
   /* "Partner required" text: a capability gap. */
   --apex-gap: #e0915f;
+  /* Light sky blue: the partnership contact. */
+  --apex-sky: #7dd3fc;
+  --apex-sky-ink: #7dd3fc;
+  --apex-sky-fill: #7dd3fc;
+  --apex-sky-on-fill: #050607;
+  --apex-sky-tint: rgba(125, 211, 252, 0.08);
+  --apex-sky-glow: rgba(125, 211, 252, 0.45);
 
   --apex-display: var(--font-apex-display), "Archivo", system-ui, sans-serif;
   --apex-body: var(--font-inter), "Inter", system-ui, -apple-system, sans-serif;
   --apex-mono: var(--font-apex-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
 
   --apex-gutter: clamp(16px, 4.2vw, 56px);
-  --apex-max: 1320px;
-  /* Fixed header height: one band on phones and tablets, the two-band masthead from 1180px. */
-  --apex-header-h: 73px;
+  --apex-max: 1280px;
+  --apex-max-wide: 1440px;
+  /* Fixed single-band masthead: 72px on phones and tablets, 84px from 1280px. */
+  --apex-header-h: 72px;
 
   position: relative;
   min-height: 100vh;
@@ -57,9 +66,9 @@
   -webkit-text-size-adjust: 100%;
 }
 
-@media (min-width: 1180px) {
+@media (min-width: 1280px) {
   .root {
-    --apex-header-h: 130px;
+    --apex-header-h: 84px;
   }
 }
 
@@ -74,8 +83,9 @@
   --apex-text: #0d0f11;
   --apex-text-2: #3e4247;
   --apex-text-3: #5d6268;
-  --apex-line: rgba(13, 15, 17, 0.13);
-  --apex-line-strong: rgba(13, 15, 17, 0.3);
+  --apex-line: rgba(13, 15, 17, 0.1);
+  --apex-line-strong: rgba(13, 15, 17, 0.24);
+  --apex-field: rgba(13, 15, 17, 0.45);
   --apex-panel: #ffffff;
   /* A step darker than the paper ink: amber-tinted cards sit on the off-white background here. */
   --apex-accent: #9f3d08;
@@ -83,6 +93,12 @@
   --apex-chart-predicted: #2563eb;
   --apex-chart-measured: #c2410c;
   --apex-gap: #8a4413;
+  --apex-sky: #38bdf8;
+  --apex-sky-ink: #0369a1;
+  --apex-sky-fill: #0369a1;
+  --apex-sky-on-fill: #ffffff;
+  --apex-sky-tint: rgba(14, 165, 233, 0.07);
+  --apex-sky-glow: rgba(14, 165, 233, 0.35);
   color-scheme: light;
 }
 
@@ -97,12 +113,19 @@
   --apex-text: var(--apex-white);
   --apex-text-2: #b9bdc1;
   --apex-text-3: #8e9399;
-  --apex-line: rgba(214, 216, 218, 0.13);
-  --apex-line-strong: rgba(214, 216, 218, 0.3);
+  --apex-line: rgba(214, 216, 218, 0.09);
+  --apex-line-strong: rgba(214, 216, 218, 0.22);
+  --apex-field: rgba(214, 216, 218, 0.4);
   --apex-panel: #0a0c0e;
   --apex-accent: var(--apex-amber);
   --apex-mark: var(--apex-silver);
   --apex-gap: #e0915f;
+  --apex-sky: #7dd3fc;
+  --apex-sky-ink: #7dd3fc;
+  --apex-sky-fill: #7dd3fc;
+  --apex-sky-on-fill: #050607;
+  --apex-sky-tint: rgba(125, 211, 252, 0.08);
+  --apex-sky-glow: rgba(125, 211, 252, 0.45);
   color: var(--apex-text);
   color-scheme: dark;
 }
@@ -180,7 +203,7 @@
 
 .section {
   position: relative;
-  padding-block: clamp(72px, 10vw, 136px);
+  padding-block: clamp(48px, 6.6vw, 96px);
   border-top: 1px solid var(--apex-line);
   scroll-margin-top: var(--apex-header-h);
 }
@@ -206,6 +229,12 @@
   --apex-accent: var(--apex-amber-ink);
   --apex-mark: #3e4247;
   --apex-gap: #8a4413;
+  --apex-sky: #38bdf8;
+  --apex-sky-ink: #0369a1;
+  --apex-sky-fill: #0369a1;
+  --apex-sky-on-fill: #ffffff;
+  --apex-sky-tint: rgba(14, 165, 233, 0.07);
+  --apex-sky-glow: rgba(14, 165, 233, 0.35);
   background: var(--apex-white);
   color: var(--apex-text);
   border-top: none;
@@ -271,30 +300,39 @@
   opacity: 0.6;
 }
 
+/* Display: 56–80px desktop, 40–48px phones (36px at 320). */
 .display {
   font-family: var(--apex-display);
-  font-stretch: 125%;
+  font-stretch: 112%;
   font-weight: 760;
-  font-size: clamp(30px, 10vw, 116px);
-  line-height: 0.94;
+  font-size: clamp(36px, 11vw, 48px);
+  line-height: 0.96;
   letter-spacing: -0.012em;
   text-transform: uppercase;
   text-wrap: balance;
 }
 
+@media (min-width: 640px) {
+  .display {
+    font-stretch: 122%;
+    font-size: clamp(48px, 5.6vw, 80px);
+  }
+}
+
+/* Section heading: 36–48px desktop, 28–36px phones. */
 .h2 {
   font-family: var(--apex-display);
-  font-stretch: 122%;
+  font-stretch: 118%;
   font-weight: 720;
-  font-size: clamp(25px, calc(5vw + 9px), 66px);
-  line-height: 1;
+  font-size: clamp(26px, calc(2.4vw + 18px), 48px);
+  line-height: 1.02;
   letter-spacing: -0.01em;
   text-transform: uppercase;
   text-wrap: balance;
 }
 
 .h2Small {
-  font-size: clamp(23px, calc(3.6vw + 7px), 44px);
+  font-size: clamp(24px, calc(1.8vw + 16px), 40px);
 }
 
 .h3 {
@@ -316,16 +354,17 @@
   letter-spacing: 0.04em;
 }
 
+/* Body: 17–20px desktop, 16–18px phones. Narrative measure ~720px. */
 .lead {
-  font-size: clamp(17px, 1.5vw, 20px);
+  font-size: clamp(17px, 1.2vw + 2px, 20px);
   line-height: 1.55;
   color: var(--apex-text-2);
-  max-width: 62ch;
+  max-width: 720px;
   text-wrap: pretty;
 }
 
 .body {
-  font-size: 16px;
+  font-size: clamp(16px, 0.6vw + 9px, 17px);
   line-height: 1.65;
   color: var(--apex-text-2);
   max-width: 64ch;
@@ -512,6 +551,15 @@
 .badge[data-status="SUPPORTED"] .badgeMark {
   border-radius: 50%;
 }
+/* The APEX–Gamyaa AeroSystems engineering collaboration: sky blue, as on the Company page. */
+.badge[data-status="COLLABORATION"] {
+  border-color: var(--apex-sky);
+  color: var(--apex-sky-ink);
+}
+.badge[data-status="COLLABORATION"] .badgeMark {
+  border-radius: 50%;
+  background: var(--apex-sky);
+}
 
 /* ── Evidence frame: registration marks at the corners ── */
 .frame {
@@ -641,7 +689,7 @@
   top: 0.68em;
   width: 8px;
   height: 1px;
-  background: var(--apex-amber);
+  background: var(--apex-text-3);
 }
 
 .chips {
@@ -704,7 +752,7 @@ button.chip:hover {
   align-items: flex-start;
   padding: 14px 16px;
   border-left: 2px solid var(--apex-amber);
-  background: rgba(255, 106, 26, 0.06);
+  background: var(--apex-hover);
   font-size: 14px;
   line-height: 1.55;
   color: var(--apex-text-2);
@@ -759,9 +807,9 @@ button.chip:hover {
 
 .pageTitle {
   font-family: var(--apex-display);
-  font-stretch: 125%;
+  font-stretch: 110%;
   font-weight: 740;
-  font-size: clamp(26px, 8.4vw, 40px);
+  font-size: clamp(28px, 9vw, 40px);
   line-height: 0.98;
   letter-spacing: -0.012em;
   text-transform: uppercase;
@@ -772,7 +820,8 @@ button.chip:hover {
 
 @media (min-width: 640px) {
   .pageTitle {
-    font-size: clamp(40px, 5vw, 76px);
+    font-stretch: 120%;
+    font-size: clamp(44px, 5vw, 76px);
   }
 }
 

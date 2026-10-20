@@ -34,7 +34,7 @@ export const DISPLAY_STATUS_MEANING: Record<DisplayStatus, string> = {
   BUILT: "Confirmed physical hardware exists.",
   ACTIVE: "Confirmed current development activity.",
   PLANNED: "Future work confirmed by APEX.",
-  CONCEPT: "Proposed architecture or engineering collaboration.",
+  CONCEPT: "Proposed architecture or approach; not yet built or confirmed.",
   PARTNER_REQUIRED: "Capability identified; partner not finalised.",
   EVIDENCE_REQUIRED: "A stronger status cannot be published yet.",
 };
@@ -44,7 +44,7 @@ export interface EvidenceRecord {
   claim: string;
   status: EvidenceStatus;
   display: DisplayStatus;
-  /** Where the claim was read, or "owner-brief" for information APEX supplied for this proposal. */
+  /** Where the claim was read, or "owner-brief" for information APEX supplied for this concept experience. */
   source: string;
   sourceLabel: string;
   approvedWording: string;
@@ -311,6 +311,32 @@ export const EVIDENCE: readonly EvidenceRecord[] = [
     ownerConfirmationRequired: false,
   },
   {
+    id: "vision-foundation",
+    claim: "Building the foundation for affordable, reliable launch systems",
+    status: "CONFIRMED_PUBLIC",
+    display: "ACTIVE",
+    source: APEX_OFFICIAL_PAGES.home,
+    sourceLabel: "apexrocketsystems.com — Home",
+    approvedWording: "APEX is building the foundation for affordable, reliable launch systems through hands-on engineering, hardware development and continuous iteration.",
+    prohibitedWording: [],
+    publish: true,
+    ownerConfirmationRequired: false,
+    engineeringEvidence: false,
+  },
+  {
+    id: "vision-access",
+    claim: "The prototype as a step toward making access to space more accessible",
+    status: "CONFIRMED_PUBLIC",
+    display: "PLANNED",
+    source: APEX_OFFICIAL_PAGES.home,
+    sourceLabel: "apexrocketsystems.com — Home",
+    approvedWording: "APEX describes its prototype as a step toward a broader vision of making access to space more accessible.",
+    prohibitedWording: [],
+    publish: true,
+    ownerConfirmationRequired: false,
+    engineeringEvidence: false,
+  },
+  {
     id: "company-focus",
     claim: "Aerospace development company focused on small and medium-lift launch vehicles",
     status: "CONFIRMED_PUBLIC",
@@ -329,7 +355,7 @@ export const EVIDENCE: readonly EvidenceRecord[] = [
     status: "OWNER_CONFIRMED",
     display: "BUILT",
     source: "owner-brief",
-    sourceLabel: "Supplied for this proposal",
+    sourceLabel: "Supplied by APEX",
     approvedWording: "Founders: Vibbhav Gopaal and Arcchit Gopaal.",
     prohibitedWording: [],
     publish: true,
@@ -343,9 +369,10 @@ export const EVIDENCE: readonly EvidenceRecord[] = [
     status: "CONCEPT",
     display: "CONCEPT",
     source: "owner-brief",
-    sourceLabel: "Proposal",
-    approvedWording: "Proposed capability partners. No formal agreement is implied.",
-    prohibitedWording: ["official technology partner", "strategic partner of APEX"],
+    sourceLabel: "Engineering collaboration",
+    approvedWording:
+      "APEX Rocket Systems and Gamyaa AeroSystems are working together in an engineering collaboration. Other organisations shown are proposed capability partners unless otherwise confirmed.",
+    prohibitedWording: ["official technology partner", "strategic partner of APEX", "joint venture", "strategic alliance", "exclusive partner"],
     publish: true,
     ownerConfirmationRequired: true,
   },
@@ -355,7 +382,7 @@ export const EVIDENCE: readonly EvidenceRecord[] = [
     status: "CONCEPT",
     display: "CONCEPT",
     source: "owner-brief",
-    sourceLabel: "Proposal",
+    sourceLabel: "Concept experience",
     approvedWording: "Proposed Digital Twin approach. No maturity level is claimed.",
     prohibitedWording: ["validated digital twin", "operational digital twin"],
     publish: true,
@@ -367,7 +394,7 @@ export const EVIDENCE: readonly EvidenceRecord[] = [
     status: "CONCEPT",
     display: "CONCEPT",
     source: "owner-brief",
-    sourceLabel: "Proposal",
+    sourceLabel: "Concept experience",
     approvedWording: "Review gates are shown as process concepts. Completion is not claimed.",
     prohibitedWording: ["PDR complete", "CDR complete", "passed CDR"],
     publish: true,

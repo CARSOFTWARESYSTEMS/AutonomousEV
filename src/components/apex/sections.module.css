@@ -831,7 +831,7 @@
 }
 
 .partnerCard[data-core] {
-  background: rgba(255, 106, 26, 0.06);
+  background: var(--apex-hover);
 }
 
 .partnerCard[data-open] {
@@ -871,6 +871,19 @@
 @media (min-width: 900px) {
   .statsRow {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Five figures: the total spans the row on phones, then all five sit in one row. */
+@media (max-width: 899px) {
+  .statsRowFive > :first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 900px) {
+  .statsRowFive {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 }
 
@@ -962,40 +975,22 @@
   }
 }
 
-.founderCard {
+.founderProfile {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  gap: 20px;
-  padding: clamp(20px, 3vw, 32px);
-  border: 1px solid var(--apex-line);
+  align-content: start;
+  gap: 10px;
+  padding-top: 24px;
+  border-top: 1px solid var(--apex-line-strong);
   min-width: 0;
-}
-
-.monogram {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: clamp(64px, 9vw, 88px);
-  aspect-ratio: 1;
-  border: 1px solid var(--apex-line-strong);
-  font-family: var(--apex-display);
-  font-stretch: 125%;
-  font-weight: 760;
-  font-size: clamp(20px, 2.6vw, 28px);
-  letter-spacing: 0.04em;
-  color: var(--apex-text-2);
-  background:
-    linear-gradient(var(--apex-amber), var(--apex-amber)) left bottom / 100% 3px no-repeat,
-    var(--apex-bg-alt);
 }
 
 .founderName {
   font-family: var(--apex-display);
-  font-stretch: 112%;
-  font-weight: 680;
-  font-size: clamp(20px, 2.2vw, 26px);
-  line-height: 1.1;
+  font-stretch: 116%;
+  font-weight: 720;
+  font-size: clamp(28px, 1.8vw + 18px, 46px);
+  line-height: 1.02;
+  text-transform: uppercase;
 }
 
 /* ── 11 CTA ── */

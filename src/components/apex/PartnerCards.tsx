@@ -25,7 +25,15 @@ export function PartnerCards() {
               onClick={(event) => open({ kind: "partner", id: p.id }, event.currentTarget)}
             >
               <span className={sections.partnerCardHead}>
-                <span className={styles.badge} data-status={p.id === "apex" ? "BUILT" : p.relationshipStatus === "TO_BE_IDENTIFIED" ? "PARTNER_REQUIRED" : "CONCEPT"}>
+                <span className={styles.badge} data-status={
+                    p.id === "apex"
+                      ? "BUILT"
+                      : p.relationshipStatus === "ENGINEERING_COLLABORATION"
+                        ? "COLLABORATION"
+                        : p.relationshipStatus === "TO_BE_IDENTIFIED"
+                          ? "PARTNER_REQUIRED"
+                          : "CONCEPT"
+                  }>
                   <span className={styles.badgeMark} aria-hidden="true" />
                   {PARTNER_STATUS_LABEL[p.relationshipStatus]}
                 </span>

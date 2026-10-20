@@ -8,11 +8,12 @@ import { usePanel } from "./panelContext";
 import styles from "./apex.module.css";
 import eco from "./ecosystem.module.css";
 
-const STATUSES: CapabilityStatus[] = ["CORE", "PROPOSED", "PARTNER_REQUIRED"];
+const STATUSES: CapabilityStatus[] = ["CORE", "COLLABORATION", "PROPOSED", "PARTNER_REQUIRED"];
 
 /** Every capability, filterable by area and coverage. Each opens its detail panel. */
 export function CapabilityExplorer() {
   const { open } = usePanel();
+  const [expanded, setExpanded] = useState(false);
   const [ring, setRing] = useState<EcosystemRing | "all">("all");
   const [status, setStatus] = useState<CapabilityStatus | "all">("all");
 
@@ -21,8 +22,18 @@ export function CapabilityExplorer() {
     [ring, status],
   );
 
+  if (!expanded) {
+    return (
+      <div className={styles.actions}>
+        <button type="button" className={`${styles.btn} ${styles.btnSecondary}`} aria-expanded={false} aria-controls="all-capabilities" onClick={() => setExpanded(true)}>
+          Show all {CAPABILITIES.length} capabilities
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div>
+    <div id="all-capabilities">
       <div className={eco.filters}>
         <div className={eco.filterGroup} role="group" aria-label="Filter by area">
           <span className={eco.filterLabel}>Area</span>

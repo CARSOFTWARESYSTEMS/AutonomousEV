@@ -4,6 +4,7 @@ import { apexImage } from "@/data/apex/images";
 import { apexJsonLd } from "@/data/apex/seo";
 import { SYSTEM_DOMAINS } from "@/data/apex/system";
 import { ApexPageView } from "../ApexPageView";
+import { EngineToSystem } from "../EngineToSystem";
 import { EvidenceFigure } from "../EvidenceFigure";
 import { NextPage, PageHero } from "../PageHero";
 import { SectionHead } from "../SectionHead";
@@ -24,27 +25,29 @@ export function SystemPage() {
         aside={<EvidenceFigure image={apexImage("04")} sizes="(min-width: 1024px) 34vw, 100vw" aspect="4 / 5" priority />}
       />
 
-      <section className={`${styles.section} ${styles.sectionAlt}`} aria-labelledby="explorer-title" id="explorer">
+      <EngineToSystem index="" />
+
+      <section className={styles.section} aria-labelledby="explorer-title" id="explorer">
         <div className={styles.container}>
           <SectionHead
             eyebrow="System explorer"
             id="explorer-title"
             title="Select a domain"
-            lead="Purpose, interfaces, development evidence, partner capabilities, status and dependencies for each. The technical view adds the interface matrix."
+            lead="Six groups, eighteen domains. Open a group, then a domain, for its purpose, interfaces, evidence, partner capabilities and dependencies. The technical view adds the interface matrix."
             small
           />
           <SystemExplorer allowTechnical />
         </div>
       </section>
 
-      <section className={styles.section} aria-labelledby="fit-title" id="where-apex-fits-section">
+      <section className={`${styles.section} ${styles.sectionAlt}`} aria-labelledby="fit-title" id="where-apex-fits-section">
         <div className={styles.container}>
           <SectionHead eyebrow="Authority" id="fit-title" title="Where APEX fits" lead="Partners contribute capability. Intent, architecture, configuration and acceptance stay with APEX." small />
           <WhereApexFits />
         </div>
       </section>
 
-      <section className={`${styles.section} ${styles.sectionAlt}`} aria-labelledby="gates-title" id="review-gates">
+      <section className={styles.section} aria-labelledby="gates-title" id="review-gates">
         <div className={styles.container}>
           <SectionHead
             eyebrow="Engineering governance"
@@ -57,7 +60,7 @@ export function SystemPage() {
         </div>
       </section>
 
-      <section className={styles.section} aria-labelledby="cto-title" id="technical-questions">
+      <section className={`${styles.section} ${styles.sectionAlt}`} aria-labelledby="cto-title" id="technical-questions">
         <div className={styles.container}>
           <SectionHead eyebrow="Technical view" id="cto-title" title="Questions a CTO will ask" small />
           <QuestionList items={CTO_QUESTIONS} />

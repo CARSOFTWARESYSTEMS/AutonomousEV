@@ -4,36 +4,47 @@
   position: fixed;
   inset: 0 0 auto 0;
   z-index: 100;
+  height: var(--apex-header-h);
   background: rgba(5, 6, 7, 0.86);
   -webkit-backdrop-filter: saturate(140%) blur(16px);
   backdrop-filter: saturate(140%) blur(16px);
   border-bottom: 1px solid var(--apex-line);
+  transition: background-color 0.35s ease, border-color 0.35s ease, height 0.3s ease;
 }
 
-/* The masthead: the full logo on its own band, the navigation on the band below. */
-.topBand {
-  height: 72px;
+/* Over the home hero, before scrolling: the photograph shows through. */
+.header[data-overlay="true"] {
+  /* border-box origin, so the gradient does not repeat into the 1px border as a dark line. */
+  background: linear-gradient(180deg, rgba(5, 6, 7, 0.62) 0%, rgba(5, 6, 7, 0) 100%) border-box;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  border-bottom-color: transparent;
+}
+
+/* After scrolling, the bar slims a little on wide screens; the logo keeps its size. */
+@media (min-width: 1280px) {
+  .header[data-scrolled="true"] {
+    height: 72px;
+  }
+}
+
+.bar {
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
-}
-
-@media (min-width: 1180px) {
-  .topBand {
-    height: 84px;
-  }
+  gap: 28px;
 }
 
 .brand {
   display: inline-flex;
   align-items: center;
-  flex-shrink: 1;
+  flex-shrink: 0;
   min-width: 0;
   min-height: 44px;
 }
 
-/* Logo height by screen: phones, tablets, laptops and larger. Width follows the logo's proportions. */
+/* Logo height by screen. Width follows the logo's proportions. */
 .brandLogo img {
   height: 26px;
   width: auto;
@@ -52,87 +63,99 @@
   }
 }
 
-@media (min-width: 1180px) {
+@media (min-width: 1280px) {
   .brandLogo img {
     height: 46px;
   }
 }
 
-.status {
+.nav {
   display: none;
 }
 
-@media (min-width: 1180px) {
-  .status {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    margin-left: auto;
-    font-family: var(--apex-mono);
-    font-size: 11px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--apex-text-3);
-    white-space: nowrap;
-  }
-  .status::before {
-    content: "";
-    width: 7px;
-    height: 7px;
-    border: 1.5px solid currentColor;
-    border-radius: 50%;
-  }
-}
-
-.navBand {
-  display: none;
-}
-
-@media (min-width: 1180px) {
-  .navBand {
+/* The full navigation needs ~1,230px beside the full-size logo, so it shows from 1360px. */
+@media (min-width: 1360px) {
+  .nav {
     display: block;
-    border-top: 1px solid var(--apex-line);
+    margin-left: auto;
   }
 }
 
 .navList {
   display: flex;
   align-items: center;
-  gap: clamp(20px, 2.4vw, 40px);
-  height: 44px;
+  gap: clamp(18px, 1.6vw, 30px);
 }
 
 .navLink {
   position: relative;
   display: inline-flex;
   align-items: center;
+  gap: 6px;
   min-height: 44px;
+  padding: 0;
+  border: none;
+  background: none;
   font-family: var(--apex-mono);
   font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
   color: var(--apex-text-2);
   white-space: nowrap;
+  cursor: pointer;
   transition: color 0.15s ease;
 }
 
-.navLink:hover {
+.navLink:hover,
+.navLink[aria-current="page"],
+.navLink[data-current="true"] {
   color: var(--apex-text);
 }
 
-.navLink[aria-current="page"] {
-  color: var(--apex-text);
-}
-
-.navLink[aria-current="page"]::after {
+.navLink[aria-current="page"]::after,
+.navLink[data-current="true"]::after {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -1px;
-  height: 2px;
+  bottom: 8px;
+  height: 1.5px;
   background: var(--apex-amber);
+}
+
+.more {
+  position: relative;
+}
+
+.moreList {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 200px;
+  padding: 6px;
+  background: rgba(10, 12, 14, 0.98);
+  border: 1px solid var(--apex-line-strong);
+  border-radius: 2px;
+  box-shadow: 0 24px 48px -24px rgba(0, 0, 0, 0.8);
+}
+
+.moreLink {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 14px;
+  font-family: var(--apex-mono);
+  font-size: 12px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--apex-text-2);
+}
+
+.moreLink:hover,
+.moreLink[aria-current="page"] {
+  color: var(--apex-text);
+  background: var(--apex-hover);
 }
 
 .headerActions {
@@ -144,31 +167,15 @@
 
 .officialLink {
   display: none !important;
+  min-height: 44px !important;
+  padding: 8px 16px !important;
+  font-size: 12px !important;
 }
 
 @media (min-width: 760px) {
   .officialLink {
     display: inline-flex !important;
   }
-}
-
-.themeToggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  flex-shrink: 0;
-  border: 1px solid var(--apex-line-strong);
-  border-radius: 2px;
-  background: transparent;
-  color: var(--apex-text);
-  cursor: pointer;
-  transition: border-color 0.15s ease;
-}
-
-.themeToggle:hover {
-  border-color: var(--apex-text);
 }
 
 .menuButton {
@@ -200,10 +207,38 @@
   }
 }
 
-@media (min-width: 1180px) {
+@media (min-width: 1360px) {
   .menuButton {
     display: none;
   }
+}
+
+/* The theme switch: a small utility, in the footer and the phone menu. */
+.utilityToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--apex-line-strong);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--apex-text-2);
+  cursor: pointer;
+}
+
+.utilityToggle:hover {
+  color: var(--apex-text);
+  border-color: var(--apex-text-3);
+}
+
+.menuUtility {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 8px;
 }
 
 /* ── Mobile menu ── */
@@ -378,4 +413,33 @@
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-color: var(--apex-line-strong);
+}
+
+/* The collaboration statement: two short paragraphs and the two links, kept to a readable measure. */
+.statement {
+  display: grid;
+  gap: 8px;
+  max-width: 88ch;
+}
+
+.statement p {
+  margin: 0;
+}
+
+.footerUtility {
+  display: grid;
+  gap: 14px;
+  justify-items: start;
+}
+
+@media (min-width: 900px) {
+  .footerUtility {
+    justify-items: end;
+    text-align: right;
+  }
+
+  /* A narrow right column, so the collaboration statement keeps its measure. */
+  .footerUtility p {
+    max-width: 30ch;
+  }
 }

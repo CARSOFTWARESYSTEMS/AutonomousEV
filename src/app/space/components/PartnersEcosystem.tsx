@@ -12,7 +12,7 @@ export const APEX_ENTRY_HREF = apexHref("/");
 
 /**
  * The APEX card in the "Learn by building mission-ready thinking" grid.
- * Its pill and note say what it is: a collaboration concept, not a programme
+ * Its pill and note say what it is: an engineering collaboration with Gamyaa AeroSystems, not a programme
  * of this site, and not a claim about APEX beyond its own published words.
  */
 export function ApexProjectCard({ pill }: { pill: React.ReactNode }) {
@@ -34,7 +34,7 @@ export function ApexProjectCard({ pill }: { pill: React.ReactNode }) {
         Explore APEX Collaboration Concept <ArrowRight size={16} />
       </Link>
       <p className={styles.projectNote}>
-        Engineering collaboration concept ·{" "}
+        Engineering collaboration with Gamyaa AeroSystems ·{" "}
         <a
           href={APEX_OFFICIAL_SITE_URL}
           target="_blank"
@@ -53,7 +53,7 @@ export function ApexProjectCard({ pill }: { pill: React.ReactNode }) {
 
 const OTHER_PARTNERS = ["gamyaa", "ifab", "itelematics", "evsociety"] as const;
 
-/** Partners & Engineering Ecosystem: APEX first, then the proposed capability partners. */
+/** Partners & Engineering Ecosystem: APEX first, then Gamyaa AeroSystems (engineering collaboration) and the proposed capability partners. */
 export function PartnersEcosystem({ label, pill, h2Style, descStyle }: { label: React.ReactNode; pill: (text: string, color: string) => React.ReactNode; h2Style: React.CSSProperties; descStyle: React.CSSProperties }) {
   const apex = partner("apex");
   return (
@@ -64,23 +64,24 @@ export function PartnersEcosystem({ label, pill, h2Style, descStyle }: { label: 
           Partners &amp; Engineering Ecosystem
         </h2>
         <p style={descStyle}>
-          Organisations proposed to work together on engineering, validation, quality and skills. Relationships are proposed capability partnerships; no formal
-          agreement is implied.
+          APEX Rocket Systems and Gamyaa AeroSystems are working together in an engineering collaboration. The other organisations shown are proposed
+          capability partners unless otherwise confirmed.
         </p>
       </div>
 
       <div className={`${styles.cardHover} ${theme.card} ${partners.featured}`}>
         <div>
-          {pill("Engineering Collaboration Concept", "#06B6D4")}
+          {pill("Engineering Collaboration", "#06B6D4")}
           <h3 className={partners.featuredTitle} style={{ fontFamily: FONT_MANROPE }}>
             {apex.name}
           </h3>
-          <p className={partners.partnerFocus}>{apex.focus}</p>
+          <p className={`${partners.partnerFocus} ${partners.featuredFocus}`}>{apex.focus}</p>
           <p className={styles.projectDesc}>Developing liquid-propulsion capability as a foundation for progressively integrated rocket systems.</p>
+          {/* One button, then the official site as a quieter link, like each partner's "Website" below. */}
           <div className={partners.featuredActions}>
             <Link
               href={APEX_ENTRY_HREF}
-              className={theme.secondaryButton}
+              className={`${theme.secondaryButton} ${partners.featuredPrimary}`}
               data-track-event="space_partner_card_click"
               data-track-partner="apex_rocket_systems"
               data-track-placement="partners_ecosystem"
@@ -91,12 +92,12 @@ export function PartnersEcosystem({ label, pill, h2Style, descStyle }: { label: 
               href={APEX_OFFICIAL_SITE_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className={theme.secondaryButton}
+              className={partners.featuredLink}
               data-track-event="space_partner_official_site_click"
               data-track-partner="apex_rocket_systems"
               data-track-placement="partners_ecosystem"
             >
-              Official Website <ArrowUpRight size={16} />
+              Official Website <ArrowUpRight size={15} />
               <span className={styles.srOnly}> (opens in a new tab)</span>
             </a>
           </div>
@@ -115,8 +116,8 @@ export function PartnersEcosystem({ label, pill, h2Style, descStyle }: { label: 
             <dd>Gas-generator</dd>
           </div>
           <div>
-            <dt>Status</dt>
-            <dd>Concept · collaboration proposal</dd>
+            <dt>Collaboration</dt>
+            <dd>With Gamyaa AeroSystems</dd>
           </div>
         </dl>
       </div>
@@ -126,12 +127,13 @@ export function PartnersEcosystem({ label, pill, h2Style, descStyle }: { label: 
           const p = partner(id);
           return (
             <div key={p.id} className={`${theme.card} ${partners.partner}`}>
-              {pill(PARTNER_STATUS_LABEL[p.relationshipStatus], "#93C5FD")}
+              {/* Gamyaa AeroSystems shares the APEX card's cyan: the two are in an engineering collaboration; the others are proposed. */}
+              {pill(PARTNER_STATUS_LABEL[p.relationshipStatus], p.relationshipStatus === "ENGINEERING_COLLABORATION" ? "#06B6D4" : "#93C5FD")}
               <h3 className={partners.partnerName} style={{ fontFamily: FONT_MANROPE }}>
                 {p.name}
               </h3>
+              {/* The capability line is the card's description; the role ("Embedded Systems & Firmware") would only repeat it. */}
               <p className={partners.partnerFocus}>{p.focus}</p>
-              <p className={partners.partnerDesc}>{p.role}</p>
               {p.website && (
                 <a
                   href={p.website}

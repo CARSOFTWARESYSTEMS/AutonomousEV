@@ -74,7 +74,7 @@ export function TwinCorrelationChart({ compact = false }: { compact?: boolean })
         <figcaption className={styles.h4}>Predicted vs measured</figcaption>
         <span className={styles.badge} data-status="CONCEPT">
           <span className={styles.badgeMark} aria-hidden="true" />
-          Illustrative — not APEX test data
+          Illustrative engineering data — not APEX test measurements
         </span>
       </div>
       <div className={loop.chartLegend}>

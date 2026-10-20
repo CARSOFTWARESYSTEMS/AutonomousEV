@@ -150,3 +150,37 @@ export const QUALITY_THREAD: readonly string[] = [
   "Test result",
   "Acceptance",
 ];
+
+/** The twin, in four words: the primary sequence on the Digital Twin page. */
+export const TWIN_CYCLE: readonly { id: string; label: string; detail: string }[] = [
+  { id: "predict", label: "Predict", detail: "Before a test, the model says what the hardware should do in this configuration." },
+  { id: "test", label: "Test", detail: "The instrumented hardware is tested to a written objective." },
+  { id: "compare", label: "Compare", detail: "Measured data is set against the prediction, and every deviation is investigated." },
+  { id: "learn", label: "Learn", detail: "The model, the hardware or both are updated — and the next test starts better informed." },
+];
+
+/**
+ * The two Gamyaa AeroSystems Digital Twin experiences linked from the Digital
+ * Twin page. They live on aerospace.gamyaa.in: same-tab paths while the
+ * microsite is hosted there, absolute new-tab links once it moves.
+ */
+export const GAMYAA_TWIN_HOST = "https://aerospace.gamyaa.in";
+
+export const GAMYAA_TWIN_EXPERIENCES: readonly { id: string; path: string; title: string; description: string; cta: string }[] = [
+  {
+    id: "rocket_engine_digital_twin",
+    path: "/space/rocket-engine-digital-twin",
+    title: "Rocket Engine Digital Twin",
+    description:
+      "Explore an interactive rocket-engine Digital Twin experience focused on understanding propulsion-system architecture, operating relationships, engineering behaviour, and system-level interaction.",
+    cta: "Explore Rocket Engine Digital Twin",
+  },
+  {
+    id: "rocket_propulsion_digital_twin_advanced",
+    path: "/space/rocket-engine-digital-twin-advanced",
+    title: "Advanced Rocket Engine Digital Twin",
+    description:
+      "Explore the advanced Digital Twin experience covering deeper system interaction, physics-driven analysis, test-data correlation concepts, engineering intelligence, and advanced propulsion-system understanding.",
+    cta: "Explore Advanced Digital Twin",
+  },
+];

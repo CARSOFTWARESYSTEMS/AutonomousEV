@@ -2,12 +2,40 @@
 
 import type { CSSProperties } from "react";
 import { capability } from "@/data/apex/partner-capabilities";
-import { CONFIGURATION_RECORD, INSTRUMENTATION_CHAIN, TEST_RECORD_FIELDS, TWIN_LOOP, TWIN_MATURITY } from "@/data/apex/validation";
+import { CONFIGURATION_RECORD, DIGITAL_TWIN_RESPONSIBILITIES, INSTRUMENTATION_CHAIN, TEST_RECORD_FIELDS, TWIN_CYCLE, TWIN_LOOP, TWIN_MATURITY } from "@/data/apex/validation";
 import { EvidenceBadge } from "./EvidenceBadge";
 import { usePanel } from "./panelContext";
 import styles from "./apex.module.css";
 import loop from "./loop.module.css";
 import validation from "./validation.module.css";
+
+/** Predict → Test → Compare → Learn, with the full loop and the twin's responsibilities beneath it. */
+export function TwinCycle() {
+  return (
+    <div style={{ display: "grid", gap: 36 }}>
+      <ol className={loop.cycle}>
+        {TWIN_CYCLE.map((step, i) => (
+          <li key={step.id} className={loop.cycleStep}>
+            <span className={loop.twinIndex}>{String(i + 1).padStart(2, "0")}</span>
+            <span className={loop.cycleLabel}>{step.label}</span>
+            <span className={styles.body}>{step.detail}</span>
+          </li>
+        ))}
+      </ol>
+      <div className={loop.strip} style={{ marginTop: 0 }}>
+        <h3 className={styles.h4}>The loop in detail</h3>
+        <ol className={loop.stripList}>
+          {TWIN_LOOP.map((step) => (
+            <li key={step.id}>{step.label}</li>
+          ))}
+        </ol>
+        <p className={styles.small}>
+          What the twin does: {DIGITAL_TWIN_RESPONSIBILITIES.map((item) => item.label.toLowerCase()).join(" · ")}.
+        </p>
+      </div>
+    </div>
+  );
+}
 
 /** Model → prediction → test → measurement → comparison → review → update → retest, highlighted slowly in turn. */
 export function TwinLoop() {

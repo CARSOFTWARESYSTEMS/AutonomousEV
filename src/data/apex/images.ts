@@ -1,5 +1,5 @@
 /**
- * Audit of the APEX photographs supplied for this proposal, and the optimised
+ * Audit of the APEX photographs supplied for this concept experience, and the optimised
  * files made from them by scripts/apex-images.mjs.
  *
  * The audit names only what can be seen. No component is identified as a

@@ -85,6 +85,10 @@
   fill: var(--apex-mark);
 }
 
+.dot[data-status="COLLABORATION"] {
+  fill: var(--apex-sky);
+}
+
 .dot[data-status="PARTNER_REQUIRED"] {
   fill: var(--apex-bg-alt);
   stroke: var(--apex-amber-muted);

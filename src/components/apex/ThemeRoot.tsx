@@ -72,24 +72,27 @@ export function useApexTheme() {
   return useContext(ThemeContext);
 }
 
-/** The light / dark switch: a toggle button, pressed when the light theme is on. */
+/**
+ * The light / dark switch. Its label names the theme it switches to — "Light
+ * theme" while dark is showing, "Dark theme" while light is — like its icon.
+ */
 export function ThemeToggle({ className, withLabel = false }: { className?: string; withLabel?: boolean }) {
   const { theme, setTheme } = useApexTheme();
   const next: ApexTheme = theme === "dark" ? "light" : "dark";
+  const label = next === "light" ? "Light theme" : "Dark theme";
   return (
     <button
       type="button"
       className={className}
-      aria-label="Light theme"
-      aria-pressed={theme === "light"}
-      title={theme === "light" ? "Switch to the dark theme" : "Switch to the light theme"}
+      aria-label={withLabel ? undefined : label}
+      title={`Switch to the ${next} theme`}
       onClick={() => {
         setTheme(next);
         trackApex("apex_theme_change", { theme: next });
       }}
     >
-      {theme === "dark" ? <Sun size={17} aria-hidden="true" /> : <Moon size={17} aria-hidden="true" />}
-      {withLabel && <span className={styles.mono}>Light theme</span>}
+      {next === "light" ? <Sun size={17} aria-hidden="true" /> : <Moon size={17} aria-hidden="true" />}
+      {withLabel && <span className={styles.mono}>{label}</span>}
     </button>
   );
 }

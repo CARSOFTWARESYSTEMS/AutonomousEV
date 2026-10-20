@@ -89,6 +89,24 @@ export function EnginePage() {
         </div>
       </section>
 
+      <section className={styles.section} aria-labelledby="engine-view-title" id="engine-system">
+        <div className={styles.container}>
+          <SectionHead
+            eyebrow="Engine system view"
+            id="engine-view-title"
+            title="The engine as functional blocks"
+            lead="What each block does, what it interfaces with, the capability it needs, how it is verified and who may contribute."
+          />
+          <EngineSystemView />
+        </div>
+      </section>
+
+      <section className={`${styles.section} ${styles.sectionAlt}`} aria-labelledby="record-title" id="record">
+        <div className={styles.container}>
+          <SectionHead eyebrow="Hardware record" id="record-title" title="The hardware" lead="Photographs supplied by APEX. Select one to enlarge." small />
+          <HardwareGallery title="All supplied photographs" />
+        </div>
+      </section>
       <section className={styles.section} aria-labelledby="approach-title">
         <div className={styles.container}>
           <SectionHead
@@ -142,19 +160,7 @@ export function EnginePage() {
         </div>
       </section>
 
-      <section className={styles.section} aria-labelledby="engine-view-title" id="engine-system">
-        <div className={styles.container}>
-          <SectionHead
-            eyebrow="Engine system view"
-            id="engine-view-title"
-            title="The engine as functional blocks"
-            lead="What each block does, what it interfaces with, the capability it needs, how it is verified and who may contribute."
-          />
-          <EngineSystemView />
-        </div>
-      </section>
-
-      <section className={`${styles.section} ${styles.sectionAlt}`} aria-labelledby="measure-title">
+      <section className={styles.section} aria-labelledby="measure-title">
         <div className={styles.container}>
           <SectionHead
             eyebrow="Instrumentation"
@@ -174,12 +180,6 @@ export function EnginePage() {
         </div>
       </section>
 
-      <section className={styles.section} aria-labelledby="record-title">
-        <div className={styles.container}>
-          <SectionHead eyebrow="Hardware record" id="record-title" title="APEX photographs" small />
-          <HardwareGallery title="All supplied photographs" />
-        </div>
-      </section>
       <NextPage current="engine" />
     </>
   );

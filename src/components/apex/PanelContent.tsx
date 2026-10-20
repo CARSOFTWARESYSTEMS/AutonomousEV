@@ -113,7 +113,7 @@ export function CapabilityDetail({ id }: { id: string }) {
       <Block title="Engineering evidence">
         <Bullets items={item.evidence} />
       </Block>
-      <Block title="Known / proposed partners">
+      <Block title="Partners">
         <CapabilityPartners capabilityId={id} />
       </Block>
       <Block title="APEX retains">
@@ -166,9 +166,11 @@ export function PartnerDetail({ id }: { id: string }) {
         <p className={panel.blockText}>
           {item.id === "apex"
             ? "Program owner. APEX keeps system intent and engineering authority across every capability."
-            : item.relationshipStatus === "TO_BE_IDENTIFIED"
-              ? "Open. No institution is named until an agreement exists."
-              : "Proposed capability partner. No formal agreement is implied."}
+            : item.relationshipStatus === "ENGINEERING_COLLABORATION"
+              ? "Engineering collaboration with APEX Rocket Systems, working toward shared engineering goals. APEX retains ownership of its rocket-system and propulsion engineering direction; Gamyaa AeroSystems contributes complementary digital-engineering and quality capabilities."
+              : item.relationshipStatus === "TO_BE_IDENTIFIED"
+                ? "Open. No institution is named until an agreement exists."
+                : "Proposed capability partner. The relationship is not yet confirmed."}
         </p>
         {item.website && (
           <div>

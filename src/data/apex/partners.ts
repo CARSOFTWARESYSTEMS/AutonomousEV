@@ -3,13 +3,16 @@
  *
  * A partner is linked to capabilities only through partner-capabilities.ts,
  * never by a field on the partner, so any partner can hold any number of
- * capabilities and any capability any number of partners. Nothing here is a
- * formal agreement: every relationship other than APEX's own is proposed.
+ * capabilities and any capability any number of partners. APEX Rocket Systems
+ * and Gamyaa AeroSystems are in an engineering collaboration; every other
+ * relationship is proposed unless it is confirmed. None is a joint venture,
+ * alliance or exclusive partnership.
  */
 import { APEX_OFFICIAL_SITE_URL } from "./site";
 
 export type PartnerRelationshipStatus =
   | "CORE_ORGANIZATION"
+  | "ENGINEERING_COLLABORATION"
   | "PROPOSED_PARTNER"
   | "CAPABILITY_PROVIDER"
   | "RESEARCH_PARTNER"
@@ -19,6 +22,7 @@ export type PartnerRelationshipStatus =
 
 export const PARTNER_STATUS_LABEL: Record<PartnerRelationshipStatus, string> = {
   CORE_ORGANIZATION: "Program Owner",
+  ENGINEERING_COLLABORATION: "Engineering Collaboration",
   PROPOSED_PARTNER: "Proposed Capability Partner",
   CAPABILITY_PROVIDER: "Capability Provider",
   RESEARCH_PARTNER: "Potential Research Partner",
@@ -56,14 +60,14 @@ export const PARTNERS: readonly Partner[] = [
   },
   {
     id: "gamyaa",
-    name: "Gamyaa Aerospace",
+    name: "Gamyaa AeroSystems",
     shortName: "Gamyaa",
     role: "Digital Engineering & Quality",
     focus: "Digital Engineering · Digital Twin · Quality",
-    website: "https://aerospace.gamyaa.in/aerospace",
+    website: "https://www.gamyaa.in/",
     description:
-      "Proposed capability partner for systems and software engineering, simulation, Digital Twin, ground and test software, engineering test data and the digital quality thread, including manufacturing quality and First Article Inspection.",
-    relationshipStatus: "PROPOSED_PARTNER",
+      "Working with APEX in an engineering collaboration, contributing systems engineering, digital engineering, Digital Twin, simulation, software, aerospace quality intelligence, manufacturing quality and test-data and engineering-data capabilities. APEX retains ownership of its rocket-system and propulsion engineering direction.",
+    relationshipStatus: "ENGINEERING_COLLABORATION",
   },
   {
     id: "ifab",

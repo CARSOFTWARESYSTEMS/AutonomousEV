@@ -6,7 +6,7 @@ import { CAPABILITY_DEFINITIONS } from "./capabilities";
 import { EVIDENCE, GLOBAL_PROHIBITED_PHRASES } from "./evidence";
 import { APEX_IMAGES, imageFile } from "./images";
 import { MISSION_TO_FLIGHT } from "./lifecycle";
-import { CAPABILITIES, CAPABILITY_PARTNERS, capabilitiesForPartner, partnersForCapability } from "./partner-capabilities";
+import { CAPABILITIES, CAPABILITY_PARTNERS, capabilitiesForPartner, capability, partnersForCapability } from "./partner-capabilities";
 import { PARTNERS } from "./partners";
 import { OWNER_CONFIRM_REQUIRED, ROADMAP, roadmapDateLabel } from "./roadmap";
 import { APEX_OFFICIAL_SITE_URL, APEX_ROUTES, apexAsset, apexHref, apexUrl } from "./site";
@@ -30,7 +30,7 @@ describe("partner ⇄ capability model", () => {
       pairs.add(key);
       expect(record.role.length).toBeGreaterThan(0);
       expect(record.contribution.length).toBeGreaterThan(0);
-      expect(record.relationshipStatus).toMatch(/^(PROGRAM_OWNER|PROPOSED|CONFIRMED|TO_BE_IDENTIFIED)$/);
+      expect(record.relationshipStatus).toMatch(/^(PROGRAM_OWNER|COLLABORATION|PROPOSED|CONFIRMED|TO_BE_IDENTIFIED)$/);
     }
   });
 
@@ -51,7 +51,7 @@ describe("partner ⇄ capability model", () => {
     expect(capsOf("itelematics")).toEqual(["cybersecurity", "engineering-ai"]);
   });
 
-  it("never places Gamyaa Aerospace under Cybersecurity or AI", () => {
+  it("never places Gamyaa AeroSystems under Cybersecurity or AI", () => {
     expect(capsOf("gamyaa")).not.toContain("cybersecurity");
     expect(capsOf("gamyaa")).not.toContain("engineering-ai");
     expect(capsOf("gamyaa")).toEqual(
@@ -65,11 +65,19 @@ describe("partner ⇄ capability model", () => {
     expect(capsOf("evsociety")).toEqual(["research-academia", "skills-workforce"]);
   });
 
-  it("keeps APEX as program owner and every other relationship proposed — no formal agreement is implied", () => {
+  it("keeps APEX as program owner, Gamyaa AeroSystems in an engineering collaboration, and every other relationship proposed", () => {
     for (const record of CAPABILITY_PARTNERS) {
-      if (record.partnerId === "apex") expect(record.relationshipStatus).toBe("PROGRAM_OWNER");
-      else expect(record.relationshipStatus).not.toBe("CONFIRMED");
+      const key = `${record.partnerId}|${record.capabilityId}`;
+      if (record.partnerId === "apex") expect(record.relationshipStatus, key).toBe("PROGRAM_OWNER");
+      else if (record.partnerId === "gamyaa") expect(record.relationshipStatus, key).toBe("COLLABORATION");
+      else expect(record.relationshipStatus, key).toMatch(/^(PROPOSED|TO_BE_IDENTIFIED)$/);
     }
+    for (const p of PARTNERS) {
+      if (p.id === "gamyaa") expect(p.relationshipStatus).toBe("ENGINEERING_COLLABORATION");
+      else expect(p.relationshipStatus, p.id).not.toBe("ENGINEERING_COLLABORATION");
+    }
+    expect(PARTNERS.find((p) => p.id === "gamyaa")?.description).not.toMatch(/propos/i);
+    for (const id of ["digital-twin", "quality-intelligence", "test-data"]) expect(capability(id).status, id).toBe("COLLABORATION");
     expect(PARTNERS.find((p) => p.id === "apex")?.website).toBe(APEX_OFFICIAL_SITE_URL);
   });
 
@@ -221,6 +229,21 @@ describe("analytics", () => {
     }
     expect(used.size).toBeGreaterThan(10);
     for (const event of used) expect(APEX_EVENTS as readonly string[], event).toContain(event);
+  });
+});
+
+describe("collaboration wording", () => {
+  it("never calls the APEX–Gamyaa AeroSystems relationship a proposal, in any APEX source, llms.txt or the docs", () => {
+    const targets = ["src/components/apex", "src/data/apex", "src/app/space/partners", "src/app/space/components/PartnersEcosystem.tsx", "public/llms.txt", "docs/apexrocketsystems.md"];
+    for (const dir of targets) {
+      const full = path.join(ROOT, dir);
+      const files = fs.statSync(full).isDirectory() ? (fs.readdirSync(full, { recursive: true }) as string[]).map((f) => path.join(full, f)) : [full];
+      for (const file of files) {
+        if (!/\.(ts|tsx|css|txt|md)$/.test(file) || /\.test\./.test(file)) continue;
+        const text = fs.readFileSync(file, "utf-8");
+        expect(text, file).not.toMatch(/no formal agreement is implied|collaboration proposal|partnership proposal|the proposal comes from|proposed capability( partner)?: gamyaa/i);
+      }
+    }
   });
 });
 

@@ -1,0 +1,905 @@
+/* The homepage: an executive narrative. Big hardware, few words, depth one click away. */
+
+.wide {
+  width: 100%;
+  max-width: var(--apex-max-wide);
+  margin-inline: auto;
+  padding-inline: var(--apex-gutter);
+}
+
+.narrow {
+  max-width: 720px;
+}
+
+.headline {
+  display: grid;
+  gap: 20px;
+  margin-bottom: clamp(40px, 5vw, 72px);
+}
+
+.headlineCenter {
+  justify-items: center;
+  text-align: center;
+  margin-inline: auto;
+}
+
+.more {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  font-family: var(--apex-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--apex-text);
+  border-bottom: 1px solid var(--apex-line-strong);
+  transition: border-color 0.2s ease, gap 0.2s ease;
+}
+
+.more:hover {
+  border-color: var(--apex-amber);
+  gap: 14px;
+}
+
+.more svg {
+  color: var(--apex-accent);
+}
+
+/* ── 01 Hero ── */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background: var(--apex-graphite);
+}
+
+@media (min-height: 1100px) {
+  .hero {
+    min-height: 1100px;
+  }
+}
+
+.heroMedia {
+  position: absolute;
+  inset: 0;
+}
+
+.heroMedia picture,
+.heroMedia img {
+  width: 100%;
+  height: 100%;
+}
+
+.heroMedia img {
+  object-fit: cover;
+  object-position: 50% 32%;
+  animation: settle 2.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@media (min-width: 768px) {
+  .heroMedia img {
+    object-position: 64% 50%;
+  }
+}
+
+@keyframes settle {
+  from {
+    transform: scale(1.06);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* Text sits on a shade that covers the lower left only, so the hardware holds most of the frame. */
+.heroShade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(5, 6, 7, 0.55) 0%, rgba(5, 6, 7, 0) 20%),
+    linear-gradient(0deg, rgba(5, 6, 7, 1) 0%, rgba(5, 6, 7, 0.6) 22%, rgba(5, 6, 7, 0) 52%);
+}
+
+@media (min-width: 768px) {
+  .heroShade {
+    background:
+      linear-gradient(180deg, rgba(5, 6, 7, 0.5) 0%, rgba(5, 6, 7, 0) 18%),
+      linear-gradient(0deg, rgba(5, 6, 7, 0.92) 0%, rgba(5, 6, 7, 0) 42%),
+      linear-gradient(90deg, rgba(5, 6, 7, 0.78) 0%, rgba(5, 6, 7, 0.32) 38%, rgba(5, 6, 7, 0) 62%);
+  }
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding-top: calc(var(--apex-header-h) + 40px);
+  padding-bottom: clamp(40px, 8vh, 96px);
+}
+
+.heroCopy {
+  display: grid;
+  gap: 22px;
+  max-width: 760px;
+}
+
+.heroCopy > * {
+  animation: rise 1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: calc(var(--i, 0) * 110ms + 200ms);
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(14px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+.heroKicker {
+  font-family: var(--apex-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--apex-silver);
+}
+
+.heroLine {
+  font-size: clamp(18px, 1.4vw + 4px, 22px);
+  line-height: 1.45;
+  color: var(--apex-silver);
+  max-width: 34ch;
+}
+
+/* The collaboration byline: the two names in small capitals, one quiet line beneath. */
+.heroCollab {
+  display: grid;
+  gap: 6px;
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--apex-line-strong);
+  max-width: 46ch;
+}
+
+.heroCollabTitle {
+  font-family: var(--apex-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--apex-text-2);
+}
+
+.heroCollabLine {
+  font-size: 14px;
+  line-height: 1.5;
+  font-style: italic;
+  color: var(--apex-text-3);
+}
+
+/* Phones: the photograph on top, the words below it. */
+@media (max-width: 767px) {
+  .hero {
+    display: block;
+    min-height: 0;
+  }
+  .heroMedia {
+    position: relative;
+    height: 62svh;
+    min-height: 340px;
+    max-height: 600px;
+  }
+  .heroContent {
+    padding-top: 0;
+    margin-top: -72px;
+  }
+}
+
+/* ── 02 Built at APEX ── */
+.built {
+  display: grid;
+  gap: clamp(36px, 5vw, 96px);
+  align-items: center;
+}
+
+@media (min-width: 960px) {
+  .built {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  }
+}
+
+.builtMedia {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--apex-titanium);
+}
+
+.builtMedia img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.builtCopy {
+  display: grid;
+  gap: 28px;
+  min-width: 0;
+}
+
+.builtTitle {
+  font-family: var(--apex-display);
+  font-stretch: 118%;
+  font-weight: 760;
+  font-size: clamp(36px, 4.4vw + 8px, 72px);
+  line-height: 0.98;
+  text-transform: uppercase;
+}
+
+.builtSub {
+  display: block;
+  margin-top: 10px;
+  font-stretch: 105%;
+  font-weight: 560;
+  font-size: clamp(20px, 1.4vw + 10px, 30px);
+  line-height: 1.15;
+  text-transform: none;
+  color: var(--apex-text-2);
+}
+
+.facts {
+  display: grid;
+  border-top: 1px solid var(--apex-line);
+}
+
+.facts li {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--apex-line);
+  font-family: var(--apex-display);
+  font-stretch: 116%;
+  font-weight: 700;
+  font-size: clamp(18px, 1vw + 12px, 26px);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--apex-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--apex-accent);
+}
+
+.status::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: var(--apex-amber);
+}
+
+.builtFoot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 28px;
+}
+
+.source {
+  font-size: 13px;
+  color: var(--apex-text-3);
+}
+
+.source a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--apex-line-strong);
+}
+
+/* ── 03 The hardware is real ── */
+.editorial {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  padding-inline: var(--apex-gutter);
+  scroll-padding-inline: var(--apex-gutter);
+}
+
+.editorial::-webkit-scrollbar {
+  display: none;
+}
+
+.shot {
+  position: relative;
+  flex: 0 0 82%;
+  aspect-ratio: 4 / 5;
+  margin: 0;
+  overflow: hidden;
+  background: var(--apex-titanium);
+  scroll-snap-align: start;
+}
+
+.shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.shot:hover img {
+  transform: scale(1.025);
+}
+
+@media (min-width: 900px) {
+  .editorial {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    overflow: visible;
+    padding-inline: 0;
+    height: min(86vh, 860px);
+  }
+  .shot {
+    aspect-ratio: auto;
+  }
+  .shot:first-child {
+    grid-row: 1 / span 2;
+  }
+  .shot[data-extra] {
+    display: none;
+  }
+}
+
+.editorialFoot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 22px;
+}
+
+.caption {
+  font-size: 14px;
+  color: var(--apex-text-3);
+}
+
+.swipeHint {
+  font-family: var(--apex-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--apex-text-3);
+}
+
+@media (min-width: 900px) {
+  .swipeHint {
+    display: none;
+  }
+}
+
+/* ── 04 An engine is the beginning ── */
+.systemGrid {
+  display: grid;
+  gap: clamp(32px, 4vw, 72px);
+  align-items: center;
+}
+
+@media (min-width: 960px) {
+  .systemGrid {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  }
+}
+
+.domains {
+  display: grid;
+  border-top: 1px solid var(--apex-line);
+}
+
+.domain {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 4px 16px;
+  align-items: baseline;
+  padding: 18px 0;
+  border: none;
+  border-bottom: 1px solid var(--apex-line);
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  color: var(--apex-text-3);
+  transition: color 0.25s ease;
+}
+
+.domainIndex {
+  font-family: var(--apex-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+}
+
+.domainName {
+  font-family: var(--apex-display);
+  font-stretch: 116%;
+  font-weight: 720;
+  font-size: clamp(22px, 1.4vw + 14px, 38px);
+  line-height: 1.05;
+  text-transform: uppercase;
+  color: var(--apex-text-2);
+  transition: color 0.25s ease;
+}
+
+.domainLine {
+  grid-column: 2;
+  max-height: 0;
+  overflow: hidden;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--apex-text-2);
+  transition: max-height 0.35s ease, margin 0.35s ease;
+}
+
+.domain[aria-pressed="true"] .domainName,
+.domain:hover .domainName {
+  color: var(--apex-text);
+}
+
+.domain[aria-pressed="true"] .domainIndex {
+  color: var(--apex-accent);
+}
+
+.domain[aria-pressed="true"] .domainLine {
+  max-height: 4.8em;
+  margin-top: 6px;
+}
+
+.schematic {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+}
+
+.schematic svg {
+  width: min(100%, 340px);
+  height: auto;
+  overflow: visible;
+}
+
+@media (max-width: 959px) {
+  .schematic svg {
+    width: min(56%, 200px);
+  }
+}
+
+.zone {
+  fill: transparent;
+  stroke: var(--apex-text-3);
+  stroke-width: 1.2;
+  vector-effect: non-scaling-stroke;
+  transition: stroke 0.3s ease, fill 0.3s ease;
+}
+
+.zoneGroup[data-active="true"] .zone {
+  stroke: var(--apex-amber);
+  fill: rgba(255, 106, 26, 0.12);
+}
+
+.detail {
+  fill: none;
+  stroke: var(--apex-line-strong);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.softwareLine {
+  fill: none;
+  stroke: var(--apex-text-3);
+  stroke-width: 1.2;
+  stroke-dasharray: 3 5;
+  vector-effect: non-scaling-stroke;
+  transition: stroke 0.3s ease;
+}
+
+.zoneGroup[data-active="true"] .softwareLine {
+  stroke: var(--apex-amber);
+}
+
+.zoneLabel {
+  font-family: var(--apex-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  fill: var(--apex-text-3);
+  transition: fill 0.3s ease;
+}
+
+.zoneGroup[data-active="true"] .zoneLabel {
+  fill: var(--apex-text);
+}
+
+/* ── 05 Physical ↔ digital ── */
+.signature {
+  font-family: var(--apex-display);
+  font-stretch: 118%;
+  font-weight: 760;
+  font-size: clamp(34px, 3.8vw + 14px, 76px);
+  line-height: 0.98;
+  text-transform: uppercase;
+}
+
+.signature span {
+  display: block;
+}
+
+.signature span:last-child {
+  color: var(--apex-accent);
+}
+
+.pd {
+  display: grid;
+  gap: 18px;
+  align-items: stretch;
+}
+
+@media (min-width: 1024px) {
+  .pd {
+    grid-template-columns: minmax(0, 1fr) minmax(200px, 0.5fr) minmax(0, 1fr);
+    gap: 0;
+  }
+}
+
+.side {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 18px;
+  min-width: 0;
+}
+
+.sideLabel {
+  font-family: var(--apex-display);
+  font-stretch: 120%;
+  font-weight: 720;
+  font-size: clamp(22px, 1vw + 16px, 30px);
+  text-transform: uppercase;
+}
+
+.sideMedia {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--apex-titanium);
+}
+
+.sideMedia img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.digitalCanvas {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border: 1px solid var(--apex-line);
+  background:
+    linear-gradient(var(--apex-line) 1px, transparent 1px) 0 0 / 100% 25%,
+    linear-gradient(90deg, var(--apex-line) 1px, transparent 1px) 0 0 / 12.5% 100%,
+    var(--apex-bg);
+}
+
+.digitalCanvas svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.trace {
+  fill: none;
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  transition: stroke-dashoffset 2.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-inview="true"] .trace {
+  stroke-dashoffset: 0;
+}
+
+.traceModel {
+  stroke: var(--apex-chart-predicted);
+}
+
+.traceTest {
+  stroke: var(--apex-chart-measured);
+  transition-delay: 0.6s;
+}
+
+.mesh {
+  fill: none;
+  stroke: var(--apex-text-3);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  opacity: 0.55;
+}
+
+.canvasNote {
+  position: absolute;
+  left: 12px;
+  bottom: 10px;
+  font-family: var(--apex-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--apex-text-3);
+}
+
+.process {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  font-family: var(--apex-mono);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--apex-text-2);
+}
+
+.process span[aria-hidden] {
+  color: var(--apex-accent);
+}
+
+.correlation {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  text-align: center;
+  gap: 14px;
+  padding: 28px 16px;
+}
+
+.correlationMark {
+  font-family: var(--apex-display);
+  font-weight: 300;
+  font-size: 44px;
+  line-height: 1;
+  color: var(--apex-accent);
+}
+
+.correlationTitle {
+  font-family: var(--apex-display);
+  font-stretch: 118%;
+  font-weight: 740;
+  font-size: clamp(18px, 0.8vw + 12px, 24px);
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+@media (min-width: 1024px) {
+  .correlation::before,
+  .correlation::after {
+    content: "";
+    width: 1px;
+    height: 56px;
+    background: var(--apex-line-strong);
+  }
+}
+
+/* ── 06 Ecosystem ── */
+.constellation {
+  position: relative;
+  display: grid;
+  gap: 0;
+}
+
+.constellationLines {
+  display: none;
+}
+
+@media (min-width: 960px) {
+  .constellation {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: auto auto auto;
+    gap: 28px 40px;
+    align-items: center;
+  }
+  .constellationLines {
+    display: block;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  .constellationLines line {
+    stroke: var(--apex-line-strong);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+}
+
+.core {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  text-align: center;
+  padding: clamp(28px, 3vw, 44px) 24px;
+  border: 1px solid var(--apex-amber);
+  background: var(--apex-bg);
+}
+
+.coreName {
+  font-family: var(--apex-display);
+  font-stretch: 125%;
+  font-weight: 780;
+  font-size: clamp(34px, 2vw + 22px, 52px);
+  line-height: 1;
+}
+
+.coreRole {
+  font-family: var(--apex-mono);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--apex-accent);
+}
+
+.node {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 6px;
+  width: 100%;
+  padding: 18px 0;
+  border: none;
+  border-bottom: 1px solid var(--apex-line);
+  background: var(--apex-bg);
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+}
+
+.node:hover .nodeName {
+  color: var(--apex-accent);
+}
+
+.nodeName {
+  font-family: var(--apex-display);
+  font-stretch: 112%;
+  font-weight: 680;
+  font-size: clamp(18px, 0.6vw + 14px, 22px);
+  line-height: 1.15;
+  transition: color 0.2s ease;
+}
+
+.nodeFocus {
+  font-size: 14px;
+  color: var(--apex-text-3);
+}
+
+.node[data-open="true"] .nodeName::after {
+  content: " ↗";
+  color: var(--apex-text-3);
+}
+
+@media (min-width: 960px) {
+  .core {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .node {
+    padding: 18px 20px;
+    border: 1px solid var(--apex-line);
+  }
+  .node[data-pos="tl"] { grid-column: 1; grid-row: 1; }
+  .node[data-pos="tr"] { grid-column: 3; grid-row: 1; }
+  .node[data-pos="bl"] { grid-column: 1; grid-row: 3; }
+  .node[data-pos="br"] { grid-column: 3; grid-row: 3; }
+  .node[data-pos="bc"] { grid-column: 2; grid-row: 3; border-style: dashed; }
+}
+
+@media (max-width: 959px) {
+  .core {
+    margin-bottom: 8px;
+  }
+}
+
+.authority {
+  margin-top: clamp(32px, 4vw, 56px);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px 32px;
+}
+
+.authorityLine {
+  font-family: var(--apex-display);
+  font-stretch: 112%;
+  font-weight: 700;
+  font-size: clamp(18px, 0.8vw + 12px, 24px);
+  text-transform: uppercase;
+}
+
+/* ── 07 Final CTA ── */
+.final {
+  position: relative;
+  overflow: hidden;
+  /* Forced dark: the text must read even before (or without) the photograph. */
+  background: var(--apex-graphite);
+  min-height: min(92svh, 920px);
+  display: flex;
+  align-items: flex-end;
+  border-top: none;
+  padding: 0;
+}
+
+.finalMedia {
+  position: absolute;
+  inset: 0;
+}
+
+.finalMedia picture,
+.finalMedia img {
+  width: 100%;
+  height: 100%;
+}
+
+.finalMedia img {
+  object-fit: cover;
+  object-position: 50% 40%;
+}
+
+.finalShade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(5, 6, 7, 0.96) 0%, rgba(5, 6, 7, 0.72) 40%, rgba(5, 6, 7, 0.25) 100%);
+}
+
+.finalContent {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding-block: clamp(96px, 14vw, 180px) clamp(56px, 8vw, 112px);
+  display: grid;
+  gap: 24px;
+}
+
+.finalTitle {
+  font-family: var(--apex-display);
+  font-stretch: 106%;
+  font-weight: 780;
+  font-size: clamp(30px, 4.6vw + 10px, 84px);
+  line-height: 0.96;
+  text-transform: uppercase;
+}
+
+.finalTitle span {
+  display: block;
+}
+
+@media (min-width: 640px) {
+  .finalTitle {
+    font-stretch: 118%;
+  }
+}
+
+.finalContent > * {
+  min-width: 0;
+}

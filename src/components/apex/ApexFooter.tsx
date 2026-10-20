@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { APEX_CONCEPT_HOST, APEX_NAV, APEX_OFFICIAL_SITE_URL, APEX_PARENT_PORTAL, APEX_SITE, apexHref } from "@/data/apex/site";
+import { APEX_NAV, APEX_OFFICIAL_SITE_URL, APEX_PARENT_PORTAL, APEX_SITE, apexHref } from "@/data/apex/site";
 import { ApexLogo } from "./ApexLogo";
-import { ProtectedEmail } from "./ProtectedEmail";
+import { CollaborationStatement } from "./CollaborationStatement";
+import { ProtectedEmail } from "./ProtectedContact";
+import { ThemeToggle } from "./ThemeRoot";
 import { apexTrack } from "./analytics";
 import styles from "./apex.module.css";
 import chrome from "./chrome.module.css";
@@ -50,6 +52,11 @@ export function ApexFooter() {
               <li>
                 <ProtectedEmail placement="footer" />
               </li>
+              <li>
+                <Link href={apexHref("/company#partnership-contacts")} {...apexTrack("apex_nav_click", { item: "partnership_contacts", placement: "footer" })}>
+                  Partnership contacts
+                </Link>
+              </li>
               {APEX_PARENT_PORTAL && (
                 <li>
                   <Link href={APEX_PARENT_PORTAL.href} {...apexTrack("apex_nav_click", { item: "parent_portal", placement: "footer" })}>
@@ -62,18 +69,11 @@ export function ApexFooter() {
         </div>
 
         <div className={chrome.footerBase}>
-          <p>
-            {APEX_SITE.disclosure} Prepared and hosted by{" "}
-            <a href={APEX_CONCEPT_HOST.url} target="_blank" rel="noopener noreferrer" {...apexTrack("apex_partner_site_click", { partner_id: "gamyaa", placement: "footer" })}>
-              {APEX_CONCEPT_HOST.name}
-            </a>
-            . Partners shown are proposed; no formal agreement is implied. For APEX&rsquo;s official information, visit{" "}
-            <a href={APEX_OFFICIAL_SITE_URL} target="_blank" rel="noopener noreferrer" {...apexTrack("apex_official_site_click", { placement: "footer_disclosure" })}>
-              apexrocketsystems.com
-            </a>
-            .
-          </p>
-          <p>The APEX Rocket Systems name, logo and photographs belong to APEX Rocket Systems.</p>
+          <CollaborationStatement placement="footer_statement" className={chrome.statement} />
+          <div className={chrome.footerUtility}>
+            <p>The APEX Rocket Systems name, logo and photographs belong to APEX Rocket Systems.</p>
+            <ThemeToggle className={chrome.utilityToggle} withLabel />
+          </div>
         </div>
       </div>
     </footer>

@@ -6,17 +6,28 @@
  */
 import type { DisplayStatus } from "./evidence";
 
-export type SystemLayer = "vehicle" | "electronics" | "flight" | "ground" | "assurance";
+/** Six groups, so the eighteen domains are never shown as eighteen equal cards at once. */
+export type SystemLayer = "propulsion" | "vehicle" | "avionics-control" | "software-digital" | "ground-test" | "quality-assurance";
 
 export const SYSTEM_LAYER_LABEL: Record<SystemLayer, string> = {
-  vehicle: "Vehicle hardware",
-  electronics: "Electronics & embedded",
-  flight: "Flight & communications",
-  ground: "Ground segment",
-  assurance: "Assurance & digital engineering",
+  propulsion: "Propulsion",
+  vehicle: "Vehicle",
+  "avionics-control": "Avionics & Control",
+  "software-digital": "Software & Digital",
+  "ground-test": "Ground & Test",
+  "quality-assurance": "Quality & Assurance",
 };
 
-export const SYSTEM_LAYERS: readonly SystemLayer[] = ["vehicle", "electronics", "flight", "ground", "assurance"];
+export const SYSTEM_LAYER_LINE: Record<SystemLayer, string> = {
+  propulsion: "Thrust from stored propellants, under control. Where APEX started.",
+  vehicle: "The structure, power and radio hardware that carry everything else.",
+  "avionics-control": "The electronics, firmware and sensing that fly the vehicle.",
+  "software-digital": "Flight software, telemetry and the digital engineering that connects the evidence.",
+  "ground-test": "The test stands, ground systems and instrumentation that produce evidence.",
+  "quality-assurance": "Proof that every part and every release is what it should be.",
+};
+
+export const SYSTEM_LAYERS: readonly SystemLayer[] = ["propulsion", "vehicle", "avionics-control", "software-digital", "ground-test", "quality-assurance"];
 
 export interface SystemDomain {
   id: string;
@@ -37,7 +48,7 @@ export const SYSTEM_DOMAINS: readonly SystemDomain[] = [
   {
     id: "propulsion",
     name: "Propulsion",
-    layer: "vehicle",
+    layer: "propulsion",
     purpose: "Produces thrust from stored propellants, under control.",
     interfaces: ["structures", "sensors", "instrumentation", "embedded", "ground-hardware", "testing"],
     evidence: ["5 kN-class demonstrator hardware built", "Engine test records — owner confirmation required", "Correlation with engine models — concept"],
@@ -73,7 +84,7 @@ export const SYSTEM_DOMAINS: readonly SystemDomain[] = [
   {
     id: "avionics",
     name: "Avionics",
-    layer: "electronics",
+    layer: "avionics-control",
     purpose: "Computes, routes data and distributes commands on board.",
     interfaces: ["flight-software", "gnc", "telemetry", "power", "sensors", "embedded"],
     evidence: ["Board-level tests", "Environmental and EMC tests", "HIL results"],
@@ -85,7 +96,7 @@ export const SYSTEM_DOMAINS: readonly SystemDomain[] = [
   {
     id: "embedded",
     name: "Embedded Systems",
-    layer: "electronics",
+    layer: "avionics-control",
     purpose: "Controllers that read sensors and drive actuators in real time.",
     interfaces: ["firmware", "sensors", "propulsion", "power", "avionics"],
     evidence: ["Controller hardware records", "Interface tests", "HIL results"],
@@ -97,7 +108,7 @@ export const SYSTEM_DOMAINS: readonly SystemDomain[] = [
   {
     id: "firmware",
     name: "Firmware",
-    layer: "electronics",
+    layer: "avionics-control",
     purpose: "The control logic, drivers and diagnostics running on embedded hardware.",
     interfaces: ["embedded", "cybersecurity", "flight-software", "testing"],
     evidence: ["Firmware baseline", "Unit and integration tests", "HIL results", "Signed release records"],
@@ -109,7 +120,7 @@ export const SYSTEM_DOMAINS: readonly SystemDomain[] = [
   {
     id: "sensors",
     name: "Sensors",
-    layer: "electronics",
+    layer: "avionics-control",
     purpose: "Measure pressure, temperature, force, vibration and other physical quantities.",
     interfaces: ["instrumentation", "embedded", "propulsion", "gnc"],
     evidence: ["Sensor list and ranges", "Calibration certificates", "Channel checkouts"],
@@ -121,7 +132,7 @@ export const SYSTEM_DOMAINS: readonly SystemDomain[] = [
   {
     id: "instrumentation",
     name: "Instrumentation",
-    layer: "electronics",
+    layer: "ground-test",
     purpose: "Conditions, digitises and time-stamps measurements into test data.",
     interfaces: ["sensors", "ground-software", "digital-engineering", "testing"],
     evidence: ["Instrumentation plan", "DAQ configuration", "Time-sync verification"],
@@ -133,7 +144,7 @@ export const SYSTEM_DOMAINS: readonly SystemDomain[] = [
   {
     id: "gnc",
     name: "GNC",
-    layer: "flight",
+    layer: "avionics-control",
     purpose: "Guides, navigates and controls the vehicle along its trajectory.",
     interfaces: ["avionics", "flight-software", "sensors", "propulsion", "digital-engineering"],
     evidence: ["Trajectory analysis", "Monte Carlo campaigns", "HIL results"],
@@ -145,7 +156,7 @@ export const SYSTEM_DOMAINS: readonly SystemDomain[] = [
   {
     id: "telemetry",
     name: "Telemetry",
-    layer: "flight",
+    layer: "software-digital",
     purpose: "Packages vehicle data for transmission and recording.",
     interfaces: ["avionics", "rf", "ground-software", "cybersecurity"],
     evidence: ["Telemetry format definition", "End-to-end data checks"],
@@ -157,7 +168,7 @@ export const SYSTEM_DOMAINS: readonly SystemDomain[] = [
   {
     id: "rf",
     name: "RF Communications",
-    layer: "flight",
+    layer: "vehicle",
     purpose: "Carries telemetry, tracking and command between vehicle and ground.",
     interfaces: ["telemetry", "avionics", "ground-hardware", "cybersecurity"],
     evidence: ["Link budget", "Link tests", "Range compatibility tests"],
@@ -169,7 +180,7 @@ export const SYSTEM_DOMAINS: readonly SystemDomain[] = [
   {
     id: "flight-software",
     name: "Flight Software",
-    layer: "flight",
+    layer: "software-digital",
     purpose: "Runs the mission sequence, GNC and fault management on board.",
     interfaces: ["avionics", "gnc", "firmware", "telemetry", "cybersecurity"],
     evidence: ["Software requirements", "SIL/PIL/HIL results", "Release records"],
@@ -181,19 +192,19 @@ export const SYSTEM_DOMAINS: readonly SystemDomain[] = [
   {
     id: "ground-software",
     name: "Ground Software",
-    layer: "ground",
+    layer: "ground-test",
     purpose: "Controls tests, acquires data and shows engineers what is happening.",
     interfaces: ["instrumentation", "ground-hardware", "telemetry", "digital-engineering", "cybersecurity"],
     evidence: ["Software verification", "Dry-run records", "Test-day logs"],
     capabilityIds: ["ground-software", "software-engineering", "test-data"],
     status: "CONCEPT",
-    statusNote: "Proposed digital engineering partner.",
+    statusNote: "Ground and test software through the engineering collaboration with Gamyaa AeroSystems.",
     dependencies: ["DAQ", "Test procedures", "Data platform"],
   },
   {
     id: "ground-hardware",
     name: "Ground Hardware",
-    layer: "ground",
+    layer: "ground-test",
     purpose: "Test stands, servicing equipment, handling and ground power.",
     interfaces: ["propulsion", "ground-software", "power", "rf", "testing"],
     evidence: ["Proof and leak tests", "Facility readiness records"],
@@ -205,19 +216,19 @@ export const SYSTEM_DOMAINS: readonly SystemDomain[] = [
   {
     id: "quality",
     name: "Quality",
-    layer: "assurance",
+    layer: "quality-assurance",
     purpose: "Proves every part matches its design and every process ran as specified.",
     interfaces: ["digital-engineering", "testing", "propulsion", "structures"],
     evidence: ["FAI packages", "Inspection records", "Non-conformance dispositions"],
     capabilityIds: ["manufacturing-quality", "quality-intelligence", "digital-quality-thread", "ndt"],
     status: "CONCEPT",
-    statusNote: "Proposed digital quality thread.",
+    statusNote: "Digital quality thread in concept, through the engineering collaboration with Gamyaa AeroSystems.",
     dependencies: ["Drawings", "Inspection", "Traceability"],
   },
   {
     id: "cybersecurity",
     name: "Cybersecurity",
-    layer: "assurance",
+    layer: "quality-assurance",
     purpose: "Protects firmware, commands, telemetry and engineering data.",
     interfaces: ["firmware", "flight-software", "ground-software", "telemetry", "rf", "digital-engineering"],
     evidence: ["Threat model", "Secure boot and signing records", "Security test results"],
@@ -229,19 +240,19 @@ export const SYSTEM_DOMAINS: readonly SystemDomain[] = [
   {
     id: "digital-engineering",
     name: "Digital Engineering",
-    layer: "assurance",
+    layer: "software-digital",
     purpose: "Models, simulation, Digital Twin, test data and the digital thread that connect the evidence.",
     interfaces: ["testing", "instrumentation", "quality", "gnc", "ground-software", "propulsion"],
     evidence: ["Model revisions tied to configuration", "Correlation reports", "Traceability coverage"],
     capabilityIds: ["digital-twin", "simulation", "test-data", "systems-engineering", "engineering-ai"],
     status: "CONCEPT",
-    statusNote: "Proposed digital engineering partner.",
+    statusNote: "Digital engineering through the engineering collaboration with Gamyaa AeroSystems.",
     dependencies: ["Instrumentation", "Configuration control", "Test data"],
   },
   {
     id: "testing",
     name: "Testing",
-    layer: "assurance",
+    layer: "ground-test",
     purpose: "Builds confidence step by step, from material coupons to integrated systems.",
     interfaces: ["propulsion", "ground-hardware", "instrumentation", "digital-engineering", "quality", "firmware"],
     evidence: ["Test plans", "Test readiness records", "Test reports and dispositions"],
@@ -390,4 +401,14 @@ export const REVIEW_GATES: readonly { id: string; acronym: string; name: string;
   { id: "cdr", acronym: "CDR", name: "Critical Design Review", question: "Is the detailed design mature enough to build and test?" },
   { id: "trr", acronym: "TRR", name: "Test Readiness Review", question: "Are hardware, procedures, facilities and people ready to test safely?" },
   { id: "frr", acronym: "FRR", name: "Flight Readiness Review", question: "Is the evidence sufficient to fly?" },
+];
+
+/** The six executive domains the homepage shows. The full eighteen live on /system. */
+export const HOME_DOMAINS: readonly { id: string; name: string; line: string }[] = [
+  { id: "propulsion", name: "Propulsion", line: "Where APEX started: the 5 kN-class liquid-engine demonstrator." },
+  { id: "structures", name: "Structures", line: "Tanks and load paths that carry every other system." },
+  { id: "avionics", name: "Avionics", line: "Flight computers, power and data handling on board." },
+  { id: "gnc", name: "Guidance & Control", line: "Where the vehicle goes, and how it knows where it is." },
+  { id: "software", name: "Software", line: "Flight, ground and test software under one release discipline." },
+  { id: "ground-test", name: "Ground & Test", line: "Test stands, ground equipment and the facilities that produce evidence." },
 ];

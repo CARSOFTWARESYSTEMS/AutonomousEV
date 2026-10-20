@@ -1,0 +1,294 @@
+/* The Build & Validate lifecycle and the roadmap timeline. */
+
+.root {
+  display: grid;
+  gap: 0;
+}
+
+/* ── Phones and tablets: vertical ── */
+.track {
+  position: relative;
+  display: grid;
+}
+
+.track::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 10px;
+  bottom: 10px;
+  width: 1px;
+  background: var(--apex-line-strong);
+}
+
+.item {
+  position: relative;
+}
+
+.node {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 15px 34px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  min-height: 52px;
+  padding: 8px 0;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  color: var(--apex-text-2);
+}
+
+.dot {
+  position: relative;
+  z-index: 1;
+  width: 15px;
+  height: 15px;
+  border: 1.5px solid var(--apex-text-3);
+  border-radius: 50%;
+  background: var(--apex-bg-alt);
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.item[data-done="true"] .dot {
+  border-color: var(--apex-text-2);
+  background: var(--apex-text-3);
+}
+
+.item[data-active="true"] .dot {
+  border-color: var(--apex-amber);
+  background: var(--apex-amber);
+}
+
+.nodeIndex {
+  font-family: var(--apex-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--apex-text-3);
+}
+
+.nodeLabel {
+  font-family: var(--apex-display);
+  font-stretch: 116%;
+  font-weight: 700;
+  font-size: 20px;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+.item[data-active="true"] .nodeLabel {
+  color: var(--apex-text);
+}
+
+.node:hover .nodeLabel {
+  color: var(--apex-text);
+}
+
+.inline {
+  padding: 4px 0 28px 29px;
+}
+
+.below {
+  display: none;
+}
+
+/* ── Wide screens: horizontal track, detail below ── */
+@media (min-width: 1024px) {
+  .track {
+    grid-template-columns: repeat(13, minmax(92px, 1fr));
+    overflow-x: auto;
+    scrollbar-width: thin;
+    border-bottom: 1px solid var(--apex-line);
+    padding-bottom: 8px;
+  }
+  .track::before {
+    display: none;
+  }
+  .item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 22px;
+    height: 1px;
+    background: var(--apex-line-strong);
+  }
+  .node {
+    position: relative;
+    grid-template-columns: 1fr;
+    justify-items: start;
+    gap: 8px;
+    padding: 15px 6px 12px 0;
+  }
+  .nodeLabel {
+    font-size: 10.5px;
+    font-stretch: 96%;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+  }
+  .inline {
+    display: none;
+  }
+  .below {
+    display: block;
+    padding-top: clamp(32px, 4vw, 56px);
+  }
+}
+
+/* ── Step detail ── */
+.detail {
+  display: grid;
+  gap: 28px;
+}
+
+.detailHead {
+  display: grid;
+  gap: 12px;
+}
+
+.detailIndex {
+  font-family: var(--apex-mono);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  color: var(--apex-accent);
+}
+
+.detailTitle {
+  font-family: var(--apex-display);
+  font-stretch: 120%;
+  font-weight: 760;
+  font-size: clamp(30px, 2vw + 20px, 56px);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.stages {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--apex-line);
+}
+
+@media (min-width: 1024px) {
+  .stages {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0 32px;
+  }
+}
+
+.stage {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--apex-line);
+  min-width: 0;
+}
+
+.stageFacts {
+  display: grid;
+  gap: 10px;
+}
+
+.stageFacts dt {
+  font-family: var(--apex-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--apex-text-3);
+}
+
+.stageFacts dd {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--apex-text-2);
+}
+
+/* ── Roadmap timeline ── */
+.roadmap {
+  position: relative;
+  display: grid;
+  gap: 0;
+  max-width: 980px;
+}
+
+.roadmap::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 8px;
+  bottom: 8px;
+  width: 1px;
+  background: var(--apex-line-strong);
+}
+
+.phase {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  padding: 28px 0 8px 40px;
+}
+
+.phaseTitle {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.phaseTitle::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 15px;
+  height: 15px;
+  border: 1.5px solid var(--apex-text-3);
+  border-radius: 50%;
+  background: var(--apex-bg);
+}
+
+.phase[data-status="BUILT"] .phaseTitle::before {
+  border-color: var(--apex-amber);
+  background: var(--apex-amber);
+}
+
+.phase[data-status="ACTIVE"] .phaseTitle::before {
+  border-color: var(--apex-text);
+  background: var(--apex-text-3);
+}
+
+.milestones {
+  display: grid;
+}
+
+.milestone {
+  display: grid;
+  gap: 4px 24px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--apex-line);
+}
+
+@media (min-width: 900px) {
+  .milestone {
+    grid-template-columns: minmax(0, 1fr) minmax(200px, 0.42fr);
+    align-items: baseline;
+  }
+}
+
+.milestoneTitle {
+  font-size: clamp(16px, 0.4vw + 14px, 18px);
+  line-height: 1.45;
+  color: var(--apex-text);
+}
+
+.milestoneMeta {
+  font-family: var(--apex-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--apex-text-3);
+  line-height: 1.6;
+}
+
+.milestoneCategory {
+  color: var(--apex-text-2);
+}

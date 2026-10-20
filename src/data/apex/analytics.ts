@@ -37,6 +37,7 @@ export const APEX_EVENTS = [
   "apex_official_site_click",
   "apex_collaboration_click",
   "apex_email_click",
+  "apex_phone_click",
   "apex_partner_site_click",
   "apex_theme_change",
 ] as const;

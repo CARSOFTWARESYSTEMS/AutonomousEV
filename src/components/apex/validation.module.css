@@ -726,26 +726,176 @@
   color: var(--apex-text);
 }
 
-/* ── Related links ── */
-.related {
+/* ── Related Gamyaa AeroSystems Digital Twin experiences ──
+   Two sheets of one engineering drawing: a sky rule on top (the Gamyaa colour),
+   an index, a line drawing, the title in the display face, and the link along
+   the foot. The whole sheet is the target; the link names it. */
+.twinNote {
+  max-width: 720px;
+  margin: -12px 0 clamp(32px, 4vw, 48px);
+  padding-left: 14px;
+  border-left: 2px solid var(--apex-sky);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--apex-text-3);
+}
+
+.twinNote strong {
+  color: var(--apex-text-2);
+  font-weight: 600;
+}
+
+.twins {
   display: grid;
-  gap: 12px;
+  grid-template-columns: minmax(0, 1fr);
+  border-top: 2px solid var(--apex-sky);
 }
 
 @media (min-width: 900px) {
-  .related {
+  .twins {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-.relatedCard {
+.twin {
+  position: relative;
   display: grid;
-  gap: 10px;
-  padding: 22px;
-  border: 1px solid var(--apex-line);
-  transition: border-color 0.16s ease;
+  grid-template-rows: auto auto auto 1fr auto;
+  gap: 16px;
+  padding: clamp(24px, 3vw, 40px) clamp(4px, 2vw, 32px) 0 0;
+  border-bottom: 1px solid var(--apex-line-strong);
+  transition: background-color 0.18s ease;
 }
 
-.relatedCard:hover {
-  border-color: var(--apex-line-strong);
+@media (min-width: 900px) {
+  .twin {
+    padding-inline: clamp(24px, 3vw, 40px);
+  }
+
+  .twin + .twin {
+    border-left: 1px solid var(--apex-line-strong);
+  }
+}
+
+.twin:hover {
+  background: var(--apex-hover);
+}
+
+.twinTop {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  font-family: var(--apex-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--apex-text-3);
+}
+
+.twinIndex {
+  color: var(--apex-sky-ink);
+}
+
+.twinArt {
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  color: var(--apex-text-3);
+}
+
+.twinEngine path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.twinNodes circle {
+  fill: var(--apex-bg-alt);
+  stroke: var(--apex-sky);
+  stroke-width: 1.5;
+}
+
+.twinTraces path {
+  fill: none;
+  stroke: var(--apex-sky);
+  stroke-width: 1.75;
+  stroke-linecap: round;
+}
+
+.twinTraces path[data-measured] {
+  stroke: var(--apex-text-2);
+  stroke-dasharray: 4 4;
+}
+
+.twinTraces path[data-axis] {
+  stroke: var(--apex-line-strong);
+  stroke-width: 1;
+}
+
+.twinTitle {
+  font-family: var(--apex-display);
+  font-stretch: 112%;
+  font-weight: 680;
+  font-size: clamp(24px, 2.2vw + 10px, 34px);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.twinBody {
+  font-size: clamp(16px, 0.6vw + 9px, 17px);
+  line-height: 1.65;
+  color: var(--apex-text-2);
+  max-width: 54ch;
+}
+
+.twinCta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 56px;
+  margin-top: 8px;
+  padding: 16px 0 20px;
+  border-top: 1px solid var(--apex-line);
+  font-family: var(--apex-mono);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--apex-text);
+}
+
+.twinCta svg {
+  flex-shrink: 0;
+  color: var(--apex-sky-ink);
+  transition: transform 0.18s ease;
+}
+
+/* The whole sheet is clickable through the link. */
+.twinCta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.twin:hover .twinCta svg {
+  transform: translateX(4px);
+}
+
+.twinCta:focus-visible {
+  outline: none;
+}
+
+.twin:has(.twinCta:focus-visible) {
+  outline: 2px solid var(--apex-sky-ink);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .twin,
+  .twinCta svg {
+    transition: none;
+  }
 }

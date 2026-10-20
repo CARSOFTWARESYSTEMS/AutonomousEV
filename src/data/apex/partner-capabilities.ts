@@ -7,14 +7,15 @@
  *
  * Role boundaries this file keeps (checked by tests):
  *  - iTelematics: Cybersecurity and AI only.
- *  - Gamyaa Aerospace: never Cybersecurity or AI.
+ *  - Gamyaa AeroSystems: never Cybersecurity or AI.
  *  - iFab Innovations: embedded systems and firmware work.
  *  - EV Society: skills, workforce and academic collaboration.
  */
 import { CAPABILITY_DEFINITIONS, RING_CATEGORY, type CapabilityDefinition } from "./capabilities";
 import { PARTNERS, type Partner } from "./partners";
 
-export type CapabilityRelationshipStatus = "PROGRAM_OWNER" | "PROPOSED" | "CONFIRMED" | "TO_BE_IDENTIFIED";
+/** COLLABORATION is the APEX–Gamyaa AeroSystems engineering collaboration; PROPOSED is every other partner until confirmed. */
+export type CapabilityRelationshipStatus = "PROGRAM_OWNER" | "COLLABORATION" | "PROPOSED" | "CONFIRMED" | "TO_BE_IDENTIFIED";
 
 export interface CapabilityPartner {
   capabilityId: string;
@@ -26,6 +27,7 @@ export interface CapabilityPartner {
 
 export const RELATIONSHIP_LABEL: Record<CapabilityRelationshipStatus, string> = {
   PROGRAM_OWNER: "Program Owner",
+  COLLABORATION: "Engineering Collaboration",
   PROPOSED: "Proposed Capability Partner",
   CONFIRMED: "Capability Provider",
   TO_BE_IDENTIFIED: "To Be Identified",
@@ -40,16 +42,16 @@ export const CAPABILITY_PARTNERS: readonly CapabilityPartner[] = [
   { capabilityId: "aerospace-manufacturing", partnerId: "apex", role: "Process owner", contribution: "Manufacturing-led development with design, manufacturing and assembly kept closely integrated (published).", relationshipStatus: "PROGRAM_OWNER" },
   { capabilityId: "welding-brazing", partnerId: "apex", role: "Process owner", contribution: "Orbital TIG welding and induction brazing within APEX's published manufacturing approach.", relationshipStatus: "PROGRAM_OWNER" },
 
-  // Gamyaa Aerospace — digital engineering & quality
-  { capabilityId: "systems-engineering", partnerId: "gamyaa", role: "Systems engineering support", contribution: "Requirements traceability, interface control and configuration baselines, under APEX authority.", relationshipStatus: "PROPOSED" },
-  { capabilityId: "software-engineering", partnerId: "gamyaa", role: "Software engineering", contribution: "Software development process, architecture and verification for ground and test software.", relationshipStatus: "PROPOSED" },
-  { capabilityId: "digital-twin", partnerId: "gamyaa", role: "Digital Twin", contribution: "Configuration-aware engine and subsystem models, pre-test prediction and predicted-vs-measured correlation.", relationshipStatus: "PROPOSED" },
-  { capabilityId: "simulation", partnerId: "gamyaa", role: "Simulation", contribution: "Scenario simulation and test prediction feeding the Digital Twin.", relationshipStatus: "PROPOSED" },
-  { capabilityId: "ground-software", partnerId: "gamyaa", role: "Ground & test software", contribution: "Test sequencing, data acquisition software and operator displays.", relationshipStatus: "PROPOSED" },
-  { capabilityId: "test-data", partnerId: "gamyaa", role: "Test-data platform", contribution: "Traceable test records, correlation workspace and engineering-evidence views.", relationshipStatus: "PROPOSED" },
-  { capabilityId: "quality-intelligence", partnerId: "gamyaa", role: "Aerospace Quality Intelligence", contribution: "Quality data, trends and supplier performance views.", relationshipStatus: "PROPOSED" },
-  { capabilityId: "manufacturing-quality", partnerId: "gamyaa", role: "Manufacturing quality & FAI", contribution: "Inspection planning and First Article Inspection records.", relationshipStatus: "PROPOSED" },
-  { capabilityId: "digital-quality-thread", partnerId: "gamyaa", role: "Digital Quality Thread", contribution: "Traceability from requirement through serial number, inspection and test to acceptance.", relationshipStatus: "PROPOSED" },
+  // Gamyaa AeroSystems — engineering collaboration: digital engineering & quality
+  { capabilityId: "systems-engineering", partnerId: "gamyaa", role: "Systems engineering support", contribution: "Requirements traceability, interface control and configuration baselines, under APEX authority.", relationshipStatus: "COLLABORATION" },
+  { capabilityId: "software-engineering", partnerId: "gamyaa", role: "Software engineering", contribution: "Software development process, architecture and verification for ground and test software.", relationshipStatus: "COLLABORATION" },
+  { capabilityId: "digital-twin", partnerId: "gamyaa", role: "Digital Twin", contribution: "Configuration-aware engine and subsystem models, pre-test prediction and predicted-vs-measured correlation.", relationshipStatus: "COLLABORATION" },
+  { capabilityId: "simulation", partnerId: "gamyaa", role: "Simulation", contribution: "Scenario simulation and test prediction feeding the Digital Twin.", relationshipStatus: "COLLABORATION" },
+  { capabilityId: "ground-software", partnerId: "gamyaa", role: "Ground & test software", contribution: "Test sequencing, data acquisition software and operator displays.", relationshipStatus: "COLLABORATION" },
+  { capabilityId: "test-data", partnerId: "gamyaa", role: "Test-data platform", contribution: "Traceable test records, correlation workspace and engineering-evidence views.", relationshipStatus: "COLLABORATION" },
+  { capabilityId: "quality-intelligence", partnerId: "gamyaa", role: "Aerospace Quality Intelligence", contribution: "Quality data, trends and supplier performance views.", relationshipStatus: "COLLABORATION" },
+  { capabilityId: "manufacturing-quality", partnerId: "gamyaa", role: "Manufacturing quality & FAI", contribution: "Inspection planning and First Article Inspection records.", relationshipStatus: "COLLABORATION" },
+  { capabilityId: "digital-quality-thread", partnerId: "gamyaa", role: "Digital Quality Thread", contribution: "Traceability from requirement through serial number, inspection and test to acceptance.", relationshipStatus: "COLLABORATION" },
 
   // iFab Innovations — embedded systems & firmware
   { capabilityId: "embedded-firmware", partnerId: "ifab", role: "Embedded systems & firmware", contribution: "Embedded controllers, firmware, RTOS, device drivers, communication protocols and embedded diagnostics.", relationshipStatus: "PROPOSED" },
@@ -69,11 +71,12 @@ export const CAPABILITY_PARTNERS: readonly CapabilityPartner[] = [
   { capabilityId: "skills-workforce", partnerId: "academic-institutions", role: "Talent", contribution: "Student projects and the future workforce.", relationshipStatus: "TO_BE_IDENTIFIED" },
 ];
 
-export type CapabilityStatus = "CORE" | "SUPPORTED" | "PROPOSED" | "PARTNER_REQUIRED";
+export type CapabilityStatus = "CORE" | "SUPPORTED" | "COLLABORATION" | "PROPOSED" | "PARTNER_REQUIRED";
 
 export const CAPABILITY_STATUS_LABEL: Record<CapabilityStatus, string> = {
   CORE: "APEX Core",
   SUPPORTED: "Supported",
+  COLLABORATION: "Engineering Collaboration",
   PROPOSED: "Partner Proposed",
   PARTNER_REQUIRED: "Partner Required",
 };
@@ -98,6 +101,7 @@ export function relationshipsForPartner(partnerId: string): CapabilityPartner[] 
 function deriveStatus(definition: CapabilityDefinition, records: CapabilityPartner[]): CapabilityStatus {
   if (definition.apexOwned) return "CORE";
   if (records.some((record) => record.relationshipStatus === "CONFIRMED")) return "SUPPORTED";
+  if (records.some((record) => record.relationshipStatus === "COLLABORATION")) return "COLLABORATION";
   if (records.some((record) => record.relationshipStatus === "PROPOSED")) return "PROPOSED";
   return "PARTNER_REQUIRED";
 }
@@ -139,6 +143,7 @@ export function capabilityCoverage() {
     total: CAPABILITIES.length,
     core: count("CORE"),
     supported: count("SUPPORTED"),
+    collaboration: count("COLLABORATION"),
     proposed: count("PROPOSED"),
     partnerRequired: count("PARTNER_REQUIRED"),
   };

@@ -231,16 +231,17 @@ async function main() {
       await page.goto(`${BASE}${ROOT}/roadmap`, { waitUntil: "load" });
       const root = page.locator("[data-apex-theme]");
       assert.equal(await root.getAttribute("data-apex-theme"), "dark");
-      const toggle = page.getByRole("button", { name: "Light theme" }).first();
-      assert.equal(await toggle.getAttribute("aria-pressed"), "false");
-      await toggle.click();
+      // The label names the theme the button switches to.
+      assert.equal(await page.getByRole("button", { name: "Dark theme" }).count(), 0);
+      await page.getByRole("button", { name: "Light theme" }).first().click();
       assert.equal(await root.getAttribute("data-apex-theme"), "light");
-      assert.equal(await toggle.getAttribute("aria-pressed"), "true");
+      assert.equal(await page.getByRole("button", { name: "Light theme" }).count(), 0);
       await page.waitForFunction(() => (window.dataLayer || []).some((e) => e[1] === "apex_theme_change"));
       await page.reload({ waitUntil: "load" });
       assert.equal(await page.locator("[data-apex-theme]").getAttribute("data-apex-theme"), "light");
-      await page.getByRole("button", { name: "Light theme" }).first().click();
+      await page.getByRole("button", { name: "Dark theme" }).first().click();
       assert.equal(await page.locator("[data-apex-theme]").getAttribute("data-apex-theme"), "dark");
+      assert.equal(await page.getByRole("button", { name: "Light theme" }).count() > 0, true);
     });
 
     await test(`${engine.name}: every photograph and logo loads, in a modern format where supported`, async () => {
@@ -257,16 +258,18 @@ async function main() {
       assert.match(hero, /\.(avif|webp)$/);
     });
 
-    await test(`${engine.name}: home reports its page view and the hero image is fetched first`, async () => {
+    await test(`${engine.name}: home is seven sections, reports its page view, and the hero image is fetched first`, async () => {
       await page.goto(`${BASE}${ROOT}`, { waitUntil: "load" });
       await page.waitForFunction(() => (window.dataLayer || []).some((e) => e[0] === "event" && e[1] === "apex_home_view"), null, { timeout: 15000 });
       const ns = await page.evaluate(() => window.dataLayer.find((e) => e[0] === "event" && e[1] === "apex_home_view")[2].site_namespace);
       assert.equal(ns, "apex");
       assert.equal(await page.locator("main img").first().getAttribute("fetchpriority"), "high");
+      assert.equal(await page.locator("main > section").count(), 7);
     });
 
     await test(`${engine.name}: a system domain opens the panel; Escape closes it and focus returns`, async () => {
-      const tile = page.getByRole("button", { name: /^Propulsion\s*Built/ });
+      await page.goto(`${BASE}${ROOT}/system`, { waitUntil: "load" });
+      const tile = page.getByRole("button", { name: /^Propulsion\s*Produces thrust/ });
       await tile.scrollIntoViewIfNeeded();
       await tile.click();
       const dialog = page.locator("dialog[aria-labelledby='apex-panel-title']");
@@ -281,6 +284,7 @@ async function main() {
     });
 
     await test(`${engine.name}: the gallery opens a photograph and steps with the arrow keys`, async () => {
+      await page.goto(`${BASE}${ROOT}/engine`, { waitUntil: "load" });
       const thumb = page.getByRole("button", { name: /^Fig\. 01 — enlarge/ });
       await thumb.scrollIntoViewIfNeeded();
       await thumb.click();
@@ -307,10 +311,19 @@ async function main() {
       await page.waitForFunction(() => (window.dataLayer || []).some((e) => e[1] === "apex_technical_view"));
     });
 
-    await test(`${engine.name}: the contact address is not in the server HTML but appears after hydration`, async () => {
+    await test(`${engine.name}: contact details stay out of the server HTML; every email is addressed to APEX and Gamyaa AeroSystems`, async () => {
       const response = await page.goto(`${BASE}${ROOT}/company?topic=testing#contact`, { waitUntil: "load" });
-      assert(!(await response.text()).includes("vibbhav@"));
+      const html = await response.text();
+      for (const secret of ["vibbhav@", "gamyaa.aerosystems@", "98866"]) assert(!html.includes(secret), `${secret} in server HTML`);
       await page.locator('a[href^="mailto:"]').first().waitFor({ state: "attached" });
+      const hrefs = await page.locator('a[href^="mailto:"]').evaluateAll((links) => links.map((a) => a.getAttribute("href")));
+      assert(hrefs.length >= 3, `only ${hrefs.length} email links`);
+      for (const href of hrefs) {
+        const to = href.replace(/^mailto:/, "").split("?")[0].split(",").sort();
+        assert.deepEqual(to, ["gamyaa.aerosystems@gmail.com", "vibbhav@apex-propulsion.com"], href);
+        assert(!/[?&]cc=/.test(href), href);
+      }
+      assert((await page.locator('a[href="tel:+919886643942"]').count()) >= 1);
       assert.equal(await page.locator("#apex-category").inputValue(), "testing");
     });
 
@@ -318,7 +331,7 @@ async function main() {
       const reduced = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: "reduce" });
       await reduced.route(ANALYTICS, (route) => route.abort());
       const p = await reduced.newPage();
-      await p.goto(`${BASE}${ROOT}`, { waitUntil: "load" });
+      await p.goto(`${BASE}${ROOT}/build-validate`, { waitUntil: "load" });
       const duration = await p.evaluate(() => {
         const pulse = [...document.querySelectorAll("g")].find((g) => getComputedStyle(g).animationName === "orbit" || /pulse/.test(g.getAttribute("class") || ""));
         return pulse ? parseFloat(getComputedStyle(pulse).animationDuration) : -1;
@@ -342,7 +355,8 @@ async function main() {
       assert.equal(await mobile.evaluate(() => document.documentElement.style.overflow), "");
     });
     await test(`${engine.name}: on a phone a capability opens as a bottom sheet`, async () => {
-      const card = mobile.getByRole("button", { name: /Avionics & Flight Electronics/ }).first();
+      await mobile.getByRole("button", { name: "Avionics", exact: true }).click();
+      const card = mobile.locator("#contribution-result").getByRole("button", { name: /Avionics & Flight Electronics/ });
       await card.scrollIntoViewIfNeeded();
       await card.click();
       const dialog = mobile.locator("dialog[aria-labelledby='apex-panel-title']");

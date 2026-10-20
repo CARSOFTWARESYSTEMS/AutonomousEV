@@ -32,7 +32,7 @@ export const APEX_PAGES: Record<ApexPageId, PageSeo> = {
     name: "APEX Rocket Systems",
     title: "APEX Rocket Systems — From Propulsion Hardware Toward Validated Rocket Systems",
     description:
-      "APEX Rocket Systems has built a 5 kN-class gas-generator-cycle liquid-engine demonstrator. An engineering collaboration concept for progressing from propulsion hardware toward a validated, integrated launch system.",
+      "APEX Rocket Systems has built a 5 kN-class gas-generator-cycle liquid-engine demonstrator. A concept experience from the engineering collaboration between APEX Rocket Systems and Gamyaa AeroSystems, on progressing from propulsion hardware toward a validated, integrated launch system.",
     schemaType: "WebPage",
     keywords: ["APEX Rocket Systems", "liquid rocket engine demonstrator", "5 kN-class engine", "gas-generator cycle", "launch vehicle development", "rocket system validation"],
   },
@@ -86,7 +86,7 @@ export const APEX_PAGES: Record<ApexPageId, PageSeo> = {
     name: "Ecosystem",
     title: "Engineering Ecosystem — No Rocket Company Builds Everything Alone | APEX Rocket Systems",
     description:
-      "A many-to-many map of the specialist capabilities an integrated rocket program needs, the proposed partners for each, and the open capabilities where new partners can contribute.",
+      "A many-to-many map of the specialist capabilities an integrated rocket program needs, who contributes to each, and the open capabilities where new partners can contribute.",
     schemaType: "CollectionPage",
     keywords: ["aerospace partner ecosystem", "rocket supply chain", "embedded systems partner", "test laboratory partner", "aerospace capability map"],
   },

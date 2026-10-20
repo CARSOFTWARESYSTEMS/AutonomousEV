@@ -108,3 +108,34 @@ export const MISSION_TO_FLIGHT: readonly LifecycleNode[] = [
   { id: "post-flight-analysis", label: "Post-flight analysis", phase: "improve", happens: "Flight data is compared with prediction.", deliverable: "Post-flight report", evidence: "Correlation and anomaly reports", capabilityIds: ["test-data", "digital-twin", "engineering-ai"] },
   { id: "design-iteration", label: "Design iteration", phase: "improve", happens: "Lessons become changes to the next baseline.", deliverable: "Updated baseline", evidence: "Change records with impact assessment", capabilityIds: ["systems-engineering", "propulsion", "digital-quality-thread"] },
 ];
+
+/**
+ * The lifecycle as thirteen steps, for the Build & Validate timeline. Each step
+ * holds the detailed stages above (all twenty-four keep their content); the two
+ * steps with no stage of their own carry their own summary.
+ */
+export const LIFECYCLE_STEPS: readonly { id: string; label: string; summary: string; stageIds: string[] }[] = [
+  { id: "mission", label: "Mission", summary: "The customer and mission problem the vehicle must solve.", stageIds: ["mission-need"] },
+  { id: "requirements", label: "Requirements", summary: "The mission turned into measurable, verifiable requirements, flowed down to the vehicle.", stageIds: ["mission-requirements", "system-requirements"] },
+  { id: "architecture", label: "Architecture", summary: "Subsystems, interfaces and allocations chosen.", stageIds: ["system-architecture"] },
+  { id: "design", label: "Design", summary: "Each subsystem designed, then released as drawings and bills of material.", stageIds: ["subsystem-design", "detailed-design"] },
+  { id: "simulate", label: "Simulate", summary: "Behaviour predicted, with models tied to the configuration to be tested.", stageIds: ["simulation", "digital-twin"] },
+  { id: "build", label: "Build", summary: "Materials procured; parts, software and firmware made with recorded processes.", stageIds: ["procurement", "manufacturing", "software-development", "firmware-development"] },
+  { id: "inspect", label: "Inspect", summary: "Parts shown to match their drawings, with records tied to serial numbers.", stageIds: ["inspection"] },
+  {
+    id: "instrument",
+    label: "Instrument",
+    summary: "Sensors fitted, calibrated, mapped to channels and time-synchronised, so every test produces data that can be trusted and compared.",
+    stageIds: [],
+  },
+  { id: "test", label: "Test", summary: "Components, subsystems and controllers tested against their requirements.", stageIds: ["component-testing", "subsystem-testing", "hil"] },
+  {
+    id: "correlate",
+    label: "Correlate",
+    summary: "Measured results compared with prediction for the same configuration; deviations investigated and the model or the hardware updated.",
+    stageIds: [],
+  },
+  { id: "integrate", label: "Integrate", summary: "Subsystems integrated and tested as one vehicle, with the ground system end to end.", stageIds: ["system-integration", "integrated-vehicle-test", "ground-system-test"] },
+  { id: "validate", label: "Validate", summary: "The mission rehearsed, the evidence reviewed against flight criteria, and flight.", stageIds: ["mission-simulation", "flight-readiness", "flight"] },
+  { id: "learn", label: "Learn", summary: "Flight data compared with prediction; lessons become the next baseline.", stageIds: ["post-flight-analysis", "design-iteration"] },
+];

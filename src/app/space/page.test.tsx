@@ -415,11 +415,11 @@ it("places the APEX Rocket Systems card next to Space Station, linking to the AP
     expect(official).toHaveAttribute("href", "https://www.apexrocketsystems.com/");
     expect(official).toHaveAttribute("target", "_blank");
     expect(official).toHaveAttribute("rel", "noopener noreferrer");
-    expect(card.textContent).toMatch(/Engineering collaboration concept/);
+    expect(card.textContent).toMatch(/Engineering collaboration with Gamyaa AeroSystems/);
     expect(card.textContent).not.toMatch(/hot-fired|flight-qualified|launch-ready|ishavasyam/i);
   });
 
-it("lists the proposed partners in a Partners & Engineering Ecosystem section, each in its own role", () => {
+it("lists the partners in a Partners & Engineering Ecosystem section, each in its own role: Gamyaa AeroSystems in an engineering collaboration, the rest proposed", () => {
     const { container } = render(<SpacePage />);
     const section = container.querySelector("#partners") as HTMLElement;
     expect(within(section).getByRole("heading", { level: 2 })).toHaveTextContent("Partners & Engineering Ecosystem");
@@ -429,8 +429,15 @@ it("lists the proposed partners in a Partners & Engineering Ecosystem section, e
     expect(text).toMatch(/Embedded Systems · Firmware/);
     expect(text).toMatch(/Cybersecurity · AI/);
     expect(text).toMatch(/Skills · Internships · Academia/);
-    expect(text).toMatch(/no formal agreement is implied/);
-    expect(text).not.toMatch(/official technology partner/i);
+    expect(text).toMatch(/APEX Rocket Systems and Gamyaa AeroSystems are working together in an engineering collaboration/);
+    expect(text).toMatch(/proposed\s+capability partners unless otherwise confirmed/);
+    expect(text).not.toMatch(/no formal agreement is implied|collaboration proposal/i);
+    expect(text).not.toMatch(/official technology partner|joint venture|strategic alliance/i);
+    const gamyaa = within(section).getByRole("heading", { name: "Gamyaa AeroSystems" }).parentElement as HTMLElement;
+    expect(gamyaa.textContent).toMatch(/Engineering Collaboration/);
+    expect(gamyaa.textContent).not.toMatch(/Proposed/);
+    const ifab = within(section).getByRole("heading", { name: "iFab Innovations Private Limited" }).parentElement as HTMLElement;
+    expect(ifab.textContent).toMatch(/Proposed Capability Partner/);
   });
 
 it("places the Advanced Rocket Propulsion Digital Twin card immediately next to the Rocket Engine Digital Twin card", () => {

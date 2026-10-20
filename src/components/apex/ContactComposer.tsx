@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { ArrowUpRight, Mail } from "lucide-react";
 import { COLLABORATION_CATEGORIES } from "@/data/apex/business";
-import { APEX_CONTACT_PARTS } from "@/data/apex/founders";
+import { APEX_CONTACT, COLLABORATION_PARTNER_CONTACT, mailto } from "@/data/apex/contacts";
 import { APEX_OFFICIAL_SITE_URL } from "@/data/apex/site";
-import { ProtectedEmail } from "./ProtectedEmail";
+import { ProtectedEmail } from "./ProtectedContact";
 import { apexTrack, trackApex } from "./analytics";
 import styles from "./apex.module.css";
 import company from "./company.module.css";
@@ -36,7 +36,8 @@ export function sanitise(value: FormDataEntryValue | null, max: number, multilin
   return cleaned.trim().slice(0, max);
 }
 
-export function composeMailto(fields: { category: string; name: string; organisation: string; role: string; message: string }, address: string): string {
+/** The enquiry as an email addressed to APEX and to Gamyaa AeroSystems, its engineering-collaboration partner. */
+export function composeMailto(fields: { category: string; name: string; organisation: string; role: string; message: string }): string {
   const categoryLabel = COLLABORATION_CATEGORIES.find((item) => item.id === fields.category)?.label ?? "Collaboration";
   const subject = `APEX collaboration — ${categoryLabel}${fields.organisation ? ` — ${fields.organisation}` : ""}`;
   const body = [
@@ -49,13 +50,13 @@ export function composeMailto(fields: { category: string; name: string; organisa
   ]
     .filter((line, i) => line !== "" || i === 4)
     .join("\n");
-  return `mailto:${address}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  return mailto(APEX_CONTACT, { subject, body });
 }
 
 /**
- * BUILD WITH APEX. The form composes an email in the visitor's own mail app;
- * nothing is sent to or stored by this site, and analytics records only the
- * chosen category.
+ * BUILD WITH APEX. The form composes an email in the visitor's own mail app,
+ * addressed to APEX and Gamyaa AeroSystems; nothing is sent to or stored by this
+ * site, and analytics records only the chosen category.
  */
 export function ContactComposer() {
   const selectRef = useRef<HTMLSelectElement>(null);
@@ -79,10 +80,9 @@ export function ContactComposer() {
       message: sanitise(data.get("message"), LIMITS.message, true),
     };
     if (!fields.name || !fields.message) return;
-    const address = `${APEX_CONTACT_PARTS.user}@${APEX_CONTACT_PARTS.domain}.${APEX_CONTACT_PARTS.tld}`;
     trackApex("apex_collaboration_click", { topic: COLLABORATION_CATEGORIES.some((item) => item.id === fields.category) ? fields.category : "other", placement: "composer" });
     setOpened(true);
-    window.location.href = composeMailto(fields, address);
+    window.location.href = composeMailto(fields);
   };
 
   return (
@@ -136,11 +136,12 @@ export function ContactComposer() {
           </a>
         </div>
         <p id="composer-note" className={styles.small}>
-          This opens a message in your own email app, addressed to APEX. Nothing is sent to or stored by this site.
+          {`This opens a message in your own email app, addressed to ${APEX_CONTACT.organisation} and ${COLLABORATION_PARTNER_CONTACT.organisation}. Nothing is sent to or stored by this site.`}
         </p>
         {opened && (
           <p className={styles.small} role="status">
-            Your email app should now be open. If it did not open, write to <ProtectedEmail placement="composer_fallback" className={styles.textLink} />.
+            Your email app should now be open. If it did not open, write to <ProtectedEmail placement="composer_fallback" className={styles.textLink} />{" "}
+            and <ProtectedEmail contactId="gamyaa" placement="composer_fallback" className={styles.textLink} />.
           </p>
         )}
       </form>

@@ -5,7 +5,7 @@
  */
 
 export const BUSINESS_EQUATION: readonly { title: string; line: string }[] = [
-  { title: "APEX", line: "Owns the rocket" },
+  { title: "APEX", line: "Retains system authority" },
   { title: "Specialist partners", line: "Provide critical capabilities" },
   { title: "Digital engineering", line: "Connects the evidence" },
   { title: "Physical testing", line: "Builds confidence" },
@@ -67,7 +67,7 @@ export const BUSINESS_MODEL_CANVAS: readonly { id: string; title: string; items:
   {
     id: "partners",
     title: "Key partners",
-    items: ["Gamyaa Aerospace", "iFab Innovations", "iTelematics", "EV Society", "Avionics partners", "Sensor partners", "GNC specialists", "Manufacturers", "Test labs", "Material suppliers", "NDT", "Research institutions", "Facility partners"],
+    items: ["Gamyaa AeroSystems", "iFab Innovations", "iTelematics", "EV Society", "Avionics partners", "Sensor partners", "GNC specialists", "Manufacturers", "Test labs", "Material suppliers", "NDT", "Research institutions", "Facility partners"],
   },
   {
     id: "costs",
@@ -81,24 +81,24 @@ export const BUSINESS_MODEL_CANVAS: readonly { id: string; title: string; items:
   },
 ];
 
-/** "Where can we contribute?" — each area maps to capabilities and lifecycle stages. */
+/** "Where can we contribute?" — capability-first: each area maps to capabilities, partners and lifecycle stages. The first eleven lead. */
 export const CONTRIBUTION_AREAS: readonly { id: string; label: string; capabilityIds: string[]; lifecycleIds: string[]; interfacesThatMatter: string[] }[] = [
-  { id: "manufacturing", label: "Manufacturing", capabilityIds: ["aerospace-manufacturing", "precision-machining", "welding-brazing", "special-processes"], lifecycleIds: ["procurement", "manufacturing", "inspection"], interfacesThatMatter: ["Released drawings and BOMs", "Process specifications", "Inspection and FAI requirements"] },
-  { id: "sensors", label: "Sensors", capabilityIds: ["sensors-instrumentation"], lifecycleIds: ["component-testing", "subsystem-testing"], interfacesThatMatter: ["Measurement ranges and accuracy", "Electrical and mechanical mounting", "Calibration records"] },
-  { id: "avionics", label: "Avionics", capabilityIds: ["avionics", "power-electrical", "emi-emc"], lifecycleIds: ["subsystem-design", "hil", "integrated-vehicle-test"], interfacesThatMatter: ["Power and grounding", "Data buses", "Environmental and EMC levels"] },
   { id: "embedded", label: "Embedded", capabilityIds: ["embedded-firmware", "engine-control"], lifecycleIds: ["firmware-development", "hil", "component-testing"], interfacesThatMatter: ["Sensor and actuator interfaces", "Communication protocols", "Firmware release and signing"] },
+  { id: "avionics", label: "Avionics", capabilityIds: ["avionics", "power-electrical", "emi-emc"], lifecycleIds: ["subsystem-design", "hil", "integrated-vehicle-test"], interfacesThatMatter: ["Power and grounding", "Data buses", "Environmental and EMC levels"] },
+  { id: "sensors", label: "Sensors", capabilityIds: ["sensors-instrumentation"], lifecycleIds: ["component-testing", "subsystem-testing"], interfacesThatMatter: ["Measurement ranges and accuracy", "Electrical and mechanical mounting", "Calibration records"] },
   { id: "gnc", label: "GNC", capabilityIds: ["gnc", "simulation"], lifecycleIds: ["simulation", "hil", "mission-simulation"], interfacesThatMatter: ["Vehicle model", "Navigation sensor data", "Flight software interface"] },
-  { id: "rf", label: "RF", capabilityIds: ["rf-telemetry"], lifecycleIds: ["ground-system-test", "flight"], interfacesThatMatter: ["Telemetry format", "Link budget", "Ground station interface"] },
-  { id: "test-infrastructure", label: "Test infrastructure", capabilityIds: ["propulsion-test-infrastructure", "environmental-testing", "structural-test-labs", "gse"], lifecycleIds: ["component-testing", "subsystem-testing", "integrated-vehicle-test"], interfacesThatMatter: ["Test objectives", "DAQ and control interface", "Facility safety plan"] },
-  { id: "materials", label: "Materials", capabilityIds: ["materials", "special-processes", "ndt"], lifecycleIds: ["procurement", "manufacturing", "inspection"], interfacesThatMatter: ["Material specifications", "Certificates and traceability", "Coupon testing"] },
-  { id: "quality", label: "Quality", capabilityIds: ["manufacturing-quality", "quality-intelligence", "digital-quality-thread", "ndt"], lifecycleIds: ["inspection", "system-integration", "flight-readiness"], interfacesThatMatter: ["Drawings and acceptance criteria", "Serial-number traceability", "Non-conformance process"] },
-  { id: "research", label: "Research", capabilityIds: ["research-academia", "simulation", "materials"], lifecycleIds: ["simulation", "digital-twin", "post-flight-analysis"], interfacesThatMatter: ["Data-sharing terms", "Model assumptions", "Publication clearance"] },
-  { id: "academia", label: "Academia", capabilityIds: ["research-academia", "skills-workforce"], lifecycleIds: ["simulation", "software-development"], interfacesThatMatter: ["Student project scope", "Lab access", "Supervision"] },
-  { id: "software", label: "Software", capabilityIds: ["software-engineering", "ground-software", "test-data"], lifecycleIds: ["software-development", "ground-system-test"], interfacesThatMatter: ["Software requirements", "Test-stand and DAQ interfaces", "Release management"] },
+  { id: "manufacturing", label: "Manufacturing", capabilityIds: ["aerospace-manufacturing", "precision-machining", "welding-brazing", "special-processes"], lifecycleIds: ["procurement", "manufacturing", "inspection"], interfacesThatMatter: ["Released drawings and BOMs", "Process specifications", "Inspection and FAI requirements"] },
   { id: "digital-twin", label: "Digital Twin", capabilityIds: ["digital-twin", "simulation", "test-data"], lifecycleIds: ["digital-twin", "subsystem-testing", "post-flight-analysis"], interfacesThatMatter: ["Hardware configuration baseline", "Sensor map and calibration", "Test data format"] },
+  { id: "quality", label: "Quality", capabilityIds: ["manufacturing-quality", "quality-intelligence", "digital-quality-thread", "ndt"], lifecycleIds: ["inspection", "system-integration", "flight-readiness"], interfacesThatMatter: ["Drawings and acceptance criteria", "Serial-number traceability", "Non-conformance process"] },
   { id: "cybersecurity", label: "Cybersecurity", capabilityIds: ["cybersecurity"], lifecycleIds: ["firmware-development", "software-development", "ground-system-test"], interfacesThatMatter: ["Firmware signing", "Command and telemetry integrity", "Access control"] },
   { id: "ai", label: "AI", capabilityIds: ["engineering-ai"], lifecycleIds: ["post-flight-analysis", "component-testing"], interfacesThatMatter: ["Test-data access", "Engineer-in-the-loop review", "Audit of AI-assisted decisions"] },
+  { id: "test-infrastructure", label: "Testing", capabilityIds: ["propulsion-test-infrastructure", "environmental-testing", "structural-test-labs", "gse"], lifecycleIds: ["component-testing", "subsystem-testing", "integrated-vehicle-test"], interfacesThatMatter: ["Test objectives", "DAQ and control interface", "Facility safety plan"] },
   { id: "workforce", label: "Workforce", capabilityIds: ["skills-workforce"], lifecycleIds: ["software-development", "firmware-development"], interfacesThatMatter: ["Project briefs", "Mentoring", "Skills records"] },
+  { id: "rf", label: "RF", capabilityIds: ["rf-telemetry"], lifecycleIds: ["ground-system-test", "flight"], interfacesThatMatter: ["Telemetry format", "Link budget", "Ground station interface"] },
+  { id: "materials", label: "Materials", capabilityIds: ["materials", "special-processes", "ndt"], lifecycleIds: ["procurement", "manufacturing", "inspection"], interfacesThatMatter: ["Material specifications", "Certificates and traceability", "Coupon testing"] },
+  { id: "software", label: "Software", capabilityIds: ["software-engineering", "ground-software", "test-data"], lifecycleIds: ["software-development", "ground-system-test"], interfacesThatMatter: ["Software requirements", "Test-stand and DAQ interfaces", "Release management"] },
+  { id: "research", label: "Research", capabilityIds: ["research-academia", "simulation", "materials"], lifecycleIds: ["simulation", "digital-twin", "post-flight-analysis"], interfacesThatMatter: ["Data-sharing terms", "Model assumptions", "Publication clearance"] },
+  { id: "academia", label: "Academia", capabilityIds: ["research-academia", "skills-workforce"], lifecycleIds: ["simulation", "software-development"], interfacesThatMatter: ["Student project scope", "Lab access", "Supervision"] },
 ];
 
 export const COLLABORATION_CATEGORIES: readonly { id: string; label: string }[] = [
