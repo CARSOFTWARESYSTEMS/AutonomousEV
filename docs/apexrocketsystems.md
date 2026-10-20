@@ -12,7 +12,7 @@ A standalone concept site for APEX Rocket Systems — from its engineering colla
 | `src/data/apex/` | All content and facts, as data. Nothing about APEX is written only in JSX. |
 | `public/apexrocketsystems/original/` | The photographs and logos exactly as supplied. Never edited. |
 | `public/apexrocketsystems/{hardware,brand,hero}/` | Optimised AVIF/WebP/JPEG and logo files made by `node scripts/apex-images.mjs` (`… brand` skips the slow photo step). |
-| `src/app/space/components/PartnersEcosystem.tsx` | The APEX card in the /space "Learn by building mission-ready thinking" grid and the Partners & Engineering Ecosystem section. Shown on /space only, not on the aerospace.ishavasyam.org route. |
+| `src/app/space/components/PartnersEcosystem.tsx` | The APEX card in the /space "Learn by building mission-ready thinking" grid and the Partners & Engineering Ecosystem section. Shown on /space on every host (aerospace.gamyaa.in and aerospace.ishavasyam.org), with no host condition. |
 
 Routes: `/`, `/company`, `/engine`, `/system`, `/build-validate`, `/digital-twin`, `/ecosystem`, `/roadmap` (all under the base path).
 
