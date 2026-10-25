@@ -247,8 +247,14 @@ export type AerospaceBrand = "ev-engineer" | "gamyaa";
 
 const GAMYAA_URL = "https://gamyaa.in/";
 
-/** Widest viewport (px) with the compact header + menu. Must match the header media query in aerospace.module.css. */
-export const AEROSPACE_HEADER_COMPACT_MAX = 1279;
+/**
+ * Widest viewport (px) with the compact header + menu. The full single-line
+ * header with Workspace needs 1,260px of layout width (measured on
+ * aerospace.ev.engineer, the widest brand); 1300px leaves room for a classic
+ * Windows scrollbar, which takes 17px. Must match the header media query in
+ * aerospace.module.css.
+ */
+export const AEROSPACE_HEADER_COMPACT_MAX = 1299;
 /** Gamyaa is an external site: like the other external menu links, it opens in a new tab. */
 const gamyaaLinkProps = { target: "_blank", rel: "noopener noreferrer" } as const;
 
@@ -283,12 +289,12 @@ export default function AerospacePage({ brand = "ev-engineer" }: { brand?: Aeros
           </span>
         </div>
 
-        {/* Desktop nav links */}
+        {/* Desktop nav links. Labels never wrap; below the desktop breakpoint the menu takes over. */}
         <nav aria-label="Aerospace section navigation" style={{ display: "flex", alignItems: "center", gap: 2, flex: 1, justifyContent: "center" }}
           className={styles.headerNavDesktop}>
           {navLinks.map(link => (
             <a key={link} href="#" style={{
-              padding: "6px 12px", borderRadius: 8, color: "#B5B8C9", fontSize: 13, fontWeight: 500,
+              padding: "6px 9px", borderRadius: 8, color: "#B5B8C9", fontSize: 13, fontWeight: 500, whiteSpace: "nowrap",
               textDecoration: "none", transition: "color 0.2s, background 0.2s", display: "block"
             }}
               onMouseEnter={e => { (e.target as HTMLElement).style.color = "#fff"; (e.target as HTMLElement).style.background = "rgba(255,255,255,0.05)"; }}
@@ -296,26 +302,26 @@ export default function AerospacePage({ brand = "ev-engineer" }: { brand?: Aeros
             >{link}</a>
           ))}
           <a href="https://aerospace.ev.engineer/space" target="_blank" rel="noopener noreferrer" style={{
-            padding: "6px 14px", borderRadius: 8, fontWeight: 600, fontSize: 13,
+            padding: "6px 11px", borderRadius: 8, fontWeight: 600, fontSize: 13, whiteSpace: "nowrap",
             background: "linear-gradient(135deg, rgba(124,58,237,0.3), rgba(59,130,246,0.2))",
             border: "1px solid rgba(124,58,237,0.4)", color: "#B39DDB",
             textDecoration: "none", display: "block"
           }}>Space</a>
           <a href="https://www.uflight.in/" target="_blank" rel="noopener noreferrer" style={{
-            padding: "6px 14px", borderRadius: 8, fontWeight: 600, fontSize: 13,
+            padding: "6px 11px", borderRadius: 8, fontWeight: 600, fontSize: 13, whiteSpace: "nowrap",
             background: "linear-gradient(135deg, rgba(124,58,237,0.3), rgba(59,130,246,0.2))",
             border: "1px solid rgba(124,58,237,0.4)", color: "#B39DDB",
             textDecoration: "none", display: "block", marginLeft: 8
           }}>UFlight</a>
           {/* On aerospace.gamyaa.in this button is Gamyaa (gamyaa.in), not EV.ENGINEER. */}
           <Link href={brand === "gamyaa" ? GAMYAA_URL : "/"} {...(brand === "gamyaa" ? gamyaaLinkProps : {})} style={{
-            padding: "6px 14px", borderRadius: 8, fontWeight: 600, fontSize: 13,
+            padding: "6px 11px", borderRadius: 8, fontWeight: 600, fontSize: 13, whiteSpace: "nowrap",
             background: "linear-gradient(135deg, rgba(124,58,237,0.3), rgba(59,130,246,0.2))",
             border: "1px solid rgba(124,58,237,0.4)", color: "#B39DDB",
             textDecoration: "none", display: "block", marginLeft: 8
           }}>{brand === "gamyaa" ? "Gamyaa" : "EV.ENGINEER"}</Link>
           <a href="https://www.evsociety.org" target="_blank" rel="noopener noreferrer" style={{
-            padding: "6px 14px", borderRadius: 8, fontWeight: 600, fontSize: 13,
+            padding: "6px 11px", borderRadius: 8, fontWeight: 600, fontSize: 13, whiteSpace: "nowrap",
             background: "linear-gradient(135deg, rgba(124,58,237,0.3), rgba(59,130,246,0.2))",
             border: "1px solid rgba(124,58,237,0.4)", color: "#B39DDB",
             textDecoration: "none", display: "block", marginLeft: 8

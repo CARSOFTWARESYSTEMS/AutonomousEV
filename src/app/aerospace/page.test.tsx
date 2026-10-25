@@ -1,7 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import fs from "node:fs";
+import path from "node:path";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import AerospacePage from "./page";
+import { AEROSPACE_HEADER_COMPACT_MAX } from "./AerospacePage";
 
 vi.mock("next/font/google", () => ({
   Manrope: () => ({ variable: "--font-uflight-manrope" }),
@@ -83,5 +86,20 @@ describe("Aerospace page", () => {
 
     // Rendered once in the DOM (visibility toggled by a mobile-only media query, not JS).
     expect(container.querySelectorAll('a[aria-label*="Expression of Interest"]').length).toBe(1);
+  });
+
+  it("never wraps a desktop nav label, and switches to the menu at one breakpoint mirrored in CSS", () => {
+    render(<AerospacePage />);
+    const nav = screen.getByRole("navigation", { name: "Aerospace section navigation" });
+    within(nav)
+      .getAllByRole("link")
+      .forEach((a) => expect(a).toHaveStyle({ whiteSpace: "nowrap" }));
+
+    // With Login in the bar the full header needs a laptop-width screen.
+    expect(AEROSPACE_HEADER_COMPACT_MAX).toBeGreaterThanOrEqual(1299);
+    const css = fs.readFileSync(path.resolve(import.meta.dirname, "aerospace.module.css"), "utf-8");
+    const at = css.indexOf(`@media (max-width: ${AEROSPACE_HEADER_COMPACT_MAX}px)`);
+    expect(at).toBeGreaterThan(-1);
+    expect(css.slice(at, css.indexOf("}", css.indexOf(".headerToggle", at)) + 1)).toMatch(/\.headerNavDesktop\s*\{\s*display:\s*none[\s\S]*\.headerToggle\s*\{\s*display:\s*flex/);
   });
 });

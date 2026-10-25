@@ -163,7 +163,7 @@
    decorative elements like the roadmap connector) so the header's own
    breakpoint can be tuned independently. The desktop nav row (6 links,
    4 bordered pills, Login and the CTA) needs a laptop-width screen, so the
-   mobile toggle takes over below 1280px — matching the site-wide Navbar. */
+   mobile toggle takes over below 1300px. */
 .headerBar {
   padding: 0 32px;
 }
@@ -176,10 +176,10 @@
   display: none;
 }
 
-/* With Login in the bar the full header needs about 1,200px (it already overflowed
-   at 1,025-1,100px before), so the menu takes over below 1,280px. Keep in sync
+/* With Login or Workspace in the bar the full header needs 1,260px, so the menu
+   takes over below 1,300px (room for a 17px Windows scrollbar). Keep in sync
    with AEROSPACE_HEADER_COMPACT_MAX in AerospacePage.tsx. */
-@media (max-width: 1279px) {
+@media (max-width: 1299px) {
   .headerNavDesktop {
     display: none !important;
   }
