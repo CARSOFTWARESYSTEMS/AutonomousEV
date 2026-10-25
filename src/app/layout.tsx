@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import AuthHostFlag from "@/components/auth/AuthHostFlag";
+import AuthProvider from "@/components/auth/AuthProvider";
 import ChromeGate from "@/components/ChromeGate";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import "./globals.css";
@@ -24,10 +26,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable}`}>
+    // suppressHydrationWarning: AuthHostFlag sets data-auth-site on <html> before React hydrates.
+    <html lang="en" className={`${inter.variable}`} suppressHydrationWarning>
+      <head>
+        <AuthHostFlag />
+      </head>
       <body>
         <GoogleAnalytics />
-        <ChromeGate>{children}</ChromeGate>
+        <AuthProvider>
+          <ChromeGate>{children}</ChromeGate>
+        </AuthProvider>
       </body>
     </html>
   );

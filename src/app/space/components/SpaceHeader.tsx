@@ -2,6 +2,7 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
 import { Orbit, Menu, X } from "lucide-react";
+import AuthNavControl, { AuthMenuEntry } from "@/components/auth/AuthNavControl";
 import { useMobileMenuLock } from "@/hooks/useMobileMenuLock";
 import { EOI_FORM_URL } from "@/lib/eoi";
 import { FONT_MANROPE } from "../fonts";
@@ -28,12 +29,12 @@ export type BrandLink = { label: string; href: string };
 
 /**
  * Widest viewport (px) that still uses the compact header + menu. The full
- * single-line desktop header needs 1,315px of layout width (measured with the
- * "ISHAVASYAM.ORG /space" brand); 1340px leaves room for a classic Windows
- * scrollbar, which takes 17px. Must match the header media query in
- * ../space.module.css.
+ * single-line desktop header needs about 1,410px of layout width with Login
+ * (measured with the "ISHAVASYAM.ORG /space" brand); 1440px leaves room for a
+ * classic Windows scrollbar, which takes 17px. Must match the header media
+ * query in ../space.module.css.
  */
-export const SPACE_HEADER_COMPACT_MAX = 1339;
+export const SPACE_HEADER_COMPACT_MAX = 1439;
 
 export default function SpaceHeader({
   basePath = "",
@@ -174,7 +175,7 @@ export default function SpaceHeader({
               );
             }
             const linkStyle: React.CSSProperties = {
-              padding: "6px 8px",
+              padding: "6px 7px",
               borderRadius: 8,
               color: "#B5B8C9",
               fontSize: 13,
@@ -216,6 +217,10 @@ export default function SpaceHeader({
             flexShrink: 0,
           }}
         >
+          {/* On phones Login moves into the opened menu, like Express Interest. */}
+          <div className={styles.headerAuthBar}>
+            <AuthNavControl variant="space" />
+          </div>
           <a
             href={EOI_FORM_URL}
             target="_blank"
@@ -284,6 +289,9 @@ export default function SpaceHeader({
             gap: 8,
           }}
         >
+          <div className={styles.headerAuthMenu}>
+            <AuthMenuEntry variant="space" onNavigate={() => setMobileOpen(false)} />
+          </div>
           {items.map((item) => {
             const isInternalRoute = item.href === "/";
             const isExternal = item.href.startsWith("http");

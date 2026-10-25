@@ -4,6 +4,7 @@ import Link from "next/link";
 import styles from "./Navbar.module.css";
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
+import AuthNavControl, { AuthMenuEntry } from "./auth/AuthNavControl";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -177,8 +178,14 @@ export default function Navbar() {
         </div>
 
         <div className={styles.actions}>
+          <AuthNavControl variant="core" />
           <Link href="/corporate-training" className="btn btn-secondary" data-track-event="nav_training_click">Training</Link>
           <Link href="/consulting" className="btn btn-primary" data-track-event="nav_consulting_click">Consulting</Link>
+        </div>
+
+        {/* Phones and tablets: Login stays in the bar, beside the menu button. */}
+        <div className={styles.authMobile}>
+          <AuthNavControl variant="core" />
         </div>
 
         <button
@@ -193,6 +200,9 @@ export default function Navbar() {
       {/* Mobile Menu Content */}
       <div className={`${styles.mobileMenu} ${mobileMenuOpen ? styles.mobileMenuOpen : ''}`}>
         <div className={styles.mobileMenuInner}>
+          <div className={styles.authMenu}>
+            <AuthMenuEntry variant="core" onNavigate={() => setMobileMenuOpen(false)} />
+          </div>
           <div className={styles.mobileSectionTitle}>About</div>
           <Link href="/about" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>About Us</Link>
           <Link href="/about/sudarshana-karkala" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Sudarshana Karkala</Link>

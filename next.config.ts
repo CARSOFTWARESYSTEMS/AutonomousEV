@@ -1,4 +1,6 @@
 import type { NextConfig } from "next";
+// Explicit extension: Node loads this config with its own TypeScript loader (no extension lookup).
+import { authRewrites } from "./src/lib/auth/sites.ts";
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -72,6 +74,8 @@ const nextConfig: NextConfig = {
       // /space exists on the filesystem, so overriding it per host has to run
       // before the filesystem check.
       beforeFiles: [
+        // Sign-in: each host's /api/auth/* is served by its Intern2026 login host (src/lib/auth/sites.ts).
+        ...authRewrites(),
         {
           source: '/space',
           has: [

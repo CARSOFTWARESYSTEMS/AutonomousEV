@@ -1,0 +1,638 @@
+/* ── Sign-in UI: header control, account menu, five-minute prompt, notice ──
+   Two visual families, matching the page the visitor is on:
+   - core: the EV.ENGINEER pages under the site Navbar (deep green, green buttons)
+   - space: Space, Aerospace and their neighbours (deep navy, violet-to-cyan)
+   The dialog and notice pick theirs from the page; the header control is told
+   by the header it sits in. */
+
+.dialog,
+.notice,
+.slotCore {
+  --auth-surface: linear-gradient(180deg, #082c1e 0%, #04140e 100%);
+  --auth-raised: #0a3323;
+  --auth-border: rgba(0, 245, 160, 0.16);
+  --auth-border-strong: rgba(76, 169, 48, 0.6);
+  --auth-text: #eaf7f1;
+  --auth-text-2: rgba(234, 247, 241, 0.74);
+  --auth-text-3: rgba(234, 247, 241, 0.56);
+  --auth-accent: #4ca930;
+  --auth-accent-line: linear-gradient(90deg, transparent, rgba(76, 169, 48, 0.75), transparent);
+  --auth-glow: rgba(76, 169, 48, 0.12);
+  --auth-primary-bg: #3a8b26;
+  --auth-primary-shadow: 0 4px 15px rgba(58, 139, 38, 0.36);
+  --auth-primary-shadow-hover: 0 6px 20px rgba(76, 169, 48, 0.42);
+  --auth-button-radius: 999px;
+  --auth-hover: rgba(234, 247, 241, 0.06);
+  --auth-focus: #4ca930;
+}
+
+.dialog[data-family="space"],
+.notice[data-family="space"],
+.slotSpace {
+  --auth-surface: linear-gradient(180deg, #13163d 0%, #0a0c22 100%);
+  --auth-raised: #151942;
+  --auth-border: rgba(255, 255, 255, 0.09);
+  --auth-border-strong: rgba(124, 58, 237, 0.55);
+  --auth-text: #ffffff;
+  --auth-text-2: #b5b8c9;
+  --auth-text-3: #8d91aa;
+  --auth-accent: #22d3ee;
+  --auth-accent-line: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.8), rgba(6, 182, 212, 0.8), transparent);
+  --auth-glow: rgba(6, 182, 212, 0.1);
+  --auth-primary-bg: linear-gradient(135deg, #7c3aed, #06b6d4);
+  --auth-primary-shadow: 0 6px 20px rgba(124, 58, 237, 0.28);
+  --auth-primary-shadow-hover: 0 8px 26px rgba(6, 182, 212, 0.3);
+  --auth-button-radius: 12px;
+  --auth-hover: rgba(255, 255, 255, 0.06);
+  --auth-focus: #22d3ee;
+}
+
+/* ── Header control ─────────────────────────────────────────────────────── */
+
+/* Laid out only on hosts with a sign-in service (html[data-auth-site] is set before first paint). */
+.slot {
+  display: none;
+  position: relative;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: var(--auth-slot-width);
+}
+
+:global(html[data-auth-site]) .slot {
+  display: inline-flex;
+}
+
+/* Workspace's width in each header's type (measured), so neither answer moves the header. */
+.slotCore {
+  --auth-slot-width: 6.75rem;
+}
+
+.slotSpace {
+  --auth-slot-width: 100px;
+}
+
+.slot[data-status="loading"] .trigger,
+.slot[data-status="unavailable"] .trigger {
+  visibility: hidden;
+}
+
+.slot[data-status="anonymous"] .trigger,
+.slot[data-status="authenticated"] .trigger {
+  animation: authFadeIn 0.18s ease-out;
+}
+
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  font: inherit;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.slotCore .trigger {
+  color: var(--text-secondary, rgba(234, 247, 241, 0.72));
+  font-size: 0.95rem;
+}
+
+.slotCore .trigger:hover {
+  color: var(--text-primary, #eaf7f1);
+}
+
+.slotSpace .trigger {
+  color: #b5b8c9;
+  font-size: 13px;
+}
+
+.slotSpace .trigger:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.trigger:focus-visible,
+.menuItem:focus-visible,
+.close:focus-visible,
+.primary:focus-visible,
+.secondary:focus-visible,
+.noticeClose:focus-visible {
+  outline: 2px solid var(--auth-focus);
+  outline-offset: 2px;
+}
+
+.signedInDot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--auth-accent);
+  box-shadow: 0 0 0 3px var(--auth-glow), 0 0 10px var(--auth-glow);
+}
+
+.chevron {
+  transition: transform 0.15s ease;
+}
+
+.chevron[data-open="true"] {
+  transform: rotate(180deg);
+}
+
+/* ── Account menu ───────────────────────────────────────────────────────── */
+
+.menuWrap {
+  position: relative;
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 1100;
+  width: max-content;
+  min-width: 240px;
+  max-width: min(320px, calc(100vw - 32px));
+  padding: 6px;
+  border: 1px solid var(--auth-border);
+  border-radius: 14px;
+  background: var(--auth-surface);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.5), 0 0 32px var(--auth-glow);
+  animation: authMenuIn 0.14s ease-out;
+}
+
+.menu[hidden] {
+  display: none;
+}
+
+.identity {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px 12px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--auth-border);
+  min-width: 0;
+}
+
+.identityLabel {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--auth-text-3);
+}
+
+.identityName,
+.identityEmail {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.identityName {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--auth-text);
+}
+
+.identityEmail {
+  font-size: 12.5px;
+  color: var(--auth-text-3);
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: var(--auth-text);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.menuItem svg {
+  color: var(--auth-text-3);
+  flex-shrink: 0;
+}
+
+.menuItem:hover {
+  background: var(--auth-hover);
+}
+
+.menuItem:disabled {
+  cursor: progress;
+  color: var(--auth-text-2);
+}
+
+/* ── Row in a phone menu ─────────────────────────────────────────────────── */
+
+.menuEntry {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 8px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--auth-border);
+}
+
+.menuEntryIdentity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 6px 0 2px;
+  font-size: 13px;
+}
+
+.menuEntryItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1px solid var(--auth-border);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--auth-text);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.menuEntryItem svg {
+  color: var(--auth-text-3);
+  flex-shrink: 0;
+}
+
+.menuEntryItem:hover {
+  background: var(--auth-hover);
+}
+
+.menuEntryItem:focus-visible {
+  outline: 2px solid var(--auth-focus);
+  outline-offset: 2px;
+}
+
+/* ── Five-minute prompt ─────────────────────────────────────────────────── */
+
+.dialog {
+  width: min(440px, calc(100vw - 32px));
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--auth-text);
+  overflow: visible;
+  font-family: var(--font-inter), "Inter", system-ui, -apple-system, sans-serif;
+}
+
+.dialog::backdrop {
+  background: rgba(2, 6, 18, 0.66);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.dialog[open] {
+  animation: authDialogIn 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.dialog[open]::backdrop {
+  animation: authFadeIn 0.22s ease-out;
+}
+
+.panel {
+  position: relative;
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 28px 28px 24px;
+  border: 1px solid var(--auth-border);
+  border-radius: 20px;
+  background: var(--auth-surface);
+  box-shadow: 0 28px 72px rgba(0, 0, 0, 0.55), 0 0 56px var(--auth-glow);
+  outline: none;
+}
+
+/* A hairline of the accent across the top edge. */
+.panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 28px;
+  right: 28px;
+  height: 1px;
+  background: var(--auth-accent-line);
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  color: var(--auth-text-3);
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.close:hover {
+  color: var(--auth-text);
+  background: var(--auth-hover);
+}
+
+.brandRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding-right: 40px;
+}
+
+.brandIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: var(--auth-primary-bg);
+  color: #fff;
+  box-shadow: 0 0 18px var(--auth-glow);
+}
+
+.brandName {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--auth-text-2);
+}
+
+.title {
+  margin: 0 0 10px;
+  padding-right: 24px;
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--auth-text);
+  overflow-wrap: anywhere;
+}
+
+.text {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--auth-text-2);
+}
+
+.note {
+  margin: 10px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--auth-text-3);
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.primary,
+.secondary {
+  flex: 1 1 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 18px;
+  border-radius: var(--auth-button-radius);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.primary {
+  border: 0;
+  background: var(--auth-primary-bg);
+  color: #fff;
+  box-shadow: var(--auth-primary-shadow);
+}
+
+.primary:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--auth-primary-shadow-hover);
+}
+
+.secondary {
+  border: 1px solid var(--auth-border-strong);
+  background: transparent;
+  color: var(--auth-text);
+}
+
+.secondary:hover {
+  background: var(--auth-hover);
+}
+
+/* Small phones: a bottom sheet, buttons full width, clear of the home indicator. */
+@media (max-width: 480px) {
+  .dialog {
+    width: 100%;
+    max-height: calc(100dvh - 12px);
+    margin: auto 0 0;
+  }
+
+  .dialog[open] {
+    animation-name: authSheetIn;
+  }
+
+  .panel {
+    max-height: calc(100dvh - 12px);
+    padding: 24px 20px calc(20px + env(safe-area-inset-bottom, 0px));
+    border-bottom: 0;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .panel::before {
+    left: 20px;
+    right: 20px;
+  }
+
+  .title {
+    font-size: 1.35rem;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 22px;
+  }
+
+  .primary,
+  .secondary {
+    flex: none;
+    width: 100%;
+  }
+}
+
+/* ── Notice ─────────────────────────────────────────────────────────────── */
+
+.noticeRegion {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  z-index: 1200;
+  display: flex;
+  justify-content: center;
+  padding: 0 16px;
+  pointer-events: none;
+}
+
+.notice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 520px;
+  padding: 6px 6px 6px 16px;
+  border: 1px solid var(--auth-border);
+  border-radius: 14px;
+  background: var(--auth-raised);
+  color: var(--auth-text);
+  font-size: 14px;
+  line-height: 1.45;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+  pointer-events: auto;
+  animation: authNoticeIn 0.2s ease-out;
+}
+
+.notice[data-tone="error"] {
+  border-color: rgba(255, 77, 77, 0.45);
+}
+
+.noticeClose {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: var(--auth-text-3);
+  cursor: pointer;
+}
+
+.noticeClose:hover {
+  color: var(--auth-text);
+  background: var(--auth-hover);
+}
+
+@keyframes authFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes authMenuIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes authDialogIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes authSheetIn {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes authNoticeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slot .trigger,
+  .menu,
+  .dialog[open],
+  .dialog[open]::backdrop,
+  .notice {
+    animation: none !important;
+  }
+
+  .primary:hover {
+    transform: none;
+  }
+}

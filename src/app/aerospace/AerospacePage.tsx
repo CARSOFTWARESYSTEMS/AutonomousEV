@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import styles from "./aerospace.module.css";
 import { useMobileMenuLock } from "@/hooks/useMobileMenuLock";
+import AuthNavControl from "@/components/auth/AuthNavControl";
 import { EOI_FORM_URL } from "@/lib/eoi";
 import ResearcherCard from "@/components/ResearcherCard";
 import AerospaceHostPoster from "./AerospaceHostPoster";
@@ -245,13 +246,16 @@ function FooterCol({ title, links }: { title: string; links: string[] }) {
 export type AerospaceBrand = "ev-engineer" | "gamyaa";
 
 const GAMYAA_URL = "https://gamyaa.in/";
+
+/** Widest viewport (px) with the compact header + menu. Must match the header media query in aerospace.module.css. */
+export const AEROSPACE_HEADER_COMPACT_MAX = 1279;
 /** Gamyaa is an external site: like the other external menu links, it opens in a new tab. */
 const gamyaaLinkProps = { target: "_blank", rel: "noopener noreferrer" } as const;
 
 export default function AerospacePage({ brand = "ev-engineer" }: { brand?: AerospaceBrand }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const mobileToggleRef = useRef<HTMLButtonElement>(null);
-  useMobileMenuLock(mobileOpen, setMobileOpen, mobileToggleRef);
+  useMobileMenuLock(mobileOpen, setMobileOpen, mobileToggleRef, AEROSPACE_HEADER_COMPACT_MAX);
 
   return (
     <div className={`${styles.root} ${manrope.variable} ${inter.variable}`} style={{ background: "#090B1D", minHeight: "100vh", fontFamily: FONT_INTER, overflowX: "hidden" }}>
@@ -320,6 +324,7 @@ export default function AerospacePage({ brand = "ev-engineer" }: { brand?: Aeros
 
         {/* Right: auth */}
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
+          <AuthNavControl variant="space" />
           <a
             href={EOI_FORM_URL}
             target="_blank"

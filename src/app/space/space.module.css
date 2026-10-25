@@ -163,16 +163,17 @@
    Kept separate from .hiddenMobile/.showMobile (which serve unrelated
    decorative elements like the roadmap connector) so the header's own
    breakpoint can be tuned independently. The full header (the brand, 9 nav
-   items + CTA) needs 1,315px on one line, so below 1340px the compact header —
-   brand, Express Interest (from 640px) and the menu button — takes over.
-   Labels are nowrap, so there is no intermediate wrapping state. Keep the
-   1339px value in sync with SPACE_HEADER_COMPACT_MAX in SpaceHeader.tsx. */
+   items, Login + CTA) needs about 1,410px on one line, so below 1440px the
+   compact header — brand, Login, Express Interest (from 640px) and the menu
+   button — takes over. Labels are nowrap, so there is no intermediate
+   wrapping state. Keep the 1439px value in sync with SPACE_HEADER_COMPACT_MAX
+   in SpaceHeader.tsx. */
 .headerBar {
   padding: 0 32px;
 }
 
 /* "ISHAVASYAM.ORG /space". Sized so that the full header still fits on one
-   line at its 1340px breakpoint with a classic scrollbar showing; on a narrow
+   line at its 1440px breakpoint with a classic scrollbar showing; on a narrow
    phone it is set smaller again, so that the brand, its section and the menu
    button share one line at 320px. */
 .headerBrandName {
@@ -194,7 +195,7 @@
   display: none;
 }
 
-@media (max-width: 1339px) {
+@media (max-width: 1439px) {
   .headerNavDesktop {
     display: none !important;
   }
@@ -203,10 +204,24 @@
   }
 }
 
-/* On phones the CTA moves into the opened menu (it is already listed there). */
+/* Login / Workspace: in the bar from 640px, in the opened menu on phones. */
+.headerAuthBar {
+  display: flex;
+}
+
+.headerAuthMenu {
+  display: none;
+}
+
+/* On phones the CTA moves into the opened menu (it is already listed there), and so does Login. */
 @media (max-width: 639px) {
-  .headerCtaDesktop {
+  .headerCtaDesktop,
+  .headerAuthBar {
     display: none !important;
+  }
+
+  .headerAuthMenu {
+    display: block;
   }
 }
 

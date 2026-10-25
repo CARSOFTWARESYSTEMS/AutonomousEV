@@ -21,6 +21,8 @@ export function ApexShell({ children }: { children: ReactNode }) {
       <a href="#apex-main" className={styles.skipLink}>
         Skip to content
       </a>
+      {/* APEX's own brand: the host site's five-minute sign-in prompt stays out of it. */}
+      <span hidden data-auth-prompt="off" />
       <PanelProvider>
         <ApexHeader />
         <main id="apex-main" tabIndex={-1} style={{ outline: "none" }}>

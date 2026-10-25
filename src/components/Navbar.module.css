@@ -31,10 +31,11 @@
   color: #fff;
 }
 
+/* 24px (was 32px) leaves room for Login / Workspace in the 1,200px bar */
 .navLinks {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 24px;
 }
 
 .navItem {
@@ -163,7 +164,7 @@
 .actions {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 
 /* Mobile Toggle */
@@ -253,12 +254,40 @@
   border-radius: 4px;
 }
 
-@media (max-width: 1024px) {
+/* Login / Workspace in the mobile bar: pushed right, beside the menu button */
+.authMobile {
+  display: none;
+  margin-left: auto;
+  margin-right: 8px;
+}
+
+/* The desktop bar needs its full 1,200px container (links wrapped onto two lines below
+   1,180px even before Login), so narrower screens use the menu. */
+@media (max-width: 1279px) {
   .navLinks, .actions {
     display: none;
   }
   
   .mobileToggle {
+    display: block;
+  }
+
+  .authMobile {
+    display: flex;
+  }
+}
+
+/* Login / Workspace inside the opened menu, only where the bar has no room for it */
+.authMenu {
+  display: none;
+}
+
+@media (max-width: 359px) {
+  .authMobile {
+    display: none;
+  }
+
+  .authMenu {
     display: block;
   }
 }

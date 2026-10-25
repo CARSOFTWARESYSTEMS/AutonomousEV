@@ -4,9 +4,9 @@ import { usePathname } from "next/navigation";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 
-export default function ChromeGate({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-  const isSelfContained =
+/** Pages that bring their own header and footer (the Space visual family and its neighbours). */
+export function isSelfContainedPath(pathname: string | null): boolean {
+  return (
     pathname === "/aerospace" ||
     pathname?.startsWith("/aerospace/") ||
     pathname === "/space" ||
@@ -20,9 +20,14 @@ export default function ChromeGate({ children }: { children: React.ReactNode }) 
     pathname === "/internships/aerospace-quality-intelligence-platform" ||
     // So does the EV Battery Health & Diagnostics Toolkit, in the Space visual family.
     pathname === "/internships/ev-battery-health-diagnostics-toolkit" ||
-    pathname?.startsWith("/internships/ev-battery-health-diagnostics-toolkit/");
+    pathname?.startsWith("/internships/ev-battery-health-diagnostics-toolkit/") === true
+  );
+}
 
-  if (isSelfContained) {
+export default function ChromeGate({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+
+  if (isSelfContainedPath(pathname)) {
     return <>{children}</>;
   }
 
