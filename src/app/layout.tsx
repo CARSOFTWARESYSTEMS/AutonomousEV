@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import AuthHostFlag from "@/components/auth/AuthHostFlag";
 import AuthProvider from "@/components/auth/AuthProvider";
+import PremiumRouteGate from "@/components/auth/PremiumRouteGate";
 import ChromeGate from "@/components/ChromeGate";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import "./globals.css";
@@ -34,7 +35,9 @@ export default function RootLayout({
       <body>
         <GoogleAnalytics />
         <AuthProvider>
-          <ChromeGate>{children}</ChromeGate>
+          <ChromeGate>
+            <PremiumRouteGate>{children}</PremiumRouteGate>
+          </ChromeGate>
         </AuthProvider>
       </body>
     </html>

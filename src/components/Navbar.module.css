@@ -110,6 +110,24 @@
   max-width: 240px;
 }
 
+/* A titled group of columns inside a dropdown (Engineering under Space & Aerospace). */
+.dropdownGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-left: 32px;
+  border-left: 1px solid var(--glass-border);
+}
+
+.dropdownGroup > .dropdownTitle {
+  margin-bottom: 0;
+}
+
+.dropdownGroupColumns {
+  display: flex;
+  gap: 32px;
+}
+
 .dropdownTitle {
   font-size: 0.85rem;
   text-transform: uppercase;
@@ -201,6 +219,12 @@
 
 .mobileMenuInner {
   padding: 24px 24px 80px; /* Extra bottom padding for scroll room */
+  display: flex;
+  flex-direction: column;
+}
+
+/* An opened accordion section: its links stack like the menu's own. */
+.mobilePanel {
   display: flex;
   flex-direction: column;
 }

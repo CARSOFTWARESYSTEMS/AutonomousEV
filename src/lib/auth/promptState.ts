@@ -1,3 +1,5 @@
+import { SITE_LOGIN_TRIGGERS, type SiteLoginTrigger } from "./loginContext";
+
 // ── Browser storage for the sign-in prompt: UX state only ──────────────────
 //
 // When the prompt last showed, when it was dismissed, when this tab's
@@ -30,7 +32,8 @@ export const STORAGE_KEYS = {
   sessionChanged: "auth_session_changed",
 } as const;
 
-export type LoginTrigger = "header" | "prompt";
+/** Values a tab may still hold from before the triggers were renamed. */
+const LEGACY_TRIGGERS: Record<string, SiteLoginTrigger> = { header: "header_login", prompt: "five_minute_prompt" };
 
 type Area = "local" | "session";
 
@@ -103,12 +106,12 @@ export function quietPromptForSession(): void {
   write("session", STORAGE_KEYS.quietThisSession, "1");
 }
 
-export function markLoginPending(trigger: LoginTrigger, now: number): void {
+export function markLoginPending(trigger: SiteLoginTrigger, now: number): void {
   write("session", STORAGE_KEYS.loginPending, JSON.stringify({ trigger, at: now }));
 }
 
 /** The trigger of a recent Login click in this tab, consumed on read; null if there was none. */
-export function takeLoginPending(now: number): LoginTrigger | null {
+export function takeLoginPending(now: number): SiteLoginTrigger | null {
   const raw = read("session", STORAGE_KEYS.loginPending);
   if (raw === null) return null;
   remove("session", STORAGE_KEYS.loginPending);
@@ -116,7 +119,8 @@ export function takeLoginPending(now: number): LoginTrigger | null {
     const value = JSON.parse(raw) as { trigger?: unknown; at?: unknown };
     const at = typeof value.at === "number" ? value.at : NaN;
     if (!(now - at >= 0 && now - at <= LOGIN_PENDING_MS)) return null;
-    return value.trigger === "header" || value.trigger === "prompt" ? value.trigger : null;
+    const trigger = typeof value.trigger === "string" ? (LEGACY_TRIGGERS[value.trigger] ?? value.trigger) : null;
+    return SITE_LOGIN_TRIGGERS.find((t) => t === trigger) ?? null;
   } catch {
     return null;
   }

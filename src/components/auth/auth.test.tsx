@@ -1,4 +1,4 @@
-// @vitest-environment-options {"url": "https://aerospace.ev.engineer/space/satellite-engineering?mode=advanced#telemetry"}
+// @vitest-environment-options {"url": "https://aerospace.ev.engineer/space/partners?mode=advanced#telemetry"}
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi, type Mock } from "vitest";
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { trackEvent } from "@/utils/analytics";
@@ -7,7 +7,7 @@ import AuthProvider from "./AuthProvider";
 import AuthNavControl from "./AuthNavControl";
 
 vi.mock("next/navigation", () => ({
-  usePathname: () => "/space/satellite-engineering",
+  usePathname: () => "/space/partners",
 }));
 
 vi.mock("@/utils/analytics", () => ({
@@ -16,7 +16,11 @@ vi.mock("@/utils/analytics", () => ({
 
 const HOST = "aerospace.ev.engineer";
 const FIVE_MINUTES = 5 * 60_000;
-const RETURN = encodeURIComponent("/space/satellite-engineering?mode=advanced#telemetry");
+const RETURN = encodeURIComponent("/space/partners?mode=advanced#telemetry");
+const TITLE = "Partners & Engineering Ecosystem | EV.ENGINEER™";
+const LABEL = encodeURIComponent("Partners & Engineering Ecosystem");
+/** Analytics parameters every sign-in event on this page carries. */
+const PAGE = { site: "ev_engineer", hostname: HOST, page_path: "/space/partners", page_label: "Partners & Engineering Ecosystem" };
 const ANONYMOUS = { authenticated: false };
 const SIGNED_IN = {
   authenticated: true,
@@ -73,6 +77,7 @@ beforeAll(() => {
 });
 
 beforeEach(() => {
+  document.title = TITLE;
   vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout", "Date"] });
   vi.setSystemTime(new Date("2026-10-25T10:00:00Z"));
 });
@@ -92,7 +97,7 @@ describe("header control", () => {
     renderSite();
     await settle();
     const login = screen.getByRole("link", { name: "Login" });
-    expect(login).toHaveAttribute("href", `/api/auth/login?return=${RETURN}`);
+    expect(login).toHaveAttribute("href", `/api/auth/login?return=${RETURN}&trigger=header_login&label=${LABEL}`);
   });
 
   it("keeps the slot empty and hidden while the session is unknown or sign-in is unavailable", async () => {
@@ -113,16 +118,13 @@ describe("header control", () => {
     expect(screen.queryByRole("button", { name: /Workspace/ })).toBeNull();
   });
 
-  it("tracks a Login click with site, host, path and trigger, and remembers it for the return", async () => {
+  it("tracks a Login click with site, host, path, page and trigger, and remembers it for the return", async () => {
     serveSessions(ANONYMOUS);
     renderSite();
     await settle();
     fireEvent.click(screen.getByRole("link", { name: "Login" }));
-    expect(events()).toContainEqual({
-      name: "login_header_click",
-      params: { site: "ev_engineer", hostname: HOST, page_path: "/space/satellite-engineering", trigger: "header" },
-    });
-    expect(JSON.parse(sessionStorage.getItem(STORAGE_KEYS.loginPending)!)).toMatchObject({ trigger: "header" });
+    expect(events()).toContainEqual({ name: "login_header_click", params: { ...PAGE, trigger: "header_login" } });
+    expect(JSON.parse(sessionStorage.getItem(STORAGE_KEYS.loginPending)!)).toMatchObject({ trigger: "header_login" });
   });
 
   it("shows Workspace once signed in, with the account and the real workspace", async () => {
@@ -175,20 +177,18 @@ describe("header control", () => {
 
 describe("returning from sign-in", () => {
   it("reports a successful return once, with the trigger that started it", async () => {
-    sessionStorage.setItem(STORAGE_KEYS.loginPending, JSON.stringify({ trigger: "prompt", at: Date.now() - 20_000 }));
+    sessionStorage.setItem(STORAGE_KEYS.loginPending, JSON.stringify({ trigger: "five_minute_prompt", at: Date.now() - 20_000 }));
     serveSessions(SIGNED_IN);
     renderSite();
     await settle();
-    expect(events()).toContainEqual({
-      name: "login_success_return",
-      params: { site: "ev_engineer", hostname: HOST, page_path: "/space/satellite-engineering", trigger: "prompt" },
-    });
+    expect(events()).toContainEqual({ name: "login_success_return", params: { ...PAGE, trigger: "five_minute_prompt" } });
+    expect(events().map((e) => e.name)).not.toContain("premium_route_login_success");
     expect(sessionStorage.getItem(STORAGE_KEYS.loginPending)).toBeNull();
     expect(localStorage.getItem(STORAGE_KEYS.sessionChanged)).not.toBeNull();
   });
 
   it("says, without blocking, when a sign-in came back unfinished", async () => {
-    sessionStorage.setItem(STORAGE_KEYS.loginPending, JSON.stringify({ trigger: "header", at: Date.now() - 20_000 }));
+    sessionStorage.setItem(STORAGE_KEYS.loginPending, JSON.stringify({ trigger: "header_login", at: Date.now() - 20_000 }));
     serveSessions(ANONYMOUS);
     renderSite();
     await settle();
@@ -211,7 +211,7 @@ describe("returning from sign-in", () => {
   });
 });
 
-describe("five-minute prompt", () => {
+describe("optional premium prompt (five minutes)", () => {
   const dialog = () => document.querySelector("dialog")!;
 
   it("opens for an anonymous visitor after five minutes, not before", async () => {
@@ -223,16 +223,19 @@ describe("five-minute prompt", () => {
 
     await settle(1000);
     expect(dialog()).toHaveAttribute("open");
-    const title = screen.getByRole("heading", { name: "Continue with EV.ENGINEER™" });
+    expect(dialog()).toHaveTextContent("EV.ENGINEER™");
+    const title = screen.getByRole("heading", { name: "Login to view premium content" });
     expect(dialog()).toHaveAttribute("aria-labelledby", title.id);
-    expect(document.getElementById(dialog().getAttribute("aria-describedby")!)).toHaveTextContent(
-      "Sign in to access your engineering workspace, projects and personalised experiences.",
+    const description = document.getElementById(dialog().getAttribute("aria-describedby")!);
+    expect(description).toHaveTextContent(
+      "Sign in to access premium engineering content, interactive experiences and your engineering workspace.",
     );
+    expect(description).toHaveTextContent("You’ll return directly to this page after login.");
     expect(screen.getByRole("button", { name: "Login" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Continue Browsing" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
     expect(document.documentElement.style.overflow).toBe("hidden");
-    expect(events().map((e) => e.name)).toContain("login_prompt_shown");
+    expect(events()).toContainEqual({ name: "premium_login_prompt_shown", params: { ...PAGE, trigger: "five_minute_prompt" } });
   });
 
   it("does not open if the visitor signed in during the five minutes", async () => {
@@ -250,7 +253,7 @@ describe("five-minute prompt", () => {
     await settle();
     await settle(FIVE_MINUTES * 3);
     expect(dialog()).not.toHaveAttribute("open");
-    expect(events().map((e) => e.name)).not.toContain("login_prompt_shown");
+    expect(events().map((e) => e.name)).not.toContain("premium_login_prompt_shown");
   });
 
   it("Continue Browsing closes it, restores scroll and focus, and keeps it away", async () => {
@@ -268,8 +271,8 @@ describe("five-minute prompt", () => {
     expect(document.activeElement).toBe(before);
     expect(localStorage.getItem(STORAGE_KEYS.dismissedAt)).not.toBeNull();
     expect(events()).toContainEqual({
-      name: "login_prompt_dismissed",
-      params: expect.objectContaining({ trigger: "timer", method: "continue" }),
+      name: "premium_login_prompt_continue",
+      params: { ...PAGE, trigger: "five_minute_prompt", method: "continue" },
     });
 
     await settle(FIVE_MINUTES * 2);
@@ -283,7 +286,7 @@ describe("five-minute prompt", () => {
     await settle(FIVE_MINUTES);
     fireEvent(dialog(), new Event("cancel", { cancelable: true }));
     expect(dialog()).not.toHaveAttribute("open");
-    expect(events().at(-1)).toMatchObject({ name: "login_prompt_dismissed", params: { method: "escape" } });
+    expect(events().at(-1)).toMatchObject({ name: "premium_login_prompt_continue", params: { method: "escape" } });
   });
 
   it("keeps Tab and Shift+Tab inside the dialog", async () => {
@@ -305,9 +308,12 @@ describe("five-minute prompt", () => {
     renderSite();
     await settle();
     await settle(FIVE_MINUTES);
+    const assign = vi.fn();
+    vi.stubGlobal("location", { ...window.location, hostname: HOST, pathname: "/space/partners", search: "?mode=advanced", hash: "#telemetry", assign });
     fireEvent.click(screen.getByRole("button", { name: "Login" }));
-    expect(events().map((e) => e.name)).toContain("login_prompt_login_click");
-    expect(JSON.parse(sessionStorage.getItem(STORAGE_KEYS.loginPending)!)).toMatchObject({ trigger: "prompt" });
+    expect(events()).toContainEqual({ name: "premium_login_prompt_login", params: { ...PAGE, trigger: "five_minute_prompt" } });
+    expect(JSON.parse(sessionStorage.getItem(STORAGE_KEYS.loginPending)!)).toMatchObject({ trigger: "five_minute_prompt" });
+    expect(assign).toHaveBeenCalledWith(`/api/auth/login?return=${RETURN}&trigger=five_minute_prompt&label=${LABEL}`);
   });
 
   it("waits while the visitor is typing, then opens", async () => {

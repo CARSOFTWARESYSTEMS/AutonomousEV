@@ -71,7 +71,7 @@ describe("five-minute prompt timing", () => {
     markPromptShown(T0);
     markPromptDismissed(T0);
     promptDueAt(T0);
-    markLoginPending("header", T0);
+    markLoginPending("header_login", T0);
     const stored = [...Object.entries(localStorage), ...Object.entries(sessionStorage)].map(([k, v]) => `${k}=${v}`).join("\n");
     expect(stored).not.toMatch(/token|session_id|cookie|email|role|@/i);
   });
@@ -79,13 +79,22 @@ describe("five-minute prompt timing", () => {
 
 describe("returning from sign-in", () => {
   it("reports a recent Login click once, with its trigger", () => {
-    markLoginPending("prompt", T0);
-    expect(takeLoginPending(T0 + 30_000)).toBe("prompt");
+    markLoginPending("five_minute_prompt", T0);
+    expect(takeLoginPending(T0 + 30_000)).toBe("five_minute_prompt");
     expect(takeLoginPending(T0 + 31_000)).toBeNull();
+    markLoginPending("premium_route_required", T0);
+    expect(takeLoginPending(T0 + 30_000)).toBe("premium_route_required");
+  });
+
+  it("reads a Login click stored before the triggers were renamed", () => {
+    sessionStorage.setItem(STORAGE_KEYS.loginPending, JSON.stringify({ trigger: "header", at: T0 }));
+    expect(takeLoginPending(T0 + 1000)).toBe("header_login");
+    sessionStorage.setItem(STORAGE_KEYS.loginPending, JSON.stringify({ trigger: "prompt", at: T0 }));
+    expect(takeLoginPending(T0 + 1000)).toBe("five_minute_prompt");
   });
 
   it("forgets a Login click older than the sign-in can last", () => {
-    markLoginPending("header", T0);
+    markLoginPending("header_login", T0);
     expect(takeLoginPending(T0 + LOGIN_PENDING_MS + 1)).toBeNull();
   });
 

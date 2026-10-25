@@ -130,3 +130,52 @@ describe("Navbar Space & Aerospace dropdown", () => {
     expect(panel?.querySelector('a[href="/aerospace"]')).not.toBeNull();
   });
 });
+
+describe("Engineering under Space & Aerospace", () => {
+  const ENGINEERING = [
+    ["Battery Intelligence", "/"],
+    ["Technical Concepts", "/technical-concepts"],
+    ["AV Concepts", "/av-concepts"],
+    ["Cybersecurity", "/cybersecurity"],
+    ["Ecosystem", "/ecosystem/singapore"],
+    ["Risks & Maintenance", "/challenges"],
+    ["Developer Portal", "/developer-portal"],
+  ];
+
+  it("is no longer a top-level menu item", () => {
+    render(<Navbar />);
+    const labels = screen.getAllByText("Engineering");
+    expect(labels).toHaveLength(1);
+    expect(document.getElementById("space-dropdown-menu")).toContainElement(labels[0]);
+  });
+
+  it("sits in the Space & Aerospace dropdown with all its links, and a click closes the menu", async () => {
+    const user = userEvent.setup();
+    render(<Navbar />);
+    const trigger = getDesktopSpaceTrigger();
+    const menu = document.getElementById("space-dropdown-menu")!;
+    expect(menu).toHaveTextContent("Engineering");
+    expect(menu).toHaveTextContent("Battery Systems");
+    expect(menu).toHaveTextContent("Ecosystem & Risks");
+    for (const [name, href] of ENGINEERING) {
+      expect(Array.from(menu.querySelectorAll("a")).find((a) => a.textContent === name)).toHaveAttribute("href", href);
+    }
+
+    await user.click(trigger);
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+    await user.click(Array.from(menu.querySelectorAll("a")).find((a) => a.textContent === "Cybersecurity")!);
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("sits in the phone menu's Space & Aerospace accordion", async () => {
+    const user = userEvent.setup();
+    render(<Navbar />);
+    const mobileTrigger = screen
+      .getAllByRole("button", { name: /Space & Aerospace/ })
+      .find((btn) => btn.getAttribute("aria-controls") === "mobile-space-panel")!;
+    await user.click(mobileTrigger);
+    const panel = document.getElementById("mobile-space-panel")!;
+    expect(panel).toHaveTextContent("Engineering");
+    for (const [, href] of ENGINEERING) expect(panel.querySelector(`a[href="${href}"]`)).not.toBeNull();
+  });
+});

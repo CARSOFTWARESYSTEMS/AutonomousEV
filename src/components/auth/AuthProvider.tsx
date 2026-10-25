@@ -2,14 +2,14 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
-import { trackAuth } from "@/lib/auth/analytics";
+import { trackAuth, type AuthEventName } from "@/lib/auth/analytics";
+import { currentLoginContext, type SiteLoginTrigger } from "@/lib/auth/loginContext";
 import {
   announceSessionChange,
   markLoginPending,
   quietPromptForSession,
   STORAGE_KEYS,
   takeLoginPending,
-  type LoginTrigger,
 } from "@/lib/auth/promptState";
 import { checkSession, endSession, type AuthUser } from "@/lib/auth/session";
 import { authSiteForHost, loginHref, normalizeHostname, workspaceUrlFor, type AuthSite } from "@/lib/auth/sites";
@@ -40,7 +40,7 @@ interface AuthContextValue extends AuthState {
   /** Re-reads the session and resolves with the status it leaves. */
   refresh: () => Promise<AuthStatus>;
   /** Sends the browser to this site's sign-in, returning to the current page. */
-  startLogin: (trigger: LoginTrigger) => void;
+  startLogin: (trigger: SiteLoginTrigger) => void;
   signOut: () => Promise<void>;
 }
 
@@ -55,6 +55,13 @@ const AuthContext = createContext<AuthContextValue>({
 });
 
 export const useAuth = () => useContext(AuthContext);
+
+/** The analytics event for a Login click, by what offered it. */
+const LOGIN_START_EVENTS: Record<SiteLoginTrigger, AuthEventName> = {
+  header_login: "login_header_click",
+  five_minute_prompt: "premium_login_prompt_login",
+  premium_route_required: "premium_route_login_started",
+};
 
 /** A tab coming back to the front re-checks at most this often; other tabs' sign-ins arrive by storage event. */
 const VISIBILITY_RECHECK_MS = 15_000;
@@ -108,6 +115,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
       apply({ status: "authenticated", site, user: result.user });
       if (trigger) {
         trackAuth("login_success_return", site, { trigger });
+        if (trigger === "premium_route_required") trackAuth("premium_route_login_success", site, { trigger });
         announceSessionChange(Date.now());
       }
     } else {
@@ -146,12 +154,12 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, [refresh]);
 
-  const startLogin = useCallback((trigger: LoginTrigger) => {
+  const startLogin = useCallback((trigger: SiteLoginTrigger) => {
     const { site } = stateRef.current;
     // Read at click time, so the return is the page the visitor is on now, after any in-app navigation.
-    const href = loginHref(window.location);
+    const href = loginHref(window.location, currentLoginContext(trigger));
     if (!site || !href) return;
-    trackAuth(trigger === "header" ? "login_header_click" : "login_prompt_login_click", site, { trigger });
+    trackAuth(LOGIN_START_EVENTS[trigger], site, { trigger });
     markLoginPending(trigger, Date.now());
     window.location.assign(href);
   }, []);

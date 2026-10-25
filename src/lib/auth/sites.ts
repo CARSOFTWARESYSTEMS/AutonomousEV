@@ -180,10 +180,22 @@ export function returnPathFor(page: PageLocation): string {
   return "/";
 }
 
-/** The Login button's destination: this site's sign-in start, returning to `page`. Null on a host without sign-in. */
-export function loginHref(page: PageLocation): string | null {
+/** Why a sign-in starts, for the user's activation record (see src/lib/auth/loginContext.ts). */
+export interface LoginHrefContext {
+  trigger: string;
+  label?: string;
+}
+
+/**
+ * The Login button's destination: this site's sign-in start, returning to
+ * `page`, with why it started. Null on a host without sign-in.
+ */
+export function loginHref(page: PageLocation, context?: LoginHrefContext): string | null {
   if (!authSiteForHost(page.hostname)) return null;
-  return `${AUTH_API.login}?return=${encodeURIComponent(returnPathFor(page))}`;
+  let href = `${AUTH_API.login}?return=${encodeURIComponent(returnPathFor(page))}`;
+  if (context) href += `&trigger=${encodeURIComponent(context.trigger)}`;
+  if (context?.label) href += `&label=${encodeURIComponent(context.label)}`;
+  return href;
 }
 
 // ── Rewrites ───────────────────────────────────────────────────────────────

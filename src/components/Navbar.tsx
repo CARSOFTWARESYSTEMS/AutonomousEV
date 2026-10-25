@@ -123,6 +123,7 @@ export default function Navbar() {
               className={`${styles.dropdown} ${spaceOpen ? styles.dropdownForceOpen : ""}`}
             >
               <div className={styles.dropdownColumn}>
+                <div className={styles.dropdownTitle}>Space &amp; Aerospace</div>
                 <Link
                   href="/space"
                   className={styles.dropdownLink}
@@ -148,24 +149,23 @@ export default function Navbar() {
                   Model Rocketry Guide
                 </Link>
               </div>
-            </div>
-          </div>
-
-          <div className={styles.navItem}>
-            Engineering
-            <div className={styles.dropdown}>
-              <div className={styles.dropdownColumn}>
-                <div className={styles.dropdownTitle}>Battery Systems</div>
-                <Link href="/" className={styles.dropdownLink}>Battery Intelligence</Link>
-                <Link href="/technical-concepts" className={styles.dropdownLink}>Technical Concepts</Link>
-                <Link href="/av-concepts" className={styles.dropdownLink}>AV Concepts</Link>
-              </div>
-              <div className={styles.dropdownColumn}>
-                <div className={styles.dropdownTitle}>Ecosystem & Risks</div>
-                <Link href="/cybersecurity" className={styles.dropdownLink}>Cybersecurity</Link>
-                <Link href="/ecosystem/singapore" className={styles.dropdownLink}>Ecosystem</Link>
-                <Link href="/challenges" className={styles.dropdownLink}>Risks & Maintenance</Link>
-                <Link href="/developer-portal" className={styles.dropdownLink}>Developer Portal</Link>
+              <div className={styles.dropdownGroup}>
+                <div className={styles.dropdownTitle}>Engineering</div>
+                <div className={styles.dropdownGroupColumns}>
+                  <div className={styles.dropdownColumn}>
+                    <div className={styles.dropdownSubTitle}>Battery Systems</div>
+                    <Link href="/" className={styles.dropdownLink} onClick={closeSpace}>Battery Intelligence</Link>
+                    <Link href="/technical-concepts" className={styles.dropdownLink} onClick={closeSpace}>Technical Concepts</Link>
+                    <Link href="/av-concepts" className={styles.dropdownLink} onClick={closeSpace}>AV Concepts</Link>
+                  </div>
+                  <div className={styles.dropdownColumn}>
+                    <div className={styles.dropdownSubTitle}>Ecosystem & Risks</div>
+                    <Link href="/cybersecurity" className={styles.dropdownLink} onClick={closeSpace}>Cybersecurity</Link>
+                    <Link href="/ecosystem/singapore" className={styles.dropdownLink} onClick={closeSpace}>Ecosystem</Link>
+                    <Link href="/challenges" className={styles.dropdownLink} onClick={closeSpace}>Risks & Maintenance</Link>
+                    <Link href="/developer-portal" className={styles.dropdownLink} onClick={closeSpace}>Developer Portal</Link>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -219,7 +219,7 @@ export default function Navbar() {
             <span aria-hidden="true">{mobileSpaceOpen ? "−" : "+"}</span>
           </button>
           {mobileSpaceOpen && (
-            <div id="mobile-space-panel">
+            <div id="mobile-space-panel" className={styles.mobilePanel}>
               <Link
                 href="/space"
                 className={styles.mobileLink}
@@ -241,17 +241,28 @@ export default function Navbar() {
               >
                 Model Rocketry Guide
               </Link>
+
+              <div className={styles.mobileSectionTitle}>Engineering</div>
+              {[
+                ["/", "Battery Intelligence"],
+                ["/technical-concepts", "Technical Concepts"],
+                ["/av-concepts", "AV Concepts"],
+                ["/cybersecurity", "Cybersecurity"],
+                ["/ecosystem/singapore", "Ecosystem"],
+                ["/challenges", "Risks & Maintenance"],
+                ["/developer-portal", "Developer Portal"],
+              ].map(([href, label]) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className={styles.mobileLink}
+                  onClick={() => { setMobileMenuOpen(false); setMobileSpaceOpen(false); }}
+                >
+                  {label}
+                </Link>
+              ))}
             </div>
           )}
-
-          <div className={styles.mobileSectionTitle}>Engineering</div>
-          <Link href="/" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Battery Intelligence</Link>
-          <Link href="/technical-concepts" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Technical Concepts</Link>
-          <Link href="/av-concepts" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>AV Concepts</Link>
-          <Link href="/cybersecurity" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Cybersecurity</Link>
-          <Link href="/ecosystem/singapore" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Ecosystem</Link>
-          <Link href="/challenges" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Risks &amp; Maintenance</Link>
-          <Link href="/developer-portal" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Developer Portal</Link>
 
           <div className={styles.mobileSectionTitle}>Internships</div>
           <Link href="/internships" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Internships</Link>

@@ -5,6 +5,7 @@ import type { MouseEvent as ReactMouseEvent } from "react";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight, ChevronDown, LogIn, LogOut } from "lucide-react";
 import { trackAuth } from "@/lib/auth/analytics";
+import { currentLoginContext } from "@/lib/auth/loginContext";
 import { loginHref } from "@/lib/auth/sites";
 import { useAuth } from "./AuthProvider";
 import styles from "./auth.module.css";
@@ -50,13 +51,13 @@ export default function AuthNavControl({ variant, className = "" }: { variant: A
 
   if (status === "anonymous") {
     const onClick = (event: ReactMouseEvent<HTMLAnchorElement>) => {
-      const href = loginHref(window.location);
+      const href = loginHref(window.location, currentLoginContext("header_login"));
       if (!href) return;
       event.currentTarget.href = href;
       // A new tab or window follows the fresh address on its own.
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
       event.preventDefault();
-      startLogin("header");
+      startLogin("header_login");
     };
     return (
       <div className={slotClass} data-status={status} data-track-manual="">
@@ -67,7 +68,7 @@ export default function AuthNavControl({ variant, className = "" }: { variant: A
               link.focus();
             }
           }}
-          href={loginHref(window.location) ?? undefined}
+          href={loginHref(window.location, currentLoginContext("header_login")) ?? undefined}
           className={styles.trigger}
           onClick={onClick}
         >
@@ -182,12 +183,12 @@ export function AuthMenuEntry({ variant, onNavigate }: { variant: AuthNavVariant
     return (
       <div className={`${styles.menuEntry} ${family}`} data-track-manual="">
         <a
-          href={loginHref(window.location) ?? undefined}
+          href={loginHref(window.location, currentLoginContext("header_login")) ?? undefined}
           className={styles.menuEntryItem}
           onClick={(event) => {
             event.preventDefault();
             onNavigate?.();
-            startLogin("header");
+            startLogin("header_login");
           }}
         >
           Login

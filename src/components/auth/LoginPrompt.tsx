@@ -5,6 +5,7 @@ import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 import { usePathname } from "next/navigation";
 import { KeyRound, X } from "lucide-react";
 import { isSelfContainedPath } from "@/components/ChromeGate";
+import { routeAccessFor } from "@/config/premiumAuthRoutes";
 import { trackAuth } from "@/lib/auth/analytics";
 import { markPromptDismissed, markPromptShown, promptDueAt } from "@/lib/auth/promptState";
 import { useAuth } from "./AuthProvider";
@@ -21,13 +22,16 @@ function isShown(el: Element): boolean {
 }
 
 /**
- * Why the prompt must wait right now, or null when it may open. It never
- * interrupts sign-in itself, an error page, a page that opted out, another
- * dialog or open menu, fullscreen, or someone typing.
+ * Why the prompt must wait right now, or null when it may open. It opens only
+ * on optional-login pages (src/config/premiumAuthRoutes.ts: public pages never
+ * prompt, required-login pages have their own gate) and never interrupts
+ * sign-in itself, an error page, a page that opted out, another dialog or open
+ * menu, fullscreen, or someone typing.
  */
 export function promptBlocker(doc: Document = document): string | null {
   if (doc.visibilityState !== "visible") return "hidden";
   if (/^\/(?:api\/auth|login|logout|auth|sso)(?:\/|$)/.test(doc.location.pathname)) return "sign-in";
+  if (routeAccessFor(doc.location.pathname) !== "optional-login") return "route";
   // Pages opt out with data-auth-prompt="off"; .next-error-h1 is Next.js's own error and 404 page.
   if (doc.querySelector('[data-auth-prompt="off"], .next-error-h1')) return "page";
   if (doc.fullscreenElement) return "fullscreen";
@@ -42,9 +46,9 @@ export function promptBlocker(doc: Document = document): string | null {
 type DismissMethod = "continue" | "close" | "escape" | "backdrop";
 
 /**
- * The five-minute prompt. For a visitor still anonymous five minutes into a
- * browsing session, once per day at most, never while signed in. It offers
- * Login and Continue Browsing, and never forces either.
+ * The optional premium prompt. For a visitor still anonymous five minutes
+ * into a browsing session, once per day at most, never while signed in. It
+ * offers Login and Continue Browsing, and never forces either.
  */
 export default function LoginPrompt() {
   const { status, site, refresh, startLogin } = useAuth();
@@ -77,7 +81,7 @@ export default function LoginPrompt() {
       if (promptBlocker()) return later();
       markPromptShown(Date.now());
       setOpen(true);
-      trackAuth("login_prompt_shown", site!, { trigger: "timer" });
+      trackAuth("premium_login_prompt_shown", site!, { trigger: "five_minute_prompt" });
     }
     timer = window.setTimeout(attempt, Math.max(0, dueAt - Date.now()));
     return () => {
@@ -111,7 +115,7 @@ export default function LoginPrompt() {
     (method: DismissMethod) => {
       markPromptDismissed(Date.now());
       setOpen(false);
-      if (site) trackAuth("login_prompt_dismissed", site, { trigger: "timer", method });
+      if (site) trackAuth("premium_login_prompt_continue", site, { trigger: "five_minute_prompt", method });
     },
     [site],
   );
@@ -167,11 +171,13 @@ export default function LoginPrompt() {
             <span className={styles.brandName}>{site.brand}</span>
           </div>
           <h2 id={titleId} className={styles.title}>
-            Continue with {site.brand}
+            Login to view premium content
           </h2>
           <div id={descriptionId}>
-            <p className={styles.text}>Sign in to access your engineering workspace, projects and personalised experiences.</p>
-            <p className={styles.note}>You’ll come straight back to this page.</p>
+            <p className={styles.text}>
+              Sign in to access premium engineering content, interactive experiences and your engineering workspace.
+            </p>
+            <p className={styles.note}>You’ll return directly to this page after login.</p>
           </div>
           <div className={styles.actions}>
             <button
@@ -179,7 +185,7 @@ export default function LoginPrompt() {
               className={styles.primary}
               onClick={() => {
                 setOpen(false);
-                startLogin("prompt");
+                startLogin("five_minute_prompt");
               }}
             >
               Login
