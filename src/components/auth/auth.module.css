@@ -8,6 +8,7 @@
 .dialog,
 .notice,
 .gate,
+.preview,
 .slotCore {
   --auth-surface: linear-gradient(180deg, #082c1e 0%, #04140e 100%);
   --auth-raised: #0a3323;
@@ -30,6 +31,7 @@
 .dialog[data-family="space"],
 .notice[data-family="space"],
 .gate[data-family="space"],
+.preview[data-family="space"],
 .slotSpace {
   --auth-surface: linear-gradient(180deg, #13163d 0%, #0a0c22 100%);
   --auth-raised: #151942;
@@ -123,6 +125,8 @@
 
 .trigger:focus-visible,
 .gateBack:focus-visible,
+.previewCrumbs a:focus-visible,
+.previewItemName:focus-visible,
 .menuItem:focus-visible,
 .close:focus-visible,
 .primary:focus-visible,
@@ -651,6 +655,172 @@
 @keyframes authSpin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+/* ── Public preview of a required-login page ────────────────────────────── */
+
+/* What signed-out visitors and search engines get: the page's title, description and topics beside the login card. */
+.preview {
+  color: var(--auth-text);
+  font-family: var(--font-inter), "Inter", system-ui, -apple-system, sans-serif;
+}
+
+.preview[data-layout="page"] {
+  min-height: 100dvh;
+  background:
+    radial-gradient(ellipse 80% 40% at 50% 0%, rgba(124, 58, 237, 0.16), transparent 70%),
+    radial-gradient(ellipse 70% 35% at 50% 100%, rgba(6, 182, 212, 0.08), transparent 70%),
+    #090b1d;
+}
+
+.previewMain {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 28px;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 120px 20px 80px;
+}
+
+.previewCrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 18px;
+  font-size: 13px;
+  color: var(--auth-text-3);
+}
+
+.previewCrumbs a {
+  color: var(--auth-text-2);
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.previewCrumbs a:hover {
+  color: var(--auth-text);
+}
+
+.previewTitle {
+  margin: 0 0 14px;
+  font-size: clamp(1.85rem, 3.6vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--auth-text);
+  overflow-wrap: anywhere;
+}
+
+.previewLead {
+  margin: 0;
+  max-width: 62ch;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--auth-text-2);
+}
+
+.previewCard .gatePanel {
+  width: 100%;
+}
+
+.previewSectionTitle {
+  margin: 0 0 14px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--auth-accent);
+}
+
+.previewTopics {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+  gap: 10px 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.previewTopics li {
+  display: flex;
+  gap: 10px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--auth-text-2);
+}
+
+.previewTopics svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+  color: var(--auth-accent);
+}
+
+.previewCatalogue {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.previewCatalogue li {
+  padding: 16px 18px;
+  border: 1px solid var(--auth-border);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.previewItemName {
+  display: inline-block;
+  margin-bottom: 6px;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--auth-text);
+  text-decoration: none;
+}
+
+.previewItemName:hover {
+  color: var(--auth-accent);
+}
+
+.previewCatalogue p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--auth-text-3);
+}
+
+/* Laptops: the login card stays beside the overview as it scrolls. */
+@media (min-width: 960px) {
+  .previewMain {
+    grid-template-columns: minmax(0, 1fr) 400px;
+    column-gap: 48px;
+    align-items: start;
+    padding-top: 136px;
+  }
+
+  .previewIntro,
+  .previewSection {
+    grid-column: 1;
+  }
+
+  .previewCard {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    position: sticky;
+    top: 104px;
+  }
+}
+
+@media (max-width: 480px) {
+  .previewMain {
+    padding: 96px 16px 56px;
+    gap: 24px;
   }
 }
 

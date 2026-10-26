@@ -1,42 +1,39 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef } from "react";
 import type { ReactNode } from "react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowLeft, KeyRound } from "lucide-react";
-import { isSelfContainedPath } from "@/components/ChromeGate";
 import { CATEGORY_HOME, routeConfigFor, type PremiumAuthRoute } from "@/config/premiumAuthRoutes";
-import { trackAuth } from "@/lib/auth/analytics";
 import { useAuth } from "./AuthProvider";
+import PremiumLoginCard from "./PremiumLoginCard";
 import styles from "./auth.module.css";
 
+// A LOGIN GATE, NOT ACCESS CONTROL. Everything here decides what the browser
+// renders; the page files stay fetchable without signing in. Genuinely
+// protected content or data must be authorized on the server before delivery
+// (see src/config/premiumAuthRoutes.ts and docs/premium-login.md).
+
 /**
- * Required-login pages (src/config/premiumAuthRoutes.ts) render only for a
- * signed-in visitor. Until the session is known the visitor sees a quiet
- * "checking" panel, then either the page or the premium login gate. The page
- * is never rendered behind the gate, so none of it shows or runs first.
+ * Whether the current required-login page must stay locked: until the session
+ * is known, and for a visitor who is not signed in. Hosts without a sign-in
+ * service (local development, previews) are never locked; where the service
+ * is configured but not answering, the page stays locked.
  *
- * Hosts without a sign-in service (local development, previews) show the
- * page. Where the service is configured but not answering, the gate stays
- * closed and offers to try again.
+ * Coming back from sign-in, the page appears after the browser has already
+ * looked for its #hash, so this scrolls there once the page is unlocked.
  */
-export default function PremiumRouteGate({ children }: { children: ReactNode }) {
-  const pathname = usePathname();
-  const route = routeConfigFor(pathname);
+export function usePremiumLock(scrollOnUnlock = true): { route: PremiumAuthRoute | null; locked: boolean } {
+  const route = routeConfigFor(usePathname());
   const { status } = useAuth();
   const locked = route?.access === "required-login" && status !== "authenticated" && status !== "none";
 
-  // Coming back from sign-in, the page appears after the browser has already
-  // looked for its #hash, so scroll to it once the page is there.
   const wasLocked = useRef(false);
   useEffect(() => {
-    if (wasLocked.current && !locked) scrollToHash();
+    if (wasLocked.current && !locked && scrollOnUnlock) scrollToHash();
     wasLocked.current = locked;
-  }, [locked]);
+  }, [locked, scrollOnUnlock]);
 
-  if (!locked || !route) return <>{children}</>;
-  return <Gate key={route.path} route={route} checking={status === "loading"} unavailable={status === "unavailable"} />;
+  return { route, locked };
 }
 
 function scrollToHash() {
@@ -50,90 +47,36 @@ function scrollToHash() {
   window.requestAnimationFrame(() => attempt(8));
 }
 
-function Gate({ route, checking, unavailable }: { route: PremiumAuthRoute; checking: boolean; unavailable: boolean }) {
-  const { site, startLogin, refresh } = useAuth();
-  const pathname = usePathname();
-  const titleId = useId();
-  const selfContained = isSelfContainedPath(pathname);
-  const Landmark = selfContained ? "main" : "section";
-  const home = CATEGORY_HOME[route.category];
-  const showing = !checking && !unavailable;
-  const [retrying, setRetrying] = useState(false);
+/**
+ * The root layout's gate: on a required-login page without a public preview,
+ * the login card replaces the whole page, so none of it shows or runs first.
+ * Pages with `publicPreview` gate themselves with <PremiumContent> and pass
+ * through here.
+ */
+export default function PremiumRouteGate({ children }: { children: ReactNode }) {
+  // A page with a public preview scrolls to its own #hash (PremiumContent).
+  const { route, locked } = usePremiumLock(!routeConfigFor(usePathname())?.publicPreview);
+  if (!locked || !route || route.publicPreview) return <>{children}</>;
+  return <Gate key={route.path} route={route} />;
+}
 
-  useEffect(() => {
-    if (showing && site) trackAuth("premium_route_gate_shown", site, { trigger: "premium_route_required" });
-  }, [showing, site]);
+function Gate({ route }: { route: PremiumAuthRoute }) {
+  const { status } = useAuth();
+  const titleId = useId();
+  const { family } = CATEGORY_HOME[route.category];
+  const Landmark = family === "space" ? "main" : "section";
 
   return (
     <Landmark
       className={styles.gate}
-      data-family={selfContained ? "space" : "core"}
-      data-layout={selfContained ? "page" : "section"}
+      data-family={family}
+      data-layout={family === "space" ? "page" : "section"}
       // The five-minute prompt never opens over the gate.
       data-auth-prompt="off"
-      data-track-manual=""
       aria-labelledby={titleId}
-      aria-busy={checking || undefined}
+      aria-busy={status === "loading" || undefined}
     >
-      <div className={styles.gatePanel}>
-        {checking ? (
-          <div className={styles.gateChecking} role="status">
-            <span className={styles.gateSpinner} aria-hidden="true" />
-            <span id={titleId}>Checking your sign-in…</span>
-          </div>
-        ) : (
-          <>
-            <div className={styles.brandRow} aria-hidden="true">
-              <span className={styles.brandIcon}>
-                <KeyRound size={17} />
-              </span>
-              <span className={styles.brandName}>{site?.brand}</span>
-            </div>
-            <p className={styles.gateEyebrow}>{route.label}</p>
-            {unavailable ? (
-              <>
-                <h1 id={titleId} className={styles.title}>
-                  Sign-in is temporarily unavailable
-                </h1>
-                <p className={styles.text}>
-                  This engineering experience needs a sign-in, and the sign-in service isn’t answering right now.
-                </p>
-                <div className={styles.actions}>
-                  <button
-                    type="button"
-                    className={styles.primary}
-                    disabled={retrying}
-                    onClick={async () => {
-                      setRetrying(true);
-                      await refresh();
-                      setRetrying(false);
-                    }}
-                  >
-                    {retrying ? "Trying again…" : "Try again"}
-                  </button>
-                </div>
-              </>
-            ) : (
-              <>
-                <h1 id={titleId} className={styles.title}>
-                  Login to view premium content
-                </h1>
-                <p className={styles.text}>Sign in to continue to this engineering experience.</p>
-                <p className={styles.note}>You’ll return directly to this page after login.</p>
-                <div className={styles.actions}>
-                  <button type="button" className={styles.primary} onClick={() => startLogin("premium_route_required")}>
-                    Login
-                  </button>
-                </div>
-              </>
-            )}
-            <Link href={home.href} className={styles.gateBack}>
-              <ArrowLeft size={15} aria-hidden="true" />
-              Back to {home.label}
-            </Link>
-          </>
-        )}
-      </div>
+      <PremiumLoginCard route={route} heading="h1" titleId={titleId} showLabel showBack />
     </Landmark>
   );
 }

@@ -1,4 +1,6 @@
 import Link from "next/link";
+import PremiumContent from "@/components/auth/PremiumContent";
+import PremiumPreview from "@/components/auth/PremiumPreview";
 import { ChevronRight, Play, Telescope, ShieldCheck } from "lucide-react";
 import { JsonLd } from "@/lib/structured-data/JsonLd";
 import { manrope, inter } from "../fonts";
@@ -6,7 +8,7 @@ import SpaceHeader from "../components/SpaceHeader";
 import SpaceFooter from "../components/SpaceFooter";
 import spaceTheme from "../spaceTheme.module.css";
 import styles from "./station.module.css";
-import { structuredData } from "./seo";
+import { structuredData, TITLE, DESCRIPTION } from "./seo";
 import { IMEX } from "./data/india";
 import { BRAND_LINKS, ORGANISATION_LINE } from "./data/organisations";
 import { LAST_REVIEWED, LAST_REVIEWED_LABEL } from "./data/sources";
@@ -63,7 +65,7 @@ const PART_LINKS: Record<"knowledge" | "systems" | "lab" | "research", [string, 
   research: [["#lab", "Microgravity Lab"], ["#frontier", "Research Frontier"], ["#questions", "Question generator"], ["#library", "Library"]],
 };
 
-export default function SpaceStationPage() {
+function FullExperience() {
   return (
     <div className={`${spaceTheme.theme} ${manrope.variable} ${inter.variable} ${styles.portal}`}>
       <JsonLd data={structuredData} />
@@ -369,5 +371,27 @@ export default function SpaceStationPage() {
       </ModeProvider>
       <SpaceFooter basePath="/space" brandLinks={BRAND_LINKS} organisationLine={ORGANISATION_LINE} />
     </div>
+  );
+}
+
+/**
+ * Signed-in visitors get the full experience. Everyone else — and the server
+ * render search engines index — gets the public preview (premiumAuthRoutes).
+ */
+export default function SpaceStationPage() {
+  return (
+    <PremiumContent
+      preview={
+        <PremiumPreview
+          path="/space/space-station"
+          title={TITLE}
+          description={DESCRIPTION}
+          structuredData={structuredData}
+          header={<div className={`${spaceTheme.theme} ${manrope.variable} ${inter.variable}`}><SpaceHeader basePath="/space" brandLinks={BRAND_LINKS} /></div>}
+        />
+      }
+    >
+      <FullExperience />
+    </PremiumContent>
   );
 }

@@ -1,9 +1,13 @@
 // @vitest-environment-options {"url": "https://autonomous.ev.engineer/space/cubesat?mode=advanced#energy"}
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi, type Mock } from "vitest";
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
+import { renderToString } from "react-dom/server";
 import { trackEvent } from "@/utils/analytics";
 import { STORAGE_KEYS } from "@/lib/auth/promptState";
+import { PROGRAMME_TRACKS } from "@/lib/structured-data/internshipsGraph";
 import AuthProvider from "./AuthProvider";
+import PremiumContent from "./PremiumContent";
+import PremiumPreview from "./PremiumPreview";
 import PremiumRouteGate from "./PremiumRouteGate";
 
 let pathname = "/space/cubesat";
@@ -15,11 +19,30 @@ vi.mock("@/utils/analytics", () => ({
   trackEvent: vi.fn(),
 }));
 
+// Every listed route has a public preview today. The layout gate is the
+// fallback for one that doesn't, so its tests take the preview away.
+let previews = true;
+vi.mock("@/config/premiumAuthRoutes", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/config/premiumAuthRoutes")>();
+  return {
+    ...actual,
+    routeConfigFor: (path: string | null | undefined) => {
+      const route = actual.routeConfigFor(path);
+      return route && !previews ? { ...route, publicPreview: false } : route;
+    },
+  };
+});
+
 const HOST = "autonomous.ev.engineer";
 const FIVE_MINUTES = 5 * 60_000;
 const ANONYMOUS = { authenticated: false };
 const SIGNED_IN = { authenticated: true, user: { id: "u1", name: "Asha Rao", email: "asha@example.com" }, roles: ["Viewer"], domain: HOST };
 const RETURN = encodeURIComponent("/space/cubesat?mode=advanced#energy");
+const LABEL = encodeURIComponent("CubeSat / CubeTwin");
+const STRUCTURED = {
+  "@context": "https://schema.org",
+  "@graph": [{ "@type": "Course", name: "CubeTwin", teaches: ["Orbit sunlight", "Battery state of charge", "Fault injection"] }],
+};
 
 const json = (body: unknown) => new Response(JSON.stringify(body), { status: 200, headers: { "content-type": "application/json" } });
 
@@ -41,18 +64,39 @@ async function settle(ms = 0) {
   });
 }
 
-function renderPage() {
-  return render(
-    <AuthProvider>
-      <PremiumRouteGate>
-        <article data-testid="premium-content">
-          <h1>CubeTwin</h1>
-          <section id="energy">Energy budget</section>
-        </article>
-      </PremiumRouteGate>
-    </AuthProvider>,
-  );
-}
+const fullPage = (
+  <article data-testid="premium-content">
+    <h1>CubeTwin</h1>
+    <section id="energy">Energy budget</section>
+  </article>
+);
+
+/** The root layout's gate around a page that renders no preview of its own. */
+const layoutOnly = () => (
+  <AuthProvider>
+    <PremiumRouteGate>{fullPage}</PremiumRouteGate>
+  </AuthProvider>
+);
+
+/** A page with a public preview, inside the root layout's gate (which steps aside). */
+const withPreview = () => (
+  <AuthProvider>
+    <PremiumRouteGate>
+      <PremiumContent
+        preview={
+          <PremiumPreview
+            path="/space/cubesat"
+            title="CubeTwin | CubeSat Battery & Energy Digital Twin"
+            description="Learn CubeSat power systems with an interactive digital twin."
+            structuredData={STRUCTURED}
+          />
+        }
+      >
+        {fullPage}
+      </PremiumContent>
+    </PremiumRouteGate>
+  </AuthProvider>
+);
 
 const content = () => screen.queryByTestId("premium-content");
 
@@ -68,6 +112,7 @@ beforeAll(() => {
 
 beforeEach(() => {
   pathname = "/space/cubesat";
+  previews = true;
   document.title = "CubeTwin | CubeSat Battery & Energy Digital Twin";
   vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout", "Date", "requestAnimationFrame"] });
   vi.setSystemTime(new Date("2026-10-25T10:00:00Z"));
@@ -81,96 +126,67 @@ afterEach(() => {
   sessionStorage.clear();
 });
 
-describe("required-login route, anonymous visitor", () => {
-  it("shows the premium login gate and never renders the page", async () => {
+// ── Public preview (every listed route today) ──────────────────────────────
+
+describe("required-login page with a public preview", () => {
+  it("server-renders the indexable preview — title, description, structured data, topics — and never the full page", () => {
+    serveSessions(ANONYMOUS);
+    const html = renderToString(withPreview());
+    expect(html).toContain("<h1");
+    expect(html).toContain(">CubeTwin</h1>");
+    expect(html).toContain("Learn CubeSat power systems with an interactive digital twin.");
+    expect(html).toContain('<script type="application/ld+json">');
+    expect(html).toContain("Battery state of charge");
+    expect(html).toContain("Checking your sign-in");
+    expect(html).not.toContain("premium-content");
+    expect(html).not.toContain("Energy budget");
+  });
+
+  it("shows a signed-out visitor the preview beside the login card, with Login only", async () => {
     serveSessions(ANONYMOUS);
     renderPage();
     await settle();
     expect(content()).toBeNull();
-    expect(screen.queryByText("Energy budget")).toBeNull();
-    expect(screen.getByRole("heading", { level: 1, name: "Login to view premium content" })).toBeInTheDocument();
-    expect(screen.getByText("Sign in to continue to this engineering experience.")).toBeInTheDocument();
-    expect(screen.getByText("You’ll return directly to this page after login.")).toBeInTheDocument();
-    expect(screen.getByText("CubeSat / CubeTwin")).toBeInTheDocument();
-    expect(screen.getByText("EV.ENGINEER™")).toBeInTheDocument();
-    expect(screen.getByRole("main")).toHaveAttribute("aria-labelledby");
-  });
-
-  it("offers Login only — no Continue Browsing — and a way back to the section", async () => {
-    serveSessions(ANONYMOUS);
-    renderPage();
-    await settle();
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("CubeTwin");
+    expect(screen.getByRole("heading", { level: 2, name: "Login to view premium content" })).toBeInTheDocument();
+    expect(screen.getByText("Learn CubeSat power systems with an interactive digital twin.")).toBeInTheDocument();
+    expect(within(screen.getByRole("list")).getAllByRole("listitem").map((li) => li.textContent)).toEqual([
+      "Orbit sunlight", "Battery state of charge", "Fault injection",
+    ]);
     expect(screen.getAllByRole("button").map((b) => b.textContent)).toEqual(["Login"]);
     expect(screen.queryByText("Continue Browsing")).toBeNull();
-    expect(screen.getByRole("link", { name: "Back to Space" })).toHaveAttribute("href", "/space");
+    expect(screen.getByRole("navigation", { name: "Breadcrumb" })).toHaveTextContent("Space");
+    expect(screen.getByRole("link", { name: "Space" })).toHaveAttribute("href", "/space");
+    expect(screen.getByRole("main")).toHaveAttribute("aria-labelledby", "premium-preview-title");
   });
 
-  it("does not wait five minutes, and the optional prompt never opens over it", async () => {
-    serveSessions(ANONYMOUS);
-    renderPage();
-    await settle();
-    expect(events()).toContainEqual({
-      name: "premium_route_gate_shown",
-      params: { site: "ev_engineer", hostname: HOST, page_path: "/space/cubesat", page_label: "CubeSat / CubeTwin", trigger: "premium_route_required" },
-    });
-    await settle(FIVE_MINUTES * 2);
-    expect(document.querySelector("dialog[open]")).toBeNull();
-    expect(events().map((e) => e.name)).not.toContain("premium_login_prompt_shown");
-  });
-
-  it("Login starts sign-in returning to the exact page, with the premium trigger and page label", async () => {
+  it("Login returns to the exact page, with the premium trigger and page label", async () => {
     serveSessions(ANONYMOUS);
     renderPage();
     await settle();
     const assign = vi.fn();
     vi.stubGlobal("location", { ...window.location, hostname: HOST, pathname: "/space/cubesat", search: "?mode=advanced", hash: "#energy", assign });
     fireEvent.click(screen.getByRole("button", { name: "Login" }));
-    expect(assign).toHaveBeenCalledWith(
-      `/api/auth/login?return=${RETURN}&trigger=premium_route_required&label=${encodeURIComponent("CubeSat / CubeTwin")}`,
-    );
+    expect(assign).toHaveBeenCalledWith(`/api/auth/login?return=${RETURN}&trigger=premium_route_required&label=${LABEL}`);
     expect(JSON.parse(sessionStorage.getItem(STORAGE_KEYS.loginPending)!)).toMatchObject({ trigger: "premium_route_required" });
-    expect(events().map((e) => e.name)).toContain("premium_route_login_started");
-    expect(JSON.stringify(events())).not.toMatch(/asha|u1|Viewer/i);
+    expect(events().map((e) => e.name)).toEqual(expect.arrayContaining(["premium_route_gate_shown", "premium_route_login_started"]));
   });
-});
 
-describe("required-login route, while the session is unknown", () => {
-  it("shows a checking panel, not the page", async () => {
-    let answer: (r: Response) => void = () => {};
-    vi.stubGlobal("fetch", vi.fn(() => new Promise<Response>((resolve) => (answer = resolve))));
+  it("does not wait five minutes, and the optional prompt never opens over it", async () => {
+    serveSessions(ANONYMOUS);
     renderPage();
-    expect(content()).toBeNull();
-    expect(screen.getByRole("status")).toHaveTextContent("Checking your sign-in…");
-    expect(screen.getByRole("main")).toHaveAttribute("aria-busy", "true");
     await settle();
-    expect(content()).toBeNull();
-    await act(async () => answer(json(SIGNED_IN)));
-    await settle();
-    expect(content()).not.toBeNull();
+    await settle(FIVE_MINUTES * 2);
+    expect(document.querySelector("dialog[open]")).toBeNull();
   });
-});
 
-describe("required-login route, signed-in visitor", () => {
-  it("renders the page", async () => {
+  it("gives a signed-in visitor the full page and no preview", async () => {
     serveSessions(SIGNED_IN);
     renderPage();
     await settle();
     expect(content()).not.toBeNull();
     expect(screen.queryByText("Login to view premium content")).toBeNull();
-  });
-
-  it("is signed in without a membership: the page shows, protected data stays a server decision", async () => {
-    serveSessions({ ...SIGNED_IN, roles: [] });
-    renderPage();
-    await settle();
-    expect(content()).not.toBeNull();
-  });
-
-  it("treats a session for another host as no session", async () => {
-    serveSessions({ ...SIGNED_IN, domain: "ev.engineer" });
-    renderPage();
-    await settle();
-    expect(content()).toBeNull();
+    expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
   });
 
   it("returning from sign-in: reports success and scrolls to the page's #hash", async () => {
@@ -181,73 +197,136 @@ describe("required-login route, signed-in visitor", () => {
     renderPage();
     await settle();
     await settle(300);
-    expect(content()).not.toBeNull();
     expect(events().map((e) => e.name)).toEqual(expect.arrayContaining(["login_success_return", "premium_route_login_success"]));
-    expect(scrolled).toHaveBeenCalled();
+    expect(scrolled).toHaveBeenCalledTimes(1);
     expect(scrolled.mock.contexts[0]).toBe(document.getElementById("energy"));
   });
-});
 
-describe("required-login route, sign-in service not answering", () => {
-  it("stays closed and offers to try again", async () => {
+  it("stays locked, preview showing, while sign-in is unavailable", async () => {
     serveSessions(new Response("down", { status: 503 }), ANONYMOUS);
     renderPage();
     await settle();
     expect(content()).toBeNull();
-    expect(screen.getByRole("heading", { name: "Sign-in is temporarily unavailable" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("CubeTwin");
+    expect(screen.getByRole("heading", { level: 2, name: "Sign-in is temporarily unavailable" })).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Try again" }));
     await settle();
-    expect(screen.getByRole("heading", { name: "Login to view premium content" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 2, name: "Login to view premium content" })).toBeInTheDocument();
+  });
+
+  it("treats a session for another host as no session", async () => {
+    serveSessions({ ...SIGNED_IN, domain: "ev.engineer" });
+    renderPage();
+    await settle();
+    expect(content()).toBeNull();
+  });
+
+  function renderPage() {
+    return render(withPreview());
+  }
+});
+
+describe("/internships preview", () => {
+  it("lists every programme track the structured data lists, linked on this host", async () => {
+    pathname = "/internships";
+    serveSessions(ANONYMOUS);
+    const { default: InternshipsPage } = await import("@/app/internships/page");
+    render(<AuthProvider>{InternshipsPage()}</AuthProvider>);
+    await settle();
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Engineering Internships & R&D — EV, AI, Aerospace & Space");
+    const catalogue = screen.getByRole("region", { name: "Programme tracks" });
+    const links = within(catalogue).getAllByRole("link");
+    expect(links.map((a) => a.textContent)).toEqual(PROGRAMME_TRACKS.map((t) => t.name));
+    expect(links.find((a) => a.textContent === "EV Battery Pack Design")).toHaveAttribute("href", "/internships/battery-pack-design");
+    expect(links.find((a) => a.textContent === "EV Help Agent")).toHaveAttribute("href", "https://help.ev.engineer/");
+    expect(document.querySelector('script[type="application/ld+json"]')).not.toBeNull();
+    // Under the site Navbar: a section, not a second <main>.
+    expect(screen.queryByRole("main")).toBeNull();
   });
 });
 
-describe("other routes", () => {
+// ── Layout gate (a required-login route without a public preview) ──────────
+
+describe("layout gate, for a route without a public preview", () => {
+  beforeEach(() => {
+    previews = false;
+  });
+
+  it("replaces the whole page with the login card and never renders the page", async () => {
+    serveSessions(ANONYMOUS);
+    render(layoutOnly());
+    await settle();
+    expect(content()).toBeNull();
+    expect(screen.getByRole("heading", { level: 1, name: "Login to view premium content" })).toBeInTheDocument();
+    expect(screen.getByText("CubeSat / CubeTwin")).toBeInTheDocument();
+    expect(screen.getAllByRole("button").map((b) => b.textContent)).toEqual(["Login"]);
+    expect(screen.getByRole("link", { name: "Back to Space" })).toHaveAttribute("href", "/space");
+  });
+
+  it("shows a checking panel, not the page, while the session is unknown", async () => {
+    let answer: (r: Response) => void = () => {};
+    vi.stubGlobal("fetch", vi.fn(() => new Promise<Response>((resolve) => (answer = resolve))));
+    render(layoutOnly());
+    expect(content()).toBeNull();
+    expect(screen.getByRole("status")).toHaveTextContent("Checking your sign-in…");
+    expect(screen.getByRole("main")).toHaveAttribute("aria-busy", "true");
+    await settle();
+    expect(content()).toBeNull();
+    await act(async () => answer(json(SIGNED_IN)));
+    await settle();
+    expect(content()).not.toBeNull();
+  });
+
+  it("is signed in without a membership: the page shows, protected data stays a server decision", async () => {
+    serveSessions({ ...SIGNED_IN, roles: [] });
+    render(layoutOnly());
+    await settle();
+    expect(content()).not.toBeNull();
+  });
+
+  it("gates a premium page reached by in-app navigation", async () => {
+    pathname = "/space";
+    serveSessions(ANONYMOUS);
+    const view = render(layoutOnly());
+    await settle();
+    expect(content()).not.toBeNull();
+    pathname = "/space/space-station";
+    view.rerender(layoutOnly());
+    await settle();
+    expect(content()).toBeNull();
+    expect(screen.getByText("Space Station")).toBeInTheDocument();
+  });
+
+  it("puts a core page's gate in the site's content area, not a full-page takeover", async () => {
+    pathname = "/internships";
+    serveSessions(ANONYMOUS);
+    render(layoutOnly());
+    await settle();
+    expect(screen.queryByRole("main")).toBeNull();
+    expect(screen.getByRole("region", { name: "Login to view premium content" })).toHaveAttribute("data-family", "core");
+    expect(screen.getByRole("link", { name: "Back to Home" })).toHaveAttribute("href", "/");
+  });
+});
+
+// ── Everywhere ──────────────────────────────────────────────────────────────
+
+describe("other routes and hosts", () => {
   it("leaves an unconfigured page alone, whatever the session", async () => {
     pathname = "/space";
     serveSessions(ANONYMOUS);
-    renderPage();
+    render(withPreview());
     expect(content()).not.toBeNull();
     await settle();
     expect(content()).not.toBeNull();
     expect(screen.queryByText("Login to view premium content")).toBeNull();
   });
 
-  it("gates a premium page reached by in-app navigation", async () => {
-    pathname = "/space";
-    serveSessions(ANONYMOUS);
-    const view = renderPage();
-    await settle();
-    expect(content()).not.toBeNull();
-    pathname = "/space/space-station";
-    view.rerender(
-      <AuthProvider>
-        <PremiumRouteGate>
-          <article data-testid="premium-content" />
-        </PremiumRouteGate>
-      </AuthProvider>,
-    );
-    await settle();
-    expect(content()).toBeNull();
-    expect(screen.getByText("Space Station")).toBeInTheDocument();
-  });
-
-  it("shows the page on a host without a sign-in service (local development, previews)", async () => {
+  it("shows the full page on a host without a sign-in service (local development, previews)", async () => {
     vi.stubGlobal("location", { ...window.location, hostname: "localhost" });
     const fetchMock = serveSessions(ANONYMOUS);
-    renderPage();
+    render(withPreview());
     await settle();
     expect(content()).not.toBeNull();
     expect(fetchMock).not.toHaveBeenCalled();
-  });
-
-  it("puts /internships in the site's content area, not a full-page takeover", async () => {
-    pathname = "/internships";
-    serveSessions(ANONYMOUS);
-    renderPage();
-    await settle();
-    expect(content()).toBeNull();
-    expect(screen.queryByRole("main")).toBeNull();
-    expect(screen.getByRole("region", { name: "Login to view premium content" })).toHaveAttribute("data-family", "core");
-    expect(screen.getByRole("link", { name: "Back to Home" })).toHaveAttribute("href", "/");
   });
 });

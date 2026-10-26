@@ -25,7 +25,8 @@ import {
 const HUB_URL = INTERNSHIP_PROGRAM.canonicalUrl;
 const COLLECTION_ID = INTERNSHIP_PROGRAM.id;
 
-const PROGRAMME_TRACKS: { name: string; url: string; description: string }[] = [
+/** Also the public catalogue on the /internships preview, so what it shows and what this graph lists stay one list. */
+export const PROGRAMME_TRACKS: { name: string; url: string; description: string }[] = [
   {
     name: "EV Battery Intelligence Platform (Cybersecurity & Fire Prevention)",
     url: `${SITE_URL}/internships/battery-cybersecurity`,

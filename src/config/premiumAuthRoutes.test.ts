@@ -47,6 +47,34 @@ describe("premium route table", () => {
   });
 });
 
+describe("public previews", () => {
+  /** The page file serving `path`, following a next.config.ts rewrite to another page. */
+  function pageFile(path: string): string {
+    const direct = join(process.cwd(), "src/app", path, "page.tsx");
+    if (existsSync(direct)) return direct;
+    const config = readFileSync(join(process.cwd(), "next.config.ts"), "utf8");
+    const target = new RegExp(`source: '${path}',\\s*destination: '([^']+)'`).exec(config)?.[1];
+    if (!target) throw new Error(`No page or rewrite for ${path}`);
+    return join(process.cwd(), "src/app", target, "page.tsx");
+  }
+
+  it("keeps today's premium pages indexable through a public preview", () => {
+    // A future page that must stay entirely non-public may leave publicPreview off: the layout gate covers it.
+    expect(premiumAuthRoutes.filter((r) => r.publicPreview).map((r) => r.path).sort()).toEqual([...REQUIRED].sort());
+  });
+
+  it("is only claimed by pages that render the gated boundary with a preview of themselves", () => {
+    for (const r of premiumAuthRoutes.filter((r) => r.publicPreview)) {
+      const source = readFileSync(pageFile(r.path), "utf8");
+      expect(source, r.path).toMatch(/<PremiumContent\b/);
+      expect(source, r.path).toMatch(/<PremiumPreview\b/);
+      // The preview names a listed route (a /workshop visitor sees /internships' preview).
+      const previewPath = /<PremiumPreview\s+path="([^"]+)"/.exec(source)?.[1];
+      expect(routeConfigFor(previewPath)?.access, r.path).toBe("required-login");
+    }
+  });
+});
+
 describe("matching", () => {
   it("matches exact paths, ignoring a trailing slash", () => {
     expect(routeAccessFor("/space/cubesat")).toBe("required-login");

@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { JsonLd } from "@/lib/structured-data/JsonLd";
-import { buildInternshipsGraph } from "@/lib/structured-data/internshipsGraph";
+import { buildInternshipsGraph, PROGRAMME_TRACKS } from "@/lib/structured-data/internshipsGraph";
+import { SITE_URL } from "@/data/public-entities";
+import PremiumContent from "@/components/auth/PremiumContent";
+import PremiumPreview from "@/components/auth/PremiumPreview";
 
 const PAGE_TITLE = "Engineering Internships & R&D — EV, AI, Aerospace & Space | EV.ENGINEER™";
 const PAGE_DESCRIPTION =
@@ -60,11 +63,36 @@ const internshipsGraph = {
 
 import InternshipsClient from "./InternshipsClient";
 
+/** The tracks the structured data lists, linked on whichever host serves the page. */
+const catalogue = {
+  title: "Programme tracks",
+  items: PROGRAMME_TRACKS.map((track) => ({
+    name: track.name,
+    description: track.description,
+    href: track.url.startsWith(SITE_URL) ? track.url.slice(SITE_URL.length) || "/" : track.url,
+  })),
+};
+
+/**
+ * Signed-in visitors get the full programme page. Everyone else — and the
+ * server render search engines index — gets the public overview: the page's
+ * title, description, structured data and every programme track with its link.
+ */
 export default function InternshipsPage() {
   return (
-    <>
+    <PremiumContent
+      preview={
+        <PremiumPreview
+          path="/internships"
+          title={PAGE_TITLE}
+          description={PAGE_DESCRIPTION}
+          structuredData={internshipsGraph}
+          catalogue={catalogue}
+        />
+      }
+    >
       <JsonLd data={internshipsGraph} />
       <InternshipsClient />
-    </>
+    </PremiumContent>
   );
 }

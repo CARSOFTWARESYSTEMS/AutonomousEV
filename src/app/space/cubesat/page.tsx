@@ -1,4 +1,6 @@
 import Link from "next/link";
+import PremiumContent from "@/components/auth/PremiumContent";
+import PremiumPreview from "@/components/auth/PremiumPreview";
 import {
   ArrowRight,
   BatteryCharging,
@@ -16,7 +18,7 @@ import { JsonLd } from "@/lib/structured-data/JsonLd";
 import ResearcherCard from "@/components/ResearcherCard";
 import { ASSUMPTIONS } from "@/lib/cubetwin/engine";
 import { SCIENCE, FAQ, REFERENCES } from "@/lib/cubetwin/content";
-import { structuredData, LAST_REVIEWED } from "./seo";
+import { structuredData, LAST_REVIEWED, TITLE, DESCRIPTION } from "./seo";
 import { manrope, inter } from "../fonts";
 import SpaceHeader from "../components/SpaceHeader";
 import SpaceFooter from "../components/SpaceFooter";
@@ -52,7 +54,7 @@ function SectionHeading({
     </div>
   );
 }
-export default function CubeTwinPage() {
+function FullExperience() {
   return (
     <div
       className={`${spaceTheme.theme} ${manrope.variable} ${inter.variable} ${styles.portal}`}
@@ -561,5 +563,27 @@ export default function CubeTwinPage() {
       </SimulationProvider>
       <SpaceFooter basePath="/space" />
     </div>
+  );
+}
+
+/**
+ * Signed-in visitors get the full experience. Everyone else — and the server
+ * render search engines index — gets the public preview (premiumAuthRoutes).
+ */
+export default function CubeTwinPage() {
+  return (
+    <PremiumContent
+      preview={
+        <PremiumPreview
+          path="/space/cubesat"
+          title={TITLE}
+          description={DESCRIPTION}
+          structuredData={structuredData}
+          header={<div className={`${spaceTheme.theme} ${manrope.variable} ${inter.variable}`}><SpaceHeader basePath="/space" /></div>}
+        />
+      }
+    >
+      <FullExperience />
+    </PremiumContent>
   );
 }

@@ -1,4 +1,6 @@
 import Image from "next/image";
+import PremiumContent from "@/components/auth/PremiumContent";
+import PremiumPreview from "@/components/auth/PremiumPreview";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -22,7 +24,7 @@ import styles from "./satellite.module.css";
 import HeroVisual from "./components/HeroVisual";
 import Curriculum from "./components/Curriculum";
 import PageToc from "./components/PageToc";
-import { structuredData } from "./seo";
+import { structuredData, TITLE, DESCRIPTION } from "./seo";
 import {
   heroChips,
   heroAudience,
@@ -86,7 +88,7 @@ function SectionHead({
   );
 }
 
-export default function SatelliteEngineeringPage() {
+function FullExperience() {
   return (
     <div className={`${spaceTheme.theme} ${manrope.variable} ${inter.variable} ${styles.page}`}>
       <JsonLd data={structuredData} />
@@ -904,5 +906,27 @@ export default function SatelliteEngineeringPage() {
 
       <SpaceFooter basePath="/space" />
     </div>
+  );
+}
+
+/**
+ * Signed-in visitors get the full experience. Everyone else — and the server
+ * render search engines index — gets the public preview (premiumAuthRoutes).
+ */
+export default function SatelliteEngineeringPage() {
+  return (
+    <PremiumContent
+      preview={
+        <PremiumPreview
+          path="/space/satellite-engineering"
+          title={TITLE}
+          description={DESCRIPTION}
+          structuredData={structuredData}
+          header={<div className={`${spaceTheme.theme} ${manrope.variable} ${inter.variable}`}><SpaceHeader basePath="/space" /></div>}
+        />
+      }
+    >
+      <FullExperience />
+    </PremiumContent>
   );
 }
