@@ -8,7 +8,7 @@ import TrackCard from "./TrackCard";
 import trackStyles from "./TrackCard.module.css";
 import type { LucideIcon } from "lucide-react";
 
-function ProjectCard({ title, desc, note, link, pricingLink, secondaryLink, secondaryLinkLabel, tertiaryLink, tertiaryLinkLabel, quaternaryLink, quaternaryLinkLabel, quinaryLink, quinaryLinkLabel, category, badge, tags, ctaLabel, trackProps, icon: Icon }: { title: string, desc?: string, note?: string, link: string, pricingLink?: string, secondaryLink?: string, secondaryLinkLabel?: string, tertiaryLink?: string, tertiaryLinkLabel?: string, quaternaryLink?: string, quaternaryLinkLabel?: string, quinaryLink?: string, quinaryLinkLabel?: string, category?: string, badge?: string, tags?: string[], ctaLabel?: string, trackProps?: Record<`data-${string}`, string>, icon?: LucideIcon }) {
+function ProjectCard({ title, subtitle, desc, note, link, pricingLink, secondaryLink, secondaryLinkLabel, tertiaryLink, tertiaryLinkLabel, quaternaryLink, quaternaryLinkLabel, quinaryLink, quinaryLinkLabel, category, badge, tags, ctaLabel, trackProps, icon: Icon }: { title: string, subtitle?: string, desc?: string, note?: string, link: string, pricingLink?: string, secondaryLink?: string, secondaryLinkLabel?: string, tertiaryLink?: string, tertiaryLinkLabel?: string, quaternaryLink?: string, quaternaryLinkLabel?: string, quinaryLink?: string, quinaryLinkLabel?: string, category?: string, badge?: string, tags?: string[], ctaLabel?: string, trackProps?: Record<`data-${string}`, string>, icon?: LucideIcon }) {
   const isExternal = link.startsWith('http');
   const sLink = pricingLink || secondaryLink;
   const sLabel = pricingLink ? "Pricing" : secondaryLinkLabel;
@@ -190,6 +190,7 @@ function ProjectCard({ title, desc, note, link, pricingLink, secondaryLink, seco
           {title}
         </h3>
       </div>
+      {subtitle && <p style={{ color: 'var(--text-primary)', fontSize: '0.95rem', fontWeight: 600, marginBottom: '10px' }}>{subtitle}</p>}
       {badge && (
         <div style={{ display: 'inline-block', background: 'rgba(76, 169, 48, 0.1)', padding: '4px 12px', borderRadius: '4px', fontSize: '0.75rem', color: 'var(--accent-primary)', fontWeight: 600, marginBottom: '12px', alignSelf: 'flex-start' }}>
           {badge}
@@ -616,7 +617,7 @@ export default function InternshipsClient() {
             />
           </Section>
 
-          <Section title="EV Workshop">
+          <Section title="Marketing & Sales" id="marketing-sales">
             <ProjectCard
               title="EV Repair Workshop"
               desc="Specialized focus on EV diagnostics, repair mechanisms, and maintenance workflows."
@@ -626,6 +627,20 @@ export default function InternshipsClient() {
               title="BMC - Battery Circular Economy"
               desc="End-to-end financial model for EV battery secondary life — cost breakdown, cell grading, repacking economics, and Business Model Canvas."
               link="/internships/battery-circular-economy"
+            />
+            <ProjectCard
+              title="B2B Revenue Engineering"
+              subtitle="Marketing & Sales for Aerospace & Defence MSMEs"
+              desc="Learn how to understand a real industrial market, discover customer pain, validate opportunities, position a specialised B2B software product, engage decision-makers, build a qualified pipeline and turn customer value into sustainable revenue."
+              link="/internships/marketing-sales"
+              badge="Case Study: Balloon Drawings & AS9102 FAI Reporting"
+              tags={["12 Weeks", "Bengaluru Market", "Hybrid", "Live Industry Case Study"]}
+              ctaLabel="Enter Revenue Framework"
+              trackProps={{
+                "data-track-event": "revenue_framework_card_click",
+                "data-track-source": "internships_marketing_sales",
+                "data-track-destination": "/internships/marketing-sales",
+              }}
             />
           </Section>
 

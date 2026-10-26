@@ -102,6 +102,11 @@ export const PROGRAMME_TRACKS: { name: string; url: string; description: string 
     url: `${SITE_URL}/internships/battery-circular-economy`,
     description: "Financial model for EV battery secondary life, cell grading and repacking economics.",
   },
+  {
+    name: "B2B Revenue Engineering — Marketing & Sales",
+    url: `${SITE_URL}/internships/marketing-sales`,
+    description: "A 12-week B2B marketing, customer discovery and consultative sales framework for Bengaluru aerospace and defence MSMEs, with a live AS9102 FAI case study.",
+  },
 ];
 
 export interface InternshipsGraphOptions {

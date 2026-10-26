@@ -8,6 +8,10 @@ describe("sitemap", () => {
     expect(urls).toContain("https://autonomous.ev.engineer/design-development/passenger-taxi/battery-cybersecurity");
   });
 
+  it("includes the B2B Revenue Engineering route", () => {
+    expect(sitemap().map((e) => e.url)).toContain("https://autonomous.ev.engineer/internships/marketing-sales");
+  });
+
   it("still includes the existing passenger taxi route", () => {
     const entries = sitemap();
     const urls = entries.map((e) => e.url);
