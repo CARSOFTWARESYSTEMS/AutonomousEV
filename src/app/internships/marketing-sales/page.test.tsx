@@ -4,8 +4,7 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
-const push = vi.hoisted(() => vi.fn());
-vi.mock("next/navigation", () => ({ usePathname: () => "/internships/marketing-sales", useRouter: () => ({ push }) }));
+vi.mock("next/navigation", () => ({ usePathname: () => "/internships/marketing-sales" }));
 vi.mock("@/utils/analytics", () => ({ trackEvent: vi.fn() }));
 
 import { isSelfContainedPath } from "@/components/ChromeGate";
@@ -90,13 +89,8 @@ describe("Marketing & Sales overview: short, simple, beginner first", () => {
     for (const hidden of ["B2B Revenue Engineering", "Revenue Cockpit", "North Star", "Founder Challenge", "Question Bank", "Pain Library", "Decision Log", "Final Boardroom", "Gate A", "Orion", "Synthetic", "₹", "60 days", "12-week journey"]) {
       expect(text, hidden).not.toContain(hidden);
     }
-    // No sixty-day grid: outside the closed day picker, only today's day is named.
-    const outsidePicker = [...main().querySelectorAll(":scope > section")].map((section) => {
-      const copy = section.cloneNode(true) as HTMLElement;
-      copy.querySelectorAll("select").forEach((select) => select.remove());
-      return copy.textContent;
-    });
-    expect(outsidePicker.join(" ").match(/Day \d+/g)).toEqual(["Day 01"]);
+    // No sixty-day grid: only today's day is named.
+    expect(text.match(/Day \d+/g)).toEqual(["Day 01"]);
   });
 
   it("answers the beginner's first questions on the page itself", () => {
@@ -131,19 +125,42 @@ describe("Marketing & Sales overview: short, simple, beginner first", () => {
     expect(screen.getByRole("link", { name: "Continue Day 3" })).toHaveAttribute("href", `${BASE}/today#day-3`);
   });
 
-  it("goes to any day, first to last, from beside the main action", async () => {
+  it("keeps Go to Day out of the hero and in the header, quieter than Start Today", async () => {
     const user = userEvent.setup();
     useRevenue.getState().completeDay(1, true);
     renderPage();
-    const picker = screen.getByRole("combobox", { name: "Or go to any day" });
-    const options = within(picker).getAllByRole("option").filter((option) => option.getAttribute("value"));
-    expect(options).toHaveLength(60);
-    expect(options[0]).toHaveTextContent("Day 1 — Understand the Customer ✓");
-    expect(options[59]).toHaveTextContent("Day 60 — Final Revenue Review");
-    expect(within(picker).getAllByRole("group").map((group) => group.getAttribute("label"))).toHaveLength(12);
-    await user.selectOptions(picker, "60");
-    expect(push).toHaveBeenCalledWith(`${BASE}/today#day-60`);
+    const hero = screen.getByRole("region", { name: "Learn Marketing. Learn Sales. Create Value. Generate Revenue." });
+    expect(within(hero).queryByRole("combobox")).toBeNull();
+    expect(within(hero).queryByText(/go to any day/i)).toBeNull();
+
+    const trigger = within(screen.getByRole("banner")).getByRole("button", { name: "Go to Day" });
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+    await user.click(trigger);
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+    const panel = screen.getByRole("dialog", { name: "Go to Day" });
+    expect(within(panel).getAllByRole("heading", { level: 3 }).map((h) => h.textContent)).toEqual(["Month 1 — Understand & Market", "Month 2 — Sales", "Month 3 — Execute & Revenue"]);
+    expect(within(panel).getAllByRole("button", { name: /^Week \d+/ })).toHaveLength(12);
+    // The current week is open; the current day is marked in words, a completed one with a tick.
+    expect(within(panel).getByRole("button", { name: "Week 1 Days 1–5 · 1 done" })).toHaveAttribute("aria-expanded", "true");
+    expect(within(panel).getByRole("link", { name: "Day 1 — Understand the Customer, current, complete" })).toHaveAttribute("href", `${BASE}/today#day-1`);
+    await user.click(within(panel).getByRole("button", { name: "Week 12 Days 56–60" }));
+    const day60 = within(panel).getByRole("link", { name: "Day 60 — Final Revenue Review" });
+    expect(day60).toHaveAttribute("href", `${BASE}/today#day-60`);
+    await user.click(day60);
     expect(useRevenue.getState().day).toBe(60);
+    expect(screen.queryByRole("dialog", { name: "Go to Day" })).toBeNull();
+  });
+
+  it("closes Go to Day with Escape and returns focus to its button", async () => {
+    const user = userEvent.setup();
+    renderPage();
+    const trigger = within(screen.getByRole("banner")).getByRole("button", { name: "Go to Day" });
+    await user.click(trigger);
+    expect(screen.getByRole("link", { name: "Day 1 — Understand the Customer, current" })).toHaveFocus();
+    await user.keyboard("{Escape}");
+    expect(screen.queryByRole("dialog")).toBeNull();
+    expect(trigger).toHaveFocus();
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
   });
 
   it("has five header destinations and one action, and a bottom bar of four places and More", () => {

@@ -183,15 +183,19 @@ describe("Today: the step, mentor checks and navigation", () => {
     expect(within(rail).getByRole("link", { name: "All 10 steps →" })).toHaveAttribute("href", `${BASE}#journey`);
   });
 
-  it("jumps to any day from the step column, and shows which day is open", async () => {
+  it("jumps to any day from Go to Day in the header — by week or by topic — and changes the day in place", async () => {
     const user = userEvent.setup();
     render(<Page />);
-    const picker = within(screen.getByRole("navigation", { name: "This step" })).getByRole("combobox", { name: "Go to any day" });
-    expect(picker).toHaveValue("1");
-    await user.selectOptions(picker, "47");
-    expect(screen.getByRole("heading", { level: 1, name: "Validate / Invalidate Pain" })).toBeInTheDocument();
-    expect(window.location.hash).toBe("#day-47");
-    expect(within(screen.getByRole("navigation", { name: "This step" })).getByRole("combobox", { name: "Go to any day" })).toHaveValue("47");
+    expect(within(screen.getByRole("navigation", { name: "This step" })).queryByRole("combobox")).toBeNull();
+    await user.click(screen.getByRole("button", { name: "Go to Day" }));
+    await user.type(screen.getByRole("searchbox", { name: "Search day or topic" }), "pilot");
+    const matches = within(screen.getByRole("list", { name: "Matching days" })).getAllByRole("link");
+    expect(matches[0]).toHaveAccessibleName("Day 37 — Pilot / Proof-of-Value Design");
+    await user.click(matches[0]);
+    expect(screen.getByRole("heading", { level: 1, name: "Pilot / Proof-of-Value Design" })).toBeInTheDocument();
+    expect(window.location.hash).toBe("#day-37");
+    expect(screen.queryByRole("dialog")).toBeNull();
+    expect(tracked()).toEqual(expect.arrayContaining(["mission_search", "daily_mission_view"]));
   });
 
   it("shows a mentor check only on its day, and keeps Gate G locked until Gates A–F and Professional Behaviour", () => {

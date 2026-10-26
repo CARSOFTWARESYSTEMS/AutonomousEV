@@ -75,6 +75,8 @@ export interface Phase {
   label: string;
   /** The short name the progress view uses: Market, Sales, Revenue. */
   short: string;
+  /** The month's name in Go to Day. */
+  month: string;
   weeks: string;
   verb: string;
   topics: readonly string[];
@@ -91,6 +93,7 @@ export const PHASES: readonly Phase[] = [
     name: "Prove the Market",
     label: "Marketing",
     short: "Market",
+    month: "Understand & Market",
     weeks: "Weeks 1–4",
     verb: "Understand",
     topics: ["Bengaluru market", "Customer workflow", "Pain", "Ideal Customer", "Buyers", "Positioning", "Value proposition", "Go-to-market"],
@@ -104,6 +107,7 @@ export const PHASES: readonly Phase[] = [
     name: "Prove the Sales Motion",
     label: "Sales",
     short: "Sales",
+    month: "Sales",
     weeks: "Weeks 5–8",
     verb: "Learn",
     topics: ["Account research", "Prospecting", "Customer discovery", "Qualification", "Demo", "ROI", "Pilot", "Proposal", "Negotiation"],
@@ -117,6 +121,7 @@ export const PHASES: readonly Phase[] = [
     name: "Prove the Business",
     label: "Execution",
     short: "Revenue",
+    month: "Execute & Revenue",
     weeks: "Weeks 9–12",
     verb: "Execute",
     topics: ["Target accounts", "Customer conversations", "Opportunities", "Pilots", "Proposals", "Potential sales", "Proof the customer sees value", "Revenue"],

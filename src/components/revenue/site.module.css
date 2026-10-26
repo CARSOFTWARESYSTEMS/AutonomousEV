@@ -400,7 +400,7 @@
   align-items: center;
   gap: 4px;
   min-height: 44px;
-  margin-left: auto;
+  margin-left: 8px;
   padding: 0 14px;
   border: 1px solid var(--rv-blue-line);
   border-radius: var(--rv-radius-control);
@@ -429,8 +429,280 @@
     display: block;
   }
   .root .headerCta {
+    margin-left: 10px;
+  }
+}
+
+/* ── Go to Day: a quiet utility beside the header's action ──
+   From 1024px an outlined "Go to Day" button opens a panel anchored under it
+   (placed from the button's position: --top, --right). Below 1024px the
+   button is a calendar icon and the panel is a bottom sheet. */
+.dayNav {
+  flex: none;
+  margin-left: auto;
+}
+.dayNavButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 10px;
+  border: 1px solid var(--rv-line-2);
+  border-radius: var(--rv-radius-control);
+  background: transparent;
+  color: var(--rv-text-2);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color var(--rv-fast) var(--rv-ease), color var(--rv-fast) var(--rv-ease);
+}
+.dayNavButton:hover,
+.dayNavButton[aria-expanded="true"] {
+  border-color: var(--rv-blue-line);
+  color: var(--rv-text);
+}
+/* Phones: the icon alone, the label kept for screen readers. */
+.dayNavLabel {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+.dayNavChevron {
+  display: none;
+}
+.dayNavChevron[data-open] {
+  transform: rotate(180deg);
+}
+@media (min-width: 1024px) {
+  .dayNav {
     margin-left: 16px;
   }
+  .dayNavButton {
+    padding: 0 12px;
+  }
+  .dayNavIcon {
+    display: none;
+  }
+  .dayNavLabel {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+  }
+  .dayNavChevron {
+    display: inline;
+  }
+  .dayNavChevron {
+    transition: transform var(--rv-fast) var(--rv-ease);
+  }
+}
+.dayNavBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 58;
+  background: rgba(2, 6, 12, 0.62);
+}
+.dayNavPanel {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 59;
+  display: flex;
+  flex-direction: column;
+  max-height: 86vh;
+  padding: 16px max(var(--rv-gutter), env(safe-area-inset-right)) env(safe-area-inset-bottom) max(var(--rv-gutter), env(safe-area-inset-left));
+  border-top: 1px solid var(--rv-line-2);
+  border-radius: 20px 20px 0 0;
+  background: var(--rv-surface);
+  box-shadow: 0 -24px 48px rgba(0, 0, 0, 0.5);
+  animation: rvSheetUp 220ms var(--rv-ease);
+}
+@media (min-width: 1024px) {
+  .dayNavBackdrop {
+    display: none;
+  }
+  .dayNavPanel {
+    top: var(--top);
+    right: var(--right);
+    bottom: auto;
+    left: auto;
+    width: min(400px, calc(100vw - 32px));
+    max-height: min(560px, calc(100vh - var(--top) - 24px));
+    padding: 14px 16px 0;
+    border: 1px solid var(--rv-line-2);
+    border-radius: var(--rv-radius);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+    animation-name: rvPanelIn;
+  }
+}
+@keyframes rvSheetUp {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+}
+@keyframes rvPanelIn {
+  from {
+    transform: translateY(-6px);
+    opacity: 0;
+  }
+}
+.dayNavHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.dayNavTitle {
+  color: var(--rv-text);
+  font-size: 1.1rem;
+  font-weight: 620;
+}
+.dayNavClose {
+  min-height: 44px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--rv-radius-sm);
+  background: none;
+  color: var(--rv-text-2);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.dayNavClose:hover {
+  color: var(--rv-text);
+}
+.dayNavSearch {
+  width: 100%;
+  min-height: 44px;
+  margin-top: 8px;
+  padding: 0 14px;
+  border: 1px solid var(--rv-line-2);
+  border-radius: var(--rv-radius-control);
+  background: var(--rv-bg);
+  color: var(--rv-text);
+  font: inherit;
+  /* 16px stops iOS Safari zooming into a focused field. */
+  font-size: 16px;
+}
+.dayNavSearch:focus-visible {
+  border-color: var(--rv-blue);
+}
+.dayNavBody {
+  flex: 1;
+  min-height: 0;
+  margin: 10px -4px 0;
+  padding: 0 4px 16px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+.dayNavMonth + .dayNavMonth {
+  margin-top: 14px;
+}
+.dayNavMonthName {
+  padding: 8px 0 6px;
+  color: var(--rv-muted);
+  font-family: var(--rv-mono);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.dayNavWeek {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 46px;
+  padding: 0 4px;
+  border: 0;
+  border-top: 1px solid var(--rv-line);
+  background: none;
+  color: var(--rv-text);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 560;
+  text-align: left;
+  cursor: pointer;
+}
+.dayNavWeek::after {
+  content: "+";
+  color: var(--rv-muted);
+  font-family: var(--rv-mono);
+}
+.dayNavWeek[aria-expanded="true"]::after {
+  content: "−";
+}
+.dayNavWeekName {
+  flex: none;
+}
+.dayNavWeekDays {
+  flex: 1;
+  color: var(--rv-muted);
+  font-size: 0.85rem;
+  font-weight: 400;
+  text-align: right;
+}
+.dayNavDays {
+  padding-bottom: 6px;
+}
+.root .dayNavDay {
+  display: grid;
+  grid-template-columns: 4.6em minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 8px;
+  min-height: 44px;
+  padding: 11px 8px;
+  border-radius: var(--rv-radius-sm);
+  color: var(--rv-text-2);
+  font-size: 0.93rem;
+  line-height: 1.35;
+  text-decoration: none;
+}
+.root .dayNavDay:hover {
+  background: var(--rv-surface-2);
+  color: var(--rv-text);
+}
+.root .dayNavDay[aria-current="step"] {
+  background: var(--rv-blue-soft);
+  color: var(--rv-text);
+}
+.dayNavDayNo {
+  color: var(--rv-muted);
+  font-family: var(--rv-mono);
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+.dayNavDay[data-done] .dayNavDayNo {
+  color: var(--rv-green);
+}
+.dayNavDay[aria-current="step"] .dayNavDayNo {
+  color: var(--rv-blue);
+}
+.dayNavDayTitle {
+  overflow-wrap: break-word;
+}
+.dayNavNow {
+  color: var(--rv-blue);
+  font-family: var(--rv-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.dayNavEmpty {
+  padding: 16px 4px;
+  color: var(--rv-muted);
 }
 
 /* ── Sections ── */
@@ -734,47 +1006,6 @@
     gap: 72px;
   }
 }
-/* Go to any day: a native select, as tall as a button. */
-.dayPicker {
-  display: grid;
-  gap: 8px;
-  max-width: 420px;
-  margin-top: 20px;
-}
-.dayPickerLabel {
-  color: var(--rv-muted);
-  font-family: var(--rv-mono);
-  font-size: 0.76rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-.dayPickerSelect {
-  width: 100%;
-  min-width: 0;
-  min-height: 50px;
-  padding: 0 44px 0 16px;
-  border: 1px solid var(--rv-line-2);
-  border-radius: var(--rv-radius-control);
-  background-color: var(--rv-surface);
-  background-image: linear-gradient(45deg, transparent 50%, var(--rv-muted) 50%), linear-gradient(135deg, var(--rv-muted) 50%, transparent 50%);
-  background-position: calc(100% - 22px) 50%, calc(100% - 16px) 50%;
-  background-size: 6px 6px;
-  background-repeat: no-repeat;
-  color: var(--rv-text);
-  font: inherit;
-  /* 16px stops iOS Safari zooming into a focused field. */
-  font-size: 16px;
-  text-overflow: ellipsis;
-  appearance: none;
-  cursor: pointer;
-}
-.dayPickerSelect:hover {
-  border-color: var(--rv-blue-line);
-}
-.dayPickerSelect:focus-visible {
-  border-color: var(--rv-blue);
-}
-
 /* ── The hero's drawing: a fictitious part, ballooned once ──
    Balloons appear one after another and light their row in the table.
    Every element's resting state is its final state, so with reduced
@@ -2053,7 +2284,12 @@ ul.stepList[data-tone="warn"] li::before {
   .balloon,
   .drawingTable tbody tr,
   .winsSignal,
-  .win {
+  .win,
+  .dayNavPanel {
     animation: none;
+  }
+  .dayNavButton,
+  .dayNavChevron {
+    transition: none;
   }
 }

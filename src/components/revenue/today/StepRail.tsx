@@ -1,12 +1,11 @@
 "use client";
-// Today's left column: the step this day belongs to, that step's days, the
-// way to the next or previous day, and a picker for any of the sixty.
+// Today's left column: the step this day belongs to, that step's days, and
+// the way to the next or previous day. Any other day: Go to Day, in the header.
 import Link from "next/link";
 import { JOURNEY_HREF, TOTAL_DAYS } from "../data/framework";
 import { daysOfStep, stepNo, stepOfDay } from "../data/steps";
 import { missionFor } from "../logic/missions";
 import { useRevenue } from "../state/store";
-import DayPicker from "../ui/DayPicker";
 import css from "../app.module.css";
 
 export default function StepRail({ onDayChange }: { onDayChange: (day: number) => void }) {
@@ -40,7 +39,6 @@ export default function StepRail({ onDayChange }: { onDayChange: (day: number) =
           Day {Math.min(TOTAL_DAYS, day + 1)} →
         </button>
       </div>
-      <DayPicker value={day} onSelect={onDayChange} />
       <Link href={JOURNEY_HREF} className={css.inlineLink}>
         All 10 steps →
       </Link>

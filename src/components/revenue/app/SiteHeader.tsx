@@ -1,12 +1,14 @@
 "use client";
 // One header for every page, after itelematics.com: the brand on the left,
-// five destinations, one action on the right. Below 1024px the destinations
-// move to the bottom bar (AppShell) and the header keeps the brand and the
-// action. The action is Start Today, or the day to continue once begun.
+// five destinations, then a quiet Go to Day and one action on the right.
+// Below 1024px the destinations move to the bottom bar (AppShell) and the
+// header keeps the brand, Go to Day (as an icon) and the action. The action
+// is Start Today, or the day to continue once begun.
 import Link from "next/link";
 import { FRAMEWORK, HEADER_NAV, ROUTES, TOTAL_DAYS, type RouteId } from "../data/framework";
 import { useRevenue } from "../state/store";
 import css from "../site.module.css";
+import DayNavigator from "./DayNavigator";
 
 export default function SiteHeader({ page }: { page: RouteId }) {
   const day = useRevenue((state) => state.day);
@@ -34,6 +36,7 @@ export default function SiteHeader({ page }: { page: RouteId }) {
             ))}
           </ul>
         </nav>
+        <DayNavigator />
         {onToday || started ? (
           <Link href={ROUTES.today} className={css.headerCta} aria-current={onToday ? "page" : undefined} aria-label={`Today: Day ${day} of ${TOTAL_DAYS}`} data-track-event="revenue_framework_start" data-track-source="header">
             Day {day}
