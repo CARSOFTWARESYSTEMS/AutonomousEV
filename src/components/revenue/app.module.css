@@ -1200,10 +1200,6 @@ a.chipLink:hover {
 .cardNav[data-last] {
   grid-template-columns: auto;
 }
-.cardNext {
-  font-weight: 500;
-  opacity: 0.75;
-}
 .result {
   min-width: 0;
 }
@@ -1337,12 +1333,14 @@ a.chipLink:hover {
   }
 }
 
+/* Laptops: the step on the left, the day in the centre, Result under the
+   day's work rather than in a third column. */
 @media (min-width: 1024px) {
   .day {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 320px;
+    grid-template-columns: 240px minmax(0, 1fr);
     grid-template-areas:
-      "main result"
+      "rail main"
       "rail result";
     align-items: start;
     gap: 0 clamp(32px, 3vw, 48px);
@@ -1364,34 +1362,17 @@ a.chipLink:hover {
     padding-bottom: 32px;
   }
   .result {
-    position: sticky;
-    top: calc(var(--rv-header) + 16px);
     grid-area: result;
-    max-height: calc(100vh - var(--rv-header) - 32px);
-    margin-top: 32px;
+    margin: 8px 0 0;
     padding: 24px;
-    overflow-y: auto;
     border: 1px solid var(--rv-line-2);
     border-radius: var(--rv-radius);
     background: var(--rv-surface);
-    scrollbar-width: thin;
-  }
-  .result .cardTitle {
-    font-size: 1.25rem;
-  }
-  .dayRail {
-    grid-area: rail;
-  }
-}
-/* From 1280px the step moves to its own column on the left. */
-@media (min-width: 1280px) {
-  .day {
-    grid-template-columns: 240px minmax(0, 1fr) 320px;
-    grid-template-areas: "rail main result";
   }
   .dayRail {
     position: sticky;
     top: calc(var(--rv-header) + 16px);
+    grid-area: rail;
     max-height: calc(100vh - var(--rv-header) - 32px);
     margin-top: 32px;
     padding-top: 0;
@@ -1399,6 +1380,41 @@ a.chipLink:hover {
     border-top: 0;
     scrollbar-width: thin;
   }
+}
+/* Wide screens: Result gets its own column on the right, and stays in view. */
+@media (min-width: 1440px) {
+  .day {
+    grid-template-columns: 240px minmax(0, 1fr) 320px;
+    grid-template-areas: "rail main result";
+  }
+  .result {
+    position: sticky;
+    top: calc(var(--rv-header) + 16px);
+    max-height: calc(100vh - var(--rv-header) - 32px);
+    margin-top: 32px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+  .result .cardTitle {
+    font-size: 1.25rem;
+  }
+}
+/* Why it matters, inside the first card. */
+.why {
+  padding-top: 18px;
+  border-top: 1px solid var(--rv-line);
+}
+.why > * + * {
+  margin-top: 10px;
+}
+.whyTitle {
+  color: var(--rv-text);
+  font-size: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+  font-weight: 620;
+  letter-spacing: -0.015em;
+}
+.why .keyLine {
+  margin-bottom: 14px;
 }
 .keyLine {
   max-width: 34ch;

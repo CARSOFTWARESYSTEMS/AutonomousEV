@@ -7,7 +7,7 @@ import css from "../site.module.css";
 
 export default function StepJourney() {
   return (
-    <section id="journey" className={css.section} data-tone="alt" aria-labelledby="rv-journey-title">
+    <section id="journey" className={css.section} data-rule="" aria-labelledby="rv-journey-title">
       <div className={css.container}>
         <p className={css.eyebrow}>The 10-Step Journey</p>
         <h2 id="rv-journey-title" className={css.sectionTitle}>

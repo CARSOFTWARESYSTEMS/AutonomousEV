@@ -1,6 +1,7 @@
 // One step of the ten: its sentence, an optional visual, then Do / Ask /
 // Avoid, the result to finish with and one way to start it in Today.
-// Deeper ideas wait behind "Learn more".
+// Deeper ideas, and any advanced material the page passes, wait behind
+// "Learn More".
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { DONT_ASK, todayHref } from "../data/framework";
@@ -10,7 +11,7 @@ import css from "../site.module.css";
 
 const CONCEPTS = [...LEARN.marketing.concepts, ...LEARN.sales.concepts, ...LEARN.revenue.concepts];
 
-export default function StepSection({ step, tone, children }: { step: Step; tone?: "alt"; children?: ReactNode }) {
+export default function StepSection({ step, tone, children, more }: { step: Step; tone?: "alt"; children?: ReactNode; more?: ReactNode }) {
   const concepts = step.concepts.map((id) => CONCEPTS.find((concept) => concept.id === id)).filter((concept) => concept !== undefined);
   const days = daysOfStep(step.n);
   const titleId = `rv-step-${step.n}-title`;
@@ -81,8 +82,9 @@ export default function StepSection({ step, tone, children }: { step: Step; tone
         </div>
 
         <details className={css.learnMore}>
-          <summary>Learn more</summary>
+          <summary>Learn More</summary>
           <div className={css.learnBody}>
+            {more}
             {concepts.length ? (
               <ul className={css.conceptList}>
                 {concepts.map((concept) => (

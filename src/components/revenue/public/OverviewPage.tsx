@@ -1,8 +1,9 @@
 import AppShell from "../app/AppShell";
+import FourWins from "./FourWins";
 import Hero from "./Hero";
 import StepJourney from "./StepJourney";
 import TodayPreview from "./TodayPreview";
-import { CaseStudyTeaser, CentralQuestion, CustomerSection, DesignedBy, FourWins, InternshipCta, ProblemSection } from "./Sections";
+import { CaseStudyTeaser, CentralQuestion, CustomerSection, DesignedBy, InternshipCta, ProblemSection } from "./Sections";
 
 /**
  * The public overview, short on purpose: nine sections that answer what we
@@ -18,8 +19,8 @@ export default function OverviewPage() {
       <CustomerSection />
       <ProblemSection />
       <StepJourney />
-      <CaseStudyTeaser />
       <TodayPreview />
+      <CaseStudyTeaser />
       <FourWins />
       <InternshipCta />
       <DesignedBy />

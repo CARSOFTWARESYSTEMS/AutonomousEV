@@ -141,7 +141,10 @@ export default function CaseStudyPage() {
               </li>
             ))}
           </ul>
-          <Notice tone="info">{STANDARD_NOTE}</Notice>
+          <details className={css.disclosure}>
+            <summary>About AS9102 and compliance</summary>
+            <p>{STANDARD_NOTE}</p>
+          </details>
           <p className={css.sourceLine}>
             Source:{" "}
             <a href={SOURCES.faiProduct.url} target="_blank" rel="noopener noreferrer">

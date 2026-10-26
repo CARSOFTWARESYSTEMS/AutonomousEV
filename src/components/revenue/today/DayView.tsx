@@ -1,8 +1,8 @@
 "use client";
-// One day as six short cards: Today, Why, Do, Ask, Don't, Result. Phones
-// show one card at a time with one action (Start, Next, Complete Day); from
-// 1024px the first five read top to bottom in the centre and Result stays
-// on the right. Tools appear inside the card that needs them, once their
+// One day as five short cards: Today (with why it matters), Do, Ask, Don't
+// and Result. Phones show one card at a time with one action (Start, Next,
+// Complete Day); from 1024px the day reads top to bottom, Result below it on
+// laptops and beside it from 1440px. Tools appear inside the card that needs them, once their
 // day has come (UNLOCKS); mentor checks and reviews appear only on their day.
 import dynamic from "next/dynamic";
 import Link from "next/link";
@@ -32,7 +32,6 @@ const Boardroom = dynamic(() => import("./Boardroom"), { loading });
 
 export const CARDS = [
   { id: "today", label: "Today", question: "What are we learning?" },
-  { id: "why", label: "Why", question: "Why does it matter?" },
   { id: "do", label: "Do", question: "What exactly should I do?" },
   { id: "ask", label: "Ask", question: "What should I ask?" },
   { id: "dont", label: "Don't", question: "What should I avoid?" },
@@ -142,7 +141,7 @@ export default function DayView({ onDayChange }: { onDayChange: (day: number) =>
         ← Back
       </button>
       <button type="button" className={css.primaryButton} onClick={() => go(index + 1)}>
-        Next <span className={css.cardNext}>· {CARDS[index + 1].label}</span>
+        Next →
       </button>
     </div>
   );
@@ -182,9 +181,23 @@ export default function DayView({ onDayChange }: { onDayChange: (day: number) =>
           </h1>
           <p className={css.dayToday}>{mission.mission}</p>
           {done ? <Badge tone="green">Completed</Badge> : null}
+          <div className={css.why}>
+            <p className={css.cardKicker}>
+              <span>Why</span>
+            </p>
+            <h2 className={css.whyTitle}>Why does it matter?</h2>
+            <p className={css.cardText}>{mission.why}</p>
+            <details className={css.disclosure}>
+              <summary>Learn More</summary>
+              <p className={css.keyLine}>{mission.key}</p>
+              <p>{mission.learn}</p>
+              <h3 className={css.blockTitle}>Apply to FAI</h3>
+              <p>{mission.applyFai}</p>
+            </details>
+          </div>
           <div className={css.cardStart}>
             <button type="button" className={css.primaryButton} onClick={() => go(1)}>
-              Start
+              Start →
             </button>
           </div>
         </header>
@@ -192,20 +205,6 @@ export default function DayView({ onDayChange }: { onDayChange: (day: number) =>
         <section {...cardProps(1)}>
           {kicker(1)}
           {heading(1)}
-          <p className={css.cardText}>{mission.why}</p>
-          <p className={css.keyLine}>{mission.key}</p>
-          <details className={css.disclosure}>
-            <summary>Learn more</summary>
-            <p>{mission.learn}</p>
-            <h3 className={css.blockTitle}>Apply to FAI</h3>
-            <p>{mission.applyFai}</p>
-          </details>
-          {cardNav(1)}
-        </section>
-
-        <section {...cardProps(2)}>
-          {kicker(2)}
-          {heading(2)}
           <ol className={css.checkList}>
             {mission.doToday.map((item, i) => (
               <CheckItem key={i} checked={Boolean(checks[`${day}:do:${i}`])} onChange={() => toggleCheck(`${day}:do:${i}`)}>
@@ -229,12 +228,12 @@ export default function DayView({ onDayChange }: { onDayChange: (day: number) =>
               <RoiCalculator />
             </details>
           ) : null}
-          {cardNav(2)}
+          {cardNav(1)}
         </section>
 
-        <section {...cardProps(3)}>
-          {kicker(3)}
-          {heading(3)}
+        <section {...cardProps(2)}>
+          {kicker(2)}
+          {heading(2)}
           {mission.askNote ? <Notice tone="warn">{mission.askNote}</Notice> : null}
           <List items={mission.ask} />
           <div>
@@ -254,12 +253,12 @@ export default function DayView({ onDayChange }: { onDayChange: (day: number) =>
               </details>
             </>
           ) : null}
-          {cardNav(3)}
+          {cardNav(2)}
         </section>
 
-        <section {...cardProps(4)}>
-          {kicker(4)}
-          {heading(4)}
+        <section {...cardProps(3)}>
+          {kicker(3)}
+          {heading(3)}
           <List items={mission.dont} />
           {isUnlocked("outreach", day) ? (
             <details className={css.disclosure}>
@@ -267,13 +266,13 @@ export default function DayView({ onDayChange }: { onDayChange: (day: number) =>
               <ClaimChecker />
             </details>
           ) : null}
-          {cardNav(4)}
+          {cardNav(3)}
         </section>
       </article>
 
-      <aside {...cardProps(5)} className={`${css.card} ${css.result}`}>
-        {kicker(5)}
-        {heading(5)}
+      <aside {...cardProps(4)} className={`${css.card} ${css.result}`}>
+        {kicker(4)}
+        {heading(4)}
         <p className={css.resultOutput}>{mission.output}</p>
         <ul className={css.checkList} aria-label="Tick when you have it">
           {mission.submit.map((item, i) => (
@@ -392,7 +391,7 @@ export default function DayView({ onDayChange }: { onDayChange: (day: number) =>
               </ul>
             )}
             <button type="button" className={css.primaryButton} aria-disabled={!ready} onClick={complete}>
-              Complete Day {day}
+              Complete Day {day} →
             </button>
             <p className={css.blockNote}>{mission.next}</p>
           </div>

@@ -31,7 +31,7 @@ const GROUPS: readonly { label: string; links: readonly { label: string; href: s
     label: "Your workspace",
     links: [
       { label: "Accounts", href: ROUTES.accounts },
-      { label: "Pipeline", href: ROUTES.pipeline },
+      { label: "Potential sales (pipeline)", href: ROUTES.pipeline },
     ],
   },
 ];

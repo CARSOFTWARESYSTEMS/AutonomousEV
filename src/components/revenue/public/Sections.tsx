@@ -1,11 +1,11 @@
 // The overview's other sections, one idea each: the central question, the
-// customer, their work, the live case study, the four wins, the internship
-// and who designed it.
+// customer, their work, the live case study, the internship and who
+// designed it. The four wins animate, so they are a component of their own.
 import Link from "next/link";
 import ResearcherCard from "@/components/ResearcherCard";
 import { LINK_EVENTS } from "../analytics";
 import { CASE_STUDY, DESIGNED_BY, FRAMEWORK, INTERNSHIP, ROUTES } from "../data/framework";
-import { CUSTOMER_TO_REVENUE, FOUR_WINS, WINS_NOTE, stepNo } from "../data/steps";
+import { CUSTOMER_TO_REVENUE } from "../data/steps";
 import SignalFlow from "../ui/SignalFlow";
 import css from "../site.module.css";
 import CustomerMap from "./CustomerMap";
@@ -36,7 +36,7 @@ export function CustomerSection() {
           <div>
             <p className={css.eyebrow}>Our customer</p>
             <h2 id="rv-customer-title" className={css.sectionTitle}>
-              Who are we trying to help?
+              Who Are We Trying to Help?
             </h2>
             <p className={css.sectionLede}>A Bengaluru aerospace or defence manufacturer that makes parts to drawings — and four people inside it. Choose one.</p>
             <Link href={`${ROUTES.customer}#step-1`} className={css.textLink}>
@@ -106,34 +106,6 @@ export function CaseStudyTeaser() {
             AQIP Context →
           </Link>
         </div>
-      </div>
-    </section>
-  );
-}
-
-export function FourWins() {
-  return (
-    <section className={css.section} data-tone="alt" aria-labelledby="rv-wins-title">
-      <div className={css.container}>
-        <p className={css.eyebrow}>Win–Win–Win–Win</p>
-        <h2 id="rv-wins-title" className={css.sectionTitle}>
-          Four Wins
-        </h2>
-        <p className={css.sectionLede}>A sale is only good when the customer, the business, the team and the product all win.</p>
-        <ol className={css.wins}>
-          {FOUR_WINS.map((win, i) => (
-            <li key={win.id} className={css.win} data-win={win.id}>
-              <p className={css.winNo}>{stepNo(i + 1)}</p>
-              <h3 className={css.winName}>{win.name}</h3>
-              <ul className={css.winItems}>
-                {win.items.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ol>
-        <p className={css.note}>{WINS_NOTE}</p>
       </div>
     </section>
   );

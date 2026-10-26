@@ -39,19 +39,20 @@ describe("Today: what do I do today?", () => {
     expect(metadata.title).toBe("Today | Marketing & Sales | EV.ENGINEER™");
   });
 
-  it("opens on the day, its step, what we are learning and one action: Start", () => {
+  it("opens on the day, its step, what we are learning, why it matters and one action: Start", () => {
     render(<Page />);
     expect(screen.getByText(/^Day 01/)).toHaveTextContent("Day 01 / 60 · Step 01 Understand Customer");
     expect(screen.getByRole("heading", { level: 1, name: "Understand the Customer" })).toBeInTheDocument();
     expect(card("today")).toHaveTextContent("Understand what type of Bengaluru aerospace / defence company may need FAI software.");
-    expect(within(card("today")).getByRole("button", { name: "Start" })).toBeInTheDocument();
+    expect(within(card("today")).getByRole("heading", { level: 2, name: "Why does it matter?" })).toBeInTheDocument();
+    expect(within(card("today")).getByRole("button", { name: "Start →" })).toBeInTheDocument();
     expect(activeCard()).toBe(card("today"));
   });
 
-  it("lays every day out as Today, Why, Do, Ask, Don't and Result — each card a question", () => {
+  it("lays every day out as five cards — Today (with Why), Do, Ask, Don't and Result — each a question", () => {
     render(<Page />);
     const cards = [...document.querySelectorAll<HTMLElement>("[data-card]")].filter((node) => node.tagName !== "DIV");
-    expect(cards.map((node) => node.dataset.card)).toEqual(["today", "why", "do", "ask", "dont", "result"]);
+    expect(cards.map((node) => node.dataset.card)).toEqual(["today", "do", "ask", "dont", "result"]);
     expect(screen.getAllByRole("heading", { level: 2 }).slice(0, 5).map((h) => h.textContent)).toEqual([
       "Why does it matter?",
       "What exactly should I do?",
@@ -63,7 +64,7 @@ describe("Today: what do I do today?", () => {
 
   it("is Day 1 of the brief: research five companies, no contact, five things not to do", () => {
     render(<Page />);
-    expect(card("why")).toHaveTextContent("You cannot market a product effectively if you do not know who the customer is.");
+    expect(card("today")).toHaveTextContent("You cannot market a product effectively if you do not know who the customer is.");
     expect(within(card("do")).getAllByRole("checkbox")).toHaveLength(5);
     expect(card("do")).toHaveTextContent("Research 5 Bengaluru aerospace / defence manufacturing companies, from public sources.");
     expect(card("ask")).toHaveTextContent("No customer contact today. Answer these from research.");
@@ -75,14 +76,14 @@ describe("Today: what do I do today?", () => {
   it("moves one card at a time on a phone: Start, Next, Back — and remembers the card", async () => {
     const user = userEvent.setup();
     render(<Page />);
-    await user.click(screen.getByRole("button", { name: "Start" }));
-    expect(activeCard()).toBe(card("why"));
+    await user.click(screen.getByRole("button", { name: "Start →" }));
+    expect(activeCard()).toBe(card("do"));
     expect(useRevenue.getState().stages[1]).toBe(1);
     expect(tracked()).toContain("mission_step_view");
-    await user.click(within(card("why")).getByRole("button", { name: "Next · Do" }));
+    await user.click(within(card("do")).getByRole("button", { name: "Next →" }));
+    expect(activeCard()).toBe(card("ask"));
+    await user.click(within(card("ask")).getByRole("button", { name: "← Back" }));
     expect(activeCard()).toBe(card("do"));
-    await user.click(within(card("do")).getByRole("button", { name: "← Back" }));
-    expect(activeCard()).toBe(card("why"));
   });
 
   it("keeps the advanced tools out of Day 1", () => {
@@ -98,7 +99,7 @@ describe("Today: what do I do today?", () => {
     expect(within(card("ask")).queryByRole("link", { name: "Customer Meeting Guide →" })).toBeNull();
     unmount();
 
-    openDay(10, 3);
+    openDay(10, 2);
     render(<Page />);
     expect(within(card("ask")).getByRole("link", { name: "Customer Meeting Guide →" })).toHaveAttribute("href", `${BASE}/sales#meeting-guide`);
     await user.click(within(card("ask")).getByText("More questions for your meeting"));
@@ -112,7 +113,7 @@ describe("Today: what do I do today?", () => {
     expect(screen.queryByText("Check a message before you send it")).toBeNull();
     unmount();
 
-    openDay(26, 4);
+    openDay(26, 3);
     render(<Page />);
     await user.click(screen.getByText("Check a message before you send it"));
     await user.type(await screen.findByLabelText("Check a draft message before you send it"), "Our software guarantees AS9102 compliance.");
@@ -121,7 +122,7 @@ describe("Today: what do I do today?", () => {
 
   it("brings the ROI calculator into Day 33's Do card", async () => {
     const user = userEvent.setup();
-    openDay(33, 2);
+    openDay(33, 1);
     render(<Page />);
     await user.click(within(card("do")).getByText("ROI calculator"));
     expect(await screen.findByText(/They are not guaranteed savings\./)).toBeInTheDocument();
@@ -129,13 +130,13 @@ describe("Today: what do I do today?", () => {
 
   it("completes a day only once its results are ticked, then offers the next", async () => {
     const user = userEvent.setup();
-    openDay(1, 5);
+    openDay(1, 4);
     render(<Page />);
     const result = card("result");
-    expect(within(result).getByRole("button", { name: "Complete Day 1" })).toHaveAttribute("aria-disabled", "true");
+    expect(within(result).getByRole("button", { name: "Complete Day 1 →" })).toHaveAttribute("aria-disabled", "true");
     expect(result).toHaveTextContent("Tick 2 more results above");
     for (const box of within(within(result).getByRole("list", { name: "Tick when you have it" })).getAllByRole("checkbox")) await user.click(box);
-    await user.click(within(result).getByRole("button", { name: "Complete Day 1" }));
+    await user.click(within(result).getByRole("button", { name: "Complete Day 1 →" }));
     expect(screen.getByText("Day 1 is complete.")).toBeInTheDocument();
     expect(tracked()).toEqual(expect.arrayContaining(["evidence_submit", "daily_mission_complete"]));
     expect(JSON.parse(window.localStorage.getItem(STORAGE_KEY)!).state.completed[1]).toMatch(/^\d{4}-\d{2}-\d{2}$/);
@@ -148,11 +149,11 @@ describe("Today: what do I do today?", () => {
   it("will not complete a customer-facing day without the reflection", () => {
     act(() => {
       useRevenue.getState().setDay(10);
-      useRevenue.getState().setStage(10, 5);
+      useRevenue.getState().setStage(10, 4);
       for (let i = 0; i < 2; i++) useRevenue.getState().toggleCheck(`10:submit:${i}`);
     });
     render(<Page />);
-    expect(screen.getByRole("button", { name: "Complete Day 10" })).toHaveAttribute("aria-disabled", "true");
+    expect(screen.getByRole("button", { name: "Complete Day 10 →" })).toHaveAttribute("aria-disabled", "true");
     expect(screen.getByText("Answer the four questions in “What changed my mind?”")).toBeInTheDocument();
   });
 
@@ -194,13 +195,13 @@ describe("Today: the step, mentor checks and navigation", () => {
   });
 
   it("shows a mentor check only on its day, and keeps Gate G locked until Gates A–F and Professional Behaviour", () => {
-    openDay(10, 5);
+    openDay(10, 4);
     const { unmount } = render(<Page />);
     expect(screen.getByLabelText(/^Gate A — Market Ready/)).toBeInTheDocument();
     expect(screen.getByLabelText(/^Gate C — Discovery Ready/)).toBeInTheDocument();
     unmount();
 
-    openDay(40, 5);
+    openDay(40, 4);
     render(<Page />);
     expect(screen.getByLabelText(/^Gate G — Customer-Facing/)).toBeDisabled();
     act(() => {
@@ -211,12 +212,12 @@ describe("Today: the step, mentor checks and navigation", () => {
   });
 
   it("adds the weekly review on Fridays and the final review on the last two days", () => {
-    openDay(5, 5);
+    openDay(5, 4);
     const { unmount } = render(<Page />);
     expect(screen.getByText("Weekly review — due today")).toBeInTheDocument();
     expect(screen.queryByText("Final review")).toBeNull();
     unmount();
-    openDay(59, 5);
+    openDay(59, 4);
     render(<Page />);
     expect(screen.getByText("Final review")).toBeInTheDocument();
   });
@@ -251,7 +252,7 @@ describe("Today: the step, mentor checks and navigation", () => {
     expect(useRevenue.getState().stages).toEqual({});
   });
 
-  it("opens a day saved on a later card of the old seven-stage flow on its last card", () => {
+  it("opens a day saved on a later card of an older, longer flow on its last card", () => {
     openDay(4, 7);
     render(<Page />);
     expect(activeCard()).toBe(card("result"));

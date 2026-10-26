@@ -20,7 +20,7 @@ export default function HeroActions() {
     <>
       <div className={css.actions}>
         <Link href={todayHref(started ? day : 1)} className={css.primaryCta} data-track-event="revenue_framework_start" data-track-source={started ? "continue" : "hero"}>
-          {started ? `Continue Day ${day}` : "Start Step 1"}
+          {started ? `Continue Day ${day}` : "Start Today"}
         </Link>
         <a href="#journey" className={css.secondaryCta}>
           See the Journey

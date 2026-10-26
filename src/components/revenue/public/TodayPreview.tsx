@@ -18,12 +18,12 @@ export default function TodayPreview() {
   ];
 
   return (
-    <section className={css.section} data-rule="" aria-labelledby="rv-preview-title">
+    <section className={css.section} data-tone="alt" aria-labelledby="rv-preview-title">
       <div className={css.container}>
         <div className={css.preview}>
           <div className={css.previewHead}>
             <p className={css.eyebrow}>
-              Today · Day {stepNo(day)} · Step {stepNo(step.n)} {step.short}
+              Today&apos;s Mission · Day {stepNo(day)} · Step {stepNo(step.n)} {step.short}
             </p>
             <h2 id="rv-preview-title" className={css.sectionTitle}>
               {mission.title}

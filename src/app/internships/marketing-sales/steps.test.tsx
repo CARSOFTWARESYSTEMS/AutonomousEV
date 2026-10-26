@@ -46,7 +46,7 @@ describe("Step pages", () => {
       expect(within(section).getByRole("heading", { level: 3, name: "Avoid" })).toBeInTheDocument();
       expect(within(section).getByText("Result")).toBeInTheDocument();
       expect(within(section).getByRole("link", { name: `Start Step ${n} →` })).toHaveAttribute("href", `${BASE}/today#day-${first[i]}`);
-      expect(within(section).getByText("Learn more")).toBeInTheDocument();
+      expect(within(section).getByText("Learn More")).toBeInTheDocument();
     });
   });
 
@@ -58,8 +58,11 @@ describe("Step pages", () => {
     expect(within(step2).getByRole("list", { name: "The customer's FAI workflow" })).toBeInTheDocument();
     expect(within(step2).getByText("Hypothesis — Validate with Customer")).toBeInTheDocument();
     expect(within(step2).getByRole("heading", { level: 3, name: "Ask" })).toBeInTheDocument();
-    await user.click(within(step2).getByText("Learn more"));
+    await user.click(within(step2).getByText("Learn More"));
     expect(within(step2).getByText("Pain hypotheses")).toBeInTheDocument();
+    // The evidence ladder lives here, not on the homepage.
+    expect(within(step2).getByText("The evidence ladder")).toBeInTheDocument();
+    expect(within(step2).getByText("Commercial Proof")).toBeInTheDocument();
     expect(within(step2).getByRole("link", { name: "Day 3" })).toHaveAttribute("href", `${BASE}/today#day-3`);
   });
 
@@ -72,17 +75,19 @@ describe("Step pages", () => {
     expect(document.querySelector("#step-3 details")).not.toHaveAttribute("open");
   });
 
-  it("sales: the Customer Meeting Guide is one tap from the bottom bar's Sales", () => {
+  it("sales: the eight-stage path, and the Customer Meeting Guide one tap from the bottom bar's Sales", () => {
     render(<SalesStep />);
+    const stages = within(screen.getByRole("list", { name: "From first contact to purchase" })).getAllByRole("button");
+    expect(stages.map((stage) => stage.querySelector("span:nth-child(2)")!.textContent)).toEqual(["Contact", "Discovery", "Validate", "Demo", "Value", "Pilot", "Proposal", "Purchase"]);
     expect(within(screen.getByRole("navigation", { name: "Essentials" })).getByRole("link", { name: "Sales" })).toHaveAttribute("aria-current", "page");
-    expect(screen.getByRole("link", { name: "Customer Meeting Guide ↓" })).toHaveAttribute("href", "#meeting-guide");
+    expect(screen.getByRole("link", { name: "Prepare for Customer Meeting" })).toHaveAttribute("href", "#meeting-guide");
     const guide = screen.getByRole("region", { name: "Customer Meeting Guide" });
     expect(guide).toHaveAttribute("id", "meeting-guide");
     expect(guide).toHaveTextContent("Understand the customer's existing FAI workflow.");
     const ask = within(guide).getByRole("heading", { level: 3, name: "Ask" }).nextElementSibling!;
     expect(within(ask as HTMLElement).getAllByRole("listitem")).toHaveLength(7);
-    expect(within(guide).getAllByRole("listitem").map((li) => li.textContent)).toEqual(expect.arrayContaining(["Time", "Rework", "Errors", "Review effort", "Revision handling", "Delivery impact", "Approval delay"]));
-    expect(guide).toHaveTextContent("Permission to show a relevant product workflow or conduct a sample evaluation.");
+    expect(within(guide).getAllByRole("listitem").map((li) => li.textContent)).toEqual(expect.arrayContaining(["Time", "Rework", "Errors", "Review effort", "Revisions", "Delivery impact", "Approval delay"]));
+    expect(guide).toHaveTextContent("Permission for a relevant product demonstration or sample evaluation.");
     // After the meeting: what to record and the next step.
     expect(within(guide).getByRole("heading", { level: 3, name: "After the meeting, record" })).toBeInTheDocument();
     expect(guide).toHaveTextContent("The agreed next step, with a date");
@@ -101,7 +106,7 @@ describe("Step pages", () => {
     expect(screen.getByText("Current Workflow")).toBeInTheDocument();
     expect(screen.getByText("FAI-Assisted Workflow")).toBeInTheDocument();
     const compare = screen.getByRole("figure");
-    expect(within(compare).getAllByRole("term").map((term) => term.textContent)).toEqual(["Time", "Review effort", "Corrections", "Workflow steps", "Customer feedback"]);
+    expect(within(compare).getAllByRole("term").map((term) => term.textContent)).toEqual(["Time", "Manual work", "Review effort", "Corrections", "User feedback"]);
     // No numbers: the pilot produces them, with the customer.
     expect(compare.textContent).not.toMatch(/\d+\s*%/);
     expect(screen.getAllByText(/Agree success criteria before starting/).length).toBeGreaterThan(0);
@@ -122,15 +127,25 @@ describe("Step pages", () => {
     expect(within(screen.getByRole("list", { name: "From validated problem to purchase" })).getAllByRole("button")).toHaveLength(6);
   });
 
-  it("revenue: six plain metrics, not a finance course", () => {
+  it("revenue: four plain questions first, the formal metrics behind Learn Advanced Metrics", () => {
     render(<RevenueStep />);
-    expect(within(document.getElementById("step-10")!).getAllByRole("term").map((term) => term.textContent)).toEqual([
-      "Revenue",
-      "Customer acquisition effort",
-      "Delivery / support cost",
+    const step10 = document.getElementById("step-10")!;
+    expect(within(within(step10).getByRole("list", { name: "Four questions about revenue" })).getAllByRole("listitem").map((li) => li.textContent)).toEqual([
+      "What did we earn?",
+      "What did it cost to acquire and support the customer?",
+      "Will the customer renew?",
+      "Can we serve more customers profitably?",
+    ]);
+    const advanced = within(step10).getByText("Learn Advanced Metrics").closest("details")!;
+    expect(advanced).not.toHaveAttribute("open");
+    expect(within(advanced).getAllByRole("term").map((term) => term.textContent)).toEqual([
+      "CAC — Customer Acquisition Cost",
+      "ACV — Annual Contract Value",
+      "LTV — Lifetime Value",
+      "Sales cycle",
+      "Pipeline coverage",
+      "Margin",
       "Renewal",
-      "Expansion",
-      "Profitability",
     ]);
   });
 

@@ -107,16 +107,17 @@ describe("Marketing & Sales overview: short, simple, beginner first", () => {
     expect(text).toContain("Hypothesis — Validate with Customer"); // What problem might they have?
     expect(text).toContain("Marketing means giving the right customer a reason to talk."); // What is marketing?
     expect(text).toContain("Sales means helping the customer make a good business decision."); // What is sales?
-    expect(screen.getByRole("link", { name: "Start Step 1" })).toHaveAttribute("href", `${BASE}/today#day-1`); // What first?
+    // What first?
+    expect(within(screen.getByRole("region", { name: "Learn Marketing. Learn Sales. Create Value. Generate Revenue." })).getByRole("link", { name: "Start Today" })).toHaveAttribute("href", `${BASE}/today#day-1`);
   });
 
   it("opens with the hero: eyebrow, headline, copy, the path and two ways in", () => {
     renderPage();
     const hero = screen.getByRole("region", { name: "Learn Marketing. Learn Sales. Create Value. Generate Revenue." });
     expect(within(hero).getByText("Marketing & Sales")).toBeInTheDocument();
-    expect(within(hero).getByText("A practical step-by-step guide to market and sell Balloon Drawings & AS9102 FAI Reporting software to Bengaluru Aerospace & Defence MSMEs.")).toBeInTheDocument();
+    expect(within(hero).getByText("A practical guide to market and sell Balloon Drawings & AS9102 FAI Reporting software to Bengaluru Aerospace & Defence MSMEs.")).toBeInTheDocument();
     expect(within(within(hero).getByRole("list", { name: "The path" })).getAllByRole("listitem").map((li) => li.textContent)).toEqual(["Customer", "Pain", "Marketing", "Sales", "Value", "Revenue"]);
-    expect(within(hero).getByRole("link", { name: "Start Step 1" })).toHaveAttribute("href", `${BASE}/today#day-1`);
+    expect(within(hero).getByRole("link", { name: "Start Today" })).toHaveAttribute("href", `${BASE}/today#day-1`);
     expect(within(hero).getByRole("link", { name: "See the Journey" })).toHaveAttribute("href", "#journey");
     // The drawing shows what ballooning is, on a fictitious part.
     expect(within(hero).getByText("Fictitious drawing")).toBeInTheDocument();
@@ -156,7 +157,7 @@ describe("Marketing & Sales overview: short, simple, beginner first", () => {
       ["Case Study", `${BASE}/case-study`],
     ]);
     expect(within(header).getByRole("link", { name: "Overview" })).toHaveAttribute("aria-current", "page");
-    expect(screen.getByRole("link", { name: "Start Today" })).toHaveAttribute("href", `${BASE}/today`);
+    expect(within(screen.getByRole("banner")).getByRole("link", { name: "Start Today" })).toHaveAttribute("href", `${BASE}/today`);
     const bar = screen.getByRole("navigation", { name: "Essentials" });
     expect(within(bar).getAllByRole("link").map((link) => link.textContent)).toEqual(["Today", "Journey", "Customer", "Sales"]);
     expect(within(bar).getByRole("link", { name: "Journey" })).toHaveAttribute("aria-current", "page");
@@ -168,20 +169,22 @@ describe("Marketing & Sales overview: short, simple, beginner first", () => {
     renderPage();
     const section = screen.getByRole("region", { name: "Can we solve a real customer problem well enough that they will pay for it?" });
     const stages = within(within(section).getByRole("list", { name: "From customer to revenue" })).getAllByRole("button");
-    expect(stages.map((stage) => stage.querySelector("span:nth-child(2)")!.textContent)).toEqual(["Customer", "Pain", "Marketing", "Conversation", "Sales", "Value", "Revenue"]);
+    expect(stages.map((stage) => stage.querySelector("span:nth-child(2)")!.textContent)).toEqual(["Customer", "Pain", "Marketing", "Sales", "Value", "Revenue"]);
     expect(stages[0]).toHaveAttribute("aria-pressed", "true");
     await user.click(stages[3]);
     expect(stages[3]).toHaveAttribute("aria-pressed", "true");
     const detail = document.getElementById("rv-flow-customer-to-revenue")!;
-    expect(detail).toHaveTextContent("04 / 07 · Conversation");
-    expect(detail).toHaveTextContent("What should we ask?");
-    expect(vi.mocked(trackEvent)).toHaveBeenCalledWith("flow_stage_view", { flow: "customer-to-revenue", stage: "conversation" });
+    expect(detail).toHaveTextContent("04 / 06 · Sales");
+    expect(detail).toHaveTextContent("Is this a real opportunity?");
+    expect(vi.mocked(trackEvent)).toHaveBeenCalledWith("flow_stage_view", { flow: "customer-to-revenue", stage: "sales" });
+    // The evidence ladder is for later steps, not the homepage.
+    expect(main().textContent).not.toMatch(/Pilot Validated|Commercial Proof/);
   });
 
   it("shows the customer as one company and four people, one explanation at a time", async () => {
     const user = userEvent.setup();
     renderPage();
-    const section = screen.getByRole("region", { name: "Who are we trying to help?" });
+    const section = screen.getByRole("region", { name: "Who Are We Trying to Help?" });
     expect(within(section).getByText("Bengaluru Aerospace / Defence MSME")).toBeInTheDocument();
     const people = within(within(section).getByRole("list", { name: "People in the customer company" })).getAllByRole("button");
     expect(people.map((person) => person.firstChild!.textContent)).toEqual(["Business Owner", "Quality Head", "Quality Engineer", "Manufacturing / Operations"]);
@@ -199,8 +202,8 @@ describe("Marketing & Sales overview: short, simple, beginner first", () => {
     await user.click(stages[2]);
     const detail = document.getElementById("rv-flow-fai-workflow")!;
     expect(within(detail).getAllByRole("term").map((term) => term.textContent)).toEqual(["What happens here?", "What should we ask?", "What pain might exist?"]);
-    expect(detail).toHaveTextContent("Dimensions / characteristics are identified and linked to balloon numbers.");
-    expect(within(detail).getAllByRole("listitem").map((li) => li.textContent)).toEqual(["How do you create balloons today?", "Who does this?", "How long does it take?", "What causes correction?"]);
+    expect(detail).toHaveTextContent("Drawing characteristics are identified and linked to balloon numbers.");
+    expect(within(detail).getAllByRole("listitem").map((li) => li.textContent)).toEqual(["How do you do this today?", "Who does it?", "How long does it take?", "What causes correction?"]);
     expect(detail).toHaveTextContent("Manual effort / rework.");
     expect(within(detail).getByText("Hypothesis — Validate with Customer")).toBeInTheDocument();
   });
@@ -254,7 +257,10 @@ describe("Marketing & Sales overview: short, simple, beginner first", () => {
   it("previews today's step without embedding it", () => {
     renderPage();
     const preview = screen.getByRole("region", { name: "Understand the Customer" });
-    expect(preview).toHaveTextContent("Today · Day 01 · Step 01 Understand Customer");
+    expect(preview).toHaveTextContent("Today's Mission · Day 01 · Step 01 Understand Customer");
+    // The brief's order: Today's Mission, then the case study.
+    const order = [...main().querySelectorAll(":scope > section")].map((section) => section.getAttribute("aria-labelledby"));
+    expect(order.indexOf("rv-preview-title")).toBe(order.indexOf("rv-case-title") - 1);
     expect(within(preview).getAllByRole("term").map((term) => term.textContent)).toEqual(["Do", "Result"]);
     expect(within(preview).getByText("5 researched companies")).toBeInTheDocument();
     expect(within(preview).getByRole("link", { name: "Open Today →" })).toHaveAttribute("href", `${BASE}/today#day-1`);
@@ -264,7 +270,9 @@ describe("Marketing & Sales overview: short, simple, beginner first", () => {
     renderPage();
     const section = screen.getByRole("region", { name: "Four Wins" });
     expect(within(section).getAllByRole("heading", { level: 3 }).map((h) => h.textContent)).toEqual(["Customer Wins", "Business Wins", "Team Wins", "Product Wins"]);
-    expect(within(section).getByText("Lower manual effort")).toBeInTheDocument();
+    expect(within(section).getAllByRole("listitem").filter((li) => !li.querySelector("li")).map((li) => li.textContent)).toEqual(
+      expect.arrayContaining(["Better workflow", "Less effort", "Better traceability", "Faster execution where validated", "Repeat business", "Industry knowledge", "Market fit"]),
+    );
     expect(section).toHaveTextContent("measured with the customer before anyone claims it");
     expect(main().textContent).not.toMatch(/guaranteed (savings|revenue|profit|compliance)/i);
   });

@@ -6,9 +6,10 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import AppShell from "../app/AppShell";
 import { ROUTES } from "../data/framework";
-import { BEFORE_PURCHASE, PROPOSAL_PARTS, REVENUE_METRICS, STEP_PAGES, STEP_PAGE_ORDER, stepRange, stepsOnPage, type StepPageId } from "../data/steps";
+import { ADVANCED_METRICS, BEFORE_PURCHASE, PROPOSAL_PARTS, REVENUE_QUESTIONS, STEP_PAGES, STEP_PAGE_ORDER, stepRange, stepsOnPage, type StepPageId } from "../data/steps";
 import CustomerMap from "../public/CustomerMap";
 import WorkflowExplorer from "../public/WorkflowExplorer";
+import EvidenceLadder from "../ui/EvidenceLadder";
 import SignalFlow from "../ui/SignalFlow";
 import css from "../site.module.css";
 import Chain from "./Chain";
@@ -21,7 +22,6 @@ const VISUALS: Partial<Record<number, ReactNode>> = {
   1: <CustomerMap />,
   2: <WorkflowExplorer />,
   4: <Chain label="Generating leads" items={["Find", "Research", "Prioritise", "Contact"]} />,
-  5: <Chain label="The sales path" items={["Contact", "Discovery", "Validate Pain", "Demo", "Show Value", "Pilot", "Proposal", "Purchase"]} />,
   7: <Chain label="Demonstrating value" items={["Customer Problem", "Relevant Product Workflow", "Business Benefit", "Evidence"]} />,
   9: (
     <div className={css.closeGrid}>
@@ -41,16 +41,36 @@ const VISUALS: Partial<Record<number, ReactNode>> = {
     </div>
   ),
   10: (
-    <dl className={css.metrics}>
-      {REVENUE_METRICS.map((metric) => (
-        <div key={metric.name}>
-          <dt>{metric.name}</dt>
-          <dd>{metric.text}</dd>
-        </div>
-      ))}
-    </dl>
+    <>
+      <ol className={css.questions} aria-label="Four questions about revenue">
+        {REVENUE_QUESTIONS.map((question) => (
+          <li key={question}>{question}</li>
+        ))}
+      </ol>
+      <details className={css.learnMore}>
+        <summary>Learn Advanced Metrics</summary>
+        <dl className={css.metrics}>
+          {ADVANCED_METRICS.map((metric) => (
+            <div key={metric.name}>
+              <dt>{metric.name}</dt>
+              <dd>{metric.text}</dd>
+            </div>
+          ))}
+        </dl>
+      </details>
+    </>
   ),
 };
+
+/** Advanced material a step keeps behind Learn More, beside its ideas. */
+const EVIDENCE = (
+  <div className={css.learnExtra}>
+    <p className={css.conceptTitle}>The evidence ladder</p>
+    <p>How sure are we? Every claim starts as an assumption and moves up only with evidence.</p>
+    <EvidenceLadder />
+  </div>
+);
+const MORE: Partial<Record<number, ReactNode>> = { 2: EVIDENCE, 8: EVIDENCE };
 
 export default function StepPage({ page }: { page: StepPageId }) {
   const content = STEP_PAGES[page];
@@ -72,8 +92,8 @@ export default function StepPage({ page }: { page: StepPageId }) {
           <p className={css.lede}>{content.lede}</p>
           {page === "sales" ? (
             <div className={css.actions}>
-              <a href="#meeting-guide" className={css.secondaryCta}>
-                Customer Meeting Guide ↓
+              <a href="#meeting-guide" className={css.primaryCta}>
+                Prepare for Customer Meeting
               </a>
             </div>
           ) : null}
@@ -89,7 +109,7 @@ export default function StepPage({ page }: { page: StepPageId }) {
       {page === "sales" ? <MeetingGuide /> : null}
 
       {steps.map((step, i) => (
-        <StepSection key={step.n} step={step} tone={i % 2 === 1 ? "alt" : undefined}>
+        <StepSection key={step.n} step={step} tone={i % 2 === 1 ? "alt" : undefined} more={MORE[step.n]}>
           {VISUALS[step.n]}
         </StepSection>
       ))}

@@ -432,7 +432,7 @@ export const MONTH_2: readonly Mission[] = [
     evidence: ["One-account evidence chain", "Gate G status"],
     submit: ["Sales Validation Gate pack", "Weekly CEO / CMO / CSO review"],
     selfReview: ["Can you honestly say the gate statement?"],
-    gate: "Month 2 gate: \"We can engage the right customer and progress a validated problem into a qualified commercial opportunity.\" Gate G (Customer-Facing) unlocks when A–F are complete.",
+    gate: "Month 2 gate: \"We can engage the right customer and progress a validated problem into a real sales opportunity.\" Gate G (Customer-Facing) unlocks when A–F are complete.",
     next: "Month 3: prove the business.",
     output: "Sales Validation Gate",
     customerFacing: true,

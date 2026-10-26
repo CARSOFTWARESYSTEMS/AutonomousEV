@@ -120,13 +120,13 @@ export const STEPS: readonly Step[] = [
     line: "Sales means helping the customer make a good business decision.",
     sentence: "Sales means understanding whether the problem is real, demonstrating relevant value and helping the customer make a good business decision.",
     doList: [
-      "Learn the path: Contact → Discovery → Validate Pain → Demo → Show Value → Pilot → Proposal → Purchase.",
+      "Learn the path above, from first contact to purchase.",
       "Find out who else is involved in a decision.",
       "Qualify honestly: is there a real problem, an owner and a reason to act?",
       "Keep a next step and a date for every opportunity.",
     ],
     avoid: ["Don't push; diagnose.", "Don't treat interest as a purchase."],
-    result: "You know where each opportunity stands and what must happen next.",
+    result: "You know which are real sales opportunities, and what must happen next.",
     concepts: ["b2b-sales", "qualification", "dmu", "pipeline"],
   },
   {
@@ -177,7 +177,7 @@ export const STEPS: readonly Step[] = [
     doList: [
       "Agree success criteria before starting.",
       "Measure the current workflow first: that is the baseline.",
-      "Measure time, corrections, manual effort, review effort, usability and completeness.",
+      "Measure time, manual work, review effort, corrections and user feedback.",
       "Collect the customer's own feedback.",
     ],
     avoid: ["Don't start without written success criteria.", "Don't claim a result the pilot did not measure."],
@@ -267,16 +267,15 @@ export const CUSTOMER_TO_REVENUE: readonly (FlowStage & { step: number })[] = [
   { name: "Customer", hint: "Who has the problem?", step: 1 },
   { name: "Pain", hint: "What is difficult today?", step: 2 },
   { name: "Marketing", hint: "Why should they talk to us?", step: 3 },
-  { name: "Conversation", hint: "What should we ask?", step: 6 },
-  { name: "Sales", hint: "Is there a real opportunity?", step: 5 },
+  { name: "Sales", hint: "Is this a real opportunity?", step: 5 },
   { name: "Value", hint: "Can we prove improvement?", step: 7 },
   { name: "Revenue", hint: "Will the customer pay?", step: 10 },
 ];
 
 export const MARKETING_FLOW: readonly FlowStage[] = [
   { name: "Find", hint: "Identify relevant Bengaluru Aerospace & Defence MSMEs." },
-  { name: "Research", hint: "Understand their business before contacting them." },
-  { name: "Position", hint: "Explain the customer problem we may help solve." },
+  { name: "Research", hint: "Understand the company before contacting them." },
+  { name: "Position", hint: "Explain the problem and possible value clearly." },
   { name: "Reach", hint: "Start a relevant conversation." },
 ];
 
@@ -286,6 +285,9 @@ export const SALES_FLOW: readonly FlowStage[] = [
   { name: "Validate", hint: "Confirm the pain is real." },
   { name: "Demo", hint: "Show only what is relevant." },
   { name: "Value", hint: "Agree what improvement to measure." },
+  { name: "Pilot", hint: "Prove it on their own work." },
+  { name: "Proposal", hint: "Scope, value, price and next step." },
+  { name: "Purchase", hint: "A purchase order, not a promise." },
 ];
 
 export const CLOSE_FLOW: readonly FlowStage[] = [
@@ -329,7 +331,7 @@ export const STEP_PAGES: Record<StepPageId, { label: string; title: string; lede
     label: "Sales",
     title: "Understand. Demonstrate. Help the Customer Decide.",
     lede: "Sales is understanding whether the problem is real, showing relevant value and helping the customer make a good business decision.",
-    flow: { label: "Sales in five stages", stages: SALES_FLOW },
+    flow: { label: "From first contact to purchase", stages: SALES_FLOW },
   },
   pilot: {
     label: "Pilot",
@@ -404,8 +406,8 @@ export const WORKFLOW: readonly WorkflowStage[] = [
   },
   {
     name: "Ballooning",
-    what: "Dimensions / characteristics are identified and linked to balloon numbers.",
-    ask: ["How do you create balloons today?", "Who does this?", "How long does it take?", "What causes correction?"],
+    what: "Drawing characteristics are identified and linked to balloon numbers.",
+    ask: ["How do you do this today?", "Who does it?", "How long does it take?", "What causes correction?"],
     pain: "Manual effort / rework.",
   },
   {
@@ -437,10 +439,10 @@ export const WORKFLOW: readonly WorkflowStage[] = [
 // ── Four wins ───────────────────────────────────────────────────────────────
 
 export const FOUR_WINS: readonly { id: string; name: string; items: readonly string[] }[] = [
-  { id: "customer", name: "Customer Wins", items: ["Lower manual effort", "Better workflow", "Reduced rework", "Improved traceability", "Faster preparation"] },
-  { id: "business", name: "Business Wins", items: ["Revenue", "Profit", "Customer relationship", "References", "Repeat business"] },
-  { id: "team", name: "Team Wins", items: ["Marketing skills", "Sales skills", "Customer experience", "Industry exposure", "Commercial capability"] },
-  { id: "product", name: "Product Wins", items: ["Customer feedback", "Better product", "Stronger market fit", "Evidence", "Future opportunities"] },
+  { id: "customer", name: "Customer Wins", items: ["Better workflow", "Less effort", "Better traceability", "Faster execution where validated"] },
+  { id: "business", name: "Business Wins", items: ["Revenue", "Profit", "Relationship", "Repeat business"] },
+  { id: "team", name: "Team Wins", items: ["Marketing skill", "Sales skill", "Industry knowledge", "Customer experience"] },
+  { id: "product", name: "Product Wins", items: ["Feedback", "Improvement", "Evidence", "Market fit"] },
 ];
 
 export const WINS_NOTE = "Customer wins are what we aim for, not what we promise: each one is measured with the customer before anyone claims it.";
@@ -458,9 +460,9 @@ export const MEETING_GUIDE = {
     "Who reviews the FAI?",
     "What happens if the report is delayed?",
   ],
-  listenFor: ["Time", "Rework", "Errors", "Review effort", "Revision handling", "Delivery impact", "Approval delay"],
+  listenFor: ["Time", "Rework", "Errors", "Review effort", "Revisions", "Delivery impact", "Approval delay"],
   doNot: ["Don't pitch before you understand.", "Don't ask for drawings or controlled information.", "Don't criticise their current process.", "Don't promise savings, compliance or features."],
-  next: "Permission to show a relevant product workflow or conduct a sample evaluation.",
+  next: "Permission for a relevant product demonstration or sample evaluation.",
   record: [
     "What they said, in their own words",
     "Any time, rework or review effort they mentioned",
@@ -481,10 +483,10 @@ export const PILOT_COMPARE = {
 
 export const PILOT_MEASURES: readonly { name: string; how: string }[] = [
   { name: "Time", how: "Preparation time per drawing" },
+  { name: "Manual work", how: "Steps done by hand, and re-typing" },
   { name: "Review effort", how: "Time spent checking before submission" },
   { name: "Corrections", how: "Errors found in review" },
-  { name: "Workflow steps", how: "Steps and hand-offs from drawing to report" },
-  { name: "Customer feedback", how: "What the people doing the work say" },
+  { name: "User feedback", how: "What the people doing the work say" },
 ];
 
 export const PROPOSAL_PARTS = ["Customer context", "Validated problem", "Proposed solution", "Scope", "Expected value", "Pilot evidence", "Price", "Implementation", "Next step"] as const;
@@ -492,11 +494,21 @@ export const PROPOSAL_PARTS = ["Customer context", "Validated problem", "Propose
 /** What may still stand between a customer's interest and a purchase order. */
 export const BEFORE_PURCHASE = ["Technical review", "IT / security review", "Procurement", "Vendor registration", "NDA", "Commercial negotiation", "Purchase order"] as const;
 
-export const REVENUE_METRICS: readonly { name: string; text: string }[] = [
-  { name: "Revenue", text: "What the customer pays." },
-  { name: "Customer acquisition effort", text: "The time and cost it took to win the customer." },
-  { name: "Delivery / support cost", text: "What it costs to implement, train and support them." },
-  { name: "Renewal", text: "Whether they keep paying — because the value is real." },
-  { name: "Expansion", text: "More users, sites or products — only after they have adopted it." },
-  { name: "Profitability", text: "Revenue minus the cost to win and serve the customer, over time." },
+/** The beginner's view of revenue: four plain questions. */
+export const REVENUE_QUESTIONS = [
+  "What did we earn?",
+  "What did it cost to acquire and support the customer?",
+  "Will the customer renew?",
+  "Can we serve more customers profitably?",
+] as const;
+
+/** Behind "Learn Advanced Metrics": the formal terms, each in one line. */
+export const ADVANCED_METRICS: readonly { name: string; text: string }[] = [
+  { name: "CAC — Customer Acquisition Cost", text: "What it costs to win one customer." },
+  { name: "ACV — Annual Contract Value", text: "What one customer pays in a year." },
+  { name: "LTV — Lifetime Value", text: "What a customer is worth over the whole relationship." },
+  { name: "Sales cycle", text: "How long it takes from first contact to purchase order." },
+  { name: "Pipeline coverage", text: "Potential sales compared with the sales target." },
+  { name: "Margin", text: "What is left of revenue after the cost to deliver and support." },
+  { name: "Renewal", text: "The share of customers who keep paying." },
 ];

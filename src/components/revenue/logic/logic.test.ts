@@ -370,16 +370,23 @@ describe("The ten steps", () => {
     expect(daysOfStep(10)).toEqual([56, 57, 58, 59, 60]);
   });
 
-  it("draws the customer-to-revenue flow in the brief's seven stages", () => {
-    expect(CUSTOMER_TO_REVENUE.map((stage) => stage.name)).toEqual(["Customer", "Pain", "Marketing", "Conversation", "Sales", "Value", "Revenue"]);
+  it("draws the customer-to-revenue flow in the brief's six stages", () => {
+    expect(CUSTOMER_TO_REVENUE.map((stage) => stage.name)).toEqual(["Customer", "Pain", "Marketing", "Sales", "Value", "Revenue"]);
     expect(CUSTOMER_TO_REVENUE.map((stage) => stage.hint)).toEqual([
       "Who has the problem?",
       "What is difficult today?",
       "Why should they talk to us?",
-      "What should we ask?",
-      "Is there a real opportunity?",
+      "Is this a real opportunity?",
       "Can we prove improvement?",
       "Will the customer pay?",
     ]);
+  });
+
+  it("says Ideal Customer before ICP, and avoids advanced terms in the steps", () => {
+    expect(MISSIONS[6].title).toBe("Define Your Ideal Customer");
+    expect(MISSIONS[6].mission).toMatch(/Ideal Customer .*ICP, an Ideal Customer Profile/);
+    // No day before Day 7 says ICP without explaining it.
+    for (const m of MISSIONS.slice(0, 6)) expect(JSON.stringify(m), `Day ${m.day}`).not.toMatch(/\bICP\b/);
+    expect(JSON.stringify(STEPS)).not.toMatch(/qualified commercial opportunity|commercial evidence|revenue pipeline/i);
   });
 });
