@@ -3,8 +3,8 @@ import { pageMetadata } from "../seo";
 
 export const metadata = pageMetadata({
   route: "caseStudy",
-  title: "Case Study: Balloon Drawings & AS9102 FAI Reporting | B2B Revenue Engineering",
-  description: "The live case: FAI Engineer, the Bengaluru aerospace market, problem hypotheses, ICP, buyer map, evidence, value proposition, demo, ROI, objections and pilot.",
+  title: "Case Study: Balloon Drawings & AS9102 FAI Reporting | Marketing & Sales | EV.ENGINEER™",
+  description: "The live case: FAI Engineer for Bengaluru aerospace and defence MSMEs — what the product does today, and the customer problems still to be validated.",
 });
 
 export default function Page() {

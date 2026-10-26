@@ -11,9 +11,11 @@ export interface ResearcherCardProps {
   role?: string;
   /** `data-*` attributes for the profile link, e.g. a page's `data-track-event`. */
   profileLinkProps?: Record<`data-${string}`, string>;
+  /** Where the profile link goes, when a page names another copy of the profile. */
+  href?: string;
 }
 
-export default function ResearcherCard({ imageAlt = `Portrait of ${SUDARSHANA_KARKALA.name}`, role = "EV.ENGINEER™", profileLinkProps }: ResearcherCardProps = {}) {
+export default function ResearcherCard({ imageAlt = `Portrait of ${SUDARSHANA_KARKALA.name}`, role = "EV.ENGINEER™", profileLinkProps, href = "/about/sudarshana-karkala" }: ResearcherCardProps = {}) {
   return (
     <aside className={styles.card} aria-label="About the researcher">
       <div className={styles.identity}>
@@ -30,7 +32,7 @@ export default function ResearcherCard({ imageAlt = `Portrait of ${SUDARSHANA_KA
           <p className={styles.role}>{role}</p>
         </div>
       </div>
-      <Link href="/about/sudarshana-karkala" className={styles.cta} {...profileLinkProps}>
+      <Link href={href} className={styles.cta} {...profileLinkProps}>
         View full profile <ArrowRight size={16} />
       </Link>
     </aside>

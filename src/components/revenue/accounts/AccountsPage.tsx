@@ -80,7 +80,7 @@ export default function AccountsPage() {
   };
 
   return (
-    <AppShell active="accounts">
+    <AppShell page="accounts">
       <div className={css.page}>
         <header className={css.pageHead}>
           <p className={css.eyebrow}>Accounts</p>

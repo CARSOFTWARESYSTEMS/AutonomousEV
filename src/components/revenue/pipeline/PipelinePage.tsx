@@ -46,7 +46,7 @@ export default function PipelinePage() {
   ];
 
   return (
-    <AppShell active="pipeline">
+    <AppShell page="pipeline">
       <div className={css.page}>
         <header className={css.pageHead}>
           <p className={css.eyebrow}>Revenue Cockpit</p>

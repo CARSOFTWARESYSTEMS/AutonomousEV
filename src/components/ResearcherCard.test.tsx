@@ -27,6 +27,11 @@ describe("ResearcherCard", () => {
     expect(link).toHaveAttribute("data-track-placement", "prepared_by");
   });
 
+  it("links to another copy of the profile when a page names one", () => {
+    render(<ResearcherCard href="https://aerospace.ev.engineer/about/sudarshana-karkala" />);
+    expect(screen.getByRole("link", { name: /View full profile/ })).toHaveAttribute("href", "https://aerospace.ev.engineer/about/sudarshana-karkala");
+  });
+
   it("credits him by his engineering identity unless a page gives the role it credits him in", () => {
     const { unmount } = render(<ResearcherCard />);
     expect(screen.getByText("EV.ENGINEER™")).toBeInTheDocument();

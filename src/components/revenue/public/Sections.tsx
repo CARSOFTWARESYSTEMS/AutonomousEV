@@ -1,16 +1,82 @@
-// The overview's other sections: the live case study, the three-phase
-// journey, outcomes and audience, and the internship. One idea each.
+// The overview's other sections, one idea each: the central question, the
+// customer, their work, the live case study, the four wins, the internship
+// and who designed it.
 import Link from "next/link";
+import ResearcherCard from "@/components/ResearcherCard";
 import { LINK_EVENTS } from "../analytics";
-import { AUDIENCES, CASE_STUDY, INTERNSHIP, OUTCOMES, PHASES, ROUTES } from "../data/framework";
+import { CASE_STUDY, DESIGNED_BY, FRAMEWORK, INTERNSHIP, ROUTES } from "../data/framework";
+import { CUSTOMER_TO_REVENUE, FOUR_WINS, WINS_NOTE, stepNo } from "../data/steps";
+import SignalFlow from "../ui/SignalFlow";
 import css from "../site.module.css";
+import CustomerMap from "./CustomerMap";
+import WorkflowExplorer from "./WorkflowExplorer";
+
+export function CentralQuestion() {
+  return (
+    <section className={css.section} data-tone="alt" aria-labelledby="rv-question-title">
+      <div className={css.container}>
+        <div className={css.sectionHeadCenter}>
+          <p className={css.eyebrow}>One question</p>
+          <h2 id="rv-question-title" className={css.questionTitle}>
+            {FRAMEWORK.question}
+          </h2>
+          <p className={css.sectionLede}>Every stage answers one part of it. Choose a stage.</p>
+        </div>
+        <SignalFlow id="customer-to-revenue" label="From customer to revenue" stages={CUSTOMER_TO_REVENUE} />
+      </div>
+    </section>
+  );
+}
+
+export function CustomerSection() {
+  return (
+    <section id="customer" className={css.section} data-rule="" aria-labelledby="rv-customer-title">
+      <div className={css.container}>
+        <div className={css.split}>
+          <div>
+            <p className={css.eyebrow}>Our customer</p>
+            <h2 id="rv-customer-title" className={css.sectionTitle}>
+              Who are we trying to help?
+            </h2>
+            <p className={css.sectionLede}>A Bengaluru aerospace or defence manufacturer that makes parts to drawings — and four people inside it. Choose one.</p>
+            <Link href={`${ROUTES.customer}#step-1`} className={css.textLink}>
+              Step 01: Understand the Customer →
+            </Link>
+          </div>
+          <CustomerMap />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function ProblemSection() {
+  return (
+    <section className={css.section} data-tone="alt" aria-labelledby="rv-problem-title">
+      <div className={css.container}>
+        <div className={css.sectionHeadCenter}>
+          <p className={css.eyebrow}>The problem</p>
+          <h2 id="rv-problem-title" className={css.sectionTitle}>
+            Understand the Work Before Selling the Software
+          </h2>
+          <p className={css.sectionLede}>From drawing to approval. Choose a stage to see what happens, what to ask and where pain might be.</p>
+        </div>
+        <WorkflowExplorer />
+        <p className={css.centerLink}>
+          <Link href={`${ROUTES.customer}#step-2`} className={css.textLink}>
+            Step 02: Find the Pain →
+          </Link>
+        </p>
+      </div>
+    </section>
+  );
+}
 
 export function CaseStudyTeaser() {
-  const cards = [
+  const facts = [
     { label: "Product", value: CASE_STUDY.product },
-    { label: "Market", value: CASE_STUDY.market },
-    { label: "Geography", value: CASE_STUDY.geography },
-    { label: "Objective", value: CASE_STUDY.objective },
+    { label: "Customer", value: CASE_STUDY.market },
+    { label: "Customer problem", value: CASE_STUDY.problem },
   ];
   return (
     <section className={css.section} data-rule="" aria-labelledby="rv-case-title">
@@ -20,10 +86,10 @@ export function CaseStudyTeaser() {
           {CASE_STUDY.title}
         </h2>
         <dl className={css.factRow}>
-          {cards.map((card) => (
-            <div key={card.label} className={css.fact}>
-              <dt>{card.label}</dt>
-              <dd>{card.value}</dd>
+          {facts.map((fact) => (
+            <div key={fact.label} className={css.fact}>
+              <dt>{fact.label}</dt>
+              <dd>{fact.value}</dd>
             </div>
           ))}
         </dl>
@@ -37,7 +103,7 @@ export function CaseStudyTeaser() {
             View Case Study →
           </Link>
           <Link href={CASE_STUDY.contextUrl} className={css.textLink} data-track-event={LINK_EVENTS.aqip} data-track-source="overview">
-            AQIP strategy context →
+            AQIP Context →
           </Link>
         </div>
       </div>
@@ -45,70 +111,29 @@ export function CaseStudyTeaser() {
   );
 }
 
-export function JourneyStages() {
+export function FourWins() {
   return (
-    <section id="journey" className={css.section} data-tone="alt" aria-labelledby="rv-stages-title">
+    <section className={css.section} data-tone="alt" aria-labelledby="rv-wins-title">
       <div className={css.container}>
-        <p className={css.eyebrow}>12-Week Journey</p>
-        <h2 id="rv-stages-title" className={css.sectionTitle}>
-          Three months. Three proofs.
+        <p className={css.eyebrow}>Win–Win–Win–Win</p>
+        <h2 id="rv-wins-title" className={css.sectionTitle}>
+          Four Wins
         </h2>
-        <ol className={css.stages}>
-          {PHASES.map((phase) => (
-            <li key={phase.n} className={css.stage}>
-              <p className={css.stageNo}>{String(phase.n).padStart(2, "0")}</p>
-              <h3 className={css.stageName}>{phase.name}</h3>
-              <p className={css.stageWeeks}>{phase.weeks}</p>
-              <p className={css.stageVerb}>{phase.verb}</p>
-              <ul className={css.stageTopics}>
-                {phase.topics.map((topic) => (
-                  <li key={topic}>{topic}</li>
+        <p className={css.sectionLede}>A sale is only good when the customer, the business, the team and the product all win.</p>
+        <ol className={css.wins}>
+          {FOUR_WINS.map((win, i) => (
+            <li key={win.id} className={css.win} data-win={win.id}>
+              <p className={css.winNo}>{stepNo(i + 1)}</p>
+              <h3 className={css.winName}>{win.name}</h3>
+              <ul className={css.winItems}>
+                {win.items.map((item) => (
+                  <li key={item}>{item}</li>
                 ))}
               </ul>
-              <Link href={ROUTES[phase.route]} className={css.textLink}>
-                {phase.cta} →
-              </Link>
             </li>
           ))}
         </ol>
-      </div>
-    </section>
-  );
-}
-
-export function Outcomes() {
-  return (
-    <section className={css.section} data-rule="" aria-labelledby="rv-outcomes-title">
-      <div className={css.container}>
-        <div className={css.split}>
-          <div>
-            <p className={css.eyebrow}>Outcomes</p>
-            <h2 id="rv-outcomes-title" className={css.sectionTitle}>
-              What you will be able to do
-            </h2>
-          </div>
-          <ol className={css.numbered}>
-            {OUTCOMES.map((outcome, i) => (
-              <li key={outcome.title}>
-                <span className={css.numberedNo} aria-hidden="true">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <span>
-                  <span className={css.numberedTitle}>{outcome.title}</span>
-                  <span className={css.numberedText}>{outcome.text}</span>
-                </span>
-              </li>
-            ))}
-          </ol>
-        </div>
-        <div className={css.audience}>
-          <h3 className={css.smallHead}>Who it is for</h3>
-          <ul className={css.chips} aria-label="Who it is for">
-            {AUDIENCES.map((audience) => (
-              <li key={audience}>{audience}</li>
-            ))}
-          </ul>
-        </div>
+        <p className={css.note}>{WINS_NOTE}</p>
       </div>
     </section>
   );
@@ -122,15 +147,15 @@ export function InternshipCta() {
     { label: "Certification", value: INTERNSHIP.certification.join(" + ") },
   ];
   return (
-    <section id="internship" className={css.section} data-tone="alt" aria-labelledby="rv-internship-title">
+    <section id="internship" className={css.section} data-rule="" aria-labelledby="rv-internship-title">
       <div className={css.container}>
         <div className={css.split}>
           <div>
-            <p className={css.eyebrow}>Internship mode</p>
+            <p className={css.eyebrow}>Internship</p>
             <h2 id="rv-internship-title" className={css.sectionTitle}>
               {INTERNSHIP.title}
             </h2>
-            <p className={css.sectionLede}>The framework is open to everyone. The internship is one guided way through it, with mentor reviews.</p>
+            <p className={css.sectionLede}>The 10 steps are open to everyone. The internship is one guided way through them, with mentor reviews.</p>
             <div className={css.actions}>
               <Link href={INTERNSHIP.apply.url} className={css.primaryCta} data-track-event={LINK_EVENTS.apply} data-track-source="overview">
                 {INTERNSHIP.apply.label}
@@ -156,6 +181,17 @@ export function InternshipCta() {
             <p className={css.note}>{INTERNSHIP.details}</p>
           </div>
         </div>
+      </div>
+    </section>
+  );
+}
+
+/** The site's shared "Designed by" card, linking to the profile on aerospace.ev.engineer. */
+export function DesignedBy() {
+  return (
+    <section className={css.designedBy} aria-label="Designed by">
+      <div className={css.container}>
+        <ResearcherCard href={DESIGNED_BY.profileUrl} profileLinkProps={{ "data-track-event": LINK_EVENTS.profile, "data-track-placement": "designed_by" }} />
       </div>
     </section>
   );

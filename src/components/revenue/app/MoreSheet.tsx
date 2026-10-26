@@ -1,6 +1,7 @@
 "use client";
-// "More": everything that is not one of the four essentials. A modal sheet —
-// focus stays inside while it is open, Escape or the backdrop closes it.
+// "More": the pages that are not in the bottom bar. A modal sheet — focus
+// stays inside while it is open, Escape or the backdrop closes it. The
+// personal tools come last: they matter once the work reaches them.
 import Link from "next/link";
 import { useEffect, useRef, type KeyboardEvent } from "react";
 import { LINK_EVENTS } from "../analytics";
@@ -10,20 +11,27 @@ import DataControls from "./DataControls";
 
 const GROUPS: readonly { label: string; links: readonly { label: string; href: string }[] }[] = [
   {
-    label: "Journey",
+    label: "The 10 steps",
     links: [
-      { label: "Marketing · Weeks 1–4", href: ROUTES.marketing },
-      { label: "Sales · Weeks 5–8", href: ROUTES.sales },
-      { label: "Execution · Weeks 9–12", href: ROUTES.execution },
+      { label: "Overview", href: ROUTES.overview },
+      { label: "Marketing · Steps 3–4", href: ROUTES.marketing },
+      { label: "Pilot · Step 8", href: ROUTES.pilot },
+      { label: "Proposal & Close · Step 9", href: ROUTES.close },
+      { label: "Revenue & Profit · Step 10", href: ROUTES.revenue },
     ],
   },
   {
     label: "Reference",
     links: [
+      { label: "Customer Meeting Guide", href: `${ROUTES.sales}#meeting-guide` },
       { label: "Case Study: Balloon Drawings & AS9102 FAI", href: ROUTES.caseStudy },
-      { label: "Gates & weekly challenge", href: `${ROUTES.today}#gates` },
-      { label: "Revenue model", href: `${ROUTES.pipeline}#revenue-model` },
-      { label: "Programme overview", href: ROUTES.overview },
+    ],
+  },
+  {
+    label: "Your workspace",
+    links: [
+      { label: "Accounts", href: ROUTES.accounts },
+      { label: "Pipeline", href: ROUTES.pipeline },
     ],
   },
 ];
@@ -47,7 +55,7 @@ export default function MoreSheet({ onClose }: { onClose: () => void }) {
       return;
     }
     if (event.key !== "Tab" || !sheet.current) return;
-    const focusable = [...sheet.current.querySelectorAll<HTMLElement>("a[href], button:not([disabled])")];
+    const focusable = [...sheet.current.querySelectorAll<HTMLElement>("a[href], button:not([disabled]), summary")];
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
     if (event.shiftKey && document.activeElement === first) {
@@ -87,7 +95,10 @@ export default function MoreSheet({ onClose }: { onClose: () => void }) {
         <Link href={INTERNSHIP.apply.url} className={css.primaryButton} data-track-event={LINK_EVENTS.apply} data-track-source="more" onClick={onClose}>
           {INTERNSHIP.apply.label}
         </Link>
-        <DataControls />
+        <details className={css.disclosure}>
+          <summary>Saved progress</summary>
+          <DataControls />
+        </details>
       </div>
     </div>
   );

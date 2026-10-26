@@ -1,30 +1,28 @@
-import Footer from "../app/Footer";
-import { PublicHeader } from "../app/SiteHeader";
+import AppShell from "../app/AppShell";
 import Hero from "./Hero";
-import MissionPreview from "./MissionPreview";
-import RevenueJourney from "./RevenueJourney";
-import { CaseStudyTeaser, InternshipCta, JourneyStages, Outcomes } from "./Sections";
+import StepJourney from "./StepJourney";
+import TodayPreview from "./TodayPreview";
+import { CaseStudyTeaser, CentralQuestion, CustomerSection, DesignedBy, FourWins, InternshipCta, ProblemSection } from "./Sections";
 
 /**
- * The public overview: seven short sections that answer what this is, who
- * it is for, what problem it solves, what the twelve weeks are, what to do
- * today and how to enter. The tools themselves live on the framework's pages.
+ * The public overview, short on purpose: nine sections that answer what we
+ * sell, to whom, what problem they might have, what marketing and sales are,
+ * and what to do first — then who designed it. The work itself lives on Today
+ * and the step pages.
  */
 export default function OverviewPage() {
   return (
-    <>
-      <span id="top" />
-      <PublicHeader />
-      <main>
-        <Hero />
-        <RevenueJourney />
-        <CaseStudyTeaser />
-        <JourneyStages />
-        <MissionPreview />
-        <Outcomes />
-        <InternshipCta />
-      </main>
-      <Footer />
-    </>
+    <AppShell page="overview">
+      <Hero />
+      <CentralQuestion />
+      <CustomerSection />
+      <ProblemSection />
+      <StepJourney />
+      <CaseStudyTeaser />
+      <TodayPreview />
+      <FourWins />
+      <InternshipCta />
+      <DesignedBy />
+    </AppShell>
   );
 }

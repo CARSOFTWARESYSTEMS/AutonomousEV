@@ -1,12 +1,10 @@
-// The hero: what this is, for whom, and the way in — beside a readout of the
-// evidence ladder, the idea the whole framework rests on.
+// The hero: what this is, for whom and where to start — beside a drawing
+// being ballooned, which is what the product helps with.
+import { Fragment } from "react";
 import { FRAMEWORK } from "../data/framework";
-import { EVIDENCE_LABEL, EVIDENCE_ORDER } from "../types";
 import css from "../site.module.css";
+import BalloonDrawing from "./BalloonDrawing";
 import HeroActions from "./HeroActions";
-
-/** The ladder from the top rung down; only Assumption is reached on Day 1. */
-const RUNGS = [...EVIDENCE_ORDER].reverse();
 
 export default function Hero() {
   return (
@@ -16,39 +14,21 @@ export default function Hero() {
           <div>
             <p className={css.eyebrow}>{FRAMEWORK.eyebrow}</p>
             <h1 id="rv-hero-title" className={css.title}>
-              {FRAMEWORK.headline}
+              {FRAMEWORK.headlineLines.map((line) => (
+                <Fragment key={line}>
+                  <span className={css.titleLine}>{line}</span>{" "}
+                </Fragment>
+              ))}
             </h1>
             <p className={css.lede}>{FRAMEWORK.lede}</p>
             <HeroActions />
-            <div className={css.heroMeta}>
-              <ul className={css.contextLine} aria-label="Focus">
-                {FRAMEWORK.context.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
+            <ul className={`${css.contextLine} ${css.heroPath}`} aria-label="The path">
+              {FRAMEWORK.context.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
           </div>
-
-          <figure className={css.instrument} aria-labelledby="rv-instrument-caption">
-            <figcaption id="rv-instrument-caption" className={css.instrumentHead}>
-              <span>Evidence ladder</span>
-              <span>Day 01</span>
-            </figcaption>
-            <ol className={css.instrumentRows}>
-              {RUNGS.map((level) => {
-                const on = level === "assumption";
-                return (
-                  <li key={level} data-on={on ? "" : undefined}>
-                    <span className={css.instrumentName}>{EVIDENCE_LABEL[level]}</span>
-                    <span className={css.instrumentBar} aria-hidden="true">
-                      <span style={{ ["--fill" as string]: on ? "100%" : "0%" }} />
-                    </span>
-                  </li>
-                );
-              })}
-            </ol>
-            <p className={css.instrumentStatus}>Every claim starts as an assumption</p>
-          </figure>
+          <BalloonDrawing />
         </div>
       </div>
     </section>

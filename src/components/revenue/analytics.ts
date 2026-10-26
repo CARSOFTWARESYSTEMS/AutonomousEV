@@ -1,4 +1,4 @@
-// Analytics for the Revenue Engineering workspace. Every event the page sends
+// Analytics for the Marketing & Sales framework. Every event the page sends
 // from code is declared here and goes through the site's existing
 // `trackEvent`; link clicks use `data-track-event` attributes (LINK_EVENTS).
 //
@@ -37,9 +37,9 @@ export interface RevenueEvents {
   founder_challenge_complete: { week: string };
   mentor_gate_complete: { gate: string };
   mission_search: NoParams;
-  revenue_journey_stage: { stage: string };
+  flow_stage_view: { flow: string; stage: string };
+  customer_role_view: { role: string };
   mission_step_view: { day: string; step: string };
-  context_panel_toggle: { open: "true" | "false" };
 }
 
 export type RevenueEvent = keyof RevenueEvents;
@@ -50,6 +50,7 @@ export const LINK_EVENTS = {
   product: "fai_product_click",
   aqip: "aqip_context_click",
   apply: "apply_internship_click",
+  profile: "revenue_framework_profile_click",
   start: "revenue_framework_start",
 } as const;
 

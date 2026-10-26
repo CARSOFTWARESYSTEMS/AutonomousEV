@@ -617,7 +617,7 @@ export default function InternshipsClient() {
             />
           </Section>
 
-          <Section title="Marketing & Sales" id="marketing-sales">
+          <Section title="Marketing & Sales" id="marketing-sales" gridClassName="grid-2">
             <ProjectCard
               title="EV Repair Workshop"
               desc="Specialized focus on EV diagnostics, repair mechanisms, and maintenance workflows."
@@ -628,20 +628,23 @@ export default function InternshipsClient() {
               desc="End-to-end financial model for EV battery secondary life — cost breakdown, cell grading, repacking economics, and Business Model Canvas."
               link="/internships/battery-circular-economy"
             />
-            <ProjectCard
-              title="B2B Revenue Engineering"
-              subtitle="Marketing & Sales for Aerospace & Defence MSMEs"
-              desc="Learn how to understand a real industrial market, discover customer pain, validate opportunities, position a specialised B2B software product, engage decision-makers, build a qualified pipeline and turn customer value into sustainable revenue."
-              link="/internships/marketing-sales"
-              badge="Case Study: Balloon Drawings & AS9102 FAI Reporting"
-              tags={["12 Weeks", "Bengaluru Market", "Hybrid", "Live Industry Case Study"]}
-              ctaLabel="Enter Revenue Framework"
-              trackProps={{
-                "data-track-event": "revenue_framework_card_click",
-                "data-track-source": "internships_marketing_sales",
-                "data-track-destination": "/internships/marketing-sales",
-              }}
-            />
+            {/* The framework gets a row of its own, below the two shorter cards. */}
+            <div style={{ gridColumn: '1 / -1' }}>
+              <ProjectCard
+                title="Marketing & Sales for Aerospace & Defence MSMEs"
+                subtitle="A Practical B2B Customer-to-Revenue Framework"
+                desc="Learn marketing and sales step by step: understand a Bengaluru aerospace or defence customer, find real pain, market and sell a specialised software product professionally, and turn customer value into revenue."
+                link="/internships/marketing-sales"
+                badge="Case Study: Balloon Drawings & AS9102 FAI Reporting"
+                tags={["10 Steps", "Bengaluru Market", "Hybrid", "Live Case Study"]}
+                ctaLabel="Start Step 1"
+                trackProps={{
+                  "data-track-event": "revenue_framework_card_click",
+                  "data-track-source": "internships_marketing_sales",
+                  "data-track-destination": "/internships/marketing-sales",
+                }}
+              />
+            </div>
           </Section>
 
           <Section title="Miscellaneous">

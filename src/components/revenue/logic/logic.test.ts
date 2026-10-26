@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
-import { APP_NAV, PHASES, ROUTES, TOOL_LINKS, TOTAL_DAYS, UNLOCKS, WEEKS, isReviewDay, isUnlocked, phaseOf, weekOf } from "../data/framework";
+import { BAR_NAV, BAR_OF, HEADER_NAV, PHASES, ROUTES, TOOL_LINKS, TOTAL_DAYS, UNLOCKS, WEEKS, isReviewDay, isUnlocked, phaseOf, weekOf } from "../data/framework";
+import { CUSTOMER_TO_REVENUE, STEPS, STEP_PAGE_ORDER, daysOfStep, firstDayOfStep, stepOfDay, stepsOnPage } from "../data/steps";
 import { MISSIONS } from "../data/missions";
 import { CLAIMS } from "../data/product";
 import { ACCOUNT_CRITERIA, OPPORTUNITY_CRITERIA } from "../data/scoring";
@@ -215,15 +216,29 @@ describe("Sixty daily missions", () => {
     }
   });
 
-  it("starts with the Bengaluru market and product context; marketing theory comes on Day 4", () => {
+  it("starts with the customer, their workflow and their pain; marketing comes on Day 4", () => {
     expect(MISSIONS.slice(0, 5).map((m) => m.title)).toEqual([
-      "Understand the Bengaluru Aerospace & Defence Market",
+      "Understand the Customer",
       "Understand the FAI Workflow",
-      "Understand the Customer Problem",
+      "Find Customer Pain",
       "What Is B2B Marketing?",
       "Design the Problem Validation Plan",
     ]);
-    expect(MISSIONS[0].mission).toBe("Identify the types of companies most likely to experience drawing-driven inspection and FAI workflow pain.");
+    // The brief's Day 1: five researched companies, no customer contact.
+    expect(MISSIONS[0].mission).toBe("Understand what type of Bengaluru aerospace / defence company may need FAI software.");
+    expect(MISSIONS[0].why).toBe("You cannot market a product effectively if you do not know who the customer is.");
+    expect(MISSIONS[0].doToday[0]).toBe("Research 5 Bengaluru aerospace / defence manufacturing companies, from public sources.");
+    expect(MISSIONS[0].askNote).toBe("No customer contact today. Answer these from research.");
+    expect(MISSIONS[0].dont).toEqual(["Don't contact companies before basic research.", "Don't assume they need our software.", "Don't call every aerospace company a target customer."]);
+    expect(MISSIONS[0].output).toBe("5 researched companies");
+    // Day 2: one workflow map, no selling. Day 3: 3–5 pain hypotheses.
+    expect(MISSIONS[1].mission).toBe("Understand the customer's workflow before discussing our product.");
+    expect(MISSIONS[1].dont[0]).toBe("Don't start selling yet.");
+    expect(MISSIONS[1].output).toBe("One clear workflow map");
+    expect(MISSIONS[2].ask).toEqual(["Which part takes the most time?", "Where do corrections happen?", "What causes rework?", "What happens when an FAI is delayed?", "What is hardest when a drawing changes?"]);
+    expect(MISSIONS[2].output).toBe("3–5 pain hypotheses");
+    // Later days no longer assume a 20-company map or six hypotheses.
+    expect(JSON.stringify(MISSIONS)).not.toMatch(/20 Market Map|six hypotheses/);
     expect(MISSIONS[3].key).toBe("Find the right customer. Understand the right problem. Create a reason to start a conversation.");
     expect(MISSIONS[20].key).toBe("Marketing creates relevance. Sales converts validated value into a business decision.");
   });
@@ -246,7 +261,7 @@ describe("Sixty daily missions", () => {
     // No Month 1 day before Day 10 is customer-facing, and every research day says so.
     for (const m of MISSIONS.slice(0, 9)) {
       expect(m.customerFacing).toBeFalsy();
-      expect(m.askNote).toMatch(/Gate C/);
+      expect(m.askNote).toMatch(/Gate C|No customer contact/);
     }
     expect(MISSIONS[9].gate).toMatch(/Gate C/);
   });
@@ -286,9 +301,12 @@ describe("Synthetic demonstration data", () => {
     for (const link of Object.values(TOOL_LINKS)) if (link.unlock) expect(UNLOCKS.map((unlock) => unlock.tool)).toContain(link.unlock);
   });
 
-  it("organises the platform into eight pages and four app destinations", () => {
-    expect(Object.keys(ROUTES)).toEqual(["overview", "today", "marketing", "sales", "execution", "caseStudy", "accounts", "pipeline"]);
-    expect(APP_NAV.map((item) => item.label)).toEqual(["Today", "Journey", "Accounts", "Pipeline"]);
+  it("organises the platform into step pages, Today, the case study and two personal tools", () => {
+    expect(Object.keys(ROUTES)).toEqual(["overview", "today", "customer", "marketing", "sales", "pilot", "close", "revenue", "caseStudy", "accounts", "pipeline"]);
+    expect(HEADER_NAV.map((item) => item.label)).toEqual(["Overview", "Customer", "Marketing", "Sales", "Case Study"]);
+    expect(BAR_NAV.map((item) => item.label)).toEqual(["Today", "Journey", "Customer", "Sales"]);
+    // Every page belongs to one place in the bottom bar.
+    for (const route of Object.keys(ROUTES)) expect(BAR_OF[route as keyof typeof ROUTES]).toBeDefined();
     expect(PHASES.map((phase) => phase.label)).toEqual(["Marketing", "Sales", "Execution"]);
     expect(WEEKS.map((week) => week.theme)).toEqual([
       "Market & Problem",
@@ -319,5 +337,49 @@ describe("Analytics privacy", () => {
     expect(trackEvent).toHaveBeenNthCalledWith(1, "daily_mission_view", { day: "12" });
     expect(trackEvent).toHaveBeenNthCalledWith(2, "account_scored", {});
     vi.doUnmock("@/utils/analytics");
+  });
+});
+
+describe("The ten steps", () => {
+  it("runs from understanding the customer to revenue and profit, across six pages", () => {
+    expect(STEPS.map((step) => step.short)).toEqual([
+      "Understand Customer",
+      "Find Pain",
+      "Learn Marketing",
+      "Generate Leads",
+      "Learn Sales",
+      "Talk to Customer",
+      "Demonstrate Value",
+      "Pilot",
+      "Proposal & Close",
+      "Revenue & Profit",
+    ]);
+    expect(STEP_PAGE_ORDER.map((page) => stepsOnPage(page).map((step) => step.n))).toEqual([[1, 2], [3, 4], [5, 6, 7], [8], [9], [10]]);
+    for (const step of STEPS) {
+      expect(step.doList.length, `Step ${step.n}`).toBeGreaterThanOrEqual(3);
+      expect(step.doList.length, `Step ${step.n}`).toBeLessThanOrEqual(5);
+      expect(step.result.trim()).not.toBe("");
+    }
+  });
+
+  it("gives every day a step, and every step at least one day", () => {
+    for (let day = 1; day <= TOTAL_DAYS; day++) expect(STEPS).toContain(stepOfDay(day));
+    for (const step of STEPS) expect(daysOfStep(step.n).length, `Step ${step.n}`).toBeGreaterThan(0);
+    expect(daysOfStep(1).slice(0, 1)).toEqual([1]);
+    expect([firstDayOfStep(1), firstDayOfStep(2), firstDayOfStep(3), firstDayOfStep(8), firstDayOfStep(10)]).toEqual([1, 2, 4, 37, 56]);
+    expect(daysOfStep(10)).toEqual([56, 57, 58, 59, 60]);
+  });
+
+  it("draws the customer-to-revenue flow in the brief's seven stages", () => {
+    expect(CUSTOMER_TO_REVENUE.map((stage) => stage.name)).toEqual(["Customer", "Pain", "Marketing", "Conversation", "Sales", "Value", "Revenue"]);
+    expect(CUSTOMER_TO_REVENUE.map((stage) => stage.hint)).toEqual([
+      "Who has the problem?",
+      "What is difficult today?",
+      "Why should they talk to us?",
+      "What should we ask?",
+      "Is there a real opportunity?",
+      "Can we prove improvement?",
+      "Will the customer pay?",
+    ]);
   });
 });

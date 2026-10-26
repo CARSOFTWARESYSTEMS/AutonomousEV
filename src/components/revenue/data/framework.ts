@@ -1,31 +1,41 @@
-// The framework itself: identity, routes, the journey, the three phases and
-// twelve weeks, when each tool unlocks, navigation, the internship and its gates.
+// The framework itself: identity, routes, navigation, the internship and its
+// gates, and the 60 days' calendar (phases, weeks, unlocks). The ten steps the
+// learner sees, and the content of the step pages, are in ./steps.
 import type { ToolId } from "../types";
 
 const BASE = "/internships/marketing-sales";
 
 export const FRAMEWORK = {
-  name: "B2B Revenue Engineering",
-  descriptor: "Customer Discovery · Marketing · Consultative Sales · Revenue Execution",
-  programme: "12-Week B2B Marketing & Sales Internship",
+  name: "Marketing & Sales",
+  descriptor: "A Practical B2B Customer-to-Revenue Framework",
+  programme: "12-Week Marketing & Sales Internship",
   route: BASE,
   /** The id of the page root; the stylesheet's theme is scoped to it. */
   rootId: "revenue-root",
-  eyebrow: "B2B Revenue Engineering",
-  headline: "Turn Customer Problems Into Revenue",
-  lede: "Learn how to understand Bengaluru Aerospace & Defence MSMEs, validate real customer pain, position a specialised software solution and build a repeatable B2B revenue pipeline.",
-  context: ["Bengaluru", "Aerospace & Defence MSMEs", "FAI", "Customer Discovery", "Sales"],
+  eyebrow: "Marketing & Sales",
+  headline: "Learn Marketing. Learn Sales. Create Value. Generate Revenue.",
+  /** The headline as the hero sets it: one line each. */
+  headlineLines: ["Learn Marketing.", "Learn Sales.", "Create Value.", "Generate Revenue."],
+  lede: "A practical step-by-step guide to market and sell Balloon Drawings & AS9102 FAI Reporting software to Bengaluru Aerospace & Defence MSMEs.",
+  context: ["Customer", "Pain", "Marketing", "Sales", "Value", "Revenue"],
+  /** The one question everything on the platform helps to answer. */
+  question: "Can we solve a real customer problem well enough that they will pay for it?",
+  /** What the framework promises, and all it promises. */
+  goal: "Build a repeatable process that improves the probability of creating customer value and converting qualified opportunities into sustainable revenue.",
   reviewed: "2026-10-26",
   reviewedLabel: "26 October 2026",
 } as const;
 
-/** Every page of the platform. The overview is public; the rest are the framework itself. */
+/** Every page of the platform. The step pages teach; Today is where the work is done; Accounts and Pipeline are personal tools. */
 export const ROUTES = {
   overview: BASE,
   today: `${BASE}/today`,
+  customer: `${BASE}/customer`,
   marketing: `${BASE}/marketing`,
   sales: `${BASE}/sales`,
-  execution: `${BASE}/execution`,
+  pilot: `${BASE}/pilot`,
+  close: `${BASE}/close`,
+  revenue: `${BASE}/revenue`,
   caseStudy: `${BASE}/case-study`,
   accounts: `${BASE}/accounts`,
   pipeline: `${BASE}/pipeline`,
@@ -33,120 +43,39 @@ export const ROUTES = {
 
 export type RouteId = keyof typeof ROUTES;
 
-/** Today's Mission opened on a given day. */
+/** The ten steps, on the overview. */
+export const JOURNEY_HREF = `${BASE}#journey`;
+
+/** Today opened on a given day. */
 export const todayHref = (day?: number) => (day ? `${ROUTES.today}#day-${day}` : ROUTES.today);
+
+/** Who designed the framework, and where the profile lives. */
+export const DESIGNED_BY = {
+  profileUrl: "https://aerospace.ev.engineer/about/sudarshana-karkala",
+} as const;
 
 /** The first case study. The framework is built so a second product can be added beside it. */
 export const CASE_STUDY = {
   id: "fai-as9102",
-  label: "Live Industry Case Study",
+  label: "Live Case Study",
   title: "Balloon Drawings & AS9102 FAI Reporting",
   product: "FAI Engineer",
   productUrl: "https://fai.ev.engineer/",
   contextUrl: "/internships/aerospace-quality-intelligence-platform",
-  market: "Aerospace & Defence MSMEs",
+  market: "Bengaluru Aerospace & Defence MSMEs",
   geography: "Bengaluru",
-  objective: "Understand workflow pain, validate value and build commercial opportunities.",
+  /** The customer problem is not known yet: it is what the learner validates. */
+  problem: "To be validated with customers.",
 } as const;
-
-export const OPERATING_SYSTEM = ["Learn", "Do", "Ask", "Don't", "Evidence", "Review", "Improve"] as const;
-
-/** The commercial journey, with the one question each stage answers. The platform's signature visual. */
-export const JOURNEY = ["Problem", "Customer", "Evidence", "Value", "Opportunity", "Pilot", "Revenue"] as const;
-
-export const JOURNEY_QUESTIONS: Record<(typeof JOURNEY)[number], string> = {
-  Problem: "Is this problem real?",
-  Customer: "Who experiences it?",
-  Evidence: "What proves it?",
-  Value: "Why should they change?",
-  Opportunity: "Is this commercially qualified?",
-  Pilot: "Can we demonstrate measurable value?",
-  Revenue: "Will the customer pay?",
-};
-
-/** Where in the twelve weeks each stage is worked on. */
-export const JOURNEY_WEEKS: Record<(typeof JOURNEY)[number], string> = {
-  Problem: "Weeks 1–2",
-  Customer: "Weeks 2 and 5",
-  Evidence: "Weeks 1–6 and 10",
-  Value: "Weeks 3 and 7",
-  Opportunity: "Weeks 5 and 9–11",
-  Pilot: "Weeks 8 and 11",
-  Revenue: "Week 12",
-};
-
-export const FULL_JOURNEY = [
-  "Market Understanding",
-  "Customer Problem Discovery",
-  "Pain Validation",
-  "ICP",
-  "Buyer Mapping",
-  "Positioning",
-  "Marketing",
-  "Outreach",
-  "Discovery",
-  "Qualification",
-  "Demo",
-  "ROI",
-  "Pilot",
-  "Proposal",
-  "Negotiation",
-  "Purchase",
-  "Adoption",
-  "Expansion",
-  "Revenue",
-  "Profit",
-] as const;
-
-export const MAIN_MESSAGE = {
-  dont: "How do I sell my product?",
-  do: "What important problem does this customer have, what evidence proves it, and can we create enough measurable value that they are willing to change?",
-  chain: ["Problem", "Evidence", "Value", "Trust", "Opportunity", "Revenue"],
-} as const;
-
-export const PRINCIPLES = [
-  "Evidence over assumption.",
-  "Understand before selling.",
-  "Diagnose before demonstrating.",
-  "Business value before features.",
-  "Qualified pipeline before vanity leads.",
-  "Customer trust before short-term revenue.",
-  "Measure before claiming ROI.",
-  "Trade value; don't blindly discount.",
-  "Learn from lost opportunities.",
-  "Revenue is the result of a repeatable system.",
-] as const;
-
-/** What someone can do after the twelve weeks. */
-export const OUTCOMES: readonly { title: string; text: string }[] = [
-  { title: "Read an industrial market", text: "Map who makes what, who prepares first-article evidence, and where a product might fit — from public sources." },
-  { title: "Validate pain with evidence", text: "Turn beliefs into hypotheses and move them up the evidence ladder through real conversations." },
-  { title: "Run discovery that customers value", text: "Ask about the last FAI, listen, and leave with a clear next step instead of a pitch." },
-  { title: "Qualify, don't chase", text: "Score accounts and opportunities honestly, and know when not to sell." },
-  { title: "Build a business case", text: "Estimate value from the customer's own numbers, as a range, and prove it in a pilot." },
-  { title: "Show revenue evidence", text: "Present qualified pipeline and what it is built on to a CEO or investor panel." },
-];
-
-export const AUDIENCES = [
-  "Interns and MBA / BBA students",
-  "Startup founders",
-  "MSME owners",
-  "Sales and business-development teams",
-  "Product and marketing professionals",
-  "Engineers moving into commercial roles",
-] as const;
 
 export interface Phase {
   n: 1 | 2 | 3;
   name: string;
-  /** The journey page's name: Marketing, Sales, Execution. */
+  /** The month's name: Marketing, Sales, Execution. */
   label: string;
   /** The short name the progress view uses: Market, Sales, Revenue. */
   short: string;
   weeks: string;
-  route: "marketing" | "sales" | "execution";
-  /** The journey page's call to action. */
-  cta: string;
   verb: string;
   topics: readonly string[];
   question: string;
@@ -163,8 +92,6 @@ export const PHASES: readonly Phase[] = [
     label: "Marketing",
     short: "Market",
     weeks: "Weeks 1–4",
-    route: "marketing",
-    cta: "Explore Marketing",
     verb: "Understand",
     topics: ["Bengaluru market", "Customer workflow", "Pain", "ICP", "Buyers", "Positioning", "Value proposition", "GTM"],
     question: "Is this a painful enough problem for a specific Bengaluru aerospace / defence customer to consider solving?",
@@ -178,8 +105,6 @@ export const PHASES: readonly Phase[] = [
     label: "Sales",
     short: "Sales",
     weeks: "Weeks 5–8",
-    route: "sales",
-    cta: "Explore Sales",
     verb: "Learn",
     topics: ["Account research", "Prospecting", "Customer discovery", "Qualification", "Demo", "ROI", "Pilot", "Proposal", "Negotiation"],
     question: "Can we reliably reach, engage, qualify and demonstrate value to the right customers?",
@@ -193,8 +118,6 @@ export const PHASES: readonly Phase[] = [
     label: "Execution",
     short: "Revenue",
     weeks: "Weeks 9–12",
-    route: "execution",
-    cta: "Explore Execution",
     verb: "Execute",
     topics: ["Target accounts", "Customer conversations", "Opportunities", "Pilots", "Proposals", "Pipeline", "Commercial evidence", "Revenue"],
     question: "Can opportunities progress into evaluations, pilots, proposals, pipeline, revenue and a repeatable commercial model?",
@@ -260,51 +183,74 @@ export const isUnlocked = (tool: string, day: number) => day >= unlockDay(tool);
 /** Where each tool a mission names is found. Small tools live inside the pages that use them. */
 export const TOOL_LINKS: Record<ToolId, { label: string; href: string; unlock?: string }> = {
   today: { label: "Today", href: ROUTES.today },
-  journey: { label: "Journey", href: ROUTES.marketing },
-  cockpit: { label: "Revenue Cockpit", href: ROUTES.pipeline, unlock: "pipeline" },
+  journey: { label: "The 10 steps", href: JOURNEY_HREF },
+  cockpit: { label: "Pipeline summary", href: ROUTES.pipeline, unlock: "pipeline" },
   market: { label: "Bengaluru market", href: `${ROUTES.caseStudy}#market`, unlock: "market" },
-  icp: { label: "ICP & buyer map", href: `${ROUTES.caseStudy}#icp`, unlock: "icp" },
-  pains: { label: "Problem hypotheses", href: `${ROUTES.caseStudy}#problems`, unlock: "pains" },
+  icp: { label: "Ideal customer & buyers", href: `${ROUTES.caseStudy}#icp`, unlock: "icp" },
+  pains: { label: "Pain hypotheses", href: `${ROUTES.caseStudy}#problems`, unlock: "pains" },
   accounts: { label: "Accounts", href: ROUTES.accounts, unlock: "accounts" },
-  questions: { label: "Meeting questions", href: `${ROUTES.accounts}#meetings` },
-  meetings: { label: "Meeting prep", href: `${ROUTES.accounts}#meetings` },
+  questions: { label: "Customer Meeting Guide", href: `${ROUTES.sales}#meeting-guide` },
+  meetings: { label: "Meeting notes", href: `${ROUTES.accounts}#meetings` },
   pipeline: { label: "Pipeline", href: ROUTES.pipeline, unlock: "pipeline" },
   pilot: { label: "Pilot charter", href: `${ROUTES.pipeline}#pilot`, unlock: "pilot" },
-  "learn-marketing": { label: "Marketing weeks", href: ROUTES.marketing },
-  "learn-sales": { label: "Sales weeks", href: ROUTES.sales },
-  "learn-revenue": { label: "Revenue model", href: `${ROUTES.pipeline}#revenue-model` },
+  "learn-marketing": { label: "Marketing", href: ROUTES.marketing },
+  "learn-sales": { label: "Sales", href: ROUTES.sales },
+  "learn-revenue": { label: "Revenue & profit", href: ROUTES.revenue },
   product: { label: "FAI product", href: `${ROUTES.caseStudy}#product` },
-  evidence: { label: "Evidence & claims", href: `${ROUTES.caseStudy}#evidence` },
+  evidence: { label: "Approved claims", href: `${ROUTES.caseStudy}#evidence` },
   roi: { label: "ROI calculator", href: `${ROUTES.caseStudy}#roi`, unlock: "roi" },
   feedback: { label: "Product feedback", href: `${ROUTES.caseStudy}#feedback` },
   review: { label: "Weekly review", href: ROUTES.today },
   decisions: { label: "Decision log", href: `${ROUTES.pipeline}#decisions` },
   challenges: { label: "Weekly challenge", href: ROUTES.today },
-  boardroom: { label: "Final boardroom", href: `${ROUTES.execution}#boardroom` },
-  internship: { label: "Gates", href: `${ROUTES.today}#gates` },
+  boardroom: { label: "Final review", href: todayHref(59) },
+  internship: { label: "Mentor check", href: ROUTES.today },
 };
 
-/** The app's navigation: the same four places on every screen size, plus More. */
-export const APP_NAV: readonly { id: "today" | "journey" | "accounts" | "pipeline"; label: string; href: string }[] = [
+/** Tools Today shows inside the day itself, so it never links to them. */
+export const INLINE_TOOLS: readonly ToolId[] = ["today", "review", "challenges", "boardroom", "internship"];
+
+/** The header's destinations from 1024px. */
+export const HEADER_NAV: readonly { page: RouteId; label: string }[] = [
+  { page: "overview", label: "Overview" },
+  { page: "customer", label: "Customer" },
+  { page: "marketing", label: "Marketing" },
+  { page: "sales", label: "Sales" },
+  { page: "caseStudy", label: "Case Study" },
+];
+
+export type BarId = "today" | "journey" | "customer" | "sales" | "more";
+
+/** The bottom bar below 1024px: four places, then More. */
+export const BAR_NAV: readonly { id: Exclude<BarId, "more">; label: string; href: string }[] = [
   { id: "today", label: "Today", href: ROUTES.today },
-  { id: "journey", label: "Journey", href: ROUTES.marketing },
-  { id: "accounts", label: "Accounts", href: ROUTES.accounts },
-  { id: "pipeline", label: "Pipeline", href: ROUTES.pipeline },
+  { id: "journey", label: "Journey", href: JOURNEY_HREF },
+  { id: "customer", label: "Customer", href: ROUTES.customer },
+  { id: "sales", label: "Sales", href: ROUTES.sales },
 ];
 
-/** The public overview's header: four anchors and one way in. */
-export const PUBLIC_NAV: readonly { label: string; href: string }[] = [
-  { label: "Overview", href: "#top" },
-  { label: "Journey", href: "#journey" },
-  { label: "Case Study", href: ROUTES.caseStudy },
-  { label: "Internship", href: "#internship" },
-];
+/** Which bottom-bar place each page belongs to. */
+export const BAR_OF: Record<RouteId, BarId> = {
+  overview: "journey",
+  today: "today",
+  customer: "customer",
+  marketing: "journey",
+  sales: "sales",
+  pilot: "journey",
+  close: "journey",
+  revenue: "journey",
+  caseStudy: "more",
+  accounts: "more",
+  pipeline: "more",
+};
 
-/** Questions that close conversations. Shown beside every Ask step. */
+/** Questions that close conversations. Shown beside every list of questions to ask. */
 export const DONT_ASK = [
   "Do you want to buy our software?",
-  "Is your current process inefficient?",
-  "Don't you think AI would make this faster?",
+  "What is your budget?",
+  "Is your current process bad?",
+  "Don't you think AI can solve this?",
+  "Can we replace your existing system?",
 ] as const;
 
 // ── Internship ──────────────────────────────────────────────────────────────
@@ -329,7 +275,7 @@ export const INTERNSHIP = {
   apply: {
     label: "Apply for Internship",
     url: "/contact",
-    note: "Mention “B2B Revenue Engineering” when you get in touch.",
+    note: "Mention “Marketing & Sales internship” when you get in touch.",
   },
 } as const;
 

@@ -4,11 +4,11 @@ import { EV_ENGINEER_BRAND_ID, ITELEMATICS_ID, WEBSITE_ID, evEngineerBrandNode, 
 import { CASE_STUDY, FRAMEWORK, ROUTES, type RouteId } from "@/components/revenue/data/framework";
 
 export const CANONICAL = `${SITE_URL}${FRAMEWORK.route}`;
-export const TITLE = "B2B Revenue Engineering for Aerospace & Defence MSMEs | Marketing & Sales Framework | EV.ENGINEER™";
+export const TITLE = "Marketing & Sales for Aerospace & Defence MSMEs | A Practical B2B Customer-to-Revenue Framework | EV.ENGINEER™";
 export const DESCRIPTION =
-  "A practical 12-week B2B marketing, customer discovery and consultative sales framework using a live AS9102 FAI software case study for Bengaluru aerospace and defence MSMEs.";
-export const OG_TITLE = `${FRAMEWORK.name} — Marketing & Sales for Aerospace & Defence MSMEs`;
-export const OG_ALT = `${FRAMEWORK.name}: ${FRAMEWORK.headline}. Live case study: ${CASE_STUDY.title}. EV.ENGINEER.`;
+  "Learn marketing and sales step by step: understand Bengaluru aerospace and defence MSMEs, find real customer pain, and market and sell Balloon Drawings & AS9102 FAI reporting software professionally.";
+export const OG_TITLE = `${FRAMEWORK.name} — ${FRAMEWORK.descriptor}`;
+export const OG_ALT = `${FRAMEWORK.name}: ${FRAMEWORK.headline} Live case study: ${CASE_STUDY.title}. EV.ENGINEER.`;
 const OG_IMAGE = `${CANONICAL}/opengraph-image`;
 
 /** What the platform is about. Used as keywords and as the overview's topics. */
@@ -25,7 +25,7 @@ export const KEYWORDS = [
   "Business Model Canvas",
   "Go-To-Market",
   "Sales Pipeline",
-  "Revenue Engineering",
+  "Customer Value",
   "AS9102",
   "First Article Inspection",
   "FAI",

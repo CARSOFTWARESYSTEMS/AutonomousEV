@@ -3,8 +3,8 @@ import { pageMetadata } from "../seo";
 
 export const metadata = pageMetadata({
   route: "accounts",
-  title: "Accounts | B2B Revenue Engineering | EV.ENGINEER™",
-  description: "Lightweight account research for the B2B Revenue Engineering framework, saved in your browser.",
+  title: "Accounts | Marketing & Sales | EV.ENGINEER™",
+  description: "Lightweight account research for the Marketing & Sales framework, saved in your browser.",
   index: false,
 });
 

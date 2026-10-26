@@ -219,28 +219,38 @@ describe("/internships Marketing & Sales", () => {
     render(<InternshipsPage />);
     expect(screen.queryByRole("heading", { level: 2, name: "EV Workshop" })).toBeNull();
     expect(section()).toHaveAttribute("id", "marketing-sales");
-    expect(within(section()).getAllByRole("heading", { level: 3 }).map((h) => h.textContent)).toEqual(["EV Repair Workshop", "BMC - Battery Circular Economy", "B2B Revenue Engineering"]);
+    expect(within(section()).getAllByRole("heading", { level: 3 }).map((h) => h.textContent)).toEqual(["EV Repair Workshop", "BMC - Battery Circular Economy", "Marketing & Sales for Aerospace & Defence MSMEs"]);
     expect(within(section()).getByRole("link", { name: /BMC - Battery Circular Economy/ })).toHaveAttribute("href", "/internships/battery-circular-economy");
   });
 
-  it("adds B2B Revenue Engineering straight after BMC, with its case study, metadata, CTA and event", () => {
+  it("adds Marketing & Sales straight after BMC, with its case study, metadata, CTA and event", () => {
     render(<InternshipsPage />);
-    const card = within(section()).getByRole("link", { name: /B2B Revenue Engineering/ });
+    const card = within(section()).getByRole("link", { name: /Marketing & Sales for Aerospace & Defence MSMEs/ });
     expect(card).toHaveAttribute("href", "/internships/marketing-sales");
     expect(card).toHaveAttribute("data-track-event", "revenue_framework_card_click");
     expect(card).toHaveAttribute("data-track-destination", "/internships/marketing-sales");
-    expect(card).toHaveTextContent("Marketing & Sales for Aerospace & Defence MSMEs");
-    expect(card).toHaveTextContent("Learn how to understand a real industrial market, discover customer pain, validate opportunities, position a specialised B2B software product, engage decision-makers, build a qualified pipeline and turn customer value into sustainable revenue.");
+    expect(card).toHaveTextContent("A Practical B2B Customer-to-Revenue Framework");
+    expect(card).toHaveTextContent("Learn marketing and sales step by step: understand a Bengaluru aerospace or defence customer, find real pain, market and sell a specialised software product professionally, and turn customer value into revenue.");
+    expect(card).not.toHaveTextContent("B2B Revenue Engineering");
     expect(card).toHaveTextContent("Case Study: Balloon Drawings & AS9102 FAI Reporting");
-    for (const tag of ["12 Weeks", "Bengaluru Market", "Hybrid", "Live Industry Case Study"]) expect(within(card).getByText(tag)).toBeInTheDocument();
-    expect(card).toHaveTextContent(/Enter Revenue Framework\s*→/);
+    for (const tag of ["10 Steps", "Bengaluru Market", "Hybrid", "Live Case Study"]) expect(within(card).getByText(tag)).toBeInTheDocument();
+    expect(card).toHaveTextContent(/Start Step 1\s*→/);
     expect(document.querySelectorAll('a[href="/internships/marketing-sales"]')).toHaveLength(1);
+  });
+
+  it("gives Marketing & Sales a row of its own, below the two shorter cards", () => {
+    render(<InternshipsPage />);
+    const grid = section().querySelector(".grid-2")!;
+    expect(grid).not.toBeNull();
+    const card = within(section()).getByRole("link", { name: /Marketing & Sales for Aerospace & Defence MSMEs/ });
+    expect(card.parentElement).toHaveStyle({ gridColumn: "1 / -1" });
+    expect(card.parentElement!.parentElement).toBe(grid);
   });
 
   it("lists the new track in the public catalogue and the structured data, after BMC", () => {
     const tracks = buildInternshipsGraph({ title: "t", description: "d", dateModified: "2026-10-26" });
     const collection = tracks.find((n) => (n as Record<string, unknown>)["@type"] === "CollectionPage") as Record<string, unknown>;
     const names = ((collection.hasPart as Record<string, unknown>).itemListElement as Record<string, unknown>[]).map((item) => item.name);
-    expect(names.slice(-2)).toEqual(["Battery Circular Economy (BMC)", "B2B Revenue Engineering — Marketing & Sales"]);
+    expect(names.slice(-2)).toEqual(["Battery Circular Economy (BMC)", "Marketing & Sales for Aerospace & Defence MSMEs"]);
   });
 });

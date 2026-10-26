@@ -38,23 +38,27 @@ link below points to a canonical public page already listed in
   rest is labelled in development, planned, research or long-term vision. An
   EV Society initiative; commercial product development through iTelematics
   Software Private Limited.
-- [B2B Revenue Engineering — Marketing & Sales](https://autonomous.ev.engineer/internships/marketing-sales):
-  A daily B2B marketing, customer discovery and consultative sales framework
-  for Bengaluru (Bangalore) aerospace and defence MSMEs, with the FAI Engineer
-  ballooning and AS9102 Form 3-oriented export toolkit as its live case study.
-  Sixty daily missions over twelve weeks, each a guided sequence (Learn, Do,
-  Ask, Don't, Evidence, Review, Complete), an evidence ladder from assumption
-  to commercial proof, and no market-size figures or guaranteed savings.
-- [Today's Mission](https://autonomous.ev.engineer/internships/marketing-sales/today):
-  The framework's daily workspace, starting with the Bengaluru market.
-- [Prove the Market — Weeks 1–4](https://autonomous.ev.engineer/internships/marketing-sales/marketing),
-  [Prove the Sales Motion — Weeks 5–8](https://autonomous.ev.engineer/internships/marketing-sales/sales) and
-  [Prove the Business — Weeks 9–12](https://autonomous.ev.engineer/internships/marketing-sales/execution):
-  The three months of the journey, week by week.
+- [Marketing & Sales — A Practical B2B Customer-to-Revenue Framework](https://autonomous.ev.engineer/internships/marketing-sales):
+  Learn marketing and sales from zero in ten steps — understand the customer,
+  find the pain, marketing, leads, sales, customer conversations, value,
+  pilot, proposal and close, revenue and profit — for Bengaluru (Bangalore)
+  aerospace and defence MSMEs, with the FAI Engineer ballooning and AS9102
+  Form 3-oriented export toolkit as its live case study. Customer problems
+  are hypotheses until customers confirm them; no guaranteed savings,
+  revenue or compliance.
+- [Today](https://autonomous.ev.engineer/internships/marketing-sales/today):
+  One day at a time: Today, Why, Do, Ask, Don't and Result.
+- [Customer — Steps 1–2](https://autonomous.ev.engineer/internships/marketing-sales/customer),
+  [Marketing — Steps 3–4](https://autonomous.ev.engineer/internships/marketing-sales/marketing),
+  [Sales — Steps 5–7](https://autonomous.ev.engineer/internships/marketing-sales/sales),
+  [Pilot — Step 8](https://autonomous.ev.engineer/internships/marketing-sales/pilot),
+  [Proposal & Close — Step 9](https://autonomous.ev.engineer/internships/marketing-sales/close) and
+  [Revenue & Profit — Step 10](https://autonomous.ev.engineer/internships/marketing-sales/revenue):
+  Each step's purpose, what to do, ask and avoid, and its result. Sales
+  includes the Customer Meeting Guide.
 - [Case Study: Balloon Drawings & AS9102 FAI Reporting](https://autonomous.ev.engineer/internships/marketing-sales/case-study):
-  Product, market, problem hypotheses, ICP and buyer map, evidence and
-  approved claims, value proposition, alternatives, demo, ROI, objections,
-  pilot and product feedback. Example companies are labelled synthetic.
+  The product as it is today, the customer, and the problem hypotheses still
+  to be validated, with reference material for later steps.
 - [AegisCAN](https://autonomous.ev.engineer/internships/AegisCAN): 12-week
   educational R&D mini-project on Battery, BMS, BESS, CAN communication,
   validation, fault injection and CAN cybersecurity. Initiated and led by

@@ -1,13 +1,12 @@
 "use client";
 // Day 60's management review: twenty-three agenda items, each rated by the
 // quality of its evidence — not by presentation style.
-import { EVALUATION } from "../data/framework";
+import { EVALUATION, todayHref } from "../data/framework";
 import { BOARDROOM_AGENDA } from "../data/library";
 import { useRevenue } from "../state/store";
 import { EVIDENCE_LABEL, EVIDENCE_ORDER, type EvidenceLevel } from "../types";
 import { EvidenceBadge } from "../ui/badges";
 import Link from "next/link";
-import { ROUTES } from "../data/framework";
 import { Meter, Panel } from "../ui/controls";
 import css from "../app.module.css";
 
@@ -73,7 +72,7 @@ export default function Boardroom() {
           ))}
         </ul>
         <p className={css.blockNote}>
-          Critical assignments and the ethics / compliance gates must be complete. <Link href={`${ROUTES.today}#gates`}>See the gates</Link>.
+          Critical assignments and the ethics / compliance gates must be complete. <Link href={todayHref(40)}>See the mentor checks on Day 40</Link>.
         </p>
       </Panel>
     </div>

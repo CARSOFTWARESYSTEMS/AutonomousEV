@@ -1,21 +1,20 @@
 "use client";
-// A preview of today's mission: the day, its objective, and three lines —
-// learn, do, evidence. The full mission lives on /today.
+// A preview of today: the day, its step, what to learn, the first thing to
+// do and the result to finish with. The day itself lives on /today.
 import Link from "next/link";
-import { ROUTES, TOTAL_DAYS, phaseOf } from "../data/framework";
+import { todayHref } from "../data/framework";
+import { stepNo, stepOfDay } from "../data/steps";
 import { missionFor } from "../logic/missions";
-import { useHydrateRevenue, useRevenue } from "../state/store";
+import { useRevenue } from "../state/store";
 import css from "../site.module.css";
 
-export default function MissionPreview() {
-  useHydrateRevenue();
+export default function TodayPreview() {
   const day = useRevenue((state) => state.day);
   const mission = missionFor(day);
-  const phase = phaseOf(day);
+  const step = stepOfDay(day);
   const lines = [
-    { label: "Learn", text: mission.key },
     { label: "Do", text: mission.doToday[0] },
-    { label: "Evidence", text: mission.evidence[mission.evidence.length - 1] },
+    { label: "Result", text: mission.output },
   ];
 
   return (
@@ -24,7 +23,7 @@ export default function MissionPreview() {
         <div className={css.preview}>
           <div className={css.previewHead}>
             <p className={css.eyebrow}>
-              Day {String(day).padStart(2, "0")} / {TOTAL_DAYS} · {phase.name}
+              Today · Day {stepNo(day)} · Step {stepNo(step.n)} {step.short}
             </p>
             <h2 id="rv-preview-title" className={css.sectionTitle}>
               {mission.title}
@@ -41,8 +40,8 @@ export default function MissionPreview() {
           </dl>
           <div className={css.previewGo}>
             <div className={css.actions}>
-              <Link href={ROUTES.today} className={css.primaryCta} data-track-event="revenue_framework_start" data-track-source="preview">
-                Open Today&apos;s Mission →
+              <Link href={todayHref(day)} className={css.primaryCta} data-track-event="revenue_framework_start" data-track-source="preview">
+                Open Today →
               </Link>
             </div>
           </div>

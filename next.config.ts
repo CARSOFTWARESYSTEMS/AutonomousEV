@@ -59,6 +59,13 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        // Marketing & Sales replaced its three monthly pages with ten steps;
+        // the last month (pilots, proposals, revenue) ends on Revenue & Profit.
+        source: "/internships/marketing-sales/execution",
+        destination: "/internships/marketing-sales/revenue",
+        permanent: true,
+      },
+      {
         // The social card for aerospace.ishavasyam.org/space moved from the
         // opengraph-image convention to a plain .png URL. Anything that kept
         // the old address is sent to the new one instead of a 404.

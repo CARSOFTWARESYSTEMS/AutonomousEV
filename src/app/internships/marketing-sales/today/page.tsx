@@ -3,8 +3,8 @@ import { pageMetadata } from "../seo";
 
 export const metadata = pageMetadata({
   route: "today",
-  title: "Today's Mission | B2B Revenue Engineering | EV.ENGINEER™",
-  description: "One day of the 12-week B2B marketing and sales framework: learn, do, ask, avoid, capture evidence and review — applied to Bengaluru aerospace and defence MSMEs and AS9102 FAI.",
+  title: "Today | Marketing & Sales | EV.ENGINEER™",
+  description: "What to do today, step by step: what you are learning, why it matters, what to do, what to ask, what to avoid and the result to finish with — for selling FAI software to Bengaluru aerospace and defence MSMEs.",
 });
 
 export default function Page() {
