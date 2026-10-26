@@ -2,7 +2,7 @@
 // depends on colour alone. Safe to render on the server.
 import type { ReactNode } from "react";
 import { ANSWER_LABEL, CLAIM_LABEL, EVIDENCE_LABEL, EVIDENCE_ORDER, MATURITY_LABEL, type AnswerClass, type ClaimStatus, type EvidenceLevel, type Maturity } from "../types";
-import css from "../workspace.module.css";
+import css from "../app.module.css";
 
 type Tone = "neutral" | "cyan" | "green" | "strong" | "amber" | "red" | "synthetic";
 

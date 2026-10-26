@@ -3,11 +3,22 @@
 import type { EvidenceLevel, PilotStatus, PipelineStage, Rating } from "../types";
 import type { GateId } from "../data/framework";
 
+export const ACCOUNT_STATUSES = ["Researching", "Contacted", "In discovery", "Qualified", "Nurture", "Not a fit"] as const;
+export type AccountStatus = (typeof ACCOUNT_STATUSES)[number];
+
 export interface Account {
   id: string;
   /** Fictional demonstration records are flagged so they can never be mistaken for real ones. */
   synthetic?: boolean;
   name: string;
+  /** Why this account: the sourced reason it is on the list. */
+  why: string;
+  /** What is known about its pain. "Unknown" until a conversation says otherwise. */
+  pain: string;
+  /** The buyer role to reach first. */
+  buyer: string;
+  status: AccountStatus;
+  next: string;
   location: string;
   website: string;
   category: string;
@@ -120,9 +131,11 @@ export interface Feedback {
 }
 
 export interface RevenueState {
-  version: 1;
+  version: 2;
   /** The day open in Today. */
   day: number;
+  /** Day → the step reached in its guided sequence (0 = not started). */
+  stages: Record<number, number>;
   /** Day → ISO date it was marked complete. */
   completed: Record<number, string>;
   /** `${day}:do:${i}` and `${day}:submit:${i}` → ticked. */
@@ -145,7 +158,7 @@ export interface RevenueState {
   boardroom: Record<number, EvidenceLevel>;
   /** User-adjusted account-fit weights (criterion id → weight). */
   weights: Record<string, number>;
-  /** Show fictional records beside the user's own in the cockpit and pipeline. */
+  /** Show fictional records beside the user's own on the Accounts and Pipeline pages (never on Today). */
   showSynthetic: boolean;
 }
 
@@ -170,8 +183,9 @@ export const EMPTY_PILOT: Pilot = {
 };
 
 export const INITIAL_STATE: RevenueState = {
-  version: 1,
+  version: 2,
   day: 1,
+  stages: {},
   completed: {},
   checks: {},
   reflections: {},

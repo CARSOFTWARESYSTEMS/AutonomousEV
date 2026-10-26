@@ -8,6 +8,7 @@ export const MONTH_3: readonly Mission[] = [
   {
     day: 41,
     title: "Freeze Case & ICP",
+    key: "Fix the variables, then measure.",
     mission: "Freeze the case, ICP and message for the sprint, using evidence from Months 1–2.",
     why: "Changing targets every day makes results impossible to read. A frozen sprint plan turns activity into learning.",
     learn: "Sprint discipline: fix the variables (segment, buyer, message) for a defined period, measure, then change one thing at a time.",
@@ -27,6 +28,7 @@ export const MONTH_3: readonly Mission[] = [
   {
     day: 42,
     title: "Build 50 High-Quality Accounts",
+    key: "Fifty relevant accounts beat five hundred names.",
     mission: "Build 50 accounts that genuinely fit ICP V2 — no mass scraping without relevance.",
     why: "Fifty well-researched accounts beat five hundred names. Relevance is what earns replies.",
     learn: "Quality over volume: every account has a sourced reason to be on the list and a score with confidence.",
@@ -45,6 +47,7 @@ export const MONTH_3: readonly Mission[] = [
   {
     day: 43,
     title: "Map 2–3 Stakeholders per Priority Account",
+    key: "Single-threaded deals die quietly.",
     mission: "Map 2–3 stakeholder roles per priority account using public sources and legitimate channels.",
     why: "Single-threaded deals die when one person is busy, leaves or says no.",
     learn: "Multi-threading: engage the user, the quality head and the owner in the right order, each with a message about their concerns.",
@@ -63,6 +66,7 @@ export const MONTH_3: readonly Mission[] = [
   {
     day: 44,
     title: "Build Outreach Campaign",
+    key: "Personalisation shows you did the work.",
     mission: "Personalise outreach by account and role.",
     why: "Personalisation shows you did the work. It is the difference between a reply and a delete.",
     learn: "A campaign is a sequence: first touch, value-add follow-up, final polite close. Each touch has a reason and is personalised to the role.",
@@ -83,6 +87,7 @@ export const MONTH_3: readonly Mission[] = [
   {
     day: 45,
     title: "Launch Approved Outreach",
+    key: "Measure which segment, role and message earns conversations.",
     mission: "Send approved outreach and track activity and replies.",
     why: "Measurement turns outreach into learning: which segment, role and message earns conversations?",
     learn: "Track by segment, role, channel and message version. Response rate = replies ÷ messages sent. Meeting rate = meetings ÷ messages sent.",
@@ -93,7 +98,7 @@ export const MONTH_3: readonly Mission[] = [
     evidence: ["Outreach log", "Pipeline updated"],
     submit: ["Outreach activity and replies", "Weekly CEO / CMO / CSO review"],
     selfReview: ["Is your follow-up plan realistic for the volume you sent?"],
-    gate: "Founder Challenge, Week 9: Create a qualified opportunity.",
+    gate: "Weekly Business Challenge, Week 9: Create a qualified opportunity.",
     next: "Week 10: customer discovery sprint.",
     output: "Outreach launch",
     customerFacing: true,
@@ -105,6 +110,7 @@ export const MONTH_3: readonly Mission[] = [
   {
     day: 46,
     title: "Conduct Customer Conversations",
+    key: "Same guide, same tags — so the patterns are real.",
     mission: "Run discovery conversations using the approved structure.",
     why: "Every conversation is a data point about the market. Consistency in method makes them comparable.",
     learn: "Same guide, same evidence tags, same note format — so patterns are real, not artefacts of how you asked.",
@@ -124,14 +130,15 @@ export const MONTH_3: readonly Mission[] = [
   {
     day: 47,
     title: "Validate / Invalidate Pain",
+    key: "Invalidating a hypothesis is progress.",
     mission: "Ask: were we solving the right problem?",
     why: "Invalidating a hypothesis is progress. It saves months of selling into a problem that does not exist.",
     learn: "Compare evidence with the thresholds you set on Day 5. A hypothesis that fails is marked invalidated, with the evidence.",
-    applyFai: "Update each FAI pain in the Pain Library: evidence level, number of interviews, and verbatim support. Mark invalidated ones clearly.",
-    doToday: ["Score each hypothesis against its threshold.", "Update the Pain Library.", "Record invalidated hypotheses in the Decision Log."],
+    applyFai: "Update each FAI problem hypothesis in the case study: evidence level, number of interviews, and verbatim support. Mark invalidated ones clearly.",
+    doToday: ["Score each hypothesis against its threshold.", "Update the problem hypotheses.", "Record invalidated hypotheses in the Decision Log."],
     ask: ["Is this a problem worth solving this year?"],
     dont: ["Don't move the threshold to save a favourite hypothesis.", "Don't count the same customer twice."],
-    evidence: ["Pain Library updated with counts", "Invalidated hypotheses recorded"],
+    evidence: ["Problem hypotheses updated with counts", "Invalidated hypotheses recorded"],
     submit: ["Validation results"],
     selfReview: ["Which result surprised you most?"],
     next: "Day 48: capture market intelligence.",
@@ -143,6 +150,7 @@ export const MONTH_3: readonly Mission[] = [
   {
     day: 48,
     title: "Capture Market Intelligence",
+    key: "One mention: record. A pattern: investigate. Evidence: product review.",
     mission: "Record alternatives, processes, decision rules, objections and constraints you heard.",
     why: "Market intelligence compounds. Recorded well, it shapes the product, the message and the next cohort's work.",
     learn: "Use structured feedback categories. One mention is recorded; a repeated pattern is investigated; an evidence-backed pattern goes to product review.",
@@ -162,6 +170,7 @@ export const MONTH_3: readonly Mission[] = [
   {
     day: 49,
     title: "Refine Value Proposition",
+    key: "Write V2 in the customer's words.",
     mission: "Create Value Proposition V2 from evidence.",
     why: "V2 is written in the customer's words and backed by their evidence. It should sound like them, not like a brochure.",
     learn: "Replace every assumption in V1 with evidence or remove it. Use verbatim language customers used about their problem.",
@@ -180,6 +189,7 @@ export const MONTH_3: readonly Mission[] = [
   {
     day: 50,
     title: "CEO / CMO / CSO Review",
+    key: "Lead with evidence, not activity.",
     mission: "Present what changed, the strongest segment and pain, response quality, objections, product insights and the next experiment.",
     why: "Leadership reviews turn individual learning into company decisions.",
     learn: "Lead with evidence, not activity. Show what you believed, what you learned and what you recommend changing.",
@@ -191,7 +201,7 @@ export const MONTH_3: readonly Mission[] = [
     evidence: ["Review pack with evidence links", "Decisions recorded"],
     submit: ["CEO / CMO / CSO review", "Weekly CEO / CMO / CSO review"],
     selfReview: ["Did your review change a decision?"],
-    gate: "Founder Challenge, Week 10: Improve the product / message from customer evidence.",
+    gate: "Weekly Business Challenge, Week 10: Improve the product / message from customer evidence.",
     next: "Week 11: opportunity execution.",
     output: "Leadership review",
     tools: ["review", "decisions", "cockpit"],
@@ -202,6 +212,7 @@ export const MONTH_3: readonly Mission[] = [
   {
     day: 51,
     title: "Qualified Meetings",
+    key: "Late in the cycle, every meeting must move a decision.",
     mission: "Hold only high-value conversations with qualified accounts.",
     why: "Late in the cycle, time spent on unqualified meetings is time stolen from deals that could close.",
     learn: "Before each meeting, check the qualification criteria. If several are missing, the meeting's goal is to fill them — or to disqualify.",
@@ -221,6 +232,7 @@ export const MONTH_3: readonly Mission[] = [
   {
     day: 52,
     title: "Relevant Demo",
+    key: "Every screen ties to a problem the customer named.",
     mission: "Tie each screen of the demo to a validated problem.",
     why: "A demo that mirrors the customer's own words is remembered; a feature tour is forgotten.",
     learn: "For every screen, say which problem it addresses, in the customer's words, and ask whether it fits their workflow.",
@@ -240,6 +252,7 @@ export const MONTH_3: readonly Mission[] = [
   {
     day: 53,
     title: "Business Case",
+    key: "Write the business case for the room you won't be in.",
     mission: "Write problem → impact → value → ROI → risk → next action.",
     why: "The business case is what your champion takes into the room you are not in.",
     learn: "Write it for the economic buyer: one page, their numbers, ranges not points, risks stated plainly.",
@@ -259,10 +272,11 @@ export const MONTH_3: readonly Mission[] = [
   {
     day: 54,
     title: "Pilot / Proposal",
+    key: "Agree success in writing before anything starts.",
     mission: "Define measurable success and agree the pilot or proposal.",
     why: "The pilot or proposal is where evidence becomes commercial commitment.",
     learn: "Agree criteria, baseline, scope, owners, dates and the decision rule in writing before anything starts.",
-    applyFai: "Complete the Pilot workspace: baseline, sample scope, success criteria, measures, security constraints, start and end dates, owner, next decision.",
+    applyFai: "Complete the pilot charter on the Pipeline page: baseline, sample scope, success criteria, measures, security constraints, start and end dates, owner, next decision.",
     doToday: ["Complete the Pilot Charter or Proposal with the customer.", "Get written agreement on success criteria.", "Set the decision date."],
     ask: ["If the pilot meets these criteria, what happens next?"],
     dont: ["Don't start a pilot without agreed criteria.", "Don't commit to scope beyond approved policy."],
@@ -278,6 +292,7 @@ export const MONTH_3: readonly Mission[] = [
   {
     day: 55,
     title: "Follow-Up",
+    key: "Most deals are lost to silence.",
     mission: "Move each opportunity to its next commitment: technical evaluation, sample drawing, pilot, proposal, procurement or commercial discussion.",
     why: "Most deals are lost to silence, not to competitors. Disciplined follow-up keeps decisions moving.",
     learn: "Every follow-up has a reason, adds value and asks for one specific commitment.",
@@ -288,7 +303,7 @@ export const MONTH_3: readonly Mission[] = [
     evidence: ["Follow-ups sent", "Stop / Continue decisions"],
     submit: ["Pipeline update", "Weekly CEO / CMO / CSO review"],
     selfReview: ["Which opportunity should you stop chasing?"],
-    gate: "Founder Challenge, Week 11: Build a credible business case.",
+    gate: "Weekly Business Challenge, Week 11: Build a credible business case.",
     next: "Week 12: revenue evidence.",
     output: "Pipeline update",
     customerFacing: true,
@@ -300,6 +315,7 @@ export const MONTH_3: readonly Mission[] = [
   {
     day: 56,
     title: "Marketing Performance Review",
+    key: "Qualified conversations, not likes, measure marketing.",
     mission: "Review ICP accuracy, channels, messaging and response patterns.",
     why: "Knowing which marketing worked is how the next cohort starts ahead.",
     learn: "Compare plan to result: which segments, roles, channels and messages produced qualified conversations — not just replies.",
@@ -319,6 +335,7 @@ export const MONTH_3: readonly Mission[] = [
   {
     day: 57,
     title: "Sales Performance Review",
+    key: "Conversion between stages shows where the system leaks.",
     mission: "Review meetings, qualification, opportunities, pilots and proposals.",
     why: "Conversion between stages shows where the sales system leaks.",
     learn: "Stage conversion rates, cycle time per stage, loss reasons and what was learned from each loss.",
@@ -338,6 +355,7 @@ export const MONTH_3: readonly Mission[] = [
   {
     day: 58,
     title: "BMC V2 + Unit Economics",
+    key: "A customer must bring more gross profit than they cost to win.",
     mission: "Compare assumptions with evidence in BMC V2 and test unit economics.",
     why: "A business is repeatable only if acquiring a customer costs less than the gross profit that customer brings.",
     learn: "CAC, ACV, gross margin, sales cycle, payback, renewal, expansion and lifetime value. Use your own measured inputs — no borrowed benchmarks.",
@@ -357,6 +375,7 @@ export const MONTH_3: readonly Mission[] = [
   {
     day: 59,
     title: "Boardroom Pitch",
+    key: "State every claim with its evidence level.",
     mission: "Prepare a 15-minute pitch: market, problem, evidence, ICP, buyer, positioning, product, GTM, conversations, ROI, pipeline, pilot, pricing, risks, lessons and next 90 days.",
     why: "A board evaluates whether evidence is turning into traction — and whether the team knows the difference.",
     learn: "Every slide states the claim and its evidence level. Weak evidence presented honestly is better than strong claims without proof.",
@@ -376,6 +395,7 @@ export const MONTH_3: readonly Mission[] = [
   {
     day: 60,
     title: "Final Revenue Review",
+    key: "Revenue is the result of a repeatable system.",
     mission: "Defend the revenue system: evidence quality, market learning, customer interaction, qualified pipeline, commercial logic, product feedback, professionalism and the next 90-day plan.",
     why: "The programme ends with a management review, not a student presentation.",
     learn: "Panels score the quality of evidence, not presentation style. Revenue is one outcome — the system that produces it is the real deliverable.",
@@ -387,7 +407,7 @@ export const MONTH_3: readonly Mission[] = [
     evidence: ["Final review pack", "Next 90-day plan"],
     submit: ["Final Revenue Review", "Next 90-day plan"],
     selfReview: ["Can you show how evidence became — or did not become — commercial traction?"],
-    gate: "Founder Challenge, Week 12: Defend the revenue system before a CEO / investor-style panel.",
+    gate: "Weekly Business Challenge, Week 12: Defend the revenue system before a CEO / investor-style panel.",
     next: "Apply the framework to the next product, city or industrial market.",
     output: "Final Revenue Review",
     customerFacing: true,

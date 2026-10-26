@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { SITE_URL } from "@/data/public-entities";
 import { EV_ENGINEER_BRAND_ID, ITELEMATICS_ID, WEBSITE_ID, evEngineerBrandNode, itelematicsOrgNode, websiteNode } from "@/lib/structured-data/entities";
-import { CASE_STUDY, FRAMEWORK } from "@/components/revenue/data/framework";
+import { CASE_STUDY, FRAMEWORK, ROUTES, type RouteId } from "@/components/revenue/data/framework";
 
 export const CANONICAL = `${SITE_URL}${FRAMEWORK.route}`;
 export const TITLE = "B2B Revenue Engineering for Aerospace & Defence MSMEs | Marketing & Sales Framework | EV.ENGINEER™";
@@ -11,7 +11,7 @@ export const OG_TITLE = `${FRAMEWORK.name} — Marketing & Sales for Aerospace &
 export const OG_ALT = `${FRAMEWORK.name}: ${FRAMEWORK.headline}. Live case study: ${CASE_STUDY.title}. EV.ENGINEER.`;
 const OG_IMAGE = `${CANONICAL}/opengraph-image`;
 
-/** What the page is about. Used as keywords and as the WebPage's topics. */
+/** What the platform is about. Used as keywords and as the overview's topics. */
 export const KEYWORDS = [
   "B2B Marketing",
   "B2B Sales",
@@ -34,33 +34,37 @@ export const KEYWORDS = [
   "Marketing and Sales Internship",
 ] as const;
 
-export const metadata: Metadata = {
-  title: TITLE,
-  description: DESCRIPTION,
-  keywords: [...KEYWORDS],
-  publisher: "iTelematics Software Private Limited",
-  alternates: { canonical: CANONICAL },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
-  },
-  openGraph: {
-    title: OG_TITLE,
-    description: DESCRIPTION,
-    url: CANONICAL,
-    type: "website",
-    locale: "en_IN",
-    siteName: "EV.ENGINEER",
-    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: OG_ALT }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: OG_TITLE,
-    description: DESCRIPTION,
-    images: [{ url: OG_IMAGE, alt: OG_ALT }],
-  },
-};
+/**
+ * Metadata for one page of the platform. Pages that only show a visitor's own
+ * saved records (Accounts, Pipeline) are not indexed: they have nothing for a
+ * search engine but empty tools.
+ */
+export function pageMetadata({ route, title, description, index = true }: { route: RouteId; title: string; description: string; index?: boolean }): Metadata {
+  const url = `${SITE_URL}${ROUTES[route]}`;
+  return {
+    title,
+    description,
+    keywords: [...KEYWORDS],
+    publisher: "iTelematics Software Private Limited",
+    alternates: { canonical: url },
+    robots: index
+      ? { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 } }
+      : { index: false, follow: true },
+    openGraph: {
+      title,
+      description,
+      url,
+      type: "website",
+      locale: "en_IN",
+      siteName: "EV.ENGINEER",
+      images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: OG_ALT }],
+    },
+    twitter: { card: "summary_large_image", title, description, images: [{ url: OG_IMAGE, alt: OG_ALT }] },
+  };
+}
+
+const overview = pageMetadata({ route: "overview", title: TITLE, description: DESCRIPTION });
+export const metadata: Metadata = { ...overview, openGraph: { ...overview.openGraph, title: OG_TITLE }, twitter: { ...overview.twitter, title: OG_TITLE } };
 
 const WEBPAGE_ID = `${CANONICAL}#webpage`;
 const BREADCRUMB_ID = `${CANONICAL}#breadcrumb`;

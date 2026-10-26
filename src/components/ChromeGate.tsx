@@ -18,8 +18,9 @@ export function isSelfContainedPath(pathname: string | null): boolean {
     pathname === "/about/sudarshana-karkala" ||
     // AQIP has its own header and its own footer, rendered by the page itself.
     pathname === "/internships/aerospace-quality-intelligence-platform" ||
-    // B2B Revenue Engineering draws its own header and footer too, in its own theme.
+    // B2B Revenue Engineering draws its own header and footer on every page, in its own theme.
     pathname === "/internships/marketing-sales" ||
+    pathname?.startsWith("/internships/marketing-sales/") === true ||
     // So does the EV Battery Health & Diagnostics Toolkit, in the Space visual family.
     pathname === "/internships/ev-battery-health-diagnostics-toolkit" ||
     pathname?.startsWith("/internships/ev-battery-health-diagnostics-toolkit/") === true

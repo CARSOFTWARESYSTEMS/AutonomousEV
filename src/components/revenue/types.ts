@@ -81,14 +81,16 @@ export interface Mission {
   output: string;
   /** Customer-facing days make the "What changed my mind?" reflection mandatory. */
   customerFacing?: boolean;
-  /** Workspace tools the day uses. */
-  tools?: readonly ViewId[];
+  /** One memorable line: the day's idea in a sentence. */
+  key: string;
+  /** Tools the day uses; each appears once it is unlocked (see UNLOCKS). */
+  tools?: readonly ToolId[];
   /** Extra words the mission search should match. */
   tags?: readonly string[];
 }
 
-/** Every place in the workspace that can be opened by address (#id). */
-export type ViewId =
+/** The tools a mission can point to. Each resolves to a page or a section of one (TOOL_LINKS). */
+export type ToolId =
   | "today"
   | "journey"
   | "cockpit"

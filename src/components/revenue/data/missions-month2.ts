@@ -7,6 +7,7 @@ export const MONTH_2: readonly Mission[] = [
   {
     day: 21,
     title: "What Is B2B Sales?",
+    key: "Marketing creates relevance. Sales converts validated value into a business decision.",
     mission: "Understand that marketing creates relevance, while sales diagnoses, qualifies and progresses a commercial decision.",
     why: "Sales is not persuasion. In B2B it is helping a group of people decide whether a change is worth making — and walking away when it is not.",
     learn: "A B2B sales process moves an account through stages, each with an exit criterion the customer controls: agreed problem, agreed impact, agreed evaluation, agreed commercial terms. Your job at each stage is to diagnose, not to push.",
@@ -30,6 +31,7 @@ export const MONTH_2: readonly Mission[] = [
   {
     day: 22,
     title: "Account Prioritisation",
+    key: "Your hours are the scarcest resource in the sales system.",
     mission: "Prioritise accounts by fit, pain, access, urgency and commercial potential.",
     why: "Your hours are the scarcest resource in the sales system. Spending them on low-fit accounts is the most expensive mistake.",
     learn: "Prioritisation combines a fit score with timing and access. A high-fit account you cannot reach yet is a nurture account, not a priority.",
@@ -53,6 +55,7 @@ export const MONTH_2: readonly Mission[] = [
   {
     day: 23,
     title: "Prospecting",
+    key: "Reach the right role through a channel they would consider appropriate.",
     mission: "Identify legitimate stakeholder roles at priority accounts from public sources.",
     why: "Reaching the right role first saves weeks. Reaching them through a legitimate channel protects your reputation.",
     learn: "Prospecting uses public company pages, professional profiles people chose to publish, event speaker lists, association directories and warm referrals. It records roles and the source, not private data.",
@@ -76,10 +79,11 @@ export const MONTH_2: readonly Mission[] = [
   {
     day: 24,
     title: "Qualification",
+    key: "Raw leads are not pipeline.",
     mission: "Qualify on problem, impact, urgency, authority, evaluation path and commercial plausibility.",
     why: "Qualified pipeline is the North Star. Unqualified \"pipeline\" makes forecasts fiction and wastes everyone's time.",
     learn: "A qualified opportunity has: a relevant target account, a validated problem, evidence of business impact, a relevant stakeholder, plausible technical fit, plausible commercial fit and an agreed next action. Miss one and it is not pipeline yet.",
-    applyFai: "Use the Opportunity Score in the Pipeline view: problem severity, frequency, economic impact, urgency, decision-maker access, technical fit, pilot interest, commercial potential.",
+    applyFai: "Use the Opportunity Score on the Pipeline page: problem severity, frequency, economic impact, urgency, decision-maker access, technical fit, pilot interest, commercial potential.",
     doToday: [
       "Read the qualification criteria and the Opportunity Score.",
       "Score one synthetic opportunity and explain each rating.",
@@ -99,6 +103,7 @@ export const MONTH_2: readonly Mission[] = [
   {
     day: 25,
     title: "Decision-Making Unit",
+    key: "Deals die in the roles you never met.",
     mission: "Map user → champion → technical evaluator → decision maker → economic buyer → procurement / security.",
     why: "Deals die in the roles you never met. Mapping the decision-making unit early shows you who to involve and when.",
     learn: "For each role: what they need to believe, what evidence they need, what could make them say no, and when they enter the process.",
@@ -114,7 +119,7 @@ export const MONTH_2: readonly Mission[] = [
     evidence: ["Decision Map with entry points"],
     submit: ["Decision Map", "Weekly CEO / CMO / CSO review"],
     selfReview: ["Which role is most likely to say no, and what would they need?"],
-    gate: "Founder Challenge, Week 5: Get a legitimate prospect to agree to discovery.",
+    gate: "Weekly Business Challenge, Week 5: Get a legitimate prospect to agree to discovery.",
     next: "Week 6: customer engagement, starting with outreach.",
     output: "Decision Map",
     tools: ["icp", "evidence", "review"],
@@ -125,6 +130,7 @@ export const MONTH_2: readonly Mission[] = [
   {
     day: 26,
     title: "Outreach",
+    key: "Outreach earns a conversation — nothing more.",
     mission: "Create short, problem-relevant outreach for email, LinkedIn and referral introductions.",
     why: "Outreach earns a conversation, nothing more. Short, specific and respectful messages get replies; pitches get ignored.",
     learn: "Good outreach: personal context, a problem hypothesis framed as a question, why you are asking them, a small ask (20 minutes to learn), and an easy way to say no.",
@@ -150,6 +156,7 @@ export const MONTH_2: readonly Mission[] = [
   {
     day: 27,
     title: "Sales Messaging",
+    key: "Context, problem, relevance, credibility, one small ask.",
     mission: "Structure messages as Context → Problem Hypothesis → Relevance → Credibility → CTA.",
     why: "When someone asks \"what do you do?\", you have seconds. A clear structure keeps you honest and brief.",
     learn: "Context (what you noticed) → problem hypothesis (as a question) → relevance (why them) → credibility (a true, specific fact) → call to action (one small step).",
@@ -169,6 +176,7 @@ export const MONTH_2: readonly Mission[] = [
   {
     day: 28,
     title: "Discovery Meeting",
+    key: "Prepared meetings get second meetings.",
     mission: "Prepare the agenda, questions and desired outcome for a discovery meeting.",
     why: "Prepared meetings get second meetings. Unprepared ones waste the customer's time and close the door.",
     learn: "Before-meeting plan: account, participants, objective, what we know, what we don't, hypotheses, questions, what not to say, desired next step, confidentiality cautions.",
@@ -188,6 +196,7 @@ export const MONTH_2: readonly Mission[] = [
   {
     day: 29,
     title: "Ask Better Questions",
+    key: "Ask about the last time, not about someday.",
     mission: "Use open, diagnostic, impact and future-state questions.",
     why: "The quality of your evidence is set by the quality of your questions.",
     learn: "Open questions start a story; diagnostic questions find the cause; impact questions find the cost; future-state questions find what better looks like. Avoid leading questions that contain your answer.",
@@ -207,17 +216,18 @@ export const MONTH_2: readonly Mission[] = [
   {
     day: 30,
     title: "Listening & Evidence",
+    key: "Write down what was said, apart from what you think it means.",
     mission: "Separate what the customer said from what you inferred.",
     why: "Inference recorded as fact is how false validation enters a business. Clean notes protect every decision downstream.",
     learn: "Record verbatim quotes, observed facts and your interpretations in separate columns. Tag each pain with its evidence level and the number of independent sources.",
     applyFai: "\"Our quality engineer spends most of Monday on balloon tables\" is evidence. \"They need automation\" is your inference.",
-    doToday: ["Write up discovery notes with Said / Observed / Inferred columns.", "Update the Pain Library: evidence level and count.", "Complete \"What changed my mind?\" and this week's Friday review."],
+    doToday: ["Write up discovery notes with Said / Observed / Inferred columns.", "Update the problem hypotheses in the case study: evidence level and count.", "Complete \"What changed my mind?\" and this week's Friday review."],
     ask: ["Did I understand that correctly?"],
     dont: ["Don't upgrade a pain to Customer Validated from one polite comment.", "Don't share one customer's details with another."],
-    evidence: ["Discovery notes with evidence tags", "Pain Library updated"],
+    evidence: ["Discovery notes with evidence tags", "Problem hypotheses updated"],
     submit: ["Discovery Notes + Evidence Tags", "Weekly CEO / CMO / CSO review"],
     selfReview: ["Could someone else reach the same conclusion from your notes alone?"],
-    gate: "Founder Challenge, Week 6: Discover something you did not already know.",
+    gate: "Weekly Business Challenge, Week 6: Discover something you did not already know.",
     next: "Week 7: solution and value selling.",
     output: "Discovery Notes",
     customerFacing: true,
@@ -229,6 +239,7 @@ export const MONTH_2: readonly Mission[] = [
   {
     day: 31,
     title: "Consultative Selling",
+    key: "Diagnose before demonstrating.",
     mission: "Diagnose before demonstrating: map validated problems to solution elements.",
     why: "A demo before diagnosis shows features the customer does not care about and hides the one that matters.",
     learn: "Consultative selling: understand the situation, the problem, the implication and the value of solving it — then propose only what addresses it. Sometimes the right answer is \"we are not the right fit\".",
@@ -248,6 +259,7 @@ export const MONTH_2: readonly Mission[] = [
   {
     day: 32,
     title: "Product Demonstration",
+    key: "Show only what addresses the validated pain.",
     mission: "Show only the workflow relevant to the validated pain.",
     why: "Relevant demos are short. Every irrelevant screen weakens the one that matters.",
     learn: "A 15-minute demo: recap the customer's problem in their words → show the specific workflow → let them try → agree what the evaluation should measure.",
@@ -268,6 +280,7 @@ export const MONTH_2: readonly Mission[] = [
   {
     day: 33,
     title: "ROI & Business Value",
+    key: "Use the customer's numbers. Show a range. Measure it later.",
     mission: "Build a value estimate using customer-provided assumptions.",
     why: "Owners invest when the numbers are theirs. An ROI built on your assumptions is a guess; one built on theirs is a decision tool.",
     learn: "ROI = (value − cost) / cost. Value comes from time saved, rework avoided or delay reduced — each estimated as a range and later measured in a pilot.",
@@ -286,6 +299,7 @@ export const MONTH_2: readonly Mission[] = [
   {
     day: 34,
     title: "Pricing Architecture",
+    key: "Pricing is policy. Interns propose; they never quote.",
     mission: "Understand seat, site, subscription, perpetual + maintenance, pilot, enterprise and service pricing.",
     why: "Pricing structure shapes who can buy and how fast. The wrong structure blocks MSMEs that would otherwise say yes.",
     learn: "Price metric (per user, per site), term (monthly, annual), packaging (tiers), and services (implementation, integration). Pricing is a policy decision — interns propose hypotheses, they do not quote.",
@@ -305,6 +319,7 @@ export const MONTH_2: readonly Mission[] = [
   {
     day: 35,
     title: "Proposal",
+    key: "A proposal should confirm a decision, not surprise anyone.",
     mission: "Write: customer context → validated pain → solution → scope → evidence → success criteria → commercials → next action.",
     why: "A proposal confirms a decision already discussed. If it surprises the customer, the earlier stages were skipped.",
     learn: "Good proposals use the customer's words, scope tightly, define success measurably and make the next step obvious. Commercials come from approved policy.",
@@ -315,7 +330,7 @@ export const MONTH_2: readonly Mission[] = [
     evidence: ["Proposal V1"],
     submit: ["Proposal V1", "Weekly CEO / CMO / CSO review"],
     selfReview: ["Would the customer recognise their own words in it?"],
-    gate: "Founder Challenge, Week 7: Quantify value without exaggeration.",
+    gate: "Weekly Business Challenge, Week 7: Quantify value without exaggeration.",
     next: "Week 8: objections, pilots and negotiation.",
     output: "Proposal V1",
     tools: ["pipeline", "review"],
@@ -326,6 +341,7 @@ export const MONTH_2: readonly Mission[] = [
   {
     day: 36,
     title: "Objection Handling",
+    key: "Objections are information.",
     mission: "Build an objection library with honest responses.",
     why: "Objections are information. Handled well, they reveal the real decision criteria; handled badly, they end the conversation.",
     learn: "Acknowledge → clarify (\"what's behind that?\") → respond with evidence or an honest limit → check. Some objections are correct; agree and record them.",
@@ -345,11 +361,12 @@ export const MONTH_2: readonly Mission[] = [
   {
     day: 37,
     title: "Pilot / Proof-of-Value Design",
+    key: "A pilot that cannot fail cannot prove anything.",
     mission: "Define success before the pilot starts.",
     why: "A pilot without success criteria cannot succeed — it can only drift. Predefined criteria turn a trial into a decision.",
     learn: "A pilot charter: customer, problem, baseline, scope, success criteria, measures, owners, dates, security constraints and the decision that follows.",
     applyFai: "Measures: preparation time per drawing, extraction review effort (for Beta OCR), correction count, completeness, report preparation effort, user acceptance.",
-    doToday: ["Draft a Pilot Charter in the Pilot workspace (synthetic).", "Define baseline measurement before the tool is used.", "Agree the decision rule: what result leads to purchase?"],
+    doToday: ["Draft a Pilot Charter on the Pipeline page (practise on a synthetic account).", "Define baseline measurement before the tool is used.", "Agree the decision rule: what result leads to purchase?"],
     ask: ["How will we know this worked?", "Who will decide after the pilot?"],
     dont: ["Don't run a pilot without success criteria.", "Don't start without a baseline."],
     evidence: ["Pilot Charter with baseline and criteria"],
@@ -364,6 +381,7 @@ export const MONTH_2: readonly Mission[] = [
   {
     day: 38,
     title: "Negotiation",
+    key: "Trade value; don't blindly discount.",
     mission: "Trade value; do not simply discount.",
     why: "Unconditional discounts teach customers that price is soft and value is negotiable. Trades protect both.",
     learn: "Know your walk-away, the customer's alternatives and the tradeables: term length, scope, payment terms, reference rights, case-study permission, pilot conversion.",
@@ -383,10 +401,11 @@ export const MONTH_2: readonly Mission[] = [
   {
     day: 39,
     title: "Pipeline Management",
+    key: "Stages move on customer commitment, not on your activity.",
     mission: "Run the pipeline: Research → Contacted → Discovery → Qualified → Demo → Evaluation → Pilot → Proposal → Negotiation → Won / Lost.",
     why: "A pipeline is a promise about the future. Managed honestly, it tells you what to do next; managed optimistically, it lies.",
     learn: "Every opportunity has a stage, a next action and a date. Stage moves only on customer commitment. Weighted pipeline uses stage probabilities you calibrate from your own history.",
-    applyFai: "Use the Pipeline view: move synthetic opportunities, record next actions, and see which count toward the qualified pipeline.",
+    applyFai: "Use the Pipeline page: study the synthetic opportunities, add your own, record next actions, and see which count toward the qualified pipeline.",
     doToday: ["Put every active account into the Pipeline with a stage, next action and date.", "Remove anything with no next action.", "Run a Stop / Continue check on the weakest opportunity."],
     ask: ["What is the next step, and when?"],
     dont: ["Don't confuse activity with pipeline quality.", "Don't keep chasing an account with no pain, urgency or fit."],
@@ -401,6 +420,7 @@ export const MONTH_2: readonly Mission[] = [
   {
     day: 40,
     title: "Sales Validation Gate",
+    key: "One real account, one honest chain of evidence.",
     mission: "Demonstrate one target account, buyer map, discovery evidence, qualification, demo, ROI hypothesis, pilot path and next action.",
     why: "Month 3 is execution. The gate confirms the motion works on at least one real account before scaling it.",
     learn: "Gate reviews look for a complete, honest chain of evidence on one account — not volume.",

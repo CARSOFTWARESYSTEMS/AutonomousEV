@@ -42,12 +42,19 @@ link below points to a canonical public page already listed in
   A daily B2B marketing, customer discovery and consultative sales framework
   for Bengaluru (Bangalore) aerospace and defence MSMEs, with the FAI Engineer
   ballooning and AS9102 Form 3-oriented export toolkit as its live case study.
-  Sixty daily missions over twelve weeks (Prove the Market, Prove the Sales
-  Motion, Prove the Business), an evidence-versus-assumption system, a pain
-  hypothesis library, a discovery question bank, account and opportunity
-  scoring, an ROI calculator built on customer-supplied inputs, revenue math,
-  a pilot workspace and a revenue cockpit. Example companies are labelled
-  synthetic; no market-size figures or guaranteed savings are claimed.
+  Sixty daily missions over twelve weeks, each a guided sequence (Learn, Do,
+  Ask, Don't, Evidence, Review, Complete), an evidence ladder from assumption
+  to commercial proof, and no market-size figures or guaranteed savings.
+- [Today's Mission](https://autonomous.ev.engineer/internships/marketing-sales/today):
+  The framework's daily workspace, starting with the Bengaluru market.
+- [Prove the Market — Weeks 1–4](https://autonomous.ev.engineer/internships/marketing-sales/marketing),
+  [Prove the Sales Motion — Weeks 5–8](https://autonomous.ev.engineer/internships/marketing-sales/sales) and
+  [Prove the Business — Weeks 9–12](https://autonomous.ev.engineer/internships/marketing-sales/execution):
+  The three months of the journey, week by week.
+- [Case Study: Balloon Drawings & AS9102 FAI Reporting](https://autonomous.ev.engineer/internships/marketing-sales/case-study):
+  Product, market, problem hypotheses, ICP and buyer map, evidence and
+  approved claims, value proposition, alternatives, demo, ROI, objections,
+  pilot and product feedback. Example companies are labelled synthetic.
 - [AegisCAN](https://autonomous.ev.engineer/internships/AegisCAN): 12-week
   educational R&D mini-project on Battery, BMS, BESS, CAN communication,
   validation, fault injection and CAN cybersecurity. Initiated and led by

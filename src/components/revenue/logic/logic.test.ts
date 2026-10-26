@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { NAV_GROUPS, TOTAL_DAYS, VIEW_IDS, isReviewDay, phaseOf, weekOf } from "../data/framework";
+import { APP_NAV, PHASES, ROUTES, TOOL_LINKS, TOTAL_DAYS, UNLOCKS, WEEKS, isReviewDay, isUnlocked, phaseOf, weekOf } from "../data/framework";
 import { MISSIONS } from "../data/missions";
 import { CLAIMS } from "../data/product";
 import { ACCOUNT_CRITERIA, OPPORTUNITY_CRITERIA } from "../data/scoring";
@@ -84,8 +84,8 @@ describe("Opportunity Score", () => {
     expect(score.weakest).toContain("Frequency");
   });
 
-  it("counts an opportunity as qualified pipeline only when all seven criteria hold", () => {
-    const all = { account: true, problem: true, impact: true, stakeholder: true, technical: true, commercial: true, next: true };
+  it("counts an opportunity as qualified pipeline only when all six criteria hold", () => {
+    const all = { account: true, problem: true, stakeholder: true, technical: true, commercial: true, next: true };
     expect(isFullyQualified(all)).toBe(true);
     expect(missingQualification({ ...all, problem: false })).toEqual(["Validated problem"]);
     expect(isFullyQualified({})).toBe(false);
@@ -208,16 +208,28 @@ describe("Sixty daily missions", () => {
 
   it("fills the mandatory template on every day", () => {
     for (const m of MISSIONS) {
-      for (const field of ["title", "mission", "why", "learn", "applyFai", "next", "output"] as const) expect(m[field].trim(), `Day ${m.day} ${field}`).not.toBe("");
+      for (const field of ["title", "key", "mission", "why", "learn", "applyFai", "next", "output"] as const) expect(m[field].trim(), `Day ${m.day} ${field}`).not.toBe("");
       expect(m.doToday.length, `Day ${m.day} do`).toBeGreaterThanOrEqual(2);
       for (const list of [m.ask, m.dont, m.evidence, m.submit, m.selfReview]) expect(list.length, `Day ${m.day}`).toBeGreaterThan(0);
-      for (const tool of m.tools ?? []) expect(VIEW_IDS).toContain(tool);
+      for (const tool of m.tools ?? []) expect(Object.keys(TOOL_LINKS)).toContain(tool);
     }
+  });
+
+  it("starts with the Bengaluru market and product context; marketing theory comes on Day 4", () => {
+    expect(MISSIONS.slice(0, 5).map((m) => m.title)).toEqual([
+      "Understand the Bengaluru Aerospace & Defence Market",
+      "Understand the FAI Workflow",
+      "Understand the Customer Problem",
+      "What Is B2B Marketing?",
+      "Design the Problem Validation Plan",
+    ]);
+    expect(MISSIONS[0].mission).toBe("Identify the types of companies most likely to experience drawing-driven inspection and FAI workflow pain.");
+    expect(MISSIONS[3].key).toBe("Find the right customer. Understand the right problem. Create a reason to start a conversation.");
+    expect(MISSIONS[20].key).toBe("Marketing creates relevance. Sales converts validated value into a business decision.");
   });
 
   it("follows the brief's daily sequence at its milestones", () => {
     const title = (day: number) => MISSIONS[day - 1].title;
-    expect(title(1)).toBe("What Is B2B Marketing?");
     expect(title(15)).toBe("Business Model Canvas");
     expect(title(20)).toBe("Market Validation Gate");
     expect(title(33)).toBe("ROI & Business Value");
@@ -264,10 +276,35 @@ describe("Synthetic demonstration data", () => {
     for (const account of SYNTHETIC_ACCOUNTS) expect(account.location).toMatch(/fictional/);
   });
 
-  it("navigation lists every view once", () => {
-    const ids = NAV_GROUPS.flatMap((group) => group.items.map((item) => item.id));
-    expect(new Set(ids).size).toBe(ids.length);
-    expect(ids).toEqual(VIEW_IDS);
+  it("shows tools when the work needs them", () => {
+    expect(UNLOCKS.map((unlock) => [unlock.tool, unlock.day])).toEqual(
+      expect.arrayContaining([["outreach", 26], ["demo", 32], ["roi", 33], ["pilot", 37], ["pipeline", 39], ["proposal", 54]]),
+    );
+    expect(isUnlocked("roi", 32)).toBe(false);
+    expect(isUnlocked("roi", 33)).toBe(true);
+    // Every unlock a tool link names exists.
+    for (const link of Object.values(TOOL_LINKS)) if (link.unlock) expect(UNLOCKS.map((unlock) => unlock.tool)).toContain(link.unlock);
+  });
+
+  it("organises the platform into eight pages and four app destinations", () => {
+    expect(Object.keys(ROUTES)).toEqual(["overview", "today", "marketing", "sales", "execution", "caseStudy", "accounts", "pipeline"]);
+    expect(APP_NAV.map((item) => item.label)).toEqual(["Today", "Journey", "Accounts", "Pipeline"]);
+    expect(PHASES.map((phase) => phase.label)).toEqual(["Marketing", "Sales", "Execution"]);
+    expect(WEEKS.map((week) => week.theme)).toEqual([
+      "Market & Problem",
+      "Customer Discovery",
+      "Value & Positioning",
+      "Go-To-Market",
+      "Sales Foundations",
+      "Customer Engagement",
+      "Solution & Value Selling",
+      "Pilot, Proposal & Negotiation",
+      "Build the Market",
+      "Talk to Customers",
+      "Create Opportunities",
+      "Create Revenue Evidence",
+    ]);
+    expect(WEEKS[2].challenge).toBe("Prove the value proposition matters.");
   });
 });
 

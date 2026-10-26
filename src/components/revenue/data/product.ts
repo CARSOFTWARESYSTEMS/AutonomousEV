@@ -1,7 +1,7 @@
 // What FAI Engineer is today, as its product page publishes it, and what may
 // and may not be said about it. Anything the page does not state is marked as
 // needing product or security team confirmation — never improvised.
-import type { AnswerClass, ClaimStatus, Maturity } from "../types";
+import type { AnswerClass, ClaimStatus, EvidenceLevel, Maturity } from "../types";
 
 export const PRODUCT_SUMMARY =
   "A browser-based toolkit for engineering drawing ballooning, characteristic tables and First Article Inspection report preparation.";
@@ -101,3 +101,24 @@ export const TRUST_CHECKLIST: readonly TrustTopic[] = [
 ];
 
 export const TRUST_RULE = "Interns never improvise security answers. If an answer is not approved here, say: \"Let me confirm that with our product and security team.\"";
+
+/** The current value proposition, part by part, each with the evidence behind it. Version 1: no customer has confirmed it yet. */
+export const VALUE_PROPOSITION: { version: string; parts: readonly { label: string; text: string; level: EvidenceLevel }[] } = {
+  version: "V1",
+  parts: [
+    { label: "For", text: "Quality engineers at Bengaluru aerospace machining MSMEs who prepare first-article packages", level: "research" },
+    { label: "Who", text: "may spend skilled hours ballooning drawings and reconciling balloon numbers with the Form 3 table", level: "assumption" },
+    { label: "FAI Engineer", text: "keeps the ballooned drawing and the characteristic table together in one browser workspace and exports a Form 3-oriented table", level: "research" },
+    { label: "So that", text: "re-entry and reconciliation effort could fall — to be measured in a pilot, never promised", level: "assumption" },
+  ],
+};
+
+/** What a pilot of FAI Engineer could measure. Success is defined before it starts. */
+export const PILOT_MEASURES = [
+  "Preparation time per drawing",
+  "Extraction review effort (Beta OCR)",
+  "Correction count",
+  "Completeness",
+  "Report preparation effort",
+  "User acceptance",
+] as const;

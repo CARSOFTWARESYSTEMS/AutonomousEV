@@ -1,11 +1,11 @@
 "use client";
-// Form controls, panels, tabs and figures shared by the workspace views.
+// Form controls, panels, tabs and figures shared by the framework's pages.
 // Every control has a visible label; ratings are radio groups; tabs follow the
 // WAI-ARIA tabs pattern with arrow-key movement.
 import { useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { RATING_LABELS } from "../data/scoring";
 import type { Rating } from "../types";
-import css from "../workspace.module.css";
+import css from "../app.module.css";
 
 export function Panel({ title, kicker, actions, children, tone, id }: { title: ReactNode; kicker?: ReactNode; actions?: ReactNode; children: ReactNode; tone?: "accent" | "warn" | "quiet"; id?: string }) {
   return (
@@ -19,19 +19,6 @@ export function Panel({ title, kicker, actions, children, tone, id }: { title: R
       </header>
       {children}
     </section>
-  );
-}
-
-export function ViewHeader({ eyebrow, title, lede, children }: { eyebrow: string; title: string; lede?: ReactNode; children?: ReactNode }) {
-  return (
-    <header className={css.viewHead}>
-      <p className={css.eyebrow}>{eyebrow}</p>
-      <h2 className={css.viewTitle} tabIndex={-1}>
-        {title}
-      </h2>
-      {lede ? <p className={css.viewLede}>{lede}</p> : null}
-      {children}
-    </header>
   );
 }
 

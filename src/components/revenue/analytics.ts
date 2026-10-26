@@ -37,6 +37,9 @@ export interface RevenueEvents {
   founder_challenge_complete: { week: string };
   mentor_gate_complete: { gate: string };
   mission_search: NoParams;
+  revenue_journey_stage: { stage: string };
+  mission_step_view: { day: string; step: string };
+  context_panel_toggle: { open: "true" | "false" };
 }
 
 export type RevenueEvent = keyof RevenueEvents;

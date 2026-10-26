@@ -13,8 +13,12 @@ import { INITIAL_STATE, type Account, type Decision, type Feedback, type Meeting
 
 export const STORAGE_KEY = "ev-revenue-engineering-v1";
 
+/** Fields added to accounts in version 2. */
+const ACCOUNT_DEFAULTS: Pick<Account, "why" | "pain" | "buyer" | "status" | "next"> = { why: "", pain: "Unknown", buyer: "", status: "Researching", next: "" };
+
 interface Actions {
   setDay: (day: number) => void;
+  setStage: (day: number, stage: number) => void;
   completeDay: (day: number, done: boolean) => void;
   toggleCheck: (key: string) => void;
   setReflection: (day: number, patch: Partial<Reflection>) => void;
@@ -88,6 +92,7 @@ export const useRevenue = create<RevenueStore>()(
       ...INITIAL_STATE,
 
       setDay: (day) => set({ day: clampDay(day) }),
+      setStage: (day, stage) => set((state) => ({ stages: { ...state.stages, [day]: Math.max(0, Math.round(stage)) } })),
       completeDay: (day, done) =>
         set((state) => {
           const completed = { ...state.completed };
@@ -144,7 +149,16 @@ export const useRevenue = create<RevenueStore>()(
     }),
     {
       name: STORAGE_KEY,
-      version: 1,
+      version: 2,
+      // Version 1 had no step progress and fuller account records.
+      migrate: (persisted) => {
+        const state = (persisted ?? {}) as Partial<RevenueState>;
+        return {
+          ...state,
+          stages: state.stages ?? {},
+          accounts: (state.accounts ?? []).map((account) => ({ ...ACCOUNT_DEFAULTS, ...(account as Partial<Account>) }) as Account),
+        };
+      },
       storage: safeStorage,
       skipHydration: true,
       partialize: (state) => {

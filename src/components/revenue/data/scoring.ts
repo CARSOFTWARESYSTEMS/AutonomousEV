@@ -39,11 +39,10 @@ export const OPPORTUNITY_BANDS: readonly { min: number; id: string; label: strin
   { min: 0, id: "hold", label: "Do Not Chase Yet", action: "Record what you learned and step back." },
 ];
 
-/** The North Star's definition: an opportunity counts as qualified pipeline only when all seven hold. */
+/** The North Star's definition: an opportunity counts as qualified pipeline only when all six hold. */
 export const QUALIFICATION: readonly { id: string; label: string }[] = [
-  { id: "account", label: "Relevant target account" },
+  { id: "account", label: "Right account" },
   { id: "problem", label: "Validated problem" },
-  { id: "impact", label: "Evidence of business impact" },
   { id: "stakeholder", label: "Relevant stakeholder" },
   { id: "technical", label: "Plausible technical fit" },
   { id: "commercial", label: "Plausible commercial fit" },
