@@ -382,6 +382,32 @@
   }
 }
 
+/* ── Product & Consultancy Services ── each poster full width of the column, its title and line under it */
+.services {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+}
+.service {
+  overflow: hidden;
+  border: 1px solid var(--space-border);
+  border-radius: var(--space-radius);
+  background: var(--space-surface-soft);
+}
+.serviceImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-bottom: 1px solid var(--space-border);
+}
+.serviceText {
+  padding: 18px 22px 20px;
+}
+/* The link's 44px tap area already adds space below it. */
+.serviceText .textLink {
+  margin-bottom: -10px;
+}
+
 /* ── Research & Engineering ── four short columns, no cards and no chips */
 .focus {
   display: grid;

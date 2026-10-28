@@ -14,7 +14,7 @@ import theme from "@/app/space/spaceTheme.module.css";
 import JumpLink from "./JumpLink";
 import ProfileAnalytics from "./ProfileAnalytics";
 import { profileTracking } from "./analytics";
-import { ABOUT, ACADEMIC, BACKGROUND, CONSULTING, CONTACT, EV_ENGINEER_URL, FOCUS_AREAS, HERO, INITIATIVES, LAST_REVIEWED, LEADERSHIP, PRIMARY_INITIATIVE, SCOPE_NOTE, SELECTED_WORK, WORKSHOPS, shownDate } from "./profile";
+import { ABOUT, ACADEMIC, BACKGROUND, CONSULTING, CONTACT, EV_ENGINEER_URL, FOCUS_AREAS, HERO, INITIATIVES, LAST_REVIEWED, LEADERSHIP, PRIMARY_INITIATIVE, SCOPE_NOTE, SELECTED_WORK, SERVICES, WORKSHOPS, shownDate } from "./profile";
 import type { Organisation, TrackedOrganisation } from "./profile";
 import styles from "./page.module.css";
 
@@ -454,6 +454,34 @@ export default function ProfileContent() {
             <a href={`tel:${TELEPHONE.replace(/\s/g, "")}`} className={styles.phone} {...profileTracking("profile_contact_click", { contact_type: "phone", destination_type: "telephone" })}>
               {TELEPHONE}
             </a>
+          </div>
+        </Section>
+
+        {/* ── The owner's posters, full width so their detail stays legible ── */}
+        <Section id={SERVICES.id} label={SERVICES.heading}>
+          <div className={styles.services}>
+            {SERVICES.entries.map((service) => (
+              <article key={service.id} className={styles.service}>
+                <Image
+                  src={service.image.src}
+                  alt={service.image.alt}
+                  width={service.image.width}
+                  height={service.image.height}
+                  sizes="(min-width: 960px) 720px, 92vw"
+                  className={styles.serviceImage}
+                />
+                <div className={styles.serviceText}>
+                  <h3 className={styles.initiativeName}>{service.title}</h3>
+                  <p className={styles.initiativeLine}>{service.line}</p>
+                  {service.link ? (
+                    <a href={service.link.href} {...NEW_TAB} className={styles.textLink} {...profileTracking("profile_service_click", { service_name: service.id, destination: service.link.destination, section: "services" })}>
+                      {service.link.label}
+                      <Leaves />
+                    </a>
+                  ) : null}
+                </div>
+              </article>
+            ))}
           </div>
         </Section>
       </main>

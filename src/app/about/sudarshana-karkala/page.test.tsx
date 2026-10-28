@@ -574,7 +574,7 @@ describe("/about/sudarshana-karkala: workshops and certifications", () => {
 });
 
 describe("/about/sudarshana-karkala: contact", () => {
-  it("ends with Contact / Consultation: one line of topics and the verified contact actions", () => {
+  it("has Contact / Consultation: one line of topics and the verified contact actions", () => {
     render(<ProfilePage />);
     const contact = section("Contact / Consultation");
     expect(contact).toHaveAttribute("id", "contact");
@@ -591,8 +591,32 @@ describe("/about/sudarshana-karkala: contact", () => {
     }
     expect(within(contact).getByRole("link", { name: "Consulting" })).toHaveAttribute("href", "/consulting");
     expect(within(contact).getByRole("link", { name: "+91 9845561518" })).toHaveAttribute("href", "tel:+919845561518");
-    // It is the last section of the page.
-    expect(contact.nextElementSibling).toBeNull();
+    // Only the Product & Consultancy Services follow it.
+    expect(contact.nextElementSibling).toHaveAttribute("id", "services");
+  });
+
+  it("ends with Product & Consultancy Services: FAI, then Digital Twin, each the owner's poster with a title and a line", () => {
+    render(<ProfilePage />);
+    const services = section("Product & Consultancy Services");
+    expect(services).toHaveAttribute("id", "services");
+    expect(services.nextElementSibling).toBeNull();
+
+    const cards = within(services).getAllByRole("article");
+    expect(cards.map((card) => within(card).getByRole("heading", { level: 3 }).textContent)).toEqual(["FAI AS9102 & Drawing Ballooning Automation", "Digital Twin Design"]);
+    expect(cards[0]).toHaveTextContent("Defence Aerospace Quality Intelligence Platform");
+    expect(cards[1]).toHaveTextContent("Physics Based · Aerospace · Defence · Space");
+
+    // Each poster is described for a screen reader, and the description repeats no email address or telephone number.
+    const posters = within(services).getAllByRole("img");
+    expect(posters.map((img) => img.getAttribute("alt"))).toEqual([expect.stringMatching(/^FAI AS9102 & Drawing Ballooning Automation/), expect.stringMatching(/^Digital Twin Design, physics based/)]);
+    for (const img of posters) expect(img.getAttribute("alt")).not.toMatch(/@|\d{5}/);
+
+    // The FAI platform's own address, safely, in a new tab; the Digital Twin card links nowhere it has no address for.
+    const fai = within(cards[0]).getByRole("link", { name: /^fai\.ev\.engineer\s*\(opens in a new tab\)$/ });
+    expect(fai).toHaveAttribute("href", "https://fai.ev.engineer/");
+    expect(fai).toHaveAttribute("target", "_blank");
+    expect(fai).toHaveAttribute("rel", "noopener noreferrer");
+    expect(within(cards[1]).queryByRole("link")).toBeNull();
   });
 
   it("is reachable from the bar at every width, by a link whose name begins with the word that always shows", () => {
@@ -644,7 +668,7 @@ describe("/about/sudarshana-karkala: contact", () => {
 });
 
 describe("/about/sudarshana-karkala: the page as a whole", () => {
-  it("has twelve parts in one order: the career, the consulting, the community leadership and the academic engagement come before the initiatives and the work", () => {
+  it("has thirteen parts in one order: the career, the consulting, the community leadership and the academic engagement come before the initiatives and the work", () => {
     const { container } = render(<ProfilePage />);
     const parts = [...container.querySelectorAll("main > section")].map((part) => document.getElementById(part.getAttribute("aria-labelledby")!)?.textContent);
     expect(parts).toEqual([
@@ -660,6 +684,7 @@ describe("/about/sudarshana-karkala: the page as a whole", () => {
       "Selected Work",
       "Workshops & Certifications",
       "Contact / Consultation",
+      "Product & Consultancy Services",
     ]);
     expect(screen.queryByRole("heading", { name: /^(Mission|Vision)$/ })).toBeNull();
     expect(visibleText(container)).not.toMatch(/To advance intelligent, secure|To contribute to the development|Verified Profiles|Core Focus Areas|About the Founder/);
@@ -676,8 +701,10 @@ describe("/about/sudarshana-karkala: the page as a whole", () => {
   it("stays short: a summary that links to the work, not a résumé", () => {
     const { container } = render(<ProfilePage />);
     const words = visibleText(container.querySelector("main")!).trim().split(/\s+/).length;
-    expect(words).toBeLessThan(930);
-    expect(container.querySelectorAll("main a").length).toBeLessThanOrEqual(23);
+    // 930 before the Product & Consultancy Services section; its two cards add about thirty words.
+    expect(words).toBeLessThan(960);
+    // 23 before the Product & Consultancy Services section, which adds the FAI platform's address.
+    expect(container.querySelectorAll("main a").length).toBeLessThanOrEqual(24);
     // A line or two for each place, not paragraphs of duties: no paragraph of the career, consulting or academic sections is long.
     for (const name of ["Professional Background", "Consulting Engagements", "Professional & Community Leadership", "Academic Engagement & Student Mentorship"]) {
       for (const block of section(name).querySelectorAll("p, li")) expect((block.textContent ?? "").split(/\s+/).length).toBeLessThan(45);
@@ -774,6 +801,8 @@ describe("/about/sudarshana-karkala: the page as a whole", () => {
       "https://labs.ev.engineer/",
       "https://www.linkedin.com/in/sudarshanakarkala/",
       "https://carsoftwaresystems.com/public/sudarshanakarkala.pdf",
+      // Product & Consultancy Services.
+      "https://fai.ev.engineer/",
     ]);
     for (const link of external) {
       expect(link).toHaveAttribute("target", "_blank");

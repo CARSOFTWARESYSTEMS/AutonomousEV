@@ -333,5 +333,43 @@ export const CONTACT = {
   ],
 } as const;
 
+/**
+ * The products and consultancy services, after the contact section: each the
+ * owner's own poster, a title and one line, as the poster states them. The
+ * alt text describes the poster without its email address or telephone
+ * number: the page publishes no email address, and the telephone is in the
+ * contact section.
+ */
+export const SERVICES = {
+  id: "services",
+  heading: "Product & Consultancy Services",
+  entries: [
+    {
+      id: "fai",
+      title: "FAI AS9102 & Drawing Ballooning Automation",
+      line: "Defence Aerospace Quality Intelligence Platform",
+      image: {
+        src: "/about/sudarshana-karkala/fai-as9102-drawing-ballooning-automation.webp",
+        width: 1659,
+        height: 948,
+        alt: "FAI AS9102 & Drawing Ballooning Automation, Defence Aerospace Quality Intelligence Platform: an engineering drawing whose dimensions carry numbered balloons, beside a machined part. Sudarshana Karkala, EV.ENGINEER™, Bengaluru, India. fai.ev.engineer",
+      },
+      link: { label: "fai.ev.engineer", href: "https://fai.ev.engineer/", destination: "fai.ev.engineer" },
+    },
+    {
+      id: "digital_twin",
+      title: "Digital Twin Design",
+      line: "Physics Based · Aerospace · Defence · Space",
+      image: {
+        src: "/about/sudarshana-karkala/digital-twin-design-physics-based.webp",
+        width: 1672,
+        height: 941,
+        alt: "Digital Twin Design, physics based: a dimensioned space station module with solar arrays and an antenna, above the Earth. ISHAVASYAM.ORG, Space Station Research Organisation. Aerospace, Defence, Space.",
+      },
+      link: null,
+    },
+  ],
+} as const;
+
 /** The day the profile was last reviewed: the date on the page and the page's `dateModified`. */
 export const LAST_REVIEWED = { iso: "2026-10-19", shown: "19 October 2026" } as const;

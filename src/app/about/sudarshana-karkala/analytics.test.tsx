@@ -172,6 +172,12 @@ describe("profile analytics: what a visitor uses", () => {
     expect(everythingSent()).not.toMatch(/9845561518|tel:|https?:|linkedin\.com|\.pdf|@/);
   });
 
+  it("reports the FAI link of Product & Consultancy Services by the service, and its host only", () => {
+    const services = screen.getByRole("region", { name: "Product & Consultancy Services" });
+    for (const link of services.querySelectorAll("a")) fireEvent.click(link);
+    expect(trackEvent.mock.calls).toEqual([["profile_service_click", { service_name: "fai", destination: "fai.ev.engineer", section: "services" }]]);
+  });
+
   it("sends only fixed ids, hosts and routes, whatever is clicked", () => {
     for (const link of document.querySelectorAll("#profile a")) fireEvent.click(link);
     for (const [, params] of trackEvent.mock.calls) {

@@ -20,13 +20,15 @@ export interface ProfileEvents {
   profile_project_click: { project_name: string; destination: string; section: "selected_work" };
   /** `destination_type` says what kind of place the action leads to, never the place itself. */
   profile_contact_click: { contact_type: "linkedin" | "resume" | "consultation" | "phone" | "contact_page"; destination_type: "external" | "document" | "internal" | "telephone" };
+  /** A link of one of the Product & Consultancy Services. */
+  profile_service_click: { service_name: "fai" | "digital_twin"; destination: string; section: "services" };
 }
 
 export type ProfileEvent = keyof ProfileEvents;
 
 export const PROFILE_VIEW: ProfileEvents["profile_view"] = { page_type: "profile", profile_name: "sudarshana_karkala" };
 
-const EVENTS: readonly string[] = ["profile_view", "profile_initiative_click", "profile_project_click", "profile_contact_click"] satisfies readonly ProfileEvent[];
+const EVENTS: readonly string[] = ["profile_view", "profile_initiative_click", "profile_project_click", "profile_contact_click", "profile_service_click"] satisfies readonly ProfileEvent[];
 /** A short id, a host name or a route of this site. No scheme, no query, nothing a person typed. */
 const VALUE = /^[a-z0-9_./-]{1,80}$/;
 const ATTRIBUTE = "data-profile-";
