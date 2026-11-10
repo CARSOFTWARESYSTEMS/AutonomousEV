@@ -322,14 +322,14 @@ describe("Space page", () => {
   });
 });
 
- it("links to the CubeTwin simulator between labs and research themes", () => {
+ it("links to the CubeTwin simulator from the featured tutorials, which come before the planned labs and research themes", () => {
     const { container } = render(<SpacePage />);
     const simulations = container.querySelector("#simulations");
     expect(simulations).not.toBeNull();
     expect(within(simulations as HTMLElement).getByRole("link", { name: "Explore CubeTwin" })).toHaveAttribute("href", "/space/cubesat");
+    // The portal brief's order: hero, pathways, mission, education to startup, tutorials, labs and platform, themes, roadmap, partners, FAQ.
     const ids = Array.from(container.querySelectorAll("section[id]")).map(section => section.id);
-    expect(ids.indexOf("simulations")).toBeGreaterThan(ids.indexOf("labs"));
-    expect(ids.indexOf("simulations")).toBeLessThan(ids.indexOf("projects"));
+    expect(ids).toEqual(["home", "pathway", "mission", "vision", "education", "internships", "simulations", "labs", "research", "projects", "roadmap", "community", "access", "partners", "ecosystem", "faq"]);
   });
 
 it("shows the Model Rocketry card before the CubeTwin card in the simulations section", () => {
@@ -492,3 +492,46 @@ it("does not import the rocket engine experience into the Space page: its card i
     expect(source).not.toMatch(/rocket-engine-twin/);
   });
 
+
+it("gives each of the four pathway categories its own call to action, with Discover leading to Space Academy", () => {
+    const { container } = render(<SpacePage />);
+    const pathway = container.querySelector("#pathway") as HTMLElement;
+    const cards = within(pathway).getAllByRole("article");
+    expect(cards.map((c) => within(c).getByRole("heading", { level: 3 }).textContent)).toEqual(["Ages 14–18", "Higher Education", "Applied Teams", "Young Founders"]);
+    const ctas = cards.map((c) => within(c).getByRole("link"));
+    expect(new Set(ctas.map((a) => a.textContent)).size).toBe(4);
+    expect(ctas[0]).toHaveTextContent("Explore Space Academy");
+    expect(ctas[0]).toHaveAttribute("href", "/space/academy");
+    expect(ctas[1]).toHaveAttribute("href", "#internships");
+    expect(ctas[2]).toHaveAttribute("href", "#research");
+    expect(ctas[3]).toHaveAttribute("href", "https://forms.gle/GZbPDHd7qozGSZuJA");
+    expect(ctas[3]).toHaveAttribute("rel", "noopener noreferrer");
+    ctas.forEach((a) => expect(a).toHaveAttribute("data-track-event", "space_pathway_cta_click"));
+  });
+
+it("leads into Space Academy from the hero and the Ages 14–18 section, and keeps the planned programme labelled", () => {
+    const { container } = render(<SpacePage />);
+    const hero = container.querySelector("#home") as HTMLElement;
+    expect(within(hero).getByRole("link", { name: /Space Academy for ages 14–18/ })).toHaveAttribute("href", "/space/academy");
+    const education = container.querySelector("#education") as HTMLElement;
+    expect(within(education).getByRole("link", { name: /Explore Space Academy/ })).toHaveAttribute("href", "/space/academy");
+    expect(within(education).getByText("Planned Programme")).toBeInTheDocument();
+    expect(education.textContent).toMatch(/Online classes and CanSat and Model Rocketry workshops are planned/);
+  });
+
+it("offers an 'On this page' section navigation whose links all resolve", () => {
+    render(<SpacePage />);
+    const nav = screen.getByRole("navigation", { name: "On this page" });
+    const links = within(nav).getAllByRole("link");
+    expect(links.length).toBeGreaterThanOrEqual(10);
+    links.filter((a) => a.getAttribute("href")?.startsWith("#")).forEach((a) => expect(document.getElementById((a.getAttribute("href") as string).slice(1))).not.toBeNull());
+    expect(within(nav).getByRole("link", { name: "Space Academy" })).toHaveAttribute("href", "/space/academy");
+  });
+
+it("keeps the long mission explanation in the HTML behind a native disclosure", () => {
+    const { container } = render(<SpacePage />);
+    const details = container.querySelector("#mission details") as HTMLDetailsElement;
+    expect(details).not.toBeNull();
+    expect(details.open).toBe(false);
+    expect(details.textContent).toMatch(/Fault Detection, Isolation and Recovery \(FDIR\)/);
+  });

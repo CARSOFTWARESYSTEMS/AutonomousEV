@@ -60,40 +60,58 @@ export const visionReferences: { label: string; href: string }[] = [
   { label: "Indian Space Policy 2023 (PDF)", href: "https://www.isro.gov.in/media_isro/pdf/IndianSpacePolicy2023.pdf" },
 ];
 
+/**
+ * Each pathway card's call to action. `route` is a page of this site,
+ * `anchor` a section of /space, `eoi` the approved Expression of Interest
+ * form (src/lib/eoi.ts), which must be linked verbatim.
+ */
+export type PathwayCta = { label: string; kind: "route" | "anchor" | "eoi"; href?: string; note: string; track: string };
+
 export const pathwayStages: {
   stage: string;
+  /** Stable key for styling and analytics. */
+  key: "discover" | "engineer" | "research" | "venture";
   title: string;
   items: string[];
   icon: IconName;
   color: string;
+  cta: PathwayCta;
 }[] = [
   {
     stage: "Discover",
+    key: "discover",
     title: "Ages 14–18",
     icon: "graduationCap",
     color: "#7C3AED",
     items: ["Spacecraft systems", "Sensors and telemetry", "Faults, redundancy and safe mode", "Mission-health challenge"],
+    cta: { label: "Explore Space Academy", kind: "route", href: "/space/academy", note: "Seven learning tracks and interactive 3D missions.", track: "space_academy" },
   },
   {
     stage: "Engineer",
+    key: "engineer",
     title: "Higher Education",
     icon: "cpu",
     color: "#3B82F6",
     items: ["Simulator and telemetry engineering", "Digital twins", "Fault detection, isolation and recovery", "Hardware-in-the-loop validation"],
+    cta: { label: "See Internships & Research", kind: "anchor", href: "#internships", note: "One multidisciplinary mission team.", track: "internships" },
   },
   {
     stage: "Research",
+    key: "research",
     title: "Applied Teams",
     icon: "flaskConical",
     color: "#06B6D4",
     items: ["Verified algorithms", "Fault libraries and datasets", "Papers and patent candidates", "Academic and industry validation"],
+    cta: { label: "View the Research Platform", kind: "anchor", href: "#research", note: "A planned research platform.", track: "research_platform" },
   },
   {
     stage: "Venture",
+    key: "venture",
     title: "Young Founders",
     icon: "rocket",
     color: "#F59E0B",
     items: ["Customer discovery", "Validated prototype", "Responsible incubation", "Space products and services"],
+    cta: { label: "Express Interest as a Founder", kind: "eoi", note: "Records interest only; it does not confirm selection.", track: "venture_eoi" },
   },
 ];
 

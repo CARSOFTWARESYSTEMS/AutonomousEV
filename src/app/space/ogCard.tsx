@@ -4,7 +4,11 @@ import { ImageResponse } from "next/og";
 // is a parameter so each host's route can attribute the page to its own brand.
 export const OG_SIZE = { width: 1200, height: 630 };
 
-export function renderSpaceOgImage(footer: string) {
+export function renderSpaceOgImage(
+  footer: string,
+  title = "Autonomous Spacecraft Health Mission 2040",
+  subtitle = "Health Management · FDIR · Digital Twin · Safe Recovery",
+) {
   return new ImageResponse(
     (
       <div
@@ -82,7 +86,7 @@ export function renderSpaceOgImage(footer: string) {
             maxWidth: 920,
           }}
         >
-          Autonomous Spacecraft Health Mission 2040
+          {title}
         </div>
 
         <div
@@ -94,7 +98,7 @@ export function renderSpaceOgImage(footer: string) {
             color: "#93C5FD",
           }}
         >
-          Health Management · FDIR · Digital Twin · Safe Recovery
+          {subtitle}
         </div>
 
         <div

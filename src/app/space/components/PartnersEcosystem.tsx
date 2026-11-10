@@ -54,10 +54,11 @@ export function ApexProjectCard({ pill }: { pill: React.ReactNode }) {
 const OTHER_PARTNERS = ["gamyaa", "ifab", "itelematics", "evsociety"] as const;
 
 /** Partners & Engineering Ecosystem: APEX first, then Gamyaa AeroSystems (engineering collaboration) and the proposed capability partners. */
-export function PartnersEcosystem({ label, pill, h2Style, descStyle }: { label: React.ReactNode; pill: (text: string, color: string) => React.ReactNode; h2Style: React.CSSProperties; descStyle: React.CSSProperties }) {
+export function PartnersEcosystem({ label, pill, h2Style, descStyle, className }: { label: React.ReactNode; pill: (text: string, color: string) => React.ReactNode; h2Style: React.CSSProperties; descStyle: React.CSSProperties; /** The host page's section spacing; the content keeps its 1,280px column either way. */ className?: string }) {
   const apex = partner("apex");
   return (
-    <section id="partners" className={styles.section} style={{ maxWidth: 1280, margin: "0 auto" }} aria-labelledby="partners-title">
+    <section id="partners" className={className ?? styles.section} style={className ? undefined : { maxWidth: 1280, margin: "0 auto" }} aria-labelledby="partners-title">
+      <div style={{ maxWidth: 1280, margin: "0 auto" }}>
       <div style={{ marginBottom: 32, textAlign: "center" }}>
         {label}
         <h2 id="partners-title" style={h2Style}>
@@ -153,6 +154,7 @@ export function PartnersEcosystem({ label, pill, h2Style, descStyle }: { label: 
         })}
       </div>
       <p className={partners.disclaimer}>More specialist partners are welcome across avionics, sensors, GNC, manufacturing, test infrastructure and research.</p>
+      </div>
     </section>
   );
 }

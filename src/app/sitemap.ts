@@ -1,5 +1,8 @@
 import type { MetadataRoute } from "next";
 import { APEX_ROUTES, apexUrl } from "@/data/apex/site";
+import { TRACKS } from "./space/academy/data/curriculum";
+import { MISSIONS, missionHref } from "./space/academy/data/missions";
+import { ACADEMY_PATH, ORIGIN as ACADEMY_ORIGIN, LAST_REVIEWED as ACADEMY_REVIEWED } from "./space/academy/seo";
 
 const BASE_URL = "https://autonomous.ev.engineer";
 
@@ -76,6 +79,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: "https://aerospace.ev.engineer/aerospace/uflight-3d", lastModified: "2026-10-01", changeFrequency: "monthly", priority: 0.8 },
     { url: "https://aerospace.ev.engineer/space/rocket-engine-digital-twin", lastModified: "2026-10-03", changeFrequency: "monthly", priority: 0.8 },
     { url: "https://aerospace.ev.engineer/space/rocket-engine-digital-twin-advanced", lastModified: "2026-10-12", changeFrequency: "monthly", priority: 0.8 },
+    // Space Academy: landing, seven track pages and three interactive missions.
+    ...[ACADEMY_PATH, ...TRACKS.map((t) => `${ACADEMY_PATH}/${t.slug}`), ...MISSIONS.map((m) => missionHref(m.slug))].map((path) => ({
+      url: `${ACADEMY_ORIGIN}${path}`,
+      lastModified: ACADEMY_REVIEWED,
+      changeFrequency: "monthly" as const,
+      priority: path === ACADEMY_PATH ? 0.8 : 0.7,
+    })),
     // The APEX Rocket Systems microsite, at its own canonical host (src/data/apex/site.ts).
     ...APEX_ROUTES.map((path) => ({
       url: apexUrl(path),
