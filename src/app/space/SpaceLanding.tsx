@@ -239,7 +239,7 @@ export default function SpaceLanding({ entityGraph }: { entityGraph: object }) {
                   href={EOI_FORM_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Expression of Interest (opens Google Form in a new tab)"
+                  aria-label="Expression of Interest (opens the iTelematics contact page in a new tab)"
                   className={styles.eoiCta}
                 >
                   Expression of Interest
@@ -510,7 +510,7 @@ export default function SpaceLanding({ entityGraph }: { entityGraph: object }) {
                         href={EOI_FORM_URL}
                         target="_blank"
                         rel="noopener noreferrer"
-                        aria-label={`Express Interest in ${lab.title} (opens Google Form in a new tab)`}
+                        aria-label={`Express Interest in ${lab.title} (opens the iTelematics contact page in a new tab)`}
                         className={portal.labLink}
                         style={{ color: tint(lab.color) }}
                       >
@@ -666,7 +666,7 @@ export default function SpaceLanding({ entityGraph }: { entityGraph: object }) {
                 href={EOI_FORM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Express Interest (opens Google Form in a new tab)"
+                aria-label="Express Interest (opens the iTelematics contact page in a new tab)"
                 className={portal.btnPrimary}
               >Express Interest</a>
               <Link href={CONTACT_HREF} className={portal.btnSecondary}>Partner With Us</Link>

@@ -11,7 +11,7 @@ import { getSensor, sensorPosition } from "../data/sensorDefinitions";
 import { EXPLODED_LIFT, PLACEMENT, PROPULSION_PARTS, UNIT_STATIONS, anchorAt, unitMount, unitPartLocal, unitPoint } from "../aircraft/layout";
 import { DEG, clamp, easeInOutCubic } from "../lib/math";
 import { sceneShift } from "../state/selectors";
-import { useUFlightStore } from "../state/uflightStore";
+import { type UFlightState, useUFlightStore } from "../state/uflightStore";
 import { CAMERA_PRESETS, type CameraPreset, transitionDurationMs, viewportFit } from "./cameraPresets";
 import { frame } from "./frameState";
 
@@ -122,9 +122,33 @@ function poseForTrace(sensorId: string, current: Pose): { pose: Pose; preset: Ca
   return { pose: poseFromPreset(preset), preset };
 }
 
-export default function CameraRig() {
+/**
+ * Optional adjustments for a host other than the full application (the
+ * homepage preview). Every default reproduces the application's behaviour.
+ */
+export interface CameraRigOptions {
+  /** How far back the camera stands for a canvas size. Defaults to leaving room for the application's side panels. */
+  fit?: (width: number, height: number) => number;
+  /** A preset to use instead of the one the store asks for; null keeps the store's. */
+  presetFor?: (state: UFlightState) => CameraPreset | null;
+  /** Slow azimuth drift, rad/s, while no move is running and nobody is dragging. The application drifts only on its opening screen. */
+  drift?: () => number;
+  /** "modifier": the wheel zooms only with Ctrl or ⌘ held (as a trackpad pinch sends), so page scrolling passes through. */
+  wheelZoom?: "always" | "modifier";
+  /** Shift the view sideways to clear the application's side panels. */
+  panelShift?: boolean;
+  /** Called when the visitor starts to drag, pinch or zoom. */
+  onInteract?: () => void;
+}
+
+export default function CameraRig(props: CameraRigOptions = {}) {
   const gl = useThree((state) => state.gl);
   const camera = useThree((state) => state.camera) as PerspectiveCamera;
+  // Read inside handlers and the frame loop, so changing options never re-subscribes or restarts a move.
+  const options = useRef(props);
+  useEffect(() => {
+    options.current = props;
+  });
   const rig = useRef({
     pose: poseFromPreset(CAMERA_PRESETS.hero),
     /** Where the current view placed the target; panning is limited around it. */
@@ -168,7 +192,7 @@ export default function CameraRig() {
         moveTo(pose, preset);
         return;
       }
-      const preset: CameraPreset = CAMERA_PRESETS[s.cameraPreset];
+      const preset: CameraPreset = options.current.presetFor?.(s) ?? CAMERA_PRESETS[s.cameraPreset];
       moveTo(poseFromPreset(preset), preset);
     };
     apply();
@@ -204,6 +228,7 @@ export default function CameraRig() {
     };
     const down = (e: PointerEvent) => {
       if (!useUFlightStore.getState().started) return;
+      options.current.onInteract?.();
       r.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
       el.setPointerCapture(e.pointerId);
       if (r.pointers.size === 2) {
@@ -254,7 +279,9 @@ export default function CameraRig() {
     };
     const wheel = (e: WheelEvent) => {
       if (!useUFlightStore.getState().started) return;
+      if (options.current.wheelZoom === "modifier" && !e.ctrlKey && !e.metaKey) return;
       e.preventDefault();
+      options.current.onInteract?.();
       interrupt();
       const step = e.deltaMode === 1 ? e.deltaY * 16 : e.deltaY;
       r.pose.distance = clamp(r.pose.distance * Math.exp(clamp(step, -120, 120) * 0.0014), r.min, r.max);
@@ -299,11 +326,13 @@ export default function CameraRig() {
     } else if (!s.started && !s.reducedMotion) {
       // Opening: a very slow drift around the aircraft.
       r.pose.azimuth += dt * 0.014;
+    } else if (!s.reducedMotion && !r.drag && r.pointers.size === 0) {
+      r.pose.azimuth += dt * (options.current.drift?.() ?? 0);
     }
 
     // ── Pose → world: the frame travels with the aircraft but stays level ──
     const { width, height } = state.size;
-    sphericalOffset(r.pose, local).multiplyScalar(viewportFit(width, height)).add(r.pose.target);
+    sphericalOffset(r.pose, local).multiplyScalar((options.current.fit ?? viewportFit)(width, height)).add(r.pose.target);
     cam.position.copy(local).add(frame.position);
     cam.position.y = Math.max(cam.position.y, FLOOR_CLEARANCE);
     lookAt.copy(r.pose.target).add(frame.position);
@@ -311,7 +340,7 @@ export default function CameraRig() {
     cam.lookAt(lookAt);
 
     // ── Projection: composition offset and panel clearance ──
-    r.shift += (sceneShift(s) - r.shift) * (1 - Math.exp(-5 * dt));
+    r.shift += ((options.current.panelShift === false ? 0 : sceneShift(s)) - r.shift) * (1 - Math.exp(-5 * dt));
     const offsetX = r.pose.offsetX + r.shift;
     if (Math.abs(offsetX) > 0.0005 || Math.abs(r.pose.offsetY) > 0.0005) {
       cam.setViewOffset(width, height, -offsetX * width, r.pose.offsetY * height, width, height);

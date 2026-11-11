@@ -43,7 +43,7 @@ describe("Aerospace page", () => {
     expect(toggle).toHaveFocus();
   });
 
-  it("points every Express Interest CTA at the approved Google Form, opened safely in a new tab", async () => {
+  it("points every Express Interest CTA at the iTelematics contact page, opened safely in a new tab", async () => {
     const user = userEvent.setup();
     render(<AerospacePage />);
     // The mobile-drawer CTA only mounts once the menu is opened.
@@ -52,11 +52,13 @@ describe("Aerospace page", () => {
     const links = screen.getAllByRole("link", { name: /Express Interest/ });
     expect(links.length).toBeGreaterThanOrEqual(3);
     links.forEach((link) => {
-      expect(link).toHaveAttribute("href", "https://forms.gle/GZbPDHd7qozGSZuJA");
+      expect(link).toHaveAttribute("href", "https://itelematics.com/contact");
       expect(link).toHaveAttribute("target", "_blank");
       expect(link).toHaveAttribute("rel", "noopener noreferrer");
       expect(link.tagName.toLowerCase()).toBe("a");
+      expect(link.getAttribute("aria-label")).toMatch(/\(opens the iTelematics contact page in a new tab\)$/);
     });
+    expect(document.body.innerHTML).not.toMatch(/forms\.gle\/GZbPDHd7qozGSZuJA|Google Form/);
   });
 
   it("does not show the aerospace.ev.engineer poster on other hosts", () => {
@@ -75,7 +77,7 @@ describe("Aerospace page", () => {
     const { container } = render(<AerospacePage />);
     const eoiCtas = screen.getAllByRole("link", { name: /Expression of Interest/ });
     expect(eoiCtas).toHaveLength(1);
-    expect(eoiCtas[0]).toHaveAttribute("href", "https://forms.gle/GZbPDHd7qozGSZuJA");
+    expect(eoiCtas[0]).toHaveAttribute("href", "https://itelematics.com/contact");
     expect(eoiCtas[0]).toHaveAttribute("target", "_blank");
     expect(eoiCtas[0]).toHaveAttribute("rel", "noopener noreferrer");
 
@@ -95,6 +97,39 @@ describe("Aerospace page", () => {
     expect(within(uflight).getByRole("link", { name: /LAUNCH UFLIGHT™ 3D/ })).toHaveAttribute("href", "/aerospace/uflight-3d");
     expect(within(uflight).getByRole("img", { name: /UFlight™ Reference eVTOL/ })).toBeInTheDocument();
     expect(uflight.nextElementSibling).toBe(container.querySelector("section#space-research"));
+  });
+
+  it("upgrades the UFlight™ visual to a four-stage preview without touching the card's copy or its CTA", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<AerospacePage />);
+    const uflight = container.querySelector<HTMLElement>('section[aria-labelledby="uflight-3d-title"]')!;
+    const card = within(uflight);
+    // Copy and CTA as before.
+    expect(card.getByText("UFLIGHT™ · DIGITAL ENGINEERING")).toBeInTheDocument();
+    const cta = card.getByRole("link", { name: /LAUNCH UFLIGHT™ 3D/ });
+    expect(cta).toHaveAttribute("href", "/aerospace/uflight-3d");
+    expect(cta).toHaveAttribute("data-track-event", "uflight_3d_launch");
+    expect(cta).not.toHaveAttribute("target");
+
+    const stages = card.getByRole("group", { name: "Preview stages" });
+    const buttons = within(stages).getAllByRole("button");
+    expect(buttons.map((b) => b.textContent)).toEqual(["01·Discover", "02·Systems", "03·Health", "04·Digital Twin"]);
+    expect(buttons[0]).toHaveAttribute("aria-pressed", "true");
+
+    // Manual selection overrides the sequence and says what the stage shows.
+    await user.click(buttons[2]);
+    expect(buttons[2]).toHaveAttribute("aria-pressed", "true");
+    expect(card.getByRole("img", { name: /Stage 3 of 4: Health/ })).toBeInTheDocument();
+    expect(card.getByText(/Simulated vibration at motor 04/)).toBeInTheDocument();
+    expect(card.getByRole("button", { name: "Pause the preview" })).toBeInTheDocument();
+    await user.click(card.getByRole("button", { name: "Pause the preview" }));
+    expect(card.getByRole("button", { name: "Play the preview" })).toBeInTheDocument();
+    await user.click(card.getByRole("button", { name: "Reset the preview" }));
+    expect(buttons[0]).toHaveAttribute("aria-pressed", "true");
+
+    // No WebGL here: no canvas, and the rendered still stays in the frame.
+    expect(uflight.querySelector("canvas")).toBeNull();
+    expect(uflight.querySelector('img[src*="uflight-3d%2Fposter.jpg"]')).not.toBeNull();
   });
 
   it("shows the Space Research copy exactly as approved", () => {

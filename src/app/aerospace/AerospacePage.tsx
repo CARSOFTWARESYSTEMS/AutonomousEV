@@ -18,6 +18,7 @@ import { EOI_FORM_URL } from "@/lib/eoi";
 import ResearcherCard from "@/components/ResearcherCard";
 import AerospaceHostPoster from "./AerospaceHostPoster";
 import SpaceResearchShowcase from "@/components/space-research-showcase/SpaceResearchShowcase";
+import UFlightShowcasePreview from "@/components/uflight-3d/preview/UFlightShowcasePreview";
 import { POSTER, PRODUCT } from "@/components/uflight-3d/data/uflightReferenceAircraft";
 
 const manrope = Manrope({
@@ -336,7 +337,7 @@ export default function AerospacePage({ brand = "ev-engineer" }: { brand?: Aeros
             href={EOI_FORM_URL}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Express Interest (opens Google Form in a new tab)"
+            aria-label="Express Interest (opens the iTelematics contact page in a new tab)"
             className={styles.headerNavDesktop}
             style={{
               padding: "7px 16px", borderRadius: 10, background: "linear-gradient(135deg, #7C3AED, #6D28D9)",
@@ -415,7 +416,7 @@ export default function AerospacePage({ brand = "ev-engineer" }: { brand?: Aeros
             href={EOI_FORM_URL}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Express Interest (opens Google Form in a new tab)"
+            aria-label="Express Interest (opens the iTelematics contact page in a new tab)"
             onClick={() => setMobileOpen(false)}
             style={{
               marginTop: 12, padding: "12px", borderRadius: 10, textAlign: "center",
@@ -465,7 +466,7 @@ export default function AerospacePage({ brand = "ev-engineer" }: { brand?: Aeros
                 href={EOI_FORM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Expression of Interest (opens Google Form in a new tab)"
+                aria-label="Expression of Interest (opens the iTelematics contact page in a new tab)"
                 className={styles.eoiCta}
               >
                 Expression of Interest
@@ -590,7 +591,8 @@ export default function AerospacePage({ brand = "ev-engineer" }: { brand?: Aeros
             </div>
           </div>
           <div className={styles.uflightVisual}>
-            <Image src={POSTER.src} alt={POSTER.alt} width={POSTER.width} height={POSTER.height} sizes="(min-width: 1024px) 620px, 100vw" />
+            {/* The still is the preview's poster and its fallback without WebGL; the 3D preview loads over it near the screen. */}
+            <UFlightShowcasePreview poster={<Image src={POSTER.src} alt="" width={POSTER.width} height={POSTER.height} sizes="(min-width: 1024px) 620px, 100vw" />} />
           </div>
         </div>
       </section>
@@ -1036,7 +1038,7 @@ export default function AerospacePage({ brand = "ev-engineer" }: { brand?: Aeros
                 href={EOI_FORM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Express Interest (opens Google Form in a new tab)"
+                aria-label="Express Interest (opens the iTelematics contact page in a new tab)"
                 style={{
                   padding: "14px 28px", borderRadius: 12, background: "transparent",
                   border: "1px solid rgba(255,255,255,0.15)", color: "#B5B8C9", fontWeight: 600, fontSize: 16, cursor: "pointer",

@@ -82,3 +82,32 @@ export const frame = {
 };
 
 export type FrameState = typeof frame;
+
+/**
+ * Back to the state a fresh page load starts from. The frame outlives any one
+ * canvas, so a host that drives it (the homepage preview) calls this when it
+ * unmounts, and the full application then opens dark and assembled as usual.
+ */
+export function resetFrameState() {
+  frame.position.set(0, 0, 0);
+  frame.pitch = 0;
+  frame.lift = 0;
+  frame.tiltDeg = 90;
+  frame.rpm.fill(0);
+  frame.exploded = 0;
+  frame.power = 0;
+  frame.environment = { studio: 1, vertiport: 0, flight: 0, twin: 0 };
+  frame.flight = groundState();
+  frame.snapshot = PREFLIGHT_SNAPSHOT;
+  frame.severity = 0;
+  frame.presentation.clear();
+  frame.subOpen.clear();
+  frame.deep.clear();
+  frame.deepOpen.clear();
+  frame.opacity.clear();
+  frame.revealed = false;
+  frame.health = {};
+  for (const id of FLOW_IDS) frame.flows[id] = 0;
+  frame.ghost = 0;
+  frame.ghostAlign = 0;
+}

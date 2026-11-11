@@ -135,7 +135,7 @@ describe("/space/academy", () => {
     window.localStorage.clear();
   });
 
-  it("asks a student for a parent or guardian's agreement before showing the form", async () => {
+  it("asks a student for a parent or guardian's agreement before showing the contact link", async () => {
     const user = userEvent.setup();
     render(<AcademyPage />);
     const enquire = document.getElementById("enquire") as HTMLElement;
@@ -143,11 +143,17 @@ describe("/space/academy", () => {
     expect(within(enquire).queryByRole("link", { name: /Express Interest/ })).toBeNull();
     await user.click(within(enquire).getByRole("checkbox", { name: /parent or guardian knows about this enquiry/ }));
     const form = within(enquire).getByRole("link", { name: /Express Interest/ });
-    expect(form).toHaveAttribute("href", "https://forms.gle/GZbPDHd7qozGSZuJA");
+    expect(form).toHaveAttribute("href", "https://itelematics.com/contact");
     expect(form).toHaveAttribute("rel", "noopener noreferrer");
-    // Parents and schools go straight to the form and the contact page.
+    expect(form).toHaveAttribute("target", "_blank");
+    expect(form).toHaveAttribute("data-track-event", "academy_enquiry_form_click");
+    expect(form).toHaveAccessibleName("Express Interest in Space Academy (opens the iTelematics contact page in a new tab)");
+    // The page has no Academy enquiry type, so the guidance says which one to choose.
+    expect(enquire).toHaveTextContent(/Choose “Other” as the enquiry type and mention Space Academy/);
+    expect(enquire).not.toHaveTextContent(/Google/);
+    // Parents and schools go straight to the iTelematics contact page, and to this site's contact page.
     await user.click(within(enquire).getByRole("button", { name: "I am a parent or guardian" }));
-    expect(within(enquire).getByRole("link", { name: /Express Interest/ })).toHaveAttribute("href", "https://forms.gle/GZbPDHd7qozGSZuJA");
+    expect(within(enquire).getByRole("link", { name: /Express Interest/ })).toHaveAttribute("href", "https://itelematics.com/contact");
     expect(within(enquire).getByRole("link", { name: "Contact page" })).toHaveAttribute("href", "/contact");
   });
 });

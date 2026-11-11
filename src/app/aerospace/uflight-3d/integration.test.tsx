@@ -127,8 +127,9 @@ describe("UFlight 3D section on the Aerospace homepage", () => {
       ),
     ).toBeInTheDocument();
     expect(within(section).getByText("Best experienced on Desktop / Laptop")).toBeInTheDocument();
-    const image = within(section).getByRole("img", { name: /UFlight™ Reference eVTOL/ });
-    expect(image.getAttribute("src")).toContain("uflight-3d%2Fposter.jpg");
+    // The aircraft is the interactive preview; until (or without) 3D, it shows the rendered still.
+    const visual = within(section).getByRole("img", { name: /UFlight™ Reference eVTOL/ });
+    expect(visual.querySelector("img")?.getAttribute("src")).toContain("uflight-3d%2Fposter.jpg");
   });
 
   it("links to the experience and reports the launch", () => {

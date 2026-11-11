@@ -225,7 +225,7 @@ export default function SpaceHeader({
             href={EOI_FORM_URL}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Express Interest (opens Google Form in a new tab)"
+            aria-label="Express Interest (opens the iTelematics contact page in a new tab)"
             className={styles.headerCtaDesktop}
             style={{
               alignItems: "center",
@@ -368,7 +368,7 @@ export default function SpaceHeader({
             href={EOI_FORM_URL}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Express Interest (opens Google Form in a new tab)"
+            aria-label="Express Interest (opens the iTelematics contact page in a new tab)"
             onClick={() => setMobileOpen(false)}
             style={{
               marginTop: 12,

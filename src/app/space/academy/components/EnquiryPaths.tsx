@@ -12,9 +12,9 @@ const ORDER: EnquiryRole[] = ["student", "parent", "school"];
 
 /**
  * Three ways to enquire. Nothing is collected on this site: every path ends
- * at the approved Expression of Interest form or the contact page. A
- * student's path asks for a parent or guardian's agreement before it shows
- * the form link.
+ * at the approved Expression of Interest destination (the iTelematics contact
+ * page) or this site's contact page. A student's path asks for a parent or
+ * guardian's agreement before it shows the link.
  */
 export default function EnquiryPaths() {
   const [role, setRole] = useState<EnquiryRole | null>(null);
@@ -73,14 +73,14 @@ export default function EnquiryPaths() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className={styles.btnPrimary}
-                  aria-label="Express Interest in Space Academy (opens Google Form in a new tab)"
+                  aria-label="Express Interest in Space Academy (opens the iTelematics contact page in a new tab)"
                   data-track-event="academy_enquiry_form_click"
                   data-track-role={role ?? ""}
                 >
                   Express Interest <ExternalLink size={16} aria-hidden />
                 </a>
               ) : (
-                <p className={styles.consentNote}>Tick the box above once your parent or guardian has agreed. Then the form link appears.</p>
+                <p className={styles.consentNote}>Tick the box above once your parent or guardian has agreed. Then the link to the contact page appears.</p>
               )}
               {role !== "student" && (
                 <Link href="/contact" className={styles.btnGhost} data-track-event="academy_enquiry_contact_click" data-track-role={role ?? ""}>
@@ -89,7 +89,8 @@ export default function EnquiryPaths() {
               )}
             </div>
             <p className={styles.small}>
-              The form records interest only. It does not confirm a place, selection, dates or fees. The form is a Google Form, so Google&apos;s terms apply to what you submit there.
+              Express Interest opens the iTelematics contact page. Choose &ldquo;Other&rdquo; as the enquiry type and mention Space Academy in your message. The page opens an email draft for you to
+              send; it records interest only and does not confirm a place, selection, dates or fees. That site&apos;s own privacy policy and terms apply to what you send.
             </p>
           </>
         )}

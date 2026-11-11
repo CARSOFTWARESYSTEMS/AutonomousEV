@@ -343,6 +343,7 @@
    A darker, quieter card than the rest of the page: the rendered aircraft
    carries it. Copy on the left, the render on the right; stacked on phones. */
 .uflightCard {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
   align-items: stretch;
@@ -353,6 +354,43 @@
   background: #04050a;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 40px 100px rgba(0, 0, 0, 0.45);
+}
+
+/* A thin glint of cool light that travels slowly round the card's edge,
+   just inside its border. A 1px ring masked out of a turning conic gradient;
+   still for reduced motion, and static (but present) where @property is unsupported. */
+@property --uflight-edge-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.uflightCard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  padding: 1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--uflight-edge-angle),
+    transparent 0deg,
+    transparent 270deg,
+    rgba(147, 197, 253, 0.35) 318deg,
+    rgba(255, 255, 255, 0.5) 334deg,
+    transparent 352deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  pointer-events: none;
+  animation: uflightEdge 14s linear infinite;
+}
+
+@keyframes uflightEdge {
+  to {
+    --uflight-edge-angle: 360deg;
+  }
 }
 
 .uflightCopy {
@@ -454,6 +492,13 @@
   }
 }
 
+/* Phones: the preview's 16:10 viewer sets the height, with its stage controls below it. */
+@media (max-width: 640px) {
+  .uflightVisual {
+    aspect-ratio: auto;
+  }
+}
+
 @media (max-width: 480px) {
   .uflightCard {
     border-radius: 20px;
@@ -470,5 +515,8 @@
 @media (prefers-reduced-motion: reduce) {
   .uflightCta {
     transition: none;
+  }
+  .uflightCard::after {
+    animation: none;
   }
 }

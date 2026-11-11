@@ -260,23 +260,25 @@ describe("Space page", () => {
     expect(container.querySelectorAll('a[href="#"]').length).toBe(0);
   });
 
-  it("points every Express Interest CTA at the approved Google Form, opened safely in a new tab", () => {
+  it("points every Express Interest CTA at the iTelematics contact page, opened safely in a new tab", () => {
     render(<SpacePage />);
     const links = screen.getAllByRole("link", { name: /Express Interest/ });
     expect(links.length).toBeGreaterThanOrEqual(5);
     links.forEach((link) => {
-      expect(link).toHaveAttribute("href", "https://forms.gle/GZbPDHd7qozGSZuJA");
+      expect(link).toHaveAttribute("href", "https://itelematics.com/contact");
       expect(link).toHaveAttribute("target", "_blank");
       expect(link).toHaveAttribute("rel", "noopener noreferrer");
       expect(link.tagName.toLowerCase()).toBe("a");
+      expect(link.getAttribute("aria-label")).toMatch(/\(opens the iTelematics contact page in a new tab\)$/);
     });
+    expect(document.body.innerHTML).not.toMatch(/forms\.gle\/GZbPDHd7qozGSZuJA|Google Form/);
   });
 
-  it("does not append query params or tracking identifiers to the EOI form URL", () => {
+  it("does not append query params or tracking identifiers to the Express Interest URL", () => {
     render(<SpacePage />);
     const links = screen.getAllByRole("link", { name: /Express Interest/ });
     links.forEach((link) => {
-      expect(link.getAttribute("href")).toBe("https://forms.gle/GZbPDHd7qozGSZuJA");
+      expect(link.getAttribute("href")).toBe("https://itelematics.com/contact");
     });
   });
 
@@ -293,7 +295,7 @@ describe("Space page", () => {
     const { container } = render(<SpacePage />);
     const eoiCtas = screen.getAllByRole("link", { name: /Expression of Interest/ });
     expect(eoiCtas).toHaveLength(1);
-    expect(eoiCtas[0]).toHaveAttribute("href", "https://forms.gle/GZbPDHd7qozGSZuJA");
+    expect(eoiCtas[0]).toHaveAttribute("href", "https://itelematics.com/contact");
     expect(eoiCtas[0]).toHaveAttribute("target", "_blank");
     expect(eoiCtas[0]).toHaveAttribute("rel", "noopener noreferrer");
 
@@ -307,7 +309,7 @@ describe("Space page", () => {
     expect(container.querySelectorAll('a[aria-label*="Expression of Interest"]').length).toBe(1);
   });
 
-  it("FAQ answer for expressing interest points to the EOI form and does not claim selection or participation", () => {
+  it("FAQ answer for expressing interest points to the contact page and does not claim selection or participation", () => {
     render(<SpacePage />);
     const faqSection = document.getElementById("faq") as HTMLElement;
     const question = within(faqSection).getByRole("button", {
@@ -319,6 +321,7 @@ describe("Space page", () => {
     const panel = document.getElementById(panelId) as HTMLElement;
     expect(panel.textContent).not.toMatch(/no separate form/i);
     expect(panel.textContent).toMatch(/does not confirm selection/i);
+    expect(panel.textContent).toMatch(/open our contact page/);
   });
 });
 
@@ -607,7 +610,7 @@ it("gives each of the four pathway categories its own call to action, with Disco
     expect(ctas[0]).toHaveAttribute("href", "/space/academy");
     expect(ctas[1]).toHaveAttribute("href", "#internships");
     expect(ctas[2]).toHaveAttribute("href", "#research");
-    expect(ctas[3]).toHaveAttribute("href", "https://forms.gle/GZbPDHd7qozGSZuJA");
+    expect(ctas[3]).toHaveAttribute("href", "https://itelematics.com/contact");
     expect(ctas[3]).toHaveAttribute("rel", "noopener noreferrer");
     ctas.forEach((a) => expect(a).toHaveAttribute("data-track-event", "space_pathway_cta_click"));
   });

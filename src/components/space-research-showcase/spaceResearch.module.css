@@ -4,6 +4,7 @@
    cyan telemetry, where UFlight is a neutral studio. Copy left (45%), the 3D
    spacecraft right (55%); on tablets and phones the copy comes first. */
 .card {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 0.82fr) minmax(0, 1fr);
   align-items: stretch;
@@ -17,6 +18,44 @@
     #05061a;
   border: 1px solid rgba(167, 139, 250, 0.18);
   box-shadow: 0 40px 100px rgba(0, 0, 0, 0.45), 0 0 90px rgba(124, 58, 237, 0.08);
+}
+
+/* The UFlight™ card's travelling edge light, in this card's purple and cyan. */
+@property --space-edge-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 180deg;
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  padding: 1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--space-edge-angle),
+    transparent 0deg,
+    transparent 270deg,
+    rgba(196, 181, 253, 0.38) 316deg,
+    rgba(103, 232, 249, 0.48) 334deg,
+    transparent 352deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  pointer-events: none;
+  animation: spaceEdge 14s linear infinite;
+}
+
+@keyframes spaceEdge {
+  from {
+    --space-edge-angle: 180deg;
+  }
+  to {
+    --space-edge-angle: 540deg;
+  }
 }
 
 .copy {
@@ -361,7 +400,7 @@
 .fallback {
   position: absolute;
   left: 16px;
-  right: 16px;
+  right: 120px;
   bottom: 16px;
   margin: 0;
   padding: 8px 12px;
@@ -604,6 +643,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .card::after {
+    animation: none;
+  }
   .cta,
   .canvas,
   .tool,

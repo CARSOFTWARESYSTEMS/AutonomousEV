@@ -65,7 +65,7 @@ function PathwayCtaLink({ cta, stage }: { cta: PathwayCta; stage: string }) {
   );
   if (cta.kind === "eoi") {
     return (
-      <a href={EOI_FORM_URL} target="_blank" rel="noopener noreferrer" aria-label={`${cta.label} (opens Google Form in a new tab)`} className={styles.cta} {...track}>
+      <a href={EOI_FORM_URL} target="_blank" rel="noopener noreferrer" aria-label={`${cta.label} (opens the iTelematics contact page in a new tab)`} className={styles.cta} {...track}>
         {content}
       </a>
     );

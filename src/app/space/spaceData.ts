@@ -56,7 +56,7 @@ export const visionReferences: { label: string; href: string }[] = [
 /**
  * Each pathway card's call to action. `route` is a page of this site,
  * `anchor` a section of /space, `eoi` the approved Expression of Interest
- * form (src/lib/eoi.ts), which must be linked verbatim.
+ * destination (src/lib/eoi.ts), which must be linked verbatim.
  */
 export type PathwayCta = { label: string; kind: "route" | "anchor" | "eoi"; href?: string; note: string; track: string };
 
@@ -225,7 +225,7 @@ export const faqs: { q: string; a: string }[] = [
   },
   {
     q: "How can schools, faculty, experts and industry express interest?",
-    a: "Use the Express Interest links on this page, which open our Expression of Interest form. Submitting the form records your interest only — it does not confirm selection, admission, internship, stipend, funding, partnership or participation. For anything else, use the Partner With Us or Contact Us links, which route to our existing contact channel.",
+    a: "Use the Express Interest links on this page, which open our contact page: choose the enquiry type that fits, or Other. Sending an enquiry records your interest only — it does not confirm selection, admission, internship, stipend, funding, partnership or participation. For anything else, use the Partner With Us or Contact Us links, which route to our existing contact channel.",
   },
   {
     q: "Will programmes be free?",

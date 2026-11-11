@@ -875,7 +875,7 @@ function FullExperience() {
                   href={EOI_FORM_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Express Interest (opens Google Form in a new tab)"
+                  aria-label="Express Interest (opens the iTelematics contact page in a new tab)"
                   className={styles.primaryButton}
                 >
                   Express Interest <ArrowRight size={16} aria-hidden="true" />

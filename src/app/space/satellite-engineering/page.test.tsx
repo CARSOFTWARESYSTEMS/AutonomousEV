@@ -100,11 +100,12 @@ describe("Satellite Engineering page", () => {
     expect(text).toMatch(/not an accredited academic qualification/);
   });
 
-  it("routes Express Interest to the approved EOI form and keeps the Designed by panel", () => {
+  it("routes Express Interest to the iTelematics contact page and keeps the Designed by panel", () => {
     render(<SatelliteEngineeringPage />);
     const cta = screen.getByRole("region", { name: "Architect the Mission. Defend the Decisions." });
     const eoi = within(cta).getByRole("link", { name: /Express Interest/ });
     expect(eoi).toHaveAttribute("href", EOI_FORM_URL);
+    expect(EOI_FORM_URL).toBe("https://itelematics.com/contact");
     expect(eoi).toHaveAttribute("target", "_blank");
     expect(eoi).toHaveAttribute("rel", "noopener noreferrer");
     expect(within(cta).getByRole("link", { name: /Explore Space R&D/ })).toHaveAttribute("href", "/space#research");

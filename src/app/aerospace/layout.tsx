@@ -1,11 +1,8 @@
-import type { Metadata } from "next";
+import { aerospaceMetadata, CANONICAL } from "./seo";
 
-export const metadata: Metadata = {
-  title: "Aerospace Learning Platform",
-  description:
-    "Aerospace is a next-generation platform focused on aviation, drones, autonomous aircraft, embedded systems, AI security, cloud security, and practical engineering. Powered by EV.ENGINEER.",
-  robots: { index: false, follow: false },
-};
+// Server-rendered title, description, canonical, Open Graph and Twitter tags
+// for /aerospace (see ./seo.ts). The share image is ./og-image.jpg/route.tsx.
+export const metadata = aerospaceMetadata(CANONICAL);
 
 export default function AerospaceLayout({
   children,
