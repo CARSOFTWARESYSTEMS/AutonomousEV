@@ -10,6 +10,7 @@ import { pathwayStages, type PathwayCta } from "../../spaceData";
 import ShowcaseVisual from "./ShowcaseVisual";
 import StillVisual from "./StillVisual";
 import { CubeSatPoster, ResearchStill, VenturePoster } from "./posters";
+import DiscoverHero from "./discover/DiscoverHero";
 import styles from "./showcase.module.css";
 
 /** Pathway hues and their text tints (AA on navy). */
@@ -21,15 +22,7 @@ const ACCENT: Record<string, { color: string; tint: string }> = {
 };
 
 const VISUAL: Record<string, React.ReactNode> = {
-  discover: (
-    <ShowcaseVisual
-      topic="discover"
-      name="CubeSat in orbit"
-      label="A 1U CubeSat with its solar wings deployed, turning slowly in orbit above Earth's limb, sending a radio beacon."
-      caption="A 1U CubeSat in orbit, sending its beacon. Not to scale: Earth is a backdrop."
-      poster={<CubeSatPoster wings />}
-    />
-  ),
+  discover: <DiscoverHero />,
   engineer: (
     <ShowcaseVisual
       topic="engineer"

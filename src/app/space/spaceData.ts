@@ -221,7 +221,7 @@ export const faqs: { q: string; a: string }[] = [
   },
   {
     q: "Are the labs and digital twin already operational?",
-    a: "No. The labs, digital twin, and research platform described here are Planned or Research Direction items, not operational products. Status is labelled honestly on each section.",
+    a: "No. The planned labs, the research platform and its digital twin described here are Planned or Research Direction items, not operational or validated products. Separately, the educational simulations and tutorial demonstrators on this site, such as CubeTwin, the Rocket Engine Digital Twins and the Space Academy missions, can be used now: they are teaching tools with simulated data, not validated engineering systems, and their availability does not make the research platform operational. Status is labelled honestly on each section. Participation in any programme is subject to its published conditions.",
   },
   {
     q: "How can schools, faculty, experts and industry express interest?",

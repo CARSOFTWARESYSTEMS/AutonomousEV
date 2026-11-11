@@ -323,7 +323,7 @@
   border: 1px solid rgba(255, 255, 255, 0.07);
 }
 
-.readout dt { font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #a3a7bd; }
+.readout dt { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #a3a7bd; }
 .readout dd { margin: 2px 0 0; font-size: 15px; font-weight: 700; color: #fff; font-variant-numeric: tabular-nums; }
 
 @media (max-width: 480px) {
@@ -514,3 +514,12 @@
   white-space: nowrap;
   border: 0;
 }
+
+.chartData { margin-top: 6px; font-size: 13px; color: #c3c6d8; }
+.chartData > summary { min-height: 36px; display: inline-flex; align-items: center; color: #93c5fd; font-weight: 700; cursor: pointer; }
+.chartData > summary:focus-visible { outline: 2px solid #93c5fd; outline-offset: 2px; border-radius: 6px; }
+.chartData table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+.chartData th,
+.chartData td { padding: 6px 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.07); text-align: right; font-variant-numeric: tabular-nums; }
+.chartData th:first-child { text-align: left; font-weight: 600; }
+.chartData thead th { color: #a3a7bd; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; }

@@ -259,7 +259,7 @@ export default function SpaceLanding({ entityGraph }: { entityGraph: object }) {
               }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
                   <div>
-                    <div style={{ fontSize: 11.5, color: "#C4B5FD", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>
+                    <div style={{ fontSize: 12, color: "#C4B5FD", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>
                       Mission Health Console
                     </div>
                     <div style={{ fontSize: 18, fontWeight: 700, color: "#fff", fontFamily: FONT_MANROPE }}>Illustrative Mission Simulation</div>
@@ -285,7 +285,7 @@ export default function SpaceLanding({ entityGraph }: { entityGraph: object }) {
                           <div style={{ fontSize: 14.5, fontWeight: 600, color: "#fff", lineHeight: 1.2 }}>{row.label}</div>
                         </div>
                         <span className={styles.consoleBadge} style={{
-                          fontSize: 11.5, fontWeight: 700, padding: "3px 10px", borderRadius: 999,
+                          fontSize: 12, fontWeight: 700, padding: "3px 10px", borderRadius: 999,
                           background: `${c}18`, color: c, border: `1px solid ${c}40`, textTransform: "uppercase", letterSpacing: "0.04em",
                         }}>{row.status}</span>
                       </div>

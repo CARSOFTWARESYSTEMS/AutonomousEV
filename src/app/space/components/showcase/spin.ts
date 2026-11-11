@@ -32,4 +32,4 @@ export class Spin {
   }
 }
 
-export type ShowcaseTopic = "earth" | "cubesat" | "rocket" | "eps" | "station" | "engine" | "propulsion" | "discover" | "engineer" | "venture" | "academy";
+export type ShowcaseTopic = "earth" | "cubesat" | "rocket" | "eps" | "station" | "engine" | "propulsion" | "engineer" | "venture" | "academy";

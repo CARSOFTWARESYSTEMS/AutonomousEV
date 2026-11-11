@@ -247,10 +247,10 @@ function SunAndNormal({ angle }: { angle: number }) {
  * The CubeSat's parts on their own, for any canvas: the tutorial showcase on
  * /space reuses them. `installed` defaults to every part.
  */
-export function CubeSatModel({ installed = INSTALLABLE, exploded, reducedMotion, solar, selected = null, highlighted, sunAngle = null }: { installed?: PartId[]; exploded: boolean; reducedMotion: boolean; solar: SolarId; selected?: PartId | null; /** Several parts lit at once, e.g. the subsystems a health-management stage involves. */ highlighted?: PartId[]; sunAngle?: number | null }) {
+export function CubeSatModel({ installed = INSTALLABLE, exploded, reducedMotion, solar, selected = null, highlighted, sunAngle = null, onSelect }: { installed?: PartId[]; exploded: boolean; reducedMotion: boolean; solar: SolarId; selected?: PartId | null; /** Several parts lit at once, e.g. the subsystems a health-management stage involves. */ highlighted?: PartId[]; sunAngle?: number | null; /** Makes parts clickable. */ onSelect?: (id: PartId) => void }) {
   const visible: PartId[] = ["frame", ...installed.filter((id) => id !== "frame")];
   const state = { exploded, reducedMotion };
-  const props = { selected, solar, highlighted };
+  const props = { selected, solar, highlighted, onSelect };
   return (
     <>
       {visible.map((id) => (

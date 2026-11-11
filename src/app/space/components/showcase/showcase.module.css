@@ -473,7 +473,7 @@
   font-size: 14px;
 }
 
-.ages strong { color: #fff; }
+.ages strong { color: #fff; white-space: nowrap; }
 
 .missions {
   display: flex;
@@ -522,7 +522,7 @@
 .missionText { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 
 .missionKicker {
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -639,4 +639,66 @@
 
 @media (prefers-reduced-motion: reduce) {
   .explorers > summary::after { transition: none; }
+}
+
+/* A way in from the picture itself (e.g. the first playable mission). */
+.frameWrap {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.frameWrap > .frame { flex: 1; }
+
+.visualAction {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  max-width: calc(100% - 32px);
+  padding: 0 18px 0 14px;
+  border-radius: 999px;
+  background: rgba(9, 11, 29, 0.78);
+  backdrop-filter: blur(10px);
+  border: 1px solid color-mix(in srgb, var(--accent) 60%, transparent);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.visualAction svg { flex-shrink: 0; color: var(--accent-text); }
+
+.visualAction:hover,
+.visualAction:focus-visible {
+  background: color-mix(in srgb, var(--accent) 35%, rgba(9, 11, 29, 0.85));
+  transform: translateY(-1px);
+}
+
+.visualAction:focus-visible {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 3px;
+}
+
+@media (max-width: 860px) {
+  .actionMore { display: none; }
+  .frameWrap > .frame { flex: none; }
+  .visualAction { left: 12px; bottom: 12px; min-height: 44px; font-size: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .visualAction { transition: none; }
+  .visualAction:hover { transform: none; }
+}
+
+@media (max-width: 560px) {
+  .visualBar { flex-direction: column; align-items: stretch; }
+  .visualTools { justify-content: flex-end; }
 }

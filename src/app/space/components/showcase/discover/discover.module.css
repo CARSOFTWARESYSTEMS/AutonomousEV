@@ -1,0 +1,226 @@
+/* ── Discover hero: overlays and controls ──
+   Overlays sit in the frame's corners, clear of the satellite in the middle
+   and of the Mission 1 button at the bottom left. Controls sit under the
+   frame in two short rows: stages and tools, then the parts to find. */
+.frame { background: #02040b; }
+
+.hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.stageChip {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(9, 11, 29, 0.78);
+  border: 1px solid rgba(196, 181, 253, 0.4);
+  color: #ddd6fe;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.energy,
+.health {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 180px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(9, 11, 29, 0.82);
+  border: 1px solid rgba(252, 211, 77, 0.35);
+  color: #f1f5f9;
+  font-size: 13px;
+}
+
+.health { border-color: rgba(110, 231, 183, 0.4); }
+
+.energyRow,
+.healthRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 600;
+}
+
+.energyRow svg { color: #fcd34d; }
+.healthRow svg { color: #6ee7b7; }
+
+.gauge {
+  position: relative;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.gaugeFill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 58%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f59e0b, #fcd34d);
+}
+
+/* Time-lapse charge while the stage plays; static (and already full) with reduced motion. */
+.gaugeFill[data-run] { animation: charge 4.2s ease-out forwards; }
+
+@keyframes charge {
+  from { width: 58%; }
+  to { width: 86%; }
+}
+
+.note { font-size: 12px; color: #a3a7bd; }
+
+.ready {
+  margin-top: 2px;
+  font-weight: 800;
+  color: #a7f3d0;
+}
+
+.fallback {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  top: 56px;
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: rgba(9, 11, 29, 0.85);
+  color: #fcd34d;
+  font-size: 13px;
+}
+
+.explain {
+  position: absolute;
+  right: 14px;
+  bottom: 16px;
+  max-width: min(320px, calc(100% - 28px));
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(9, 11, 29, 0.88);
+  border: 1px solid rgba(252, 211, 77, 0.45);
+  color: #f1f5f9;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.explain strong { color: #fde68a; }
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.stages {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.stageBtn,
+.tool,
+.partBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #c3c6d8;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.stageNum {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid rgba(196, 181, 253, 0.5);
+  font-size: 11.5px;
+}
+
+.stageBtn[aria-pressed="true"] {
+  background: rgba(124, 58, 237, 0.3);
+  color: #fff;
+}
+
+.stageBtn[aria-pressed="true"] .stageNum { background: #8b5cf6; border-color: #c4b5fd; }
+
+.tools { display: inline-flex; gap: 6px; }
+
+.tool {
+  width: 42px;
+  padding: 0;
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.04);
+  color: #e6e8f5;
+}
+
+.tool[aria-pressed="true"] { border-color: rgba(196, 181, 253, 0.6); background: rgba(124, 58, 237, 0.24); }
+.tool:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.parts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.partBtn {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.partBtn[aria-pressed="true"] {
+  border-color: rgba(252, 211, 77, 0.7);
+  background: rgba(245, 158, 11, 0.14);
+  color: #fde68a;
+}
+
+.stageBtn:hover,
+.partBtn:hover,
+.tool:hover:not(:disabled) { background: rgba(255, 255, 255, 0.08); }
+
+.stageBtn:focus-visible,
+.tool:focus-visible,
+.partBtn:focus-visible {
+  outline: 2px solid #c4b5fd;
+  outline-offset: 2px;
+}
+
+@media (max-width: 560px) {
+  .energy,
+  .health { top: auto; bottom: 74px; right: 10px; min-width: 0; padding: 8px 10px; font-size: 12px; }
+  .stageChip { top: 10px; left: 10px; }
+  .stageBtn { padding: 0 9px; font-size: 13px; }
+  .explain { bottom: 74px; right: 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gaugeFill[data-run] { animation: none; width: 86%; }
+}

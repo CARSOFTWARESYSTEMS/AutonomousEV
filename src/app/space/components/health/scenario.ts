@@ -53,6 +53,11 @@ export type StageId = "observe" | "detect" | "diagnose" | "predict" | "recover" 
 export type PartId = "battery" | "eps" | "panels" | "obc" | "adcs" | "radio" | "antenna";
 
 export interface Telemetry {
+  /**
+   * Battery pack voltage. In this design the pack is the unregulated battery
+   * bus; the computer and radio run from regulated 3.3 V and 5 V rails, which
+   * hold steady until the pack nears cut-off.
+   */
   busV: number;
   cell1V: number;
   cell2V: number;
@@ -71,8 +76,9 @@ export const TELEMETRY: Record<StageId, Telemetry> = {
   observe: NORMAL,
   detect: { ...FAULTED, obc: "Anomaly flag: pack voltage below band for 3 samples" },
   diagnose: { ...FAULTED, obc: "Isolating: comparing candidate causes" },
-  predict: { ...FAULTED, busV: ECLIPSE_START_V, obc: "Predicting the next eclipse" },
-  recover: { ...FAULTED, busV: ECLIPSE_START_V, batteryTempC: 24, loadW: LOAD_W.safe, obc: "Safe mode (operator-approved)", comms: "Transmitter off; beacon on" },
+  // By the end of the sunlit pass the weak charge has lifted the pack to 7.0 V: cell 1 4.03 V + cell 2 2.97 V.
+  predict: { ...FAULTED, busV: ECLIPSE_START_V, cell1V: 4.03, cell2V: 2.97, obc: "Predicting the next eclipse" },
+  recover: { ...FAULTED, busV: ECLIPSE_START_V, cell1V: 4.03, cell2V: 2.97, batteryTempC: 24, loadW: LOAD_W.safe, obc: "Safe mode (operator-approved)", comms: "Transmitter off; beacon on" },
   verify: { ...FAULTED, busV: Math.round(SAFE_MIN_V * 100) / 100, cell1V: 3.6, cell2V: 2.95, batteryTempC: 22, loadW: LOAD_W.safe, obc: "Safe mode held; criteria met", comms: "Beacon on; status sent at next pass" },
 };
 
@@ -162,7 +168,7 @@ export const STAGES: Stage[] = [
   {
     id: "verify",
     title: "Verify recovery",
-    short: `Through the next eclipse the bus stays at or above ${f2(SAFE_MIN_V)} V (criterion: at least ${f1(CRITERIA.minBusV)} V), the battery cools to ${TELEMETRY.verify.batteryTempC} °C (at most ${CRITERIA.maxTempC} °C) and the beacon stays on. It stays in safe mode until people decide what comes next.`,
+    short: `Through the next eclipse the battery pack stays at or above ${f2(SAFE_MIN_V)} V (criterion: at least ${f1(CRITERIA.minBusV)} V), the battery cools to ${TELEMETRY.verify.batteryTempC} °C (at most ${CRITERIA.maxTempC} °C) and the beacon stays on. It stays in safe mode until people decide what comes next.`,
     parts: ["battery", "radio"],
     chips: [
       { part: "battery", text: `Lowest ${f2(SAFE_MIN_V)} V ≥ ${f1(CRITERIA.minBusV)} V ✓` },

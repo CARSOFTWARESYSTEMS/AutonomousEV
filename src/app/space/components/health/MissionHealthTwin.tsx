@@ -28,8 +28,8 @@ const SUBSYSTEMS: { id: string; label: string; parts: PartId[]; chip: (t: Teleme
     id: "eps",
     label: "Power (EPS)",
     parts: ["eps", "battery", "panels"],
-    chip: (t) => ({ part: "eps", text: `Bus ${f2(t.busV)} V · load ${f1(t.loadW)} W` }),
-    rows: (t) => [["Bus voltage", `${f2(t.busV)} V`], ["Cells 1 / 2", `${f2(t.cell1V)} / ${f2(t.cell2V)} V`], ["Solar array", `${f1(t.arrayA)} A`], ["Load", `${f1(t.loadW)} W`]],
+    chip: (t) => ({ part: "eps", text: `Pack ${f2(t.busV)} V · load ${f1(t.loadW)} W` }),
+    rows: (t) => [["Battery pack (unregulated bus)", `${f2(t.busV)} V`], ["Cells 1 / 2", `${f2(t.cell1V)} / ${f2(t.cell2V)} V`], ["Regulated rails", "3.3 V and 5 V, steady"], ["Solar array", `${f1(t.arrayA)} A`], ["Load", `${f1(t.loadW)} W`]],
   },
   { id: "obc", label: "Computer (OBC)", parts: ["obc"], chip: (t) => ({ part: "obc", text: t.obc }), rows: (t) => [["Status", t.obc]] },
   {
@@ -49,7 +49,7 @@ const DETAIL: Record<StageId, ReactNode> = {
   observe: (
     <>
       <p>Telemetry is judged against what the orbit predicts. In sunlight, at this state of charge, the pack should read {DETECTION.bandV[0]}–{DETECTION.bandV[1]} V. Data is stored on board and sent down at ground-station passes, which can be hours apart, so the spacecraft has to judge its own health between them.</p>
-      <p>Orbit: 500 km, one revolution every {f1(ORBIT_MIN)} minutes, up to {f1(ECLIPSE_MIN)} minutes of each in Earth&rsquo;s shadow.</p>
+      <p>Orbit: 500 km, one revolution every {f1(ORBIT_MIN)} minutes, up to {f1(ECLIPSE_MIN)} minutes of each in Earth&rsquo;s shadow. The battery pack (two lithium-ion cells in series) is the unregulated battery bus; the computer and radio run from regulated 3.3 V and 5 V rails, which hold steady until the pack nears its {f1(BATTERY.cutoffV)} V cut-off.</p>
     </>
   ),
   detect: (
@@ -95,7 +95,7 @@ const DETAIL: Record<StageId, ReactNode> = {
       <p>Criteria fixed before flight, checked through the next eclipse:</p>
       <ul>
         <li>
-          Lowest bus voltage {f2(SAFE_MIN_V)} V, at least {f1(CRITERIA.minBusV)} V required: met.
+          Lowest battery pack voltage {f2(SAFE_MIN_V)} V, at least {f1(CRITERIA.minBusV)} V required: met.
         </li>
         <li>
           Battery {TELEMETRY.verify.batteryTempC} °C, at most {CRITERIA.maxTempC} °C allowed: met.
@@ -196,8 +196,8 @@ export default function MissionHealthTwin() {
               </button>
             ))}
           </div>
-          {ready && (
-            <div className={styles.tools}>
+          {(
+            <div className={styles.tools} style={{ visibility: ready ? "visible" : "hidden" }} aria-hidden={!ready || undefined}>
               <button type="button" className={styles.tool} onClick={() => spin.reset()} aria-label="Reset the view">
                 <RotateCcw size={16} aria-hidden />
               </button>
@@ -258,7 +258,7 @@ export default function MissionHealthTwin() {
               <p className={styles.short}>{s.short}</p>
               <dl className={styles.readout} aria-label="Simulated telemetry at this stage">
                 <div>
-                  <dt>Bus</dt>
+                  <dt>Pack</dt>
                   <dd>{f2(t.busV)} V</dd>
                 </div>
                 <div>
@@ -294,6 +294,9 @@ export default function MissionHealthTwin() {
             </div>
           );
         })}
+        <p className={styles.srOnly} aria-live="polite">
+          Stage {stage + 1} of {STAGES.length}: {current.title}.
+        </p>
         <p className={styles.disclaimer}>Illustrative scenario with simulated telemetry, built from stated teaching assumptions. Not data from any spacecraft, and not a validated or flight-ready autonomy system.</p>
       </div>
     </div>

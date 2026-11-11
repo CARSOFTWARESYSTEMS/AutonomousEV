@@ -8,7 +8,8 @@
 // rotate; vertical swipes still scroll the page.
 import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import dynamic from "next/dynamic";
-import { Pause, Play, RotateCw } from "lucide-react";
+import Link from "next/link";
+import { Pause, Play, PlayCircle, RotateCw } from "lucide-react";
 import { getWebGLSupport } from "@/components/satellite-explorer/lib/capabilities";
 import { Spin, type ShowcaseTopic } from "./spin";
 import styles from "./showcase.module.css";
@@ -43,7 +44,26 @@ function useStageQuality(): "high" | "low" | null {
   );
 }
 
-export default function ShowcaseVisual({ topic, name, label, caption, poster, animated = true }: { topic: ShowcaseTopic; /** Short name of the model, e.g. "CubeSat". */ name: string; /** Text alternative for the picture. */ label: string; caption: ReactNode; poster: ReactNode; animated?: boolean }) {
+export default function ShowcaseVisual({
+  topic,
+  name,
+  label,
+  caption,
+  poster,
+  animated = true,
+  action,
+}: {
+  topic: ShowcaseTopic;
+  /** Short name of the model, e.g. "CubeSat". */
+  name: string;
+  /** Text alternative for the picture. */
+  label: string;
+  caption: ReactNode;
+  poster: ReactNode;
+  animated?: boolean;
+  /** A way straight in from the picture, e.g. the first playable mission. */
+  action?: { label: string; href: string; track?: Record<string, string> };
+}) {
   const frameRef = useRef<HTMLDivElement>(null);
   const [near, setNear] = useState(false);
   const [onScreen, setOnScreen] = useState(false);
@@ -95,6 +115,7 @@ export default function ShowcaseVisual({ topic, name, label, caption, poster, an
 
   return (
     <figure className={styles.visual}>
+      <div className={styles.frameWrap}>
       <div
         ref={frameRef}
         className={styles.frame}
@@ -116,10 +137,21 @@ export default function ShowcaseVisual({ topic, name, label, caption, poster, an
           </div>
         )}
       </div>
+      {action && (
+        <Link href={action.href} className={styles.visualAction} {...action.track}>
+          <PlayCircle size={20} aria-hidden />
+          <span>
+            {action.label.split(":")[0]}
+            {action.label.includes(":") && <span className={styles.actionMore}>:{action.label.split(":").slice(1).join(":")}</span>}
+          </span>
+        </Link>
+      )}
+      </div>
       <div className={styles.visualBar}>
         <figcaption className={styles.caption}>{caption}</figcaption>
-        {ready && (
-          <div className={styles.visualTools}>
+        {/* Always laid out, shown once the 3D is ready, so its arrival never moves the text below (CLS). */}
+        {(
+          <div className={styles.visualTools} style={{ visibility: ready ? "visible" : "hidden" }} aria-hidden={!ready || undefined}>
             <button type="button" className={styles.tool} onClick={() => spin.add(Math.PI / 4)} aria-label={`Turn the ${name} model`}>
               <RotateCw size={16} aria-hidden />
               <span>Turn</span>

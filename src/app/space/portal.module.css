@@ -28,13 +28,13 @@
   color: var(--portal-body);
 }
 
-/* Anchored sections clear the fixed header (60px) and, from 768px, the sticky section bar. */
-.page section[id] {
+/* Every anchor clears the fixed header (60px) and, from 768px, the sticky section bar. */
+.page [id] {
   scroll-margin-top: 76px;
 }
 
 @media (min-width: 768px) {
-  .page section[id] {
+  .page [id] {
     scroll-margin-top: 124px;
   }
 }
@@ -148,7 +148,7 @@
   max-width: 100%;
   padding: 4px 10px;
   border-radius: 999px;
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 700;
   line-height: 1.4;
   letter-spacing: 0.06em;

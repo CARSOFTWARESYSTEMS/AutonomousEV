@@ -210,3 +210,40 @@ export function ResearchStill() {
     </svg>
   );
 }
+
+/** Discover's still: a CubeSat with its wings out, high above Earth's sunlit limb, the Sun behind. */
+export function DiscoverPoster() {
+  const stars = Array.from({ length: 70 }, (_, i) => [((i * 97) % 400) + 0.5, ((i * 53) % 210) + 0.5, i % 5 === 0 ? 1.4 : 0.8]);
+  return (
+    <svg viewBox="0 0 400 300" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+      <defs>
+        <radialGradient id="disc-earth" cx="72%" cy="20%" r="80%">
+          <stop offset="0" stopColor="#3b82f6" />
+          <stop offset="0.55" stopColor="#1e3a8a" />
+          <stop offset="1" stopColor="#0b1026" />
+        </radialGradient>
+        <radialGradient id="disc-sun" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stopColor="#fff6d8" />
+          <stop offset="0.25" stopColor="#fcd34d" stopOpacity="0.6" />
+          <stop offset="1" stopColor="#f59e0b" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      <rect width="400" height="300" fill="#060816" />
+      {stars.map(([x, y, r], i) => (
+        <circle key={i} cx={x} cy={y} r={r} fill="#dbe4ff" opacity="0.8" />
+      ))}
+      <circle cx="54" cy="48" r="46" fill="url(#disc-sun)" />
+      <circle cx="120" cy="560" r="380" fill="url(#disc-earth)" />
+      <circle cx="120" cy="560" r="384" fill="none" stroke="#60a5fa" strokeOpacity="0.55" strokeWidth="6" />
+      <path d="M-20 238 C 120 150, 300 120, 430 150" fill="none" stroke="#67e8f9" strokeOpacity="0.6" strokeWidth="1.6" />
+      <g transform="translate(250 118)">
+        <polygon points="-62,6 -22,-6 -22,26 -62,38" fill="#1e3a8a" stroke="#93c5fd" strokeOpacity="0.5" />
+        <polygon points="62,6 22,-6 22,26 62,38" fill="#1e3a8a" stroke="#93c5fd" strokeOpacity="0.5" />
+        <polygon points="0,-16 22,-6 0,4 -22,-6" fill="#b6bcc6" />
+        <polygon points="-22,-6 0,4 0,40 -22,30" fill="#1d4ed8" />
+        <polygon points="22,-6 0,4 0,40 22,30" fill="#172554" />
+        <circle cx="0" cy="-30" r="9" fill="none" stroke="#67e8f9" strokeOpacity="0.6" />
+      </g>
+    </svg>
+  );
+}

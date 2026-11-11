@@ -22,6 +22,7 @@ import { DEFAULT_ROCKET, DIAMETER_MM, MOTOR_LENGTH_MM, finRootLeadingEdgeMm, tot
 import { finOutline, noseProfile } from "@/components/space-academy/missions/rocket/geometry";
 import type { Spin, ShowcaseTopic } from "./spin";
 import Turntable from "./Turntable";
+import { Starfield } from "./SpaceBackdrop";
 
 // The engine scenes carry the Rocket Engine Digital Twin's model: a separate chunk, loaded only for those two rows.
 const EngineScene = lazy(() => import("./EngineScenes").then((m) => ({ default: m.EngineScene })));
@@ -291,26 +292,6 @@ function Beacon({ at, playing, color = "#67e8f9", size = 1 }: { at: [number, num
   );
 }
 
-/** Discover: a CubeSat in orbit, Earth's limb below. Not to scale: Earth is a backdrop. */
-function DiscoverScene({ spin, playing, reducedMotion }: { spin: Spin; playing: boolean; reducedMotion: boolean }) {
-  return (
-    <>
-      <mesh position={[0, -64, -40]}>
-        <sphereGeometry args={[56, 64, 48]} />
-        <meshStandardMaterial color="#1d4ed8" emissive="#0b1d4d" emissiveIntensity={0.55} roughness={0.8} />
-      </mesh>
-      <mesh position={[0, -64, -40]}>
-        <sphereGeometry args={[57.5, 64, 48]} />
-        <meshBasicMaterial color="#38bdf8" transparent opacity={0.12} depthWrite={false} side={DoubleSide} />
-      </mesh>
-      <Turntable spin={spin} playing={playing} reducedMotion={reducedMotion} rate={0.16}>
-        <CubeSatModel exploded={false} reducedMotion={reducedMotion} solar="wings" />
-        <Beacon at={[0, 5.4, 0]} playing={playing} size={3} />
-      </Turntable>
-    </>
-  );
-}
-
 /** Engineer: the subsystems separated over a drawing grid. */
 function EngineerScene({ spin, playing, reducedMotion }: { spin: Spin; playing: boolean; reducedMotion: boolean }) {
   return (
@@ -409,11 +390,12 @@ function AcademyScene({ spin, playing, reducedMotion }: { spin: Spin; playing: b
   const base = -26;
   return (
     <>
-      <group position={[-30, 0, 0]}>
-        <Pedestal x={0} y={base} r={9} />
+      <Starfield count={900} />
+      <group position={[-24, 0, 0]}>
+        <Pedestal x={0} y={base} r={8} />
         <group position={[0, base + 5.5, 0]}>
           <mesh rotation={[Math.PI / 2 - 0.35, 0, 0.2]}>
-            <torusGeometry args={[12, 0.08, 6, 120]} />
+            <torusGeometry args={[10, 0.08, 6, 120]} />
             <meshBasicMaterial color="#c4b5fd" transparent opacity={0.6} />
           </mesh>
           <Turntable spin={spin} playing={playing} reducedMotion={reducedMotion} rate={0.18}>
@@ -430,8 +412,8 @@ function AcademyScene({ spin, playing, reducedMotion }: { spin: Spin; playing: b
           </Turntable>
         </group>
       </group>
-      <group position={[28, 0, 0]}>
-        <Pedestal x={0} y={base} r={8} />
+      <group position={[23, 0, 0]}>
+        <Pedestal x={0} y={base} r={7.5} />
         <group position={[0, base + 6.25, 0]}>
           <Turntable spin={spin} playing={playing} reducedMotion={reducedMotion} rate={0.14}>
             <CanSat />
@@ -455,10 +437,9 @@ const STAGE: Record<ShowcaseTopic, { camera: [number, number, number]; target?: 
   station: { camera: [22, 18, 38], fov: 40, rate: 0.08 },
   engine: { camera: [3.4, 1.2, 4.6], target: [0, 0, 0], fov: 38, rate: 0.12 },
   propulsion: { camera: [3.2, 1.6, 4.4], target: [0, 0.3, 0], fov: 38, rate: 0.1 },
-  discover: { camera: [30, 10, 46], target: [0, -2, 0], fov: 40, rate: 0 },
   engineer: { camera: [36, 26, 48], target: [0, -1, 0], fov: 38, rate: 0 },
-  venture: { camera: [0, 18, 74], target: [0, -2, 0], fov: 38, rate: 0 },
-  academy: { camera: [0, 6, 112], target: [0, -3, 0], fov: 40, rate: 0 },
+  venture: { camera: [0, 18, 86], target: [0, -2, 0], fov: 38, rate: 0 },
+  academy: { camera: [0, 6, 118], target: [0, -3, 0], fov: 40, rate: 0 },
 };
 
 function Look({ target }: { target: [number, number, number] }) {
@@ -496,7 +477,6 @@ export default function ShowcaseCanvas({ topic, playing, reducedMotion, quality,
           </Turntable>
         </group>
       )}
-      {topic === "discover" && <DiscoverScene spin={spin} playing={animate} reducedMotion={reducedMotion} />}
       {topic === "engineer" && <EngineerScene spin={spin} playing={animate} reducedMotion={reducedMotion} />}
       {topic === "venture" && <VentureScene spin={spin} playing={animate} reducedMotion={reducedMotion} />}
       {topic === "academy" && <AcademyScene spin={spin} playing={animate} reducedMotion={reducedMotion} />}

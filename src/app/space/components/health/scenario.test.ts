@@ -16,12 +16,20 @@ describe("the illustrative power-anomaly scenario", () => {
     STAGES.slice(1).forEach((s, i) => expect(s.at).toBeGreaterThan(STAGES[i].at));
   });
 
-  it("adds up: two cells in series make the pack voltage, within the cell limits", () => {
-    for (const t of Object.values(TELEMETRY)) {
-      expect(t.cell1V + t.cell2V).toBeLessThanOrEqual(BATTERY.fullV);
+  it("adds up at every stage: two cells in series make the pack voltage, within the pack's limits", () => {
+    for (const [stage, t] of Object.entries(TELEMETRY)) {
+      expect(t.cell1V + t.cell2V, stage).toBeCloseTo(t.busV, 2);
+      expect(t.busV, stage).toBeLessThanOrEqual(BATTERY.fullV);
+      expect(t.busV, stage).toBeGreaterThan(BATTERY.cutoffV);
     }
-    expect(TELEMETRY.diagnose.cell1V + TELEMETRY.diagnose.cell2V).toBeCloseTo(TELEMETRY.diagnose.busV, 2);
-    expect(TELEMETRY.observe.cell1V + TELEMETRY.observe.cell2V).toBeCloseTo(TELEMETRY.observe.busV, 2);
+  });
+
+  it("moves through the stages in a physically sensible order", () => {
+    const order = ["observe", "detect", "diagnose", "predict", "recover", "verify"] as const;
+    const temps = order.map((s) => TELEMETRY[s].batteryTempC);
+    // Warms with the fault, cools once charging is slowed in safe mode.
+    expect(temps).toEqual([18, 27, 27, 27, 24, 22]);
+    expect(order.map((s) => TELEMETRY[s].loadW)).toEqual([4.2, 4.2, 4.2, 4.2, 1.5, 1.5]);
   });
 
   it("detects only what the rule says: in sunlight below the band, with the array still delivering", () => {

@@ -121,7 +121,7 @@ export function Stat({ label, value, tone = "neutral", detail }: { label: string
         {tone === "warn" && <AlertTriangle size={14} aria-label="Caution" />}
         <span>{value}</span>
       </dd>
-      {detail && <p className={styles.statDetail}>{detail}</p>}
+      {detail && <dd className={styles.statDetail}>{detail}</dd>}
     </div>
   );
 }

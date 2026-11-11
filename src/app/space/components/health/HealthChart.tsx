@@ -79,6 +79,36 @@ export default function HealthChart({ stage }: { stage: StageId }) {
           {Math.round(T.end)} min
         </text>
       </svg>
+      <details className={styles.chartData}>
+        <summary>Chart data</summary>
+        <table>
+          <caption className={styles.srOnly}>Simulated battery pack voltage at each stage</caption>
+          <thead>
+            <tr>
+              <th scope="col">Stage</th>
+              <th scope="col">Minute</th>
+              <th scope="col">Pack voltage</th>
+            </tr>
+          </thead>
+          <tbody>
+            {STAGES.map((s) => {
+              const p = ACTUAL.reduce((best, q) => (Math.abs(q.t - s.at) < Math.abs(best.t - s.at) ? q : best));
+              return (
+                <tr key={s.id}>
+                  <th scope="row">{s.title}</th>
+                  <td>{Math.round(p.t)}</td>
+                  <td>{p.v.toFixed(2)} V</td>
+                </tr>
+              );
+            })}
+            <tr>
+              <th scope="row">Without action: cut-off</th>
+              <td>{Math.round(WITHOUT[WITHOUT.length - 1].t)}</td>
+              <td>{BATTERY.cutoffV.toFixed(2)} V</td>
+            </tr>
+          </tbody>
+        </table>
+      </details>
       <figcaption className={styles.chartCaption}>
         <span className={styles.key} data-kind="actual" /> Battery pack voltage, simulated
         {showPrediction && (

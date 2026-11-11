@@ -598,7 +598,10 @@ it("gives each of the four pathway categories its own call to action, with Disco
     const pathway = container.querySelector("#pathway") as HTMLElement;
     const cards = within(pathway).getAllByRole("article");
     expect(cards.map((c) => within(c).getByRole("heading", { level: 3 }).textContent)).toEqual(["Ages 14–18", "Higher Education", "Applied Teams", "Young Founders"]);
-    const ctas = cards.map((c) => within(c).getByRole("link"));
+    // Each pathway's own call to action (Discover's picture also links straight to Mission 1).
+    const ctas = cards.map((c) => c.querySelector('a[data-track-event="space_pathway_cta_click"]') as HTMLAnchorElement);
+    expect(cards.map((c) => c.querySelectorAll('a[data-track-event="space_pathway_cta_click"]').length)).toEqual([1, 1, 1, 1]);
+    expect(within(cards[0]).getByRole("link", { name: /Play Mission 1/ })).toHaveAttribute("href", "/space/academy/missions/build-your-first-cubesat");
     expect(new Set(ctas.map((a) => a.textContent)).size).toBe(4);
     expect(ctas[0]).toHaveTextContent("Explore Space Academy");
     expect(ctas[0]).toHaveAttribute("href", "/space/academy");
@@ -718,4 +721,18 @@ it("presents Space Academy as one feature: two age groups, the three playable mi
     expect(explorers.open).toBe(false);
     expect(explorers.querySelector("summary")?.textContent).toMatch(/Planned Programme/);
     expect(explorers.textContent).toMatch(/Space Health Explorers is a planned programme for students aged 14–18/);
+  });
+
+it("makes the Discover hero a playable 3D exhibit: four stages, five parts to find, and the Mission 1 button", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<SpacePage />);
+    const row = (container.querySelector('#pathway article[data-pathway="discover"]') as HTMLElement).closest("li") as HTMLElement;
+    expect(within(within(row).getByRole("group", { name: "Animation stages" })).getAllByRole("button").map((b) => b.textContent?.replace(/^\d/, ""))).toEqual(["Discover", "Explore", "Experiment", "Mission"]);
+    const parts = within(row).getByRole("group", { name: "Find a part" });
+    expect(within(parts).getAllByRole("button").map((b) => b.textContent)).toEqual(["Solar panels", "Battery", "Flight computer", "Sensors", "Antenna"]);
+    await user.click(within(parts).getByRole("button", { name: "Battery" }));
+    expect(within(row).getByText(/Stores energy for the eclipse/)).toBeInTheDocument();
+    expect(within(row).getByRole("button", { name: "Exploded view" })).toHaveAttribute("aria-pressed", "false");
+    expect(within(row).getByRole("link", { name: /Play Mission 1/ })).toHaveAttribute("href", "/space/academy/missions/build-your-first-cubesat");
+    expect(row.querySelector("figcaption")?.textContent).toMatch(/educational 1U CubeSat model.*not flight hardware.*simulated.*Not to scale/);
   });
