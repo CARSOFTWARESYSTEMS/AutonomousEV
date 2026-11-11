@@ -39,9 +39,17 @@
   }
 }
 
-/* ── Section rhythm ── */
+/* ── Section rhythm ──
+   Content runs to 1,600px with a fluid 16–56px gutter, so wide screens give
+   the room to content rather than to empty margins. Reading text keeps its
+   own measure (.lede, .head, .narrow). */
+.page {
+  --portal-gutter: clamp(16px, 3.5vw, 56px);
+  --portal-max: 1600px;
+}
+
 .section {
-  padding: 96px 32px;
+  padding: 96px var(--portal-gutter);
 }
 
 .band {
@@ -51,25 +59,25 @@
 }
 
 .inner {
-  max-width: 1200px;
+  max-width: var(--portal-max);
   margin: 0 auto;
 }
 
 .narrow {
-  max-width: 880px;
+  max-width: 1040px;
   margin: 0 auto;
 }
 
 @media (max-width: 1024px) {
-  .section { padding: 72px 28px; }
+  .section { padding-top: 72px; padding-bottom: 72px; }
 }
 
 @media (max-width: 768px) {
-  .section { padding: 56px 20px; }
+  .section { padding-top: 56px; padding-bottom: 56px; }
 }
 
 @media (max-width: 480px) {
-  .section { padding: 48px 16px; }
+  .section { padding-top: 48px; padding-bottom: 48px; }
 }
 
 /* ── Section heads ── */
@@ -173,6 +181,15 @@
   font-weight: 600;
 }
 
+.head .stageTrail {
+  justify-content: center;
+  margin: 4px 0 0;
+}
+
+@media (max-width: 640px) {
+  .head .stageTrail { justify-content: flex-start; }
+}
+
 .stageTrail li {
   display: inline-flex;
   align-items: center;
@@ -186,98 +203,6 @@
   font-size: 16px;
   line-height: 1;
   margin: 0 4px 0 6px;
-}
-
-.heroStats {
-  display: grid;
-  grid-template-columns: repeat(4, max-content);
-  justify-content: start;
-  gap: 16px 0;
-  margin: 0;
-}
-
-.heroStats > div {
-  padding: 0 28px;
-  border-left: 1px solid var(--portal-line);
-}
-
-.heroStats > div:first-child {
-  padding-left: 0;
-  border-left: none;
-}
-
-.heroStats dt {
-  order: 2;
-  font-size: 13.5px;
-  color: var(--portal-muted);
-  margin-top: 4px;
-}
-
-.heroStats dd {
-  order: 1;
-  margin: 0;
-  font-family: var(--font-space-manrope);
-  font-size: 19px;
-  font-weight: 800;
-  color: #fff;
-  line-height: 1.2;
-}
-
-.heroStats > div {
-  display: flex;
-  flex-direction: column;
-}
-
-@media (max-width: 1240px) {
-  .heroStats { grid-template-columns: repeat(2, minmax(0, max-content)); }
-  .heroStats > div:nth-child(3) { padding-left: 0; border-left: none; }
-}
-
-@media (max-width: 380px) {
-  .heroStats > div { padding: 0 16px; }
-  .heroStats > div:nth-child(odd) { padding-left: 0; }
-}
-
-.academyNotice {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  max-width: 100%;
-  margin: 0 0 36px;
-  padding: 10px 14px 10px 10px;
-  min-height: 44px;
-  border-radius: 14px;
-  background: rgba(124, 58, 237, 0.1);
-  border: 1px solid rgba(167, 139, 250, 0.35);
-  color: #e6e8f5;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1.4;
-  text-decoration: none;
-  transition: background 0.2s ease, border-color 0.2s ease;
-}
-
-.academyNotice:hover,
-.academyNotice:focus-visible {
-  background: rgba(124, 58, 237, 0.2);
-  border-color: rgba(196, 181, 253, 0.6);
-}
-
-.academyNoticeTag {
-  flex-shrink: 0;
-  padding: 3px 8px;
-  border-radius: 8px;
-  background: var(--discover);
-  color: #fff;
-  font-size: 11.5px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.academyNotice svg {
-  flex-shrink: 0;
-  color: var(--discover-text);
 }
 
 /* ── Section navigation ──
@@ -301,12 +226,12 @@
 }
 
 .sectionNavInner {
-  max-width: 1200px;
+  max-width: calc(var(--portal-max) + 2 * var(--portal-gutter));
   margin: 0 auto;
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: 8px 32px;
+  padding: 8px var(--portal-gutter);
   overflow-x: auto;
   scrollbar-width: none;
   overscroll-behavior-x: contain;
@@ -315,11 +240,9 @@
 .sectionNavInner::-webkit-scrollbar { display: none; }
 
 @media (max-width: 768px) {
-  .sectionNavInner { padding: 8px 20px; }
 }
 
 @media (max-width: 480px) {
-  .sectionNavInner { padding: 8px 16px; }
 }
 
 .sectionNavLabel {
@@ -560,9 +483,13 @@
   .loopSteps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
-/* Below 769px the diagram turns into a vertical list of the same six steps, so the cards would only repeat it. */
-@media (max-width: 768px) {
-  .loopSteps { display: none; }
+/* The diagram sits in a disclosure, so on a phone the six steps stay as a compact two-column list. */
+@media (max-width: 640px) {
+  .loopSteps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 24px; }
+  .loopStep { flex-direction: row; text-align: left; padding: 10px 12px; gap: 10px; }
+  .loopIcon { width: 32px; height: 32px; flex-shrink: 0; }
+  .stepNumber { display: none; }
+  .loopLabel { font-size: 13.5px; }
 }
 
 /* Progressive disclosure: a native <details>, so the full text is in the HTML, findable and readable without JavaScript. */
@@ -712,54 +639,8 @@
 
 .freshness {
   margin: 16px 0 0;
-  text-align: center;
   color: var(--portal-muted);
   font-size: 13px;
-}
-
-/* ── Education to startup: the two detailed stages side by side ── */
-.stageGrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-@media (max-width: 960px) {
-  .stageGrid { grid-template-columns: minmax(0, 1fr); }
-}
-
-.stagePanel {
-  --accent: var(--discover);
-  --accent-text: var(--discover-text);
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  padding: 32px;
-  border-radius: 22px;
-  background: var(--portal-surface);
-  border: 1px solid var(--portal-line);
-  border-top: 3px solid var(--accent);
-}
-
-.stagePanel[data-pathway="engineer"] { --accent: var(--engineer); --accent-text: var(--engineer-text); }
-
-@media (max-width: 480px) {
-  .stagePanel { padding: 24px 18px; }
-}
-
-.stagePanel .eyebrow {
-  align-self: flex-start;
-  margin-bottom: 0;
-  color: var(--accent-text);
-  background: color-mix(in srgb, var(--accent) 12%, transparent);
-  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
-}
-
-.stagePanel .h2 {
-  font-size: clamp(24px, 2.6vw, 30px);
-  margin: 0;
 }
 
 .tagList {
@@ -784,37 +665,6 @@
   font-weight: 500;
   line-height: 1.4;
   overflow-wrap: anywhere;
-}
-
-.stagePanel[data-pathway="engineer"] .tag {
-  background: rgba(59, 130, 246, 0.08);
-  border-color: rgba(59, 130, 246, 0.25);
-}
-
-.academyCard {
-  margin-top: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 20px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.18), rgba(6, 182, 212, 0.08));
-  border: 1px solid rgba(167, 139, 250, 0.4);
-}
-
-.academyCardTitle {
-  font-family: var(--font-space-manrope);
-  font-size: 18px;
-  font-weight: 800;
-  color: #fff;
-  margin: 0;
-}
-
-.academyCardText {
-  margin: 0;
-  font-size: 15px;
-  line-height: 1.65;
-  color: #d5d8e8;
 }
 
 .ctaRow {
@@ -1213,40 +1063,6 @@
   .milestoneCard { text-align: left; padding: 14px 16px; }
 }
 
-/* ── Participation ── */
-.audienceGrid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
-  margin: 0 0 32px;
-  padding: 0;
-  list-style: none;
-}
-
-@media (max-width: 960px) {
-  .audienceGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-
-@media (max-width: 420px) {
-  .audienceGrid { grid-template-columns: minmax(0, 1fr); }
-}
-
-.audience {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 14px 16px;
-  border-radius: 14px;
-  background: var(--portal-surface);
-  border: 1px solid var(--portal-line);
-  color: #fff;
-  font-size: 14.5px;
-  font-weight: 500;
-  line-height: 1.4;
-}
-
-.audience svg { flex-shrink: 0; color: var(--discover-text); }
-
 .centerRow {
   justify-content: center;
 }
@@ -1308,7 +1124,7 @@
 .finalCta {
   position: relative;
   overflow: hidden;
-  max-width: 900px;
+  max-width: 1100px;
   margin: 0 auto;
   padding: 48px 32px;
   border-radius: 28px;
@@ -1361,3 +1177,459 @@
 .prose a:focus-visible {
   text-decoration-color: currentColor;
 }
+
+/* ── Hero (redesign 2) ──
+   One statement, one primary destination (Space Academy), one way into the
+   mission. The console stays as the illustrative visual. */
+.hero {
+  min-height: auto;
+}
+
+.heroBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  margin-bottom: 24px;
+  padding: 7px 16px;
+  border-radius: 999px;
+  background: rgba(124, 58, 237, 0.12);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  color: #d8ccf0;
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.heroTitle {
+  font-size: clamp(34px, 4.4vw, 56px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  margin: 0 0 20px;
+  text-wrap: balance;
+}
+
+.heroCtas {
+  align-items: stretch;
+  margin: 8px 0 0;
+}
+
+.heroAcademy {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 60px;
+  padding: 10px 18px 10px 22px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #7c3aed, #4f46e5 60%, #0891b2);
+  box-shadow: 0 14px 40px rgba(124, 58, 237, 0.35);
+  color: #fff;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.heroAcademy:hover,
+.heroAcademy:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 48px rgba(124, 58, 237, 0.5);
+}
+
+.heroAcademy:focus-visible {
+  outline: 2px solid #c4b5fd;
+  outline-offset: 3px;
+}
+
+.heroAcademyText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+}
+
+.heroAcademyTitle {
+  font-family: var(--font-space-manrope);
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.heroAcademySub {
+  font-size: 13px;
+  font-weight: 500;
+  color: #e9e5ff;
+}
+
+.heroCtas > .btnGhost {
+  min-height: 60px;
+  border-radius: 16px;
+}
+
+@media (max-width: 640px) {
+  .heroAcademy { justify-content: space-between; }
+  .heroCtas > .btnGhost { min-height: 52px; }
+}
+
+/* From 1280px the hero splits the wider column: statement left, console right. */
+@media (min-width: 1280px) {
+  .heroGridWide { grid-template-columns: minmax(0, 1fr) minmax(460px, 560px) !important; }
+  .heroGridWide .heroLede { max-width: 680px; font-size: 19px; }
+}
+
+/* On a phone the console is decoration below the fold: keep it, but smaller. */
+@media (max-width: 1024px) {
+  .heroConsole { max-width: 520px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroAcademy { transition: none; }
+  .heroAcademy:hover { transform: none; }
+}
+
+/* ── Space Academy spotlight (#education) ── */
+.academySpot {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: 40px;
+  align-items: center;
+  padding: 40px;
+  border-radius: 28px;
+  background:
+    radial-gradient(80% 120% at 0% 0%, rgba(124, 58, 237, 0.22), transparent 60%),
+    radial-gradient(70% 100% at 100% 100%, rgba(6, 182, 212, 0.14), transparent 60%),
+    var(--portal-surface-strong);
+  border: 1px solid rgba(167, 139, 250, 0.32);
+}
+
+.academySpotText {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.academySpotText .eyebrow,
+.academySpotText .h2 { margin: 0; }
+
+@media (max-width: 960px) {
+  .academySpot { grid-template-columns: minmax(0, 1fr); gap: 28px; padding: 28px; }
+}
+
+@media (max-width: 480px) {
+  .academySpot { padding: 22px 18px; border-radius: 22px; }
+}
+
+.missionTiles {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.missionTile {
+  --accent: var(--discover);
+  --accent-text: var(--discover-text);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 64px;
+  padding: 12px 18px;
+  border-radius: 16px;
+  background: rgba(7, 9, 23, 0.55);
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  box-shadow: inset 4px 0 0 0 var(--accent);
+  color: #fff;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.missionTile:hover,
+.missionTile:focus-visible {
+  background: color-mix(in srgb, var(--accent) 16%, rgba(7, 9, 23, 0.55));
+  border-color: color-mix(in srgb, var(--accent) 70%, transparent);
+}
+
+.missionTile:focus-visible {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 2px;
+}
+
+.missionTile > svg { flex-shrink: 0; color: var(--accent-text); }
+
+.missionTile > span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.missionTileKicker {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+}
+
+.missionTileTitle {
+  font-family: var(--font-space-manrope);
+  font-size: 16.5px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .missionTile { transition: none; }
+}
+
+.academyMore {
+  margin-top: 16px;
+}
+
+.summaryWithPill {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.strong {
+  color: #fff;
+}
+
+.moreBody .tagList { margin-top: 14px; }
+
+/* ── Mission: the two disclosures under the loop ── */
+.moreStack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 820px;
+  margin: 20px auto 0;
+}
+
+.moreStack .more { margin: 0; }
+
+/* ── Research, programme and partners: collapsible panels ──
+   Each panel keeps its label, heading and one line visible; the toggle sits
+   top-right on wide screens and under the text on phones. */
+.panelList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.panel {
+  position: relative;
+  padding: 24px 28px;
+  border-radius: 20px;
+  background: var(--portal-surface);
+  border: 1px solid var(--portal-line);
+  transition: border-color 0.2s ease;
+}
+
+.panel:has(> details[open]),
+.panel:has(> div > details[open]) {
+  border-color: rgba(167, 139, 250, 0.32);
+}
+
+.panelHead {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  max-width: 900px;
+  padding-right: 200px;
+}
+
+.panelLabel {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--discover-text);
+}
+
+.panelTitle,
+.panelHead > h2 {
+  margin: 0;
+  font-family: var(--font-space-manrope);
+  font-size: clamp(19px, 2vw, 23px);
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  color: #fff;
+  text-wrap: balance;
+}
+
+.panelSummary,
+.panelHead > p {
+  margin: 0;
+  max-width: 680px;
+  color: var(--portal-body);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.panelHead .notice { padding: 12px 16px; font-size: 14px; }
+
+.panelToggle {
+  position: absolute;
+  top: 22px;
+  right: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 8px 14px;
+  white-space: nowrap;
+  border-radius: 12px;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  color: var(--engineer-text);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.3;
+  cursor: pointer;
+  list-style: none;
+}
+
+.panelToggle::-webkit-details-marker { display: none; }
+
+.panelToggle::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translateY(-2px);
+  transition: transform 0.2s ease;
+}
+
+.panelDetails[open] > .panelToggle::after {
+  transform: rotate(-135deg) translateY(-1px);
+}
+
+.panelToggle:hover { background: rgba(59, 130, 246, 0.2); }
+
+.panelToggle:focus-visible {
+  outline: 2px solid #93c5fd;
+  outline-offset: 2px;
+}
+
+.toggleHide { display: none; }
+.panelDetails[open] .toggleShow { display: none; }
+.panelDetails[open] .toggleHide { display: inline; }
+
+.panelBody {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px solid var(--portal-line);
+}
+
+.panelBody .lede { font-size: 16px; }
+.panelBody .refGrid { margin: 0; }
+
+@media (max-width: 860px) {
+  .panel { padding: 20px; }
+  .panelHead { padding-right: 0; }
+  .panelToggle { position: static; margin-top: 14px; }
+}
+
+@media (max-width: 480px) {
+  .panel { padding: 18px 16px; border-radius: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel, .panelToggle::after { transition: none; }
+}
+
+/* ── Take part (#community) ── */
+.finalCta .eyebrow { margin-bottom: 14px; }
+
+.audienceChips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  max-width: 720px;
+  margin: 0 auto 28px;
+  padding: 0;
+  list-style: none;
+}
+
+.audienceChips li {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #d5d8e8;
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+
+.finalBack {
+  margin: 20px 0 0;
+  font-size: 14.5px;
+}
+
+.finalBack a {
+  color: var(--engineer-text);
+  font-weight: 600;
+  text-underline-offset: 3px;
+}
+
+/* Jump links into the panels: each opens its panel (OpenOnHash). */
+.jumpRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.jumpRow a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(147, 197, 253, 0.3);
+  background: rgba(59, 130, 246, 0.08);
+  color: var(--engineer-text);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.jumpRow a:hover { background: rgba(59, 130, 246, 0.18); }
+.jumpRow a:focus-visible { outline: 2px solid #93c5fd; outline-offset: 2px; }
+
+@media (max-width: 640px) {
+  .jumpRow { justify-content: flex-start; }
+}
+
+/* ── Mission section head ── */
+.missionSubtitle {
+  margin: 0;
+  font-family: var(--font-space-manrope);
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  background: linear-gradient(135deg, #c4b5fd, #93c5fd, #67e8f9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.scienceMore {
+  max-width: 720px;
+  margin: 22px auto 0;
+}
+
+#mission .head { margin-bottom: 36px; }

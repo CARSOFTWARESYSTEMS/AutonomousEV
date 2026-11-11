@@ -35,7 +35,7 @@ export default function AcademyFrame({ crumbs, graph, children }: { crumbs: Crum
         </nav>
         {children}
       </main>
-      <SpaceFooter basePath="/space" />
+      <SpaceFooter basePath="/space" wide />
     </div>
   );
 }

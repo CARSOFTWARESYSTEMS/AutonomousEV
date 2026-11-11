@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import dynamic from "next/dynamic";
 import type { Level, TutorialRef } from "@/app/space/academy/data/curriculum";
 import type { MissionMeta } from "@/app/space/academy/data/missions";
@@ -7,7 +7,12 @@ import { SAFETY_PRINCIPLES } from "@/app/space/academy/data/programme";
 import { useLevel } from "../../store";
 import { academyEvent } from "../../analytics";
 import ModelViewer from "../../viewer/ModelViewer";
-import LessonShell, { type LessonStep } from "../../lesson/LessonShell";
+import { useLabMode, useLabRendering } from "../../lab/MissionLab";
+import LabMission from "../../lab/LabMission";
+import type { LabStep } from "../../lab/StepRunner";
+import type { Reflection } from "../../lab/Debrief";
+import { Compass } from "lucide-react";
+import lab from "../../lab/lab.module.css";
 import { Choice, Equation, Explain, SimTag, Slider, Stat, Stats, Toggles } from "../../lesson/controls";
 import styles from "../../lesson/lesson.module.css";
 import Rocket2D from "./Rocket2D";
@@ -25,8 +30,20 @@ const RocketScene = dynamic(() => import("./RocketScene"), {
 const by = (level: Level, foundation: string, advanced: string) => (level === "advanced" ? advanced : foundation);
 const tone = (status: string) => (status === "stable" ? "good" : status === "unstable" ? "bad" : "warn") as "good" | "bad" | "warn";
 
-export default function RocketMission({ mission, related, next }: { mission: MissionMeta; related: TutorialRef[]; next?: { href: string; label: string } }) {
+const REFLECTION: Reflection = {
+  prompt: "Which change made the biggest difference to your rocket's stability?",
+  options: [
+    { id: "fins", label: "Bigger fins, or fins further back", feedback: "Fins carry most of the rocket's side area near the tail, so making them bigger moves the centre of pressure aft and the static margin grows. It is usually the most powerful lever, and it costs little mass." },
+    { id: "ballast", label: "Clay ballast in the nose", feedback: "Nose ballast moves the centre of gravity forward, which also grows the margin, but it adds mass, so the rocket flies lower and leaves the launch rod more slowly." },
+    { id: "body", label: "A longer body tube", feedback: "A longer body puts the fins further from the nose, so the CP moves back more than the CG and the margin grows. It also adds mass and drag." },
+    { id: "motor", label: "A heavier motor", feedback: "A heavier motor moves the centre of gravity towards the tail, which shrinks the margin. That is why the Advanced check tests the heavier motor too: a design has to stay stable with it." },
+  ],
+};
+
+export default function RocketMission({ mission, related, next, info, trackTitle }: { mission: MissionMeta; related: TutorialRef[]; next?: { href: string; label: string }; info: ReactNode; trackTitle?: string }) {
   const level = useLevel();
+  const [mode, setMode] = useLabMode(mission.slug, "learn");
+  const { quality, reducedMotion } = useLabRendering();
   const [stepIndex, setStepIndex] = useState(0);
   const [design, setDesign] = useState<RocketDesign>(DEFAULT_ROCKET);
   const [whatIf, setWhatIf] = useState<RocketFault | null>(null);
@@ -44,7 +61,7 @@ export default function RocketMission({ mission, related, next }: { mission: Mis
 
   const base = evaluateRocket(design);
   const shown = evaluateRocket(design, whatIf);
-  const stepId = ["forces", "cg", "cp", "stable", "launch"][stepIndex];
+  const stepId = mode === "explore" ? "explore" : ["forces", "cg", "cp", "stable", "launch"][stepIndex];
   const sceneProps: RocketSceneProps = { design: whatIf === "finDamage" ? { ...design, spanMm: design.spanMm * 0.7 } : whatIf === "lostBallast" ? { ...design, ballastG: 0 } : design, cgMm: shown.cg.xMm, cpMm: shown.cp.xMm, selected: stepId === "cg" ? "cg" : stepId === "cp" ? "cp" : null };
 
   const sliders = (keys: (keyof typeof LIMITS)[]) =>
@@ -96,7 +113,7 @@ export default function RocketMission({ mission, related, next }: { mission: Mis
     />
   );
 
-  const steps: LessonStep[] = [
+  const steps: LabStep[] = [
     {
       id: "forces",
       title: "Parts and forces",
@@ -298,28 +315,72 @@ export default function RocketMission({ mission, related, next }: { mission: Mis
     setCpAnswer(null);
   };
 
+  const learned = [
+    "The four forces on a rocket, and why the fins make it fly straight",
+    "Finding the centre of gravity from masses and positions",
+    "Finding the centre of pressure, and what moves it",
+    "Static margin: stable, marginal, unstable and overstable designs",
+  ];
+
+  // Explore: the whole design, free to change. It is the same design the Challenge checks.
+  const explore = (
+    <div className={lab.runner}>
+      <p className={lab.lead}>{by(level, "Change the fins, nose and motor and watch the two rings move. The cyan ring (CG) should stay ahead of the amber one (CP).", "Vary the geometry and the motor; watch X_cg, X_cp and the static margin respond. Try the what-if faults.")}</p>
+      {readout}
+      <p className={styles.sliderHint} aria-live="polite">
+        <strong style={{ color: "#fff" }}>{STATUS_TEXT[shown.status].label}.</strong> {STATUS_TEXT[shown.status].flight}
+      </p>
+      {sliders(["spanMm", "rootChordMm", "ballastG", "noseLengthMm", "bodyLengthMm"])}
+      {motorChoice}
+      <details className={lab.maths}>
+        <summary>Show the maths</summary>
+        <div className={lab.mathsBody}>
+          <Equation
+            name="Static margin"
+            expression="SM = (X_cp − X_cg) ÷ d"
+            substitution={`= (${shown.cp.xMm.toFixed(0)} − ${shown.cg.xMm.toFixed(0)}) ÷ ${DIAMETER_MM} = ${shown.margin.toFixed(2)} calibres`}
+            units="X measured from the nose tip · d = body diameter (40 mm)"
+            explain={by(level, "Positive means the CP is behind the CG, so the rocket points into the wind and flies straight.", "Barrowman's method sums each component's normal-force coefficient and centre; the margin is their distance in calibres.")}
+          />
+        </div>
+      </details>
+      <p className={lab.small}>Your design carries into the Challenge. Simplified model; never a substitute for a real flight simulation and a supervised launch.</p>
+      <div className={lab.next}>
+        <p>Ready for the guided lesson?</p>
+        <button type="button" className={lab.primary} onClick={() => setMode("learn")}>
+          <Compass size={16} aria-hidden /> Start the guided lesson
+        </button>
+      </div>
+    </div>
+  );
+
   return (
-    <LessonShell
+    <LabMission
       mission={mission}
+      trackTitle={trackTitle}
       level={level}
+      mode={mode}
+      onModeChange={setMode}
       steps={steps}
+      learnCount={3}
       stepIndex={stepIndex}
       onStepChange={setStepIndex}
-      onReplay={replay}
-      learned={[
-        "The four forces on a rocket, and why the fins make it fly straight",
-        "Finding the centre of gravity from masses and positions",
-        "Finding the centre of pressure, and what moves it",
-        "Static margin: stable, marginal, unstable and overstable designs",
-      ]}
-      next={next}
+      explore={explore}
+      reflection={REFLECTION}
+      learned={learned}
       related={related}
-      viewer={
+      next={next}
+      info={info}
+      onReplay={replay}
+      viewport={
         <ModelViewer<RocketSceneProps>
+          variant="lab"
           title="Model rocket with centre of gravity and centre of pressure"
           mission={mission.slug}
           Scene3D={RocketScene}
           sceneProps={sceneProps}
+          quality={quality}
+          reducedMotion={reducedMotion}
           render2D={(v) => <Rocket2D {...v} {...sceneProps} />}
           caption={`Illustrative model rocket. Cyan ring: centre of gravity (CG). Amber ring: centre of pressure (CP).${whatIf ? ` Previewing: ${FAULTS[whatIf].name.toLowerCase()}.` : ""}`}
         />

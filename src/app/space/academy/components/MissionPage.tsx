@@ -1,77 +1,90 @@
 import Link from "next/link";
-import AcademyFrame from "./AcademyFrame";
-import LevelSwitch from "./LevelSwitch";
-import Notices from "./Notices";
+import { manrope, inter } from "../../fonts";
+import spaceTheme from "../../spaceTheme.module.css";
+import space from "../../space.module.css";
+import { JsonLd } from "@/lib/structured-data/JsonLd";
+import lab from "@/components/space-academy/lab/lab.module.css";
 import { trackBySlug } from "../data/curriculum";
 import { missionBySlug } from "../data/missions";
+import { DISCLAIMERS, SAFETY_PRINCIPLES } from "../data/programme";
 import { missionGraph } from "../seo";
-import styles from "../academy.module.css";
 
 /**
- * The page around a mission. Each route passes its own mission component as
- * children, so a page's bundle carries only its own mission.
+ * The frame around a mission: no site header, footer or breadcrumb, because
+ * the Mission Lab is a focused, full-screen player with its own Exit. Each
+ * route passes its own mission component as children, so a page's bundle
+ * carries only its own mission.
  */
 export default function MissionPage({ slug, children }: { slug: string; children: React.ReactNode }) {
   const mission = missionBySlug(slug);
   if (!mission) throw new Error(`Unknown mission: ${slug}`);
-  const track = trackBySlug(mission.track);
   return (
-    <AcademyFrame
-      crumbs={[{ label: "Space", href: "/space" }, { label: "Space Academy", href: "/space/academy" }, { label: "Missions", href: "/space/academy#missions" }, { label: mission.title }]}
-      graph={missionGraph(mission)}
-    >
-      <header className={styles.missionHero}>
-        <span className={styles.eyebrow}>
-          Mission {mission.number}
-          {track ? ` · ${track.title}` : ""}
-        </span>
-        <div className={styles.missionHeroRow}>
-          <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 720 }}>
-            <h1 className={styles.h1} style={{ fontSize: "clamp(30px, 4vw, 44px)" }}>
-              {mission.title}
-            </h1>
-            <p className={styles.sectionLede}>{mission.summary}</p>
-          </div>
-          <LevelSwitch placement={`mission_${mission.slug}`} />
-        </div>
-      </header>
-
+    <div className={`${spaceTheme.theme} ${manrope.variable} ${inter.variable}`}>
+      <JsonLd data={missionGraph(mission)} />
+      <a href="#main-content" className={space.skipLink}>
+        Skip to the mission
+      </a>
       {children}
+    </div>
+  );
+}
 
-      <div className={styles.missionAbout}>
-        <section className={styles.aboutCard} aria-labelledby="mission-concepts">
-          <h2 id="mission-concepts" className={styles.h3}>
-            Concepts in this mission
-          </h2>
-          <ul className={styles.checkList}>
-            {mission.concepts.map((c) => (
-              <li key={c}>{c}</li>
-            ))}
-          </ul>
-          {track && (
-            <p>
-              Part of the{" "}
-              <Link href={`/space/academy/${track.slug}`} className={styles.inlineLink}>
-                {track.title} track
-              </Link>
-              , with its full curriculum for both age levels.
-            </p>
-          )}
-        </section>
-        <section className={styles.aboutCard} aria-labelledby="mission-model">
-          <h2 id="mission-model" className={styles.h3}>
-            About the model
-          </h2>
-          <p>
-            The physics is real but simplified, and the numbers are illustrative values chosen for learning. Each step says what it leaves out. It is not a design tool for real flight hardware.
-          </p>
-          <p>Your progress is saved only in this browser. Nothing you choose here is sent to us, apart from anonymous counts of which steps are completed.</p>
-        </section>
-      </div>
-
-      <div className={styles.section}>
-        <Notices compact />
-      </div>
-    </AcademyFrame>
+/**
+ * "About this mission", shown in the lab's info dialog. Rendered on the
+ * server, so the mission's description, concepts and every notice are in
+ * the page's HTML for search engines and for reading without JavaScript.
+ */
+export function MissionInfo({ slug }: { slug: string }) {
+  const mission = missionBySlug(slug);
+  if (!mission) throw new Error(`Unknown mission: ${slug}`);
+  const track = trackBySlug(mission.track);
+  const rocketry = mission.track === "model-rocketry";
+  return (
+    <div className={lab.info}>
+      <p>{mission.summary}</p>
+      <section aria-labelledby={`${slug}-you-will`}>
+        <h3 id={`${slug}-you-will`}>You will</h3>
+        <ul>
+          {mission.youWill.map((y) => (
+            <li key={y}>{y}</li>
+          ))}
+        </ul>
+      </section>
+      <section aria-labelledby="mission-concepts">
+        <h3 id="mission-concepts">Concepts in this mission</h3>
+        <ul>
+          {mission.concepts.map((c) => (
+            <li key={c}>{c}</li>
+          ))}
+        </ul>
+      </section>
+      {track && (
+        <p>
+          Part of the <Link href={`/space/academy/${track.slug}`}>{track.title} track</Link>, with its course description and a lesson plan for each age level.
+        </p>
+      )}
+      <section aria-labelledby="mission-model">
+        <h3 id="mission-model">About the model</h3>
+        <p>
+          An educational simulation, not a validated engineering tool. The physics is real but simplified and the numbers are illustrative values chosen for learning; each step says what it leaves out. Do not use it to design real flight hardware.
+        </p>
+      </section>
+      <section id="notices" aria-labelledby="notices-title">
+        <h3 id="notices-title">Independence, safety and privacy</h3>
+        <ul>
+          <li>{DISCLAIMERS.simulated}</li>
+          <li>
+            {DISCLAIMERS.privacy} {DISCLAIMERS.signIn}
+          </li>
+          <li>{DISCLAIMERS.independence}</li>
+          <li>{DISCLAIMERS.eligibility}</li>
+          <li>{DISCLAIMERS.ages}</li>
+          {rocketry && SAFETY_PRINCIPLES.map((s) => <li key={s}>{s}</li>)}
+        </ul>
+      </section>
+      <p>
+        <Link href="/space/academy">Space Academy</Link> · <Link href="/space">Space portal</Link>
+      </p>
+    </div>
   );
 }

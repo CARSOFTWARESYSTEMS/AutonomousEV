@@ -9,7 +9,8 @@ import { Box, Layers, RotateCcw, RotateCw, Square, Tag, ZoomIn, ZoomOut, LocateF
 import { getWebGLSupport, REDUCED_MOTION_QUERY } from "@/components/satellite-explorer/lib/capabilities";
 import { setViewPreference, useViewPreference } from "../store";
 import { academyEvent } from "../analytics";
-import { createController, type Scene2DState, type SceneState } from "./controller";
+import { createController, type Scene2DState, type SceneState, type StageQuality, type ViewerController } from "./controller";
+import { StageQualityContext } from "./Stage3D";
 import styles from "./viewer.module.css";
 
 const COMPACT_QUERY = "(max-width: 767px)";
@@ -49,19 +50,58 @@ export interface ModelViewerProps<P extends object> {
   caption: ReactNode;
   /** Mission slug, for analytics. */
   mission: string;
+  /**
+   * "lab": the stage fills its container (the Mission Lab's viewport) and the
+   * view tools float over it in one column; the caption is kept for screen
+   * readers. "inline" (default): a framed stage with the tools underneath.
+   */
+  variant?: "inline" | "lab";
+  /** Controlled exploded view, so a mission can open the model to show a part. */
+  exploded?: boolean;
+  onExplodedChange?: (exploded: boolean) => void;
+  /** A camera controller owned by the mission, for guided camera moves. */
+  controller?: ViewerController;
+  /** Overrides from the learner's settings; otherwise the device's preference and full quality. */
+  reducedMotion?: boolean;
+  quality?: StageQuality;
 }
 
-export default function ModelViewer<P extends object>({ title, Scene3D, sceneProps, render2D, explodable = true, defaultExploded = false, defaultLabels = true, caption, mission }: ModelViewerProps<P>) {
+export default function ModelViewer<P extends object>({
+  title,
+  Scene3D,
+  sceneProps,
+  render2D,
+  explodable = true,
+  defaultExploded = false,
+  defaultLabels = true,
+  caption,
+  mission,
+  variant = "inline",
+  exploded: explodedProp,
+  onExplodedChange,
+  controller: controllerProp,
+  reducedMotion: reducedMotionProp,
+  quality = "high",
+}: ModelViewerProps<P>) {
   const webgl = useWebGL();
   const preference = useViewPreference();
-  const reducedMotion = useMedia(REDUCED_MOTION_QUERY, false);
+  const systemReducedMotion = useMedia(REDUCED_MOTION_QUERY, false);
+  const reducedMotion = reducedMotionProp ?? systemReducedMotion;
   const compact = useMedia(COMPACT_QUERY, false);
-  const [exploded, setExploded] = useState(defaultExploded);
+  const [explodedState, setExplodedState] = useState(defaultExploded);
+  const exploded = explodedProp ?? explodedState;
+  const setExploded = (update: (v: boolean) => boolean) => {
+    const next = update(exploded);
+    setExplodedState(next);
+    onExplodedChange?.(next);
+  };
   const [labels, setLabels] = useState(defaultLabels);
   const [contextLost, setContextLost] = useState(false);
   const [near, setNear] = useState(false);
   const [zoom2d, setZoom2d] = useState(1);
-  const controller = useMemo(() => createController(), []);
+  const ownController = useMemo(() => createController(), []);
+  const controller = controllerProp ?? ownController;
+  const lab = variant === "lab";
   const stageRef = useRef<HTMLDivElement>(null);
 
   const can3d = webgl === true && !contextLost;
@@ -124,7 +164,7 @@ export default function ModelViewer<P extends object>({ title, Scene3D, scenePro
         : null;
 
   return (
-    <figure className={styles.viewer} aria-label={title}>
+    <figure className={styles.viewer} data-variant={variant} aria-label={title}>
       <div
         ref={stageRef}
         className={styles.stage}
@@ -137,7 +177,9 @@ export default function ModelViewer<P extends object>({ title, Scene3D, scenePro
         onKeyDown={onKeyDown}
       >
         {mode === "3d" && ready ? (
-          <Scene3D {...sceneProps} exploded={exploded} labels={labels} reducedMotion={reducedMotion} compact={compact} controller={controller} onContextLost={onContextLost} />
+          <StageQualityContext.Provider value={quality}>
+            <Scene3D {...sceneProps} exploded={exploded} labels={labels} reducedMotion={reducedMotion} compact={compact} controller={controller} onContextLost={onContextLost} />
+          </StageQualityContext.Provider>
         ) : (
           <div className={styles.flat} style={{ transform: zoom2d === 1 ? undefined : `scale(${zoom2d})` }}>
             {render2D({ exploded, labels, compact })}
@@ -145,11 +187,11 @@ export default function ModelViewer<P extends object>({ title, Scene3D, scenePro
         )}
         {mode === "3d" && !ready && <div className={styles.loading}>Preparing the 3D model…</div>}
         <p id={hintId} className={styles.hint}>
-          {mode === "3d" ? (compact ? "Illustrative model · drag to rotate · pinch to zoom" : "Drag to rotate · scroll or pinch to zoom · arrow keys rotate, + and − zoom, 0 resets") : compact ? "Illustrative model · 2D drawing" : "2D drawing · + and − zoom, 0 resets"}
+          {mode === "3d" ? (compact ? "Drag to rotate · pinch to zoom" : "Drag to rotate · scroll or pinch to zoom · arrow keys rotate, + and − zoom, 0 resets") : compact ? "2D drawing" : "2D drawing · + and − zoom, 0 resets"}
         </p>
       </div>
 
-      <div className={styles.toolbar} role="toolbar" aria-label="View controls">
+      <div className={styles.toolbar} role="toolbar" aria-label="View controls" aria-orientation={lab ? "vertical" : undefined}>
         <div className={styles.group}>
           {mode === "3d" && (
             <>
@@ -183,6 +225,7 @@ export default function ModelViewer<P extends object>({ title, Scene3D, scenePro
             <span>Labels</span>
           </button>
         </div>
+        {!lab && (
         <div className={styles.segmented} role="group" aria-label="View type">
           <button type="button" aria-pressed={mode === "3d"} disabled={!can3d} onClick={() => chooseMode("3d")} className={styles.segment}>
             <Box size={16} aria-hidden /> 3D
@@ -191,11 +234,12 @@ export default function ModelViewer<P extends object>({ title, Scene3D, scenePro
             <Square size={16} aria-hidden /> 2D
           </button>
         </div>
+        )}
       </div>
 
-      <figcaption className={styles.caption}>
+      <figcaption className={lab ? styles.captionLab : styles.caption}>
         {status && <span className={styles.status}>{status} </span>}
-        {caption}
+        {lab ? <span className={styles.srOnly}>{caption}</span> : caption}
       </figcaption>
     </figure>
   );

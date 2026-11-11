@@ -25,13 +25,6 @@ export type IconName =
   | "layers"
   | "checkCircle";
 
-export const heroSummary: { value: string; label: string }[] = [
-  { value: "Ages 14–18", label: "Space Education" },
-  { value: "Engineering", label: "Internships & Research" },
-  { value: "Young Founders", label: "Startup Pathway" },
-  { value: "2040", label: "Long-Term Mission" },
-];
-
 export const missionConsole: {
   label: string;
   status: "Nominal" | "Monitor" | "Degraded" | "Advisory";
@@ -72,6 +65,8 @@ export const pathwayStages: {
   /** Stable key for styling and analytics. */
   key: "discover" | "engineer" | "research" | "venture";
   title: string;
+  /** One line under the title; the items below stay complete. */
+  summary: string;
   items: string[];
   icon: IconName;
   color: string;
@@ -81,6 +76,7 @@ export const pathwayStages: {
     stage: "Discover",
     key: "discover",
     title: "Ages 14–18",
+    summary: "Find out how a spacecraft stays healthy, from its sensors to safe mode, through interactive 3D missions.",
     icon: "graduationCap",
     color: "#7C3AED",
     items: ["Spacecraft systems", "Sensors and telemetry", "Faults, redundancy and safe mode", "Mission-health challenge"],
@@ -90,6 +86,7 @@ export const pathwayStages: {
     stage: "Engineer",
     key: "engineer",
     title: "Higher Education",
+    summary: "Engineering students work as one mission team on the simulator, the digital twin and the recovery logic.",
     icon: "cpu",
     color: "#3B82F6",
     items: ["Simulator and telemetry engineering", "Digital twins", "Fault detection, isolation and recovery", "Hardware-in-the-loop validation"],
@@ -99,6 +96,7 @@ export const pathwayStages: {
     stage: "Research",
     key: "research",
     title: "Applied Teams",
+    summary: "Applied teams take the work towards verified algorithms, open datasets and academic and industry validation.",
     icon: "flaskConical",
     color: "#06B6D4",
     items: ["Verified algorithms", "Fault libraries and datasets", "Papers and patent candidates", "Academic and industry validation"],
@@ -108,6 +106,7 @@ export const pathwayStages: {
     stage: "Venture",
     key: "venture",
     title: "Young Founders",
+    summary: "Young founders take validated prototypes towards responsible space products and services.",
     icon: "rocket",
     color: "#F59E0B",
     items: ["Customer discovery", "Validated prototype", "Responsible incubation", "Space products and services"],

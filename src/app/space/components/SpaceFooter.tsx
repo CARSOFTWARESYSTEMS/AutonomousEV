@@ -9,22 +9,25 @@ export default function SpaceFooter({
   basePath = "",
   brandLinks,
   organisationLine,
+  wide = false,
 }: {
   basePath?: string;
   /** Replaces the default EV.ENGINEER / UFlight / ISHAVASYAM.ORG / iTelematics links. */
   brandLinks?: BrandLink[];
   /** Replaces the default "An ISHAVASYAM.ORG Initiative" credit line. */
   organisationLine?: string;
+  /** The 1,600px column with a fluid gutter, for pages laid out that wide (the portal and Space Academy). */
+  wide?: boolean;
 }) {
   const custom = brandLinks !== undefined;
   return (
     <footer
       style={{
         borderTop: "1px solid rgba(255,255,255,0.06)",
-        padding: "48px 32px 28px",
+        padding: wide ? "48px clamp(16px, 3.5vw, 56px) 28px" : "48px 32px 28px",
       }}
     >
-      <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+      <div style={{ maxWidth: wide ? 1600 : 1280, margin: "0 auto" }}>
         <div
           style={{ gap: 40, marginBottom: 40 }}
           className={styles.footerGrid}

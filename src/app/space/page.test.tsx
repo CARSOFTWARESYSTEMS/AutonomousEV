@@ -327,9 +327,51 @@ describe("Space page", () => {
     const simulations = container.querySelector("#simulations");
     expect(simulations).not.toBeNull();
     expect(within(simulations as HTMLElement).getByRole("link", { name: "Explore CubeTwin" })).toHaveAttribute("href", "/space/cubesat");
-    // The portal brief's order: hero, pathways, mission, education to startup, tutorials, labs and platform, themes, roadmap, partners, FAQ.
+    // The UX refinement's order: hero, the four pathways, Space Academy, the mission, tutorials, then the research,
+    // programme and partner panels, the FAQ and the call to take part. Every earlier anchor is still a section.
     const ids = Array.from(container.querySelectorAll("section[id]")).map(section => section.id);
-    expect(ids).toEqual(["home", "pathway", "mission", "vision", "education", "internships", "simulations", "labs", "research", "projects", "roadmap", "community", "access", "partners", "ecosystem", "faq"]);
+    expect(ids).toEqual(["home", "pathway", "education", "mission", "simulations", "vision", "internships", "labs", "research", "projects", "roadmap", "access", "partners", "ecosystem", "faq", "community"]);
+  });
+
+it("keeps the research, programme and partner detail in the HTML behind closed panels whose heading and status line stay visible", () => {
+    const { container } = render(<SpacePage />);
+    for (const id of ["vision", "internships", "labs", "research", "projects", "roadmap", "access", "partners", "ecosystem"]) {
+      const section = container.querySelector(`#${id}`) as HTMLElement;
+      const details = section.querySelector("details[data-panel]") as HTMLDetailsElement;
+      expect(details, id).not.toBeNull();
+      expect(details.open, id).toBe(false);
+      expect(details.querySelector("summary")?.textContent, id).toMatch(/^Show\s*Hide /);
+      expect(details.textContent?.length, id).toBeGreaterThan(40);
+      // The heading is outside the disclosure, so it is always visible and stays a real heading.
+      const heading = within(section).getAllByRole("heading", { level: 2 })[0];
+      expect(details.contains(heading), id).toBe(false);
+    }
+    // Status disclaimers stay outside the closed panels.
+    expect(container.querySelector("#partners details")?.contains(screen.getByText(/proposed\s+capability partners unless otherwise confirmed/))).toBe(false);
+    expect(container.querySelector("#vision details")?.contains(screen.getByText("Independent initiative."))).toBe(false);
+    expect(within(container.querySelector("#research") as HTMLElement).getByText("Planned Research Platform").closest("details")).toBeNull();
+  });
+
+it("opens a closed panel when a link to its anchor is followed, from the header or from a pathway card", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<SpacePage />);
+    const labs = container.querySelector("#labs details") as HTMLDetailsElement;
+    const header = screen.getByRole("navigation", { name: "Space section navigation" });
+    await user.click(within(header).getByRole("link", { name: "Labs" }));
+    expect(labs.open).toBe(true);
+    const internships = container.querySelector("#internships details") as HTMLDetailsElement;
+    await user.click(screen.getByRole("link", { name: /See Internships & Research/ }));
+    expect(internships.open).toBe(true);
+    window.history.replaceState(null, "", "/");
+  });
+
+it("keeps the hero to one statement and three calls to action, with Space Academy first", () => {
+    const { container } = render(<SpacePage />);
+    const hero = container.querySelector("#home") as HTMLElement;
+    expect(hero.querySelectorAll("p")).toHaveLength(2); // the statement, and the console's illustrative-simulation label
+    const links = within(hero).getAllByRole("link");
+    expect(links.map((a) => a.textContent?.replace(/\s+/g, " ").trim())).toEqual(["Enter Space AcademyAges 14–18 · interactive 3D missions", "Expression of Interest", "Explore the Mission"]);
+    expect(links[0]).toHaveAttribute("href", "/space/academy");
   });
 
 it("shows the Model Rocketry card before the CubeTwin card in the simulations section", () => {
@@ -360,28 +402,81 @@ it("shows a researcher attribution card linking to the canonical profile", () =>
     expect(profileLink).toHaveAttribute("href", "/about/sudarshana-karkala");
   });
 
-it("shows the Space Station card immediately after the CubeTwin card", () => {
+/** The showcase's rows, in order, each with its article (visual and text). */
+const showcaseRows = (container: HTMLElement) => {
+  const simulations = container.querySelector("#simulations") as HTMLElement;
+  return Array.from(simulations.querySelectorAll("ol > li")) as HTMLElement[];
+};
+const rowOf = (link: HTMLElement) => link.closest("li") as HTMLElement;
+
+it("shows every tutorial as its own full-width row, in the agreed order", () => {
     const { container } = render(<SpacePage />);
-    const simulations = container.querySelector("#simulations") as HTMLElement;
-    const cubetwinCard = within(simulations).getByRole("link", { name: "Explore CubeTwin" }).parentElement as HTMLElement;
-    const stationLink = within(simulations).getByRole("link", { name: /Explore Space Station/ });
-    expect(stationLink).toHaveAttribute("href", "/space/space-station");
-    expect(cubetwinCard.nextElementSibling).toBe(stationLink.parentElement);
-    expect(within(stationLink.parentElement as HTMLElement).getByRole("heading", { level: 3 })).toHaveTextContent("Space Station");
+    const rows = showcaseRows(container);
+    expect(rows.map((r) => within(r).getByRole("heading", { level: 3 }).textContent)).toEqual(["Space Applications", "Satellite Engineering", "Model Rocketry", "CubeTwin", "Space Station", "APEX Rocket Systems", "Next-Generation Rocket Engine Digital Twin", "Advanced Rocket Propulsion Digital Twin"]);
+    // Every row keeps its label, a short first line, the complete description behind a closed disclosure, one button and its status note.
+    const ctas = [
+      ["Explore Space Applications", "/space/everyday-applications"],
+      ["Explore Satellite Engineering", "/space/satellite-engineering"],
+      ["Explore Model Rocketry", "/space/model-rocketry"],
+      ["Explore CubeTwin", "/space/cubesat"],
+      ["Explore Space Station", "/space/space-station"],
+      ["Explore APEX Collaboration Concept", "/space/partners/apexrocketsystems"],
+      ["Explore Rocket Engine Digital Twin", "/space/rocket-engine-digital-twin"],
+      ["Explore Advanced Digital Twin", "/space/rocket-engine-digital-twin-advanced"],
+    ];
+    rows.forEach((row, i) => {
+      const details = row.querySelector("details") as HTMLDetailsElement;
+      expect(details.open).toBe(false);
+      expect(details.querySelector("summary")?.textContent).toBe("About this tutorial");
+      expect(details.querySelectorAll("p").length).toBeGreaterThan(0);
+      const links = within(row).getAllByRole("link").filter((a) => !/Official website/.test(a.textContent ?? ""));
+      expect(links.map((a) => [a.textContent?.trim(), a.getAttribute("href")])).toEqual([ctas[i]]);
+    });
   });
 
-it("shows the flagship Satellite Engineering card immediately after Space Applications and before Model Rocketry", () => {
+it("gives every showcase visual a text alternative, and only uses a photograph APEX supplied for the APEX row", () => {
+    const { container } = render(<SpacePage />);
+    const rows = showcaseRows(container);
+    rows.forEach((row) => {
+      const figure = row.querySelector("figure") as HTMLElement;
+      const img = within(figure).getByRole("img");
+      expect(img.getAttribute("aria-label") ?? img.getAttribute("alt")).toBeTruthy();
+      expect(figure.querySelector("figcaption")?.textContent?.length).toBeGreaterThan(20);
+    });
+    const apex = rows[5];
+    const photo = apex.querySelector("img") as HTMLImageElement;
+    expect(photo.getAttribute("src")).toMatch(/apex-hardware-01-768\.jpg$/);
+    // The approved caption only: the photograph is not claimed to be the 5 kN-class demonstrator.
+    expect(apex.querySelector("figcaption")?.textContent).toMatch(/^APEX propulsion development hardware in the workshop\./);
+    // Illustrations are labelled for what they simplify.
+    expect(rows[0].querySelector("figcaption")?.textContent).toMatch(/to scale with Earth; satellites enlarged/);
+    expect(rows[2].querySelector("figcaption")?.textContent).toMatch(/Not to scale/);
+    expect(rows[4].querySelector("figcaption")?.textContent).toMatch(/Not a model of any real station/);
+    expect(rows[6].querySelector("figcaption")?.textContent).toMatch(/not a real engine/);
+  });
+
+it("shows the Space Station row immediately after the CubeTwin row", () => {
     const { container } = render(<SpacePage />);
     const simulations = container.querySelector("#simulations") as HTMLElement;
-    const titles = within(simulations).getAllByRole("heading", { level: 3 }).map((h) => h.textContent);
-    expect(titles).toEqual(["Space Applications", "Satellite Engineering", "Model Rocketry", "CubeTwin", "Space Station", "APEX Rocket Systems", "Next-Generation Rocket Engine Digital Twin", "Advanced Rocket Propulsion Digital Twin"]);
+    const cubetwin = rowOf(within(simulations).getByRole("link", { name: "Explore CubeTwin" }));
+    const stationLink = within(simulations).getByRole("link", { name: /Explore Space Station/ });
+    expect(stationLink).toHaveAttribute("href", "/space/space-station");
+    expect(cubetwin.nextElementSibling).toBe(rowOf(stationLink));
+    expect(within(rowOf(stationLink)).getByRole("heading", { level: 3 })).toHaveTextContent("Space Station");
+  });
 
+it("shows the flagship Satellite Engineering row immediately after Space Applications and before Model Rocketry", () => {
+    const { container } = render(<SpacePage />);
+    const simulations = container.querySelector("#simulations") as HTMLElement;
     const satelliteLink = within(simulations).getByRole("link", { name: /Explore Satellite Engineering/ });
     expect(satelliteLink).toHaveAttribute("href", "/space/satellite-engineering");
-    const card = satelliteLink.parentElement as HTMLElement;
-    expect(within(card).getByText("Flagship Advanced Program")).toBeInTheDocument();
-    expect(within(card).getByText("From First Principles to Spacecraft Systems Architect")).toBeInTheDocument();
-    expect(within(card).getByText(/Architecture & Leadership Track · Systems Leads · CTO · Chief Architect/)).toBeInTheDocument();
+    const row = rowOf(satelliteLink);
+    expect(row).toHaveAttribute("data-flagship");
+    expect(within(row).getByText("Flagship Advanced Program")).toBeInTheDocument();
+    expect(within(row).getByText("From First Principles to Spacecraft Systems Architect")).toBeInTheDocument();
+    expect(within(row).getByText(/Architecture & Leadership Track · Systems Leads · CTO · Chief Architect/)).toBeInTheDocument();
+    expect(within(row.previousElementSibling as HTMLElement).getByRole("heading", { level: 3 })).toHaveTextContent("Space Applications");
+    expect(within(row.nextElementSibling as HTMLElement).getByRole("heading", { level: 3 })).toHaveTextContent("Model Rocketry");
   });
 
 it("links to the Next-Generation Rocket Engine Digital Twin from the simulations section and reports the click", () => {
@@ -392,31 +487,31 @@ it("links to the Next-Generation Rocket Engine Digital Twin from the simulations
     expect(link).toHaveAttribute("data-track-event", "space_project_card_click");
     expect(link).toHaveAttribute("data-track-project", "rocket_engine_digital_twin");
     expect(link).toHaveAttribute("data-track-placement", "simulation_projects");
-    const card = link.parentElement as HTMLElement;
-    expect(within(card).getByRole("heading", { level: 3 })).toHaveTextContent("Next-Generation Rocket Engine Digital Twin");
-    expect(within(card).getByText("Educational demonstrator · Reference and simulated data · Not a real engine.")).toBeInTheDocument();
-    // The card follows Space Station and the APEX partner card next to it.
-    const apexCard = within(simulations).getByRole("link", { name: /Explore APEX Collaboration Concept/ }).parentElement as HTMLElement;
-    expect(within(simulations).getByRole("link", { name: /Explore Space Station/ }).parentElement?.nextElementSibling).toBe(apexCard);
-    expect(apexCard.nextElementSibling).toBe(card);
+    const row = rowOf(link);
+    expect(within(row).getByRole("heading", { level: 3 })).toHaveTextContent("Next-Generation Rocket Engine Digital Twin");
+    expect(within(row).getByText("Educational demonstrator · Reference and simulated data · Not a real engine.")).toBeInTheDocument();
+    // The row follows Space Station and the APEX row next to it.
+    const apexRow = rowOf(within(simulations).getByRole("link", { name: /Explore APEX Collaboration Concept/ }));
+    expect(rowOf(within(simulations).getByRole("link", { name: /Explore Space Station/ })).nextElementSibling).toBe(apexRow);
+    expect(apexRow.nextElementSibling).toBe(row);
   });
 
-it("places the APEX Rocket Systems card next to Space Station, linking to the APEX microsite and to APEX's official website", () => {
+it("places the APEX Rocket Systems row next to Space Station, linking to the APEX microsite and to APEX's official website", () => {
     const { container } = render(<SpacePage />);
     const simulations = container.querySelector("#simulations") as HTMLElement;
     const link = within(simulations).getByRole("link", { name: /Explore APEX Collaboration Concept/ });
     expect(link).toHaveAttribute("href", "/space/partners/apexrocketsystems");
     expect(link).toHaveAttribute("data-track-event", "space_project_card_click");
     expect(link).toHaveAttribute("data-track-project", "apex_rocket_systems");
-    const card = link.parentElement as HTMLElement;
-    expect(within(card).getByRole("heading", { level: 3 })).toHaveTextContent("APEX Rocket Systems");
-    expect(within(card).getByText("Rocket Propulsion · Integrated Launch Systems")).toBeInTheDocument();
-    const official = within(card).getByRole("link", { name: /Official website/ });
+    const row = rowOf(link);
+    expect(within(row).getByRole("heading", { level: 3 })).toHaveTextContent("APEX Rocket Systems");
+    expect(within(row).getByText("Rocket Propulsion · Integrated Launch Systems")).toBeInTheDocument();
+    const official = within(row).getByRole("link", { name: /Official website/ });
     expect(official).toHaveAttribute("href", "https://www.apexrocketsystems.com/");
     expect(official).toHaveAttribute("target", "_blank");
     expect(official).toHaveAttribute("rel", "noopener noreferrer");
-    expect(card.textContent).toMatch(/Engineering collaboration with Gamyaa AeroSystems/);
-    expect(card.textContent).not.toMatch(/hot-fired|flight-qualified|launch-ready|ishavasyam/i);
+    expect(row.textContent).toMatch(/Engineering collaboration with Gamyaa AeroSystems/);
+    expect(row.textContent).not.toMatch(/hot-fired|flight-qualified|launch-ready|ishavasyam/i);
   });
 
 it("lists the partners in a Partners & Engineering Ecosystem section, each in its own role: Gamyaa AeroSystems in an engineering collaboration, the rest proposed", () => {
@@ -440,7 +535,7 @@ it("lists the partners in a Partners & Engineering Ecosystem section, each in it
     expect(ifab.textContent).toMatch(/Proposed Capability Partner/);
   });
 
-it("places the Advanced Rocket Propulsion Digital Twin card immediately next to the Rocket Engine Digital Twin card", () => {
+it("places the Advanced Rocket Propulsion Digital Twin row immediately after the Rocket Engine Digital Twin row, as the last row", () => {
     const { container } = render(<SpacePage />);
     const simulations = container.querySelector("#simulations") as HTMLElement;
     const link = within(simulations).getByRole("link", { name: "Explore Advanced Digital Twin" });
@@ -448,50 +543,55 @@ it("places the Advanced Rocket Propulsion Digital Twin card immediately next to 
     expect(link).toHaveAttribute("data-track-event", "space_project_card_click");
     expect(link).toHaveAttribute("data-track-project", "rocket_propulsion_digital_twin_advanced");
     expect(link).toHaveAttribute("data-track-placement", "simulation_projects");
-    const card = link.parentElement as HTMLElement;
-    expect(within(card).getByRole("heading", { level: 3 })).toHaveTextContent("Advanced Rocket Propulsion Digital Twin");
-    expect(within(card).getByText("Build a physics-based, data-driven and AI/ML-assisted Digital Twin for an end-to-end rocket propulsion system, with a focus on pressure monitoring, fault detection, diagnosis and prognostics.")).toBeInTheDocument();
-    expect(within(card).getByText("Physics · Pressure Monitoring · AI/ML · FDIR · Prognostics")).toBeInTheDocument();
-    // Fundamentals first, then advanced: the two cards are neighbours, and the advanced card is the last.
-    const rocketCard = within(simulations).getByRole("link", { name: "Explore Rocket Engine Digital Twin" }).parentElement as HTMLElement;
-    expect(rocketCard.nextElementSibling).toBe(card);
-    expect(card.nextElementSibling).toBeNull();
+    const row = rowOf(link);
+    expect(within(row).getByRole("heading", { level: 3 })).toHaveTextContent("Advanced Rocket Propulsion Digital Twin");
+    expect(within(row).getByText("Build a physics-based, data-driven and AI/ML-assisted Digital Twin for an end-to-end rocket propulsion system, with a focus on pressure monitoring, fault detection, diagnosis and prognostics.")).toBeInTheDocument();
+    expect(within(row).getByText("Physics · Pressure Monitoring · AI/ML · FDIR · Prognostics")).toBeInTheDocument();
+    // Fundamentals first, then advanced: the two rows are neighbours, and the advanced row is the last.
+    const rocketRow = rowOf(within(simulations).getByRole("link", { name: "Explore Rocket Engine Digital Twin" }));
+    expect(rocketRow.nextElementSibling).toBe(row);
+    expect(row.nextElementSibling).toBeNull();
   });
 
-it("positions the advanced card as the next step, with a propulsion visual and no claim to be any agency's engine", () => {
+it("positions the advanced row as the next step, with a propulsion visual and no claim to be any agency's engine", () => {
     const { container } = render(<SpacePage />);
     const simulations = container.querySelector("#simulations") as HTMLElement;
-    const card = within(simulations).getByRole("link", { name: "Explore Advanced Digital Twin" }).parentElement as HTMLElement;
-    const progression = within(card).getByText("Understand the Engine").parentElement as HTMLElement;
+    const row = rowOf(within(simulations).getByRole("link", { name: "Explore Advanced Digital Twin" }));
+    const progression = within(row).getByText("Understand the Engine").parentElement as HTMLElement;
     expect(progression).toHaveTextContent(/Understand the Engine\s*, then\s*Engineer the Digital Twin/);
-    expect(within(card).getByRole("img", { name: /rocket engine with its pressure paths.*Digital Twin.*telemetry trace/i })).toBeInTheDocument();
-    expect(within(card).getByText("Advanced educational and research-oriented reference architecture · Simulated data · Not a proprietary or flight engine.")).toBeInTheDocument();
-    expect(card.textContent).not.toMatch(/SpaceX|NASA|ISRO/);
+    expect(within(row).getByRole("img", { name: /pressure sensors.*harness.*controller/i })).toBeInTheDocument();
+    // Its still drawing (shown before or instead of 3D) is the propulsion twin drawing.
+    expect(row.querySelector('svg[aria-label*="Digital Twin"]')).not.toBeNull();
+    expect(within(row).getByText("Advanced educational and research-oriented reference architecture · Simulated data · Not a proprietary or flight engine.")).toBeInTheDocument();
+    expect(row.textContent).not.toMatch(/SpaceX|NASA|ISRO/);
   });
 
-it("keeps the two propulsion twin cards in one row from the two-column layout up, and lets them stack on a phone", () => {
-    const css = readFileSync(resolve(import.meta.dirname, "space.module.css"), "utf-8");
-    // The fundamentals card starts a row; the advanced card follows it and, with three columns, takes the two that are left.
-    expect(css).toMatch(/@media \(min-width: 640px\) \{\s*\.twinPairStart \{ grid-column-start: 1; \}\s*\}/);
-    expect(css).toMatch(/@media \(min-width: 1000px\) \{\s*\.advancedTwinCard \{\s*grid-column: span 2;/);
-    // Below 640px nothing is placed by hand, so the one-column stack is unchanged; the visual can never be wider than its card.
-    expect(css).not.toMatch(/@media \(max-width: [0-9]+px\) \{[^}]*(twinPairStart|advancedTwinCard)/);
-    expect(css).toMatch(/\.advancedTwinVisual \{[^}]*width: 100%;[^}]*max-width: 100%;/);
-    expect(css).toMatch(/@media \(prefers-reduced-motion: reduce\) \{\s*\.advancedTwinFlow \{ animation: none; \}/);
+it("lays the showcase out one tutorial per row, 50/50 from 861px, at most 1,440px wide, stacking with the visual first on phones", () => {
+    const css = readFileSync(resolve(import.meta.dirname, "components/showcase/showcase.module.css"), "utf-8");
+    expect(css).toMatch(/\.showcase \{[^}]*flex-direction: column;[^}]*max-width: 1440px;/);
+    expect(css).toMatch(/\.card \{[^}]*grid-template-columns: minmax\(0, 1fr\) minmax\(0, 1fr\);/);
+    expect(css).toMatch(/@media \(max-width: 860px\) \{\s*\.showcase \{[^}]*\}\s*\.card \{ grid-template-columns: minmax\(0, 1fr\);/);
+    expect(css).toMatch(/@media \(prefers-reduced-motion: reduce\)/);
+    // The visual comes first in each row's markup, so it is first when the row stacks.
+    const { container } = render(<SpacePage />);
+    showcaseRows(container).forEach((row) => expect(row.querySelector("article")?.firstElementChild?.tagName).toBe("FIGURE"));
   });
 
-it("does not import the advanced propulsion twin into the Space page: its card is a plain link and an inline drawing", () => {
+it("does not import the advanced propulsion twin into the Space page: its 3D loads only on demand, and its still is an inline drawing", () => {
     const source = readFileSync(resolve(import.meta.dirname, "SpaceLanding.tsx"), "utf-8");
     expect(source).not.toMatch(/propulsion-twin-advanced/);
     const visual = readFileSync(resolve(import.meta.dirname, "components/PropulsionTwinCardVisual.tsx"), "utf-8");
     expect(visual).not.toMatch(/^import /m);
   });
 
-it("does not import the rocket engine experience into the Space page: its card is a plain link", () => {
+it("does not import the rocket engine experience into the Space page: the showcase's 3D chunk is loaded lazily, in the browser only", () => {
     const source = readFileSync(resolve(import.meta.dirname, "SpaceLanding.tsx"), "utf-8");
     expect(source).not.toMatch(/rocket-engine-twin/);
+    const showcase = readFileSync(resolve(import.meta.dirname, "components/showcase/TutorialShowcase.tsx"), "utf-8");
+    expect(showcase).not.toMatch(/rocket-engine-twin|ShowcaseCanvas/);
+    const visual = readFileSync(resolve(import.meta.dirname, "components/showcase/ShowcaseVisual.tsx"), "utf-8");
+    expect(visual).toMatch(/dynamic\(\(\) => import\("\.\/ShowcaseCanvas"\), \{ ssr: false \}\)/);
   });
-
 
 it("gives each of the four pathway categories its own call to action, with Discover leading to Space Academy", () => {
     const { container } = render(<SpacePage />);
@@ -512,26 +612,110 @@ it("gives each of the four pathway categories its own call to action, with Disco
 it("leads into Space Academy from the hero and the Ages 14–18 section, and keeps the planned programme labelled", () => {
     const { container } = render(<SpacePage />);
     const hero = container.querySelector("#home") as HTMLElement;
-    expect(within(hero).getByRole("link", { name: /Space Academy for ages 14–18/ })).toHaveAttribute("href", "/space/academy");
+    expect(within(hero).getByRole("link", { name: /Enter Space Academy.*Ages 14–18/ })).toHaveAttribute("href", "/space/academy");
     const education = container.querySelector("#education") as HTMLElement;
     expect(within(education).getByRole("link", { name: /Explore Space Academy/ })).toHaveAttribute("href", "/space/academy");
     expect(within(education).getByText("Planned Programme")).toBeInTheDocument();
     expect(education.textContent).toMatch(/Online classes and CanSat and Model Rocketry workshops are planned/);
+    // Each playable mission is one tap from the portal.
+    const missions = within(education).getByRole("list", { name: "Interactive 3D missions" });
+    expect(within(missions).getAllByRole("link").map((a) => a.getAttribute("href"))).toEqual([
+      "/space/academy/missions/build-your-first-cubesat",
+      "/space/academy/missions/survive-the-eclipse",
+      "/space/academy/missions/stable-model-rocket",
+    ]);
   });
 
 it("offers an 'On this page' section navigation whose links all resolve", () => {
     render(<SpacePage />);
     const nav = screen.getByRole("navigation", { name: "On this page" });
     const links = within(nav).getAllByRole("link");
-    expect(links.length).toBeGreaterThanOrEqual(10);
+    // Short on purpose: the audiences' main destinations, not every section.
+    expect(links.length).toBeGreaterThanOrEqual(6);
+    expect(links.length).toBeLessThanOrEqual(9);
     links.filter((a) => a.getAttribute("href")?.startsWith("#")).forEach((a) => expect(document.getElementById((a.getAttribute("href") as string).slice(1))).not.toBeNull());
     expect(within(nav).getByRole("link", { name: "Space Academy" })).toHaveAttribute("href", "/space/academy");
   });
 
 it("keeps the long mission explanation in the HTML behind a native disclosure", () => {
     const { container } = render(<SpacePage />);
-    const details = container.querySelector("#mission details") as HTMLDetailsElement;
+    const details = Array.from(container.querySelectorAll("#mission details")).find((d) => d.querySelector("summary")?.textContent === "Why spacecraft need this") as HTMLDetailsElement;
     expect(details).not.toBeNull();
     expect(details.open).toBe(false);
     expect(details.textContent).toMatch(/Fault Detection, Isolation and Recovery \(FDIR\)/);
+  });
+
+it("turns the six-stage loop into connected, keyboard-operable stages that drive one illustrative, simulated scenario", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<SpacePage />);
+    const mission = container.querySelector("#mission") as HTMLElement;
+    expect(within(mission).getByRole("heading", { level: 2 })).toHaveTextContent("Can a spacecraft understand its own health and recover safely?");
+    expect(within(mission).getByText("Observe. Diagnose. Recover. Verify.")).toBeInTheDocument();
+    const science = Array.from(mission.querySelectorAll("details")).find((d) => d.querySelector("summary")?.textContent === "Learn the science") as HTMLDetailsElement;
+    expect(science.open).toBe(false);
+    expect(science.textContent).toMatch(/Autonomous Spacecraft Health Management is the capability to observe spacecraft telemetry/);
+
+    const loop = within(mission).getByRole("tablist", { name: "The six-stage health-management loop" });
+    const tabs = within(loop).getAllByRole("tab");
+    expect(tabs.map((t) => t.textContent?.replace(/^\d+/, ""))).toEqual(["Observe telemetry", "Detect anomaly", "Diagnose fault", "Predict impact", "Recover safely", "Verify recovery"]);
+    expect(tabs[0]).toHaveAttribute("aria-selected", "true");
+    // Every stage's explanation is in the HTML; only the selected one shows.
+    expect(mission.querySelectorAll('[role="tabpanel"]')).toHaveLength(6);
+    expect(mission.querySelectorAll('[role="tabpanel"][hidden]')).toHaveLength(5);
+
+    await user.click(tabs[2]);
+    const diagnose = document.getElementById("health-panel-diagnose") as HTMLElement;
+    expect(diagnose).not.toHaveAttribute("hidden");
+    expect(diagnose.textContent).toMatch(/cell 2 at 2\.92 V against 3\.98 V/);
+    tabs[2].focus();
+    await user.keyboard("{ArrowRight}");
+    expect(tabs[3]).toHaveAttribute("aria-selected", "true");
+    expect(document.activeElement).toBe(tabs[3]);
+
+    // A subsystem can be inspected at any stage.
+    await user.click(within(mission).getByRole("button", { name: "Thermal" }));
+    expect(within(mission).getByRole("button", { name: "Thermal" })).toHaveAttribute("aria-pressed", "true");
+    expect(mission.textContent).toMatch(/Battery temperature 27 °C/);
+
+    // It says what it is, and what it is not.
+    expect(mission.textContent).toMatch(/Not data from any spacecraft, and not a validated or flight-ready autonomy system\./);
+    expect(within(mission).getAllByRole("heading", { level: 3 }).map((h) => h.textContent)).toEqual(expect.arrayContaining(["Advisory", "Supervised", "Bounded Autonomy"]));
+    expect(mission.textContent).toMatch(/Generative AI must not directly control a safety-critical spacecraft loop\./);
+  });
+
+it("shows the four pathways as full-width rows, each with its own visual, three themes up front and every item under About this pathway", () => {
+    const { container } = render(<SpacePage />);
+    const rows = Array.from(container.querySelectorAll("#pathway article[data-pathway]")).map((a) => a.closest("li")) as HTMLElement[];
+    expect(rows).toHaveLength(4);
+    const labels = rows.map((r) => (r.querySelector("[role=img]") as HTMLElement).getAttribute("aria-label"));
+    expect(new Set(labels).size).toBe(4);
+    const all = [
+      ["Spacecraft systems", "Sensors and telemetry", "Faults, redundancy and safe mode", "Mission-health challenge"],
+      ["Simulator and telemetry engineering", "Digital twins", "Fault detection, isolation and recovery", "Hardware-in-the-loop validation"],
+      ["Verified algorithms", "Fault libraries and datasets", "Papers and patent candidates", "Academic and industry validation"],
+      ["Customer discovery", "Validated prototype", "Responsible incubation", "Space products and services"],
+    ];
+    rows.forEach((row, i) => {
+      expect(within(row).getByRole("list", { name: "Key themes" }).querySelectorAll("li")).toHaveLength(3);
+      const about = row.querySelector("details") as HTMLDetailsElement;
+      expect(about.querySelector("summary")?.textContent).toBe("About this pathway");
+      expect(Array.from(about.querySelectorAll("li")).map((li) => li.textContent)).toEqual(all[i]);
+      expect(row.querySelector("figure")).not.toBeNull();
+    });
+    expect(within(rows[0]).getByText("Seven learning tracks and interactive 3D missions.")).toBeInTheDocument();
+    expect(within(rows[3]).getByText("Records interest only; it does not confirm selection.")).toBeInTheDocument();
+  });
+
+it("presents Space Academy as one feature: two age groups, the three playable missions, one way in, and the planned programme still labelled", () => {
+    const { container } = render(<SpacePage />);
+    const education = container.querySelector("#education") as HTMLElement;
+    expect(within(education).getByRole("heading", { level: 2 })).toHaveTextContent("Your mission starts in Space Academy");
+    expect(within(education).getByRole("list", { name: "Two age groups" }).textContent).toMatch(/Ages 14–16.*Ages 17–18/);
+    const missions = within(within(education).getByRole("list", { name: "Interactive 3D missions" }).parentElement as HTMLElement).getAllByRole("link").filter((a) => a.getAttribute("href")?.includes("/missions/"));
+    expect(missions.map((a) => a.textContent)).toEqual(["Mission 1 · playable nowBuild Your First CubeSat", "Mission 2 · playable nowSurvive the Eclipse", "Mission 3 · playable nowDesign a Stable Model Rocket"]);
+    expect(within(education).getAllByRole("link", { name: /Explore Space Academy/ })).toHaveLength(1);
+    const explorers = Array.from(education.querySelectorAll("details")).find((d) => /Space Health Explorers/.test(d.querySelector("summary")?.textContent ?? "")) as HTMLDetailsElement;
+    expect(explorers.open).toBe(false);
+    expect(explorers.querySelector("summary")?.textContent).toMatch(/Planned Programme/);
+    expect(explorers.textContent).toMatch(/Space Health Explorers is a planned programme for students aged 14–18/);
   });

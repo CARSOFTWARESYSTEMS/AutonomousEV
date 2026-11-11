@@ -125,3 +125,52 @@ export function useMissionProgress(slug: string): MissionProgress {
 export function saveMissionProgress(slug: string, progress: MissionProgress | null) {
   writeValue(`progress:${slug}`, progress);
 }
+
+// ── Mission Lab settings ──
+//
+// Graphics quality, motion and narration. Kept in this browser only, like
+// everything else here; nothing identifies the learner.
+
+export type QualitySetting = "auto" | "high" | "low";
+export type MotionSetting = "system" | "reduce" | "full";
+
+export interface LabSettings {
+  quality: QualitySetting;
+  motion: MotionSetting;
+  /** Read each step aloud when it opens (the device's own text-to-speech). */
+  narrate: boolean;
+}
+
+export const DEFAULT_LAB_SETTINGS: LabSettings = { quality: "auto", motion: "system", narrate: false };
+
+function parseLabSettings(raw: string): LabSettings | null {
+  const data = JSON.parse(raw) as Partial<LabSettings>;
+  if (!data || typeof data !== "object") return null;
+  return {
+    quality: data.quality === "high" || data.quality === "low" ? data.quality : "auto",
+    motion: data.motion === "reduce" || data.motion === "full" ? data.motion : "system",
+    narrate: data.narrate === true,
+  };
+}
+
+export function useLabSettings(): LabSettings {
+  return usePersisted<LabSettings>("lab-settings", DEFAULT_LAB_SETTINGS, parseLabSettings);
+}
+
+export function setLabSettings(patch: Partial<LabSettings>) {
+  const current = memory.has("lab-settings") ? (memory.get("lab-settings") as LabSettings) : readValue("lab-settings", DEFAULT_LAB_SETTINGS, parseLabSettings);
+  writeValue("lab-settings", { ...current, ...patch });
+}
+
+// ── The mode each mission was last left in ──
+
+export type LabMode = "explore" | "learn" | "challenge";
+const parseMode = (raw: string): LabMode | null => (raw === "explore" || raw === "learn" || raw === "challenge" ? raw : null);
+
+export function readLabMode(slug: string): LabMode | null {
+  return readValue<LabMode | null>(`mode:${slug}`, null, parseMode);
+}
+
+export function saveLabMode(slug: string, mode: LabMode) {
+  writeValue(`mode:${slug}`, mode);
+}

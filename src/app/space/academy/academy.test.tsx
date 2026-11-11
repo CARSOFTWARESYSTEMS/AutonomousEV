@@ -86,13 +86,43 @@ describe("/space/academy", () => {
     expect(graph).not.toMatch(/hasCourseInstance|offers|startDate|price/);
   });
 
-  it("renders one heading, every track and mission, and the notices", () => {
-    render(<AcademyPage />);
-    expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
-    for (const t of TRACKS) expect(screen.getByRole("link", { name: `Open the ${t.title} track` })).toHaveAttribute("href", `/space/academy/${t.slug}`);
-    for (const m of MISSIONS) expect(screen.getByRole("link", { name: `Play ${m.title}` })).toHaveAttribute("href", `/space/academy/missions/${m.slug}`);
+  it("renders one heading, the first mission, the four ways in, every track and mission, and the notices", () => {
+    const { container } = render(<AcademyPage />);
+    const h1 = screen.getAllByRole("heading", { level: 1 });
+    expect(h1).toHaveLength(1);
+    expect(h1[0].textContent).toBe("Your Mission Starts Here.");
+    // One primary action in the hero.
+    const hero = h1[0].closest("section") as HTMLElement;
+    expect(within(hero).getByRole("link", { name: "Explore Your First Mission" })).toHaveAttribute("href", "/space/academy/missions/build-your-first-cubesat");
+    const options = within(hero).getByRole("navigation", { name: "Or choose a mission" });
+    expect(within(options).getAllByRole("link").map((a) => [a.querySelector("span span")?.textContent, a.getAttribute("href")])).toEqual([
+      ["Explore Satellites", "/space/academy/missions/build-your-first-cubesat#explore"],
+      ["Design Rockets", "/space/academy/missions/stable-model-rocket"],
+      ["Build a CanSat", "/space/academy/cansat"],
+      ["Save a Mission", "/space/academy/missions/survive-the-eclipse"],
+    ]);
+    const tracks = document.getElementById("tracks") as HTMLElement;
+    expect(within(tracks).getAllByRole("link").map((a) => a.getAttribute("href"))).toEqual(TRACKS.map((t) => `/space/academy/${t.slug}`));
+    for (const t of TRACKS) expect(within(tracks).getByRole("link", { name: new RegExp(`^Track \\d: ${t.title}$`), description: t.tagline })).toBeInTheDocument();
+    const hrefs = Array.from(container.querySelectorAll("a[href]")).map((a) => (a.getAttribute("href") as string).split("#")[0]);
+    for (const m of MISSIONS) expect(hrefs).toContain(`/space/academy/missions/${m.slug}`);
+    // No repeated calls to action: each mission is linked from the hero only.
+    expect(hrefs.filter((h) => h === "/space/academy/missions/build-your-first-cubesat")).toHaveLength(2);
     expect(screen.getByText(/not affiliated with, endorsed by, or run on behalf of ISRO, IN-SPACe/)).toBeInTheDocument();
     expect(screen.getByText(/does not register anyone for, or make anyone eligible for/)).toBeInTheDocument();
+  });
+
+  it("separates online from in-person learning, and keeps the tutorial list in the HTML behind a disclosure", () => {
+    render(<AcademyPage />);
+    const formats = document.getElementById("formats") as HTMLElement;
+    const online = within(formats).getByRole("region", { name: "Online" });
+    const offline = within(formats).getByRole("region", { name: "In person" });
+    expect(within(online).getAllByRole("heading", { level: 4 }).map((h) => h.textContent)).toEqual(["Self-paced 3D missions", "Live online classes"]);
+    expect(within(offline).getAllByRole("heading", { level: 4 }).map((h) => h.textContent)).toEqual(["CanSat workshop", "Model Rocketry workshop"]);
+    const resources = document.getElementById("resources") as HTMLElement;
+    const details = resources.querySelector("details") as HTMLDetailsElement;
+    expect(details.open).toBe(false);
+    expect(details.querySelectorAll("a[href]").length).toBe(new Set(TRACKS.flatMap((t) => t.tutorials.map((r) => r.href))).size);
   });
 
   it("switches the age level for the whole page", async () => {
@@ -142,5 +172,23 @@ describe("/space/academy/[track]", () => {
       expect(link, ref.href).not.toBeNull();
       expect(link?.textContent).toContain(ref.label);
     });
+  });
+
+  it("separates the course description, the lesson plan and the classes and workshops, with the maths optional at 14–16", async () => {
+    render(await TrackPage({ params: Promise.resolve({ track: "spacecraft-systems" }) }));
+    const parts = Array.from(document.querySelectorAll("section[id='course'], section[id='lesson-plan'], section[id='formats'], section[id='tutorials']")).map((el) => el.id);
+    expect(parts).toEqual(["course", "lesson-plan", "formats", "tutorials"]);
+    const nav = screen.getByRole("navigation", { name: "On this page" });
+    expect(within(nav).getAllByRole("link").map((a) => a.getAttribute("href"))).toEqual(["#course", "#lesson-plan", "#formats", "#tutorials"]);
+    // Course: who it is for and what it achieves. Lesson plan: lessons, activities, challenge, maths, models.
+    const course = document.getElementById("course") as HTMLElement;
+    for (const id of ["prerequisites", "objectives", "outcomes"]) expect(course.querySelector(`#${id}`), id).not.toBeNull();
+    const plan = document.getElementById("lesson-plan") as HTMLElement;
+    for (const id of ["topics", "activities", "challenge", "physics", "models"]) expect(plan.querySelector(`#${id}`), id).not.toBeNull();
+    expect((document.querySelector("#physics details") as HTMLDetailsElement).open).toBe(false);
+    expect((document.querySelector("#physics-advanced details") as HTMLDetailsElement).open).toBe(true);
+    const formats = document.getElementById("formats") as HTMLElement;
+    expect(within(formats).getByRole("heading", { level: 3, name: "Online" })).toBeInTheDocument();
+    expect(within(formats).getByRole("heading", { level: 3, name: "In person" })).toBeInTheDocument();
   });
 });

@@ -283,7 +283,7 @@
 }
 
 .heroInset {
-  padding: 0 32px;
+  padding: 0 clamp(16px, 3.5vw, 56px);
 }
 
 @media (max-width: 768px) {
@@ -481,26 +481,22 @@
   text-align: center;
 }
 
-/* ── Simulations & R&D project grid ──
-   Capped at three columns so five cards read as 3 + 2 on desktop instead of
-   stretching into one crowded row; two columns on tablets, one on phones. */
+/* ── Tutorials & simulations grid ──
+   Two cards per row at most, so each tutorial has room for its story; one
+   column on phones. */
 .projectGrid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 14px;
+  gap: 20px;
 }
 
-@media (min-width: 640px) {
-  .projectGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-
-@media (min-width: 1000px) {
-  .projectGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (min-width: 760px) {
+  .projectGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
 }
 
 /* Flagship program card: same layout as its siblings, set apart only by a
    gradient hairline border, a restrained violet glow and a subtitle. */
-.flagshipCard {
+.projectGrid > .flagshipCard {
   border: 1px solid transparent;
   border-radius: var(--space-radius);
   background:
@@ -524,53 +520,108 @@
   background: rgba(124, 58, 237, 0.26) !important;
 }
 
-/* ── Simulations & R&D project cards ──
-   Column layout so every card's call to action sits on the same baseline,
-   left-aligned text to match the titles, and full-width buttons whose labels
-   fit on one line in the four-column layout. */
+/* ── Tutorial cards ──
+   Each card carries its own accent (--card-accent, set inline from its status
+   pill's colour; cyan by default): a soft glow from the top-left corner, an
+   icon tile, a large title, an accent-tinted button on a shared baseline and
+   a footer line for the card's status note. */
 .projectCard {
+  --card-accent: #06b6d4;
+  --card-accent-text: #67e8f9;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 24px;
   height: 100%;
+  padding: 32px;
+}
+.projectGrid > .projectCard:not(.flagshipCard) {
+  border-radius: 24px;
+  background:
+    radial-gradient(110% 70% at 0% 0%, color-mix(in srgb, var(--card-accent) 15%, transparent), transparent 60%),
+    linear-gradient(180deg, rgba(21, 25, 54, 0.94), rgba(13, 16, 38, 0.94));
+  border: 1px solid color-mix(in srgb, var(--card-accent) 24%, rgba(255, 255, 255, 0.06));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+.projectGrid > .projectCard:not(.flagshipCard):hover {
+  border-color: color-mix(in srgb, var(--card-accent) 55%, transparent);
+}
+.projectGrid > .flagshipCard { border-radius: 24px; }
+@media (max-width: 480px) {
+  .projectCard { padding: 22px 18px; }
+  .projectGrid > .projectCard:not(.flagshipCard),
+  .projectGrid > .flagshipCard { border-radius: 20px; }
+}
+.projectTop {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 14px;
+}
+.projectIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--card-accent) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--card-accent) 38%, transparent);
+  color: var(--card-accent-text);
 }
 .projectTitle {
   color: #fff;
-  margin: 16px 0 10px;
-  font-size: 22px;
-  line-height: 1.25;
+  margin: 22px 0 10px;
+  font-family: var(--font-space-manrope);
+  font-size: clamp(22px, 2vw, 27px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 .projectDesc {
-  color: #B5B8C9;
-  font-size: 15px;
-  line-height: 1.65;
-  margin: 0 0 12px;
+  max-width: 62ch;
+  color: #c3c6d8;
+  font-size: 16px;
+  line-height: 1.7;
+  margin: 0 0 14px;
   text-align: left;
 }
 .projectCta {
   margin-top: auto;
-  width: 100%;
+  min-width: min(100%, 300px);
   justify-content: space-between !important;
-  padding: 12px 16px !important;
-  font-size: 14px !important;
+  gap: 14px !important;
+  padding: 14px 20px !important;
+  border-radius: 14px !important;
+  font-size: 15px !important;
   text-align: left;
+}
+.projectCard:not(.flagshipCard) > .projectCta {
+  background: color-mix(in srgb, var(--card-accent) 14%, transparent) !important;
+  border-color: color-mix(in srgb, var(--card-accent) 42%, transparent) !important;
+  color: var(--card-accent-text) !important;
+}
+.projectCard:not(.flagshipCard) > .projectCta:hover,
+.projectCard:not(.flagshipCard) > .projectCta:focus-visible {
+  background: color-mix(in srgb, var(--card-accent) 26%, transparent) !important;
 }
 .projectCta svg { flex-shrink: 0; }
 .projectNote {
-  font-size: 12px;
+  width: 100%;
+  margin: 18px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  font-size: 13px;
   line-height: 1.6;
-  color: #B5B8C9;
-  margin: 12px 0 0;
-  min-height: 3.2em;
+  color: #a3a7bd;
 }
 
 /* ── Propulsion Digital Twin progression ──
    The fundamentals card and the advanced card are one learning progression,
    so from the two-column layout up they are kept in the same row: the first
-   starts a row, the second follows it. With three columns the advanced card
-   takes the two that are left, which gives its illustration room beside the
-   text. On a phone they simply stack, in order. */
+   starts a row, the second follows it in the other column, its illustration
+   above the text. On a phone they simply stack, in order. */
 .srOnly {
   position: absolute;
   width: 1px;
@@ -587,7 +638,8 @@
   width: 100%;
   height: auto;
   max-width: 100%;
-  margin-bottom: 16px;
+  max-height: 210px;
+  margin-bottom: 22px;
   border: 1px solid rgba(124, 58, 237, 0.28);
   border-radius: 14px;
 }
@@ -612,25 +664,6 @@
 
 @media (min-width: 640px) {
   .twinPairStart { grid-column-start: 1; }
-}
-
-@media (min-width: 1000px) {
-  .advancedTwinCard {
-    grid-column: span 2;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
-    grid-template-rows: auto auto auto 1fr auto auto;
-    column-gap: 24px;
-    align-items: start;
-  }
-  .advancedTwinCard > * { grid-column: 1; }
-  .advancedTwinCard > .advancedTwinVisual {
-    grid-column: 2;
-    grid-row: 1 / -1;
-    align-self: center;
-    margin-bottom: 0;
-  }
-  .advancedTwinCard > .projectCta { align-self: end; }
 }
 
 @media (prefers-reduced-motion: reduce) {

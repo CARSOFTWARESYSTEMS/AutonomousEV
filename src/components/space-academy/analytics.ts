@@ -15,7 +15,16 @@ export type AcademyEvent =
   | "lesson_reset"
   | "lesson_view_mode"
   | "lesson_fault_toggle"
-  | "lesson_viewer_fallback";
+  | "lesson_viewer_fallback"
+  // Mission Lab
+  | "lesson_mode_change"
+  | "lesson_explore_select"
+  | "lesson_tour_step"
+  | "lesson_retry"
+  | "lesson_maths_open"
+  | "lesson_listen"
+  | "lesson_reflection"
+  | "lesson_setting_change";
 
 export function academyEvent(name: AcademyEvent, params: Record<string, string | number | boolean> = {}) {
   trackEvent(name, { ...params, page_path: typeof window !== "undefined" ? window.location.pathname : "" });

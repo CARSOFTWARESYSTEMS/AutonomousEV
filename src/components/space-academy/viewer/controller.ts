@@ -4,6 +4,11 @@ export interface ViewerHandlers {
   zoom: (factor: number) => void;
   rotate: (degrees: number) => void;
   reset: () => void;
+  /**
+   * Guided camera: glide to look at a point from a distance, optionally from a
+   * direction (otherwise the current one). Jumps when motion is reduced.
+   */
+  focus: (target: [number, number, number], distance?: number, direction?: [number, number, number]) => void;
 }
 
 export interface ViewerController extends ViewerHandlers {
@@ -22,8 +27,12 @@ export function createController(): ViewerController {
     zoom: (factor) => current?.zoom(factor),
     rotate: (degrees) => current?.rotate(degrees),
     reset: () => current?.reset(),
+    focus: (target, distance, direction) => current?.focus(target, distance, direction),
   };
 }
+
+/** Rendering quality the stage resolves to: pixel ratio is the main cost on phones. */
+export type StageQuality = "high" | "low";
 
 /** What every mission scene receives from the viewer. */
 export interface SceneState {

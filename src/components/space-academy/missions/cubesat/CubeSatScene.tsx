@@ -2,10 +2,10 @@
 // The 1U CubeSat in 3D. Procedural, low-poly geometry (1 unit = 1 cm); no
 // textures to download. Loaded lazily with the rest of the 3D chunk.
 import { createContext, useContext, useRef, useState } from "react";
-import type { Group } from "three";
+import { Quaternion, Vector3, type Group } from "three";
 import Stage3D, { useEasedPosition } from "../../viewer/Stage3D";
 import type { SceneState } from "../../viewer/controller";
-import { PARTS, type PartId, type SolarId } from "./model";
+import { INSTALLABLE, PARTS, type PartId, type SolarId } from "./model";
 import { LAYOUT } from "./layout";
 import { useLabelAnchor } from "../../viewer/labels";
 
@@ -15,6 +15,8 @@ export interface CubeSatSceneProps {
   selected: PartId | null;
   onSelect?: (id: PartId) => void;
   solar: SolarId;
+  /** The Sun's angle from square-on to the +z panels, in degrees; null hides the Sun. */
+  sunAngle?: number | null;
 }
 
 type V3 = [number, number, number];
@@ -157,14 +159,14 @@ function PartGeometry({ id, solar, exploded }: { id: PartId; solar: SolarId; exp
   }
 }
 
-function Part({ id, state, props, ghost }: { id: PartId; state: SceneState; props: CubeSatSceneProps; ghost: boolean }) {
+function Part({ id, state, props, ghost }: { id: PartId; state: Pick<SceneState, "exploded" | "reducedMotion">; props: Pick<CubeSatSceneProps, "selected" | "onSelect" | "solar"> & { highlighted?: PartId[] }; ghost: boolean }) {
   const ref = useRef<Group>(null);
   const layout = LAYOUT[id];
   const to = state.exploded && id !== "panels" ? layout.exploded : layout.pos;
   // A part flies in from the front when it is installed; the frame and ghosts start in place.
   const [from] = useState<V3 | undefined>(() => (id === "frame" || ghost ? undefined : [to[0], to[1] + 3, to[2] + 16]));
   useEasedPosition(ref, to, state.reducedMotion, from);
-  const highlight = props.selected === id;
+  const highlight = props.selected === id || (props.highlighted?.includes(id) ?? false);
   useLabelAnchor(ghost ? `ghost-${id}` : id, ref, layout.label);
   return (
     <group
@@ -190,6 +192,75 @@ function Part({ id, state, props, ghost }: { id: PartId; state: SceneState; prop
   );
 }
 
+const SUN_DISTANCE = 34;
+const UP = new Vector3(0, 1, 0);
+
+/** Where the Sun sits for an angle θ from the +z panel normal, in the x–z plane. */
+export function sunPosition(angleDeg: number): V3 {
+  const a = (angleDeg * Math.PI) / 180;
+  return [Math.round(SUN_DISTANCE * Math.sin(a) * 100) / 100, 4, Math.round(SUN_DISTANCE * Math.cos(a) * 100) / 100];
+}
+
+/** The Sun, a ray from it to the satellite, and the panels' facing direction, so θ in P = S·A·η·cos θ is visible. */
+function SunAndNormal({ angle }: { angle: number }) {
+  const sunRef = useRef<Group>(null);
+  const normalRef = useRef<Group>(null);
+  const [x, y, z] = sunPosition(angle);
+  const length = Math.hypot(x, y, z);
+  useLabelAnchor("sun", sunRef, [0, 4.2, 0]);
+  useLabelAnchor("normal", normalRef, [0, 1.6, 15]);
+  return (
+    <>
+      <group ref={sunRef} position={[x, y, z]}>
+        <mesh>
+          <sphereGeometry args={[2.6, 24, 16]} />
+          <meshBasicMaterial color="#fde68a" />
+        </mesh>
+        <mesh>
+          <sphereGeometry args={[3.6, 24, 16]} />
+          <meshBasicMaterial color="#f59e0b" transparent opacity={0.22} depthWrite={false} />
+        </mesh>
+      </group>
+      {/* The ray: a thin cylinder from the Sun towards the centre of the satellite. */}
+      <group position={[x / 2, y / 2, z / 2]} quaternion={new Quaternion().setFromUnitVectors(UP, new Vector3(x, y, z).normalize())}>
+        <mesh>
+          <cylinderGeometry args={[0.12, 0.12, length - 8, 8]} />
+          <meshBasicMaterial color="#fcd34d" transparent opacity={0.55} />
+        </mesh>
+      </group>
+      {/* The +z panels' normal. */}
+      <group ref={normalRef}>
+        <mesh position={[0, 0, 10.5]} rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.14, 0.14, 9, 8]} />
+          <meshBasicMaterial color="#67e8f9" />
+        </mesh>
+        <mesh position={[0, 0, 15.4]} rotation={[Math.PI / 2, 0, 0]}>
+          <coneGeometry args={[0.55, 1.4, 12]} />
+          <meshBasicMaterial color="#67e8f9" />
+        </mesh>
+      </group>
+    </>
+  );
+}
+
+/**
+ * The CubeSat's parts on their own, for any canvas: the tutorial showcase on
+ * /space reuses them. `installed` defaults to every part.
+ */
+export function CubeSatModel({ installed = INSTALLABLE, exploded, reducedMotion, solar, selected = null, highlighted, sunAngle = null }: { installed?: PartId[]; exploded: boolean; reducedMotion: boolean; solar: SolarId; selected?: PartId | null; /** Several parts lit at once, e.g. the subsystems a health-management stage involves. */ highlighted?: PartId[]; sunAngle?: number | null }) {
+  const visible: PartId[] = ["frame", ...installed.filter((id) => id !== "frame")];
+  const state = { exploded, reducedMotion };
+  const props = { selected, solar, highlighted };
+  return (
+    <>
+      {visible.map((id) => (
+        <Part key={id} id={id} state={state} props={props} ghost={false} />
+      ))}
+      {sunAngle !== null && <SunAndNormal angle={sunAngle} />}
+    </>
+  );
+}
+
 export default function CubeSatScene(props: CubeSatSceneProps & SceneState) {
   const visible: PartId[] = ["frame", ...props.installed.filter((id) => id !== "frame")];
   const ghost = props.ghost && !visible.includes(props.ghost) ? props.ghost : null;
@@ -200,6 +271,8 @@ export default function CubeSatScene(props: CubeSatSceneProps & SceneState) {
         ...(ghost ? [{ id: `ghost-${ghost}`, text: `Next: ${PARTS[ghost].name}?`, active: true }] : []),
       ]
     : [];
+  const sun = props.sunAngle ?? null;
+  if (sun !== null) labels.push({ id: "sun", text: `Sun · θ = ${sun}°`, active: false }, { id: "normal", text: "Panels face this way", active: false });
   return (
     <Stage3D
       controller={props.controller}
@@ -208,9 +281,11 @@ export default function CubeSatScene(props: CubeSatSceneProps & SceneState) {
       onContextLost={props.onContextLost}
       cameraPosition={[31, 19, 37]}
       minDistance={14}
-      maxDistance={80}
+      maxDistance={95}
       labels={labels}
+      keyLight={sun !== null ? sunPosition(sun) : undefined}
     >
+      {sun !== null && <SunAndNormal angle={sun} />}
       {visible.map((id) => (
         <Part key={id} id={id} state={props} props={props} ghost={false} />
       ))}

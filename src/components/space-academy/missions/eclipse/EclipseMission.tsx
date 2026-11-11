@@ -1,14 +1,18 @@
 "use client";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import dynamic from "next/dynamic";
-import { Pause, Play, RotateCcw } from "lucide-react";
+import { Compass, Pause, Play, RotateCcw } from "lucide-react";
 import type { Level, TutorialRef } from "@/app/space/academy/data/curriculum";
 import type { MissionMeta } from "@/app/space/academy/data/missions";
 import { REDUCED_MOTION_QUERY } from "@/components/satellite-explorer/lib/capabilities";
 import { useLevel } from "../../store";
 import { academyEvent } from "../../analytics";
 import ModelViewer from "../../viewer/ModelViewer";
-import LessonShell, { type LessonStep } from "../../lesson/LessonShell";
+import { useLabMode, useLabRendering } from "../../lab/MissionLab";
+import LabMission from "../../lab/LabMission";
+import type { LabStep } from "../../lab/StepRunner";
+import type { Reflection } from "../../lab/Debrief";
+import lab from "../../lab/lab.module.css";
 import { Choice, Equation, Explain, SimTag, Slider, Stat, Stats, Toggles } from "../../lesson/controls";
 import TelemetryChart, { bandsFrom } from "../../charts/TelemetryChart";
 import styles from "../../lesson/lesson.module.css";
@@ -30,8 +34,20 @@ const SOC_COLOR = "#3987e5";
 const SOLAR_COLOR = "#c98500";
 const LOAD_COLOR = "#3987e5";
 
-export default function EclipseMission({ mission, related, next }: { mission: MissionMeta; related: TutorialRef[]; next?: { href: string; label: string } }) {
+const REFLECTION: Reflection = {
+  prompt: "What does safe mode give up to keep the spacecraft alive?",
+  options: [
+    { id: "mission", label: "Mission time: the payload and transmitter are off for a while", feedback: "Yes. Safe mode keeps only what the spacecraft needs to survive (computer, power board, a beacon), so the battery can recover. It loses mission time, not the mission. The hysteresis band stops it flicking in and out." },
+    { id: "orbit", label: "Its orbit", feedback: "No. Safe mode changes how power is used, not the orbit; changing an orbit needs propulsion." },
+    { id: "panels", label: "Its solar panels", feedback: "No. The panels keep generating whenever the satellite is in sunlight. Safe mode cuts the load so more of that power refills the battery." },
+    { id: "nothing", label: "Nothing at all", feedback: "It always costs something: while in safe mode the payload is off and no science or images are collected." },
+  ],
+};
+
+export default function EclipseMission({ mission, related, next, info, trackTitle }: { mission: MissionMeta; related: TutorialRef[]; next?: { href: string; label: string }; info: ReactNode; trackTitle?: string }) {
   const level = useLevel();
+  const [mode, setMode] = useLabMode(mission.slug, "learn");
+  const { quality, reducedMotion } = useLabRendering();
   const [stepIndex, setStepIndex] = useState(0);
   const [config, setConfig] = useState<EpsConfig>(DEFAULT_EPS);
   const [answer, setAnswer] = useState<"larger" | "smaller" | "same" | null>(null);
@@ -46,7 +62,7 @@ export default function EclipseMission({ mission, related, next }: { mission: Mi
   const result = useMemo(() => simulateEps(config), [config]);
   const orbit = orbitSummary(config.altitudeKm);
   const balance = orbitEnergyBalance(config);
-  const stepId = ["orbit", "balance", "battery", "faults", "review"][stepIndex];
+  const stepId = mode === "explore" ? "explore" : ["orbit", "balance", "battery", "faults", "review"][stepIndex];
 
   // Playback: progress runs 0 → 1 over a few seconds; reduced motion jumps to the end.
   useEffect(() => {
@@ -180,7 +196,7 @@ export default function EclipseMission({ mission, related, next }: { mission: Mi
     </>
   );
 
-  const steps: LessonStep[] = [
+  const steps: LabStep[] = [
     {
       id: "orbit",
       title: "Orbit and shadow",
@@ -415,33 +431,71 @@ export default function EclipseMission({ mission, related, next }: { mission: Mi
     setPlaying(false);
   };
 
+  const learned = [
+    "How altitude sets the orbit period and the time spent in Earth's shadow",
+    "Energy balance: a design must bring in more energy than it uses over each orbit",
+    "Sizing a battery for the eclipse, and depth of discharge",
+    "Safe mode and hysteresis: how a spacecraft protects itself after a fault",
+  ];
+
+  // Explore: change the orbit and the battery, then run three orbits of simulated telemetry.
+  const explore = (
+    <div className={lab.runner}>
+      <p className={lab.lead}>{by(level, "Raise or lower the orbit and change the battery, then run three orbits and watch the charge rise in sunlight and fall in shadow.", "Vary altitude and battery capacity; run three orbits and read the state of charge, generation and load.")}</p>
+      <Slider id="explore-altitude" label="Orbit altitude" value={config.altitudeKm} min={300} max={1000} step={50} unit="km" onChange={(v) => update({ altitudeKm: v })} />
+      <Slider id="explore-cells" label="Battery packs" value={config.cells} min={1} max={MAX_CELLS} step={1} unit={`× ${CELL_WH} Wh`} onChange={(v) => update({ cells: v })} />
+      <Stats label="Orbit readout">
+        <Stat label="One orbit" value={`${orbit.periodMin.toFixed(1)} min`} />
+        <Stat label="In shadow" value={`${orbit.eclipseMin.toFixed(1)} min`} />
+        <Stat label="Lowest charge" value={`${result.minSocPct.toFixed(0)}%`} tone={result.minSocPct >= floor ? "good" : "bad"} detail={`Floor ${floor}%`} />
+      </Stats>
+      {runControls}
+      {charts}
+      <div className={lab.next}>
+        <p>Ready for the guided lesson?</p>
+        <button type="button" className={lab.primary} onClick={() => setMode("learn")}>
+          <Compass size={16} aria-hidden /> Start the guided lesson
+        </button>
+      </div>
+    </div>
+  );
+
   return (
-    <LessonShell
+    <LabMission
       mission={mission}
+      trackTitle={trackTitle}
       level={level}
+      mode={mode}
+      onModeChange={(m) => {
+        setMode(m);
+        setPlaying(false);
+        setProgress(1);
+      }}
       steps={steps}
+      learnCount={2}
       stepIndex={stepIndex}
       onStepChange={(i) => {
         setStepIndex(i);
         setPlaying(false);
         setProgress(1);
       }}
-      onReplay={replay}
-      learned={[
-        "How altitude sets the orbit period and the time spent in Earth's shadow",
-        "Energy balance: a design must bring in more energy than it uses over each orbit",
-        "Sizing a battery for the eclipse, and depth of discharge",
-        "Safe mode and hysteresis: how a spacecraft protects itself after a fault",
-      ]}
-      next={next}
+      explore={explore}
+      reflection={REFLECTION}
+      learned={learned}
       related={related}
-      viewer={
+      next={next}
+      info={info}
+      onReplay={replay}
+      viewport={
         <ModelViewer<OrbitSceneProps>
+          variant="lab"
           title="CubeSat orbit and Earth's shadow"
           mission={mission.slug}
           Scene3D={OrbitScene}
           sceneProps={sceneProps}
           explodable={false}
+          quality={quality}
+          reducedMotion={reducedMotion}
           render2D={(v) => <Orbit2D {...v} {...sceneProps} />}
           caption={`Illustrative orbit, Sun in the orbit plane. ${stepId === "orbit" ? "" : "The satellite follows the simulation as it runs."}`}
         />

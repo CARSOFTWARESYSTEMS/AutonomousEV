@@ -213,3 +213,114 @@
     transition: none;
   }
 }
+
+/* ── Mission Lab variant ──
+   The stage fills the lab's viewport; the view tools float in one column at
+   its right edge (44px targets); the 3D/2D switch lives in the lab's
+   settings; the caption stays for screen readers and the status line shows
+   when the 2D drawing replaced 3D. */
+.viewer[data-variant="lab"] {
+  position: relative;
+  height: 100%;
+  gap: 0;
+}
+
+.viewer[data-variant="lab"] .stage {
+  aspect-ratio: auto;
+  max-height: none;
+  height: 100%;
+  border-radius: 0;
+  border: 0;
+}
+
+.viewer[data-variant="lab"] .stage:focus-visible {
+  outline-offset: -3px;
+}
+
+.viewer[data-variant="lab"] .hint {
+  left: 12px;
+  bottom: 12px;
+}
+
+.viewer[data-variant="lab"] .toolbar {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  z-index: 2;
+}
+
+.viewer[data-variant="lab"] .group {
+  flex-direction: column;
+  gap: 6px;
+}
+
+.viewer[data-variant="lab"] .tool,
+.viewer[data-variant="lab"] .toggle {
+  background: rgba(9, 11, 29, 0.78);
+  backdrop-filter: blur(10px);
+  padding: 0;
+  width: 44px;
+}
+
+.viewer[data-variant="lab"] .toggle span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+/* Phones and tablets: the tools run along the bottom of the viewport instead, clear of the model. */
+@media (max-width: 1023px) {
+  .viewer[data-variant="lab"] .toolbar {
+    top: auto;
+    right: 50%;
+    bottom: 26px;
+    transform: translateX(50%);
+    flex-direction: row;
+    max-width: calc(100% - 16px);
+  }
+  .viewer[data-variant="lab"] .group { flex-direction: row; }
+  .viewer[data-variant="lab"] .hint {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+}
+
+.captionLab {
+  position: absolute;
+  left: 12px;
+  right: 72px;
+  top: 52px;
+  margin: 0;
+  pointer-events: none;
+  font-size: 13px;
+}
+
+.captionLab .status {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: rgba(9, 11, 29, 0.85);
+  line-height: 1.45;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

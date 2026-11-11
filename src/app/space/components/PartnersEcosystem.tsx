@@ -10,66 +10,32 @@ import partners from "./partners.module.css";
 /** The APEX entry into its microsite. Relative while it lives on this host, absolute once it moves. */
 export const APEX_ENTRY_HREF = apexHref("/");
 
-/**
- * The APEX card in the "Learn by building mission-ready thinking" grid.
- * Its pill and note say what it is: an engineering collaboration with Gamyaa AeroSystems, not a programme
- * of this site, and not a claim about APEX beyond its own published words.
- */
-export function ApexProjectCard({ pill }: { pill: React.ReactNode }) {
-  return (
-    <div className={`${styles.cardHover} ${theme.card} ${styles.projectCard}`}>
-      {pill}
-      <h3 className={styles.projectTitle}>APEX Rocket Systems</h3>
-      <p className={styles.projectDesc}>Rocket Propulsion · Integrated Launch Systems</p>
-      <p className={styles.projectDesc}>
-        See the 5 kN-class liquid-engine demonstrator APEX has built, and the engineering path from propulsion hardware to a validated rocket system.
-      </p>
-      <Link
-        href={APEX_ENTRY_HREF}
-        className={`${theme.secondaryButton} ${styles.projectCta}`}
-        data-track-event="space_project_card_click"
-        data-track-project="apex_rocket_systems"
-        data-track-placement="simulation_projects"
-      >
-        Explore APEX Collaboration Concept <ArrowRight size={16} />
-      </Link>
-      <p className={styles.projectNote}>
-        Engineering collaboration with Gamyaa AeroSystems ·{" "}
-        <a
-          href={APEX_OFFICIAL_SITE_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={partners.noteLink}
-          data-track-event="space_partner_official_site_click"
-          data-track-partner="apex_rocket_systems"
-          data-track-placement="simulation_projects"
-        >
-          Official website<span className={styles.srOnly}> (opens in a new tab)</span>
-        </a>
-      </p>
-    </div>
-  );
-}
-
 const OTHER_PARTNERS = ["gamyaa", "ifab", "itelematics", "evsociety"] as const;
 
 /** Partners & Engineering Ecosystem: APEX first, then Gamyaa AeroSystems (engineering collaboration) and the proposed capability partners. */
-export function PartnersEcosystem({ label, pill, h2Style, descStyle, className }: { label: React.ReactNode; pill: (text: string, color: string) => React.ReactNode; h2Style: React.CSSProperties; descStyle: React.CSSProperties; /** The host page's section spacing; the content keeps its 1,280px column either way. */ className?: string }) {
+export function PartnersEcosystem({
+  label,
+  pill,
+  h2Style,
+  descStyle,
+  className,
+  headClassName,
+  collapse,
+}: {
+  label: React.ReactNode;
+  pill: (text: string, color: string) => React.ReactNode;
+  h2Style?: React.CSSProperties;
+  descStyle?: React.CSSProperties;
+  /** The host page's section spacing; the content keeps its 1,280px column either way. */
+  className?: string;
+  /** Replaces the centred head layout with the host's own. */
+  headClassName?: string;
+  /** Lets the host put the partner cards behind its own disclosure. The head and its status line always stay visible. */
+  collapse?: (body: React.ReactNode) => React.ReactNode;
+}) {
   const apex = partner("apex");
-  return (
-    <section id="partners" className={className ?? styles.section} style={className ? undefined : { maxWidth: 1280, margin: "0 auto" }} aria-labelledby="partners-title">
-      <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-      <div style={{ marginBottom: 32, textAlign: "center" }}>
-        {label}
-        <h2 id="partners-title" style={h2Style}>
-          Partners &amp; Engineering Ecosystem
-        </h2>
-        <p style={descStyle}>
-          APEX Rocket Systems and Gamyaa AeroSystems are working together in an engineering collaboration. The other organisations shown are proposed
-          capability partners unless otherwise confirmed.
-        </p>
-      </div>
-
+  const body = (
+    <>
       <div className={`${styles.cardHover} ${theme.card} ${partners.featured}`}>
         <div>
           {pill("Engineering Collaboration", "#06B6D4")}
@@ -154,6 +120,22 @@ export function PartnersEcosystem({ label, pill, h2Style, descStyle, className }
         })}
       </div>
       <p className={partners.disclaimer}>More specialist partners are welcome across avionics, sensors, GNC, manufacturing, test infrastructure and research.</p>
+    </>
+  );
+  return (
+    <section id="partners" className={className ?? styles.section} style={className ? undefined : { maxWidth: 1280, margin: "0 auto" }} aria-labelledby="partners-title">
+      <div style={{ maxWidth: className ? undefined : 1280, margin: "0 auto" }}>
+        <div className={headClassName} style={headClassName ? undefined : { marginBottom: 32, textAlign: "center" }}>
+          {label}
+          <h2 id="partners-title" style={h2Style}>
+            Partners &amp; Engineering Ecosystem
+          </h2>
+          <p style={descStyle}>
+            APEX Rocket Systems and Gamyaa AeroSystems are working together in an engineering collaboration. The other organisations shown are proposed
+            capability partners unless otherwise confirmed.
+          </p>
+        </div>
+        {collapse ? collapse(body) : body}
       </div>
     </section>
   );

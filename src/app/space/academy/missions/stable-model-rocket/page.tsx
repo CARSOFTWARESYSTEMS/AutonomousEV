@@ -1,4 +1,4 @@
-import MissionPage from "../../components/MissionPage";
+import MissionPage, { MissionInfo } from "../../components/MissionPage";
 import RocketMission from "@/components/space-academy/missions/rocket/RocketMission";
 import { missionBySlug, missionHref, MISSIONS } from "../../data/missions";
 import { trackBySlug } from "../../data/curriculum";
@@ -7,6 +7,7 @@ import { missionMetadata } from "../../seo";
 const SLUG = "stable-model-rocket";
 const mission = missionBySlug(SLUG)!;
 const nextMission = MISSIONS.find((m) => m.number === mission.number + 1);
+const track = trackBySlug(mission.track);
 
 export const metadata = missionMetadata(mission);
 
@@ -15,8 +16,10 @@ export default function Page() {
     <MissionPage slug={SLUG}>
       <RocketMission
         mission={mission}
-        related={trackBySlug(mission.track)?.tutorials ?? []}
+        trackTitle={track?.title}
+        related={track?.tutorials ?? []}
         next={nextMission ? { href: missionHref(nextMission.slug), label: `Next: ${nextMission.title}` } : { href: "/space/academy#tracks", label: "Back to Space Academy" }}
+        info={<MissionInfo slug={SLUG} />}
       />
     </MissionPage>
   );
