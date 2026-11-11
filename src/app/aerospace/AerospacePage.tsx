@@ -17,6 +17,7 @@ import AuthNavControl from "@/components/auth/AuthNavControl";
 import { EOI_FORM_URL } from "@/lib/eoi";
 import ResearcherCard from "@/components/ResearcherCard";
 import AerospaceHostPoster from "./AerospaceHostPoster";
+import SpaceResearchShowcase from "@/components/space-research-showcase/SpaceResearchShowcase";
 import { POSTER, PRODUCT } from "@/components/uflight-3d/data/uflightReferenceAircraft";
 
 const manrope = Manrope({
@@ -592,6 +593,11 @@ export default function AerospacePage({ brand = "ev-engineer" }: { brand?: Aeros
             <Image src={POSTER.src} alt={POSTER.alt} width={POSTER.width} height={POSTER.height} sizes="(min-width: 1024px) 620px, 100vw" />
           </div>
         </div>
+      </section>
+
+      {/* ── ISHAVASYAM.ORG · Space Research: the spacecraft sibling of the UFlight™ feature ── */}
+      <section id="space-research" className={styles.section} aria-labelledby="space-research-title" style={{ paddingTop: 0 }}>
+        <SpaceResearchShowcase titleFont={FONT_MANROPE} />
       </section>
 
       {/* ── About ── */}

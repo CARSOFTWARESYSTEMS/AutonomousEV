@@ -1,6 +1,7 @@
 "use client";
-// Earth for the Discover hero, from the same imagery Satellite Explorer
-// already publishes (/space/satellite-explorer: day, night lights, clouds).
+// Earth from the imagery Satellite Explorer already publishes
+// (/space/satellite-explorer: day, night lights, clouds). Used by the /space
+// Discover hero and the Space Research showcase on /aerospace.
 // Day imagery lit by the Sun with ocean glint, city lights on the night side,
 // a separate cloud layer that drifts a little faster than the surface, a thin
 // atmosphere at the limb, and a slow spin on a 23.4° tilted axis. Textures
@@ -12,7 +13,7 @@ import { AdditiveBlending, BackSide, ShaderMaterial, SRGBColorSpace, TextureLoad
 
 const BASE = "/space/satellite-explorer/";
 
-function useEarthTextures() {
+function useEarthTextures(detail: "2k" | "4k") {
   const { gl, invalidate } = useThree();
   const [maps, setMaps] = useState<{ day: Texture; night: Texture; clouds: Texture } | null>(null);
   useEffect(() => {
@@ -25,7 +26,7 @@ function useEarthTextures() {
         t.anisotropy = aniso;
         return t;
       });
-    Promise.all([load("earth-day-2k.jpg", true), load("earth-night-2k.jpg", true), load("earth-clouds-2k.jpg", false)])
+    Promise.all([load(`earth-day-${detail}.jpg`, true), load("earth-night-2k.jpg", true), load("earth-clouds-2k.jpg", false)])
       .then(([day, night, clouds]) => {
         if (!alive) {
           day.dispose();
@@ -41,7 +42,7 @@ function useEarthTextures() {
     return () => {
       alive = false;
     };
-  }, [gl, invalidate]);
+  }, [gl, invalidate, detail]);
   useEffect(
     () => () => {
       maps?.day.dispose();
@@ -53,8 +54,19 @@ function useEarthTextures() {
   return maps;
 }
 
-export default function RealEarth({ radius, position, sun, playing }: { radius: number; position: [number, number, number]; sun: [number, number, number]; playing: boolean }) {
-  const maps = useEarthTextures();
+interface Props {
+  radius: number;
+  position: [number, number, number];
+  sun: [number, number, number];
+  playing: boolean;
+  /** Day imagery resolution: "4k" for a large Earth on a capable device. */
+  detail?: "2k" | "4k";
+  /** Overall brightness, so Earth can sit back as a backdrop. */
+  exposure?: number;
+}
+
+export default function RealEarth({ radius, position, sun, playing, detail = "2k", exposure = 1 }: Props) {
+  const maps = useEarthTextures(detail);
   const surfaceRef = useRef<Group>(null);
   const cloudsRef = useRef<Group>(null);
   const sunDir = useMemo(() => new Vector3(...sun).normalize(), [sun]);
@@ -62,7 +74,7 @@ export default function RealEarth({ radius, position, sun, playing }: { radius: 
   const surface = useMemo(() => {
     if (!maps) return null;
     return new ShaderMaterial({
-      uniforms: { uDay: { value: maps.day }, uNight: { value: maps.night }, uSun: { value: sunDir } },
+      uniforms: { uDay: { value: maps.day }, uNight: { value: maps.night }, uSun: { value: sunDir }, uExposure: { value: exposure } },
       vertexShader: /* glsl */ `
         varying vec2 vUv; varying vec3 vN; varying vec3 vPos;
         void main() {
@@ -73,7 +85,7 @@ export default function RealEarth({ radius, position, sun, playing }: { radius: 
           gl_Position = projectionMatrix * viewMatrix * wp;
         }`,
       fragmentShader: /* glsl */ `
-        uniform sampler2D uDay; uniform sampler2D uNight; uniform vec3 uSun;
+        uniform sampler2D uDay; uniform sampler2D uNight; uniform vec3 uSun; uniform float uExposure;
         varying vec2 vUv; varying vec3 vN; varying vec3 vPos;
         void main() {
           vec3 n = normalize(vN);
@@ -92,33 +104,33 @@ export default function RealEarth({ radius, position, sun, playing }: { radius: 
           // Blue scattering at the limb, strongest on the day side.
           float rim = pow(1.0 - max(dot(n, v), 0.0), 4.0);
           col += vec3(0.3, 0.56, 1.0) * rim * (0.1 + 0.9 * day) * 0.7;
-          gl_FragColor = vec4(col, 1.0);
+          gl_FragColor = vec4(col * uExposure, 1.0);
           #include <colorspace_fragment>
         }`,
     });
-  }, [maps, sunDir]);
+  }, [maps, sunDir, exposure]);
 
   const atmosphere = useMemo(
     () =>
       new ShaderMaterial({
-        uniforms: { uSun: { value: sunDir } },
+        uniforms: { uSun: { value: sunDir }, uExposure: { value: exposure } },
         vertexShader: /* glsl */ `
           varying vec3 vN; varying vec3 vPos;
           void main() { vN = normalize(mat3(modelMatrix) * normal); vec4 wp = modelMatrix * vec4(position, 1.0); vPos = wp.xyz; gl_Position = projectionMatrix * viewMatrix * wp; }`,
         fragmentShader: /* glsl */ `
-          uniform vec3 uSun; varying vec3 vN; varying vec3 vPos;
+          uniform vec3 uSun; uniform float uExposure; varying vec3 vN; varying vec3 vPos;
           void main() {
             vec3 v = normalize(cameraPosition - vPos);
             float edge = pow(max(0.0, 1.0 - abs(dot(normalize(vN), v))), 6.0);
             float lit = smoothstep(-0.25, 0.4, dot(normalize(vN), uSun));
-            gl_FragColor = vec4(vec3(0.35, 0.62, 1.0) * edge * lit * 1.4, 1.0);
+            gl_FragColor = vec4(vec3(0.35, 0.62, 1.0) * edge * lit * 1.4 * uExposure, 1.0);
           }`,
         side: BackSide,
         blending: AdditiveBlending,
         transparent: true,
         depthWrite: false,
       }),
-    [sunDir],
+    [sunDir, exposure],
   );
 
   useEffect(() => () => surface?.dispose(), [surface]);
@@ -142,7 +154,7 @@ export default function RealEarth({ radius, position, sun, playing }: { radius: 
       <group ref={cloudsRef} rotation={[0, 2.2, 0]}>
         <mesh>
           <sphereGeometry args={[radius * 1.006, 96, 72]} />
-          <meshStandardMaterial color="#ffffff" alphaMap={maps.clouds} transparent depthWrite={false} roughness={1} metalness={0} />
+          <meshStandardMaterial color="#ffffff" alphaMap={maps.clouds} transparent depthWrite={false} roughness={1} metalness={0} opacity={Math.min(1, exposure)} />
         </mesh>
       </group>
       <mesh material={atmosphere} scale={1.025}>

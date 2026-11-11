@@ -88,6 +88,76 @@ describe("Aerospace page", () => {
     expect(container.querySelectorAll('a[aria-label*="Expression of Interest"]').length).toBe(1);
   });
 
+  it("keeps the UFlight™ feature as it was, and follows it directly with the Space Research feature", () => {
+    const { container } = render(<AerospacePage />);
+    const uflight = container.querySelector<HTMLElement>('section[aria-labelledby="uflight-3d-title"]')!;
+    expect(within(uflight).getByRole("heading", { level: 2, name: "THE AIRCRAFT KNOWS MORE THAN YOU CAN SEE." })).toBeInTheDocument();
+    expect(within(uflight).getByRole("link", { name: /LAUNCH UFLIGHT™ 3D/ })).toHaveAttribute("href", "/aerospace/uflight-3d");
+    expect(within(uflight).getByRole("img", { name: /UFlight™ Reference eVTOL/ })).toBeInTheDocument();
+    expect(uflight.nextElementSibling).toBe(container.querySelector("section#space-research"));
+  });
+
+  it("shows the Space Research copy exactly as approved", () => {
+    const { container } = render(<AerospacePage />);
+    const section = within(container.querySelector<HTMLElement>("section#space-research")!);
+    expect(section.getByText("ISHAVASYAM.ORG · SPACE RESEARCH")).toBeInTheDocument();
+    expect(section.getByRole("heading", { level: 2, name: "Learn to Protect Missions." })).toBeInTheDocument();
+    expect(section.getByText("Build Systems That Protect Spacecraft.")).toBeInTheDocument();
+    expect(
+      section.getByText("Explore spacecraft systems, digital twins, telemetry, fault detection and safe recovery through interactive engineering experiences."),
+    ).toBeInTheDocument();
+  });
+
+  it("opens the Space Research Portal in a new tab, and says so", () => {
+    render(<AerospacePage />);
+    const cta = screen.getByRole("link", { name: "Explore Space Research (opens in a new tab)" });
+    expect(cta).toHaveAttribute("href", "https://aerospace.ev.engineer/space");
+    expect(cta).toHaveAttribute("target", "_blank");
+    expect(cta).toHaveAttribute("rel", "noopener noreferrer");
+    expect(cta).toHaveTextContent("Space Research");
+    expect(cta).toHaveAttribute("data-track-event", "space_research_open");
+  });
+
+  it("describes the spacecraft, shows a still where 3D is unavailable, and labels it as educational and simulated", () => {
+    const { container } = render(<AerospacePage />);
+    const section = container.querySelector<HTMLElement>("section#space-research")!;
+    expect(within(section).getByRole("img", { name: /Educational 3D model of a 6U CubeSat-class spacecraft.*Stage 1 of 4: Spacecraft reveal/ })).toBeInTheDocument();
+    // Without WebGL (jsdom) no canvas is mounted; the still is in the frame from the start.
+    expect(section.querySelector("canvas")).toBeNull();
+    expect(section.querySelector('img[src*="space-research"]')).not.toBeNull();
+    const caption = section.querySelector("figcaption")!;
+    expect(caption).toHaveTextContent(/not flight hardware/);
+    expect(caption).toHaveTextContent(/Telemetry and the anomaly are simulated/);
+    expect(caption).toHaveTextContent(/research concept, not an operational system/);
+  });
+
+  it("lets visitors step through the stages, pick a subsystem, and pause", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<AerospacePage />);
+    const section = within(container.querySelector<HTMLElement>("section#space-research")!);
+    const stages = section.getByRole("group", { name: "Animation stages" });
+    expect(within(stages).getAllByRole("button")).toHaveLength(4);
+    expect(within(stages).getByRole("button", { name: /Reveal/ })).toHaveAttribute("aria-pressed", "true");
+
+    await user.click(within(stages).getByRole("button", { name: /Health/ }));
+    expect(within(stages).getByRole("button", { name: /Health/ })).toHaveAttribute("aria-pressed", "true");
+    expect(section.getByRole("img", { name: /Stage 3 of 4: Mission health/ })).toBeInTheDocument();
+    expect(section.getByText("Simulated telemetry")).toBeInTheDocument();
+
+    await user.click(within(stages).getByRole("button", { name: /Recovery/ }));
+    expect(section.getByText("Battery discharging faster than predicted")).toBeInTheDocument();
+
+    const subsystems = section.getByRole("group", { name: "Spacecraft subsystems" });
+    expect(within(subsystems).getAllByRole("button")).toHaveLength(6);
+    await user.click(within(subsystems).getByRole("button", { name: "Computer" }));
+    expect(within(subsystems).getByRole("button", { name: "Computer" })).toHaveAttribute("aria-pressed", "true");
+    expect(section.getByText(/Runs the flight software/)).toBeInTheDocument();
+    // Picking a part pauses the loop; Play resumes it and hands back to the story.
+    await user.click(section.getByRole("button", { name: "Play the animation" }));
+    expect(section.getByRole("button", { name: "Pause the animation" })).toBeInTheDocument();
+    expect(section.queryByText(/Runs the flight software/)).toBeNull();
+  });
+
   it("never wraps a desktop nav label, and switches to the menu at one breakpoint mirrored in CSS", () => {
     render(<AerospacePage />);
     const nav = screen.getByRole("navigation", { name: "Aerospace section navigation" });

@@ -14,7 +14,7 @@ import type { PartId } from "@/components/space-academy/missions/cubesat/model";
 import { LabelContext, LabelOverlay, LabelProjector, useLabelRegistry } from "@/components/space-academy/viewer/labels";
 import vstyles from "@/components/space-academy/viewer/viewer.module.css";
 import { Nebula } from "../SpaceBackdrop";
-import RealEarth from "./RealEarth";
+import RealEarth from "@/components/space-3d/RealEarth";
 import { STAGE_SECONDS, type StageId, type Timeline } from "./timeline";
 
 const SUN: [number, number, number] = [-140, 70, 90];
