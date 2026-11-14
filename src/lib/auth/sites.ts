@@ -41,7 +41,8 @@ export const AUTH_SITES: readonly AuthSite[] = [
     id: "gamyaa",
     brand: "Gamyaa AeroSystems",
     loginHost: "login.gamyaa.in",
-    hosts: ["gamyaa.in", "www.gamyaa.in", "aerospace.gamyaa.in", "aerosystems.gamyaa.in"],
+    // aerospace.stellrspace.com (STELLR SPACE) signs in here, like aerospace.gamyaa.in.
+    hosts: ["gamyaa.in", "www.gamyaa.in", "aerospace.gamyaa.in", "aerosystems.gamyaa.in", "aerospace.stellrspace.com"],
   },
   {
     id: "uflight",
