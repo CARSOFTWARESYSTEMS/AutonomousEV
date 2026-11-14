@@ -186,6 +186,29 @@
   }
 }
 
+/* The header's top-left brand. On aerospace.stellrspace.com, where
+   SpaceBrandHostFlag sets html[data-space-brand="stellr"] before first paint,
+   STELLR SPACE (rendered with the hidden attribute) takes the place of
+   "ISHAVASYAM.ORG /space". */
+.brandDefault {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brandStellr {
+  align-items: center;
+  gap: 8px;
+}
+
+:global(html[data-space-brand="stellr"]) .brandDefault {
+  display: none;
+}
+
+:global(html[data-space-brand="stellr"]) .brandStellr {
+  display: flex;
+}
+
 .headerNavDesktop,
 .headerCtaDesktop {
   display: flex;

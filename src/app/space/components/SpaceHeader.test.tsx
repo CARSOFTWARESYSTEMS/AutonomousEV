@@ -74,6 +74,24 @@ describe("Shared Space header", () => {
     expect(section).toHaveAttribute("href", "/space#home");
   });
 
+  it("carries STELLR SPACE for aerospace.stellrspace.com, hidden elsewhere and leading to the top of Space", () => {
+    render(<SpaceHeader basePath="/space" />);
+    const header = screen.getByRole("banner");
+    // Not shown, nor announced, on any other host.
+    expect(within(header).queryByRole("link", { name: "STELLR SPACE" })).toBeNull();
+    const stellr = header.querySelector("a[hidden]") as HTMLAnchorElement;
+    expect(stellr).toHaveTextContent(/^STELLR SPACE$/);
+    expect(stellr).toHaveAttribute("href", "/space#home");
+    expect(stellr).not.toHaveAttribute("target");
+    // On that host the flag swaps it in for "ISHAVASYAM.ORG /space".
+    expect(css).toMatch(/:global\(html\[data-space-brand="stellr"\]\) \.brandDefault \{\s*display: none;/);
+    expect(css).toMatch(/:global\(html\[data-space-brand="stellr"\]\) \.brandStellr \{\s*display: flex;/);
+    // "ISHAVASYAM.ORG /space" is one block, hidden as one, beside STELLR SPACE.
+    const defaultBrand = within(header).getByRole("link", { name: "ISHAVASYAM.ORG" }).parentElement!;
+    expect(defaultBrand).toContainElement(within(header).getByRole("link", { name: /^\/space/ }));
+    expect(defaultBrand.nextElementSibling).toBe(stellr);
+  });
+
   it("offers iTelematics and EV.ENGINEER beside the navigation, and no longer UFlight", () => {
     render(<SpaceHeader />);
     const nav = screen.getByRole("navigation", { name: "Space section navigation" });

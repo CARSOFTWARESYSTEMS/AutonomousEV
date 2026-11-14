@@ -8,6 +8,7 @@ import { EOI_FORM_URL } from "@/lib/eoi";
 import { FONT_MANROPE } from "../fonts";
 import styles from "../space.module.css";
 import { SPACE_INITIATIVE } from "@/data/space-initiative";
+import { STELLR_SPACE } from "@/data/space-host-brands";
 import { ITELEMATICS } from "@/data/public-entities";
 
 /** EV.ENGINEER's own address. Not "/": this header is also served on aerospace.ishavasyam.org, where "/" is that host's root. */
@@ -26,6 +27,29 @@ const navItems = [
 ];
 
 export type BrandLink = { label: string; href: string };
+
+const brandNameStyle: React.CSSProperties = { fontFamily: FONT_MANROPE, fontWeight: 800, letterSpacing: "-0.02em", color: "#fff", whiteSpace: "nowrap" };
+
+/** The orbit badge beside the brand name. */
+function BrandMark() {
+  return (
+    <span
+      aria-hidden="true"
+      style={{
+        width: 34,
+        height: 34,
+        flexShrink: 0,
+        borderRadius: 10,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "linear-gradient(135deg, #7C3AED, #06B6D4)",
+      }}
+    >
+      <Orbit size={18} color="#fff" />
+    </span>
+  );
+}
 
 /**
  * Widest viewport (px) that still uses the compact header + menu. The full
@@ -79,38 +103,34 @@ export default function SpaceHeader({
           }}
         >
           {/* The brand: the organisation, which leads to its own site, and the section, which leads to the top of Space. */}
-          <a
-            href={SPACE_INITIATIVE.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0, textDecoration: "none" }}
-          >
-            <span
-              aria-hidden="true"
-              style={{
-                width: 34,
-                height: 34,
-                flexShrink: 0,
-                borderRadius: 10,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                background: "linear-gradient(135deg, #7C3AED, #06B6D4)",
-              }}
+          <div className={styles.brandDefault}>
+            <a
+              href={SPACE_INITIATIVE.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0, textDecoration: "none" }}
             >
-              <Orbit size={18} color="#fff" />
+              <BrandMark />
+              <span className={styles.headerBrandName} style={brandNameStyle}>
+                {SPACE_INITIATIVE.brand}
+              </span>
+            </a>
+            <a
+              href={`${basePath}#home`}
+              aria-label="/space: the top of the Space page"
+              className={styles.headerBrandName}
+              style={{ fontFamily: FONT_MANROPE, fontWeight: 700, letterSpacing: "-0.01em", color: "#B39DDB", whiteSpace: "nowrap", textDecoration: "none", marginLeft: -4 }}
+            >
+              /space
+            </a>
+          </div>
+          {/* On aerospace.stellrspace.com the brand is STELLR SPACE, leading to the top of Space.
+              Hidden until <html data-space-brand="stellr"> (SpaceBrandHostFlag) shows it in place of the brand above. */}
+          <a href={`${basePath}#home`} hidden className={styles.brandStellr} style={{ minWidth: 0, textDecoration: "none" }}>
+            <BrandMark />
+            <span className={styles.headerBrandName} style={brandNameStyle}>
+              {STELLR_SPACE.name}
             </span>
-            <span className={styles.headerBrandName} style={{ fontFamily: FONT_MANROPE, fontWeight: 800, letterSpacing: "-0.02em", color: "#fff", whiteSpace: "nowrap" }}>
-              {SPACE_INITIATIVE.brand}
-            </span>
-          </a>
-          <a
-            href={`${basePath}#home`}
-            aria-label="/space: the top of the Space page"
-            className={styles.headerBrandName}
-            style={{ fontFamily: FONT_MANROPE, fontWeight: 700, letterSpacing: "-0.01em", color: "#B39DDB", whiteSpace: "nowrap", textDecoration: "none", marginLeft: -4 }}
-          >
-            /space
           </a>
         </div>
 

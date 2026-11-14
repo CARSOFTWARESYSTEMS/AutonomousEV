@@ -52,6 +52,18 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        // aerospace.stellrspace.com opens on the Space page.
+        source: "/",
+        has: [
+          {
+            type: "host",
+            value: "aerospace\\.stellrspace\\.com",
+          },
+        ],
+        destination: "/space",
+        permanent: true,
+      },
+      {
         // Corrected route spelling (evAutoRiksha -> evAutoRickshaw). Query
         // parameters on the incoming request are passed through automatically.
         source: "/internships/evAutoRiksha",

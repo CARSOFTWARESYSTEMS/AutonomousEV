@@ -5,6 +5,7 @@ import AuthProvider from "@/components/auth/AuthProvider";
 import PremiumRouteGate from "@/components/auth/PremiumRouteGate";
 import ChromeGate from "@/components/ChromeGate";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import SpaceBrandHostFlag from "@/components/SpaceBrandHostFlag";
 import "./globals.css";
 
 const inter = Inter({
@@ -27,10 +28,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // suppressHydrationWarning: AuthHostFlag sets data-auth-site on <html> before React hydrates.
+    // suppressHydrationWarning: AuthHostFlag and SpaceBrandHostFlag set data-auth-site and data-space-brand on <html> before React hydrates.
     <html lang="en" className={`${inter.variable}`} suppressHydrationWarning>
       <head>
         <AuthHostFlag />
+        <SpaceBrandHostFlag />
       </head>
       <body>
         <GoogleAnalytics />
