@@ -12,7 +12,7 @@
 // next.config.ts loads this file through Node's own TypeScript loader, so it
 // imports nothing and uses only erasable type syntax (no enums, no namespaces).
 
-export type AuthSiteId = "itelematics" | "ev_engineer" | "gamyaa" | "uflight";
+export type AuthSiteId = "itelematics" | "ev_engineer" | "gamyaa" | "uflight" | "stellr_space";
 
 export interface AuthSite {
   id: AuthSiteId;
@@ -41,14 +41,20 @@ export const AUTH_SITES: readonly AuthSite[] = [
     id: "gamyaa",
     brand: "Gamyaa AeroSystems",
     loginHost: "login.gamyaa.in",
-    // aerospace.stellrspace.com (STELLR SPACE) signs in here, like aerospace.gamyaa.in.
-    hosts: ["gamyaa.in", "www.gamyaa.in", "aerospace.gamyaa.in", "aerosystems.gamyaa.in", "aerospace.stellrspace.com"],
+    hosts: ["gamyaa.in", "www.gamyaa.in", "aerospace.gamyaa.in", "aerosystems.gamyaa.in"],
   },
   {
     id: "uflight",
     brand: "UFlight™",
     loginHost: "login.uflight.in",
     hosts: ["uflight.in", "www.uflight.in", "cybersecurity.uflight.in"],
+  },
+  {
+    id: "stellr_space",
+    brand: "STELLR SPACE",
+    loginHost: "login.stellrspace.com",
+    // aerospace.stellrspace.com serves Space under the STELLR SPACE name (src/data/space-host-brands.ts).
+    hosts: ["aerospace.stellrspace.com"],
   },
 ];
 

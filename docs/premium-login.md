@@ -97,9 +97,10 @@ checklist (its `docs/auth/multi-domain-sso.md`) covers the first three; then:
 - [ ] **Exact return:** in a private window, open
       `https://autonomous.ev.engineer/space/cubesat?mode=advanced#energy`, Login,
       sign in: you land on exactly that URL and the page scrolls to `#energy`.
-      Repeat on `aerospace.ev.engineer`, `aerospace.gamyaa.in` and
-      `aerospace.stellrspace.com` (both sign in at `login.gamyaa.in`) and
-      `cybersecurity.uflight.in` (at `login.uflight.in`).
+      Repeat on `aerospace.ev.engineer`, `aerospace.gamyaa.in` (signs in at
+      `login.gamyaa.in`), `aerospace.stellrspace.com` (at
+      `login.stellrspace.com`) and `cybersecurity.uflight.in` (at
+      `login.uflight.in`).
 - [ ] **Previews:** signed out, each required-login page shows its title,
       description, topics and Login only (no Continue Browsing). View source
       contains the `<h1>`, description and `application/ld+json`.

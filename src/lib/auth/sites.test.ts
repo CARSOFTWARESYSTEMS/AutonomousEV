@@ -25,10 +25,10 @@ const SPEC: Record<string, string> = {
   "www.gamyaa.in": "https://login.gamyaa.in",
   "aerospace.gamyaa.in": "https://login.gamyaa.in",
   "aerosystems.gamyaa.in": "https://login.gamyaa.in",
-  "aerospace.stellrspace.com": "https://login.gamyaa.in",
   "uflight.in": "https://login.uflight.in",
   "www.uflight.in": "https://login.uflight.in",
   "cybersecurity.uflight.in": "https://login.uflight.in",
+  "aerospace.stellrspace.com": "https://login.stellrspace.com",
 };
 
 const page = (url: string) => {
@@ -57,7 +57,7 @@ describe("login service per host", () => {
     expect(authSiteForHost("aerospace.ev.engineer")?.brand).toBe("EV.ENGINEER™");
     expect(authSiteForHost("aerospace.ishavasyam.org")?.brand).toBe("EV.ENGINEER™");
     expect(authSiteForHost("aerospace.gamyaa.in")?.brand).toBe("Gamyaa AeroSystems");
-    expect(authSiteForHost("aerospace.stellrspace.com")?.brand).toBe("Gamyaa AeroSystems");
+    expect(authSiteForHost("aerospace.stellrspace.com")?.brand).toBe("STELLR SPACE");
     expect(authSiteForHost("cybersecurity.uflight.in")?.brand).toBe("UFlight™");
   });
 
@@ -174,7 +174,7 @@ describe("rewrites to Intern2026", () => {
   it("sends aerospace.gamyaa.in, aerospace.stellrspace.com and cybersecurity.uflight.in to their own providers, not EV.ENGINEER", () => {
     const dest = (host: string) => rewrites.find((r) => r.has[0].value === host.replace(/\./g, "\\."))?.destination;
     expect(dest("aerospace.gamyaa.in")).toBe("https://login.gamyaa.in/api/auth/app/aerospace.gamyaa.in/:action");
-    expect(dest("aerospace.stellrspace.com")).toBe("https://login.gamyaa.in/api/auth/app/aerospace.stellrspace.com/:action");
+    expect(dest("aerospace.stellrspace.com")).toBe("https://login.stellrspace.com/api/auth/app/aerospace.stellrspace.com/:action");
     expect(dest("cybersecurity.uflight.in")).toBe("https://login.uflight.in/api/auth/app/cybersecurity.uflight.in/:action");
   });
 
