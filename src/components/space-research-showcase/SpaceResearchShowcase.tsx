@@ -3,12 +3,13 @@
 // aircraft feature on /aerospace. Same card family (copy left, visual right,
 // stacked on smaller screens), its own identity: an orbital scene in deep
 // navy and purple with cyan telemetry. The CTA opens the Space Research
-// Portal in a new tab.
+// Portal in a new tab, on the domain it is clicked on.
 import { ArrowUpRight } from "lucide-react";
 import SpacecraftPreview3D from "./SpacecraftPreview3D";
 import styles from "./spaceResearch.module.css";
 
-export const SPACE_RESEARCH_URL = "https://aerospace.ev.engineer/space";
+/** The Space Research Portal on the domain being read: aerospace.ev.engineer/space, aerospace.stellrspace.com/space, and so on. */
+export const SPACE_RESEARCH_URL = "/space";
 
 export default function SpaceResearchShowcase({ titleFont }: { titleFont?: string }) {
   return (

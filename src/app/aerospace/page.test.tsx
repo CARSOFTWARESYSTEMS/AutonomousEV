@@ -143,10 +143,11 @@ describe("Aerospace page", () => {
     ).toBeInTheDocument();
   });
 
-  it("opens the Space Research Portal in a new tab, and says so", () => {
+  it("opens the Space Research Portal on the same domain, in a new tab, and says so", () => {
     render(<AerospacePage />);
     const cta = screen.getByRole("link", { name: "Explore Space Research (opens in a new tab)" });
-    expect(cta).toHaveAttribute("href", "https://aerospace.ev.engineer/space");
+    // /space of whichever domain /aerospace is read on: aerospace.ev.engineer, aerospace.stellrspace.com, …
+    expect(cta).toHaveAttribute("href", "/space");
     expect(cta).toHaveAttribute("target", "_blank");
     expect(cta).toHaveAttribute("rel", "noopener noreferrer");
     expect(cta).toHaveTextContent("Space Research");
