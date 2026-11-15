@@ -282,9 +282,13 @@
     bottom: 26px;
     transform: translateX(50%);
     flex-direction: row;
+    /* One row, as wide as its tools: without this, the box only gets the half of the viewer that `right: 50%`
+       leaves it, and the tools wrap into a block over the model. It wraps only where the viewer is narrower. */
+    width: max-content;
     max-width: calc(100% - 16px);
+    justify-content: center;
   }
-  .viewer[data-variant="lab"] .group { flex-direction: row; }
+  .viewer[data-variant="lab"] .group { flex-direction: row; justify-content: center; }
   .viewer[data-variant="lab"] .hint {
     position: absolute;
     width: 1px;

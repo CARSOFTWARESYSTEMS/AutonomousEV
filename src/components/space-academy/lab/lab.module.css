@@ -168,6 +168,13 @@
   color: #fff;
 }
 
+/* The narrowest phones (320–374px): a little less space around the bar's controls, so the mission's title keeps
+   enough room to be read. The 44px touch targets stay as they are. */
+@media (max-width: 374px) {
+  .bar { gap: 4px; padding: 0 6px; }
+  .levelBtn { padding: 0 5px; font-size: 12px; }
+}
+
 @media (min-width: 640px) {
   .bar { gap: 12px; padding: 0 16px; }
   .exitText { display: inline; }
