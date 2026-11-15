@@ -2,6 +2,8 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { render, screen, within, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ModelRocketryContent from "./ModelRocketryContent";
+import { HostBrandProvider } from "@/components/HostBrandContext";
+import { STELLR_HOST_BRAND } from "@/lib/host-brand";
 
 vi.mock("next/navigation", () => ({
   usePathname: () => "/space/model-rocketry",
@@ -253,5 +255,25 @@ describe("Model Rocketry learning page", () => {
 
     await user.click(within(dialog).getByRole("button", { name: /Next component/ }));
     expect(screen.getByRole("dialog", { name: "Payload / experiment section" })).toBeInTheDocument();
+  });
+});
+
+describe("the note on who the page belongs to", () => {
+  const note = (container: HTMLElement) =>
+    [...container.querySelectorAll("p")].map((p) => (p.textContent ?? "").replace(/\s+/g, " ")).find((text) => text.includes("Model Rocketry is")) ?? "";
+
+  it("names ISHAVASYAM.ORG, with a space after its article", () => {
+    const { container } = render(<ModelRocketryContent />);
+    expect(note(container)).toContain("Model Rocketry is an ISHAVASYAM.ORG educational initiative hosted on EV.ENGINEER™.");
+  });
+
+  it("names STELLR SPACE on aerospace.stellrspace.com, with its own article", () => {
+    const { container } = render(
+      <HostBrandProvider brand={STELLR_HOST_BRAND}>
+        <ModelRocketryContent />
+      </HostBrandProvider>,
+    );
+    expect(note(container)).toContain("Model Rocketry is a STELLR SPACE educational initiative hosted on EV.ENGINEER™.");
+    expect(note(container)).not.toMatch(/ishavasyam/i);
   });
 });

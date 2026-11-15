@@ -48,8 +48,7 @@ function SectionHeading({ eyebrow, title, description }: { eyebrow: string; titl
 }
 
 export default function ModelRocketryContent() {
-  // On a host with its own brand (src/app/stellrspace-space): its name, graph and footer. Every other host reads
-  // exactly as before, "an" and the name included.
+  // On a host with its own brand (src/app/stellrspace-space): its name, graph and footer.
   const brand = useHostBrand();
   const org = useHostOrganisation();
   const [mode, setMode] = useState<ExperienceMode>("webpage");
@@ -353,8 +352,8 @@ export default function ModelRocketryContent() {
 
           <section className={styles.section} style={{ borderBottom: "none" }}>
             <p className={styles.formNote}>
-              Content last reviewed: <time dateTime={LAST_REVIEWED}>14 September 2026</time>. Model Rocketry is {brand ? `${brand.article} ` : "an"}
-              {org.brand} educational initiative hosted on EV.ENGINEER™. Commercial engineering products and
+              Content last reviewed: <time dateTime={LAST_REVIEWED}>14 September 2026</time>. Model Rocketry is {org.article} {org.brand}{" "}
+              educational initiative hosted on EV.ENGINEER™. Commercial engineering products and
               services, where applicable, are handled separately by iTelematics Software Private Limited under
               explicit agreements. UFlight™ is referenced within the broader ecosystem for aerospace health and
               usage monitoring. These references do not imply a partnership, endorsement, certification, ISRO or
