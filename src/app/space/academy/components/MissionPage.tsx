@@ -7,6 +7,7 @@ import lab from "@/components/space-academy/lab/lab.module.css";
 import { trackBySlug } from "../data/curriculum";
 import { missionBySlug } from "../data/missions";
 import { DISCLAIMERS, SAFETY_PRINCIPLES } from "../data/programme";
+import { hostText } from "@/lib/host-brand-render";
 import { missionGraph } from "../seo";
 
 /**
@@ -76,7 +77,7 @@ export function MissionInfo({ slug }: { slug: string }) {
           <li>
             {DISCLAIMERS.privacy} {DISCLAIMERS.signIn}
           </li>
-          <li>{DISCLAIMERS.independence}</li>
+          <li>{hostText(DISCLAIMERS.independence)}</li>
           <li>{DISCLAIMERS.eligibility}</li>
           <li>{DISCLAIMERS.ages}</li>
           {rocketry && SAFETY_PRINCIPLES.map((s) => <li key={s}>{s}</li>)}

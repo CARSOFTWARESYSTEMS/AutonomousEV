@@ -24,7 +24,8 @@ import SatelliteToPhone from "./components/SatelliteToPhone";
 import ClosernessStrip from "./components/ClosernessStrip";
 import HeroVisual from "./components/HeroVisual";
 import type { Persona } from "./applicationsData";
-import { SPACE_INITIATIVE } from "@/data/space-initiative";
+import { useHostBrand, useHostOrganisation } from "@/components/HostBrandContext";
+import { HOST_FOOTER_LINKS, brandGraph } from "@/lib/host-brand";
 
 function SectionHeading({ eyebrow, title, description }: { eyebrow: string; title: string; description: string }) {
   return (
@@ -37,11 +38,14 @@ function SectionHeading({ eyebrow, title, description }: { eyebrow: string; titl
 }
 
 export default function EverydayApplicationsContent() {
+  // On a host with its own brand (src/app/stellrspace-space): its name, graph and footer.
+  const brand = useHostBrand();
+  const org = useHostOrganisation();
   const [persona, setPersona] = useState<Persona | null>(null);
 
   return (
     <div className={`${spaceTheme.theme} ${manrope.variable} ${inter.variable} ${styles.portal}`}>
-      <JsonLd data={structuredData} />
+      <JsonLd data={brand ? brandGraph(structuredData, brand) : structuredData} />
       <a href="#main-content" className={styles.skipLink}>
         Skip to content
       </a>
@@ -153,7 +157,7 @@ export default function EverydayApplicationsContent() {
 
           <section className={styles.section}>
             <p className={styles.formNote}>
-              {SPACE_INITIATIVE.label}, hosted on EV.ENGINEER™. UFlight™ supports aerospace health and
+              {org.label}, hosted on EV.ENGINEER™. UFlight™ supports aerospace health and
               mission-intelligence research. Commercial engineering products and services are handled by iTelematics
               Software Private Limited. Content last reviewed {LAST_REVIEWED}.
             </p>
@@ -164,7 +168,7 @@ export default function EverydayApplicationsContent() {
           </div>
         </main>
       </ViewProvider>
-      <SpaceFooter basePath="/space" />
+      <SpaceFooter basePath="/space" {...(brand ? { organisationLine: brand.label, brandLinks: [...HOST_FOOTER_LINKS] } : {})} />
     </div>
   );
 }

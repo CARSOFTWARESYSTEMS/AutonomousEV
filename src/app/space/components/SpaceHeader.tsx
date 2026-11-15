@@ -9,6 +9,7 @@ import { FONT_MANROPE } from "../fonts";
 import styles from "../space.module.css";
 import { SPACE_INITIATIVE } from "@/data/space-initiative";
 import { STELLR_SPACE } from "@/data/space-host-brands";
+import { useHostBrand } from "@/components/HostBrandContext";
 import { ITELEMATICS } from "@/data/public-entities";
 
 /** EV.ENGINEER's own address. Not "/": this header is also served on aerospace.ishavasyam.org, where "/" is that host's root. */
@@ -63,11 +64,21 @@ export const SPACE_HEADER_COMPACT_MAX = 1439;
 export default function SpaceHeader({
   basePath = "",
   brandLinks,
+  brandName: brandNameProp,
 }: {
   basePath?: string;
   /** Replaces the default brand links (iTelematics, EV.ENGINEER) for pages with their own attribution. */
   brandLinks?: BrandLink[];
+  /**
+   * A host's own name as the only brand, leading to the top of Space, in place
+   * of "ISHAVASYAM.ORG /space" and the hidden host swap below. For a page built
+   * for one host (aerospace.stellrspace.com's own copies), whose HTML names only
+   * it. Without it, the host brand of the page, if any (HostBrandContext).
+   */
+  brandName?: string;
 }) {
+  const hostBrand = useHostBrand();
+  const brandName = brandNameProp ?? hostBrand?.name;
   // The brand is the link to the organisation, so a page's own list never repeats it as a menu item.
   const items = (brandLinks ? [...navItems.filter((item) => item.href.startsWith("#")), ...brandLinks] : navItems).filter((item) => item.href !== SPACE_INITIATIVE.url);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -102,36 +113,47 @@ export default function SpaceHeader({
             flexShrink: 0,
           }}
         >
-          {/* The brand: the organisation, which leads to its own site, and the section, which leads to the top of Space. */}
-          <div className={styles.brandDefault}>
-            <a
-              href={SPACE_INITIATIVE.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0, textDecoration: "none" }}
-            >
+          {brandName ? (
+            <a href={`${basePath}#home`} style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0, textDecoration: "none" }}>
               <BrandMark />
               <span className={styles.headerBrandName} style={brandNameStyle}>
-                {SPACE_INITIATIVE.brand}
+                {brandName}
               </span>
             </a>
-            <a
-              href={`${basePath}#home`}
-              aria-label="/space: the top of the Space page"
-              className={styles.headerBrandName}
-              style={{ fontFamily: FONT_MANROPE, fontWeight: 700, letterSpacing: "-0.01em", color: "#B39DDB", whiteSpace: "nowrap", textDecoration: "none", marginLeft: -4 }}
-            >
-              /space
-            </a>
-          </div>
-          {/* On aerospace.stellrspace.com the brand is STELLR SPACE, leading to the top of Space.
-              Hidden until <html data-space-brand="stellr"> (SpaceBrandHostFlag) shows it in place of the brand above. */}
-          <a href={`${basePath}#home`} hidden className={styles.brandStellr} style={{ minWidth: 0, textDecoration: "none" }}>
-            <BrandMark />
-            <span className={styles.headerBrandName} style={brandNameStyle}>
-              {STELLR_SPACE.name}
-            </span>
-          </a>
+          ) : (
+            <>
+              {/* The brand: the organisation, which leads to its own site, and the section, which leads to the top of Space. */}
+              <div className={styles.brandDefault}>
+                <a
+                  href={SPACE_INITIATIVE.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0, textDecoration: "none" }}
+                >
+                  <BrandMark />
+                  <span className={styles.headerBrandName} style={brandNameStyle}>
+                    {SPACE_INITIATIVE.brand}
+                  </span>
+                </a>
+                <a
+                  href={`${basePath}#home`}
+                  aria-label="/space: the top of the Space page"
+                  className={styles.headerBrandName}
+                  style={{ fontFamily: FONT_MANROPE, fontWeight: 700, letterSpacing: "-0.01em", color: "#B39DDB", whiteSpace: "nowrap", textDecoration: "none", marginLeft: -4 }}
+                >
+                  /space
+                </a>
+              </div>
+              {/* On aerospace.stellrspace.com the brand is STELLR SPACE, leading to the top of Space.
+                  Hidden until <html data-space-brand="stellr"> (SpaceBrandHostFlag) shows it in place of the brand above. */}
+              <a href={`${basePath}#home`} hidden className={styles.brandStellr} style={{ minWidth: 0, textDecoration: "none" }}>
+                <BrandMark />
+                <span className={styles.headerBrandName} style={brandNameStyle}>
+                  {STELLR_SPACE.name}
+                </span>
+              </a>
+            </>
+          )}
         </div>
 
         <nav

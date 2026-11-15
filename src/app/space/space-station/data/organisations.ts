@@ -20,3 +20,6 @@ export const BRAND_LINKS = [
 ];
 
 export const ORGANISATION_LINE = `${ISHAVASYAM.name} · ${ISHAVASYAM.descriptor}`;
+
+/** The links beside the navigation and in the footer, on a host with its own brand: the brand is the header's, so ISHAVASYAM.ORG's link goes. */
+export const hostBrandLinks = (hosted: boolean) => (hosted ? BRAND_LINKS.filter((link) => link.href !== ISHAVASYAM.url) : BRAND_LINKS);

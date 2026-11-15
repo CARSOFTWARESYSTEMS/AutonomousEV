@@ -1,5 +1,6 @@
 import { Info, Lock, ShieldCheck, Users } from "lucide-react";
 import { DISCLAIMERS, SAFETY_PRINCIPLES } from "../data/programme";
+import { hostText } from "@/lib/host-brand-render";
 import styles from "../academy.module.css";
 
 /** Eligibility, independence, simulation, safety and privacy notices. Shown on every Academy page. */
@@ -13,7 +14,7 @@ export default function Notices({ id = "notices", compact = false }: { id?: stri
         <li>
           <ShieldCheck size={18} aria-hidden />
           <span>
-            <strong>Independent initiative.</strong> {DISCLAIMERS.independence}
+            <strong>Independent initiative.</strong> {hostText(DISCLAIMERS.independence)}
           </span>
         </li>
         <li>

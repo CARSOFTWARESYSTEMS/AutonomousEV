@@ -6,6 +6,7 @@ import { CYBER_TOPICS, CYBER_SOURCES, ECONOMY } from "../data/operations";
 import { MOON_PROGRESSION, ENV_COMPARISON, type EnvKey } from "../data/stations";
 import { SUDARSHANA_KARKALA } from "@/data/public-entities";
 import { ISHAVASYAM, ITELEMATICS_ORG } from "../data/organisations";
+import { renderHostBrand } from "@/lib/host-brand-render";
 import { Badge, SourceList } from "./ui";
 import { FactorCompare, CyberAreas } from "./MobilePickers";
 import styles from "../station.module.css";
@@ -240,13 +241,16 @@ export function ResearchProfile() {
 }
 
 export function Organisations() {
+  // On a host with its own brand (src/app/stellrspace-space), the card is the brand's.
+  const host = renderHostBrand();
+  const org = host ? { descriptor: "Education · Research · Engineering", name: host.name, url: host.url } : ISHAVASYAM;
   return (
     <div className={styles.grid2} style={{ marginTop: 16, maxWidth: 860 }}>
       <article className={styles.card}>
-        <div className={styles.eyebrow}>{ISHAVASYAM.descriptor}</div>
-        <h3>{ISHAVASYAM.name}</h3>
-        <a className={styles.inlineLink} style={{ display: "inline-block", marginTop: 10 }} href={ISHAVASYAM.url} target="_blank" rel="noopener noreferrer">
-          Visit {ISHAVASYAM.name}
+        <div className={styles.eyebrow}>{org.descriptor}</div>
+        <h3>{org.name}</h3>
+        <a className={styles.inlineLink} style={{ display: "inline-block", marginTop: 10 }} href={org.url} target="_blank" rel="noopener noreferrer">
+          Visit {org.name}
           <span className={styles.srOnly}> (opens in a new tab)</span>
         </a>
       </article>

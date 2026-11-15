@@ -21,12 +21,13 @@
 // partnership).
 import { SPACE_INITIATIVE } from "@/data/space-initiative";
 import { EV_SOCIETY, ITELEMATICS } from "@/data/public-entities";
+import { STELLR_SPACE } from "@/data/space-host-brands";
 
 /** EV.ENGINEER's address: the platform's own site. Not "/": this page is also served on hosts whose root is another page. */
 export const EV_ENGINEER_URL = "https://autonomous.ev.engineer/";
 
 /** The organisations whose links the profile reports, by the id analytics sends. */
-export type TrackedOrganisation = "ishavasyam" | "ev_engineer" | "itelematics" | "thasmai" | "gamyaa" | "ev_society";
+export type TrackedOrganisation = "ishavasyam" | "ev_engineer" | "itelematics" | "thasmai" | "gamyaa" | "ev_society" | "stellr_space";
 
 /**
  * An organisation as a row names it. `href` is its own site, where one is on record; `tracked` is set for the
@@ -209,6 +210,23 @@ export const CONSULTING: {
     },
   ],
 };
+
+/**
+ * STELLR Space, shown after iFab Innovations on aerospace.stellrspace.com's copy of the profile only: on every
+ * other host the profile is unchanged. Named as the owner wrote it; its name is the link to its own site.
+ */
+export const STELLR_SPACE_ENGAGEMENT: (typeof CONSULTING.engagements)[number] = {
+  organisation: { name: "STELLR Space", href: "https://stellrspace.com/", tracked: { id: "stellr_space", destination: "stellrspace.com" } },
+  role: "Consulting Engagement",
+  areas: ["Space Engineering"],
+};
+
+/** The engagements the profile lists for the host it is rendered for (src/lib/host-brand-render). */
+export function consultingEngagementsFor(host: string | null): typeof CONSULTING.engagements {
+  if (host !== STELLR_SPACE.id) return CONSULTING.engagements;
+  const after = CONSULTING.engagements.findIndex((engagement) => engagement.organisation.name === "iFab Innovations") + 1;
+  return [...CONSULTING.engagements.slice(0, after), STELLR_SPACE_ENGAGEMENT, ...CONSULTING.engagements.slice(after)];
+}
 
 /**
  * Alumni, professional-community and ecosystem-building contributions, outside any employment. Each card names the

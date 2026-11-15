@@ -5,6 +5,8 @@
 // "already live" claims. Anything not yet real is labelled Planned /
 // Proposed / Research Direction / In Development.
 
+import { SPACE_INITIATIVE } from "@/data/space-initiative";
+
 export type IconName =
   | "shield"
   | "satellite"
@@ -194,45 +196,53 @@ export const accessModels: string[] = [
   "Industry-sponsored",
 ];
 
-export const faqs: { q: string; a: string }[] = [
-  {
-    q: "What is the single focus of the Space initiative?",
-    a: "One mission: Autonomous Spacecraft Health Management and Safe Recovery — helping future spacecraft observe their own telemetry, detect anomalies, and recover safely with bounded, supervised autonomy.",
-  },
-  {
-    q: "Is this an official ISRO or government programme?",
-    a: "No. This is an independent ISHAVASYAM.ORG initiative. References to national space goals are provided for educational context and do not imply endorsement, affiliation or partnership with ISRO, IN-SPACe, NSIL or the Department of Space.",
-  },
-  {
-    q: "Who can participate?",
-    a: "School students (ages 14–18), engineering students, faculty and researchers, retired scientists and mentors, space startups and industry, government and institutional stakeholders, CSR and scholarship partners, and young founders.",
-  },
-  {
-    q: "What will students aged 14–18 learn?",
-    a: "Planned learning areas include spacecraft subsystems, telemetry and sensors, safe mode and redundancy, mission communication delays, basic anomaly reasoning, a CanSat or simulated mission-health activity, and engineering ethics and safety.",
-  },
-  {
-    q: "How are internships different from paid training?",
-    a: "Paid training and internships are distinct. Internships are merit-based and governed by the published terms of each cohort; sponsored or stipended opportunities will be identified explicitly when available.",
-  },
-  {
-    q: "Does ISHAVASYAM.ORG own student or startup intellectual property?",
-    a: "No. Student, academic, ISHAVASYAM.ORG, iTelematics and startup intellectual-property rights are governed through transparent written agreements. Participation does not automatically transfer a participant's IP to iTelematics.",
-  },
-  {
-    q: "Are the labs and digital twin already operational?",
-    a: "No. The planned labs, the research platform and its digital twin described here are Planned or Research Direction items, not operational or validated products. Separately, the educational simulations and tutorial demonstrators on this site, such as CubeTwin, the Rocket Engine Digital Twins and the Space Academy missions, can be used now: they are teaching tools with simulated data, not validated engineering systems, and their availability does not make the research platform operational. Status is labelled honestly on each section. Participation in any programme is subject to its published conditions.",
-  },
-  {
-    q: "How can schools, faculty, experts and industry express interest?",
-    a: "Use the Express Interest links on this page, which open our contact page: choose the enquiry type that fits, or Other. Sending an enquiry records your interest only — it does not confirm selection, admission, internship, stipend, funding, partnership or participation. For anything else, use the Partner With Us or Contact Us links, which route to our existing contact channel.",
-  },
-  {
-    q: "Will programmes be free?",
-    a: "Not positioned as free. Programmes may be participant-funded, institution-funded, CSR-sponsored, scholarship-supported, grant-funded, or industry-sponsored. Availability, selection, fees, sponsorship and stipend conditions will be published for each programme.",
-  },
-  {
-    q: "Where do commercial products and services belong?",
-    a: "Commercial products and services, where applicable, are handled separately by iTelematics Software Private Limited under explicit agreements — not by ISHAVASYAM.ORG, which focuses on the public-interest education, research and pre-incubation mission.",
-  },
-];
+/**
+ * The FAQ, naming the organisation the page belongs to: ISHAVASYAM.ORG on
+ * /space, STELLR SPACE on aerospace.stellrspace.com/space (../stellrspace-space).
+ */
+export function spaceFaqs(brand: string): { q: string; a: string }[] {
+  return [
+    {
+      q: "What is the single focus of the Space initiative?",
+      a: "One mission: Autonomous Spacecraft Health Management and Safe Recovery — helping future spacecraft observe their own telemetry, detect anomalies, and recover safely with bounded, supervised autonomy.",
+    },
+    {
+      q: "Is this an official ISRO or government programme?",
+      a: `No. This is an independent ${brand} initiative. References to national space goals are provided for educational context and do not imply endorsement, affiliation or partnership with ISRO, IN-SPACe, NSIL or the Department of Space.`,
+    },
+    {
+      q: "Who can participate?",
+      a: "School students (ages 14–18), engineering students, faculty and researchers, retired scientists and mentors, space startups and industry, government and institutional stakeholders, CSR and scholarship partners, and young founders.",
+    },
+    {
+      q: "What will students aged 14–18 learn?",
+      a: "Planned learning areas include spacecraft subsystems, telemetry and sensors, safe mode and redundancy, mission communication delays, basic anomaly reasoning, a CanSat or simulated mission-health activity, and engineering ethics and safety.",
+    },
+    {
+      q: "How are internships different from paid training?",
+      a: "Paid training and internships are distinct. Internships are merit-based and governed by the published terms of each cohort; sponsored or stipended opportunities will be identified explicitly when available.",
+    },
+    {
+      q: `Does ${brand} own student or startup intellectual property?`,
+      a: `No. Student, academic, ${brand}, iTelematics and startup intellectual-property rights are governed through transparent written agreements. Participation does not automatically transfer a participant's IP to iTelematics.`,
+    },
+    {
+      q: "Are the labs and digital twin already operational?",
+      a: "No. The planned labs, the research platform and its digital twin described here are Planned or Research Direction items, not operational or validated products. Separately, the educational simulations and tutorial demonstrators on this site, such as CubeTwin, the Rocket Engine Digital Twins and the Space Academy missions, can be used now: they are teaching tools with simulated data, not validated engineering systems, and their availability does not make the research platform operational. Status is labelled honestly on each section. Participation in any programme is subject to its published conditions.",
+    },
+    {
+      q: "How can schools, faculty, experts and industry express interest?",
+      a: "Use the Express Interest links on this page, which open our contact page: choose the enquiry type that fits, or Other. Sending an enquiry records your interest only — it does not confirm selection, admission, internship, stipend, funding, partnership or participation. For anything else, use the Partner With Us or Contact Us links, which route to our existing contact channel.",
+    },
+    {
+      q: "Will programmes be free?",
+      a: "Not positioned as free. Programmes may be participant-funded, institution-funded, CSR-sponsored, scholarship-supported, grant-funded, or industry-sponsored. Availability, selection, fees, sponsorship and stipend conditions will be published for each programme.",
+    },
+    {
+      q: "Where do commercial products and services belong?",
+      a: `Commercial products and services, where applicable, are handled separately by iTelematics Software Private Limited under explicit agreements — not by ${brand}, which focuses on the public-interest education, research and pre-incubation mission.`,
+    },
+  ];
+}
+
+export const faqs = spaceFaqs(SPACE_INITIATIVE.brand);

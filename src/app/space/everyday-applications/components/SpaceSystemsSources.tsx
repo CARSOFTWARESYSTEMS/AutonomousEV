@@ -1,4 +1,8 @@
+"use client";
+
 import { ExternalLink, Compass, Radio, Satellite, Waves, Building2 } from "lucide-react";
+import { useHostBrand } from "@/components/HostBrandContext";
+import { brandText } from "@/lib/host-brand";
 import type { LucideIcon } from "lucide-react";
 import { SPACE_SYSTEMS, SPACE_SYSTEM_GROUPS, VERIFIED_ON, type SpaceSystemGroup } from "../applicationsData";
 import styles from "../everyday-applications.module.css";
@@ -11,7 +15,12 @@ const GROUP_ICONS: Record<SpaceSystemGroup, LucideIcon> = {
   institutions: Building2,
 };
 
+const DISCLAIMER =
+  "Information about ISRO, IN-SPACe, MOSDAC, Bhuvan, INCOIS, NDMA and related systems above is presented for educational reference. ISHAVASYAM.ORG / EV.ENGINEER does not claim affiliation, endorsement or partnership with ISRO, IN-SPACe, the Department of Space, or any other agency named above, unless explicitly documented. Official communications and documentation from each agency always take precedence over this page.";
+
 export default function SpaceSystemsSources() {
+  // On a host with its own brand (src/app/stellrspace-space), the disclaimer names it.
+  const brand = useHostBrand();
   return (
     <div>
       <p style={{ marginBottom: 8 }}>
@@ -60,12 +69,7 @@ export default function SpaceSystemsSources() {
       })}
 
       <div className={styles.card} style={{ padding: 20, marginTop: 8, borderLeft: "3px solid var(--space-amber)" }}>
-        <p style={{ margin: 0 }}>
-          Information about ISRO, IN-SPACe, MOSDAC, Bhuvan, INCOIS, NDMA and related systems above is presented for
-          educational reference. ISHAVASYAM.ORG / EV.ENGINEER does not claim affiliation, endorsement or partnership with
-          ISRO, IN-SPACe, the Department of Space, or any other agency named above, unless explicitly documented.
-          Official communications and documentation from each agency always take precedence over this page.
-        </p>
+        <p style={{ margin: 0 }}>{brand ? brandText(DISCLAIMER, brand) : DISCLAIMER}</p>
       </div>
     </div>
   );

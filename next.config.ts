@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 // Explicit extension: Node loads this config with its own TypeScript loader (no extension lookup).
 import { authRewrites } from "./src/lib/auth/sites.ts";
+import { STELLR_SPACE } from "./src/data/space-host-brands.ts";
+
+/** Matches aerospace.stellrspace.com, and no other host. */
+const STELLR_HOST = STELLR_SPACE.hosts.map((host) => host.replace(/\./g, "\\.")).join("|");
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -105,6 +109,15 @@ const nextConfig: NextConfig = {
           ],
           destination: '/ishavasyam-space',
         },
+        // On aerospace.stellrspace.com, each of its own pages (src/data/space-host-brands.ts)
+        // is served from its STELLR SPACE copy: own titles, canonicals, social cards and
+        // JSON-LD, no ISHAVASYAM.ORG but the owner's own role. Its robots.txt and
+        // sitemap.xml are its own too. No other host is matched.
+        ...[...STELLR_SPACE.paths, '/robots.txt', '/sitemap.xml'].map((source) => ({
+          source,
+          has: [{ type: 'host' as const, value: STELLR_HOST }],
+          destination: `${STELLR_SPACE.variantPrefix}${source}`,
+        })),
         {
           // On aerospace.gamyaa.in, /aerospace shows Gamyaa.in in the top menu in place of EV.ENGINEER.
           source: '/aerospace',

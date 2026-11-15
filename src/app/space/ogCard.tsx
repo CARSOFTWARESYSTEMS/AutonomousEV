@@ -1,13 +1,15 @@
 import { ImageResponse } from "next/og";
 
 // Shared 1200x630 card for /space's Open Graph / Twitter image. The footer line
-// is a parameter so each host's route can attribute the page to its own brand.
+// and the label beside the orbit badge are parameters so each host's route can
+// attribute the page to its own brand.
 export const OG_SIZE = { width: 1200, height: 630 };
 
 export function renderSpaceOgImage(
   footer: string,
   title = "Autonomous Spacecraft Health Mission 2040",
   subtitle = "Health Management · FDIR · Digital Twin · Safe Recovery",
+  brand = "Space",
 ) {
   return new ImageResponse(
     (
@@ -71,7 +73,7 @@ export function renderSpaceOgImage(
             />
           </div>
           <span style={{ fontSize: 30, fontWeight: 800, color: "#ffffff", letterSpacing: "-0.01em" }}>
-            Space
+            {brand}
           </span>
         </div>
 

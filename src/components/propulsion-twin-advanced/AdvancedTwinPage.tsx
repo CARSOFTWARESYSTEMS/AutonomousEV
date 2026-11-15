@@ -10,6 +10,7 @@ import rt from "../rocket-engine-twin/rocketTwin.module.css";
 import { advancedTwinLinkTracking } from "./analytics";
 import { FAQ, GLOSSARY, REFERENCES, REFERENCE_ARCHITECTURE } from "./data/faq";
 import { CONTACT, CREDIBILITY_NOTICE, PREPARED_BY, PRODUCT, RELATED } from "./data/product";
+import { hostText } from "@/lib/host-brand-render";
 import { OverviewModule, PhysicsModule, PressureModule, SystemModule } from "./sections/Foundations";
 import { ArchitectureModule, FdirModule, HealthModule, LabModule, WeeksModule } from "./sections/Operations";
 import { AiModule, DataModule, TwinModule } from "./sections/TwinModules";
@@ -201,7 +202,7 @@ export default function AdvancedTwinPage() {
             <h2 id="prepared-title" className={rt.srOnly}>
               Designed By
             </h2>
-            <PreparedBy notes={PREPARED_BY.notes} reviewed={PREPARED_BY.reviewed} reviewedLabel={PREPARED_BY.reviewedLabel} reviewedSubject="Tutorial information" imageAlt={PREPARED_BY.imageAlt} profileLinkProps={advancedTwinLinkTracking("profile_clicked", { placement: "prepared_by" })} />
+            <PreparedBy notes={PREPARED_BY.notes.map(hostText)} reviewed={PREPARED_BY.reviewed} reviewedLabel={PREPARED_BY.reviewedLabel} reviewedSubject="Tutorial information" imageAlt={PREPARED_BY.imageAlt} profileLinkProps={advancedTwinLinkTracking("profile_clicked", { placement: "prepared_by" })} />
             <DesignInspirationCredit />
           </section>
         </div>

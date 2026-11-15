@@ -1,11 +1,14 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { fromHostVariant } from "@/data/space-host-brands";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 
 /** Pages that bring their own header and footer (the Space visual family and its neighbours). */
-export function isSelfContainedPath(pathname: string | null): boolean {
+export function isSelfContainedPath(rawPathname: string | null): boolean {
+  // aerospace.stellrspace.com's own copies (/stellrspace-space/space/…) are the pages they stand for.
+  const pathname = fromHostVariant(rawPathname);
   return (
     pathname === "/aerospace" ||
     pathname?.startsWith("/aerospace/") ||

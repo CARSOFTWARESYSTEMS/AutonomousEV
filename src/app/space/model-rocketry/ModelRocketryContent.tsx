@@ -34,7 +34,8 @@ import RocketryVsCansat from "./components/RocketryVsCansat";
 import CompetitionExplorer from "./components/CompetitionExplorer";
 import CostAnatomy from "./components/CostAnatomy";
 import EnterpriseMap from "./components/EnterpriseMap";
-import { SPACE_INITIATIVE } from "@/data/space-initiative";
+import { useHostBrand, useHostOrganisation } from "@/components/HostBrandContext";
+import { HOST_FOOTER_LINKS, brandGraph } from "@/lib/host-brand";
 
 function SectionHeading({ eyebrow, title, description }: { eyebrow: string; title: string; description: string }) {
   return (
@@ -47,11 +48,15 @@ function SectionHeading({ eyebrow, title, description }: { eyebrow: string; titl
 }
 
 export default function ModelRocketryContent() {
+  // On a host with its own brand (src/app/stellrspace-space): its name, graph and footer. Every other host reads
+  // exactly as before, "an" and the name included.
+  const brand = useHostBrand();
+  const org = useHostOrganisation();
   const [mode, setMode] = useState<ExperienceMode>("webpage");
 
   return (
     <div className={`${spaceTheme.theme} ${manrope.variable} ${inter.variable} ${styles.portal}`}>
-      <JsonLd data={structuredData} />
+      <JsonLd data={brand ? brandGraph(structuredData, brand) : structuredData} />
       {mode === "presentation" && <PresentationMode onExit={() => setMode("webpage")} />}
       <a href="#main-content" className={styles.skipLink}>
         Skip to content
@@ -348,8 +353,8 @@ export default function ModelRocketryContent() {
 
           <section className={styles.section} style={{ borderBottom: "none" }}>
             <p className={styles.formNote}>
-              Content last reviewed: <time dateTime={LAST_REVIEWED}>14 September 2026</time>. Model Rocketry is an
-              {SPACE_INITIATIVE.brand} educational initiative hosted on EV.ENGINEER™. Commercial engineering products and
+              Content last reviewed: <time dateTime={LAST_REVIEWED}>14 September 2026</time>. Model Rocketry is {brand ? `${brand.article} ` : "an"}
+              {org.brand} educational initiative hosted on EV.ENGINEER™. Commercial engineering products and
               services, where applicable, are handled separately by iTelematics Software Private Limited under
               explicit agreements. UFlight™ is referenced within the broader ecosystem for aerospace health and
               usage monitoring. These references do not imply a partnership, endorsement, certification, ISRO or
@@ -358,7 +363,7 @@ export default function ModelRocketryContent() {
           </section>
         </main>
       </LearningLevelProvider>
-      {mode !== "presentation" && <SpaceFooter basePath="/space" />}
+      {mode !== "presentation" && <SpaceFooter basePath="/space" {...(brand ? { organisationLine: brand.label, brandLinks: [...HOST_FOOTER_LINKS] } : {})} />}
     </div>
   );
 }

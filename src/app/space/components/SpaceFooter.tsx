@@ -4,11 +4,13 @@ import { FONT_MANROPE } from "../fonts";
 import type { BrandLink } from "./SpaceHeader";
 import styles from "../space.module.css";
 import { SPACE_INITIATIVE } from "@/data/space-initiative";
+import { HOST_FOOTER_LINKS } from "@/lib/host-brand";
+import { renderHostBrand } from "@/lib/host-brand-render";
 const CONTACT_HREF = "/contact";
 export default function SpaceFooter({
   basePath = "",
-  brandLinks,
-  organisationLine,
+  brandLinks: brandLinksProp,
+  organisationLine: organisationLineProp,
   wide = false,
 }: {
   basePath?: string;
@@ -19,6 +21,10 @@ export default function SpaceFooter({
   /** The 1,600px column with a fluid gutter, for pages laid out that wide (the portal and Space Academy). */
   wide?: boolean;
 }) {
+  // On a host with its own brand (rendered on the server; a client parent passes these itself), the brand's credit and links.
+  const host = renderHostBrand();
+  const brandLinks = brandLinksProp ?? (host ? [...HOST_FOOTER_LINKS] : undefined);
+  const organisationLine = organisationLineProp ?? host?.label;
   const custom = brandLinks !== undefined;
   return (
     <footer

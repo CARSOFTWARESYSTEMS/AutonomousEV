@@ -2,6 +2,7 @@ import Link from "next/link";
 import { manrope, inter, FONT_MANROPE, FONT_INTER } from "./fonts";
 import SpaceHeader from "./components/SpaceHeader";
 import SpaceFooter from "./components/SpaceFooter";
+import type { BrandLink } from "./components/SpaceHeader";
 import FaqItem from "./components/FaqItem";
 import SectionNav, { type SectionNavItem } from "./components/SectionNav";
 import OpenOnHash from "./components/OpenOnHash";
@@ -25,7 +26,7 @@ import {
   missionConsole, missionLoop, visionReferences,
   internshipWorkAreas, researchLayers, plannedLabs,
   researchThemes, roadmap, participationAudiences,
-  accessModels, faqs, type IconName,
+  accessModels, spaceFaqs, type IconName,
 } from "./spaceData";
 import { EOI_FORM_URL } from "@/lib/eoi";
 import { JsonLd } from "@/lib/structured-data/JsonLd";
@@ -33,6 +34,40 @@ import { SPACE_INITIATIVE } from "@/data/space-initiative";
 
 const CONTACT_HREF = "/contact";
 const ACADEMY_HREF = "/space/academy";
+
+/**
+ * Who the page names as its organisation, and where its EV.ENGINEER links go.
+ * ISHAVASYAM.ORG by default; a host with its own brand passes its own (see
+ * ../stellrspace-space), and then the page's HTML names only that brand.
+ */
+export type SpaceBranding = {
+  /** In the hero badge, the credits, the ecosystem note and the FAQ. */
+  brand: string;
+  /** The brand's own site, linked from the ecosystem note; null for no link. */
+  brandUrl: string | null;
+  /** The indefinite article before the brand: "an ISHAVASYAM.ORG initiative", "a STELLR SPACE initiative". */
+  article: "a" | "an";
+  /** Where the page's EV.ENGINEER links lead. "/" is this site's home, except on a host whose "/" is something else. */
+  evEngineerHref: string;
+  /** The header shows this brand alone in place of "ISHAVASYAM.ORG /space". */
+  headerBrand?: string;
+  /** The footer's credit line, in place of "An ISHAVASYAM.ORG Initiative". */
+  footerLine?: string;
+  /** The footer's links, in place of EV.ENGINEER / UFlight / ISHAVASYAM.ORG / iTelematics. */
+  footerLinks?: BrandLink[];
+};
+
+const ISHAVASYAM_BRANDING: SpaceBranding = {
+  brand: SPACE_INITIATIVE.brand,
+  brandUrl: SPACE_INITIATIVE.url,
+  article: "an",
+  evEngineerHref: "/",
+};
+
+/** Opens in a new tab when it leaves this site; a path stays a client-side link. */
+function EvEngineerLink({ href, children }: { href: string; children: React.ReactNode }) {
+  return href.startsWith("/") ? <Link href={href}>{children}</Link> : <a href={href} target="_blank" rel="noopener noreferrer">{children}</a>;
+}
 
 const iconMap: Record<IconName, React.ComponentType<{ size?: number; color?: string; "aria-hidden"?: boolean }>> = {
   shield: Shield,
@@ -176,10 +211,11 @@ function Panel({ id, label, title, summary, meta, toggle, children }: { id: stri
   );
 }
 
-// The JSON-LD graph is a prop so each host's route (see ../ishavasyam-space)
-// can ship its own entity graph while sharing this page body. Every section,
+// The JSON-LD graph is a prop so each host's route (see ../ishavasyam-space
+// and ../stellrspace-space) can ship its own entity graph while sharing this
+// page body; so is the branding, for a host with its own name. Every section,
 // the APEX partner card and the Partners & Engineering Ecosystem among them,
-// is shown on both hosts.
+// is shown on every host.
 //
 // Progressive disclosure: the hero, the four pathways, Space Academy, the
 // mission, the tutorials, the FAQ and the call to take part are open; the
@@ -188,14 +224,16 @@ function Panel({ id, label, title, summary, meta, toggle, children }: { id: stri
 //
 // A server component: only the header, the section navigation, the panel
 // opener and the FAQ items are client islands.
-export default function SpaceLanding({ entityGraph }: { entityGraph: object }) {
+export default function SpaceLanding({ entityGraph, branding = ISHAVASYAM_BRANDING }: { entityGraph: object; branding?: SpaceBranding }) {
+  const { brand, brandUrl, article, evEngineerHref } = branding;
+  const faqs = spaceFaqs(brand);
   return (
     <div className={`${styles.root} ${theme.theme} ${portal.page} ${manrope.variable} ${inter.variable}`} style={{ background: "var(--space-background)", minHeight: "100vh", fontFamily: FONT_INTER, overflowX: "clip" }}>
       <JsonLd data={entityGraph} />
       <OpenOnHash />
       <a href="#main-content" className={styles.skipLink}>Skip to content</a>
 
-      <SpaceHeader />
+      <SpaceHeader brandName={branding.headerBrand} />
 
       <main id="main-content">
         {/* ── 1. Hero: one mission statement, Space Academy first (#home) ── */}
@@ -207,7 +245,7 @@ export default function SpaceLanding({ entityGraph }: { entityGraph: object }) {
             <div className={styles.fadeInUp}>
               <div className={portal.heroBadge}>
                 <Shield size={14} color="#C4B5FD" style={{ flexShrink: 0 }} aria-hidden />
-                <span>{SPACE_INITIATIVE.brand} · Autonomous Spacecraft Health Mission 2040</span>
+                <span>{brand} · Autonomous Spacecraft Health Mission 2040</span>
               </div>
 
               <h1 className={portal.heroTitle} style={{ fontFamily: FONT_MANROPE }}>
@@ -465,7 +503,7 @@ export default function SpaceLanding({ entityGraph }: { entityGraph: object }) {
                   ))}
                 </div>
                 <p className={portal.freshness}>
-                  Prepared by the {SPACE_INITIATIVE.brand} technical team. Last reviewed: 14 August 2026.
+                  Prepared by the {brand} technical team. Last reviewed: 14 August 2026.
                 </p>
               </Panel>
 
@@ -621,9 +659,9 @@ export default function SpaceLanding({ entityGraph }: { entityGraph: object }) {
                 toggle="who does what"
               >
                 <p className={portal.prose}>
-                  Space is an{" "}
-                  <a href={SPACE_INITIATIVE.url} target="_blank" rel="noopener noreferrer">{SPACE_INITIATIVE.brand}</a> education, research and engineering initiative, hosted within the{" "}
-                  <Link href="/">EV.ENGINEER</Link> engineering ecosystem.{" "}
+                  Space is {article}{" "}
+                  {brandUrl ? <a href={brandUrl} target="_blank" rel="noopener noreferrer">{brand}</a> : brand} education, research and engineering initiative, hosted within the{" "}
+                  <EvEngineerLink href={evEngineerHref}>EV.ENGINEER</EvEngineerLink> engineering ecosystem.{" "}
                   <a href="https://www.uflight.in/" target="_blank" rel="noopener noreferrer">UFlight</a> focuses on health and usage monitoring technologies for aerospace and autonomous platforms. Commercial engineering products and services, where applicable, are handled separately by{" "}
                   <a href="https://itelematics.com/" target="_blank" rel="noopener noreferrer">iTelematics Software Private Limited</a> under explicit agreements. Community membership is offered through{" "}
                   <a href="https://www.evsociety.org/" target="_blank" rel="noopener noreferrer">EV Society</a>, a separate community initiative.
@@ -674,19 +712,19 @@ export default function SpaceLanding({ entityGraph }: { entityGraph: object }) {
               <a href="https://www.evsociety.org/join" target="_blank" rel="noopener noreferrer" className={portal.btnGhost}>Join Community</a>
             </div>
             <p className={portal.finalBack}>
-              <Link href="/">Back to EV.ENGINEER</Link>
+              <EvEngineerLink href={evEngineerHref}>Back to EV.ENGINEER</EvEngineerLink>
             </p>
           </div>
         </section>
 
         <section className={portal.section} style={{ maxWidth: "calc(1600px + 2 * clamp(16px, 3.5vw, 56px))", margin: "0 auto", paddingTop: 0 }}>
-          {/* Space is an ISHAVASYAM.ORG initiative, so its designer is credited as that organisation's founder. */}
+          {/* The designer's own credit: founder of ISHAVASYAM.ORG on every host, STELLR SPACE's included: it is the designer's role, not the page's brand. */}
           <ResearcherCard role={`Founder · ${SPACE_INITIATIVE.brand}`} />
         </section>
       </main>
 
       {/* ── Footer ── */}
-      <SpaceFooter wide />
+      <SpaceFooter wide organisationLine={branding.footerLine} brandLinks={branding.footerLinks} />
     </div>
   );
 }

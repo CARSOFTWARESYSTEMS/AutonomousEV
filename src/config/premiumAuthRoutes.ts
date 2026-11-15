@@ -39,6 +39,8 @@
 // "Authenticated · No Membership" visitors (signed in, roles: []) may see
 // premium pages and must get no protected functionality.
 
+import { fromHostVariant } from "@/data/space-host-brands";
+
 export type RouteAccess = "public" | "optional-login" | "required-login";
 
 export type RouteCategory = "aerospace" | "space" | "internships";
@@ -142,7 +144,9 @@ export const premiumAuthRoutes: readonly PremiumAuthRoute[] = [
 ];
 
 /** The path without a trailing slash ("/" stays "/"). */
-export function normalizeRoutePath(pathname: string | null | undefined): string {
+export function normalizeRoutePath(rawPathname: string | null | undefined): string {
+  // aerospace.stellrspace.com's own copy of a page (/stellrspace-space/space/cubesat) is gated as the page it stands for.
+  const pathname = fromHostVariant(rawPathname);
   if (!pathname) return "/";
   const path = pathname.length > 1 ? pathname.replace(/\/+$/, "") : pathname;
   return path || "/";

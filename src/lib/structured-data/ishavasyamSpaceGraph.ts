@@ -1,7 +1,9 @@
-// Structured-data graph for aerospace.ishavasyam.org/space. Unlike
-// ./spaceGraph.ts (the EV.ENGINEER-hosted copy of the same page) this graph is
-// self-contained: ISHAVASYAM.ORG is the only organisation, and no other
-// organisation or brand node is referenced.
+// Structured-data graph for a host that presents /space under its own name:
+// aerospace.ishavasyam.org/space (ISHAVASYAM.ORG) and
+// aerospace.stellrspace.com/space (STELLR SPACE). Unlike ./spaceGraph.ts (the
+// EV.ENGINEER-hosted copy of the same page) this graph is self-contained: the
+// host's organisation is the only one, and no other organisation or brand
+// node is referenced.
 
 export interface IshavasyamSpaceGraphOptions {
   origin: string;

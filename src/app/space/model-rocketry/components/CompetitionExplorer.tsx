@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import { ExternalLink } from "lucide-react";
+import { useHostBrand } from "@/components/HostBrandContext";
+import { brandText } from "@/lib/host-brand";
 import { COMPETITIONS, VERIFIED_ON, type CompetitionStatus } from "../competitionsData";
 import { useMediaQuery } from "./useMediaQuery";
 import styles from "../model-rocketry.module.css";
@@ -15,7 +17,12 @@ const STATUS_COLOR: Record<CompetitionStatus, string> = {
   "Next edition not yet verified": "#f59e0b",
 };
 
+const DISCLAIMER =
+  "IN-SPACe and international competition information above is presented for educational reference. ISHAVASYAM.ORG / EV.ENGINEER does not claim affiliation, endorsement or partnership with IN-SPACe, ISRO, DLR, KAIST, the Portuguese Space Agency, ESRA/AIAA, the American Astronautical Society, NASA or any other competition organiser, unless explicitly documented. Official competition rules, requirements, dates and communications from each organiser always take precedence over this page.";
+
 export default function CompetitionExplorer() {
+  // On a host with its own brand (src/app/stellrspace-space), the disclaimer names it.
+  const brand = useHostBrand();
   const [expanded, setExpanded] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const india = COMPETITIONS.filter((c) => c.region === "India");
@@ -60,13 +67,7 @@ export default function CompetitionExplorer() {
       )}
 
       <div className={styles.card} style={{ padding: 20, marginTop: 28, borderLeft: "3px solid var(--space-amber)" }}>
-        <p style={{ margin: 0 }}>
-          IN-SPACe and international competition information above is presented for educational reference.
-          ISHAVASYAM.ORG / EV.ENGINEER does not claim affiliation, endorsement or partnership with IN-SPACe, ISRO, DLR,
-          KAIST, the Portuguese Space Agency, ESRA/AIAA, the American Astronautical Society, NASA or any other
-          competition organiser, unless explicitly documented. Official competition rules, requirements, dates and
-          communications from each organiser always take precedence over this page.
-        </p>
+        <p style={{ margin: 0 }}>{brand ? brandText(DISCLAIMER, brand) : DISCLAIMER}</p>
       </div>
     </div>
   );

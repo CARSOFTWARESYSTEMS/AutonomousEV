@@ -10,7 +10,8 @@ import spaceTheme from "../spaceTheme.module.css";
 import styles from "./station.module.css";
 import { structuredData, TITLE, DESCRIPTION } from "./seo";
 import { IMEX } from "./data/india";
-import { BRAND_LINKS, ORGANISATION_LINE } from "./data/organisations";
+import { ORGANISATION_LINE, hostBrandLinks } from "./data/organisations";
+import { hostText, renderHostBrand } from "@/lib/host-brand-render";
 import { LAST_REVIEWED, LAST_REVIEWED_LABEL } from "./data/sources";
 import { ModeProvider, ModeSelector } from "./components/ModeProvider";
 import { MobileSectionNav } from "./components/mobile";
@@ -66,13 +67,15 @@ const PART_LINKS: Record<"knowledge" | "systems" | "lab" | "research", [string, 
 };
 
 function FullExperience() {
+  // On a host with its own brand (src/app/stellrspace-space), its name in place of ISHAVASYAM.ORG's.
+  const brandLinks = hostBrandLinks(renderHostBrand() !== null);
   return (
     <div className={`${spaceTheme.theme} ${manrope.variable} ${inter.variable} ${styles.portal}`}>
       <JsonLd data={structuredData} />
       <a href="#main-content" className={styles.skipLink}>
         Skip to content
       </a>
-      <SpaceHeader basePath="/space" brandLinks={BRAND_LINKS} />
+      <SpaceHeader basePath="/space" brandLinks={brandLinks} />
       <ModeProvider>
         <main id="main-content" className={styles.container}>
           <nav className={styles.breadcrumb} aria-label="Breadcrumb">
@@ -369,7 +372,7 @@ function FullExperience() {
         </main>
         <MobileSectionNav />
       </ModeProvider>
-      <SpaceFooter basePath="/space" brandLinks={BRAND_LINKS} organisationLine={ORGANISATION_LINE} />
+      <SpaceFooter basePath="/space" brandLinks={brandLinks} organisationLine={hostText(ORGANISATION_LINE)} />
     </div>
   );
 }
@@ -379,6 +382,7 @@ function FullExperience() {
  * render search engines index — gets the public preview (premiumAuthRoutes).
  */
 export default function SpaceStationPage() {
+  const brandLinks = hostBrandLinks(renderHostBrand() !== null);
   return (
     <PremiumContent
       preview={
@@ -387,7 +391,7 @@ export default function SpaceStationPage() {
           title={TITLE}
           description={DESCRIPTION}
           structuredData={structuredData}
-          header={<div className={`${spaceTheme.theme} ${manrope.variable} ${inter.variable}`}><SpaceHeader basePath="/space" brandLinks={BRAND_LINKS} /></div>}
+          header={<div className={`${spaceTheme.theme} ${manrope.variable} ${inter.variable}`}><SpaceHeader basePath="/space" brandLinks={brandLinks} /></div>}
         />
       }
     >
