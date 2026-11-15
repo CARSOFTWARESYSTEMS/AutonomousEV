@@ -12,22 +12,10 @@ import { cache } from "react";
 import { SPACE_INITIATIVE } from "@/data/space-initiative";
 import { brandText, hostOrganisationFor, type HostBrand } from "./host-brand";
 
-type RenderHost = {
-  /** The host the page is rendered for. */
-  host: string | null;
-  /** The brand the page's organisation is named as, or null to leave its copy as it is (the owner's profile). */
-  brand: HostBrand | null;
-};
+const slot = cache((): { brand: HostBrand | null } => ({ brand: null }));
 
-const slot = cache((): RenderHost => ({ host: null, brand: null }));
-
-export function setRenderHost(host: string, brand: HostBrand | null): void {
-  Object.assign(slot(), { host, brand });
-}
-
-/** The host this render is for, or null for every host but those with their own copies. */
-export function renderHost(): string | null {
-  return slot().host;
+export function setRenderHostBrand(brand: HostBrand): void {
+  slot().brand = brand;
 }
 
 /** The brand this render names the page's organisation as, or null. */

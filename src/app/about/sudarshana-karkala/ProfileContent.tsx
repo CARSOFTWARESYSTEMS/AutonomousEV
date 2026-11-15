@@ -14,8 +14,7 @@ import theme from "@/app/space/spaceTheme.module.css";
 import JumpLink from "./JumpLink";
 import ProfileAnalytics from "./ProfileAnalytics";
 import { profileTracking } from "./analytics";
-import { renderHost } from "@/lib/host-brand-render";
-import { ABOUT, ACADEMIC, BACKGROUND, CONSULTING, consultingEngagementsFor, CONTACT, EV_ENGINEER_URL, FOCUS_AREAS, HERO, INITIATIVES, LAST_REVIEWED, LEADERSHIP, PRIMARY_INITIATIVE, SCOPE_NOTE, SELECTED_WORK, SERVICES, WORKSHOPS, shownDate } from "./profile";
+import { ABOUT, ACADEMIC, BACKGROUND, CONSULTING, CONTACT, EV_ENGINEER_URL, FOCUS_AREAS, HERO, INITIATIVES, LAST_REVIEWED, LEADERSHIP, PRIMARY_INITIATIVE, SCOPE_NOTE, SELECTED_WORK, SERVICES, WORKSHOPS, shownDate } from "./profile";
 import type { Organisation, TrackedOrganisation } from "./profile";
 import styles from "./page.module.css";
 
@@ -271,7 +270,7 @@ export default function ProfileContent() {
           </p>
           <p className={styles.sectionIntro}>{CONSULTING.intro}</p>
           <ul className={styles.engagements} role="list">
-            {consultingEngagementsFor(renderHost()).map((engagement) => (
+            {CONSULTING.engagements.map((engagement) => (
               <li key={engagement.organisation.name}>
                 <span className={styles.engagementName}>
                   <Organisations organisations={[engagement.organisation]} section="consulting" />

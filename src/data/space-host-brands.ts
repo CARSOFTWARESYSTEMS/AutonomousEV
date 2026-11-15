@@ -54,8 +54,6 @@ export const STELLR_SPACE = {
     "/space/satellite-engineering",
     "/space/satellite-engineering/interactive-3d",
     "/space/space-station",
-    // The owner's profile, unchanged but for one consulting engagement shown on this host only.
-    "/about/sudarshana-karkala",
   ],
 } as const;
 

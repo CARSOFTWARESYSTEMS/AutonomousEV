@@ -31,8 +31,10 @@ describe("aerospace.stellrspace.com routing", () => {
     }
   });
 
-  it("covers /space, every Academy track and mission, the Space pages that name ISHAVASYAM.ORG, and the profile", () => {
-    expect(STELLR_SPACE.paths).toEqual(expect.arrayContaining(["/space", "/space/academy", "/space/cubesat", "/space/space-station", "/about/sudarshana-karkala"]));
+  it("covers /space, every Academy track and mission, and the Space pages that name ISHAVASYAM.ORG", () => {
+    expect(STELLR_SPACE.paths).toEqual(expect.arrayContaining(["/space", "/space/academy", "/space/cubesat", "/space/space-station"]));
+    // The profile is the same on every host, so this host serves the shared one.
+    expect(STELLR_SPACE.paths).not.toContain("/about/sudarshana-karkala");
     for (const track of TRACKS) expect(STELLR_SPACE.paths).toContain(`/space/academy/${track.slug}`);
     for (const mission of MISSIONS) expect(STELLR_SPACE.paths).toContain(`/space/academy/missions/${mission.slug}`);
     // The APEX pages and the 2026 rocketry guide name no ISHAVASYAM.ORG, so the host serves them as they are.
@@ -48,6 +50,5 @@ describe("aerospace.stellrspace.com routing", () => {
       expect(routeConfigFor(path), path).not.toBeNull();
     }
     expect(isSelfContainedPath("/stellrspace-space/space/academy")).toBe(true);
-    expect(isSelfContainedPath("/stellrspace-space/about/sudarshana-karkala")).toBe(true);
   });
 });

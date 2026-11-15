@@ -335,6 +335,7 @@ describe("/about/sudarshana-karkala: consulting engagements", () => {
       "Schaeffler India Consulting Engagement GenAI for Automotive & Embedded Engineering",
       "Crompton Greaves Consumer Electricals Consulting Engagement Smart Home IoT · iOS · Bluetooth Low Energy (BLE)",
       "iFab Innovations Consulting Engagement Aerospace Engineering",
+      "STELLR Space Consulting Engagement Space Engineering",
       "iTelematics Software Private Limited Consulting Engagement EV Battery · Engineering Research · Space Research",
     ]);
     // A row is an organisation, what kind of engagement, and its areas: no dates of its own, so none reads as a position held.
@@ -342,22 +343,36 @@ describe("/about/sudarshana-karkala: consulting engagements", () => {
       expect(row.children).toHaveLength(3);
       expect(row.querySelector("time")).toBeNull();
     }
+    // STELLR Space's name is its link, as iTelematics' is.
+    const stellr = within(rows().find((row) => text(row).startsWith("STELLR Space"))!).getByRole("link");
+    expect(stellr).toHaveTextContent(/^STELLR Space$/);
+    expect(stellr).toHaveAccessibleName("STELLR Space (opens in a new tab)");
+    expect(stellr).toHaveAttribute("href", "https://stellrspace.com/");
+    expect(stellr).toHaveAttribute("target", "_blank");
+    expect(stellr).toHaveAttribute("rel", "noopener noreferrer");
+    expect(stellr).toHaveAttribute("data-profile-initiative_name", "stellr_space");
+    expect(stellr).toHaveAttribute("data-profile-destination", "stellrspace.com");
+    expect(stellr).toHaveAttribute("data-profile-section", "consulting");
   });
 
   it("calls each a consulting engagement, and none a position, employment, partnership, customer or deployment", () => {
     render(<ProfilePage />);
-    expect(rows().map((row) => row.children[1].textContent)).toEqual(["Trainer & Consultant", "Consulting Engagement", "Consulting Engagement", "Consulting Engagement", "Consulting Engagement"]);
+    expect(rows().map((row) => row.children[1].textContent)).toEqual(["Trainer & Consultant", "Consulting Engagement", "Consulting Engagement", "Consulting Engagement", "Consulting Engagement", "Consulting Engagement"]);
     expect(consulting()).not.toHaveTextContent(/employ|full[- ]time|permanent|partner|client|customer|endors|deploy|director|manager|head of|\bCTO\b|\bVP\b/i);
   });
 
   it("names iTelematics once on the page, here, with its address", () => {
     const { container } = render(<ProfilePage />);
     expect(visibleText(container).match(/iTelematics/g)).toHaveLength(1);
+    // Beside STELLR Space's, the only other link of the section.
     const links = within(consulting()).getAllByRole("link");
-    expect(links.map((a) => [a.textContent, a.getAttribute("href")])).toEqual([["iTelematics Software Private Limited", "https://itelematics.com/"]]);
-    expect(links[0]).toHaveAttribute("target", "_blank");
-    expect(links[0]).toHaveAttribute("rel", "noopener noreferrer");
-    expect(links[0]).toHaveAccessibleName("iTelematics Software Private Limited (opens in a new tab)");
+    expect(links.map((a) => [a.textContent, a.getAttribute("href")])).toEqual([
+      ["STELLR Space", "https://stellrspace.com/"],
+      ["iTelematics Software Private Limited", "https://itelematics.com/"],
+    ]);
+    expect(links[1]).toHaveAttribute("target", "_blank");
+    expect(links[1]).toHaveAttribute("rel", "noopener noreferrer");
+    expect(links[1]).toHaveAccessibleName("iTelematics Software Private Limited (opens in a new tab)");
   });
 });
 
@@ -703,8 +718,8 @@ describe("/about/sudarshana-karkala: the page as a whole", () => {
     const words = visibleText(container.querySelector("main")!).trim().split(/\s+/).length;
     // 930 before the Product & Consultancy Services section; its two cards add about thirty words.
     expect(words).toBeLessThan(960);
-    // 23 before the Product & Consultancy Services section, which adds the FAI platform's address.
-    expect(container.querySelectorAll("main a").length).toBeLessThanOrEqual(24);
+    // 23 before the Product & Consultancy Services section, which adds the FAI platform's address, and STELLR Space's link adds one more.
+    expect(container.querySelectorAll("main a").length).toBeLessThanOrEqual(25);
     // A line or two for each place, not paragraphs of duties: no paragraph of the career, consulting or academic sections is long.
     for (const name of ["Professional Background", "Consulting Engagements", "Professional & Community Leadership", "Academic Engagement & Student Mentorship"]) {
       for (const block of section(name).querySelectorAll("p, li")) expect((block.textContent ?? "").split(/\s+/).length).toBeLessThan(45);
@@ -746,6 +761,7 @@ describe("/about/sudarshana-karkala: the page as a whole", () => {
       "Schaeffler India",
       "Crompton Greaves Consumer Electricals",
       "iFab Innovations",
+      "STELLR Space",
       "iTelematics Software Private Limited",
       "Consulting Engagement",
       "2001 — Present",
@@ -791,6 +807,7 @@ describe("/about/sudarshana-karkala: the page as a whole", () => {
       "https://www.thasmaiinfotech.com/space-research",
       "https://aerosystems.gamyaa.in/",
       "https://www.nmscommunications.com/",
+      "https://stellrspace.com/",
       "https://itelematics.com/",
       // Professional & Community Leadership.
       "https://www.evsociety.org/",

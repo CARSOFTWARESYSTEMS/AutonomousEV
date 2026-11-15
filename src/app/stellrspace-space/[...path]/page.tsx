@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { STELLR_SPACE } from "@/data/space-host-brands";
 import { STELLR_HOST_BRAND } from "@/lib/host-brand";
-import { setRenderHost } from "@/lib/host-brand-render";
+import { setRenderHostBrand } from "@/lib/host-brand-render";
 import { HostBrandProvider } from "@/components/HostBrandContext";
 import { hostPage } from "../pages";
 
@@ -27,7 +27,6 @@ export default async function StellrSpaceHostPage({ params }: Props) {
   const page = hostPage(`/${(await params).path.join("/")}`);
   if (!page) notFound();
   // Before the shared page renders: its server components read the host from here, its client components from the provider.
-  setRenderHost(STELLR_SPACE.id, page.rebrand ? STELLR_HOST_BRAND : null);
-  const content = await page.render();
-  return page.rebrand ? <HostBrandProvider brand={STELLR_HOST_BRAND}>{content}</HostBrandProvider> : content;
+  setRenderHostBrand(STELLR_HOST_BRAND);
+  return <HostBrandProvider brand={STELLR_HOST_BRAND}>{await page.render()}</HostBrandProvider>;
 }

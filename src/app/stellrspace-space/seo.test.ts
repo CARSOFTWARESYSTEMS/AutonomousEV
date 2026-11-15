@@ -137,13 +137,13 @@ describe("aerospace.stellrspace.com robots.txt and sitemap.xml", () => {
     expect(text).toContain("Sitemap: https://aerospace.stellrspace.com/sitemap.xml");
   });
 
-  it("lists the host's own Space pages, all on its own address, and not the profile", async () => {
+  it("lists the host's own Space pages, all on its own address", async () => {
     const res = sitemap();
     expect(res.headers.get("content-type")).toBe("application/xml");
     const xml = await res.text();
     const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
     expect(locs[0]).toBe("https://aerospace.stellrspace.com/space");
-    expect(locs).toHaveLength(STELLR_SPACE.paths.length - 1);
+    expect(locs).toHaveLength(STELLR_SPACE.paths.length);
     for (const loc of locs) expect(loc).toMatch(/^https:\/\/aerospace\.stellrspace\.com\/space(\/|$)/);
     expect(locs).not.toContain("https://aerospace.stellrspace.com/about/sudarshana-karkala");
     expect(xml).toContain(`<lastmod>${DATE_MODIFIED}</lastmod>`);

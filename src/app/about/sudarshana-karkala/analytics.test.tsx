@@ -146,10 +146,13 @@ describe("profile analytics: what a visitor uses", () => {
     expect(everythingSent()).not.toMatch(/nms|enphase|mcafee|employer/i);
   });
 
-  it("reports the iTelematics link of Consulting Engagements as the same event, and says that it was the consulting", () => {
+  it("reports the STELLR Space and iTelematics links of Consulting Engagements as the same event, and says that it was the consulting", () => {
     const consulting = screen.getByRole("region", { name: "Consulting Engagements" });
     for (const link of consulting.querySelectorAll("a")) fireEvent.click(link);
-    expect(trackEvent.mock.calls).toEqual([["profile_initiative_click", { initiative_name: "itelematics", destination: "itelematics.com", section: "consulting" }]]);
+    expect(trackEvent.mock.calls).toEqual([
+      ["profile_initiative_click", { initiative_name: "stellr_space", destination: "stellrspace.com", section: "consulting" }],
+      ["profile_initiative_click", { initiative_name: "itelematics", destination: "itelematics.com", section: "consulting" }],
+    ]);
   });
 
   it("reports the EV Society™ link of Professional & Community Leadership as the same event, and says that it was the leadership", () => {

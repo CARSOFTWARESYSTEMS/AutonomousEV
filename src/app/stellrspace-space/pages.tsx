@@ -2,10 +2,9 @@
 // src/data/space-host-brands.ts): what each one's metadata is there, and what
 // it renders. ./[...path]/page.tsx serves them.
 //
-// Every Space page is the shared page, named for STELLR SPACE: its metadata
+// Every one is the shared Space page, named for STELLR SPACE: its metadata
 // through brandMetadata, its JSON-LD and copy through the host brand its
-// render is given. The owner's profile is the shared profile, unchanged but
-// for the one consulting engagement shown on this host only.
+// render is given.
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { STELLR_SPACE } from "@/data/space-host-brands";
@@ -30,8 +29,6 @@ type PageModule = {
 const paramsOf = (params: Params) => Promise.resolve(params) as Promise<never>;
 
 export type HostPage = {
-  /** Name the page's organisation as the host's brand (every Space page), or leave its copy as it is (the owner's profile). */
-  rebrand: boolean;
   metadata(): Promise<Metadata>;
   render(): Promise<ReactNode>;
 };
@@ -52,7 +49,6 @@ function withCard(images: unknown, card: StellrCard): unknown {
 function spacePage(load: () => Promise<PageModule>, options: { params?: Params; card?: StellrCard } = {}): HostPage {
   const params = options.params ?? {};
   return {
-    rebrand: true,
     async metadata() {
       const page = await load();
       const own = page.metadata ?? (await page.generateMetadata?.({ params: paramsOf(params) })) ?? {};
@@ -90,26 +86,8 @@ const spaceGraph = {
 
 /** /space: the shared page body with STELLR SPACE's own branding, metadata and graph (written in full in ./seo.ts). */
 const SPACE_HOME: HostPage = {
-  rebrand: true,
   metadata: async () => SPACE_METADATA,
   render: async () => <SpaceLanding entityGraph={spaceGraph} branding={STELLR_BRANDING} />,
-};
-
-/** The profile's own address, where its card is: Next.js adds it to the shared route from the opengraph-image file, which this copy has not. */
-const PROFILE_URL = "https://autonomous.ev.engineer/about/sudarshana-karkala";
-
-/** The owner's profile: its metadata, card and copy exactly as everywhere else. */
-const PROFILE: HostPage = {
-  rebrand: false,
-  async metadata() {
-    const [{ metadata }, card] = await Promise.all([import("../about/sudarshana-karkala/page"), import("../about/sudarshana-karkala/opengraph-image")]);
-    const image = { url: `${PROFILE_URL}/opengraph-image`, ...card.size, type: card.contentType, alt: card.alt };
-    return { ...metadata, openGraph: { ...metadata.openGraph, images: [image] }, twitter: { ...metadata.twitter, images: [image] } };
-  },
-  async render() {
-    const { default: Profile } = await import("../about/sudarshana-karkala/page");
-    return <Profile />;
-  },
 };
 
 const track = (slug: string) => spacePage(() => import("../space/academy/[track]/page"), { params: { track: slug }, card: "academy" });
@@ -128,7 +106,6 @@ const PAGES: Record<string, HostPage> = {
   "/space/satellite-engineering": spacePage(() => import("../space/satellite-engineering/page")),
   "/space/satellite-engineering/interactive-3d": spacePage(() => import("../space/satellite-engineering/interactive-3d/page")),
   "/space/space-station": spacePage(() => import("../space/space-station/page")),
-  "/about/sudarshana-karkala": PROFILE,
 };
 
 /** The host's copy of the page at `path` (as the host serves it, /space/cubesat), or null. */

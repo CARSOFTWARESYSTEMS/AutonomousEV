@@ -3,12 +3,11 @@
 // ./sitemap.xml/route.ts). Same crawler rules as the site's own robots.txt
 // (../robots.ts), but the sitemap is this host's and lists the pages it
 // presents as STELLR SPACE's: every Space page it serves from its own copy.
-// Not the owner's profile, whose canonical address stays on autonomous.ev.engineer.
 import { STELLR_SPACE } from "@/data/space-host-brands";
 import { SITE_ORIGIN, DATE_MODIFIED } from "./seo";
 
 /** The host's own Space pages, as the sitemap lists them. */
-export const SITEMAP_PATHS = STELLR_SPACE.paths.filter((path) => path === "/space" || path.startsWith("/space/"));
+export const SITEMAP_PATHS = STELLR_SPACE.paths;
 
 export const ROBOTS_TXT = [
   "User-Agent: *",
