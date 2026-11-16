@@ -415,13 +415,14 @@ const rowOf = (link: HTMLElement) => link.closest("li") as HTMLElement;
 it("shows every tutorial as its own full-width row, in the agreed order", () => {
     const { container } = render(<SpacePage />);
     const rows = showcaseRows(container);
-    expect(rows.map((r) => within(r).getByRole("heading", { level: 3 }).textContent)).toEqual(["Space Applications", "Satellite Engineering", "Model Rocketry", "CubeTwin", "Space Station", "APEX Rocket Systems", "Next-Generation Rocket Engine Digital Twin", "Advanced Rocket Propulsion Digital Twin"]);
+    expect(rows.map((r) => within(r).getByRole("heading", { level: 3 }).textContent)).toEqual(["Space Applications", "Satellite Engineering", "Model Rocketry", "CubeTwin", "Satellite Energy Academy", "Space Station", "APEX Rocket Systems", "Next-Generation Rocket Engine Digital Twin", "Advanced Rocket Propulsion Digital Twin"]);
     // Every row keeps its label, a short first line, the complete description behind a closed disclosure, one button and its status note.
     const ctas = [
       ["Explore Space Applications", "/space/everyday-applications"],
       ["Explore Satellite Engineering", "/space/satellite-engineering"],
       ["Explore Model Rocketry", "/space/model-rocketry"],
       ["Explore CubeTwin", "/space/cubesat"],
+      ["Explore Energy Academy", "/space/satellite-energy-academy"],
       ["Explore Space Station", "/space/space-station"],
       ["Explore APEX Collaboration Concept", "/space/partners/apexrocketsystems"],
       ["Explore Rocket Engine Digital Twin", "/space/rocket-engine-digital-twin"],
@@ -446,7 +447,7 @@ it("gives every showcase visual a text alternative, and only uses a photograph A
       expect(img.getAttribute("aria-label") ?? img.getAttribute("alt")).toBeTruthy();
       expect(figure.querySelector("figcaption")?.textContent?.length).toBeGreaterThan(20);
     });
-    const apex = rows[5];
+    const apex = rows[6];
     const photo = apex.querySelector("img") as HTMLImageElement;
     expect(photo.getAttribute("src")).toMatch(/apex-hardware-01-768\.jpg$/);
     // The approved caption only: the photograph is not claimed to be the 5 kN-class demonstrator.
@@ -454,17 +455,20 @@ it("gives every showcase visual a text alternative, and only uses a photograph A
     // Illustrations are labelled for what they simplify.
     expect(rows[0].querySelector("figcaption")?.textContent).toMatch(/to scale with Earth; satellites enlarged/);
     expect(rows[2].querySelector("figcaption")?.textContent).toMatch(/Not to scale/);
-    expect(rows[4].querySelector("figcaption")?.textContent).toMatch(/Not a model of any real station/);
-    expect(rows[6].querySelector("figcaption")?.textContent).toMatch(/not a real engine/);
+    expect(rows[5].querySelector("figcaption")?.textContent).toMatch(/Not a model of any real station/);
+    expect(rows[7].querySelector("figcaption")?.textContent).toMatch(/not a real engine/);
   });
 
-it("shows the Space Station row immediately after the CubeTwin row", () => {
+it("inserts exactly one Satellite Energy Academy row between CubeTwin and Space Station", () => {
     const { container } = render(<SpacePage />);
     const simulations = container.querySelector("#simulations") as HTMLElement;
     const cubetwin = rowOf(within(simulations).getByRole("link", { name: "Explore CubeTwin" }));
     const stationLink = within(simulations).getByRole("link", { name: /Explore Space Station/ });
     expect(stationLink).toHaveAttribute("href", "/space/space-station");
-    expect(cubetwin.nextElementSibling).toBe(rowOf(stationLink));
+    const academy = within(simulations).getByRole("link", { name: "Explore Energy Academy" });
+    expect(academy).toHaveAttribute("href", "/space/satellite-energy-academy");
+    expect(cubetwin.nextElementSibling).toBe(rowOf(academy));
+    expect(rowOf(academy).nextElementSibling).toBe(rowOf(stationLink));
     expect(within(rowOf(stationLink)).getByRole("heading", { level: 3 })).toHaveTextContent("Space Station");
   });
 

@@ -11,6 +11,7 @@ import { APEX_ENTRY_HREF } from "../PartnersEcosystem";
 import { APEX_OFFICIAL_SITE_URL } from "@/data/apex/site";
 import { apexImage, imageFile, imageSrcSet } from "@/data/apex/images";
 import ShowcaseVisual from "./ShowcaseVisual";
+import SolarDiagram from "../../satellite-energy-academy/components/SolarDiagram";
 import type { ShowcaseTopic } from "./spin";
 import { CubeSatPoster, EarthPoster, EnginePoster, RocketPoster, StationPoster } from "./posters";
 import styles from "./showcase.module.css";
@@ -109,6 +110,25 @@ const ITEMS: Item[] = [
       label: "A CubeSat with deployable solar wings, seen from above, with the Sun 30 degrees off the panels' facing direction: the angle that sets how much power the cells make.",
       caption: "Solar power falls with the Sun's angle: P = S × A × η × cos θ. Here θ = 30°, about 87% of full power.",
       poster: <CubeSatPoster wings sun />,
+      animated: false,
+    },
+  },
+  {
+    key: "satellite-energy-academy",
+    label: "Interactive Physics & Mathematics Academy",
+    color: "#06B6D4",
+    title: "Satellite Energy Academy",
+    subtitle: "Play with Physics. Discover Mathematics. Power a Satellite.",
+    lead: "Discover physics and mathematics from the very beginning through interactive experiments, playful challenges, and satellite missions.",
+    description: ["Discover physics and mathematics from the very beginning through interactive experiments, playful challenges, and satellite missions. Learn at your own pace, explore freely, and make complex concepts feel simple."],
+    cta: { label: "Explore Energy Academy", href: "/space/satellite-energy-academy" },
+    note: "Beginner friendly · Interactive experiments · Learn by playing",
+    visual: {
+      topic: "eps",
+      name: "satellite energy",
+      label: "Illustrative solar-powered satellite. The fallback diagram shows a solar panel at 30 degrees to the Sun, measured from its front normal.",
+      caption: "Turn a panel. Follow the light. Discover how orientation changes electrical power in the playable Capture the Sun mission.",
+      poster: <SolarDiagram input={{ angleDeg: 30, irradianceWm2: 1000, areaM2: 0.5, efficiencyPercent: 20 }} />,
       animated: false,
     },
   },
