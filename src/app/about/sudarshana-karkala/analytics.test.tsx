@@ -138,8 +138,8 @@ describe("profile analytics: what a visitor uses", () => {
     const background = screen.getByRole("region", { name: "Professional Background" });
     for (const link of background.querySelectorAll("a")) fireEvent.click(link);
     expect(trackEvent.mock.calls).toEqual([
-      ["profile_initiative_click", { initiative_name: "thasmai", destination: "thasmaiinfotech.com/space-research", section: "background" }],
       ["profile_initiative_click", { initiative_name: "gamyaa", destination: "aerosystems.gamyaa.in", section: "background" }],
+      ["profile_initiative_click", { initiative_name: "thasmai", destination: "thasmaiinfotech.com/space-research", section: "background" }],
     ]);
     // The link to a former employer was clicked too, and reported nothing: there is no event for an employer.
     expect(background.querySelectorAll("a")).toHaveLength(3);

@@ -196,8 +196,8 @@ describe("/about/sudarshana-karkala: professional background", () => {
       "Engineering and technology leadership experience spanning software architecture, cybersecurity, connected systems, mobile platforms, IoT, AI and EV battery technologies, extending more recently into aerospace and emerging space-systems research.",
     );
     expect(entries().map(text)).toEqual([
+      "Dec 2024 — Present Gamyaa Aero Systems Private Limited Co-Founder, CTO Defence and Aerospace Engineering Intelligence initiatives, with a focus on quality, engineering workflows and emerging aerospace technologies.",
       "Nov 2025 — Nov 2026 Thasmai InfoTech Private Limited Co-Founder · Director Technology entrepreneurship, engineering R&D and aerospace / space research initiatives.",
-      "Dec 2024 — Nov 2026 Gamyaa AeroSystems Co-Founder Defence and Aerospace Engineering Intelligence initiatives, with a focus on quality, engineering workflows and emerging aerospace technologies.",
       "Jul 2021 — Dec 2024 Enphase Solar Energy Private Limited Senior Engineering Manager Software Engineering · Mobile Platforms · Connected Energy Systems · Cybersecurity",
       "Oct 2011 — Jul 2021 McAfee Software India Private Limited Engineering Manager Software Engineering · Mobile Security · Cybersecurity · Developer Ecosystems",
       "May 2005 — Sep 2011 NMS Communications · Ness Digital Engineering · eNovate Media Solutions",
@@ -211,8 +211,13 @@ describe("/about/sudarshana-karkala: professional background", () => {
     render(<ProfilePage />);
     expect(parts(entries()[2])).toEqual(["Jul 2021 — Dec 2024", "Enphase Solar Energy Private Limited", "Senior Engineering Manager", "Software Engineering · Mobile Platforms · Connected Energy Systems · Cybersecurity"]);
     expect(parts(entries()[3])).toEqual(["Oct 2011 — Jul 2021", "McAfee Software India Private Limited", "Engineering Manager", "Software Engineering · Mobile Security · Cybersecurity · Developer Ecosystems"]);
-    expect(parts(entries()[0]).slice(1, 3)).toEqual(["Thasmai InfoTech Private Limited", "Co-Founder · Director"]);
-    expect(parts(entries()[1]).slice(1, 3)).toEqual(["Gamyaa AeroSystems", "Co-Founder"]);
+    expect(parts(entries()[0])).toEqual([
+      "Dec 2024 — Present",
+      "Gamyaa Aero Systems Private Limited",
+      "Co-Founder, CTO",
+      "Defence and Aerospace Engineering Intelligence initiatives, with a focus on quality, engineering workflows and emerging aerospace technologies.",
+    ]);
+    expect(parts(entries()[1]).slice(1, 3)).toEqual(["Thasmai InfoTech Private Limited", "Co-Founder · Director"]);
     // The earlier career has no title on record, so none is written: the names and the dates, and nothing more.
     expect(parts(entries()[4])).toEqual(["May 2005 — Sep 2011", "NMS Communications · Ness Digital Engineering · eNovate Media Solutions"]);
     // The organisation is set apart from the role beneath it.
@@ -224,25 +229,28 @@ describe("/about/sudarshana-karkala: professional background", () => {
     render(<ProfilePage />);
     const dates = entries().map((entry) => [...entry.querySelectorAll("time")].map((time) => [time.textContent, time.getAttribute("datetime")]));
     expect(dates).toEqual([
+      // Held now: a start, and "Present" in place of an end.
+      [["Dec 2024", "2024-12"]],
       [["Nov 2025", "2025-11"], ["Nov 2026", "2026-11"]],
-      [["Dec 2024", "2024-12"], ["Nov 2026", "2026-11"]],
       [["Jul 2021", "2021-07"], ["Dec 2024", "2024-12"]],
       [["Oct 2011", "2011-10"], ["Jul 2021", "2021-07"]],
       [["May 2005", "2005-05"], ["Sep 2011", "2011-09"]],
     ]);
-    // Most recent start first.
-    const starts = dates.map(([from]) => from[1]);
+    // Gamyaa first, at the owner's request; after it, most recent start first.
+    const starts = dates.slice(1).map(([from]) => from[1]);
     expect([...starts].sort().reverse()).toEqual(starts);
   });
 
   it("claims nothing beyond the roles and domains given: no responsibility, achievement, customer, figure or registration", () => {
     const { container } = render(<ProfilePage />);
     for (const entry of entries()) {
-      expect(text(entry)).not.toMatch(/responsib|built|delivered|\bled\b|head of|principal|\bVP\b|\bCTO\b|revenue|customer|client|award|certified|registered|incorporated|\d+\s*(people|engineers|users|%)/i);
+      // "CTO" is the owner's own title at Gamyaa, so it is allowed there and nowhere else.
+      const claims = entry === entries()[0] ? text(entry).replace("Co-Founder, CTO", "") : text(entry);
+      expect(claims).not.toMatch(/responsib|built|delivered|\bled\b|head of|principal|\bVP\b|\bCTO\b|revenue|customer|client|award|certified|registered|incorporated|\d+\s*(people|engineers|users|%)/i);
     }
-    // Gamyaa is named without a legal form, on the page and everywhere it might be read.
-    expect(visibleText(container)).toContain("Gamyaa AeroSystems");
-    expect(visibleText(container)).not.toMatch(/Gamyaa AeroSystems (Private Limited|Pvt|Ltd)/i);
+    // Gamyaa is named by its full name, as the owner gave it, and the old spelling is gone.
+    expect(visibleText(container)).toContain("Gamyaa Aero Systems Private Limited");
+    expect(visibleText(container)).not.toMatch(/Gamyaa AeroSystems/);
   });
 
   it("never presents an employer as a Space or Aerospace employer: those words are only in the two ventures of the last two years", () => {
@@ -266,8 +274,8 @@ describe("/about/sudarshana-karkala: professional background", () => {
     render(<ProfilePage />);
     const links = within(section("Professional Background")).getAllByRole("link");
     expect(links.map((a) => [a.textContent, a.getAttribute("href")])).toEqual([
+      ["Gamyaa Aero Systems Private Limited", "https://aerosystems.gamyaa.in/"],
       ["Thasmai InfoTech Private Limited", "https://www.thasmaiinfotech.com/space-research"],
-      ["Gamyaa AeroSystems", "https://aerosystems.gamyaa.in/"],
       ["NMS Communications", "https://www.nmscommunications.com/"],
     ]);
     for (const link of links) {
@@ -746,7 +754,9 @@ describe("/about/sudarshana-karkala: the page as a whole", () => {
       "20+ Years · Engineering · Technology · Leadership",
       "Nov 2025 — Nov 2026",
       "Thasmai InfoTech Private Limited",
-      "Gamyaa AeroSystems",
+      "Gamyaa Aero Systems Private Limited",
+      "Co-Founder, CTO",
+      "Dec 2024 — Present",
       "Co-Founder · Director",
       "Enphase Solar Energy Private Limited",
       "Senior Engineering Manager",
@@ -804,8 +814,8 @@ describe("/about/sudarshana-karkala: the page as a whole", () => {
       "https://autonomous.ev.engineer/",
       "https://ishavasyam.org/",
       // Professional Background, then Consulting Engagements.
-      "https://www.thasmaiinfotech.com/space-research",
       "https://aerosystems.gamyaa.in/",
+      "https://www.thasmaiinfotech.com/space-research",
       "https://www.nmscommunications.com/",
       "https://stellrspace.com/",
       "https://itelematics.com/",

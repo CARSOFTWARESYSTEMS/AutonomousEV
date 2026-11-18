@@ -118,7 +118,7 @@ export const SELECTED_WORK = [
 export const BACKGROUND: {
   eyebrow: string;
   intro: string;
-  career: readonly { from: string; to: string; current?: true; organisations: readonly Organisation[]; role?: string; context?: string | readonly string[] }[];
+  career: readonly { from: string; /** Left out while the role is held: the page writes "Present". */ to?: string; current?: true; organisations: readonly Organisation[]; role?: string; context?: string | readonly string[] }[];
   established: { heading: string; items: readonly string[] };
   emerging: { heading: string; items: readonly string[] };
 } = {
@@ -128,12 +128,20 @@ export const BACKGROUND: {
   intro:
     "Engineering and technology leadership experience spanning software architecture, cybersecurity, connected systems, mobile platforms, IoT, AI and EV battery technologies, extending more recently into aerospace and emerging space-systems research.",
   /**
-   * In the owner's order, most recent first: the dates to the month, the organisation, the role and a few words of
+   * In the owner's order (Gamyaa first, then most recent first): the dates to the month, the organisation, the role and a few words of
    * domain, all as the owner gave them. Nothing is claimed beyond them: no responsibility, achievement, customer,
    * figure or registration. NMS, Ness and eNovate have no role on record, so none is written. None of the
    * employers is presented as a Space or Aerospace employer.
    */
   career: [
+    {
+      // First, at the owner's request, ahead of the later-started Thasmai role. Its name and role are as the owner gave them.
+      from: "2024-12",
+      current: true,
+      organisations: [{ name: "Gamyaa Aero Systems Private Limited", href: "https://aerosystems.gamyaa.in/", tracked: { id: "gamyaa", destination: "aerosystems.gamyaa.in" } }],
+      role: "Co-Founder, CTO",
+      context: "Defence and Aerospace Engineering Intelligence initiatives, with a focus on quality, engineering workflows and emerging aerospace technologies.",
+    },
     {
       from: "2025-11",
       to: "2026-11",
@@ -142,15 +150,6 @@ export const BACKGROUND: {
       organisations: [{ name: "Thasmai InfoTech Private Limited", href: "https://www.thasmaiinfotech.com/space-research", tracked: { id: "thasmai", destination: "thasmaiinfotech.com/space-research" } }],
       role: "Co-Founder · Director",
       context: "Technology entrepreneurship, engineering R&D and aerospace / space research initiatives.",
-    },
-    {
-      from: "2024-12",
-      to: "2026-11",
-      current: true,
-      // No legal status is on record for it in this repository, so it is named without "Private Limited".
-      organisations: [{ name: "Gamyaa AeroSystems", href: "https://aerosystems.gamyaa.in/", tracked: { id: "gamyaa", destination: "aerosystems.gamyaa.in" } }],
-      role: "Co-Founder",
-      context: "Defence and Aerospace Engineering Intelligence initiatives, with a focus on quality, engineering workflows and emerging aerospace technologies.",
     },
     {
       from: "2021-07",
