@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it, vi } from "vitest";
 import { render, screen, within } from "@testing-library/react";
-import { BHAVYA_KSHATRI } from "@/data/public-entities";
+import { BHAVYA_KSHATRI, KALMADI_SAISIDDI } from "@/data/public-entities";
 import sitemap from "../../sitemap";
 
 vi.mock("next/navigation", () => ({ usePathname: () => "/internships" }));
@@ -14,15 +14,22 @@ import CybersecurityEngineersPage, { metadata } from "./page";
 const ROUTE = "/internships/cybersecurity-engineers";
 const CANONICAL = `https://autonomous.ev.engineer${ROUTE}`;
 const BHAVYA = "Bhavya Naga Sai Parvathi Kshatri";
+const SAISIDDI = "Kalmadi Saisiddi";
+const SAISIDDI_LINKS = [
+  "https://www.linkedin.com/in/saisiddi-kalmadi-172672382/",
+  "https://github.com/saisiddi",
+  "https://www.evsociety.org/projects/battery-safety-systems/candidates/kalmadisaisiddi",
+];
 const card = (name: string) => screen.getByRole("article", { name });
 const hrefs = (el: HTMLElement) => within(el).getAllByRole("link").map((a) => a.getAttribute("href"));
 
 describe("Cybersecurity Engineers page", () => {
-  it("has one H1 and the engineer and the programs as H2s, in that order", () => {
+  it("has one H1 and the engineers and the programs as H2s, in that order", () => {
     const { container } = render(<CybersecurityEngineersPage />);
     expect(screen.getAllByRole("heading", { level: 1 }).map((h) => h.textContent)).toEqual(["Cybersecurity Engineers"]);
-    expect(screen.getAllByRole("heading", { level: 2 }).map((h) => h.textContent)).toEqual([BHAVYA, "Cybersecurity Research & Programs"]);
-    expect(screen.getAllByRole("article")).toHaveLength(1);
+    expect(screen.getAllByRole("heading", { level: 2 }).map((h) => h.textContent)).toEqual([BHAVYA, SAISIDDI, "Cybersecurity Research & Programs"]);
+    expect(screen.getAllByRole("article")).toHaveLength(2);
+    expect(screen.getAllByRole("article").map((a) => a.id)).toEqual(["bhavya-parvathi", "kalmadi-saisiddi"]);
     // Sudarshana Karkala is not listed here: not in the copy, the links or the JSON-LD.
     expect(container.innerHTML).not.toMatch(/karkala/i);
     expect(screen.getByText("Engineering Security for EV, Battery, Aerospace and Connected Systems")).toBeInTheDocument();
@@ -37,6 +44,26 @@ describe("Cybersecurity Engineers page", () => {
     expect(within(bhavya).getAllByRole("listitem").slice(0, 3).map((li) => li.textContent)).toEqual(["Cybersecurity", "Threat Detection & Alert Investigation", "AI SOC Analysis"]);
     expect(hrefs(bhavya)).toEqual(["https://bhavyacyber.github.io/", "https://www.linkedin.com/in/bhavya-naga-sai-parvathi-kshatri", "/internships/AegisCAN"]);
     expect(BHAVYA_KSHATRI.sameAs).toContain(hrefs(bhavya)[1]);
+  });
+
+  it("gives Kalmadi Saisiddi a portrait, the published intern role, focus areas and LinkedIn, GitHub and EV Society links", () => {
+    render(<CybersecurityEngineersPage />);
+    const saisiddi = card(SAISIDDI);
+    expect(within(saisiddi).getByRole("img", { name: `${SAISIDDI} — Cybersecurity Intern` }).getAttribute("src")).toContain("kalmadisaisiddi.jpg");
+    expect(within(saisiddi).getByText("Cybersecurity Intern · EV.ENGINEER™")).toBeInTheDocument();
+    expect(within(saisiddi).getByText(/SIM-006, the Detection Rule Simulator/)).toBeInTheDocument();
+    expect(within(saisiddi).getAllByRole("listitem").slice(0, 3).map((li) => li.textContent)).toEqual(["Battery Cybersecurity", "Detection Engineering", "Ethical Hacking"]);
+    expect(hrefs(saisiddi)).toEqual(SAISIDDI_LINKS);
+    expect(KALMADI_SAISIDDI.sameAs).toEqual(SAISIDDI_LINKS);
+    const links = within(saisiddi).getAllByRole("link");
+    expect(links.map((a) => a.getAttribute("target"))).toEqual(["_blank", "_blank", "_blank"]);
+    expect(links[2]).toHaveAccessibleName(`EV Society Profile of ${SAISIDDI} (opens in a new tab)`);
+    expect(links.map((a) => [a.getAttribute("data-track-engineer"), a.getAttribute("data-track-link_type")])).toEqual([
+      ["Kalmadi Saisiddi", "linkedin"],
+      ["Kalmadi Saisiddi", "github"],
+      ["Kalmadi Saisiddi", "ev_society"],
+    ]);
+    expect(fs.existsSync(path.join(process.cwd(), "public/team/kalmadisaisiddi.jpg"))).toBe(true);
   });
 
   it("does not present Tanuja Jadhav's EV Society page as Bhavya's profile", () => {
@@ -77,13 +104,21 @@ describe("Cybersecurity Engineers page", () => {
     expect(fs.readFileSync(path.join(process.cwd(), "public/llms.txt"), "utf-8")).toContain(CANONICAL);
   });
 
-  it("describes the page, the list and the engineer in one JSON-LD graph, with nothing invented", () => {
+  it("describes the page, the list and the engineers in one JSON-LD graph, with nothing invented", () => {
     const { container } = render(<CybersecurityEngineersPage />);
     const graph = JSON.parse(container.querySelector('script[type="application/ld+json"]')!.textContent!)["@graph"] as Array<Record<string, unknown>>;
-    expect(graph.map((n) => n["@type"])).toEqual(["WebSite", "Brand", "Organization", "Person", "WebPage", "ItemList"]);
+    expect(graph.map((n) => n["@type"])).toEqual(["WebSite", "Brand", "Organization", "Person", "Person", "WebPage", "ItemList"]);
     const people = graph.filter((n) => n["@type"] === "Person");
-    expect(people.map((p) => p.name)).toEqual([BHAVYA]);
+    expect(people.map((p) => p.name)).toEqual([BHAVYA, SAISIDDI]);
     expect(people[0].sameAs).toEqual(["https://www.linkedin.com/in/bhavya-naga-sai-parvathi-kshatri", "https://bhavyacyber.github.io/"]);
+    expect(people[1].sameAs).toEqual(SAISIDDI_LINKS);
+    expect(people[1].image).toBe("https://autonomous.ev.engineer/team/kalmadisaisiddi.jpg");
+    expect(people[1].url).toBe(`${CANONICAL}#kalmadi-saisiddi`);
+    const list = graph.find((n) => n["@type"] === "ItemList") as { itemListElement: Array<{ position: number; item: { "@id": string } }> };
+    expect(list.itemListElement.map((e) => [e.position, e.item["@id"]])).toEqual([
+      [1, BHAVYA_KSHATRI.id],
+      [2, KALMADI_SAISIDDI.id],
+    ]);
     for (const person of people) {
       expect(person.image).toMatch(/^https:\/\/autonomous\.ev\.engineer\//);
       for (const invented of ["jobTitle", "worksFor", "alumniOf", "hasCredential", "award"]) expect(person).not.toHaveProperty(invented);

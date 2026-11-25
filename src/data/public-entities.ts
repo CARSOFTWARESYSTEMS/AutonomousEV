@@ -251,6 +251,30 @@ export const SHILAJIT_DAS: PublicEntity = {
 };
 
 /**
+ * Kalmadi Saisiddi — Cybersecurity Intern · EV.ENGINEER™. The role ("EV.ENGINEER™
+ * (Cybersecurity Intern)") and the SIM-006 Detection Rule Simulator work are
+ * sourced from the EV Society candidate record and webinar listing
+ * (evsociety.org, battery-safety-systems / kalmadisaisiddi) and the public
+ * GitHub repository. The person's own profile on this site is the card on
+ * /internships/cybersecurity-engineers, so `canonicalUrl` points there.
+ */
+export const KALMADI_SAISIDDI: PublicEntity = {
+  id: "https://www.linkedin.com/in/saisiddi-kalmadi-172672382/#person",
+  type: "Person",
+  name: "Kalmadi Saisiddi",
+  description:
+    "Kalmadi Saisiddi contributes to the Battery Cybersecurity Platform at EV.ENGINEER as a cybersecurity intern, building SIM-006, the Detection Rule Simulator: it checks a battery event — telemetry, identity, firmware or cyber — against eight detection rules and returns PASS, WARN or HARD_FAIL.",
+  canonicalUrl: `${SITE_URL}/internships/cybersecurity-engineers#kalmadi-saisiddi`,
+  sameAs: [
+    "https://www.linkedin.com/in/saisiddi-kalmadi-172672382/",
+    "https://github.com/saisiddi",
+    "https://www.evsociety.org/projects/battery-safety-systems/candidates/kalmadisaisiddi",
+  ],
+  knowsAbout: ["Battery cybersecurity", "Detection engineering", "Ethical hacking"],
+  affiliations: [EV_ENGINEER.canonicalUrl],
+};
+
+/**
  * The internship programme hub at /internships. Modelled as a "Program" in
  * this registry (a descriptive, non-schema.org-specific category); the
  * corresponding JSON-LD uses CollectionPage + ItemList (see

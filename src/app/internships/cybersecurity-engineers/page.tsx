@@ -2,9 +2,19 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
-import { BHAVYA_KSHATRI, SITE_URL } from "@/data/public-entities";
+import { BHAVYA_KSHATRI, KALMADI_SAISIDDI, SITE_URL } from "@/data/public-entities";
 import { JsonLd } from "@/lib/structured-data/JsonLd";
-import { BHAVYA_KSHATRI_ID, EV_ENGINEER_BRAND_ID, WEBSITE_ID, bhavyaKshatriPersonNode, evEngineerBrandNode, itelematicsOrgNode, websiteNode } from "@/lib/structured-data/entities";
+import {
+  BHAVYA_KSHATRI_ID,
+  EV_ENGINEER_BRAND_ID,
+  KALMADI_SAISIDDI_ID,
+  WEBSITE_ID,
+  bhavyaKshatriPersonNode,
+  evEngineerBrandNode,
+  itelematicsOrgNode,
+  kalmadiSaisiddiPersonNode,
+  websiteNode,
+} from "@/lib/structured-data/entities";
 // The page shares the Battery Cybersecurity theme: its hero, sections, grids and cards.
 import theme from "../battery-cybersecurity/page.module.css";
 import styles from "./page.module.css";
@@ -18,6 +28,7 @@ const INTRO = "Meet engineers and researchers contributing to cybersecurity, bat
 
 const BHAVYA_PORTFOLIO = "https://bhavyacyber.github.io/";
 const BHAVYA_IMAGE = "/team/bhavyaparvathi.png";
+const SAISIDDI_IMAGE = "/team/kalmadisaisiddi.jpg";
 
 interface ProfileLink {
   label: string;
@@ -41,9 +52,11 @@ interface Engineer {
 }
 
 /**
- * Names, roles, summaries and focus areas restate what the entity registry and
- * the AegisCAN page already publish. Bhavya's EV Society profile is not linked
- * yet: add it to her `links` as `{ label: "EV Society Profile", href, type: "ev_society" }`.
+ * Names, roles, summaries and focus areas restate what the entity registry
+ * already publishes: Bhavya's from the AegisCAN page, Saisiddi's from the EV
+ * Society candidate record, webinar listing and GitHub. Bhavya's EV Society
+ * profile is not linked yet: add it to her `links` as
+ * `{ label: "EV Society Profile", href, type: "ev_society" }`.
  */
 const ENGINEERS: readonly Engineer[] = [
   {
@@ -59,6 +72,21 @@ const ENGINEERS: readonly Engineer[] = [
       { label: "Portfolio", href: BHAVYA_PORTFOLIO, type: "portfolio" },
       { label: "LinkedIn", href: "https://www.linkedin.com/in/bhavya-naga-sai-parvathi-kshatri", type: "linkedin" },
       { label: "AegisCAN Research", href: "/internships/AegisCAN", type: "research_project" },
+    ],
+  },
+  {
+    id: "kalmadi-saisiddi",
+    name: KALMADI_SAISIDDI.name,
+    trackName: "Kalmadi Saisiddi",
+    role: "Cybersecurity Intern · EV.ENGINEER™",
+    summary: "Contributes to the Battery Cybersecurity Platform on EV.ENGINEER, building SIM-006, the Detection Rule Simulator: eight detection rules that check each battery event — telemetry, identity, firmware or cyber — and return PASS, WARN or HARD_FAIL.",
+    focus: ["Battery Cybersecurity", "Detection Engineering", "Ethical Hacking"],
+    image: SAISIDDI_IMAGE,
+    imageAlt: `${KALMADI_SAISIDDI.name} — Cybersecurity Intern`,
+    links: [
+      { label: "LinkedIn", href: "https://www.linkedin.com/in/saisiddi-kalmadi-172672382/", type: "linkedin" },
+      { label: "GitHub", href: "https://github.com/saisiddi", type: "github" },
+      { label: "EV Society Profile", href: "https://www.evsociety.org/projects/battery-safety-systems/candidates/kalmadisaisiddi", type: "ev_society" },
     ],
   },
 ];
@@ -110,6 +138,7 @@ const structuredData = {
     evEngineerBrandNode(),
     itelematicsOrgNode(),
     { ...bhavyaKshatriPersonNode(), image: `${SITE_URL}${BHAVYA_IMAGE}`, sameAs: [...(BHAVYA_KSHATRI.sameAs ?? []), BHAVYA_PORTFOLIO] },
+    { ...kalmadiSaisiddiPersonNode(), image: `${SITE_URL}${SAISIDDI_IMAGE}` },
     {
       "@type": "WebPage",
       "@id": `${PAGE_URL}#webpage`,
@@ -134,7 +163,10 @@ const structuredData = {
       "@type": "ItemList",
       "@id": `${PAGE_URL}#engineers`,
       name: "Cybersecurity Engineers",
-      itemListElement: [{ "@type": "ListItem", position: 1, item: { "@id": BHAVYA_KSHATRI_ID } }],
+      itemListElement: [
+        { "@type": "ListItem", position: 1, item: { "@id": BHAVYA_KSHATRI_ID } },
+        { "@type": "ListItem", position: 2, item: { "@id": KALMADI_SAISIDDI_ID } },
+      ],
     },
   ],
 };
@@ -142,7 +174,7 @@ const structuredData = {
 function ProfileCard({ engineer }: { engineer: Engineer }) {
   const titleId = `${engineer.id}-name`;
   return (
-    <article className={`${theme.card} ${styles.profile}`} aria-labelledby={titleId}>
+    <article id={engineer.id} className={`${theme.card} ${styles.profile}`} aria-labelledby={titleId}>
       <div className={styles.identity}>
         <div className={styles.portrait}>
           <Image src={engineer.image} alt={engineer.imageAlt} fill sizes="120px" />
@@ -226,7 +258,7 @@ export default function CybersecurityEngineersPage() {
               Cybersecurity Research &amp; Programs
             </h2>
             <p className={theme.sectionSubtitle}>
-              {ENGINEERS[0].name} contributes to cybersecurity research at EV.ENGINEER, including the AegisCAN research track. The professional profiles are linked from the card above; the related programs are below.
+              These engineers contribute to cybersecurity research at EV.ENGINEER, including the AegisCAN research track and the Battery Cybersecurity Platform. Their professional profiles are linked from the cards above; the related programs are below.
             </p>
           </div>
           <ul className={`${theme.grid3} ${styles.programs}`}>

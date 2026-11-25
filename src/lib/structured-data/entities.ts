@@ -21,6 +21,7 @@ import {
   BHAVYA_KSHATRI,
   HARSH_YADAV,
   SHILAJIT_DAS,
+  KALMADI_SAISIDDI,
   SITE_URL,
 } from "@/data/public-entities";
 
@@ -36,6 +37,7 @@ export const TANUJA_JADHAV_ID = TANUJA_JADHAV.id;
 export const BHAVYA_KSHATRI_ID = BHAVYA_KSHATRI.id;
 export const HARSH_YADAV_ID = HARSH_YADAV.id;
 export const SHILAJIT_DAS_ID = SHILAJIT_DAS.id;
+export const KALMADI_SAISIDDI_ID = KALMADI_SAISIDDI.id;
 // Not sourced from public-entities.ts (UFlight is referenced only in the
 // /space graph as a distinct external brand, not modelled as a full entity
 // with verified contact facts), but kept here so every page importing
@@ -156,6 +158,19 @@ export function shilajitDasPersonNode() {
     sameAs: SHILAJIT_DAS.sameAs,
     knowsAbout: SHILAJIT_DAS.knowsAbout,
     affiliation: { "@type": "Organization", name: "National Institute of Technology Karnataka, Surathkal" },
+  };
+}
+
+export function kalmadiSaisiddiPersonNode() {
+  return {
+    "@type": "Person",
+    "@id": KALMADI_SAISIDDI_ID,
+    name: KALMADI_SAISIDDI.name,
+    url: KALMADI_SAISIDDI.canonicalUrl,
+    description: KALMADI_SAISIDDI.description,
+    sameAs: KALMADI_SAISIDDI.sameAs,
+    knowsAbout: KALMADI_SAISIDDI.knowsAbout,
+    affiliation: { "@id": EV_ENGINEER_BRAND_ID },
   };
 }
 
