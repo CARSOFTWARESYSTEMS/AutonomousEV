@@ -330,5 +330,43 @@
     "products": [],
     "domains": [],
     "search": { "indexable": true }
+  },
+  {
+    "id": "linkedin-7531042355899183105",
+    "type": "social-post",
+    "title": "Cyber Security Internship Completion",
+    "source": "linkedin",
+    "sourceLabel": "LinkedIn",
+    "sourceUrl": "https://www.linkedin.com/posts/hanishd_internship-cybersecurity-securityanalysis-share-7531042355899183105-Nwx7/",
+    "embedUrl": "https://www.linkedin.com/embed/feed/update/urn:li:share:7531042355899183105?collapsed=1",
+    "media": { "type": "iframe", "width": 504, "height": 626 },
+    "author": { "name": "Hanish D" },
+    "featured": false,
+    "enabled": true,
+    "verificationStatus": "externally-published",
+    "tags": ["linkedin", "professional-recognition", "internship", "cybersecurity"],
+    "audiences": [],
+    "products": [],
+    "domains": [],
+    "search": { "indexable": true }
+  },
+  {
+    "id": "linkedin-7530622741532655617",
+    "type": "social-post",
+    "title": "Security Evaluation at the Future of EV Mobility Webinar",
+    "source": "linkedin",
+    "sourceLabel": "LinkedIn",
+    "sourceUrl": "https://www.linkedin.com/posts/hanishd_cybersecurity-securityanalysis-evmobility-share-7530622741532655617-TWl_/",
+    "embedUrl": "https://www.linkedin.com/embed/feed/update/urn:li:share:7530622741532655617?collapsed=1",
+    "media": { "type": "iframe", "width": 504, "height": 625 },
+    "author": { "name": "Hanish D" },
+    "featured": false,
+    "enabled": true,
+    "verificationStatus": "externally-published",
+    "tags": ["linkedin", "engineering", "cybersecurity", "webinar"],
+    "audiences": [],
+    "products": [],
+    "domains": [],
+    "search": { "indexable": true }
   }
 ]
