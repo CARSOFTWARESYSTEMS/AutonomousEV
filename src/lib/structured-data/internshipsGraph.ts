@@ -88,6 +88,11 @@ export const PROGRAMME_TRACKS: { name: string; url: string; description: string 
     description: "Duty-cycle analysis and integrations for closed-loop cargo environments.",
   },
   {
+    name: "Next-Generation Wireless EV Charging Digital Twin",
+    url: `${SITE_URL}/internships/wireless-ev-charging-digital-twin`,
+    description: "Interactive 3D engineering research environment for stationary, dynamic and autonomous wireless EV charging and smart charging infrastructure, with an 8-month research and practical workshop.",
+  },
+  {
     name: "IN-SPACe Model Rocketry — Learning Guide",
     url: `${SITE_URL}/space/2026-INSPACe-ROCKETRY-059`,
     description: "Aerospace and space-engineering student project track: model rocketry mission architecture, avionics, recovery and telemetry.",

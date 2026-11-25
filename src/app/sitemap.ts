@@ -54,6 +54,7 @@ const ROUTES = [
   "/internships/miscellaneous/startup",
   "/internships/roadmap",
   "/internships/training-internship",
+  "/internships/wireless-ev-charging-digital-twin",
   "/si-ems",
   "/space",
   "/space/2026-INSPACe-ROCKETRY-059",

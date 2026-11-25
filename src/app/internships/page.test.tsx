@@ -212,6 +212,33 @@ describe("/internships EV Battery Health & Diagnostics Toolkit card", () => {
 });
 
 
+describe("/internships Wireless EV Charging Digital Twin card", () => {
+  const TITLE = "Next-Generation Wireless EV Charging Digital Twin";
+  const section = () => screen.getByRole("heading", { level: 2, name: "Proof of Concept" }).nextElementSibling as HTMLElement;
+
+  it("is the last card in Proof of Concept, after the existing three", () => {
+    render(<InternshipsPage />);
+    expect(within(section()).getAllByRole("heading", { level: 3 }).map((h) => h.textContent)).toEqual(["EV Auto Rickshaw", "Autonomous Air Taxi (eVTOL)", "Autonomous Airport Cargo EV", TITLE]);
+  });
+
+  it("links to the digital twin with its tagline, description, programme, CTA and analytics event", () => {
+    render(<InternshipsPage />);
+    const link = within(section()).getByRole("link", { name: new RegExp(TITLE) });
+    expect(link).toHaveAttribute("href", "/internships/wireless-ev-charging-digital-twin");
+    expect(link).toHaveAttribute("data-track-event", "wireless_ev_twin_card_clicked");
+    expect(link).toHaveTextContent("Park. Drive. Charge. Automatically.");
+    expect(link).toHaveTextContent("Explore, design and develop intelligent wireless electric vehicle charging systems through interactive 3D engineering, physics, mathematical modelling, IoT, artificial intelligence and experimental research.");
+    expect(link).toHaveTextContent("8-Month Advanced Engineering Research & Practical Workshop");
+    expect(link).toHaveTextContent(/Explore Digital Twin\s*→/);
+  });
+
+  it("leaves the other Proof of Concept cards unchanged", () => {
+    render(<InternshipsPage />);
+    expect(within(section()).getByRole("link", { name: /EV Auto Rickshaw/ })).toHaveAttribute("href", "/internships/evAutoRickshaw");
+    expect(within(section()).getByRole("link", { name: /Autonomous Airport Cargo EV/ })).toHaveAttribute("href", "/design-development/airport-cargo");
+  });
+});
+
 describe("/internships Marketing & Sales", () => {
   const section = () => screen.getByRole("heading", { level: 2, name: "Marketing & Sales" }).parentElement!;
 

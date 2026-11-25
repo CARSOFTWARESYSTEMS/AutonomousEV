@@ -26,7 +26,9 @@ export function isSelfContainedPath(rawPathname: string | null): boolean {
     pathname?.startsWith("/internships/marketing-sales/") === true ||
     // So does the EV Battery Health & Diagnostics Toolkit, in the Space visual family.
     pathname === "/internships/ev-battery-health-diagnostics-toolkit" ||
-    pathname?.startsWith("/internships/ev-battery-health-diagnostics-toolkit/") === true
+    pathname?.startsWith("/internships/ev-battery-health-diagnostics-toolkit/") === true ||
+    // The Wireless EV Charging Digital Twin brings its own header and footer around a full-screen research environment.
+    pathname === "/internships/wireless-ev-charging-digital-twin"
   );
 }
 

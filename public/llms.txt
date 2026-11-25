@@ -84,6 +84,18 @@ link below points to a canonical public page already listed in
   manufacturer website, 42 Ah per 2022 launch coverage). Cell chemistry,
   format, BMS protocol, connector and battery location are listed as not
   verified. No live BMS connection.
+- [Next-Generation Wireless EV Charging Digital Twin](https://autonomous.ev.engineer/internships/wireless-ev-charging-digital-twin):
+  "Park. Drive. Charge. Automatically." An EV.ENGINEER™ interactive 3D
+  research environment with four connected twins (Smart Wireless EV Charging
+  Station, Dynamic Wireless EV Charging, Autonomous Wireless EV Charging,
+  Smart Charging Infrastructure & Energy Intelligence), Physics & Mathematics,
+  Circuit, IoT & Data and Research laboratories, an 8-Month Advanced
+  Engineering Research & Practical Workshop (32 weeks, 64 units) and
+  Engineering Assurance with a verification suite that runs in the browser.
+  All values are simulated by stated analytical and numerical models
+  (fidelity F1–F2); none is experimentally validated, no hardware is
+  connected and no standards compliance is claimed. Designed and developed by
+  and for the EV.ENGINEER™ team.
 - [Cybersecurity Engineers](https://autonomous.ev.engineer/internships/cybersecurity-engineers):
   Profiles of engineers and researchers contributing to cybersecurity research
   at EV.ENGINEER — Bhavya Naga Sai Parvathi Kshatri (Cybersecurity Researcher ·

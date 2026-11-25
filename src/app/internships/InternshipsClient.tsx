@@ -568,6 +568,19 @@ export default function InternshipsClient() {
               desc="Duty-cycle analysis and integrations for closed-loop environments."
               link="/design-development/airport-cargo"
             />
+            <ProjectCard
+              title="Next-Generation Wireless EV Charging Digital Twin"
+              subtitle="Park. Drive. Charge. Automatically."
+              desc="Explore, design and develop intelligent wireless electric vehicle charging systems through interactive 3D engineering, physics, mathematical modelling, IoT, artificial intelligence and experimental research."
+              badge="8-Month Advanced Engineering Research & Practical Workshop"
+              link="/internships/wireless-ev-charging-digital-twin"
+              ctaLabel="Explore Digital Twin"
+              trackProps={{
+                "data-track-event": "wireless_ev_twin_card_clicked",
+                "data-track-source": "internships_proof_of_concept",
+                "data-track-destination": "/internships/wireless-ev-charging-digital-twin",
+              }}
+            />
           </Section>
 
           <Section title="Space & Aerospace Engineering" id="space-aerospace-engineering" gridClassName={trackStyles.grid}>
