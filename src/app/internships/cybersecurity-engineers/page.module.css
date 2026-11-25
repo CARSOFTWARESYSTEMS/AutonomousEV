@@ -33,6 +33,15 @@
   width: 100%;
   max-width: 640px;
 }
+/* An odd last profile (the 3rd, 5th…) sits centred on its own row at the same
+   width as the cards above, while the grid has two columns (gap 2rem). */
+@media (min-width: 993px) {
+  .page .profile:last-child:nth-child(odd):not(:only-child) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc((100% - 2rem) / 2);
+  }
+}
 .identity {
   display: flex;
   align-items: center;

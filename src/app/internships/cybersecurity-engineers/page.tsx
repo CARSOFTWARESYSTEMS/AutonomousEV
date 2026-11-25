@@ -2,15 +2,17 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
-import { BHAVYA_KSHATRI, KALMADI_SAISIDDI, SITE_URL } from "@/data/public-entities";
+import { BHAVYA_KSHATRI, GRANDHI_PRANAY, KALMADI_SAISIDDI, SITE_URL } from "@/data/public-entities";
 import { JsonLd } from "@/lib/structured-data/JsonLd";
 import {
   BHAVYA_KSHATRI_ID,
   EV_ENGINEER_BRAND_ID,
+  GRANDHI_PRANAY_ID,
   KALMADI_SAISIDDI_ID,
   WEBSITE_ID,
   bhavyaKshatriPersonNode,
   evEngineerBrandNode,
+  grandhiPranayPersonNode,
   itelematicsOrgNode,
   kalmadiSaisiddiPersonNode,
   websiteNode,
@@ -29,6 +31,7 @@ const INTRO = "Meet engineers and researchers contributing to cybersecurity, bat
 const BHAVYA_PORTFOLIO = "https://bhavyacyber.github.io/";
 const BHAVYA_IMAGE = "/team/bhavyaparvathi.png";
 const SAISIDDI_IMAGE = "/team/kalmadisaisiddi.jpg";
+const PRANAY_IMAGE = "/team/grandhipranay.jpg";
 
 interface ProfileLink {
   label: string;
@@ -54,7 +57,8 @@ interface Engineer {
 /**
  * Names, roles, summaries and focus areas restate what the entity registry
  * already publishes: Bhavya's from the AegisCAN page, Saisiddi's from the EV
- * Society candidate record, webinar listing and GitHub. Bhavya's EV Society
+ * Society candidate record, webinar listing and GitHub, Pranay's from the
+ * profile EV.ENGINEER supplied (25 Nov 2026). Bhavya's EV Society
  * profile is not linked yet: add it to her `links` as
  * `{ label: "EV Society Profile", href, type: "ev_society" }`.
  */
@@ -87,6 +91,28 @@ const ENGINEERS: readonly Engineer[] = [
       { label: "LinkedIn", href: "https://www.linkedin.com/in/saisiddi-kalmadi-172672382/", type: "linkedin" },
       { label: "GitHub", href: "https://github.com/saisiddi", type: "github" },
       { label: "EV Society Profile", href: "https://www.evsociety.org/projects/battery-safety-systems/candidates/kalmadisaisiddi", type: "ev_society" },
+    ],
+  },
+  {
+    id: "grandhi-pranay",
+    name: GRANDHI_PRANAY.name,
+    trackName: "Grandhi Pranay",
+    role: "Cybersecurity Researcher · EV.ENGINEER™",
+    summary: "Contributes to the cybersecurity research and development track on EV.ENGINEER, working on SIM-005, the Cyber Attack Simulator: threat identification, vulnerability assessment, security monitoring and simulation-based investigation.",
+    focus: [
+      "Cybersecurity Research",
+      "Cyber Attack Simulation (SIM-005)",
+      "Threat Detection & Analysis",
+      "Vulnerability Assessment",
+      "Security Monitoring & Incident Investigation",
+      "AI-Driven SOC Analysis",
+    ],
+    image: PRANAY_IMAGE,
+    imageAlt: `${GRANDHI_PRANAY.name} — Cybersecurity Researcher`,
+    links: [
+      { label: "LinkedIn", href: "https://www.linkedin.com/in/pranay-grandhi-88b431329/", type: "linkedin" },
+      { label: "GitHub", href: "https://github.com/pranaygrandhi", type: "github" },
+      { label: "EV Society Profile", href: "https://www.evsociety.org/projects/micro-nano-satellites-light-rockets/candidates/pranaygrandhi", type: "ev_society" },
     ],
   },
 ];
@@ -139,6 +165,7 @@ const structuredData = {
     itelematicsOrgNode(),
     { ...bhavyaKshatriPersonNode(), image: `${SITE_URL}${BHAVYA_IMAGE}`, sameAs: [...(BHAVYA_KSHATRI.sameAs ?? []), BHAVYA_PORTFOLIO] },
     { ...kalmadiSaisiddiPersonNode(), image: `${SITE_URL}${SAISIDDI_IMAGE}` },
+    { ...grandhiPranayPersonNode(), image: `${SITE_URL}${PRANAY_IMAGE}` },
     {
       "@type": "WebPage",
       "@id": `${PAGE_URL}#webpage`,
@@ -166,6 +193,7 @@ const structuredData = {
       itemListElement: [
         { "@type": "ListItem", position: 1, item: { "@id": BHAVYA_KSHATRI_ID } },
         { "@type": "ListItem", position: 2, item: { "@id": KALMADI_SAISIDDI_ID } },
+        { "@type": "ListItem", position: 3, item: { "@id": GRANDHI_PRANAY_ID } },
       ],
     },
   ],

@@ -87,9 +87,10 @@ link below points to a canonical public page already listed in
 - [Cybersecurity Engineers](https://autonomous.ev.engineer/internships/cybersecurity-engineers):
   Profiles of engineers and researchers contributing to cybersecurity research
   at EV.ENGINEER — Bhavya Naga Sai Parvathi Kshatri (Cybersecurity Researcher ·
-  EV.ENGINEER™) and Kalmadi Saisiddi (Cybersecurity Intern · EV.ENGINEER™,
-  SIM-006 Detection Rule Simulator) — with links to public profiles and to the
-  related cybersecurity programs.
+  EV.ENGINEER™), Kalmadi Saisiddi (Cybersecurity Intern · EV.ENGINEER™,
+  SIM-006 Detection Rule Simulator) and Grandhi Pranay (Cybersecurity
+  Researcher · EV.ENGINEER™, SIM-005 Cyber Attack Simulator) — with links to
+  public profiles and to the related cybersecurity programs.
 - [Sudarshana Karkala](https://autonomous.ev.engineer/about/sudarshana-karkala):
   Sudarshana Karkala — EV.ENGINEER™, Founder of ISHAVASYAM.ORG, engineering
   leader and consultant across Space research, Digital Twins, Cybersecurity,

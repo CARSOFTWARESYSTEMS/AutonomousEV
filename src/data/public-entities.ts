@@ -275,6 +275,36 @@ export const KALMADI_SAISIDDI: PublicEntity = {
 };
 
 /**
+ * Grandhi Pranay — Cybersecurity Researcher · EV.ENGINEER™. Role, work and
+ * focus areas are from the profile EV.ENGINEER supplied on 2026-11-25; SIM-005's
+ * name ("Cyber Attack Simulator") is from the EV Society platform listings.
+ * (His EV Society candidate record lists him under Model Rocketry, a separate
+ * track.) The person's own profile on this site is the card on
+ * /internships/cybersecurity-engineers, so `canonicalUrl` points there.
+ */
+export const GRANDHI_PRANAY: PublicEntity = {
+  id: "https://www.linkedin.com/in/pranay-grandhi-88b431329/#person",
+  type: "Person",
+  name: "Grandhi Pranay",
+  description:
+    "Grandhi Pranay contributes to the cybersecurity research and development track at EV.ENGINEER, working on SIM-005, the Cyber Attack Simulator: threat identification, vulnerability assessment, security monitoring and simulation-based investigation.",
+  canonicalUrl: `${SITE_URL}/internships/cybersecurity-engineers#grandhi-pranay`,
+  sameAs: [
+    "https://www.linkedin.com/in/pranay-grandhi-88b431329/",
+    "https://github.com/pranaygrandhi",
+    "https://www.evsociety.org/projects/micro-nano-satellites-light-rockets/candidates/pranaygrandhi",
+  ],
+  knowsAbout: [
+    "Cybersecurity research",
+    "Threat detection and analysis",
+    "Vulnerability assessment",
+    "Security monitoring and incident investigation",
+    "AI-driven SOC analysis",
+  ],
+  affiliations: [EV_ENGINEER.canonicalUrl],
+};
+
+/**
  * The internship programme hub at /internships. Modelled as a "Program" in
  * this registry (a descriptive, non-schema.org-specific category); the
  * corresponding JSON-LD uses CollectionPage + ItemList (see
