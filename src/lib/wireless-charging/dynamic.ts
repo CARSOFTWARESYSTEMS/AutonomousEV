@@ -467,6 +467,31 @@ export function regime(samples: readonly RoadSample[], tolerance = 500): EnergyR
   return mean > tolerance ? "charging" : mean < -tolerance ? "discharging" : "energy-neutral";
 }
 
+/**
+ * Mean battery power over the last `distance` metres travelled (one repeat of
+ * the electrified zones by default), so the reading covers whole zones rather
+ * than a slice of one. Null until the vehicle has driven that far within the
+ * stored samples. An analysis of the samples; it changes nothing in the model.
+ */
+export function recentBatteryPower(samples: readonly RoadSample[], distance = ZONE_PERIOD, tolerance = 500): { mean: number; seconds: number; regime: EnergyRegime } | null {
+  if (samples.length < 2) return null;
+  let travelled = 0;
+  let sum = 0;
+  let n = 0;
+  for (let i = samples.length - 1; i > 0; i--) {
+    let dx = samples[i].x - samples[i - 1].x;
+    if (dx < -ROUTE_LENGTH / 2) dx += ROUTE_LENGTH;
+    travelled += Math.max(0, dx);
+    sum += samples[i].pBattery;
+    n += 1;
+    if (travelled >= distance) {
+      const mean = sum / n;
+      return { mean, seconds: samples[samples.length - 1].t - samples[i - 1].t, regime: mean > tolerance ? "charging" : mean < -tolerance ? "discharging" : "energy-neutral" };
+    }
+  }
+  return null;
+}
+
 export interface DriveSummary {
   distance: number;
   time: number;

@@ -13,7 +13,10 @@ import { type CouplerConfig, DEFAULT_RX_PAD, DEFAULT_TX_PAD, type FieldBasis, fi
 import { runtime } from "../state/runtime";
 import { useTwin } from "../state/store";
 import { fieldColor } from "./materials";
-import { ROAD_Z } from "./world";
+import { ROAD_Z } from "./road/layout";
+import { CABINET } from "./station/Site";
+import { POWER_POINTS } from "./vehicle/chassis";
+import { NOMINAL_GAP } from "./vehicle/Vehicle";
 import { view } from "./viewState";
 import { setAnchor } from "./labels";
 import { fieldScale } from "./fieldScale";
@@ -185,17 +188,23 @@ const flowShader = (color: string) =>
     fragmentShader: "uniform float time; uniform vec3 color; uniform float level; uniform float repeat; varying vec2 vUv; void main(){ float d = fract(vUv.x * repeat - time); float dash = smoothstep(0.0, 0.2, d) * (1.0 - smoothstep(0.5, 0.75, d)); gl_FragColor = vec4(color * (0.6 + 1.6 * dash), level * (0.18 + 0.82 * dash)); }",
   });
 
-export const FLOW_COLORS = { ac: "#f5b041", hf: "#b388ff", magnetic: "#5ee7ff", dc: "#4ca930" } as const;
+import { FLOW_COLORS } from "./flowColors";
+
+export { FLOW_COLORS };
 
 function tube(points: [number, number, number][], radius: number) {
   return new TubeGeometry(new CatmullRomCurve3(points.map((p) => new Vector3(...p))), 64, radius, 10, false);
 }
 
 export function EnergyFlow() {
-  const grid = useMemo(() => tube([[9, 0.25, 7], [7.5, 0.06, 5.6], [4.2, 0.06, 2.2], [3.3, 0.25, 1.0]], 0.05), []);
-  const hf = useMemo(() => tube([[3.3, 0.1, 1.0], [2.4, 0.04, 0.8], [1.0, 0.04, 0.3], [0.25, 0.04, 0.05]], 0.04), []);
-  // Vehicle side, in the vehicle's frame: receiver → rectifier → DC–DC → battery.
-  const dc = useMemo(() => tube([[0.6, 0.3, 0], [0.95, 0.4, 0.2], [1.05, 0.42, -0.2], [0.4, 0.3, -0.1], [-0.1, 0.26, 0]], 0.035), []);
+  // Ground side: transformer → cabinet along the feeder trench, cabinet → pad along the pad trench.
+  const grid = useMemo(() => tube([[8.6, 0.3, 6.4], [7.2, 0.05, 5.0], [4.6, 0.05, 2.4], [CABINET.x + 0.1, 0.3, CABINET.z]], 0.05), []);
+  const hf = useMemo(() => tube([[CABINET.x - 0.2, 0.12, CABINET.z - 0.15], [2.4, 0.04, 0.7], [1.2, 0.04, 0.32], [0.42, 0.04, 0.04]], 0.04), []);
+  // Vehicle side, in the vehicle's frame: receiver → compensation → rectifier → DC–DC → junction box → battery.
+  const dc = useMemo(() => {
+    const P = POWER_POINTS;
+    return tube([P.receiver, P.compensation, [1.3, 0.36, 0.2], P.rectifier, P.dcdc, [1.3, 0.42, -0.3], P.junction, P.battery], 0.032);
+  }, []);
   const mats = useMemo(() => ({ grid: flowShader(FLOW_COLORS.ac), hf: flowShader(FLOW_COLORS.hf), mag: flowShader(FLOW_COLORS.magnetic), dc: flowShader(FLOW_COLORS.dc) }), []);
   const link = useRef<Mesh>(null);
   const car = useRef<Group>(null);
@@ -218,14 +227,14 @@ export function EnergyFlow() {
     set(mats.mag, pts.pRectifierIn);
     set(mats.dc, pts.pBattery);
     const v = st.vehicle;
-    if (car.current) car.current.position.set(v.x, 0, -v.y);
     const inp = useTwin.getState().station;
+    if (car.current) car.current.position.set(v.x, inp.airGap - NOMINAL_GAP, -v.y);
     if (link.current) {
       link.current.position.set(inp.longitudinal / 2, TX_WINDING_Y + inp.airGap / 2 + 0.02, -inp.lateral / 2);
       link.current.scale.set(1, inp.airGap, 1);
     }
-    setAnchor("flow-grid", 8.2, 0.9, 6.2);
-    setAnchor("flow-hf", 2.0, 0.5, 0.8);
+    setAnchor("flow-grid", 7.6, 1.0, 5.4);
+    setAnchor("flow-hf", 2.1, 0.45, 0.75);
     setAnchor("flow-gap", inp.longitudinal / 2 + 0.55, 0.35, -inp.lateral / 2);
     setAnchor("flow-dc", v.x + 0.2, 0.9, -v.y - 1.2);
   });
@@ -246,11 +255,15 @@ export function EnergyFlow() {
 // ── IoT messages ───────────────────────────────────────────────────────────
 
 const LINK_COLORS: Record<string, string> = { can: "#ffd166", vehicle: "#5ee7ff", backend: "#b388ff", cloud: "#4ca930", road: "#f5b041" };
+const vehicleAt = (p: readonly [number, number, number]) => {
+  const v = runtime.station.state.vehicle;
+  return new Vector3(v.x + p[0], p[1] + useTwin.getState().station.airGap - NOMINAL_GAP, -v.y + p[2]);
+};
 const NODES: Record<string, () => Vector3> = {
-  BMS: () => new Vector3(runtime.station.state.vehicle.x + 1.3, 0.35, -runtime.station.state.vehicle.y),
-  VCU: () => new Vector3(runtime.station.state.vehicle.x + 0.4, 1.0, -runtime.station.state.vehicle.y),
-  Station: () => new Vector3(3.3, 1.5, 1.0),
-  Gateway: () => new Vector3(3.3, 1.75, 1.0),
+  BMS: () => vehicleAt(POWER_POINTS.bms),
+  VCU: () => vehicleAt(POWER_POINTS.vcu),
+  Station: () => new Vector3(CABINET.x, 0.5, CABINET.z),
+  Gateway: () => new Vector3(CABINET.x, 1.9, CABINET.z - 0.25),
   Backend: () => new Vector3(7.5, 6.5, -5),
   Cloud: () => new Vector3(-1.5, 8, -7),
 };
@@ -336,10 +349,10 @@ const sphere = new SphereGeometry(0.06, 12, 8);
 
 // ── District flows ─────────────────────────────────────────────────────────
 
-const HUB: [number, number, number] = [1.5, 0.4, -2];
+const HUB: [number, number, number] = [CABINET.x, 1.0, CABINET.z];
 const DISTRICT = {
   grid: { from: [9, 1.8, 7] as [number, number, number], color: FLOW_COLORS.ac },
-  pv: { from: [-0.5, 3.3, -4] as [number, number, number], color: "#ffd166" },
+  pv: { from: [0.3, 3.4, -1.4] as [number, number, number], color: "#ffd166" },
   bess: { from: [-9, 2.6, 9] as [number, number, number], color: FLOW_COLORS.dc },
   road: { to: [0, 0.3, ROAD_Z] as [number, number, number], color: FLOW_COLORS.hf },
   city: { to: [-36, 0.3, -46] as [number, number, number], color: "#9aa3ad" },
@@ -382,7 +395,7 @@ export function DistrictFlows() {
       addUniform(m, "time", (key === "bess" && vals.bess < 0 ? -1 : 1) * dt * (0.3 + Math.min(1.5, p / 120)));
     }
     setAnchor("d-grid", 9, 4.5, 7);
-    setAnchor("d-pv", -0.5, 5.2, -4);
+    setAnchor("d-pv", 0.3, 5.2, -1.4);
     setAnchor("d-bess", -9, 4.6, 9);
     setAnchor("d-road", 0, 3.2, ROAD_Z);
     setAnchor("d-city", -36, 6, -46);
@@ -392,6 +405,75 @@ export function DistrictFlows() {
       {(Object.keys(geoms) as (keyof typeof DISTRICT)[]).map((k) => (
         <mesh key={k} geometry={geoms[k]} material={mats[k]} renderOrder={4} />
       ))}
+    </group>
+  );
+}
+
+// ── Alignment ──────────────────────────────────────────────────────────────
+
+/**
+ * Dimension lines for the alignment stage: the pad centre and the receiver
+ * centre projected on the slab, the lateral and longitudinal offsets between
+ * them, and the winding-to-winding air gap as a vertical dimension. The
+ * values are the station's inputs; k and M beside them are calculated.
+ */
+export function AlignmentOverlay() {
+  const group = useRef<Group>(null);
+  const parts = useRef<{ lat: Mesh | null; long: Mesh | null; gap: Mesh | null; rx: Mesh | null }>({ lat: null, long: null, gap: null, rx: null });
+  const mat = useMemo(() => new MeshBasicMaterial({ color: "#7fd8ff", transparent: true, opacity: 0, depthWrite: false, depthTest: false }), []);
+  const padMat = useMemo(() => new MeshBasicMaterial({ color: "#e8f3ff", transparent: true, opacity: 0, depthWrite: false, depthTest: false }), []);
+  useEffect(() => () => {
+    mat.dispose();
+    padMat.dispose();
+  }, [mat, padMat]);
+  useFrame(() => {
+    const s = useTwin.getState();
+    const on = view.alignment > 0.02 && s.environment === "station" && runtime.station.state.vehicle.present;
+    if (group.current) group.current.visible = on;
+    if (!on) return;
+    setOpacity(mat, 0.9 * view.alignment, 2);
+    setOpacity(padMat, 0.75 * view.alignment, 2);
+    const { lateral, longitudinal, airGap } = s.station;
+    const x = longitudinal;
+    const z = -lateral;
+    const y = 0.075;
+    const p = parts.current;
+    if (p.long) {
+      p.long.position.set(x / 2, y, 0);
+      p.long.scale.set(Math.max(0.002, Math.abs(x)), 1, 1);
+    }
+    if (p.lat) {
+      p.lat.position.set(x, y, z / 2);
+      p.lat.scale.set(1, 1, Math.max(0.002, Math.abs(z)));
+    }
+    if (p.rx) p.rx.position.set(x, y, z);
+    if (p.gap) {
+      p.gap.position.set(x + 0.36, TX_WINDING_Y + airGap / 2, z);
+      p.gap.scale.set(1, airGap, 1);
+    }
+    setAnchor("align-long", x / 2, y + 0.05, 0.12);
+    setAnchor("align-lat", x + 0.12, y + 0.05, z / 2);
+    setAnchor("align-gap", x + 0.42, TX_WINDING_Y + airGap / 2 + 0.03, z);
+    setAnchor("align-k", x, TX_WINDING_Y + airGap + 0.28, z);
+  });
+  return (
+    <group ref={group} visible={false} renderOrder={8}>
+      {/* Pad centre and receiver centre marks. */}
+      <mesh material={padMat} position={[0, 0.075, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[0.028, 0.036, 32]} />
+      </mesh>
+      <mesh ref={(m) => { parts.current.rx = m; }} material={mat} rotation={[-Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[0.028, 0.036, 32]} />
+      </mesh>
+      <mesh ref={(m) => { parts.current.long = m; }} material={mat}>
+        <boxGeometry args={[1, 0.004, 0.006]} />
+      </mesh>
+      <mesh ref={(m) => { parts.current.lat = m; }} material={mat}>
+        <boxGeometry args={[0.006, 0.004, 1]} />
+      </mesh>
+      <mesh ref={(m) => { parts.current.gap = m; }} material={mat}>
+        <boxGeometry args={[0.006, 1, 0.006]} />
+      </mesh>
     </group>
   );
 }

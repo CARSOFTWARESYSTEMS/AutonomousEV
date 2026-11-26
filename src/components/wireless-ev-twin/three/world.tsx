@@ -1,22 +1,28 @@
 "use client";
-// The world the four environments share: a dusk sky, the parking site with
-// its solar canopy, cabinet, transformer and storage, a city skyline, and the
-// electrified highway with a cutaway that travels with the vehicle.
+// The world the environments share: a blue-hour sky, the ground, a quiet
+// skyline, the hero vehicle (station and autonomous), highway traffic and the
+// electrified highway with a cutaway that travels with the vehicle. The
+// charging site itself is ./station/Site.
 import { useEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { BackSide, BoxGeometry, BufferGeometry, Color, CylinderGeometry, type Group, type InstancedMesh, Matrix4, type Mesh, MeshStandardMaterial, Object3D, ShaderMaterial, type Texture } from "three";
+import { BackSide, BoxGeometry, BufferGeometry, Color, type Mesh, MeshStandardMaterial, ShaderMaterial, type Texture } from "three";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import { createParking } from "@/lib/wireless-charging/autonomous";
-import { roadPad } from "@/lib/wireless-charging/dynamic";
 import { runtime } from "../state/runtime";
 import { useTwin } from "../state/store";
-import { asphaltTexture, concreteTexture, laneTexture, solarTexture, windowTexture } from "./materials";
-import { Cabinet, GroundPad, mats, pick, Vehicle } from "./parts";
-import { spiralCoil } from "./geometry";
-import { setEmissive, setOffset, setOpacity } from "./mutate";
+import { concreteTexture, windowTexture } from "./materials";
+import { heatOf } from "./station/Site";
+import { NOMINAL_GAP, Vehicle } from "./vehicle/Vehicle";
+import { setEmissive, setOpacity, setUniform, setVisible } from "./mutate";
 import { view } from "./viewState";
 
-export const ROAD_Z = 26;
+import { CouplingChart } from "./road/CouplingChart";
+import { Corridor } from "./road/Corridor";
+import { Cutaway } from "./road/Cutaway";
+import { laneZ, ROAD_WINDING_Y, ROAD_Z } from "./road/layout";
+import { RoadPads } from "./road/RoadPads";
+
+export { ROAD_Z };
 const hash = (i: number) => {
   const x = Math.sin(i * 91.345 + 7.1) * 24634.6345;
   return x - Math.floor(x);
@@ -32,14 +38,15 @@ export function Sky() {
       new ShaderMaterial({
         side: BackSide,
         depthWrite: false,
-        uniforms: { top: { value: new Color("#060b1a") }, mid: { value: new Color("#1b2a4a") }, horizon: { value: new Color("#c8774a") } },
+        uniforms: { top: { value: new Color("#070c18") }, mid: { value: new Color("#1d2b45") }, horizon: { value: new Color("#9c7a6a") }, dim: { value: 0 } },
         vertexShader: "varying vec3 vP; void main(){ vP = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }",
         fragmentShader:
-          "uniform vec3 top; uniform vec3 mid; uniform vec3 horizon; varying vec3 vP; void main(){ float h = clamp(vP.y, -0.2, 1.0); vec3 c = mix(horizon, mid, smoothstep(0.0, 0.18, h)); c = mix(c, top, smoothstep(0.18, 0.75, h)); c = mix(vec3(0.05,0.05,0.07), c, smoothstep(-0.2, 0.0, h)); gl_FragColor = vec4(c, 1.0); }",
+          "uniform vec3 top; uniform vec3 mid; uniform vec3 horizon; uniform float dim; varying vec3 vP; void main(){ float h = clamp(vP.y, -0.2, 1.0); vec3 c = mix(horizon, mid, smoothstep(0.0, 0.18, h)); c = mix(c, top, smoothstep(0.18, 0.75, h)); c = mix(vec3(0.05,0.05,0.07), c, smoothstep(-0.2, 0.0, h)); c = mix(c, vec3(0.018, 0.022, 0.032) + 0.03 * smoothstep(-0.1, 0.4, h), dim); gl_FragColor = vec4(c, 1.0); }",
       }),
     [],
   );
   useDispose([material]);
+  useFrame(() => setUniform(material, "dim", view.studio));
   return (
     <mesh material={material} renderOrder={-1}>
       <sphereGeometry args={[420, 32, 16]} />
@@ -55,11 +62,15 @@ export function Ground() {
   }, []);
   const material = useMemo(() => new MeshStandardMaterial({ map: tex, color: "#8d9298", roughness: 0.92, metalness: 0, transparent: true, opacity: 1 }), [tex]);
   useDispose<Texture | MeshStandardMaterial>([tex, material]);
+  const mesh = useRef<Mesh>(null);
   useFrame(() => {
-    setOpacity(material, 1 - 0.55 * view.reveal * (useTwin.getState().environment === "station" ? 1 : 0), 0.9);
+    const env = useTwin.getState().environment;
+    setOpacity(material, 1 - 0.55 * view.reveal * (env === "station" ? 1 : 0), 0.9);
+    // On the road the verges replace the site's ground.
+    setVisible(mesh.current, env !== "dynamic");
   });
   return (
-    <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow material={material}>
+    <mesh ref={mesh} rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.012, 0]} receiveShadow material={material}>
       <planeGeometry args={[320, 320]} />
     </mesh>
   );
@@ -69,10 +80,10 @@ export function Ground() {
 export function City() {
   const { geometry, material } = useMemo(() => {
     const parts: BufferGeometry[] = [];
-    for (let i = 0; i < 260; i++) {
+    for (let i = 0; i < 200; i++) {
       const x = (hash(i) - 0.5) * 300;
       const z = (hash(i + 500) - 0.5) * 300;
-      const nearSite = Math.abs(x) < 30 && z > -34 && z < 16;
+      const nearSite = Math.abs(x) < 38 && z > -44 && z < 18;
       const nearRoad = z > ROAD_Z - 10 && z < ROAD_Z + 26;
       if (nearSite || nearRoad || Math.hypot(x, z) < 34) continue;
       const w = 8 + hash(i + 900) * 14;
@@ -81,180 +92,61 @@ export function City() {
       const h = 10 + hash(i + 1700) ** 2 * (40 + 50 * far);
       const g = new BoxGeometry(w, h, d).toNonIndexed();
       const uv = g.attributes.uv;
-      for (let k = 0; k < uv.count; k++) uv.setXY(k, uv.getX(k) * (w / 7), uv.getY(k) * (h / 10));
+      for (let k = 0; k < uv.count; k++) uv.setXY(k, uv.getX(k) * (w / 14), uv.getY(k) * (h / 20));
       g.translate(x, h / 2, z);
       parts.push(g);
     }
     const geometry = mergeGeometries(parts)!;
     const windows = windowTexture();
-    const material = new MeshStandardMaterial({ color: "#20262f", roughness: 0.75, metalness: 0.25, emissive: new Color("#ffffff"), emissiveMap: windows, emissiveIntensity: 1.25 });
+    const material = new MeshStandardMaterial({ color: "#1b2029", roughness: 0.7, metalness: 0.3, emissive: new Color("#ffffff"), emissiveMap: windows, emissiveIntensity: 0.55 });
     return { geometry, material };
   }, []);
   useDispose<BufferGeometry | MeshStandardMaterial>([geometry, material]);
-  return <mesh geometry={geometry} material={material} receiveShadow />;
-}
-
-const BAY_PITCH = 2.7;
-
-/** Static neighbours: parked cars on their own pads under the canopy. */
-const NEIGHBOURS = [
-  { z: -BAY_PITCH, paint: "#2f3843" },
-  { z: -BAY_PITCH * 2, paint: "#8c1d24" },
-  { z: -BAY_PITCH * 3, paint: "#b9c3cc" },
-  { z: BAY_PITCH, paint: "#1c3f5c" },
-];
-
-/** The parking site: bays, solar canopy, cabinet, transformer, storage and cables. */
-export function Site() {
-  const m = mats();
-  const pv = useMemo(() => {
-    const t = solarTexture();
-    t.repeat.set(4, 6);
-    return t;
-  }, []);
-  const pvMat = useMemo(() => new MeshStandardMaterial({ map: pv, metalness: 0.6, roughness: 0.22, color: "#ffffff" }), [pv]);
-  const lineMat = useMemo(() => new MeshStandardMaterial({ color: "#d8dde2", roughness: 0.6, emissive: new Color("#9aa3ad"), emissiveIntensity: 0.12 }), []);
-  const lightMat = useMemo(() => new MeshStandardMaterial({ color: "#fff", emissive: new Color("#fff1dc"), emissiveIntensity: 2.4 }), []);
-  useDispose<Texture | MeshStandardMaterial>([pv, pvMat, lineMat, lightMat]);
-  const turns = useTwin((s) => s.station.txTurns);
-  const pose = (z: number) => () => ({ x: -0.6, z, heading: 0, spin: 0 });
-  const neighbours = useRef<Group>(null);
+  const mesh = useRef<Mesh>(null);
   useFrame(() => {
-    if (neighbours.current) neighbours.current.visible = view.reveal < 0.5 || useTwin.getState().environment !== "station";
+    setEmissive(material, "#ffffff", 0.55 * (1 - view.studio));
+    setVisible(mesh.current, view.studio < 0.97 && useTwin.getState().environment !== "dynamic");
   });
-  return (
-    <group>
-      {/* Bay markings. */}
-      {[-4, -3, -2, -1, 0, 1, 2].map((k) => (
-        <mesh key={k} material={lineMat} position={[-0.4, 0.004, (k - 0.5) * BAY_PITCH]} rotation={[-Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[5.4, 0.1]} />
-        </mesh>
-      ))}
-      {/* Wheel stops on the neighbouring bays; the charging bay relies on positioning guidance instead. */}
-      {[-3, -2, -1, 1].map((k) => (
-        <mesh key={k} material={m.concreteLight} position={[2.35, 0.06, k * BAY_PITCH]} castShadow>
-          <boxGeometry args={[0.18, 0.12, 1.6]} />
-        </mesh>
-      ))}
-      {/* Neighbouring bays with parked vehicles on their own pads; set aside in close-up views. */}
-      <group ref={neighbours}>
-        {NEIGHBOURS.map((n) => (
-          <group key={n.z}>
-            <group position={[0, 0, n.z]}>
-              <GroundPad turns={turns} />
-            </group>
-            <Vehicle pose={pose(n.z)} paint={n.paint} />
-          </group>
-        ))}
-      </group>
-      <group>
-        <GroundPad turns={turns} glow={() => Math.min(1, (runtime.station.state.point.ss ? Math.hypot(runtime.station.state.point.ss.i1.re, runtime.station.state.point.ss.i1.im) : 0) / 40)} heat={() => heatOf(runtime.station.state.temperatures.txCoil, 25, 110)} />
-      </group>
-      {/* Solar carport canopy. */}
-      <group position={[-0.5, 0, -BAY_PITCH * 1.5]}>
-        {[-6.2, -2.1, 2.1, 6.2].map((z) => (
-          <group key={z}>
-            <mesh material={m.steel} position={[-3.05, 1.55, z]} castShadow {...pick("solar")}>
-              <cylinderGeometry args={[0.1, 0.13, 3.1, 14]} />
-            </mesh>
-            {/* Cantilever arm. */}
-            <mesh material={m.steel} position={[-0.3, 3.0, z]} rotation={[0, 0, -0.05]} castShadow>
-              <boxGeometry args={[5.8, 0.16, 0.12]} />
-            </mesh>
-          </group>
-        ))}
-        <mesh material={m.steel} position={[0, 3.12, 0]} castShadow>
-          <boxGeometry args={[6.3, 0.14, 13.4]} />
-        </mesh>
-        <mesh material={pvMat} position={[0, 3.24, 0]} rotation={[0, 0, 0.08]} castShadow {...pick("solar")}>
-          <boxGeometry args={[6.6, 0.06, 13.6]} />
-        </mesh>
-        {[-4.5, -1.5, 1.5, 4.5].map((z) => (
-          <mesh key={z} material={lightMat} position={[0, 3.04, z]}>
-            <boxGeometry args={[1.4, 0.02, 0.18]} />
-          </mesh>
-        ))}
-      </group>
-      {/* Power electronics cabinet at the head of the bay. */}
-      <group position={[3.3, 0, 1.0]} rotation={[0, -Math.PI / 2, 0]}>
-        <Cabinet heat={() => heatOf(runtime.station.state.temperatures.inverter, 25, 90)} />
-      </group>
-      {/* Pad-mounted transformer and battery storage container. */}
-      <group position={[9, 0, 7]} {...pick("transformer")}>
-        <mesh material={m.paintDark} position={[0, 0.8, 0]} castShadow receiveShadow>
-          <boxGeometry args={[2, 1.6, 1.6]} />
-        </mesh>
-        {[-0.6, 0, 0.6].map((x) => (
-          <mesh key={x} material={m.steel} position={[x, 1.75, 0]}>
-            <cylinderGeometry args={[0.07, 0.09, 0.3, 12]} />
-          </mesh>
-        ))}
-      </group>
-      <group position={[-9, 0, 9]} {...pick("bess")}>
-        <mesh material={m.cabinet} position={[0, 1.3, 0]} castShadow receiveShadow>
-          <boxGeometry args={[6, 2.6, 2.4]} />
-        </mesh>
-        <mesh material={m.emissiveGreen} position={[3.01, 2.2, 0]}>
-          <boxGeometry args={[0.02, 0.08, 1.6]} />
-        </mesh>
-      </group>
-      {/* Grid feeder and the cable to the pad (shown on the surface as a trench cover). */}
-      <mesh material={m.trim} position={[6.1, 0.012, 4]} rotation={[-Math.PI / 2, 0, -0.75]} {...pick("grid")}>
-        <planeGeometry args={[8.2, 0.3]} />
-      </mesh>
-      <mesh material={m.trim} position={[1.7, 0.012, 0.5]} rotation={[-Math.PI / 2, 0, -0.3]} {...pick("tx-compensation")}>
-        <planeGeometry args={[3.4, 0.22]} />
-      </mesh>
-    </group>
-  );
+  return <mesh ref={mesh} geometry={geometry} material={material} receiveShadow />;
 }
 
-/** Thermal-view tint for a temperature on a scale, or null outside the thermal view. */
-export function heatOf(T: number, lo: number, hi: number): Color | null {
-  if (view.thermal < 0.5) return null;
-  return thermalScale((T - lo) / (hi - lo));
-}
-const tmp = new Color();
-const stops = ["#1d4ed8", "#0ea5a4", "#84cc16", "#f59e0b", "#dc2626"].map((c) => new Color(c));
-function thermalScale(t: number): Color {
-  const x = Math.min(0.9999, Math.max(0, t)) * (stops.length - 1);
-  const i = Math.floor(x);
-  return tmp.copy(stops[i]).lerp(stops[i + 1], x - i);
-}
-
-/** The hero vehicle in the station or parking scene. */
+/** The hero vehicle in the station or parking scene: position, steering and ride height from the simulations. */
 export function HeroVehicle() {
   const env = useTwin((s) => s.environment);
   const rxTurns = useTwin((s) => s.station.rxTurns);
   const spin = useRef(0);
   const last = useRef({ x: 0, z: 0 });
   const pose = () => {
-    const e = useTwin.getState().environment;
+    const s = useTwin.getState();
     let x: number;
     let z: number;
     let heading = 0;
-    if (e === "autonomous") {
+    let steer = 0;
+    if (s.environment === "autonomous") {
       const t = runtime.parking.state.truth;
       x = t.x + 1.45 * Math.cos(t.heading);
       const y = t.y + 1.45 * Math.sin(t.heading);
       z = -y;
       heading = t.heading;
+      steer = t.steer;
     } else {
       const v = runtime.station.state.vehicle;
       x = v.present ? v.x : -40;
       z = -v.y;
     }
-    spin.current += Math.hypot(x - last.current.x, z - last.current.z) / 0.355;
+    // Wheels roll by the distance actually travelled.
+    const d = Math.hypot(x - last.current.x, z - last.current.z);
+    if (d < 5) spin.current += d / 0.355;
     last.current = { x, z };
-    return { x, z, heading, spin: spin.current };
+    return { x, z, heading, spin: spin.current, steer, lift: s.station.airGap - NOMINAL_GAP };
   };
   if (env !== "station" && env !== "autonomous") return null;
   return (
     <Vehicle
       pose={pose}
       detailed
+      bodyId="vehicle"
       rxTurns={rxTurns}
-      airGap={() => useTwin.getState().station.airGap}
       rxGlow={() => Math.min(1, (runtime.station.state.point.ss ? Math.hypot(runtime.station.state.point.ss.i2.re, runtime.station.state.point.ss.i2.im) : 0) / 40)}
       rxHeat={() => heatOf(runtime.station.state.temperatures.rxCoil, 25, 110)}
       batteryHeat={() => heatOf(runtime.station.state.battery.temperature, 15, 55)}
@@ -300,7 +192,7 @@ const TRAFFIC = [
   { lane: 3, dir: -1, v: 28, x0: 110, paint: "#4c6b3a" },
   { lane: 3, dir: -1, v: 28, x0: -30, paint: "#e8edf2" },
 ];
-const LANE_Z = (lane: number) => ROAD_Z + lane * 3.6;
+const LANE_Z = laneZ;
 const SPAN = 300;
 
 /**
@@ -320,7 +212,7 @@ export function Traffic() {
   };
   useFrame((_, dt) => {
     const s = useTwin.getState();
-    if (s.playing || s.intro.active) clock.current += Math.min(dt, 0.1);
+    if (s.playing) clock.current += Math.min(dt, 0.1);
   });
   return (
     <group>
@@ -333,117 +225,31 @@ export function Traffic() {
 
 // ── Electrified highway ────────────────────────────────────────────────────
 
-const SEG_WINDOW = 60;
+/** Receiver winding height at nominal ride height (ground pad winding + nominal gap). */
+const RX_WINDING_NOMINAL = 0.036 + NOMINAL_GAP;
+export { ROAD_WINDING_Y };
 
-/** The highway, its layers, the embedded pads and the vehicle, in the vehicle's frame of reference. */
+/**
+ * The highway in the hero vehicle's frame: the corridor, the embedded pads
+ * (from the road simulation's segments), the section cut, the coupling chart
+ * and — in the Dynamic environment — the vehicle, riding at the height the
+ * simulated air gap requires above windings 30 mm under the surface.
+ */
 export function Highway() {
-  const m = mats();
-  const asphalt = useMemo(() => {
-    const t = asphaltTexture();
-    t.repeat.set(40, 4);
-    return t;
-  }, []);
-  const lanes = useMemo(() => {
-    const t = laneTexture();
-    t.repeat.set(1, 40);
-    return t;
-  }, []);
-  const road = useMemo(() => new MeshStandardMaterial({ map: asphalt, color: "#5d6167", roughness: 0.88, metalness: 0.02, transparent: true, opacity: 1 }), [asphalt]);
-  const laneMat = useMemo(() => new MeshStandardMaterial({ map: lanes, transparent: true, roughness: 0.6, emissive: new Color("#ffffff"), emissiveMap: lanes, emissiveIntensity: 0.15, depthWrite: false }), [lanes]);
-  const layerMats = useMemo(
-    () => [
-      new MeshStandardMaterial({ color: "#2a2c30", roughness: 0.9 }),
-      new MeshStandardMaterial({ color: "#4a4b4f", roughness: 0.9 }),
-      new MeshStandardMaterial({ color: "#7b7e83", roughness: 0.95 }),
-      new MeshStandardMaterial({ color: "#6b5a46", roughness: 1 }),
-    ],
-    [],
-  );
-  const segD = useTwin((s) => s.road.segmentDiameter);
-  const segTurns = useTwin((s) => s.road.segmentTurns);
-  const rxTurns = useTwin((s) => s.station.rxTurns);
-  const coilGeom = useMemo(() => {
-    const pad = roadPad(segD, segTurns);
-    return spiralCoil(pad.innerRadius, pad.outerRadius, segTurns, 0.0062);
-  }, [segD, segTurns]);
-  const moduleGeom = useMemo(() => new CylinderGeometry(segD / 2 + 0.05, segD / 2 + 0.05, 0.08, 48), [segD]);
-  const coilMats = useMemo(() => Array.from({ length: SEG_WINDOW }, () => m.copper.clone()), [m]);
-  useDispose<Texture | MeshStandardMaterial | BufferGeometry>([asphalt, lanes, road, laneMat, ...layerMats, moduleGeom, coilGeom, ...coilMats]);
-  const segGroups = useRef<(Group | null)[]>([]);
-  const layers = useRef<(Mesh | null)[]>([]);
-  const cabinets = useRef<InstancedMesh>(null);
-  const dummy = useMemo(() => new Object3D(), []);
-  const matrix = useMemo(() => new Matrix4(), []);
-  useFrame(() => {
-    const s = runtime.road.state;
-    const x0 = s.x;
-    setOffset(asphalt, (x0 / 8) % 1, 0);
-    setOffset(lanes, 0, (-x0 / 8) % 1);
-    setOpacity(road, 1 - 0.75 * view.reveal, 0.9);
-    // Cutaway: lift the wearing and binder courses off the vehicle's lane to show the pads embedded below.
-    layers.current.forEach((m, i) => {
-      if (m) m.visible = !(i < 2 && view.reveal > 0.5);
-    });
-    // Segments near the vehicle, in its frame.
-    const near = s.segments.filter((g) => g.x - x0 > -18 && g.x - x0 < 42).slice(0, SEG_WINDOW);
-    segGroups.current.forEach((g, i) => {
-      if (!g) return;
-      const sg = near[i];
-      g.visible = Boolean(sg);
-      if (!sg) return;
-      g.position.x = sg.x - x0;
-      setEmissive(coilMats[i], sg.state === "blocked" ? "#ff3344" : sg.state === "failed" ? "#7a7a7a" : "#ff8a3d", sg.state === "blocked" ? 1.2 : 0.1 + 2.6 * sg.level);
-    });
-    if (cabinets.current) {
-      for (let i = 0; i < 6; i++) {
-        const cx = Math.floor(x0 / 50) * 50 + i * 50 - 50 - x0;
-        dummy.position.set(cx, 0.7, ROAD_Z - 4);
-        dummy.updateMatrix();
-        matrix.copy(dummy.matrix);
-        cabinets.current.setMatrixAt(i, matrix);
-      }
-      cabinets.current.instanceMatrix.needsUpdate = true;
-    }
-  });
   const env = useTwin((s) => s.environment);
+  const rxTurns = useTwin((s) => s.station.rxTurns);
   const roadPose = () => {
     const s = runtime.road.state;
-    return { x: 0, z: ROAD_Z + useTwin.getState().road.lateral * -1, heading: 0, spin: s.x / 0.355 };
+    const r = useTwin.getState().road;
+    return { x: 0, z: ROAD_Z - r.lateral, heading: 0, spin: s.x / 0.355, lift: r.airGap - (RX_WINDING_NOMINAL - ROAD_WINDING_Y) };
   };
   return (
     <group>
-      {/* Wearing course with lane markings. */}
-      <mesh material={road} position={[0, 0.005, ROAD_Z + 5.4]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow {...pick("road-layers")}>
-        <planeGeometry args={[320, 14.4]} />
-      </mesh>
-      {[1.8, 5.4, 9].map((z) => (
-        <mesh key={z} material={laneMat} position={[0, 0.012, ROAD_Z + z]} rotation={[-Math.PI / 2, 0, Math.PI / 2]}>
-          <planeGeometry args={[0.16, 320]} />
-        </mesh>
-      ))}
-      {/* Construction layers under the vehicle's lane (visible when the surface is cut away). */}
-      {[0.06, 0.12, 0.3, 0.5].map((h, i, arr) => {
-        const top = arr.slice(0, i).reduce((a, b) => a + b, 0);
-        return (
-          <mesh key={h} ref={(m) => { layers.current[i] = m; }} material={layerMats[i]} position={[0, -top - h / 2, ROAD_Z]} receiveShadow {...pick("road-layers")}>
-            <boxGeometry args={[320, h, 3.4]} />
-          </mesh>
-        );
-      })}
-      {/* Embedded pads, energised by the segment controller. */}
-      {Array.from({ length: SEG_WINDOW }, (_, i) => (
-        <group key={i} ref={(g) => { segGroups.current[i] = g; }} position={[0, -0.09, ROAD_Z]} visible={false} {...pick("road-coil")}>
-          <mesh geometry={moduleGeom} material={m.ferrite} position={[0, -0.03, 0]} />
-          <mesh geometry={coilGeom} material={coilMats[i]} position={[0, 0.02, 0]} />
-        </group>
-      ))}
-      {/* Roadside segment cabinets every 50 m. */}
-      <instancedMesh ref={cabinets} args={[undefined, undefined, 6]} material={m.cabinet} castShadow {...pick("segment-controller")}>
-        <boxGeometry args={[0.6, 1.4, 0.45]} />
-      </instancedMesh>
-      {/* The road pads sit 0.13 m lower than a ground pad's winding: place the receiver at the road gap above them. */}
-      {env === "dynamic" && <Vehicle pose={roadPose} detailed rxTurns={rxTurns} airGap={() => useTwin.getState().road.airGap - 0.13} rxGlow={() => Math.min(1, runtime.road.state.i2 / 40)} />}
+      <Corridor />
+      <RoadPads />
+      <Cutaway />
+      <CouplingChart />
+      {env === "dynamic" && <Vehicle pose={roadPose} detailed bodyId="vehicle" rxTurns={rxTurns} rxGlow={() => Math.min(1, runtime.road.state.i2 / 40)} />}
     </group>
   );
 }
-

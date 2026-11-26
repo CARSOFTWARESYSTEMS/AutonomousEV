@@ -26,6 +26,23 @@ describe("Wireless EV Charging Digital Twin route", () => {
     expect(screen.getByRole("link", { name: /Enter Research Laboratory/ })).toHaveAttribute("href", "#research-laboratory");
   });
 
+  it("opens cinematically: descriptors, a poster from the twin's own scene, and two calls to action", () => {
+    render(<Page />);
+    expect(screen.getByText("Physics-based · Mathematics-driven · IoT-enabled · Data-driven")).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: /rendered from the digital twin's own 3D scene/ })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Watch Technology Demonstration/ })).toHaveAttribute("href", "#demo");
+  });
+
+  it("lists five research environments, with the Smart Parking Shelter marked as planned rather than working", () => {
+    render(<Page />);
+    const rail = screen.getByRole("navigation", { name: "Research environments" });
+    const buttons = within(rail).getAllByRole("button");
+    expect(buttons.slice(0, 5).map((b) => b.textContent)).toEqual(["01Smart ParkingPlanned", "02Station", "03Dynamic", "04Autonomous", "05Infrastructure"]);
+    expect(buttons[0]).toBeDisabled();
+    expect(screen.getByRole("heading", { level: 2, name: "Five research environments" })).toBeInTheDocument();
+    expect(screen.getByText(/Specified · planned for Phase 4/)).toBeInTheDocument();
+  });
+
   it("offers the nine research sections and the four experience modes", () => {
     render(<Page />);
     const nav = screen.getByRole("navigation", { name: "Research environment" });

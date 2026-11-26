@@ -5,6 +5,7 @@ import { ENVIRONMENTS, MODES, PRODUCT } from "@/lib/wireless-charging/content";
 import { FIDELITY, type Fidelity } from "@/lib/wireless-charging/registry";
 import { DATA_MODES, type DataMode } from "@/lib/wireless-charging/sensors";
 import { useTwin } from "../state/store";
+import { openEnvironment } from "../story/guide";
 import { Tag } from "../ui/controls";
 import ui from "../twin.module.css";
 
@@ -15,12 +16,18 @@ export default function OverviewSection() {
       <header className={ui.labHead}>
         <p className={ui.eyebrow}>Overview</p>
         <h2>{PRODUCT.question}</h2>
-        <p>Four connected digital twins share one engine: the same coupler, circuit, battery, thermal, communication and energy models drive every view, every graph and every number.</p>
+        <p>Five research environments, four of them simulated today, share one engine: the same coupler, circuit, battery, thermal, communication and energy models drive every view, every graph and every number. The Smart Parking Shelter is specified and planned.</p>
       </header>
       <ul className={ui.envCards}>
         {ENVIRONMENTS.map((e) => (
           <li key={e.id}>
-            <button type="button" onClick={() => set({ section: "twin", environment: e.id, view: "cinematic" })}>
+            <button
+              type="button"
+              onClick={() => {
+                set({ section: "twin" });
+                openEnvironment(e.id);
+              }}
+            >
               <span className={ui.envNumber}>{e.number}</span>
               <strong>{e.name}</strong>
               <span>{e.text}</span>

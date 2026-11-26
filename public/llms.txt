@@ -86,9 +86,13 @@ link below points to a canonical public page already listed in
   verified. No live BMS connection.
 - [Next-Generation Wireless EV Charging Digital Twin](https://autonomous.ev.engineer/internships/wireless-ev-charging-digital-twin):
   "Park. Drive. Charge. Automatically." An EV.ENGINEER™ interactive 3D
-  research environment with four connected twins (Smart Wireless EV Charging
-  Station, Dynamic Wireless EV Charging, Autonomous Wireless EV Charging,
-  Smart Charging Infrastructure & Energy Intelligence), Physics & Mathematics,
+  research laboratory with five research environments: an IoT & AI-Based
+  Smart Parking Shelter (specified, planned) and four simulated twins (Smart
+  Wireless EV Charging Station, Dynamic Wireless EV Charging, Autonomous
+  Wireless EV Charging, Smart Charging Infrastructure & Energy Intelligence).
+  The station opens as a guided 12-stage 3D sequence (vehicle, layered pads,
+  power cabinet, magnetic field, energy flow, battery, foreign-object safety)
+  with Explore, Learn, Engineer and Research modes; Physics & Mathematics,
   Circuit, IoT & Data and Research laboratories, an 8-Month Advanced
   Engineering Research & Practical Workshop (32 weeks, 64 units) and
   Engineering Assurance with a verification suite that runs in the browser.

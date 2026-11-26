@@ -10,19 +10,28 @@ export const PRODUCT = {
   attribution: "Designed and developed by and for the EV.ENGINEER™ team.",
   route: "/internships/wireless-ev-charging-digital-twin",
   programme: "8-Month Advanced Engineering Research & Practical Workshop",
+  descriptors: ["Physics-based", "Mathematics-driven", "IoT-enabled", "Data-driven"],
   description: "Explore, design and develop intelligent wireless electric vehicle charging systems through interactive 3D engineering, physics, mathematical modelling, IoT, artificial intelligence and experimental research.",
   question: "How can electric vehicles receive electrical energy wirelessly, safely, efficiently and intelligently, whether parked or moving?",
   closing: "Explore the Physics. Engineer the Technology. Electrify the Future.",
 } as const;
 
 export const ENVIRONMENTS = [
-  { id: "station", number: "01", name: "Smart Wireless EV Charging Station", short: "Station", text: "Stationary wireless charging while the vehicle is parked: home, apartment, office, commercial and public parking, bus terminals, fleet depots and opportunity charging.", settings: ["Residential", "Apartment parking", "Office parking", "Commercial parking", "Public parking", "Electric bus terminal", "Fleet depot", "Opportunity charging"] },
-  { id: "dynamic", number: "02", name: "Dynamic Wireless EV Charging", short: "Dynamic", text: "Charging while driving over an electrified road: segmented transmitter pads, moving receivers, position-dependent coupling, intelligent coil activation and the vehicle's energy balance.", settings: ["Electrified highway", "Urban street", "Bus corridor"] },
-  { id: "autonomous", number: "03", name: "Autonomous Wireless EV Charging", short: "Autonomous", text: "Self-operating vehicles that find a compatible station, reserve it, park precisely over the pad, authenticate, charge and return to their mission — in simulation.", settings: ["Precision parking", "Station selection", "Fleet coordination"] },
-  { id: "infrastructure", number: "04", name: "Smart Charging Infrastructure & Energy Intelligence", short: "Infrastructure", text: "A connected district: grid limits, solar PV, battery storage, parking bays, a fleet depot and an electrified road, under competing allocation policies and tariffs.", settings: ["District day", "Grid outage", "Peak tariff"] },
+  { id: "station", number: "02", name: "Smart Wireless EV Charging Station", short: "Station", text: "Stationary wireless charging while the vehicle is parked: home, apartment, office, commercial and public parking, bus terminals, fleet depots and opportunity charging.", settings: ["Residential", "Apartment parking", "Office parking", "Commercial parking", "Public parking", "Electric bus terminal", "Fleet depot", "Opportunity charging"] },
+  { id: "dynamic", number: "03", name: "Dynamic Wireless EV Charging", short: "Dynamic", text: "Charging while driving over an electrified road: segmented transmitter pads, moving receivers, position-dependent coupling, intelligent coil activation and the vehicle's energy balance.", settings: ["Electrified highway", "Urban street", "Bus corridor"] },
+  { id: "autonomous", number: "04", name: "Autonomous Wireless EV Charging", short: "Autonomous", text: "Self-operating vehicles that find a compatible station, reserve it, park precisely over the pad, authenticate, charge and return to their mission — in simulation.", settings: ["Precision parking", "Station selection", "Fleet coordination"] },
+  { id: "infrastructure", number: "05", name: "Smart Charging Infrastructure & Energy Intelligence", short: "Infrastructure", text: "A connected district: grid limits, solar PV, battery storage, parking bays, a fleet depot and an electrified road, under competing allocation policies and tariffs.", settings: ["District day", "Grid outage", "Peak tariff"] },
 ] as const;
 
 export type EnvironmentId = (typeof ENVIRONMENTS)[number]["id"];
+
+/**
+ * Research environments specified but not yet simulated. Shown as planned,
+ * never as working experiments (docs/wireless-ev-charging-digital-twin/SMART_PARKING_REQUIREMENTS.md).
+ */
+export const PLANNED_ENVIRONMENTS = [
+  { id: "parking", number: "01", name: "IoT & AI-Based Smart Parking Shelter", short: "Smart Parking", text: "Vehicle identification, entry and exit, slot allocation, environmental monitoring, reservation and billing, with charging-capable bays handing over to the wireless charging station.", status: "Specified · planned for Phase 4" },
+] as const;
 
 export const SECTIONS = [
   { id: "overview", label: "Overview" },
@@ -48,29 +57,28 @@ export const MODES = [
 export type ModeId = (typeof MODES)[number]["id"];
 
 export const VIEW_MODES = [
-  { id: "cinematic", label: "Cinematic", ready: true },
-  { id: "engineering", label: "Engineering", ready: true },
-  { id: "xray", label: "X-Ray", ready: true },
-  { id: "cutaway", label: "Cutaway", ready: true },
-  { id: "exploded", label: "Exploded", ready: true },
-  { id: "field", label: "Magnetic Field", ready: true },
-  { id: "energy", label: "Energy Flow", ready: true },
-  { id: "thermal", label: "Thermal", ready: true },
-  { id: "iot", label: "IoT Communication", ready: true },
+  { id: "cinematic", label: "Exterior", group: "Assembly" },
+  { id: "xray", label: "X-Ray", group: "Assembly" },
+  { id: "chassis", label: "Chassis", group: "Assembly" },
+  { id: "underbody", label: "Underbody", group: "Assembly" },
+  { id: "battery", label: "Battery", group: "Assembly" },
+  { id: "receiver", label: "Receiver", group: "Assembly" },
+  { id: "assembly", label: "Vehicle exploded", group: "Assembly" },
+  { id: "power", label: "Power electronics", group: "Assembly" },
+  { id: "cutaway", label: "Cutaway", group: "Assembly" },
+  { id: "exploded", label: "Pads exploded", group: "Assembly" },
+  { id: "engineering", label: "Alignment", group: "Science" },
+  { id: "field", label: "Magnetic Field", group: "Science" },
+  { id: "energy", label: "Energy Flow", group: "Science" },
+  { id: "thermal", label: "Thermal", group: "Science" },
+  { id: "iot", label: "IoT Communication", group: "Science" },
+  { id: "segments", label: "Segment control", group: "Science" },
+  { id: "coupling", label: "Coupling profile", group: "Science" },
+  { id: "roadside", label: "Roadside camera", group: "Camera" },
+  { id: "top", label: "Top-down", group: "Camera" },
 ] as const;
 
 export type ViewModeId = (typeof VIEW_MODES)[number]["id"];
-
-// ── Intro storyboard ──
-
-export const INTRO_SCENES = [
-  { id: "ecosystem", title: "The electric mobility ecosystem", caption: "A city where vehicles take on energy wherever they stop — and wherever they drive.", narration: "Imagine a city where electric vehicles receive energy wherever they park, and even while they drive.", seconds: 7 },
-  { id: "park", title: "Park", caption: "The vehicle parks over a charging pad. Beneath it, two coils exchange energy across an air gap.", narration: "Park. The vehicle aligns over a charging pad. Beneath it, two coils exchange energy through a magnetic field.", seconds: 8 },
-  { id: "drive", title: "Drive", caption: "On an electrified road, embedded coils switch on only as the receiver passes over them.", narration: "Drive. Under an electrified road, each coil switches on only while a receiver passes overhead.", seconds: 8 },
-  { id: "charge", title: "Charge automatically", caption: "An autonomous vehicle finds a free station, parks precisely, authenticates and starts charging.", narration: "Charge automatically. An autonomous vehicle finds a free station, parks precisely, authenticates, and begins charging.", seconds: 8 },
-  { id: "network", title: "Intelligent energy infrastructure", caption: "Grid, solar, storage and chargers share one energy budget, coordinated by software.", narration: "Grid, solar, storage and chargers share one energy budget, coordinated in real time.", seconds: 7 },
-  { id: "science", title: "Explore the science", caption: PRODUCT.closing, narration: "Explore the physics. Engineer the technology. Electrify the future.", seconds: 6 },
-] as const;
 
 // ── Physics Laboratory lessons ──
 
@@ -379,7 +387,7 @@ export interface Gate {
 }
 
 export const GATES: readonly Gate[] = [
-  { id: "MCR", name: "Mission Concept Review", purpose: "Is the research question worth pursuing, and is the concept sound?", criteria: ["Research question stated", "Four environments scoped", "Branding and content rules agreed"], evidence: ["Product vision and requirements (docs)", "This application's Overview"], open: ["Review by the EV.ENGINEER™ team"], status: "Ready for review" },
+  { id: "MCR", name: "Mission Concept Review", purpose: "Is the research question worth pursuing, and is the concept sound?", criteria: ["Research question stated", "Five research environments scoped (Smart Parking Shelter specified, not yet simulated)", "Branding and content rules agreed"], evidence: ["Product vision and requirements (docs)", "This application's Overview"], open: ["Review by the EV.ENGINEER™ team"], status: "Ready for review" },
   { id: "SRR", name: "System Requirements Review", purpose: "Are the requirements complete, testable and traceable?", criteria: ["Requirements trace to models and checks", "Safety requirements listed"], evidence: ["Traceability matrix (below)", "Verification checks with quantitative expectations"], open: ["Standards applicability not yet verified", "Safety requirements need a hazard analysis"], status: "Evidence in preparation" },
   { id: "PDR", name: "Preliminary Design Review", purpose: "Does the architecture meet the requirements?", criteria: ["Engine independent of rendering", "Model registry with fidelity", "Data modes defined"], evidence: ["Architecture document", "Model registry"], open: ["Hardware adapter layer designed but not implemented"], status: "Evidence in preparation" },
   { id: "CDR", name: "Critical Design Review", purpose: "Is the detailed design ready to build and test hardware?", criteria: ["POC designs, BOM and test plans", "Safety review of the low-voltage set-up"], evidence: ["Proof-of-concept roadmap"], open: ["Detailed hardware design not started"], status: "Not started" },

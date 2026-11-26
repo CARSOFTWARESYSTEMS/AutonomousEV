@@ -3,8 +3,7 @@
 // view, on a canvas. Used where WebGL is unavailable and in the laboratories.
 import { useEffect, useMemo, useRef } from "react";
 import { type CouplerConfig, fieldBasis, fieldFromBasis } from "@/lib/wireless-charging/coils";
-import { fieldColor } from "../three/materials";
-import { fieldScale } from "../three/fieldScale";
+import { fieldColor, fieldScale } from "../three/fieldScale";
 import ui from "../twin.module.css";
 
 export default function FieldMap2D({ config, currents, label }: { config: CouplerConfig; currents: { i1: { re: number; im: number }; i2: { re: number; im: number } } | null; label: string }) {

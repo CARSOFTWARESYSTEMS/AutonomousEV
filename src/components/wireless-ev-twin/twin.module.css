@@ -5,6 +5,8 @@
 
 .app {
   position: relative;
+  /* Anchor jumps (#research-laboratory, #demo) land below the page header. */
+  scroll-margin-top: var(--wt-header);
   color: var(--wt-text);
   font-family: var(--wt-sans);
   font-size: 14px;

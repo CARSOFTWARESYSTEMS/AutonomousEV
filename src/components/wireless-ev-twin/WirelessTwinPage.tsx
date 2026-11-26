@@ -2,9 +2,10 @@
 // all long-form content are rendered on the server, so the page says what it
 // is without running any script; the research environment mounts under it.
 import Link from "next/link";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import Image from "next/image";
+import { ArrowLeft, ArrowRight, Play } from "lucide-react";
 import { CHAIN_COMPONENTS } from "@/lib/wireless-charging/components";
-import { CURRICULUM, CURRICULUM_NOTE, CURRICULUM_TOTALS, DISCLAIMER, ENVIRONMENTS, FAQ, GATES, HIGH_POWER_NOTE, LEADERSHIP, POC_STAGES, PRODUCT, STANDARDS } from "@/lib/wireless-charging/content";
+import { CURRICULUM, CURRICULUM_NOTE, CURRICULUM_TOTALS, DISCLAIMER, ENVIRONMENTS, FAQ, PLANNED_ENVIRONMENTS, GATES, HIGH_POWER_NOTE, LEADERSHIP, POC_STAGES, PRODUCT, STANDARDS } from "@/lib/wireless-charging/content";
 import { FIDELITY, MODELS } from "@/lib/wireless-charging/registry";
 import TwinApp from "./TwinApp";
 import styles from "./wirelessTwin.module.css";
@@ -32,23 +33,28 @@ export default function WirelessTwinPage() {
 
       <main id="main-content">
         <section className={styles.hero} aria-labelledby="wevct-title">
-          <div>
-            <p className={styles.eyebrow}>{`${PRODUCT.brand} · Proof of Concept`}</p>
+          <Image src="/wireless-ev-twin/hero.jpg" alt="A four-bay solar charging shelter with vehicles parked over wireless charging pads, beside an electrified highway, rendered from the digital twin's own 3D scene." className={styles.poster} fill preload sizes="100vw" />
+          <div className={styles.heroCopy}>
+            <p className={styles.eyebrow}>{PRODUCT.brand}</p>
             <h1 id="wevct-title" className={styles.title}>
               {PRODUCT.name}
             </h1>
             <p className={styles.tagline}>{PRODUCT.tagline}</p>
-          </div>
-          <div className={styles.heroSide}>
-            <p>{PRODUCT.description}</p>
+            <p className={styles.descriptors}>{PRODUCT.descriptors.join(" · ")}</p>
             <p className={styles.meta}>
               <span>{PRODUCT.programme}</span>
               <span>{PRODUCT.attribution}</span>
             </p>
-            <a href="#research-laboratory" className={styles.primary}>
-              Enter Research Laboratory <ArrowRight size={16} aria-hidden="true" />
-            </a>
+            <div className={styles.ctas}>
+              <a href="#research-laboratory" className={styles.primary}>
+                Enter Research Laboratory <ArrowRight size={16} aria-hidden="true" />
+              </a>
+              <a href="#demo" className={styles.secondary}>
+                <Play size={15} aria-hidden="true" /> Watch Technology Demonstration
+              </a>
+            </div>
           </div>
+          <p className={styles.posterNote}>Rendered from the twin&rsquo;s own 3D scene · simulated values throughout</p>
         </section>
 
         <TwinApp />
@@ -60,6 +66,7 @@ export default function WirelessTwinPage() {
             </h2>
             <div>
               <p className={styles.lead}>{PRODUCT.question}</p>
+              <p className={styles.prose}>{PRODUCT.description}</p>
               <p className={styles.prose}>
                 Every behaviour shown in the twin traces to a stated physical principle, equation, declared approximation or numerical model. One engine — magnetic coupling, resonant circuits, power converters, battery, thermal, vehicle motion, communication and energy dispatch — drives all four environments, every graph and every number.
               </p>
@@ -68,9 +75,16 @@ export default function WirelessTwinPage() {
 
           <section className={styles.section} aria-labelledby="env-title">
             <h2 id="env-title" className={styles.heading}>
-              Four connected digital twins
+              Five research environments
             </h2>
             <ul className={styles.cards}>
+              {PLANNED_ENVIRONMENTS.map((e) => (
+                <li key={e.id} className={styles.card} data-planned>
+                  <p className={styles.number}>{`${e.number} · ${e.status}`}</p>
+                  <h3>{e.name}</h3>
+                  <p>{e.text}</p>
+                </li>
+              ))}
               {ENVIRONMENTS.map((e) => (
                 <li key={e.id} className={styles.card}>
                   <p className={styles.number}>{e.number}</p>

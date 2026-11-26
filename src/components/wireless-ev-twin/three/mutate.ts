@@ -2,7 +2,7 @@
 // are mutable GPU-side state by design; these helpers make each write
 // explicit and keep component bodies free of direct property assignment
 // (which the React Compiler's immutability rule rejects for hook-held values).
-import type { Color, Fog, Material, MeshPhysicalMaterial, MeshStandardMaterial, Scene, ShaderMaterial, Texture } from "three";
+import type { Color, Fog, Material, Mesh, MeshPhysicalMaterial, MeshStandardMaterial, Object3D, Scene, ShaderMaterial, Texture, WebGLRenderer } from "three";
 
 /** Opacity with the transparency and depth-write flags that should follow it. */
 export function setOpacity(m: Material, opacity: number, depthAbove = 0.5) {
@@ -40,6 +40,28 @@ export function setOffset(t: Texture, x: number, y: number) {
 
 export function markUpdated(t: Texture) {
   t.needsUpdate = true;
+}
+
+/** Section cuts use per-material clipping planes, which the renderer must allow. */
+export function enableLocalClipping(gl: WebGLRenderer) {
+  gl.localClippingEnabled = true;
+}
+
+/** Shows or hides an object (frame-loop visibility toggles). */
+export function setVisible(o: Object3D | null | undefined, visible: boolean) {
+  if (o && o.visible !== visible) o.visible = visible;
+}
+
+/** Swaps the material a mesh draws with (selection highlight and isolation). */
+export function setMeshMaterial(mesh: Mesh, material: Material | Material[]) {
+  mesh.material = material;
+}
+
+/** Fog colour and range (the studio backdrop closes it in around the subject). */
+export function setFog(fog: Fog, color: Color, near: number, far: number) {
+  fog.color.copy(color);
+  fog.near = near;
+  fog.far = far;
 }
 
 export function setEnvironment(scene: Scene, environment: Texture | null, intensity: number, fog: Fog | null) {

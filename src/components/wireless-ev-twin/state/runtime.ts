@@ -8,7 +8,6 @@ import { createParking, type ParkingSim, stepParking } from "@/lib/wireless-char
 import { createRoad, type RoadSim, setRoadInputs, stepRoad } from "@/lib/wireless-charging/dynamic";
 import { type GridStep, type GridTotals, simulateDay, STEP_HOURS } from "@/lib/wireless-charging/infrastructure";
 import { createStation, setStationInputs, type StationSim, stepStation } from "@/lib/wireless-charging/station";
-import { introClock } from "../intro/introClock";
 import { useTwin } from "./store";
 
 export interface Runtime {
@@ -57,7 +56,7 @@ const acc = { station: 0, road: 0, parking: 0 };
 /** Advances the active environment by `dt` wall seconds at the chosen speed. Never more than ~12 ms of work. */
 export function advance(dt: number) {
   const s = useTwin.getState();
-  const speed = s.intro.active ? introClock.speed : s.speed;
+  const speed = s.speed;
   // Wall time, capped at 0.25 s so a hidden tab does not jump the twin forward on return.
   const simDt = Math.min(dt, 0.25) * speed;
   runtime.carrier += dt * 2 * Math.PI * 0.85;
@@ -113,9 +112,8 @@ export function useInputSync() {
 /** Runs the clock while playing. */
 export function useClock() {
   const playing = useTwin((s) => s.playing);
-  const introPaused = useTwin((s) => s.intro.active && s.intro.paused);
   useEffect(() => {
-    if (!playing || introPaused) return;
+    if (!playing) return;
     let raf = 0;
     let last = performance.now();
     const loop = (now: number) => {
@@ -125,7 +123,7 @@ export function useClock() {
     };
     raf = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(raf);
-  }, [playing, introPaused]);
+  }, [playing]);
 }
 
 /** A value read from the runtime, sampled `hz` times a second. `read` must be stable. */

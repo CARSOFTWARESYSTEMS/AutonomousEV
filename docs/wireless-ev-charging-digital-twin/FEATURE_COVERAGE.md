@@ -2,22 +2,36 @@
 
 Generated from `src/lib/wireless-charging/coverage.ts` (the same list the Engineering Assurance view shows). Statuses: Planned · Designed · Implemented · Tested · Analytically verified · Experimentally validated · Blocked. Nothing is experimentally validated: no measurements exist yet.
 
-Counts: Tested 16 · Implemented 18 · Designed 4 · Planned 10 · Analytically verified 3 · Blocked 1
+Counts: Tested 27 · Implemented 20 · Planned 11 · Designed 4 · Analytically verified 3 · Blocked 1
 
 | Area | Feature | Status | Note |
 |---|---|---|---|
 | Integration | Proof of Concept card on /internships and route | Tested |  |
 | Integration | Self-contained page, existing auth and design system untouched | Tested | Default optional-login access, like the other /internships sub-pages. |
 | Integration | Research & Project Leadership section (Lead Researcher highlighted with an animated border) | Tested |  |
-| Presentation | Full-screen research environment (Fullscreen API, overlay fallback, F and Esc) | Tested |  |
-| Introduction | Six-scene cinematic introduction over the live twin | Implemented |  |
-| Introduction | Skip, pause, replay, narration (speech synthesis), sound, reduced motion, show once | Implemented |  |
-| Introduction | Photorealistic city | Designed | Procedural dusk city; photorealistic assets are a later phase. |
-| 3D | Procedural vehicle, pads with simulated turn count, ferrite, shield, cabinet, canopy, road layers | Implemented |  |
+| Presentation | Full-screen research environment (Fullscreen API, overlay fallback, F and Esc); the scene grows to 85 % of the display | Tested | scripts/test-wireless-ev-twin.cjs. |
+| Presentation | Cinematic opening: poster rendered from the twin's own scene, minimal copy, Enter Research Laboratory and Watch Technology Demonstration | Tested |  |
+| Presentation | Immersive laboratory: environment rail, stage card, instrument strip, inputs drawer, inspector on demand, cinematic timeline | Tested | Scene covers 79 % of a 1440 × 900 desktop. |
+| Presentation | No-WebGL message never in the server HTML; context-loss fallback to the 2D field view | Tested |  |
+| Guided sequence | Twelve engineering stages for the station, each with camera, view, components, telemetry, physics, models and narration | Tested |  |
+| Guided sequence | Auto-advance in Explore on engineering events; pause on interaction; resume; no unexpected resets | Tested |  |
+| Guided sequence | Eight-chapter technology demonstration across the environments | Implemented | Chapter 1 shows arrival and identification at the station; the smart parking shelter scene is planned. |
+| Guided sequence | Narration (browser speech synthesis), captions and ambience, off until chosen | Implemented |  |
+| Guided sequence | Professionally recorded narration | Planned |  |
+| 3D | Lofted unbranded vehicle with glass, pillars, seams, mirrors, interior, multi-spoke wheels, brakes, suspension, subframes, battery modules, rear drive unit, receiver electronics and HV cabling | Implemented | Representative engineering geometry, not a production model. |
+| 3D | Ride height from the simulated air gap; steering from the kinematic model; wheels roll by distance | Tested |  |
+| 3D | Layered pads: enclosure, FOD sense coils, potting, Litz winding on its former, ferrite, insulation, shield, base; exploded away from the true air gap; quarter cutaway | Implemented |  |
+| 3D | Power cabinet with protection, PFC, DC link, SiC modules on a cold plate, gate drivers, C₁ bank, controllers, gateway, cooling | Implemented |  |
+| 3D | Solar shelter, identification camera, positioning anchors, field probe, transformer, storage, apron and access road | Implemented |  |
 | 3D | Licensed photogrammetry or CAD vehicle assets | Planned | No external assets used; see ASSET_LICENSES.md. |
-| 3D | Cinematic, Engineering, X-Ray, Cutaway, Exploded, Field, Energy Flow, Thermal and IoT views | Implemented |  |
-| 3D | Component, Electrical Circuit, Physics, Mathematics and Fault Investigation as 3D views | Designed | Provided by the inspector, Circuit Lab, Physics Lab and fault panels. |
-| 3D | Component selection with registry inspector and live values | Implemented |  |
+| 3D | Fifteen views: exterior, X-ray, chassis, underbody, battery, receiver, vehicle exploded, power electronics, cutaway, pads exploded, alignment, field, energy, thermal, IoT | Implemented |  |
+| 3D | Camera director: composed shots, follow shots, eased moves, hand-over to the visitor, reset, framing from component bounds, reduced motion | Tested |  |
+| 3D | Component selection with three-level inspector, highlight, isolation and explode | Tested |  |
+| 3D | Studio backdrop for inspection views; roof fades when it blocks the line of sight | Implemented |  |
+| Dynamic | Premium electrified highway: corridor, embedded pad modules with controller states, section cut with layers and duct bank, interlock and request window, coupling chart, roadside and top-down cameras | Tested | Nine stages; scripts/test-wireless-ev-twin.cjs. |
+| Dynamic | Three energy outcomes as stages, read over a whole 200 m zone period | Tested | Each preset's regime is unit-tested. |
+| 3D | Premium scenes for the autonomous and infrastructure environments | Designed | They use the new vehicle and lighting; their own redesign is Phases 5 and 6. |
+| Smart Parking | IoT & AI-Based Smart Parking Shelter environment | Designed | Requirements in SMART_PARKING_REQUIREMENTS.md; shown as planned. |
 | Architecture | Configurable ground and vehicle chain with every stage's loss | Analytically verified | A05 energy closure. |
 | Station | 19-step state machine with 13 abnormal states and safety precedence | Tested | B09, B12, unit tests. |
 | Station | Alignment, air gap, frequency, power, turns, capacitance, battery, ambient, tariff, grid controls | Implemented |  |
@@ -53,7 +67,7 @@ Counts: Tested 16 · Implemented 18 · Designed 4 · Planned 10 · Analytically 
 | Workshop | Physical POC roadmap 01–06 with interfaces, BOM categories, instruments, tests, safety | Implemented |  |
 | Assurance | Seven review gates with honest status; traceability matrix | Implemented |  |
 | Assurance | Verification suite runnable in the browser | Tested | 29 checks. |
-| Performance | Lazy 3D chunk, adaptive quality tiers, 2D fallback without WebGL | Implemented | Field basis computed after input changes settle, outside the frame loop. |
+| Performance | Lazy 3D chunk; Auto, High, Balanced and Performance quality with adaptive pixel ratio; rendering paused off screen; 2D fallback without WebGL | Tested | 60 fps on Apple M1; heap flat over 16 environment switches. |
 | Performance | Web Worker computation for sweeps and verification | Planned | Sweeps and checks run on the main thread, yielding between steps. |
 | Accessibility | Keyboard operable, labelled controls, reduced motion, screen-reader descriptions | Implemented |  |
 | Persistence | Firestore experiment storage | Planned | Experiments are saved in the browser only. |

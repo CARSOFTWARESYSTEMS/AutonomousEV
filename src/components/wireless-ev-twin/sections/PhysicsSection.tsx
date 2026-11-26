@@ -138,7 +138,11 @@ function EquationExplorer({ initial }: { initial: string }) {
 }
 
 export default function PhysicsSection() {
-  const [lessonId, setLessonId] = useState(LESSONS[0].id);
+  // A lesson opened from the laboratory's inspector arrives through the store.
+  const [lessonId, setLessonId] = useState(() => {
+    const wanted = useTwin.getState().lesson;
+    return LESSONS.some((l) => l.id === wanted) ? wanted! : LESSONS[0].id;
+  });
   const [stage, setStage] = useState<(typeof LEARNING_SEQUENCE)[number]>("Wonder");
   const lesson = LESSONS.find((l) => l.id === lessonId)!;
   const [eqKey, setEqKey] = useState(lesson.equations[0]);

@@ -3,7 +3,7 @@
 **Park. Drive. Charge. Automatically.** — Designed and developed by and for the EV.ENGINEER™ team.
 
 Route: `/internships/wireless-ev-charging-digital-twin` (Proof of Concept card on `/internships`).
-Status: Phase 0–2 delivered with Phase 3–7 foundations (25 Nov 2026). Simulation only; nothing is experimentally validated.
+Status: engine and laboratories delivered 25 Nov 2026 (`a1e4679`); premium redesign Phases 0–2 (audit, immersive laboratory, flagship station scene) delivered the same day and Phase 3 (dynamic road) on 26 Nov, uncommitted at the time of writing — see IMPLEMENTATION_REPORT.md. Simulation only; nothing is experimentally validated.
 
 ## Documents
 
@@ -13,6 +13,21 @@ Status: Phase 0–2 delivered with Phase 3–7 foundations (25 Nov 2026). Simula
 | [MODEL_REGISTRY.md](MODEL_REGISTRY.md) | Every model: equations, SI inputs/outputs, assumptions, validity, method, limitations, fidelity, checks (generated from `registry.ts`) |
 | [FEATURE_COVERAGE.md](FEATURE_COVERAGE.md) | The brief's features against status: Planned … Analytically verified (generated from `coverage.ts`) |
 | [ASSET_LICENSES.md](ASSET_LICENSES.md) | Provenance of every visual asset |
+| [CURRENT_IMPLEMENTATION_AUDIT.md](CURRENT_IMPLEMENTATION_AUDIT.md) | Phase 0: verified strengths and weaknesses of the first version, root causes, before screenshots and measurements |
+| [IMPLEMENTATION_REPORT.md](IMPLEMENTATION_REPORT.md) | What the redesign delivered, preserved, removed and left to do |
+| [PREMIUM_EXPERIENCE_DESIGN.md](PREMIUM_EXPERIENCE_DESIGN.md) | Experience layers, laboratory layout, visual language, modes, phones |
+| [CINEMATIC_STORYBOARD.md](CINEMATIC_STORYBOARD.md) | The twelve station stages and the eight demonstration chapters |
+| [THREE_D_ARCHITECTURE.md](THREE_D_ARCHITECTURE.md) | Scene modules, rules, rendering pipeline, quality tiers, fallbacks |
+| [SIMULATION_RENDERING_CONTRACT.md](SIMULATION_RENDERING_CONTRACT.md) | What the scene may read, bindings, time scales, fast-forward to a stage |
+| [CAMERA_AND_ANIMATION_SYSTEM.md](CAMERA_AND_ANIMATION_SYSTEM.md) | Shots, who drives the camera, hand-over, view channels, reduced motion |
+| [ENGINEERING_ASSET_REGISTRY.md](ENGINEERING_ASSET_REGISTRY.md) | Every 3D asset, its construction and which dimensions come from the model |
+| [COMPONENT_INTERACTION_REGISTRY.md](COMPONENT_INTERACTION_REGISTRY.md) | How each of the 41 components is selected, framed and inspected |
+| [SCIENTIFIC_VISUALIZATION.md](SCIENTIFIC_VISUALIZATION.md) | What each overlay shows and must not be mistaken for |
+| [SCENARIO_REGISTRY.md](SCENARIO_REGISTRY.md) | Scenarios by environment with honest status |
+| [SMART_PARKING_REQUIREMENTS.md](SMART_PARKING_REQUIREMENTS.md) | Environment 01, specified and planned |
+| [PERFORMANCE_REPORT.md](PERFORMANCE_REPORT.md) | Frame rate, viewport share, memory, bundle sizes, browsers |
+| [SCIENTIFIC_VALIDATION_REPORT.md](SCIENTIFIC_VALIDATION_REPORT.md) | What was verified in this phase; no model changes |
+| [VISUAL_ACCEPTANCE_REPORT.md](VISUAL_ACCEPTANCE_REPORT.md) | The brief's visual criteria, verdicts and evidence |
 
 Regenerate the two generated files after changing the registries:
 
@@ -47,11 +62,12 @@ src/lib/wireless-charging/        Engine: pure TypeScript, no React, no three.js
   registry.ts · components.ts · benchmarks.ts · equations.ts · content.ts · coverage.ts
 src/components/wireless-ev-twin/  Interface
   WirelessTwinPage.tsx   Server-rendered page: hero, long-form content, leadership, FAQ
-  TwinApp.tsx            Research environment: nine sections, four modes, intro, full screen
+  TwinApp.tsx            Toolbar, nine sections, four modes, demonstration, quality, full screen
+  lab/                   Immersive laboratory: shell, timeline, inspector, instrument registry
+  story/                 Guided stages, demonstration chapters, guide controller, simulation control
   state/                 zustand store (UI + inputs), runtime (simulations + fixed-step clock), full screen
-  three/                 WebGL scene (lazy chunk): world, parts, overlays, camera director
-  intro/                 Six-scene cinematic introduction
-  env/ sections/ ui/     Panels, laboratories, controls, charts, inspector
+  three/                 WebGL scene (lazy chunk): vehicle/, station/, road/, world, overlays, camera rig, lighting
+  env/ sections/ ui/     Panels, laboratories, controls, charts
 src/app/internships/wireless-ev-charging-digital-twin/   Route, metadata, JSON-LD, tests
 ```
 
@@ -65,7 +81,7 @@ Boundaries:
 
 ## Verification
 
-`npx vitest run src/lib/wireless-charging` runs 29 checks plus registry and state-machine tests (40 tests). The same 29 checks run in the visitor's browser from Engineering Assurance. Highlights:
+`npx vitest run src/lib/wireless-charging` runs 29 checks plus registry and state-machine tests (40 tests). `src/components/wireless-ev-twin/lab/laboratory.test.tsx` tests the stages, views, geometry and shell; `npm run test:wireless-ev-twin:e2e` drives a production build in a real browser (see PERFORMANCE_REPORT.md). The same 29 checks run in the visitor's browser from Engineering Assurance. Highlights:
 
 - **A01–A10 (analytical):** elliptic integrals; the offset mutual-inductance formula against a brute-force Neumann double integral (≤1e-6); the dipole far-field limit; SS efficiency closed form against the mesh solution; nodal analysis against the closed form; the exact thermal step; on-axis loop field.
 - **A05 energy closure:** grid power − (battery + every stage's loss) = 0 to 1e-9.
