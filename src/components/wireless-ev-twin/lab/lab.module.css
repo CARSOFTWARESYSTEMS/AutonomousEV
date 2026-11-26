@@ -1136,6 +1136,7 @@
   margin: 12px 0 14px;
 }
 .legendValue {
+  white-space: nowrap;
   font-size: 26px;
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -1940,5 +1941,27 @@ button.gateSecondary.gateSecondary:hover {
     top: 10px;
     left: 10px;
     width: calc(100% - 20px);
+  }
+}
+@media (max-width: 760px) {
+  .shell,
+  .shell[data-panel] {
+    --tl-h: 122px;
+  }
+  .instruments > div {
+    flex: 0 0 auto;
+    width: 132px;
+    max-width: none;
+  }
+  .instruments dt {
+    max-width: none;
+  }
+  .tlStage {
+    flex-wrap: wrap;
+    gap: 6px 10px;
+  }
+  .resume {
+    padding: 3px 10px;
+    font-size: 11px;
   }
 }

@@ -207,10 +207,12 @@ function Instruments() {
   const g = useTwin((s) => s.guide);
   const mode = useTwin((s) => s.mode);
   const stage = g.active && g.stageId ? stagesFor(g.playlist)[g.index] : null;
+  const panel = useTwin((s) => s.panel);
   const ids = useMemo(() => {
     const list = stage && stage.env === env ? stage.metrics : DEFAULT_METRICS[env];
-    return mode === "explore" ? list.slice(0, 4) : list;
-  }, [stage, env, mode]);
+    // Four readings beside an open panel (or in Explore); the rest are in the Data tab.
+    return mode === "explore" || panel !== "none" ? list.slice(0, 4) : list;
+  }, [stage, env, mode, panel]);
   const read = useCallback(
     () =>
       ids.map((id) => {

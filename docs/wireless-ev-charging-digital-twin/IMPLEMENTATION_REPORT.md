@@ -70,3 +70,22 @@ None. Phase 3 added one analysis helper to `dynamic.ts`, `recentBatteryPower` (m
 ## Next steps (proposed)
 
 Review the station and road scenes with the EV.ENGINEER™ team and record acceptance or changes; then Phase 4 (Smart Parking Shelter, which needs its models first — see SMART_PARKING_REQUIREMENTS.md) or Phase 5 (autonomous charging scene).
+
+## Phase 3.5 — cinematic realism and scientific experience refinement (26 Nov 2026)
+
+Builds on `8b08b03`. Uncommitted. Full account: PHASE_3_5_VISUAL_REFINEMENT_PLAN.md, PREMIUM_ASSET_QUALITY_REPORT.md, DYNAMIC_MAGNETIC_FIELD_REPORT.md, PHASE_3_5_ACCEPTANCE_REPORT.md.
+
+| Area | Delivered |
+|---|---|
+| Realism | Rebuilt vehicle body and detail; daylight sky and reflections; trees, shrubs, lawns, city and hills |
+| Camera | Lens and drift per shot; nine new road shots; recomposed station shots; clipping that follows the shot |
+| Science | WPT-EM-005 road field (A14–A16); charging in motion; road anatomy; time-weighted 200 m window; three-scenario comparison |
+| Modes | Learn: three integrated experiments. Engineer: inputs in the side panel. Research: experiment, provenance, models, export, comparison |
+| IoT | Message inspector on the bus's delivered messages |
+| UI | iTelematics-derived tokens and type; section kit with expand/collapse; Practical Workshop redesign; presentation links and Share; proposed Drone, Air Taxi and BESS entries |
+
+New files: `src/lib/wireless-charging/roadField.ts` (+ test); `three/sky.ts`, `three/env/{foliage.ts,Forest.tsx,buildings.ts}`, `three/vehicle/details.ts`, `three/road/{RoadField.tsx,RoadEnergy.tsx,fieldInfo.ts}`; `lab/{FieldLegend,ChargingHud,RoadAnatomy,LearnLab,ResearchPanel,IotInspector,Launch}.tsx`; `state/launch.ts`; `ui/{Section.tsx,section.module.css}`; `sections/workshop.module.css`; the route's `fonts.ts`.
+
+Removed: the inputs drawer over the scene (its controls moved to the panel's Inputs tab).
+
+Shared files touched: the route's `page.tsx` (one font variable) and `page.test.tsx` (font mock; workshop heading). No other route, authentication, access control or site-wide branding changed.

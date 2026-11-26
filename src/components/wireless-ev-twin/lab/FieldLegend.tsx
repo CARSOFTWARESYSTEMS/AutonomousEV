@@ -34,8 +34,8 @@ export function FieldLegend({ env }: { env: "station" | "dynamic" }) {
     <div className={lab.fieldLegend} aria-label="Magnetic field legend and display">
       <p className={lab.legendEyebrow}>{env === "dynamic" ? "Road field · section through the receiver centre" : "Field · section through both pad centres"}</p>
       <div className={lab.legendHero}>
-        <span className={lab.legendValue}>{v.ready ? (v.on ? tesla(v.centre) : "0 µT") : "…"}</span>
-        <span className={lab.legendUnit}>RMS at mid-gap{env === "dynamic" ? " under the receiver" : ""}</span>
+        <span className={lab.legendValue}>{v.ready ? (v.on ? tesla(env === "dynamic" ? v.max : v.centre) : "0 µT") : "…"}</span>
+        <span className={lab.legendUnit}>{env === "dynamic" ? "Peak RMS in the section" : "RMS at mid-gap"}</span>
       </div>
       <span className={lab.legendBar} style={{ background: FIELD_GRADIENT }} aria-hidden="true" />
       <p className={lab.legendTicks}>

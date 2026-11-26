@@ -32,12 +32,12 @@ function CouplingLesson() {
   const st = useTwin((s) => s.station);
   const set = useTwin((s) => s.setStation);
   const config = useMemo(() => ({ tx: { ...DEFAULT_TX_PAD, turns: st.txTurns }, rx: { ...DEFAULT_RX_PAD, turns: st.rxTurns }, airGap: st.airGap, lateral: st.lateral, longitudinal: st.longitudinal }), [st.txTurns, st.rxTurns, st.airGap, st.lateral, st.longitudinal]);
-  const c = useMemo(() => computeCoupler(config, 2), [config]);
+  const c = useMemo(() => computeCoupler(config), [config]);
   // k against air gap at the present offsets (the cursor marks the present gap); deferred, so dragging stays smooth.
   const slow = useDeferredValue(config);
   const sweep = useMemo(() => {
     const gaps = Array.from({ length: 8 }, (_, i) => 0.06 + i * (0.24 / 7));
-    return { gaps: gaps.map((g) => g * 1000), k: gaps.map((g) => computeCoupler({ ...slow, airGap: g }, 2).k) };
+    return { gaps: gaps.map((g) => g * 1000), k: gaps.map((g) => computeCoupler({ ...slow, airGap: g }).k) };
   }, [slow]);
   return (
     <>
@@ -61,7 +61,7 @@ function CouplingLesson() {
 function ResonanceLesson() {
   const st = useTwin((s) => s.station);
   const setStation = useTwin((s) => s.setStation);
-  const L1 = useMemo(() => computeCoupler({ tx: { ...DEFAULT_TX_PAD, turns: st.txTurns }, rx: { ...DEFAULT_RX_PAD, turns: st.rxTurns }, airGap: st.airGap, lateral: st.lateral, longitudinal: st.longitudinal }, 2).L1, [st.txTurns, st.rxTurns, st.airGap, st.lateral, st.longitudinal]);
+  const L1 = useMemo(() => computeCoupler({ tx: { ...DEFAULT_TX_PAD, turns: st.txTurns }, rx: { ...DEFAULT_RX_PAD, turns: st.rxTurns }, airGap: st.airGap, lateral: st.lateral, longitudinal: st.longitudinal }).L1, [st.txTurns, st.rxTurns, st.airGap, st.lateral, st.longitudinal]);
   const [cScale, setCScale] = useState(1);
   const [R, setR] = useState(0.5);
   const C = resonantCapacitance(L1, 85000) * cScale;

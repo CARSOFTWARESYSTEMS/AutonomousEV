@@ -40,7 +40,7 @@ float noise(vec2 p) {
 float fbm(vec2 p) {
   float v = 0.0;
   float a = 0.5;
-  for (int i = 0; i < 5; i++) { v += a * noise(p); p = p * 2.03 + vec2(17.3, 9.1); a *= 0.5; }
+  for (int i = 0; i < 4; i++) { v += a * noise(p); p = p * 2.03 + vec2(17.3, 9.1); a *= 0.5; }
   return v;
 }
 
@@ -79,7 +79,8 @@ export function skyMaterial(opts: { sunScale?: number; clouds?: number } = {}): 
   return new ShaderMaterial({
     side: BackSide,
     depthWrite: false,
-    depthTest: false,
+    // Drawn after the opaque scene at the far plane: only pixels where the sky is visible are shaded.
+    depthTest: true,
     uniforms: {
       sunDir: { value: SUN_DIR.clone() },
       studio: { value: 0 },

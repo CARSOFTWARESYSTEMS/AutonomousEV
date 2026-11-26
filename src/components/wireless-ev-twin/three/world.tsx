@@ -38,7 +38,7 @@ export function Sky() {
   useDispose([material]);
   useFrame(() => setUniform(material, "studio", view.studio));
   return (
-    <mesh material={material} renderOrder={-1} frustumCulled={false}>
+    <mesh material={material} renderOrder={1000} frustumCulled={false}>
       <sphereGeometry args={[420, 48, 24]} />
     </mesh>
   );
@@ -270,7 +270,7 @@ export function Highway() {
       <CouplingChart />
       <RoadField />
       <RoadEnergy />
-      {env === "dynamic" && <Vehicle pose={roadPose} detailed bodyId="vehicle" rxTurns={rxTurns} rxGlow={() => Math.min(1, runtime.road.state.i2 / 40)} />}
+      {env === "dynamic" && <Vehicle pose={roadPose} detailed bodyId="vehicle" rxTurns={rxTurns} rxGlow={() => Math.min(1, runtime.road.state.i2 / 40)} hideWheels={() => view.roadField > 0.5} />}
     </group>
   );
 }

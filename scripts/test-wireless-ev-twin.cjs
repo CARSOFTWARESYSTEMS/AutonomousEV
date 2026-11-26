@@ -162,6 +162,8 @@ async function main() {
       await p2.getByRole('button', { name: 'Watch silently' }).click();
       await p2.getByText('Chapter 1 of 8', { exact: false }).waitFor({ timeout: 30000 });
       await p2.close();
+      // A background tab gets no animation frames: bring the laboratory's tab back to the front.
+      await page.bringToFront();
     });
 
     await test('The technology demonstration runs in chapters and can be left', async () => {

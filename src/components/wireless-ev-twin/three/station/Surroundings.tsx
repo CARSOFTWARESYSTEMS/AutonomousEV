@@ -33,6 +33,8 @@ const PLANTS: Plant[] = (() => {
   }
   return out;
 })();
+const NEAR_PLANTS = PLANTS.filter((p) => Math.hypot(p.x, p.z) < 26);
+const FAR_PLANTS = PLANTS.filter((p) => Math.hypot(p.x, p.z) >= 26);
 
 const box = (w: number, h: number, d: number, x: number, y: number, z: number) => new BoxGeometry(w, h, d).toNonIndexed().translate(x, y, z);
 
@@ -82,7 +84,9 @@ export function Surroundings() {
       <mesh geometry={g.poles} material={m.pole} castShadow />
       <mesh geometry={g.heads} material={m.head} />
       <mesh geometry={g.planter} material={m.planter} castShadow receiveShadow />
-      <Forest plants={PLANTS} />
+      {/* Trees near the shelter cast shadows; those farther out lie outside the shadow area and do not. */}
+      <Forest plants={NEAR_PLANTS} />
+      <Forest plants={FAR_PLANTS} shadows={false} />
     </group>
   );
 }

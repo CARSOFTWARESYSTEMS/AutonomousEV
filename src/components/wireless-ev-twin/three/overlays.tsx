@@ -434,8 +434,9 @@ export function AlignmentOverlay() {
       p.gap.position.set(x + 0.36, TX_WINDING_Y + airGap / 2, z);
       p.gap.scale.set(1, airGap, 1);
     }
-    setAnchor("align-long", x / 2, y + 0.05, 0.12);
-    setAnchor("align-lat", x + 0.12, y + 0.05, z / 2);
+    // Labels kept apart: small offsets would otherwise put both at the pad centre.
+    setAnchor("align-long", x / 2, y + 0.05, 0.34);
+    setAnchor("align-lat", x + 0.38, y + 0.05, z / 2 - 0.08);
     setAnchor("align-gap", x + 0.42, TX_WINDING_Y + airGap / 2 + 0.03, z);
     setAnchor("align-k", x, TX_WINDING_Y + airGap + 0.28, z);
   });

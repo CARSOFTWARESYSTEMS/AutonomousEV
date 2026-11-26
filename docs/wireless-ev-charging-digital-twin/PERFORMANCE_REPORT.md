@@ -47,3 +47,35 @@ Real Safari on macOS and iOS hardware, and mid-range Android phones, were not te
 ## Not measured
 
 Lower-powered GPUs (the M1 sustains 60 fps on every tier, so the tiers' effect on a weaker device is unmeasured), long-session memory over hours, and Lighthouse scores for this route.
+
+## Phase 3.5 (26 Nov 2026)
+
+Production build (`next build` + `next start`), Apple M1, Chromium through Metal, 1440 × 900, Google Analytics blocked, `npm run test:wireless-ev-twin:e2e`.
+
+| Measure | Phase 3 (`8b08b03`) | Phase 3.5 |
+|---|---|---|
+| WebGL contexts | 1 | 1 |
+| 3D share of a 1440 × 900 viewport | 79 % | 77 % (the environment rail widened from 68 to 100 px so its labels fit) |
+| … in full screen | 85 % | 83 % |
+| JS heap over 16 environment switches | 38 → 38 MB | 43 → 43 MB (no growth) |
+| Route initial JavaScript (gzipped) | 309 KB | ≈ 323 KB; three.js still loads only with the laboratory |
+| Browser checks | 11 pass | 12 pass |
+| `load` event | 0.15 s | 0.28 s |
+| Frame rate, Performance tier | 60 fps | 60 fps |
+| Frame rate, Auto (High) tier | 60 fps everywhere | **not comparable**: measured while macOS ran XProtect (≈ 95 % CPU), Spotlight indexing (≈ 75 %) and knowledge indexing (≈ 78 %), load average 7–9. Two runs gave 52 and 18 fps at the station overview, 38–41 on the road and 34–41 with the road field. |
+
+An idle-machine re-measurement against the Phase 3 build under the same conditions is still owed before the frame-rate target can be called met or missed.
+
+### What was added, and what was done about its cost
+
+| Addition | Cost control |
+|---|---|
+| Trees and shrubs | Instanced (two variants per species), alpha-to-coverage rather than blending; only trees within 26 m of the shelter cast shadows; roadside trees cast none (they lie outside the shadow area) |
+| Daylight sky with clouds | Drawn last against the depth buffer (only visible sky pixels are shaded); four-octave noise |
+| City | Merged into two meshes per strip; static |
+| Vehicle detail | Shared geometry for every car; shut lines in the paint shader, not geometry |
+| Road field | Per-ampere basis built a few rows per frame; per-frame work is table lookups; lines retraced 4× a second; computed only while the field view is open |
+| Charging in motion | A pool of eight glow quads, one column, three tubes |
+| Flicker | Near/far planes follow the shot; adaptive resolution only steps down and locks after two flip-flops |
+
+Quality tiers are unchanged in meaning: they change pixel ratio, shadows and post-processing only, never a computed value (tested).

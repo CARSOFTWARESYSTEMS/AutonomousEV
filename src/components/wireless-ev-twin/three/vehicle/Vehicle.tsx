@@ -8,7 +8,7 @@ import { useFrame } from "@react-three/fiber";
 import { type BufferGeometry, type Color, type Group, type Material, MeshBasicMaterial, type MeshStandardMaterial } from "three";
 import { DEFAULT_RX_PAD } from "@/lib/wireless-charging/coils";
 import { contactShadowTexture, CHASSIS_MATERIALS, type ChassisMaterials, bodyMaterials, wheelMaterials } from "../materials";
-import { setClearcoat, setEmissive, setOpacity } from "../mutate";
+import { setClearcoat, setEmissive, setOpacity, setVisible } from "../mutate";
 import { pick } from "../pick";
 import { Pad } from "../station/Pad";
 import { view, vehicleLayers } from "../viewState";
@@ -81,6 +81,8 @@ interface VehicleProps {
   batteryHeat?: () => Color | null;
   /** Registry id the body selects (the hero vehicle). */
   bodyId?: string;
+  /** Hide the wheels (engineering views where they would block the subject). */
+  hideWheels?: () => boolean;
 }
 
 const WHEELS = [
@@ -92,7 +94,7 @@ const WHEELS = [
 
 const damp = (a: number, b: number, rate: number, dt: number) => a + (b - a) * (1 - Math.exp(-rate * dt));
 
-export function Vehicle({ pose, paint = "#e4e7ea", detailed = false, rxTurns = DEFAULT_RX_PAD.turns, rxGlow, rxHeat, batteryHeat, bodyId }: VehicleProps) {
+export function Vehicle({ pose, paint = "#e4e7ea", detailed = false, rxTurns = DEFAULT_RX_PAD.turns, rxGlow, rxHeat, batteryHeat, bodyId, hideWheels }: VehicleProps) {
   const a = assets();
   const bm = useMemo(() => {
     const m = bodyMaterials(paint);
@@ -118,8 +120,10 @@ export function Vehicle({ pose, paint = "#e4e7ea", detailed = false, rxTurns = D
       g.rotation.y = p.heading;
     }
     const e = detailed ? view.assembly : 0;
+    const wheelsHidden = hideWheels?.() ?? false;
     WHEELS.forEach((w, i) => {
       const r = wheels.current[i];
+      setVisible(r.place, !wheelsHidden);
       if (r.place) {
         r.place.position.set(w.x, WHEEL_RADIUS - lift, w.side * (TRACK / 2 + 0.35 * e));
       }

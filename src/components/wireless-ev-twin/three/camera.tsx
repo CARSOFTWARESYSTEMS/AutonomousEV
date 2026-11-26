@@ -207,7 +207,7 @@ export function shotFor(id: ShotId): Shot {
     case "road-field": {
       // Square to the field section through the receiver, from the near shoulder, level with the gap.
       const lateral = useTwin.getState().road.lateral;
-      return { target: [0.6, 0.07, ROAD_Z - lateral], azimuth: 180, polar: 87, distance: 2.9, min: 0.6, max: 20, polarMax: 100, fov: 40 };
+      return { target: [0.6, 0.06, ROAD_Z - lateral], azimuth: 180, polar: 88.5, distance: 2.2, min: 0.6, max: 20, polarMax: 100, fov: 36 };
     }
     case "dynamic-top":
       // Nearly overhead from the median side, so the vehicle drives left to right.

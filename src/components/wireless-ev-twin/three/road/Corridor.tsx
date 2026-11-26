@@ -245,7 +245,7 @@ export function Corridor() {
         <mesh material={m.grass} position={[0, -0.04, PAVED.z1 + 60]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
           <planeGeometry args={[WINDOW, 120]} />
         </mesh>
-        <Forest plants={ROAD_PLANTS} wrap={wrapTree} />
+        <Forest plants={ROAD_PLANTS} wrap={wrapTree} shadows={false} />
         {[0, 1].map((c) => (
           <group key={c} ref={(el) => { skyline.current[c] = el; }}>
             <mesh geometry={geo.cityGlass} material={m.cityGlass} />
