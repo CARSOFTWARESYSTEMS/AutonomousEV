@@ -5,15 +5,18 @@
 // charging site itself is ./station/Site.
 import { useEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { BackSide, BoxGeometry, BufferGeometry, Color, type Mesh, MeshStandardMaterial, ShaderMaterial, type Texture } from "three";
+import { BoxGeometry, BufferGeometry, Color, DoubleSide, type Group, MeshStandardMaterial, type Texture } from "three";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import { createParking } from "@/lib/wireless-charging/autonomous";
 import { runtime } from "../state/runtime";
 import { useTwin } from "../state/store";
-import { concreteTexture, windowTexture } from "./materials";
+import { antiTile, concreteTexture, grassTexture } from "./materials";
+import { buildCity, cityMaterials, concreteFacade, glassFacade, hillRing, type Lot } from "./env/buildings";
+import { rng } from "./env/foliage";
+import { skyMaterial } from "./sky";
 import { heatOf } from "./station/Site";
 import { NOMINAL_GAP, Vehicle } from "./vehicle/Vehicle";
-import { setEmissive, setOpacity, setUniform, setVisible } from "./mutate";
+import { setColor, setOpacity, setUniform, setVisible } from "./mutate";
 import { view } from "./viewState";
 
 import { CouplingChart } from "./road/CouplingChart";
@@ -21,93 +24,109 @@ import { Corridor } from "./road/Corridor";
 import { Cutaway } from "./road/Cutaway";
 import { laneZ, ROAD_WINDING_Y, ROAD_Z } from "./road/layout";
 import { RoadPads } from "./road/RoadPads";
+import { RoadField } from "./road/RoadField";
+import { RoadEnergy } from "./road/RoadEnergy";
 
 export { ROAD_Z };
-const hash = (i: number) => {
-  const x = Math.sin(i * 91.345 + 7.1) * 24634.6345;
-  return x - Math.floor(x);
-};
 
 function useDispose<T extends { dispose(): void }>(items: T[]) {
   useEffect(() => () => items.forEach((x) => x.dispose()), [items]);
 }
 
 export function Sky() {
-  const material = useMemo(
-    () =>
-      new ShaderMaterial({
-        side: BackSide,
-        depthWrite: false,
-        uniforms: { top: { value: new Color("#070c18") }, mid: { value: new Color("#1d2b45") }, horizon: { value: new Color("#9c7a6a") }, dim: { value: 0 } },
-        vertexShader: "varying vec3 vP; void main(){ vP = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }",
-        fragmentShader:
-          "uniform vec3 top; uniform vec3 mid; uniform vec3 horizon; uniform float dim; varying vec3 vP; void main(){ float h = clamp(vP.y, -0.2, 1.0); vec3 c = mix(horizon, mid, smoothstep(0.0, 0.18, h)); c = mix(c, top, smoothstep(0.18, 0.75, h)); c = mix(vec3(0.05,0.05,0.07), c, smoothstep(-0.2, 0.0, h)); c = mix(c, vec3(0.018, 0.022, 0.032) + 0.03 * smoothstep(-0.1, 0.4, h), dim); gl_FragColor = vec4(c, 1.0); }",
-      }),
-    [],
-  );
+  const material = useMemo(() => skyMaterial(), []);
   useDispose([material]);
-  useFrame(() => setUniform(material, "dim", view.studio));
+  useFrame(() => setUniform(material, "studio", view.studio));
   return (
-    <mesh material={material} renderOrder={-1}>
-      <sphereGeometry args={[420, 32, 16]} />
+    <mesh material={material} renderOrder={-1} frustumCulled={false}>
+      <sphereGeometry args={[420, 48, 24]} />
     </mesh>
   );
 }
+
+const PLAZA = new Color("#b4b6b6");
+const LAWN = new Color("#eef2e2");
+const FLOOR = new Color("#1a1f26");
+const studioFloor = new Color();
+const studioGrass = new Color();
 
 export function Ground() {
   const tex = useMemo(() => {
-    const t = concreteTexture();
-    t.repeat.set(60, 60);
-    return t;
+    const concrete = concreteTexture();
+    concrete.repeat.set(16, 14);
+    const grass = grassTexture();
+    grass.repeat.set(90, 90);
+    return { concrete, grass };
   }, []);
-  const material = useMemo(() => new MeshStandardMaterial({ map: tex, color: "#8d9298", roughness: 0.92, metalness: 0, transparent: true, opacity: 1 }), [tex]);
-  useDispose<Texture | MeshStandardMaterial>([tex, material]);
-  const mesh = useRef<Mesh>(null);
+  const m = useMemo(
+    () => ({
+      plaza: antiTile(new MeshStandardMaterial({ map: tex.concrete, color: "#b4b6b6", roughness: 0.9, metalness: 0, transparent: true, opacity: 1 }), [1.04, 1.03, 1.0], [0.9, 0.91, 0.92]),
+      grass: antiTile(new MeshStandardMaterial({ map: tex.grass, color: "#eef2e2", roughness: 0.96, metalness: 0 })),
+    }),
+    [tex],
+  );
+  useDispose<Texture | MeshStandardMaterial>([tex.concrete, tex.grass, m.plaza, m.grass]);
+  const group = useRef<Group>(null);
   useFrame(() => {
     const env = useTwin.getState().environment;
-    setOpacity(material, 1 - 0.55 * view.reveal * (env === "station" ? 1 : 0), 0.9);
+    setOpacity(m.plaza, 1 - 0.55 * view.reveal * (env === "station" ? 1 : 0), 0.9);
+    // The inspection studio: the ground falls to a dark floor around the subject.
+    setColor(m.plaza, studioFloor.copy(PLAZA).lerp(FLOOR, view.studio));
+    setColor(m.grass, studioGrass.copy(LAWN).lerp(FLOOR, view.studio));
     // On the road the verges replace the site's ground.
-    setVisible(mesh.current, env !== "dynamic");
+    setVisible(group.current, env !== "dynamic");
   });
   return (
-    <mesh ref={mesh} rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.012, 0]} receiveShadow material={material}>
-      <planeGeometry args={[320, 320]} />
-    </mesh>
+    <group ref={group}>
+      {/* The paved site (slab, apron and plaza), then lawns and fields to the horizon. */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[-4, -0.012, -2]} receiveShadow material={m.plaza}>
+        <planeGeometry args={[64, 56]} />
+      </mesh>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.08, 0]} receiveShadow material={m.grass}>
+        <planeGeometry args={[900, 900]} />
+      </mesh>
+    </group>
   );
 }
 
-/** One merged geometry for the skyline, windows scaled to each building. */
+/** City lots around the site: a downtown cluster beyond the shelter, mid-rise blocks elsewhere, none on the site or the highway. */
+const CITY_LOTS: Lot[] = (() => {
+  const lots: Lot[] = [];
+  const r = rng(2024);
+  for (let i = 0; lots.length < 64 && i < 600; i++) {
+    const downtown = i % 3 === 0;
+    const a = downtown ? -0.75 + (r() - 0.5) * 0.9 : r() * Math.PI * 2;
+    const d = downtown ? 190 + r() * 120 : 150 + r() * 200;
+    const x = Math.cos(a) * d;
+    const z = Math.sin(a) * d;
+    if (z > ROAD_Z - 34 && z < ROAD_Z + 48) continue;
+    if (lots.some((l) => Math.hypot(l.x - x, l.z - z) < 42)) continue;
+    lots.push({ x, z, size: 0.8 + r() * 0.5, height: downtown ? 0.45 + r() * 0.55 : r() * 0.6, seed: i });
+  }
+  return lots;
+})();
+
+/** The skyline and the hills: merged, built once, faded by the haze. */
 export function City() {
-  const { geometry, material } = useMemo(() => {
-    const parts: BufferGeometry[] = [];
-    for (let i = 0; i < 200; i++) {
-      const x = (hash(i) - 0.5) * 300;
-      const z = (hash(i + 500) - 0.5) * 300;
-      const nearSite = Math.abs(x) < 38 && z > -44 && z < 18;
-      const nearRoad = z > ROAD_Z - 10 && z < ROAD_Z + 26;
-      if (nearSite || nearRoad || Math.hypot(x, z) < 34) continue;
-      const w = 8 + hash(i + 900) * 14;
-      const d = 8 + hash(i + 1300) * 14;
-      const far = Math.hypot(x, z) / 150;
-      const h = 10 + hash(i + 1700) ** 2 * (40 + 50 * far);
-      const g = new BoxGeometry(w, h, d).toNonIndexed();
-      const uv = g.attributes.uv;
-      for (let k = 0; k < uv.count; k++) uv.setXY(k, uv.getX(k) * (w / 14), uv.getY(k) * (h / 20));
-      g.translate(x, h / 2, z);
-      parts.push(g);
-    }
-    const geometry = mergeGeometries(parts)!;
-    const windows = windowTexture();
-    const material = new MeshStandardMaterial({ color: "#1b2029", roughness: 0.7, metalness: 0.3, emissive: new Color("#ffffff"), emissiveMap: windows, emissiveIntensity: 0.55 });
-    return { geometry, material };
+  const assets = useMemo(() => {
+    const geo = buildCity(CITY_LOTS);
+    const glassTex = glassFacade();
+    const concreteTex = concreteFacade();
+    const mats = cityMaterials(glassTex, concreteTex);
+    const hills = hillRing(360, 430);
+    const hillMat = new MeshStandardMaterial({ vertexColors: true, roughness: 1, metalness: 0, side: DoubleSide });
+    return { geo, glassTex, concreteTex, mats, hills, hillMat };
   }, []);
-  useDispose<BufferGeometry | MeshStandardMaterial>([geometry, material]);
-  const mesh = useRef<Mesh>(null);
-  useFrame(() => {
-    setEmissive(material, "#ffffff", 0.55 * (1 - view.studio));
-    setVisible(mesh.current, view.studio < 0.97 && useTwin.getState().environment !== "dynamic");
-  });
-  return <mesh ref={mesh} geometry={geometry} material={material} receiveShadow />;
+  useDispose<{ dispose(): void }>([assets.geo.glass, assets.geo.concrete, assets.glassTex, assets.concreteTex, assets.mats.glass, assets.mats.concrete, assets.hills, assets.hillMat]);
+  const group = useRef<Group>(null);
+  useFrame(() => setVisible(group.current, view.studio < 0.97 && useTwin.getState().environment !== "dynamic"));
+  return (
+    <group ref={group}>
+      <mesh geometry={assets.geo.glass} material={assets.mats.glass} receiveShadow />
+      <mesh geometry={assets.geo.concrete} material={assets.mats.concrete} receiveShadow />
+      <mesh geometry={assets.hills} material={assets.hillMat} />
+    </group>
+  );
 }
 
 /** The hero vehicle in the station or parking scene: position, steering and ride height from the simulations. */
@@ -249,6 +268,8 @@ export function Highway() {
       <RoadPads />
       <Cutaway />
       <CouplingChart />
+      <RoadField />
+      <RoadEnergy />
       {env === "dynamic" && <Vehicle pose={roadPose} detailed bodyId="vehicle" rxTurns={rxTurns} rxGlow={() => Math.min(1, runtime.road.state.i2 / 40)} />}
     </group>
   );

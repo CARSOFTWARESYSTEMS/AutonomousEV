@@ -33,6 +33,44 @@ export const PLANNED_ENVIRONMENTS = [
   { id: "parking", number: "01", name: "IoT & AI-Based Smart Parking Shelter", short: "Smart Parking", text: "Vehicle identification, entry and exit, slot allocation, environmental monitoring, reservation and billing, with charging-capable bays handing over to the wireless charging station.", status: "Specified · planned for Phase 4" },
 ] as const;
 
+/**
+ * Proposed environments beyond the five: shown in the rail with what they
+ * would model, never as working. BESS is simulated today inside environment
+ * 05 (the district dispatch); its entry opens it there.
+ */
+export const PROPOSED_ENVIRONMENTS = [
+  {
+    id: "drone",
+    number: "06",
+    name: "Wireless Charging for Drones",
+    short: "Drone",
+    status: "Proposed · not simulated",
+    text: "Inductive landing pads that recharge delivery and inspection drones between missions, with no connector to align in wind.",
+    scope: ["Precision landing over the pad (vision and UWB), the landing cone and its tolerance", "Small coupler at a short, variable gap: coupling against landing offset and tilt", "Fast top-up of a high-power-density pack: thermal limits and charge acceptance", "Fleet scheduling across pads and missions"],
+    reuses: "The filament coupler and field models, the battery equivalent circuit and the charging state machine.",
+  },
+  {
+    id: "airtaxi",
+    number: "07",
+    name: "Wireless Charging for Air Taxis (eVTOL)",
+    short: "Air Taxi",
+    status: "Proposed · not simulated",
+    text: "High-power inductive charging on vertiport pads during the turnaround between flights, sized for multi-hundred-kilowatt packs.",
+    scope: ["Vertiport pad layout, segmented high-power couplers and their shielding", "Turnaround energy budget: minutes on the pad against the next mission's reserve", "Thermal management of pack and coils at high C-rates", "Grid and storage demand of a vertiport through the day"],
+    reuses: "The coupler, compensation and loss models, the battery and thermal models and the district dispatch.",
+  },
+  {
+    id: "bess",
+    number: "08",
+    name: "Battery Energy Storage for Charging Hubs",
+    short: "BESS",
+    status: "Modelled in 05 · dedicated view proposed",
+    text: "Stationary storage that buffers chargers against grid limits and stores solar. Its dispatch is simulated today in Smart Charging Infrastructure (05).",
+    scope: ["Peak shaving under a grid connection limit", "Solar self-consumption and time-of-use arbitrage", "State of charge, cycling and round-trip losses", "Backing high-power wireless chargers and the electrified road"],
+    reuses: "WPT-GRID-001 (district dispatch), already running in environment 05.",
+  },
+] as const;
+
 export const SECTIONS = [
   { id: "overview", label: "Overview" },
   { id: "twin", label: "Digital Twin" },

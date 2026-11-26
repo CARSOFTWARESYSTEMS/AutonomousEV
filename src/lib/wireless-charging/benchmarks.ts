@@ -5,7 +5,8 @@
 import { DEFAULT_BATTERY, packCapacityAh, packMaxVoltage, stepBattery, type BatteryState } from "./battery";
 import { designCompensation, networkResponse, optimalLoad, resonantCapacitance, ssEfficiencyAtResonance, ssForward } from "./circuits";
 import { DEFAULT_CHAIN, solveChain, type ChainSetup } from "./chain";
-import { coaxialLoopM, computeCoupler, DEFAULT_RX_PAD, DEFAULT_TX_PAD, loopField, neumannLoopM, offsetLoopM } from "./coils";
+import { coaxialLoopM, computeCoupler, computeFieldSection, DEFAULT_RX_PAD, DEFAULT_TX_PAD, loopField, neumannLoopM, offsetLoopM } from "./coils";
+import { type FieldSource, fieldAt, fieldKernel, instantaneous, rmsOf, roadExcitation } from "./roadField";
 import { createRoad, DEFAULT_ROAD_INPUTS, runDrive, segmentM, stepRoad, regime } from "./dynamic";
 import { DEFAULT_PARKING_INPUTS, rankStations, runParking } from "./autonomous";
 import { DEFAULT_GRID_INPUTS, POLICIES, simulateDay } from "./infrastructure";
@@ -230,6 +231,74 @@ export const CHECKS: readonly Check[] = [
     },
   },
   // ── Required benchmark scenarios ──
+  {
+    id: "A14",
+    kind: "analytical",
+    title: "Road field: a single pad agrees with the station's field section",
+    expected: "One energised road pad and the receiver above it give the station section's RMS |B| (WPT-EM-002) within 3 % across the air gap",
+    models: ["WPT-EM-005", "WPT-EM-002"],
+    run: () => {
+      const station = { tx: DEFAULT_TX_PAD, rx: DEFAULT_RX_PAD, airGap: 0.15 };
+      const currents = { i1: { re: 22, im: 0 }, i2: { re: 0, im: -26 } };
+      const sec = computeFieldSection({ ...station, lateral: 0, longitudinal: 0.06 }, currents, { nx: 24, nz: 12 });
+      const k = fieldKernel(station);
+      const sources: FieldSource[] = [
+        { coil: "tx", x: 0, y: 0, current: currents.i1, segment: 0 },
+        { coil: "rx", x: 0.06, y: 0, current: currents.i2, segment: -1 },
+      ];
+      let worst = 0;
+      for (let iz = 0; iz < sec.nz; iz++) {
+        const z = sec.z0 + ((sec.z1 - sec.z0) * iz) / (sec.nz - 1);
+        if (z < 0.012 || z > 0.138) continue;
+        for (let ix = 0; ix < sec.nx; ix++) {
+          const ref = sec.brms[iz * sec.nx + ix];
+          if (!Number.isFinite(ref) || ref < 0.02 * sec.max) continue;
+          const x = sec.x0 + ((sec.x1 - sec.x0) * ix) / (sec.nx - 1);
+          worst = Math.max(worst, rel(rmsOf(fieldAt(k, sources, x, 0, z)), ref));
+        }
+      }
+      return { passed: worst < 0.03, measured: `largest relative difference ${(worst * 100).toFixed(2)} %` };
+    },
+  },
+  {
+    id: "A15",
+    kind: "analytical",
+    title: "Road field: no excitation, no field; failed pads contribute nothing",
+    expected: "|B| = 0 with no energised source; a failed segment never appears among the field's sources",
+    models: ["WPT-EM-005", "WPT-SIM-002"],
+    run: () => {
+      const k = fieldKernel({ tx: DEFAULT_TX_PAD, rx: DEFAULT_RX_PAD, airGap: 0.15 });
+      const zero = rmsOf(fieldAt(k, [{ coil: "tx", x: 0, y: 0, current: { re: 0, im: 0 }, segment: 0 }], 0.05, 0, 0.075));
+      const sim = createRoad({ ...DEFAULT_ROAD_INPUTS, coverage: 1, speed: 15, failedSegment: 12 });
+      let failedSeen = false;
+      for (let i = 0; i < 6000; i++) {
+        stepRoad(sim);
+        if (i % 50 === 0 && roadExcitation(sim).sources.some((s) => s.segment === 12)) failedSeen = true;
+      }
+      return { passed: zero === 0 && !failedSeen, measured: `|B| = ${zero} T with zero current; failed pad among sources: ${failedSeen ? "yes" : "no"}` };
+    },
+  },
+  {
+    id: "A16",
+    kind: "analytical",
+    title: "Road field: superposition and phase convention",
+    expected: "The field of three sources equals the sum of each alone within 1e-12 T; at ωt = 0 the receiver current (−j|I₂|) adds nothing to B_z",
+    models: ["WPT-EM-005"],
+    run: () => {
+      const k = fieldKernel({ tx: DEFAULT_TX_PAD, rx: DEFAULT_RX_PAD, airGap: 0.15 });
+      const a: FieldSource = { coil: "tx", x: 0, y: 0, current: { re: 45, im: 0 }, segment: 1 };
+      const b: FieldSource = { coil: "tx", x: 1, y: 0, current: { re: 18, im: 0 }, segment: 2 };
+      const c: FieldSource = { coil: "rx", x: 0.55, y: 0.05, current: { re: 0, im: -30 }, segment: -1 };
+      const sum = fieldAt(k, [a, b, c], 0.5, 0.05, 0.07);
+      const parts = [a, b, c].map((s) => fieldAt(k, [s], 0.5, 0.05, 0.07));
+      let err = 0;
+      for (let i = 0; i < 3; i++) {
+        err = Math.max(err, Math.abs(sum.re[i] - parts.reduce((t, p) => t + p.re[i], 0)), Math.abs(sum.im[i] - parts.reduce((t, p) => t + p.im[i], 0)));
+      }
+      const t0 = instantaneous(fieldAt(k, [a, c], 0, 0, 0.075), 0)[2] - instantaneous(fieldAt(k, [a], 0, 0, 0.075), 0)[2];
+      return { passed: err < 1e-12 && Math.abs(t0) < 1e-15, measured: `superposition residual ${err.toExponential(1)} T; receiver B_z at ωt = 0: ${t0.toExponential(1)} T` };
+    },
+  },
   {
     id: "B01",
     kind: "benchmark",

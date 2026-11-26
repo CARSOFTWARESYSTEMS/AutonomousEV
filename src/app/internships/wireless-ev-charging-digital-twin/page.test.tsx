@@ -6,6 +6,7 @@ vi.mock("next/navigation", () => ({ usePathname: () => "/internships/wireless-ev
 vi.mock("next/font/google", () => ({
   Manrope: () => ({ variable: "--font-space-manrope" }),
   Inter: () => ({ variable: "--font-space-inter" }),
+  JetBrains_Mono: () => ({ variable: "--font-twin-mono" }),
 }));
 
 import { isSelfContainedPath } from "@/components/ChromeGate";
@@ -65,8 +66,11 @@ describe("Wireless EV Charging Digital Twin route", () => {
     await act(async () => {
       await user.click(screen.getByRole("button", { name: "Practical Workshop" }));
     });
-    expect(await screen.findByRole("heading", { level: 2, name: "8-Month Advanced Engineering Research & Practical Workshop" })).toBeInTheDocument();
-    expect(screen.getAllByText(/32 weeks · 64 learning and experimental units/).length).toBeGreaterThan(0);
+    expect(await screen.findByRole("heading", { level: 2, name: "Eight months from first principles to a working twin" })).toBeInTheDocument();
+    expect(screen.getAllByText("8-Month Advanced Engineering Research & Practical Workshop").length).toBeGreaterThan(1);
+    const stats = screen.getByText("Weeks").closest("dl") as HTMLElement;
+    expect(within(stats).getByText("32")).toBeInTheDocument();
+    expect(within(stats).getByText("64")).toBeInTheDocument();
   });
 
   it("never mentions universities or external institutions, and claims no compliance or validation", () => {

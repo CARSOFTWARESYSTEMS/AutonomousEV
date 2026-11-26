@@ -15,7 +15,7 @@ import lab from "./lab.module.css";
 /** Visualisation modes each environment offers. */
 export const VIEWS_BY_ENV: Record<string, ViewModeId[]> = {
   station: ["cinematic", "xray", "chassis", "underbody", "battery", "receiver", "assembly", "power", "cutaway", "exploded", "engineering", "field", "energy", "thermal", "iot"],
-  dynamic: ["cinematic", "xray", "chassis", "cutaway", "receiver", "segments", "coupling", "roadside", "top"],
+  dynamic: ["cinematic", "energy", "xray", "chassis", "cutaway", "receiver", "field", "segments", "coupling", "roadside", "top"],
   autonomous: ["cinematic", "xray", "chassis"],
   infrastructure: ["cinematic"],
 };

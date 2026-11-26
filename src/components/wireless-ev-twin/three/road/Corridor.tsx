@@ -7,15 +7,18 @@
 // elsewhere the highway is a quiet backdrop beside the charging site.
 import { useEffect, useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
-import { BoxGeometry, type BufferGeometry, Color, ConeGeometry, CylinderGeometry, DoubleSide, type Group, type InstancedMesh, type Material, Matrix4, MeshStandardMaterial, Plane, Quaternion, Shape, ExtrudeGeometry, Vector3 } from "three";
+import { BoxGeometry, type BufferGeometry, Color, CylinderGeometry, DoubleSide, type Group, type InstancedMesh, type Material, Matrix4, MeshStandardMaterial, Plane, Quaternion, Shape, ExtrudeGeometry, Vector3 } from "three";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import { runtime } from "../../state/runtime";
 import { useTwin } from "../../state/store";
-import { asphaltTexture, grassTexture, laneSignTexture, windowTexture } from "../materials";
+import { antiTile, asphaltTexture, grassTexture, laneSignTexture } from "../materials";
+import { buildCity, cityMaterials, concreteFacade, glassFacade, hillRing, type Lot } from "../env/buildings";
+import { Forest, type Plant } from "../env/Forest";
+import { rng, type Species } from "../env/foliage";
 import { enableLocalClipping, setOffset, setOpacity, setVisible } from "../mutate";
 import { pick } from "../pick";
 import { view } from "../viewState";
-import { CABINET_Z, CUT, GUARDRAIL_Z, hash, LANE_WIDTH, laneZ, MEDIAN_Z, PAVED, ROAD_Z, WINDOW, wrapRel } from "./layout";
+import { CABINET_Z, CUT, GUARDRAIL_Z, LANE_WIDTH, laneZ, MEDIAN_Z, PAVED, ROAD_Z, WINDOW, wrapRel } from "./layout";
 
 const LO = -WINDOW / 2;
 const mtx = new Matrix4();
@@ -84,52 +87,65 @@ function geometries() {
   const dash = new BoxGeometry(3, 0.004, 0.15);
   const joint = new BoxGeometry(0.02, 0.82, 0.62).translate(0, 0.41, 0);
   const post = new BoxGeometry(0.1, 0.8, 0.1).translate(0, 0.4, 0);
-  // Trees: trunk and canopy.
-  const trunk = new CylinderGeometry(0.12, 0.18, 2.4, 6).translate(0, 1.2, 0);
-  const crown = mergeGeometries([g(new ConeGeometry(1.7, 3.6, 8).translate(0, 3.6, 0)), g(new ConeGeometry(1.3, 2.8, 8).translate(0, 5.0, 0))])!;
-  // Skyline strip: buildings on both sides, 500 m long, far from the road.
-  const blocks: BufferGeometry[] = [];
-  for (let i = 0; i < 70; i++) {
-    const side = i % 2 ? 1 : -1;
-    const x = -250 + hash(i) * 500;
-    const z = side > 0 ? PAVED.z1 + 110 + hash(i + 70) * 160 : ROAD_Z - 110 - hash(i + 70) * 160;
-    const w = 12 + hash(i + 140) * 22;
-    const d = 12 + hash(i + 210) * 18;
-    const h = 14 + hash(i + 280) ** 2 * 70;
-    const b = new BoxGeometry(w, h, d).toNonIndexed();
-    const uv = b.attributes.uv;
-    for (let k = 0; k < uv.count; k++) uv.setXY(k, uv.getX(k) * (w / 14), uv.getY(k) * (h / 20));
-    b.translate(x, h / 2, z);
-    blocks.push(b);
-  }
-  const skyline = mergeGeometries(blocks)!;
-  return { barrier, rails, lamp, lampHeads, cabinet, gantry, sign, dash, joint, post, trunk, crown, skyline };
+  return { barrier, rails, lamp, lampHeads, cabinet, gantry, sign, dash, joint, post };
 }
 
-/** Trees on both verges: road-frame x within one 250 m layout, lateral position and size. */
-const TREES = Array.from({ length: 70 }, (_, i) => {
-  const side = i % 2 ? 1 : -1;
-  return { x: hash(i + 400) * 250, z: side > 0 ? PAVED.z1 + 7 + hash(i + 470) * 40 : ROAD_Z - 8 - hash(i + 470) * 40, s: 0.7 + hash(i + 540) * 0.7 };
-});
+/** Vegetation along both verges over one 500 m layout (the window's period, which divides the route): clumps of mixed species, shrubs near the rails. */
+const ROAD_PLANTS: Plant[] = (() => {
+  const out: Plant[] = [];
+  const r = rng(515);
+  const kinds: Species[] = ["broadleaf", "spreading", "columnar", "broadleaf", "young"];
+  for (let clump = 0; clump < 44; clump++) {
+    const side = clump % 2 ? 1 : -1;
+    const cx = r() * WINDOW;
+    const cz = side > 0 ? PAVED.z1 + 9 + r() * 46 : ROAD_Z - 10 - r() * 46;
+    const n = 2 + Math.floor(r() * 4);
+    const kind = kinds[Math.floor(r() * kinds.length)];
+    for (let k = 0; k < n; k++) out.push({ x: cx + (r() - 0.5) * 14, z: cz + (r() - 0.5) * 10, species: r() < 0.75 ? kind : kinds[Math.floor(r() * kinds.length)], scale: 0.8 + r() * 0.55, rot: r() * Math.PI * 2, seed: out.length * 5 + 1 });
+  }
+  for (let i = 0; i < 40; i++) {
+    const side = i % 2 ? 1 : -1;
+    out.push({ x: r() * WINDOW, z: side > 0 ? PAVED.z1 + 2.2 + r() * 3 : ROAD_Z - 4.4 - r() * 2.5, species: "shrub", scale: 0.9 + r() * 0.7, rot: r() * Math.PI * 2, seed: out.length * 5 + 2 });
+  }
+  return out;
+})();
+
+/** Buildings beside the highway over one 500 m strip, set well back from both verges. */
+const ROAD_LOTS: Lot[] = (() => {
+  const lots: Lot[] = [];
+  const r = rng(808);
+  for (let i = 0; lots.length < 34 && i < 400; i++) {
+    const side = i % 2 ? 1 : -1;
+    const x = -WINDOW / 2 + r() * WINDOW;
+    const z = side > 0 ? PAVED.z1 + 230 + r() * 150 : ROAD_Z - 230 - r() * 150;
+    if (lots.some((l) => Math.hypot(l.x - x, l.z - z) < 46)) continue;
+    lots.push({ x, z, size: 0.8 + r() * 0.5, height: r() < 0.18 ? 0.55 + r() * 0.35 : r() * 0.45, seed: i + 900 });
+  }
+  return lots;
+})();
 
 const COUNTS = { dash: 40, joint: 100, post: 100, lamp: 10, cabinet: 10, gantry: 2 };
 
 export function Corridor() {
   const gl = useThree((s) => s.gl);
-  const geo = useMemo(() => geometries(), []);
+  const geo = useMemo(() => {
+    const city = buildCity(ROAD_LOTS);
+    return { ...geometries(), cityGlass: city.glass, cityConcrete: city.concrete, hills: hillRing(380, 450) };
+  }, []);
   const tex = useMemo(() => {
     const asphalt = asphaltTexture();
     asphalt.repeat.set(WINDOW / 8, (PAVED.z1 - PAVED.z0) / 8);
     const grass = grassTexture();
     grass.repeat.set(WINDOW / 10, 12);
-    const windows = windowTexture();
     const sign = laneSignTexture();
-    return { asphalt, grass, windows, sign };
+    const glassFacadeTex = glassFacade();
+    const concreteFacadeTex = concreteFacade();
+    return { asphalt, grass, sign, glassFacadeTex, concreteFacadeTex };
   }, []);
   const m = useMemo(
     () => ({
       road: new MeshStandardMaterial({ map: tex.asphalt, color: "#62666c", roughness: 0.86, metalness: 0.02 }),
-      paint: new MeshStandardMaterial({ color: "#e8eae6", roughness: 0.55, emissive: new Color("#ffffff"), emissiveIntensity: 0.06 }),
+      paint: new MeshStandardMaterial({ color: "#e8eae6", roughness: 0.55, emissive: new Color("#ffffff"), emissiveIntensity: 0.06, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 }),
       concrete: new MeshStandardMaterial({ color: "#a7aaa8", roughness: 0.85 }),
       joint: new MeshStandardMaterial({ color: "#6d706f", roughness: 0.9 }),
       steel: new MeshStandardMaterial({ color: "#a9aeb4", metalness: 0.85, roughness: 0.35 }),
@@ -137,10 +153,10 @@ export function Corridor() {
       head: new MeshStandardMaterial({ color: "#ffffff", emissive: new Color("#fff1dc"), emissiveIntensity: 2.2 }),
       cabinet: new MeshStandardMaterial({ color: "#c9cdd1", metalness: 0.4, roughness: 0.45 }),
       sign: new MeshStandardMaterial({ map: tex.sign, roughness: 0.4, emissive: new Color("#ffffff"), emissiveMap: tex.sign, emissiveIntensity: 0.35 }),
-      grass: new MeshStandardMaterial({ map: tex.grass, color: "#8a9378", roughness: 0.95 }),
-      trunk: new MeshStandardMaterial({ color: "#3b2f25", roughness: 0.9 }),
-      crown: new MeshStandardMaterial({ color: "#1f3324", roughness: 0.9, side: DoubleSide }),
-      city: new MeshStandardMaterial({ color: "#1b2029", roughness: 0.7, metalness: 0.3, emissive: new Color("#ffffff"), emissiveMap: tex.windows, emissiveIntensity: 0.5 }),
+      grass: antiTile(new MeshStandardMaterial({ map: tex.grass, color: "#e4e8d8", roughness: 0.95 })),
+      cityGlass: cityMaterials(tex.glassFacadeTex, tex.concreteFacadeTex).glass,
+      cityConcrete: cityMaterials(tex.glassFacadeTex, tex.concreteFacadeTex).concrete,
+      hills: new MeshStandardMaterial({ vertexColors: true, roughness: 1, metalness: 0, side: DoubleSide }),
     }),
     [tex],
   );
@@ -159,7 +175,7 @@ export function Corridor() {
     inst.current[k] = el;
   };
   const dynamicOnly = useRef<Group>(null);
-  const trees = useRef<{ trunk: InstancedMesh | null; crown: InstancedMesh | null }>({ trunk: null, crown: null });
+  const wrapTree = useMemo(() => (x: number) => wrapRel(x, runtime.road.state.x, WINDOW, LO), []);
   const skyline = useRef<(Group | null)[]>([]);
 
   useFrame(() => {
@@ -190,24 +206,6 @@ export function Corridor() {
     placeRow(I.sign ?? null, COUNTS.gantry, WINDOW / COUNTS.gantry, x0 - 60, 0, 0);
     setVisible(dynamicOnly.current, dyn);
     if (dyn) {
-      const { trunk, crown } = trees.current;
-      if (trunk && crown) {
-        let k = 0;
-        for (let copy = 0; copy < 2; copy++) {
-          for (const t of TREES) {
-            pos.set(wrapRel(t.x + copy * 250, x0, WINDOW, LO), 0, t.z);
-            scl.set(t.s, t.s, t.s);
-            quat.identity();
-            mtx.compose(pos, quat, scl);
-            trunk.setMatrixAt(k, mtx);
-            crown.setMatrixAt(k, mtx);
-            k++;
-          }
-        }
-        scl.set(1, 1, 1);
-        trunk.instanceMatrix.needsUpdate = true;
-        crown.instanceMatrix.needsUpdate = true;
-      }
       skyline.current.forEach((grp, c) => {
         if (grp) grp.position.x = wrapRel(c * WINDOW, x0, 2 * WINDOW, -WINDOW);
       });
@@ -241,19 +239,20 @@ export function Corridor() {
       <instancedMesh ref={ref("sign")} args={[geo.sign, m.sign, COUNTS.gantry]} />
       <group ref={dynamicOnly} visible={false}>
         {/* Verges on both sides (the ground plane of the site is hidden on the road). */}
-        <mesh material={m.grass} position={[0, -0.01, PAVED.z0 - 60]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <mesh material={m.grass} position={[0, -0.04, PAVED.z0 - 60]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
           <planeGeometry args={[WINDOW, 120]} />
         </mesh>
-        <mesh material={m.grass} position={[0, -0.01, PAVED.z1 + 60]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <mesh material={m.grass} position={[0, -0.04, PAVED.z1 + 60]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
           <planeGeometry args={[WINDOW, 120]} />
         </mesh>
-        <instancedMesh ref={(el) => { trees.current.trunk = el; }} args={[geo.trunk, m.trunk, TREES.length * 2]} castShadow />
-        <instancedMesh ref={(el) => { trees.current.crown = el; }} args={[geo.crown, m.crown, TREES.length * 2]} castShadow />
+        <Forest plants={ROAD_PLANTS} wrap={wrapTree} />
         {[0, 1].map((c) => (
           <group key={c} ref={(el) => { skyline.current[c] = el; }}>
-            <mesh geometry={geo.skyline} material={m.city} />
+            <mesh geometry={geo.cityGlass} material={m.cityGlass} />
+            <mesh geometry={geo.cityConcrete} material={m.cityConcrete} />
           </group>
         ))}
+        <mesh geometry={geo.hills} material={m.hills} position={[0, 0, ROAD_Z]} />
       </group>
     </group>
   );

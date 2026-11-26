@@ -1,29 +1,48 @@
 /* Next-Generation Wireless EV Charging Digital Twin — page frame and
    long-form content. Graphite surface with the EV.ENGINEER green accent. */
 .page {
-  --wt-bg: #05080d;
-  --wt-surface: #0b1017;
-  --wt-line: rgba(255, 255, 255, 0.08);
-  --wt-line-strong: rgba(255, 255, 255, 0.2);
-  --wt-text: #eef2f5;
-  --wt-body: #c3cad3;
-  --wt-muted: #8d97a4;
-  --wt-accent: #4ca930;
-  --wt-amber: #f5b041;
+  /* Design language shared with iTelematics: deep navy surfaces, slate text,
+     telemetry cyan for action and data, semantic state colours, Inter with
+     tight display tracking and JetBrains Mono for labels and readings. */
+  --wt-bg: #050a10;
+  --wt-bg-2: #08111b;
+  --wt-surface: #0c1722;
+  --wt-surface-2: #112033;
+  --wt-line: rgba(148, 163, 184, 0.1);
+  --wt-line-strong: rgba(148, 163, 184, 0.2);
+  --wt-text: #f8fafc;
+  --wt-body: #a7b3c4;
+  --wt-muted: #8391a6;
+  --wt-accent: #22d3ee;
+  --wt-accent-rgb: 34, 211, 238;
+  --wt-accent-ink: #03161c;
+  --wt-data: #67e8f9;
+  --wt-nominal: #34d399;
+  --wt-amber: #fbbf24;
+  --wt-amber-rgb: 251, 191, 36;
+  --wt-fault: #f87171;
+  --wt-orbit: #a5b4fc;
+  --wt-glass: rgba(8, 17, 27, 0.72);
+  --wt-glass-line: rgba(148, 163, 184, 0.14);
+  --wt-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --wt-radius-card: 16px;
+  --wt-radius-control: 11px;
   --wt-header: 56px;
-  --wt-gutter: clamp(16px, 2.4vw, 32px);
-  --wt-display: var(--font-space-manrope), var(--font-space-inter), system-ui, sans-serif;
+  --wt-gutter: clamp(20px, 4vw, 40px);
+  --wt-brand: var(--font-space-manrope), var(--font-space-inter), system-ui, sans-serif;
+  --wt-display: var(--font-space-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
   --wt-sans: var(--font-space-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
-  --wt-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  --wt-mono: var(--font-twin-mono), ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
 
   min-height: 100dvh;
   overflow-x: clip;
   background: var(--wt-bg);
   color: var(--wt-text);
   font-family: var(--wt-sans);
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 16px;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
+  font-feature-settings: "cv11", "ss01";
 }
 .page *,
 .page *::before,
@@ -86,7 +105,7 @@
   color: var(--wt-accent);
 }
 .brand {
-  font-family: var(--wt-display);
+  font-family: var(--wt-brand);
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.18em;
@@ -125,10 +144,10 @@
 }
 .eyebrow {
   margin: 0 0 10px;
-  font-family: var(--wt-display);
+  font-family: var(--wt-mono);
   font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.22em;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #e9eef3;
 }
@@ -136,8 +155,8 @@
   margin: 0;
   font-family: var(--wt-display);
   font-size: clamp(32px, 5vw, 64px);
-  font-weight: 800;
-  letter-spacing: -0.028em;
+  font-weight: 600;
+  letter-spacing: -0.035em;
   line-height: 1.02;
 }
 .tagline {
@@ -173,21 +192,39 @@
 .secondary {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 20px;
-  border-radius: 10px;
-  font-weight: 700;
+  gap: 10px;
+  min-height: 50px;
+  padding: 0 24px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.005em;
   text-decoration: none;
+  transition: transform 0.15s var(--wt-ease), box-shadow 0.2s var(--wt-ease), filter 0.2s var(--wt-ease), background 0.2s var(--wt-ease);
 }
 .primary {
-  background: var(--wt-accent);
-  color: #04140e;
+  border: 1px solid rgba(165, 243, 252, 0.55);
+  background: linear-gradient(180deg, #2bdcf5 0%, #12b6d6 100%);
+  color: #021218;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 10px 28px rgba(8, 145, 178, 0.35);
+}
+.primary:hover {
+  filter: brightness(1.06);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 14px 34px rgba(8, 145, 178, 0.45);
+}
+.primary:active,
+.secondary:active {
+  transform: translateY(1px);
 }
 .secondary {
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  background: rgba(5, 8, 13, 0.45);
-  color: #fff;
-  backdrop-filter: blur(6px);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: rgba(5, 10, 16, 0.5);
+  color: #f8fafc;
+  backdrop-filter: blur(10px);
+}
+.secondary:hover {
+  border-color: rgba(148, 163, 184, 0.6);
+  background: rgba(17, 32, 51, 0.6);
 }
 .secondary:hover {
   border-color: rgba(255, 255, 255, 0.7);
@@ -267,7 +304,7 @@
   margin: 12px 0 0;
   padding: 10px 12px;
   border-left: 3px solid var(--wt-amber);
-  background: rgba(245, 176, 65, 0.08);
+  background: rgba(var(--wt-amber-rgb), 0.08);
   font-size: 13.5px;
   color: var(--wt-body);
 }
@@ -453,8 +490,8 @@
   color: #9eefff;
 }
 .researcher[data-lead] .role {
-  border-color: rgba(76, 169, 48, 0.55);
-  background: rgba(76, 169, 48, 0.08);
+  border-color: rgba(var(--wt-accent-rgb), 0.55);
+  background: rgba(var(--wt-accent-rgb), 0.08);
   color: #a8e08f;
 }
 .researcherName {

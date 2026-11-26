@@ -111,7 +111,9 @@ export function Readout({ label, value, unit, digits = 2, note, emphasis }: { la
 export function fmt(v: number, digits = 2): string {
   if (!Number.isFinite(v)) return "—";
   const a = Math.abs(v);
-  if (a !== 0 && (a < 10 ** -digits || a >= 1e6)) return v.toExponential(Math.max(1, digits - 1));
+  // Floating-point residue (such as 3e-109 kW of storage power) is zero, not a reading.
+  if (a < 1e-30) return (0).toFixed(digits);
+  if (a >= 1e6 || (a !== 0 && digits > 0 && a < 10 ** -digits)) return v.toExponential(Math.max(1, digits - 1));
   return v.toFixed(digits);
 }
 

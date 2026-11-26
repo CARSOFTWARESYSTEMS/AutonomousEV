@@ -1,23 +1,38 @@
 "use client";
 import { ArrowRight } from "lucide-react";
-import { CHAIN_COMPONENTS } from "@/lib/wireless-charging/components";
+import { CHAIN_COMPONENTS, COMPONENTS } from "@/lib/wireless-charging/components";
 import { ENVIRONMENTS, MODES, PRODUCT } from "@/lib/wireless-charging/content";
-import { FIDELITY, type Fidelity } from "@/lib/wireless-charging/registry";
+import { FIDELITY, type Fidelity, MODELS } from "@/lib/wireless-charging/registry";
 import { DATA_MODES, type DataMode } from "@/lib/wireless-charging/sensors";
 import { useTwin } from "../state/store";
 import { openEnvironment } from "../story/guide";
 import { Tag } from "../ui/controls";
+import { Disclosure, ExpandScope, SectionHero } from "../ui/Section";
+import { CHECKS } from "@/lib/wireless-charging/benchmarks";
 import ui from "../twin.module.css";
 
 export default function OverviewSection() {
   const set = useTwin((s) => s.set);
+  const sides = [
+    { id: "grid", label: "Grid side" },
+    { id: "ground", label: "Ground side" },
+    { id: "wireless", label: "Wireless link" },
+    { id: "vehicle", label: "Vehicle side" },
+  ].map((g) => ({ ...g, items: CHAIN_COMPONENTS.filter((c) => c.side === g.id) })).filter((g) => g.items.length > 0);
   return (
+    <ExpandScope>
     <div className={ui.labBody}>
-      <header className={ui.labHead}>
-        <p className={ui.eyebrow}>Overview</p>
-        <h2>{PRODUCT.question}</h2>
-        <p>Five research environments, four of them simulated today, share one engine: the same coupler, circuit, battery, thermal, communication and energy models drive every view, every graph and every number. The Smart Parking Shelter is specified and planned.</p>
-      </header>
+      <SectionHero
+        eyebrow="Overview"
+        title="Wireless energy for electric vehicles — parked, moving and autonomous"
+        lede={PRODUCT.question}
+        stats={[
+          { value: "4", label: "Simulated environments" },
+          { value: String(MODELS.length), label: "Models" },
+          { value: String(CHECKS.length), label: "Checks" },
+          { value: String(COMPONENTS.length), label: "Components" },
+        ]}
+      />
       <ul className={ui.envCards}>
         {ENVIRONMENTS.map((e) => (
           <li key={e.id}>
@@ -40,20 +55,25 @@ export default function OverviewSection() {
       </ul>
       <section className={ui.labBlock} aria-labelledby="chain-title">
         <h3 id="chain-title">The energy chain, end to end</h3>
-        <p className={ui.small}>Ground side → wireless link → vehicle side. Select a stage to inspect it in 3D.</p>
-        <ol className={ui.chain}>
-          {CHAIN_COMPONENTS.map((c) => (
-            <li key={c.id} data-side={c.side}>
-              <button type="button" onClick={() => set({ section: "twin", environment: "station", view: "engineering", selected: c.id })}>
-                {c.name}
-              </button>
-            </li>
+        <p className={ui.small}>Every stage between the grid and the battery is a modelled loss. Select one to open it in 3D.</p>
+        <div className={ui.chainFlow}>
+          {sides.map((g) => (
+            <div key={g.id} className={ui.chainGroup} data-side={g.id}>
+              <p>{g.label}</p>
+              <ol className={ui.chain}>
+                {g.items.map((c) => (
+                  <li key={c.id} data-side={c.side}>
+                    <button type="button" onClick={() => set({ section: "twin", environment: "station", view: "engineering", selected: c.id })}>
+                      {c.name}
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            </div>
           ))}
-        </ol>
+        </div>
       </section>
-      <div className={ui.columns2}>
-        <section className={ui.labBlock} aria-labelledby="fidelity-title">
-          <h3 id="fidelity-title">Model fidelity</h3>
+      <Disclosure title="Model fidelity" summary="F0 conceptual to F5 — and what each level does and does not claim">
           <dl className={ui.defs}>
             {(Object.keys(FIDELITY) as Fidelity[]).map((f) => (
               <div key={f}>
@@ -63,9 +83,8 @@ export default function OverviewSection() {
             ))}
           </dl>
           <p className={ui.small}>Connectivity and accuracy are independent: a connected model is not, by that fact, validated. No model here is experimentally validated yet.</p>
-        </section>
-        <section className={ui.labBlock} aria-labelledby="modes-title">
-          <h3 id="modes-title">Data modes</h3>
+      </Disclosure>
+      <Disclosure title="Data modes" summary="Simulated, recorded, live, estimated — every value says which it is">
           <dl className={ui.defs}>
             {(Object.keys(DATA_MODES) as DataMode[]).map((m) => (
               <div key={m}>
@@ -79,10 +98,8 @@ export default function OverviewSection() {
           <p className={ui.small}>
             Inputs you set are marked <Tag kind="input" />; model outputs <Tag kind="calculated" />.
           </p>
-        </section>
-      </div>
-      <section className={ui.labBlock} aria-labelledby="xp-title">
-        <h3 id="xp-title">Experience modes</h3>
+      </Disclosure>
+      <Disclosure title="Experience modes" summary="Explore, Learn, Engineer and Research share one simulation">
         <dl className={ui.defs}>
           {MODES.map((m) => (
             <div key={m.id}>
@@ -91,7 +108,8 @@ export default function OverviewSection() {
             </div>
           ))}
         </dl>
-      </section>
+      </Disclosure>
     </div>
+    </ExpandScope>
   );
 }

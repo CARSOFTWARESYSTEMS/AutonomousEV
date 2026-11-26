@@ -69,3 +69,8 @@ export function setEnvironment(scene: Scene, environment: Texture | null, intens
   scene.environmentIntensity = intensity;
   scene.fog = fog;
 }
+
+/** Material colour (frame-loop state colours). */
+export function setColor(m: { color: Color }, c: Color) {
+  if (!m.color.equals(c)) m.color.copy(c);
+}

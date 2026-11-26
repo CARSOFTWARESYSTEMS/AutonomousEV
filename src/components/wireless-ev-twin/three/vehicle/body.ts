@@ -138,12 +138,18 @@ export function halfWidth(x: number): number {
   const xc = (BODY_FRONT + BODY_REAR) / 2;
   const half = (BODY_FRONT - BODY_REAR) / 2;
   const u = Math.min(1, Math.abs((x - xc) / half));
-  const p = x > xc ? 4.2 : 5.2;
+  const p = x > xc ? 5.4 : 7.5;
   const w = HALF_WIDTH * Math.pow(Math.max(0, 1 - Math.pow(u, p)), 1 / p);
   return w * (1 - 0.025 * smooth(0, BODY_FRONT, x));
 }
 
-/** Control points of the right half-section at station x, from the floor centre to the roof centre. */
+/**
+ * Control points of the right half-section at station x, from the floor
+ * centre to the roof centre: floor, rocker, door, shoulder crease, the
+ * shoulder's top surface to the beltline, the window seal, the side glass
+ * (with tumblehome), the roof seal and the roof. Outside the glasshouse the
+ * upper knots collapse onto the bonnet or boot lid.
+ */
 function sectionKnots(x: number): P[] {
   const W = halfWidth(x);
   const yB = bottomLine(x);
@@ -152,24 +158,45 @@ function sectionKnots(x: number): P[] {
   const h = yT - yB;
   const yS = Math.min(shoulderLine(x), yB + 0.62 * h);
   const belt = c > 0 ? beltLine(Math.min(COWL_X, Math.max(-1.9, x))) : yT;
-  const yBelt = Math.min(c * belt + (1 - c) * (yT - 0.035), yT - 0.025);
-  const roofW = c * 0.68 + (1 - c) * W * 0.86;
+  const yBelt = Math.max(yS + 0.02, Math.min(c * belt + (1 - c) * (yT - 0.045), yT - 0.03));
+  const roofW = c * 0.655 + (1 - c) * W * 0.76;
+  const yRail = yT - 0.05 * c - 0.012 * (1 - c);
+  const zBelt = W * (0.952 * c + 0.93 * (1 - c));
+  const rock = Math.min(0.1, 0.3 * (yS - yB));
+  const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+  const zGlass0 = zBelt - 0.014 * c - (1 - c) * W * 0.03;
+  const zGlass1 = roofW + 0.012 * c + (1 - c) * W * 0.04;
   return [
     [0, yB],
-    [W * 0.72, yB],
-    [W * 0.93, yB + Math.min(0.045, 0.2 * h)],
-    [W * 0.985, yB + Math.min(0.17, 0.42 * (yS - yB))],
+    [W * 0.78, yB],
+    [W * 0.925, yB + Math.min(0.03, 0.2 * h)],
+    [W * 0.972, yB + rock],
+    [W * 0.99, yB + rock + 0.5 * (yS - yB - rock)],
     [W, yS],
-    [W * 0.968, Math.max(yS + 0.01, yBelt)],
-    [c * W * 0.9 + (1 - c) * W * 0.93, yBelt + c * 0.13 + (1 - c) * 0.012],
-    [roofW, yT - 0.012 - c * 0.032],
-    [roofW * 0.55, yT - 0.004 - c * 0.002],
+    [zBelt, yBelt],
+    [zGlass0, yBelt + 0.016 * c + 0.008 * (1 - c)],
+    [lerp(zGlass0, zGlass1, 0.52) + 0.012 * c, lerp(yBelt, yRail, 0.52)],
+    [zGlass1, yRail - 0.018 * c - 0.004 * (1 - c)],
+    [roofW, yRail],
+    [roofW * 0.55, yT - 0.005 - 0.002 * c],
     [0, yT],
   ];
 }
 
-/** Rows per segment of the half-section (denser where it curves). */
-const ROWS = [5, 3, 3, 4, 3, 4, 4, 3, 4];
+/** Bands of the section between creases (knot index ranges); each band is smooth, the edges between bands are sharp. */
+const BANDS: [number, number][] = [
+  [0, 2],
+  [2, 3],
+  [3, 5],
+  [5, 6],
+  [6, 7],
+  [7, 9],
+  [9, 10],
+  [10, 12],
+];
+export const BAND = { floor: 0, rocker: 1, door: 2, shoulder: 3, beltSeal: 4, glass: 5, roofSeal: 6, roof: 7 } as const;
+/** Rows per segment between consecutive knots. */
+const SEG_ROWS = [4, 2, 2, 3, 3, 3, 1, 3, 3, 1, 3, 3];
 
 /** Centripetal Catmull–Rom point between k1 and k2. */
 function catmull(k0: P, k1: P, k2: P, k3: P, t: number): P {
@@ -192,34 +219,49 @@ function catmull(k0: P, k1: P, k2: P, k3: P, t: number): P {
   return lerp(b1, b2, t1, t2);
 }
 
+/** Band of every section row; a row that starts a band repeats the last row of the previous one (a hard edge). */
+export const ROW_BAND: number[] = (() => {
+  const out: number[] = [];
+  BANDS.forEach(([k0, k1], b) => {
+    for (let k = k0; k < k1; k++) for (let r = 0; r < SEG_ROWS[k]; r++) out.push(b);
+    out.push(b);
+  });
+  return out;
+})();
+/** Rows that duplicate the previous row (no faces are built between the two). */
+const DUPLICATE = ROW_BAND.map((b, i) => i > 0 && ROW_BAND[i - 1] !== b);
+
 /** The right half-section sampled at fixed rows, so every station has the same topology. Row 0 is the floor centre. */
 export function halfSection(x: number): P[] {
   const k = sectionKnots(x);
-  const ext: P[] = [[k[0][0] - (k[1][0] - k[0][0]), k[0][1]], ...k, [k[k.length - 1][0] - 0.05, k[k.length - 1][1] + 0.01]];
   const out: P[] = [];
-  for (let s = 0; s < k.length - 1; s++) {
-    for (let r = 0; r < ROWS[s]; r++) out.push(catmull(ext[s], ext[s + 1], ext[s + 2], ext[s + 3], r / ROWS[s]));
+  for (const [k0, k1] of BANDS) {
+    // Spline only through the band's own knots, extended by reflection at its ends, so creases stay sharp.
+    const at = (i: number): P => {
+      if (i < k0) return [2 * k[k0][0] - k[k0 + 1][0], 2 * k[k0][1] - k[k0 + 1][1]];
+      if (i > k1) return [2 * k[k1][0] - k[k1 - 1][0], 2 * k[k1][1] - k[k1 - 1][1]];
+      return k[i];
+    };
+    for (let s = k0; s < k1; s++) for (let r = 0; r < SEG_ROWS[s]; r++) out.push(r === 0 ? k[s] : catmull(at(s - 1), at(s), at(s + 1), at(s + 2), r / SEG_ROWS[s]));
+    out.push(k[k1]);
   }
-  out.push(k[k.length - 1]);
   return out;
 }
 
-/** Index of the section row at each control knot. */
-const KNOT_ROW = ROWS.reduce<number[]>((acc, n, i) => [...acc, acc[i] + n], [0]);
-/** The roof-rail row (knot 7): the line between the side glass and the roof, kept black like the pillars. */
-const ROOF_RAIL = KNOT_ROW[7];
-const BELT_ROW = KNOT_ROW[5];
+/** First row of a band. */
+const bandStart = (b: number) => ROW_BAND.indexOf(b);
 
 /** Body surface half-width at height y on the side of station x (for placing mirrors, handles, cladding). */
 export function surfaceZ(x: number, y: number): number {
   const s = halfSection(x);
-  let best = s[KNOT_ROW[4]][0];
-  for (let i = 1; i <= ROOF_RAIL; i++) {
+  const last = bandStart(BAND.roofSeal);
+  let best = s[bandStart(BAND.shoulder)][0];
+  for (let i = bandStart(BAND.rocker); i <= last; i++) {
     const [z0, y0] = s[i - 1];
     const [z1, y1] = s[i];
     if ((y - y0) * (y - y1) <= 0 && y1 !== y0) {
       best = z0 + ((z1 - z0) * (y - y0)) / (y1 - y0);
-      if (i > 2) break;
+      break;
     }
   }
   return best;
@@ -228,20 +270,24 @@ export function surfaceZ(x: number, y: number): number {
 /** Stations along the car: denser at the ends, with pairs at each door seam. */
 function stations(): number[] {
   const xs = new Set<number>();
-  const n = 92;
+  const n = 96;
   for (let i = 0; i <= n; i++) {
     const t = i / n;
     // Cosine spacing: fine at the nose and tail, coarser along the doors.
     xs.add(+(BODY_REAR + (BODY_FRONT - BODY_REAR) * (0.5 - 0.5 * Math.cos(Math.PI * t))).toFixed(5));
   }
-  for (let i = 0; i <= 40; i++) xs.add(+(-1.7 + (3.3 * i) / 40).toFixed(5));
+  for (let i = 0; i <= 44; i++) xs.add(+(-1.7 + (3.3 * i) / 44).toFixed(5));
   for (const s of SEAMS) {
     xs.add(+(s - SEAM_HALF).toFixed(5));
     xs.add(+(s + SEAM_HALF).toFixed(5));
   }
-  for (const x of [COWL_X, DECK_X, SIDE_GLASS[0], SIDE_GLASS[1], B_PILLAR[0], B_PILLAR[1]]) xs.add(+x.toFixed(5));
+  for (const x of [COWL_X, DECK_X, SIDE_GLASS[0], SIDE_GLASS[1], B_PILLAR[0], B_PILLAR[1], LAMP_FRONT_X, LAMP_REAR_X]) xs.add(+x.toFixed(5));
   return [...xs].sort((a, b) => a - b);
 }
+
+/** Front and rear light bars: the shoulder band across the nose and the top of it across the tail. */
+const LAMP_FRONT_X = 2.17;
+const LAMP_REAR_X = -2.12;
 
 export interface BodyGeometry {
   geometry: BufferGeometry;
@@ -281,8 +327,13 @@ export function buildBody(): BodyGeometry {
   for (let i = 0; i < xs.length - 1; i++) {
     const xm = (xs[i] + xs[i + 1]) / 2;
     const c = cabin(xm);
-    const yT = topLine(xm);
     for (let j = 0; j < ring - 1; j++) {
+      // Rows j and j+1 (mirrored on the left side); skip the zero-width step at a crease.
+      const rowA = j < half ? j : ring - 1 - j;
+      const rowB = j + 1 < half ? j + 1 : ring - 2 - j;
+      const upper = Math.max(rowA, rowB);
+      if (rowA === rowB || DUPLICATE[upper]) continue;
+      const band = ROW_BAND[upper];
       const a = id(i, j);
       const b = id(i + 1, j);
       const cc = id(i + 1, j + 1);
@@ -290,19 +341,16 @@ export function buildBody(): BodyGeometry {
       const cy = (pos[a * 3 + 1] + pos[b * 3 + 1] + pos[cc * 3 + 1] + pos[d * 3 + 1]) / 4;
       const cz = (pos[a * 3 + 2] + pos[b * 3 + 2] + pos[cc * 3 + 2] + pos[d * 3 + 2]) / 4;
       if (inArch(xm, cy, cz)) continue;
-      const row = j < half - 1 ? j : ring - 2 - j;
       let g: BodyGroup = "paint";
-      const side = row >= BELT_ROW && row < ROOF_RAIL;
-      const top = row > ROOF_RAIL;
-      if (c > 0.5 && (row === ROOF_RAIL || row === ROOF_RAIL - 1)) g = "trim";
-      else if (c > 0.5 && side) {
-        const glass = xm > SIDE_GLASS[0] && xm < SIDE_GLASS[1] && !(xm > B_PILLAR[0] && xm < B_PILLAR[1]) && row > BELT_ROW;
-        g = glass ? "glass" : row > BELT_ROW ? "trim" : "paint";
-      } else if (top && xm > DECK_X + 0.04 && xm < COWL_X - 0.03) g = "glass";
-      else if (xm > 2.1 && cy > yT - 0.085 && cy < yT - 0.045 && row > KNOT_ROW[3]) g = "lampFront";
-      else if (xm < -2.28 && cy > yT - 0.13 && cy < yT - 0.1 && row > KNOT_ROW[3]) g = "lampRear";
-      else if (SEAMS.some((s) => Math.abs(xm - s) < SEAM_HALF + 1e-4) && row >= KNOT_ROW[2] && row <= BELT_ROW && Math.abs(cz) > 0.5) g = "seam";
-      else if (row <= KNOT_ROW[2] + 1 && Math.abs(cz) > 0.62) g = "trim";
+      const inCabin = c > 0.5;
+      const sideGlass = xm > SIDE_GLASS[0] && xm < SIDE_GLASS[1] && !(xm > B_PILLAR[0] && xm < B_PILLAR[1]);
+      if (band === BAND.floor || band === BAND.rocker) g = "trim";
+      else if (band === BAND.beltSeal || band === BAND.roofSeal) g = inCabin ? "trim" : "paint";
+      else if (band === BAND.glass) g = inCabin ? (sideGlass ? "glass" : "trim") : "paint";
+      else if (band === BAND.roof) g = inCabin || (xm > DECK_X + 0.04 && xm < COWL_X - 0.03) ? "glass" : "paint";
+      else if (band === BAND.shoulder && xm > LAMP_FRONT_X) g = "lampFront";
+      else if (band === BAND.shoulder && xm < LAMP_REAR_X && cy > topLine(xm) - 0.1 && cy < topLine(xm) - 0.045) g = "lampRear";
+      else if (SEAMS.some((s) => Math.abs(xm - s) < SEAM_HALF + 1e-4) && (band === BAND.door || band === BAND.shoulder) && Math.abs(cz) > 0.5) g = "seam";
       // Outward winding: the right side runs floor→roof, so (a, d, b) faces out.
       groups[BODY_GROUPS.indexOf(g)].push(a, d, b, b, d, cc);
     }

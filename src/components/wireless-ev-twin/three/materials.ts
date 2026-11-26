@@ -114,22 +114,23 @@ export function solarTexture(): Texture {
   return t;
 }
 
-/** Dry grass and soil for the road verge (tiles every 10 m). */
+/** Mown grass with clover patches and a little soil (tiles every 10 m on verges, larger on lawns). */
 export function grassTexture(): Texture {
-  const t = canvasTexture(256, 256, (ctx) => {
-    ctx.fillStyle = "#3a4230";
-    ctx.fillRect(0, 0, 256, 256);
-    for (let i = 0; i < 5000; i++) {
-      const g = 58 + hash(i + 31) * 40;
-      ctx.fillStyle = `rgba(${g - 8},${g + 6},${g - 22},${0.25 + hash(i + 17) * 0.35})`;
-      ctx.fillRect(hash(i + 3) * 256, hash(i + 5) * 256, 1 + hash(i + 7) * 2, 2 + hash(i + 9) * 4);
-    }
-    for (let i = 0; i < 40; i++) {
-      const g = ctx.createRadialGradient(hash(i + 900) * 256, hash(i + 950) * 256, 0, hash(i + 900) * 256, hash(i + 950) * 256, 20 + hash(i + 990) * 40);
-      g.addColorStop(0, "rgba(92,84,62,0.25)");
+  const t = canvasTexture(512, 512, (ctx) => {
+    ctx.fillStyle = "#5f7a3c";
+    ctx.fillRect(0, 0, 512, 512);
+    for (let i = 0; i < 60; i++) {
+      const g = ctx.createRadialGradient(hash(i + 900) * 512, hash(i + 950) * 512, 0, hash(i + 900) * 512, hash(i + 950) * 512, 30 + hash(i + 990) * 80);
+      const warm = hash(i + 1200) > 0.6;
+      g.addColorStop(0, warm ? "rgba(128,128,70,0.22)" : "rgba(70,100,45,0.25)");
       g.addColorStop(1, "rgba(0,0,0,0)");
       ctx.fillStyle = g;
-      ctx.fillRect(0, 0, 256, 256);
+      ctx.fillRect(0, 0, 512, 512);
+    }
+    for (let i = 0; i < 26000; i++) {
+      const g = 92 + hash(i + 31) * 70;
+      ctx.fillStyle = `rgba(${Math.round(g * 0.66)},${Math.round(g)},${Math.round(g * 0.42)},${0.18 + hash(i + 17) * 0.3})`;
+      ctx.fillRect(hash(i + 3) * 512, hash(i + 5) * 512, 1, 2 + hash(i + 9) * 4);
     }
   });
   t.wrapS = t.wrapT = RepeatWrapping;
@@ -247,19 +248,26 @@ export const MATERIALS = () => ({
 
 export type Materials = ReturnType<typeof MATERIALS>;
 
-/** Materials of one vehicle's body, in the order of the body geometry's groups (paint, glass, trim, front lamp, rear lamp, seam). */
+/** Materials of one vehicle's body, in the order of the body geometry's groups (paint, glass, trim, front lamp, rear lamp, seam), plus detail parts. */
 export function bodyMaterials(paint: string) {
+  const c = new Color(paint);
+  // Light solid paints carry little metal flake; darker colours read as metallic.
+  const lum = 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b;
+  const metal = lum > 0.5 ? 0.12 : 0.55;
   return {
-    paint: new MeshPhysicalMaterial({ color: paint, metalness: 0.55, roughness: 0.3, clearcoat: 1, clearcoatRoughness: 0.05, envMapIntensity: 1.15 }),
-    glass: new MeshPhysicalMaterial({ color: "#070a0e", metalness: 0.15, roughness: 0.03, clearcoat: 1, clearcoatRoughness: 0.02, transparent: true, opacity: 0.93, envMapIntensity: 1.5 }),
-    trim: new MeshPhysicalMaterial({ color: "#0b0c0e", metalness: 0.2, roughness: 0.32, clearcoat: 0.6, clearcoatRoughness: 0.2 }),
-    lampFront: new MeshStandardMaterial({ color: "#f4f8ff", emissive: new Color("#eaf4ff"), emissiveIntensity: 2.4, roughness: 0.2 }),
-    lampRear: new MeshStandardMaterial({ color: "#2a0004", emissive: new Color("#e0101c"), emissiveIntensity: 1.1, roughness: 0.25 }),
+    paint: new MeshPhysicalMaterial({ color: paint, metalness: metal, roughness: lum > 0.5 ? 0.4 : 0.33, clearcoat: 1, clearcoatRoughness: 0.035, envMapIntensity: 1.1 }),
+    glass: new MeshPhysicalMaterial({ color: "#020304", metalness: 0, roughness: 0.04, clearcoat: 1, clearcoatRoughness: 0.01, transparent: true, opacity: 0.965, envMapIntensity: 1.05, specularIntensity: 1 }),
+    trim: new MeshPhysicalMaterial({ color: "#060708", metalness: 0.05, roughness: 0.18, clearcoat: 1, clearcoatRoughness: 0.05, envMapIntensity: 1.2 }),
+    lampFront: new MeshStandardMaterial({ color: "#f4f8ff", emissive: new Color("#eef6ff"), emissiveIntensity: 1.7, roughness: 0.2 }),
+    lampRear: new MeshStandardMaterial({ color: "#3a0002", emissive: new Color("#ff0a12"), emissiveIntensity: 3.2, roughness: 0.25 }),
     seam: new MeshStandardMaterial({ color: "#050505", roughness: 0.9 }),
-    cladding: new MeshStandardMaterial({ color: "#111214", roughness: 0.7, metalness: 0.05, side: DoubleSide }),
+    cladding: new MeshStandardMaterial({ color: "#111214", roughness: 0.72, metalness: 0.05, side: DoubleSide }),
     liner: new MeshStandardMaterial({ color: "#060607", roughness: 0.95, side: DoubleSide }),
-    interior: new MeshStandardMaterial({ color: "#1a1c20", roughness: 0.82, metalness: 0.05 }),
+    interior: new MeshStandardMaterial({ color: "#2a2b2e", roughness: 0.78, metalness: 0.05 }),
     display: new MeshStandardMaterial({ color: "#05080c", emissive: new Color("#1d4a66"), emissiveIntensity: 0.9, roughness: 0.2 }),
+    lens: new MeshPhysicalMaterial({ color: "#0b0d10", metalness: 0.4, roughness: 0.08, clearcoat: 1, clearcoatRoughness: 0.02, envMapIntensity: 1.6 }),
+    satin: new MeshStandardMaterial({ color: "#101113", metalness: 0.1, roughness: 0.55 }),
+    plate: new MeshStandardMaterial({ color: "#eef0f2", metalness: 0, roughness: 0.35 }),
   };
 }
 export type BodyMaterials = ReturnType<typeof bodyMaterials>;
@@ -317,3 +325,39 @@ export function thermalColor(t01: number, out = new Color()): Color {
 }
 
 export { fieldColor } from "./fieldScale";
+
+const NOISE_GLSL = /* glsl */ `
+float tileHash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+float tileNoise(vec2 p) {
+  vec2 i = floor(p);
+  vec2 f = fract(p);
+  vec2 u = f * f * (3.0 - 2.0 * f);
+  return mix(mix(tileHash(i), tileHash(i + vec2(1.0, 0.0)), u.x), mix(tileHash(i + vec2(0.0, 1.0)), tileHash(i + vec2(1.0, 1.0)), u.x), u.y);
+}
+`;
+
+/**
+ * Breaks visible texture tiling on large natural surfaces: the map is sampled
+ * at two scales and blended by noise, and a low-frequency tint adds lush and
+ * dry patches. Texture coordinates are continuous across tiles, so the
+ * variation never repeats with the texture.
+ */
+export function antiTile<T extends MeshStandardMaterial>(m: T, tint: [number, number, number] = [1.08, 1.02, 0.84], lush: [number, number, number] = [0.8, 0.96, 0.76]): T {
+  m.onBeforeCompile = (shader) => {
+    shader.fragmentShader = shader.fragmentShader.replace("#include <common>", `#include <common>\n${NOISE_GLSL}`).replace(
+      "#include <map_fragment>",
+      `#ifdef USE_MAP
+  vec2 tuv = vMapUv;
+  float n = tileNoise(tuv * 0.11) * 0.6 + tileNoise(tuv * 0.37) * 0.4;
+  vec4 ta = texture2D(map, tuv);
+  vec4 tb = texture2D(map, tuv * 0.31 + vec2(0.17, 0.53));
+  vec4 sampledDiffuseColor = mix(ta, tb, smoothstep(0.32, 0.68, n));
+  float macro = tileNoise(tuv * 0.045) * 0.7 + tileNoise(tuv * 0.013) * 0.3;
+  sampledDiffuseColor.rgb *= mix(vec3(${tint.join(", ")}), vec3(${lush.join(", ")}), smoothstep(0.25, 0.75, macro));
+  diffuseColor *= sampledDiffuseColor;
+#endif`,
+    );
+  };
+  m.customProgramCacheKey = () => `anti-tile-${tint.join()}-${lush.join()}`;
+  return m;
+}

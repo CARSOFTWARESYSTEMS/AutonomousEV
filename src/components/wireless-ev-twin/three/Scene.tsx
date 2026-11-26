@@ -139,7 +139,8 @@ function TwinScene({ settings, label, active }: { settings: RenderSettings; labe
           if (!useTwin.getState().demo.active) useTwin.getState().select(null);
         }}
       >
-        {settings.adaptive && <PerformanceMonitor onDecline={() => setDpr((d) => Math.max(1, +(d * 0.8).toFixed(2)))} onIncline={() => setDpr((d) => Math.min(settings.dpr, +(d * 1.12).toFixed(2)))} />}
+        {/* Adaptive resolution only steps down, and locks after two flip-flops: every change resizes the canvas and its targets, which reads as flicker. */}
+        {settings.adaptive && <PerformanceMonitor flipflops={2} bounds={() => [40, 58]} onDecline={() => setDpr((d) => Math.max(1, +(d - 0.25).toFixed(2)))} onFallback={() => setDpr(1)} />}
         <Lighting shadows={settings.shadows} mapSize={settings.shadowMapSize} />
         <Sky />
         <Ground />

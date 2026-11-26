@@ -107,11 +107,11 @@ async function main() {
       await modes.getByRole('radio', { name: 'Learn' }).click();
       await page.getByRole('tab', { name: 'Science', selected: true }).waitFor();
       await modes.getByRole('radio', { name: 'Engineer' }).click();
-      await page.getByRole('complementary', { name: 'Inputs' }).waitFor();
+      await page.getByRole('region', { name: 'Inputs' }).waitFor();
       await stageButtons().nth(4).click();
       await settle(2500);
       const before = Number(await instrument('Coupling k').first().textContent());
-      const gap = page.getByRole('complementary', { name: 'Inputs' }).getByLabel('Air gap (winding to winding)');
+      const gap = page.getByRole('region', { name: 'Inputs' }).getByLabel('Air gap (winding to winding)');
       await gap.focus();
       for (let i = 0; i < 12; i++) await page.keyboard.press('ArrowRight');
       await settle(1500);
@@ -122,10 +122,10 @@ async function main() {
       await modes.getByRole('radio', { name: 'Explore' }).click();
     });
 
-    await test('Dynamic road: nine stages; pads show controller states; the three energy outcomes come out as stated', async () => {
+    await test('Dynamic road: eleven stages; charging in motion, the road field, pad states and the three energy outcomes', async () => {
       await page.getByRole('navigation', { name: 'Research environments' }).getByRole('button', { name: /^03/ }).click();
-      await page.getByText('Stage 1 of 9', { exact: false }).waitFor({ timeout: 10000 });
-      const titles = ['An electrified highway', 'Under the road', 'Segment activation and handover', 'Position-dependent coupling', 'The receiver at speed', 'Gaining energy while driving', 'Energy-neutral driving', 'Losing energy despite charging', 'A failed segment'];
+      await page.getByText('Stage 1 of 11', { exact: false }).waitFor({ timeout: 10000 });
+      const titles = ['An electrified highway', 'How the car charges while it drives', 'Under the road', 'Segment activation and handover', 'Position-dependent coupling', 'The magnetic field over the road', 'The receiver at speed', 'Gaining energy while driving', 'Energy-neutral driving', 'Losing energy despite charging', 'A failed segment'];
       const outcome = { 'Gaining energy while driving': 'Battery gaining', 'Energy-neutral driving': 'Energy-neutral', 'Losing energy despite charging': 'Battery losing' };
       for (let i = 0; i < titles.length; i++) {
         await stageButtons().nth(i).click();
@@ -138,10 +138,30 @@ async function main() {
         }
         await shot(`road-${String(i + 1).padStart(2, '0')}`);
         if (titles[i] === 'Segment activation and handover') measurements.fpsRoad = await fps();
+        if (titles[i] === 'How the car charges while it drives') {
+          await page.getByLabel('Charging in motion').waitFor({ timeout: 10000 });
+          assert.match(await page.getByLabel('Charging in motion').textContent(), /Received from the road/);
+        }
+        if (titles[i] === 'Under the road') assert.match(await page.getByLabel('What is in the road').textContent(), /Segment controller/);
+        if (titles[i] === 'The magnetic field over the road') {
+          // The field basis is built a few rows per frame; the reading then comes from WPT-EM-005.
+          await page.locator('[aria-label="Instruments"] dd', { hasText: /µT/ }).first().waitFor({ timeout: 30000 });
+          measurements.fpsRoadField = await fps();
+        }
       }
       assert.equal(await page.locator('canvas').count(), 1);
       await page.getByRole('navigation', { name: 'Research environments' }).getByRole('button', { name: /^02/ }).click();
       await settle(1500);
+    });
+
+    await test('A presentation link opens full-window with the demonstration and one Begin control', async () => {
+      const p2 = await desktop.newPage();
+      await p2.goto(`${BASE}${ROUTE}?experience=present`, { waitUntil: 'load' });
+      await p2.getByRole('dialog', { name: /Next-Generation Wireless EV Charging Digital Twin/ }).waitFor({ timeout: 90000 });
+      assert.equal(await p2.locator('#research-laboratory').getAttribute('data-fullscreen'), 'overlay');
+      await p2.getByRole('button', { name: 'Watch silently' }).click();
+      await p2.getByText('Chapter 1 of 8', { exact: false }).waitFor({ timeout: 30000 });
+      await p2.close();
     });
 
     await test('The technology demonstration runs in chapters and can be left', async () => {

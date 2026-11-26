@@ -9,6 +9,7 @@ import { GATES, RISKS, STANDARDS } from "@/lib/wireless-charging/content";
 import { FEATURE_COUNTS, FEATURES } from "@/lib/wireless-charging/coverage";
 import { FIDELITY, MODELS } from "@/lib/wireless-charging/registry";
 import { fmt } from "../ui/controls";
+import { Disclosure, ExpandScope, SectionHero, ShowMore } from "../ui/Section";
 import ui from "../twin.module.css";
 
 type Result = ReturnType<typeof runChecks>[number] & { at: string };
@@ -28,12 +29,19 @@ export default function AssuranceSection() {
   const ran = Object.values(results);
   const passed = ran.filter((r) => r.passed).length;
   return (
+    <ExpandScope>
     <div className={ui.labBody}>
-      <header className={ui.labHead}>
-        <p className={ui.eyebrow}>Engineering Assurance</p>
-        <h2>Evidence, not claims</h2>
-        <p>Every check states its expected result and runs the real engine here, in your browser. Nothing is shown as passed until it has run and passed. No review is shown as approved.</p>
-      </header>
+      <SectionHero
+        eyebrow="Engineering Assurance"
+        title="Evidence, not claims"
+        lede="Every check states its expected result and runs the real engine here, in your browser. Nothing is shown as passed until it has run and passed."
+        stats={[
+          { value: String(CHECKS.length), label: "Checks" },
+          { value: ran.length ? `${passed}/${ran.length}` : "—", label: "Passed here" },
+          { value: String(MODELS.length), label: "Models" },
+          { value: String(COMPONENTS.length), label: "Components" },
+        ]}
+      />
       <section className={ui.labBlock} aria-labelledby="vv-title">
         <h3 id="vv-title">Verification suite</h3>
         <div className={ui.runBar}>
@@ -42,37 +50,33 @@ export default function AssuranceSection() {
           </button>
           <span role="status">{ran.length ? `${passed} of ${ran.length} run passed${ran.length < CHECKS.length ? ` (${CHECKS.length - ran.length} not yet run)` : ""}.` : "Not run in this session."}</span>
         </div>
-        <div className={ui.tableWrap}>
-          <table className={ui.table}>
-            <thead>
-              <tr>
-                <th scope="col">Check</th>
-                <th scope="col">Expected</th>
-                <th scope="col">Measured here</th>
-                <th scope="col">Result</th>
-              </tr>
-            </thead>
-            <tbody>
-              {CHECKS.map((c) => {
-                const r = results[c.id];
-                return (
-                  <tr key={c.id} data-result={r ? (r.passed ? "pass" : "fail") : undefined}>
-                    <th scope="row">
-                      {`${c.id} · ${c.title}`}
-                      <small>{`${c.kind} · ${c.models.join(", ")}`}</small>
-                    </th>
-                    <td>{c.expected}</td>
-                    <td>{r ? `${r.measured} (${fmt(r.ms, 0)} ms)` : "—"}</td>
-                    <td>{r ? (r.passed ? "Passed" : "Failed") : running === c.id ? "Running" : "Not run"}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+        <div className={ui.progress} aria-hidden="true">
+          <span style={{ transform: `scaleX(${ran.length / CHECKS.length})` }} data-fail={ran.some((r) => !r.passed) || undefined} />
         </div>
+        <ShowMore
+          items={CHECKS}
+          initial={6}
+          noun="checks"
+          className={ui.checkList}
+          render={(c) => {
+            const r = results[c.id];
+            return (
+              <Disclosure
+                key={c.id}
+                title={`${c.id} · ${c.title}`}
+                summary={`${c.kind} · ${c.models.join(", ")}`}
+                meta={<span className={ui.result} data-result={r ? (r.passed ? "pass" : "fail") : running === c.id ? "running" : undefined}>{r ? (r.passed ? "Passed" : "Failed") : running === c.id ? "Running" : "Not run"}</span>}
+              >
+                <dl className={ui.facts}>
+                  <div><dt>Expected</dt><dd>{c.expected}</dd></div>
+                  <div><dt>Measured here</dt><dd>{r ? `${r.measured} (${fmt(r.ms, 0)} ms)` : "Run the check to measure it in this browser."}</dd></div>
+                </dl>
+              </Disclosure>
+            );
+          }}
+        />
       </section>
-      <section className={ui.labBlock} aria-labelledby="gates-title">
-        <h3 id="gates-title">Review gates</h3>
+      <Disclosure title="Review gates" summary={`${GATES.length} gates · ${GATES.filter((g) => g.status !== "Not started").length} begun · none approved`}>
         <div className={ui.gates}>
           {GATES.map((g) => (
             <article key={g.id} className={ui.gate} data-status={g.status}>
@@ -88,9 +92,8 @@ export default function AssuranceSection() {
             </article>
           ))}
         </div>
-      </section>
-      <section className={ui.labBlock} aria-labelledby="trace-title">
-        <h3 id="trace-title">Traceability: requirement → model → implementation → test → evidence → validation</h3>
+      </Disclosure>
+      <Disclosure title="Traceability" summary="Requirement → model → implementation → test → evidence → validation">
         <div className={ui.tableWrap}>
           <table className={ui.table}>
             <thead>
@@ -115,9 +118,8 @@ export default function AssuranceSection() {
             </tbody>
           </table>
         </div>
-      </section>
-      <section className={ui.labBlock} aria-labelledby="models-title">
-        <h3 id="models-title">{`Model registry · ${MODELS.length} models · ${COMPONENTS.length} components`}</h3>
+      </Disclosure>
+      <Disclosure title="Model registry" summary={`${MODELS.length} models · fidelity, status, assumptions, limitations and checks`}>
         <div className={ui.tableWrap}>
           <table className={ui.table}>
             <thead>
@@ -147,10 +149,8 @@ export default function AssuranceSection() {
             </tbody>
           </table>
         </div>
-      </section>
-      <div className={ui.columns2}>
-        <section className={ui.labBlock} aria-labelledby="std-title">
-          <h3 id="std-title">Standards and requirements registry</h3>
+      </Disclosure>
+      <Disclosure title="Standards and requirements registry" summary={`${STANDARDS.length} standards for awareness · no compliance or certification is claimed`}>
           <ul className={ui.standards}>
             {STANDARDS.map((s) => (
               <li key={s.id}>
@@ -159,9 +159,8 @@ export default function AssuranceSection() {
               </li>
             ))}
           </ul>
-        </section>
-        <section className={ui.labBlock} aria-labelledby="risk-title">
-          <h3 id="risk-title">Risk register</h3>
+      </Disclosure>
+      <Disclosure title="Risk register" summary={`${RISKS.length} risks with their effect and mitigation`}>
           <ul className={ui.standards}>
             {RISKS.map((r) => (
               <li key={r.risk}>
@@ -170,10 +169,8 @@ export default function AssuranceSection() {
               </li>
             ))}
           </ul>
-        </section>
-      </div>
-      <section className={ui.labBlock} aria-labelledby="cov-title">
-        <h3 id="cov-title">Feature status</h3>
+      </Disclosure>
+      <Disclosure title="Feature status" summary={Object.entries(FEATURE_COUNTS).map(([k, v]) => `${k}: ${v}`).join(" · ")}>
         <p className={ui.small}>{Object.entries(FEATURE_COUNTS).map(([k, v]) => `${k}: ${v}`).join(" · ")}</p>
         <div className={ui.tableWrap}>
           <table className={ui.table}>
@@ -197,7 +194,8 @@ export default function AssuranceSection() {
             </tbody>
           </table>
         </div>
-      </section>
+      </Disclosure>
     </div>
+    </ExpandScope>
   );
 }

@@ -5,7 +5,7 @@
 // height that gives the simulated air gap; the wheels stay on the ground.
 import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { type BufferGeometry, type Color, type Group, type Material, MeshBasicMaterial, type MeshStandardMaterial, SphereGeometry } from "three";
+import { type BufferGeometry, type Color, type Group, type Material, MeshBasicMaterial, type MeshStandardMaterial } from "three";
 import { DEFAULT_RX_PAD } from "@/lib/wireless-charging/coils";
 import { contactShadowTexture, CHASSIS_MATERIALS, type ChassisMaterials, bodyMaterials, wheelMaterials } from "../materials";
 import { setClearcoat, setEmissive, setOpacity } from "../mutate";
@@ -14,6 +14,7 @@ import { Pad } from "../station/Pad";
 import { view, vehicleLayers } from "../viewState";
 import { buildBody, buildInterior, surfaceZ, TRACK, WHEEL_RADIUS, WHEEL_X } from "./body";
 import { buildChassis, type ChassisPart } from "./chassis";
+import { buildDetails, type Details, panelGaps } from "./details";
 import { brakeDiscGeometry, caliperGeometry, rimBarrelGeometry, rimFaceGeometry, treadTexture, tyreGeometry } from "./wheel";
 
 /** Winding plane of the receiver pad in the vehicle frame at nominal ride height (0.15 m above the ground pad's winding). */
@@ -33,7 +34,7 @@ let shared: {
   chassis: ChassisPart[];
   wheelMats: ReturnType<typeof wheelMaterials>;
   shadow: ReturnType<typeof contactShadowTexture>;
-  mirror: BufferGeometry;
+  details: Details;
 } | null = null;
 
 /** Geometry and wheel materials built once and shared by every vehicle in the scene. */
@@ -51,17 +52,10 @@ function assets() {
       chassis: buildChassis(),
       wheelMats: wheelMaterials(treadTexture()),
       shadow: contactShadowTexture(),
-      mirror: mirrorGeometry(),
+      details: buildDetails(),
     };
   }
   return shared;
-}
-
-function mirrorGeometry(): BufferGeometry {
-  // A rounded housing: a squashed sphere.
-  const g = new SphereGeometry(0.1, 20, 12);
-  g.scale(0.95, 0.55, 1.25);
-  return g;
 }
 
 export interface VehiclePose {
@@ -98,9 +92,13 @@ const WHEELS = [
 
 const damp = (a: number, b: number, rate: number, dt: number) => a + (b - a) * (1 - Math.exp(-rate * dt));
 
-export function Vehicle({ pose, paint = "#d7dce2", detailed = false, rxTurns = DEFAULT_RX_PAD.turns, rxGlow, rxHeat, batteryHeat, bodyId }: VehicleProps) {
+export function Vehicle({ pose, paint = "#e4e7ea", detailed = false, rxTurns = DEFAULT_RX_PAD.turns, rxGlow, rxHeat, batteryHeat, bodyId }: VehicleProps) {
   const a = assets();
-  const bm = useMemo(() => bodyMaterials(paint), [paint]);
+  const bm = useMemo(() => {
+    const m = bodyMaterials(paint);
+    panelGaps(m.paint);
+    return m;
+  }, [paint]);
   const bodyMats = useMemo(() => [bm.paint, bm.glass, bm.trim, bm.lampFront, bm.lampRear, bm.seam], [bm]);
   // Each layer gets its own copies, so the X-ray and isolation views can fade layers independently.
   const layerMats = useMemo(() => (detailed ? { chassis: CHASSIS_MATERIALS(), battery: CHASSIS_MATERIALS(), power: CHASSIS_MATERIALS() } : null), [detailed]);
@@ -110,7 +108,6 @@ export function Vehicle({ pose, paint = "#d7dce2", detailed = false, rxTurns = D
   const wheels = useRef<({ steer: Group | null; spin: Group | null; place: Group | null })[]>(WHEELS.map(() => ({ steer: null, spin: null, place: null })));
   const parts = useRef<(Group | null)[]>([]);
   const rx = useRef<Group>(null);
-  const mirrorZ = useMemo(() => surfaceZ(0.9, 1.0) + 0.06, []);
 
   useFrame((_, dt) => {
     const p = pose();
@@ -137,7 +134,7 @@ export function Vehicle({ pose, paint = "#d7dce2", detailed = false, rxTurns = D
     }
     setOpacity(bm.paint, damp(bm.paint.opacity, L.body, 8, dt), 0.6);
     setClearcoat(bm.paint, bm.paint.opacity);
-    for (const m of [bm.trim, bm.lampFront, bm.lampRear, bm.seam, bm.cladding, bm.liner, bm.interior, bm.display]) setOpacity(m, bm.paint.opacity, 0.6);
+    for (const m of [bm.trim, bm.lampFront, bm.lampRear, bm.seam, bm.cladding, bm.liner, bm.interior, bm.display, bm.lens, bm.satin, bm.plate]) setOpacity(m, bm.paint.opacity, 0.6);
     setOpacity(bm.glass, damp(bm.glass.opacity, L.glass, 8, dt), 2);
     if (layerMats) {
       for (const [layer, mats] of Object.entries(layerMats) as [keyof typeof layerMats, ChassisMaterials][]) {
@@ -173,19 +170,17 @@ export function Vehicle({ pose, paint = "#d7dce2", detailed = false, rxTurns = D
         <mesh geometry={body.liners} material={bm.liner} />
         <mesh geometry={a.interior.cabin} material={bm.interior} />
         <mesh geometry={a.interior.display} material={bm.display} />
-        {/* Mirrors on short stalks at the A-pillar base, and flush door handles. */}
-        {[1, -1].map((s) => (
-          <group key={s} position={[0.86, 1.02, s * mirrorZ]}>
-            <mesh geometry={a.mirror} material={bm.paint} castShadow />
-            <mesh material={bm.trim} position={[0.05, -0.02, -s * 0.07]}>
-              <boxGeometry args={[0.07, 0.03, 0.07]} />
-            </mesh>
-          </group>
-        ))}
+        {/* Lamp blades and corners, grille, diffuser, plates, fin, wipers, mirrors, and flush door handles. */}
+        <mesh geometry={a.details.lampLens} material={bm.lens} />
+        <mesh geometry={a.details.drl} material={bm.lampFront} />
+        <mesh geometry={a.details.tail} material={bm.lens} />
+        <mesh geometry={a.details.satin} material={bm.satin} castShadow />
+        <mesh geometry={a.details.plates} material={bm.plate} />
+        <mesh geometry={a.details.mirrors} material={bm.trim} castShadow />
         {[0.42, -0.72].flatMap((x) =>
           [1, -1].map((s) => (
-            <mesh key={`${x}${s}`} material={bm.trim} position={[x, 0.93, s * (surfaceZ(x, 0.93) + 0.002)]}>
-              <boxGeometry args={[0.2, 0.022, 0.008]} />
+            <mesh key={`${x}${s}`} material={bm.trim} position={[x, 0.9, s * (surfaceZ(x, 0.9) + 0.002)]}>
+              <boxGeometry args={[0.24, 0.018, 0.008]} />
             </mesh>
           )),
         )}

@@ -52,6 +52,26 @@ RMS flux density and instantaneous field lines in the vertical section through b
 - **Known limitations:** Not a finite-element solution: no ferrite edges, shields or vehicle body. Exposure assessment needs measured or FEM fields against the applicable guideline.
 - **Verification checks:** A10
 
+## WPT-EM-005 · Dynamic road magnetic field (v1.0.0)
+
+RMS and phase-sampled flux density around a vehicle on the electrified road: the per-ampere field of a segment winding and of the receiver (filament loops with ferrite images), superposed over every energised segment with its present current and over the receiver current.
+
+- **Domain:** Electromagnetic field · **Fidelity:** F1 · **Status:** Analytically verified
+- **Implementation:** `src/lib/wireless-charging/roadField.ts · fieldKernel, roadExcitation, roadFieldSection, roadFieldLines`
+- **Equations:**
+  - `B(r) = Σⱼ Iⱼ·b_tx(r − rⱼ) + I₂·b_rx(r − r_rx)   (RMS phasors)`
+  - `Iⱼ = I₁·levelⱼ ∠0,   I₂ = −jω M_total I₁ / (R₂ + R_L)`
+  - `B(t) = √2·Re(B e^{jωt})`
+  - `b from B_z, B_ρ of each turn and image (WPT-EM-002)`
+- **Inputs:** x_j, level_j — Segment positions and energisation levels (WPT-SIM-002) [SI]; I1, |I2| — Regulated segment current and receiver current [A]; geometry — Segment pad, receiver pad, air gap, lateral offset [m]
+- **Outputs:** B_rms(x, z) — RMS flux density in a vertical section through the receiver centre [T]; B(t) — Instantaneous field and field lines at a chosen phase [T]
+- **Assumptions:** All energised segments share one phase reference at the regulated current I₁ scaled by their level (the road model's coherent EMF sum requires this). The receiver is tuned to resonance: I₂ lags I₁ by 90°. Failed, blocked and switched-off segments carry no current. Quasi-static: one 85 kHz first-harmonic phasor field per instant.
+- **Validity:** Air region between the segment's and the receiver's ferrite planes; within 1.6 m of each winding.
+- **Numerical method:** Per-ampere tables on a (ρ, z) grid (6 mm × 3 mm) built once per geometry from every turn and its images; bilinear lookup and superposition per frame; RK4 line tracing.
+- **Depends on:** WPT-EM-001, WPT-EM-002, WPT-SIM-002
+- **Known limitations:** Not FEM: no ferrite edges, saturation, eddy currents in the road, reinforcement or vehicle floor. Lines show the in-plane field only; with a lateral offset part of the field crosses the section. Exposure assessment needs measured or FEM fields against the applicable guideline.
+- **Verification checks:** A14, A15, A16
+
 ## WPT-CIR-001 · Series–series compensated link (closed form) (v1.0.0)
 
 Phasor solution of the SS link under the first-harmonic approximation, forward (given inverter voltage) and inverse (given load power).

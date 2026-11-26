@@ -61,3 +61,12 @@ With `prefers-reduced-motion`, shots cut instead of moving, channels jump, and t
 | Traffic on the highway | a decorative clock; it carries no data and is not part of any calculation |
 | Field lines | traced at one phase of the 85 kHz cycle; the dash animation is labelled as slowed by about 10⁵ |
 | Energy-flow dashes | speed and brightness ∝ calculated stage power |
+
+## Phase 3.5 additions
+
+- **Lens per shot.** Shots carry a vertical field of view (28–52°); the rig eases it with the move.
+- **Drift.** Holding shots may sweep slowly (±3–6° over 18–40 s) in guided mode; the first touch stops it; never with reduced motion.
+- **Clipping follows the shot.** Near = 1.2 % of the distance to the subject (2 cm–3 m), far 1–2.4 km: surfaces millimetres apart (lane paint, road, lawn, slab) no longer z-fight at distance — the cause of the flicker seen in the district and road views.
+- **Highway shots:** `road-tracking` (front three-quarter from the shoulder), `road-low` (near road level), `road-side` (raised parallel camera clearing the guardrail), `road-rear` (behind, through the successive segments), `road-aerial` (infrastructure reveal), `road-handover` (macro on adjacent pads and the receiver), `road-failed` (long lens down the lane), `road-energy` (charging in motion), `road-field` (square to the field section). The roadside camera and top-down remain.
+- **Station:** the establishing shot moved to eye height under the shelter's edge (the PV roof no longer fills the frame); the energy shot moved under the canopy along the chain.
+- **Presentation links** (`?experience=present`) open the laboratory as a full-window presentation running the demonstration; one "Begin with sound" control then enters native full screen and starts narration and ambience (browsers allow both only after a user action).

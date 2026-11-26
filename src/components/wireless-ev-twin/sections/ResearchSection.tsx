@@ -13,6 +13,7 @@ import { STATION_MODEL_VERSION } from "@/lib/wireless-charging/station";
 import { useTwin } from "../state/store";
 import Chart from "../ui/Chart";
 import { download, fmt, Select } from "../ui/controls";
+import { Disclosure } from "../ui/Section";
 import ui from "../twin.module.css";
 
 type StudyId = "gap" | "lateral" | "frequency" | "power" | "coverage" | "speed";
@@ -278,8 +279,7 @@ export default function ResearchSection() {
           </ul>
         </section>
       )}
-      <section className={ui.labBlock} aria-labelledby="themes-title">
-        <h3 id="themes-title">Research themes</h3>
+      <Disclosure title="Research themes" summary={`${RESEARCH_THEMES.length} established research areas, each with a baseline in the twin`}>
         <p className={ui.small}>{NOVELTY_NOTE}</p>
         <table className={ui.table}>
           <thead>
@@ -299,9 +299,8 @@ export default function ResearchSection() {
             ))}
           </tbody>
         </table>
-      </section>
-      <section className={ui.labBlock} aria-labelledby="ai-title">
-        <h3 id="ai-title">Artificial intelligence and optimisation</h3>
+      </Disclosure>
+      <Disclosure title="Artificial intelligence and optimisation" summary={`${AI_STUDIES.length} studies, each against an engineering baseline`}>
         <p className={ui.small}>{AI_NOTE}</p>
         <table className={ui.table}>
           <thead>
@@ -323,7 +322,7 @@ export default function ResearchSection() {
             ))}
           </tbody>
         </table>
-      </section>
+      </Disclosure>
     </div>
   );
 }

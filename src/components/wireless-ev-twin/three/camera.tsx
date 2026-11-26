@@ -33,7 +33,13 @@ export interface Shot {
   polarMax?: number;
   /** Follow the vehicle; "roadside" is a camera fixed beside the road that the vehicle drives past (a cut to the next one when it has passed). */
   follow?: "station-vehicle" | "parking-vehicle" | "roadside";
+  /** Vertical field of view, degrees (default 34): long lenses for product shots, wide for close tracking. */
+  fov?: number;
+  /** A slow, small azimuth sweep after arrival (guided mode only): amplitude in degrees and period in seconds. */
+  drift?: { az: number; period: number };
 }
+
+const DEFAULT_FOV = 34;
 
 export type ShotId =
   | "establishing"
@@ -62,6 +68,15 @@ export type ShotId =
   | "dynamic-roadside"
   | "dynamic-receiver"
   | "dynamic-coupling"
+  | "road-tracking"
+  | "road-low"
+  | "road-side"
+  | "road-rear"
+  | "road-aerial"
+  | "road-handover"
+  | "road-failed"
+  | "road-field"
+  | "road-energy"
   | "autonomous"
   | "autonomous-top"
   | "district"
@@ -109,9 +124,10 @@ export function shotFor(id: ShotId): Shot {
   const s = useTwin.getState().station;
   switch (id) {
     case "establishing":
-      return { target: [0.4, 1.0, -1.2], azimuth: -58, polar: 70, distance: 15.5, min: 3, max: 60 };
+      // Eye height under the shelter's edge: the bay, the pad, the cabinet and the canopy above, the landscape beyond.
+      return { target: [0.2, 1.25, -1.6], azimuth: -64, polar: 80.5, distance: 15.5, min: 3, max: 60, fov: 30, drift: { az: 5, period: 26 } };
     case "approach":
-      return { target: [0.9, 0.75, 0], azimuth: -62, polar: 75, distance: 8.2, follow: "station-vehicle", min: 2, max: 40 };
+      return { target: [0.9, 0.7, 0], azimuth: -58, polar: 81, distance: 8.6, follow: "station-vehicle", min: 2, max: 40, fov: 30 };
     case "identify":
       return { target: [-1.6, 1.5, 0.3], azimuth: -38, polar: 72, distance: 9.5, min: 2, max: 40 };
     case "alignment":
@@ -132,7 +148,8 @@ export function shotFor(id: ShotId): Shot {
       // Square to the open cabinet (its door faces −x), from the vehicle's side of it.
       return { target: [CABINET.x - 0.1, 0.95, CABINET.z - 0.05], azimuth: -112, polar: 84, distance: 2.7, min: 0.6, max: 10 };
     case "energy":
-      return { target: [1.6, 0.7, 0.2], azimuth: -42, polar: 62, distance: 10.5, min: 2, max: 40 };
+      // Under the canopy, along the chain: transformer and cabinet at the head of the bay, the pads, the vehicle and its battery.
+      return { target: [1.2, 0.85, 0.1], azimuth: -36, polar: 80, distance: 9.6, min: 2, max: 40, fov: 34 };
     case "battery":
       return { target: [0.1, 0.4, 0], azimuth: -38, polar: 56, distance: 4.4, follow: "station-vehicle", min: 1, max: 20 };
     case "safety":
@@ -164,6 +181,34 @@ export function shotFor(id: ShotId): Shot {
     case "dynamic-cutaway":
       // Down over the guardrail into the section: the trench wall, the duct bank, and the pads beside the car.
       return { target: [4.2, -0.18, ROAD_Z - 1.3], azimuth: 148, polar: 50, distance: 5.2, min: 1, max: 40, polarMax: 95 };
+    case "road-tracking":
+      // Front three-quarter, from the near shoulder ahead of the car: the car, the lane ahead, the landscape.
+      return { target: [0.5, 0.72, ROAD_Z], azimuth: 122, polar: 82.5, distance: 8.8, min: 2, max: 60, fov: 30, drift: { az: 6, period: 22 } };
+    case "road-low":
+      // Near road level: wheels turning, the surface rushing past.
+      return { target: [0.4, 0.5, ROAD_Z], azimuth: 116, polar: 88.4, distance: 5.6, min: 1.2, max: 40, polarMax: 92, fov: 38, drift: { az: 3, period: 18 } };
+    case "road-side":
+      // A parallel camera raised over the near verge (its sight line clears the guardrail): speed reads from the passing road.
+      return { target: [0, 0.55, ROAD_Z], azimuth: 180, polar: 70, distance: 6.6, min: 1.5, max: 30, fov: 40 };
+    case "road-rear":
+      // Behind and above: the car driving through the successive segments ahead.
+      return { target: [3.2, 0.5, ROAD_Z], azimuth: -68, polar: 77, distance: 10.5, min: 2, max: 60, fov: 32, drift: { az: 4, period: 24 } };
+    case "road-aerial":
+      return { target: [10, 0, ROAD_Z + 4], azimuth: 128, polar: 54, distance: 62, min: 10, max: 200, fov: 30, drift: { az: 6, period: 40 } };
+    case "road-handover":
+      // Down on the receiver and the pads around it (the car is seen through in this view).
+      return { target: [0.6, 0.02, ROAD_Z], azimuth: 150, polar: 58, distance: 3.6, min: 0.8, max: 20, fov: 38 };
+    case "road-failed":
+      // Long lens down the lane ahead of the car: the failed pad comes up in the sequence.
+      return { target: [5, 0.3, ROAD_Z], azimuth: -72, polar: 68, distance: 11.5, min: 2, max: 60, fov: 30 };
+    case "road-energy":
+      // Front three-quarter, a little above the car: the glowing pads beneath, the link, the DC path to the battery and the motor.
+      return { target: [0.35, 0.36, ROAD_Z], azimuth: 148, polar: 78, distance: 6.6, min: 1.5, max: 40, fov: 32, drift: { az: 5, period: 24 } };
+    case "road-field": {
+      // Square to the field section through the receiver, from the near shoulder, level with the gap.
+      const lateral = useTwin.getState().road.lateral;
+      return { target: [0.6, 0.07, ROAD_Z - lateral], azimuth: 180, polar: 87, distance: 2.9, min: 0.6, max: 20, polarMax: 100, fov: 40 };
+    }
     case "dynamic-top":
       // Nearly overhead from the median side, so the vehicle drives left to right.
       return { target: [1.5, 0, ROAD_Z + 0.2], azimuth: 0, polar: 14, distance: 13, min: 3, max: 60 };
@@ -183,7 +228,7 @@ export function shotFor(id: ShotId): Shot {
 /** The shot a visualisation mode uses when no guided stage is driving the camera. */
 export function viewShot(env: EnvironmentId, v: ViewModeId): ShotId {
   if (env === "dynamic") {
-    const road: Partial<Record<ViewModeId, ShotId>> = { cutaway: "dynamic-cutaway", underbody: "dynamic-underbody", segments: "dynamic-top", top: "dynamic-top", coupling: "dynamic-coupling", receiver: "dynamic-receiver", roadside: "dynamic-roadside" };
+    const road: Partial<Record<ViewModeId, ShotId>> = { energy: "road-energy", field: "road-field", cutaway: "dynamic-cutaway", underbody: "dynamic-underbody", segments: "dynamic-top", top: "dynamic-top", coupling: "dynamic-coupling", receiver: "dynamic-receiver", roadside: "dynamic-roadside" };
     return road[v] ?? "dynamic-follow";
   }
   if (env === "autonomous") return "autonomous";
@@ -292,7 +337,9 @@ export function CameraRig() {
   const scene = useThree((st) => st.scene);
   const rig = useRef({
     key: "",
-    tween: null as null | { from: Pose; to: Pose; start: number; duration: number; shot: Shot | null },
+    tween: null as null | { from: Pose; to: Pose; start: number; duration: number; shot: Shot | null; fov0: number },
+    /** Pose on arrival, the base of a drifting shot, and when the drift started. */
+    base: null as null | { pose: Pose; since: number },
     shot: null as Shot | null,
     lastFollow: new Vector3(),
     first: true,
@@ -356,12 +403,15 @@ export function CameraRig() {
         r.shot = shot;
         // While moving, allow any distance and angle; the shot's limits apply on arrival.
         relaxLimits(controls);
+        r.base = null;
         if (duration === 0) {
           controls.target.copy(to.target);
           place(camera, to);
+          setFov(camera, shot.fov ?? DEFAULT_FOV);
           r.tween = null;
           applyLimits(controls, shot);
-        } else r.tween = { from, to, start: performance.now(), duration, shot };
+          if (shot.drift && !shot.follow) r.base = { pose: { ...to, target: to.target.clone() }, since: performance.now() };
+        } else r.tween = { from, to, start: performance.now(), duration, shot, fov0: camera.fov };
         if (shot.follow) r.lastFollow.copy(followOffset(shot, tmp.b));
       }
     }
@@ -377,11 +427,25 @@ export function CameraRig() {
       p.distance = tw.from.distance * Math.pow(tw.to.distance / tw.from.distance, k);
       controls.target.copy(p.target);
       place(camera, p);
+      setFov(camera, tw.fov0 + ((tw.shot?.fov ?? DEFAULT_FOV) - tw.fov0) * k);
       if (k >= 1) {
         r.tween = null;
         if (tw.shot) applyLimits(controls, tw.shot);
         if (tw.shot?.follow) r.lastFollow.copy(end);
+        if (tw.shot?.drift && !tw.shot.follow && !s.reducedMotion) r.base = { pose: { ...p, target: p.target.clone() }, since: performance.now() };
       }
+    } else if (r.base && guided && r.shot?.drift) {
+      // A slow sweep around the subject while the shot holds (stops on the first touch).
+      const d = r.shot.drift;
+      const t = (performance.now() - r.base.since) / 1000;
+      const sweep = d.az * DEG * Math.sin((2 * Math.PI * t) / d.period);
+      const p = r.pose;
+      p.target.copy(r.base.pose.target);
+      p.azimuth = r.base.pose.azimuth + sweep;
+      p.polar = r.base.pose.polar;
+      p.distance = r.base.pose.distance;
+      controls.target.copy(p.target);
+      place(camera, p);
     } else if (r.shot?.follow === "roadside") {
       if (guided) placeRoadside(r, camera, controls);
     } else if (r.shot?.follow) {
@@ -394,8 +458,14 @@ export function CameraRig() {
       }
       r.lastFollow.copy(now);
     }
+    // Depth precision follows the shot: the near plane scales with the distance to the subject, so
+    // surfaces millimetres apart (road, markings, lawn, slab) never fight at any distance.
+    fitClipping(camera, camera.position.distanceTo(controls.target));
     // Free mode keeps the key in step, so returning to guided starts from where the visitor left it.
-    if (!guided) r.key = "";
+    if (!guided) {
+      r.key = "";
+      r.base = null;
+    }
   });
   return null;
 }
@@ -407,6 +477,27 @@ function placeRoadside(r: { roadside: number | null }, camera: PerspectiveCamera
   camera.position.set(r.roadside - x, 1.25, ROAD_Z - 5.4);
   controls.target.set(0.8, 0.62, ROAD_Z);
   camera.lookAt(controls.target);
+}
+
+/** Near and far planes from the distance to the subject (close-ups keep a 2 cm near plane). */
+export function clippingFor(distance: number): { near: number; far: number } {
+  const near = Math.min(3, Math.max(0.02, distance * 0.012));
+  const far = Math.min(2400, Math.max(1000, distance * 12 + 900));
+  return { near, far };
+}
+
+function fitClipping(camera: PerspectiveCamera, distance: number) {
+  const { near, far } = clippingFor(distance);
+  if (Math.abs(camera.near - near) / near < 0.04 && Math.abs(camera.far - far) / far < 0.04) return;
+  camera.near = near;
+  camera.far = far;
+  camera.updateProjectionMatrix();
+}
+
+function setFov(camera: PerspectiveCamera, fov: number) {
+  if (Math.abs(camera.fov - fov) < 1e-3) return;
+  camera.fov = fov;
+  camera.updateProjectionMatrix();
 }
 
 function relaxLimits(controls: OrbitControlsImpl) {

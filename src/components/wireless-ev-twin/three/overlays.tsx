@@ -12,14 +12,14 @@ import { cabs } from "@/lib/wireless-charging/math";
 import { type CouplerConfig, DEFAULT_RX_PAD, DEFAULT_TX_PAD, type FieldBasis, fieldBasis, fieldFromBasis, traceFieldLines } from "@/lib/wireless-charging/coils";
 import { runtime } from "../state/runtime";
 import { useTwin } from "../state/store";
-import { fieldColor } from "./materials";
 import { ROAD_Z } from "./road/layout";
 import { CABINET } from "./station/Site";
 import { POWER_POINTS } from "./vehicle/chassis";
 import { NOMINAL_GAP } from "./vehicle/Vehicle";
 import { view } from "./viewState";
 import { setAnchor } from "./labels";
-import { fieldScale } from "./fieldScale";
+import { fieldScale, niceCeil, paintFieldTexels } from "./fieldScale";
+import { stationFieldInfo } from "./road/fieldInfo";
 import { addUniform, markUpdated, setOpacity, setUniform } from "./mutate";
 
 /** Height of the transmitter winding plane above the ground, m. */
@@ -28,7 +28,7 @@ export const TX_WINDING_Y = 0.036;
 export { fieldScale };
 
 /** Shared state for the field legend (read by the DOM). */
-export const fieldInfo = { centre: 0, max: 0, live: false, lines: 0 };
+export const fieldInfo = stationFieldInfo;
 
 function sectionFrame(config: CouplerConfig) {
   const dx = config.longitudinal;
@@ -126,7 +126,9 @@ export function FieldOverlay() {
     const max = fieldFromBasis(b, { i1, i2 }, values);
     fieldInfo.max = max;
     fieldInfo.centre = runtime.station.state.fieldCentre;
-    paintField(tex.image.data as Uint8Array, values);
+    const fd = useTwin.getState().fieldDisplay;
+    paintFieldTexels(tex.image.data as Uint8Array, values, fd.scale, niceCeil(max), fd.contours);
+    fieldInfo.full = niceCeil(max);
     markUpdated(tex);
     // Place the section plane.
     const { phi } = sectionFrame(config);
@@ -155,25 +157,6 @@ export function FieldOverlay() {
       <group ref={linesGroup} visible={false} renderOrder={6} />
     </group>
   );
-}
-
-/** Writes RMS flux density values into RGBA texels on the log colour scale (transparent where invalid). */
-function paintField(data: Uint8Array, values: Float32Array) {
-  const lo = Math.log10(fieldScale.min);
-  const span = Math.log10(fieldScale.max) - lo;
-  for (let k = 0; k < values.length; k++) {
-    const v = values[k];
-    const o = k * 4;
-    if (!Number.isFinite(v) || v <= 0) {
-      data[o + 3] = 0;
-      continue;
-    }
-    const [r, g, b] = fieldColor((Math.log10(v) - lo) / span);
-    data[o] = r * 255;
-    data[o + 1] = g * 255;
-    data[o + 2] = b * 255;
-    data[o + 3] = 215;
-  }
 }
 
 // ── Energy flow ────────────────────────────────────────────────────────────

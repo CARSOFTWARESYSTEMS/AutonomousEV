@@ -467,29 +467,89 @@ export function regime(samples: readonly RoadSample[], tolerance = 500): EnergyR
   return mean > tolerance ? "charging" : mean < -tolerance ? "discharging" : "energy-neutral";
 }
 
+/** Gap between consecutive samples above which the record is treated as discontinuous (a reset or a jump), s. */
+export const SAMPLE_GAP_LIMIT = 0.5;
+
+export interface EnergyWindow {
+  /** True once the samples cover `distance` metres without a discontinuity. */
+  complete: boolean;
+  /** Distance covered by the samples used, m (≥ `distance` when complete). */
+  travelled: number;
+  /** Time covered, s. */
+  seconds: number;
+  /** Time-weighted mean battery power over the window, W (positive = charging). */
+  mean: number;
+  /** Time-weighted means of received power and traction demand, W. */
+  meanReceived: number;
+  meanTraction: number;
+  /** Energy into the battery and received over the window, J. */
+  batteryEnergy: number;
+  receivedEnergy: number;
+  /** SOC change over the window (fraction). */
+  socChange: number;
+  regime: EnergyRegime;
+}
+
 /**
- * Mean battery power over the last `distance` metres travelled (one repeat of
- * the electrified zones by default), so the reading covers whole zones rather
- * than a slice of one. Null until the vehicle has driven that far within the
- * stored samples. An analysis of the samples; it changes nothing in the model.
+ * Time-weighted averages over the most recent `distance` metres of samples
+ * (one repeat of the electrified zones by default), so a reading covers whole
+ * zones rather than a slice of one. Each sample's power is weighted by the
+ * time since the previous sample, so irregular sampling and variable speed are
+ * handled; with uniform sampling this equals the arithmetic mean. Defined
+ * behaviour: distance across the 1000 m route boundary is unwrapped; a gap
+ * longer than SAMPLE_GAP_LIMIT (a reset) ends the window; a stopped vehicle
+ * adds time but no distance, so the window may never complete within the
+ * stored record (30 s of samples) — it is then reported incomplete, never
+ * classified. An analysis of the samples; it changes nothing in the model.
  */
-export function recentBatteryPower(samples: readonly RoadSample[], distance = ZONE_PERIOD, tolerance = 500): { mean: number; seconds: number; regime: EnergyRegime } | null {
-  if (samples.length < 2) return null;
+export function energyWindow(samples: readonly RoadSample[], distance = ZONE_PERIOD, tolerance = 500): EnergyWindow {
   let travelled = 0;
-  let sum = 0;
-  let n = 0;
+  let seconds = 0;
+  let eBat = 0;
+  let eRx = 0;
+  let eTr = 0;
+  let complete = false;
+  let first = samples.length - 1;
   for (let i = samples.length - 1; i > 0; i--) {
+    const dt = samples[i].t - samples[i - 1].t;
+    if (!(dt > 0) || dt > SAMPLE_GAP_LIMIT) break;
     let dx = samples[i].x - samples[i - 1].x;
     if (dx < -ROUTE_LENGTH / 2) dx += ROUTE_LENGTH;
     travelled += Math.max(0, dx);
-    sum += samples[i].pBattery;
-    n += 1;
+    seconds += dt;
+    eBat += samples[i].pBattery * dt;
+    eRx += samples[i].pReceived * dt;
+    eTr += samples[i].pTraction * dt;
+    first = i - 1;
     if (travelled >= distance) {
-      const mean = sum / n;
-      return { mean, seconds: samples[samples.length - 1].t - samples[i - 1].t, regime: mean > tolerance ? "charging" : mean < -tolerance ? "discharging" : "energy-neutral" };
+      complete = true;
+      break;
     }
   }
-  return null;
+  const mean = seconds > 0 ? eBat / seconds : 0;
+  const last = samples[samples.length - 1];
+  return {
+    complete,
+    travelled,
+    seconds,
+    mean,
+    meanReceived: seconds > 0 ? eRx / seconds : 0,
+    meanTraction: seconds > 0 ? eTr / seconds : 0,
+    batteryEnergy: eBat,
+    receivedEnergy: eRx,
+    socChange: last && samples[first] ? last.soc - samples[first].soc : 0,
+    regime: mean > tolerance ? "charging" : mean < -tolerance ? "discharging" : "energy-neutral",
+  };
+}
+
+/**
+ * Mean battery power over the last `distance` metres travelled, time-weighted
+ * (see `energyWindow`). Null until a complete window exists.
+ */
+export function recentBatteryPower(samples: readonly RoadSample[], distance = ZONE_PERIOD, tolerance = 500): { mean: number; seconds: number; regime: EnergyRegime } | null {
+  if (samples.length < 2) return null;
+  const w = energyWindow(samples, distance, tolerance);
+  return w.complete ? { mean: w.mean, seconds: w.seconds, regime: w.regime } : null;
 }
 
 export interface DriveSummary {

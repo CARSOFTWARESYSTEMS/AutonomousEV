@@ -19,7 +19,22 @@ The inspector, stage text and lessons keep these quantities distinct: flux densi
 - **Coupling chart** beside the lane, moving with the vehicle. Behind the receiver: the total mutual inductance the receiver actually saw and the power it actually received, from the simulation's samples. Ahead: the coupling the road would offer at each position if each pad energises on time, from the same tabulated filament model (failed pads contribute nothing). Scales: 0 to the peak single-pad M at the present lateral offset; 0 to the receiver rating.
 - **Motional EMF:** the instrument shows v·|dM/dx|/(ωM), computed every step; it stays of order 10⁻³–10⁻⁴, which is why the quasi-static model is valid. It is shown, not hidden.
 - **Energy outcome** is the mean battery power over the last 200 m driven (one repeat of the electrified zones), classified with the same ±500 W band as check B11.
-- **Not shown:** a field map on the road (the station's field section is not computed for road pads), cycle-by-cycle 85 kHz behaviour.
+- **Not shown:** cycle-by-cycle 85 kHz behaviour.
+
+## Road: magnetic field (Dynamic, WPT-EM-005)
+
+- **Colour map:** RMS |B| over a vertical section through the receiver centre, either following the receiver or fixed at a road segment; log (1 µT–10 mT) or linear (0 to a round number above the section's peak) scale; optional decade contours.
+- **Computed** every frame from the energised segments' currents (I₁ × level, one phase reference) and the receiver current (−j|I₂|), with the filament model and ferrite images (F1, not FEM). De-energised, blocked and failed pads contribute nothing: the field appears and disappears with the segments.
+- **Lines and vectors:** the in-plane instantaneous field at a chosen phase ωt (Engineer and Research modes have a phase control; a phase sweep is slowed about 10⁵× and labelled as a visual cue).
+- **Instrument:** RMS |B| at mid-gap under the receiver. Details: DYNAMIC_MAGNETIC_FIELD_REPORT.md.
+
+## Road: charging in motion
+
+- **Pad glow** through the surface: each pad's controller energisation level (soft start amber → active cyan; blocked amber). A visual cue for a simulated state, not emitted light.
+- **Flux column** between road and receiver, as bright as the received power.
+- **DC path** in the vehicle (receiver → compensation → rectifier → DC–DC → junction box), splitting to the battery (direction from the sign of battery power) and the motor (traction power).
+- **HUD:** the five pads around the receiver with state and level, the received / motor / battery balance on one scale, and the last 1.5 s of received power (one peak per pad).
+- **Outcome stages** classify only over a complete, time-weighted 200 m window; until then the card says "Collecting a complete 200 m measurement window."
 
 ## Alignment
 
@@ -51,4 +66,4 @@ The Science panel of the resonance stage plots one cycle of the inverter output 
 
 ## Not yet implemented
 
-Vector arrows and selectable section planes, contour lines, a linear/log scale switch in the 3D view, a field map on the road, imported FEM maps, and spatial thermal fields. They are listed in SCENARIO_REGISTRY.md and IMPLEMENTATION_REPORT.md as remaining work.
+Imported FEM maps, a plan-view field map, selectable arbitrary section planes at the station, and spatial thermal fields. (Linear/log scale and contours now exist for both field views; vectors and a fixed-segment section for the road.)

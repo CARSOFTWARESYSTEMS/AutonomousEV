@@ -5,12 +5,11 @@
 // right only when it is wanted, and the cinematic timeline at the bottom.
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Building2, Navigation, Route, SlidersHorizontal, SquareParking, X, Zap } from "lucide-react";
+import { BatteryCharging, Building2, Drone, Navigation, PlaneTakeoff, Route, SlidersHorizontal, SquareParking, X, Zap } from "lucide-react";
 import { componentById } from "@/lib/wireless-charging/components";
-import { ENVIRONMENTS, PLANNED_ENVIRONMENTS, type EnvironmentId, VIEW_MODES } from "@/lib/wireless-charging/content";
+import { ENVIRONMENTS, PLANNED_ENVIRONMENTS, PROPOSED_ENVIRONMENTS, type EnvironmentId, VIEW_MODES } from "@/lib/wireless-charging/content";
 import { DEFAULT_RX_PAD, DEFAULT_TX_PAD } from "@/lib/wireless-charging/coils";
-import { segmentM } from "@/lib/wireless-charging/dynamic";
-import { PHASES } from "@/lib/wireless-charging/stateMachine";
+import { energyWindow, segmentM } from "@/lib/wireless-charging/dynamic";
 import type { QualitySettings } from "../../satellite-explorer/lib/capabilities";
 import { runtime, useSampled } from "../state/runtime";
 import { type QualityChoice, useTwin } from "../state/store";
@@ -23,9 +22,11 @@ import { LAYERS } from "../three/road/layout";
 import { LOOK_COLORS, type SegmentLook } from "../three/road/segmentLook";
 import { AtDepth, fmt, Tag } from "../ui/controls";
 import FieldMap2D from "../ui/FieldMap2D";
-import { AutonomousInputs, DynamicInputs, InfrastructureInputs } from "../env/OtherPanels";
-import { StationFaults, StationInputs } from "../env/StationPanels";
 import InspectorPanel from "./Inspector";
+import { FieldLegend } from "./FieldLegend";
+import { ChargingHud } from "./ChargingHud";
+import { RoadAnatomy } from "./RoadAnatomy";
+import { IotInspector } from "./IotInspector";
 import { METRICS, type MetricId } from "./metrics";
 import Timeline from "./Timeline";
 import ui from "../twin.module.css";
@@ -33,7 +34,7 @@ import lab from "./lab.module.css";
 
 const Scene = dynamic(() => import("../three/Scene"), { ssr: false, loading: () => null });
 
-const ICONS: Record<string, typeof Zap> = { parking: SquareParking, station: Zap, dynamic: Route, autonomous: Navigation, infrastructure: Building2 };
+const ICONS: Record<string, typeof Zap> = { parking: SquareParking, station: Zap, dynamic: Route, autonomous: Navigation, infrastructure: Building2, drone: Drone, airtaxi: PlaneTakeoff, bess: BatteryCharging };
 /** Instruments shown when no guided stage is selecting them. */
 const DEFAULT_METRICS: Record<EnvironmentId, MetricId[]> = {
   station: ["phase", "pBattery", "airGap", "k", "soc"],
@@ -54,7 +55,8 @@ export function renderSettings(choice: QualityChoice, device: QualitySettings): 
 function Rail() {
   const env = useTwin((s) => s.environment);
   const mode = useTwin((s) => s.mode);
-  const drawer = useTwin((s) => s.drawer);
+  const panel = useTwin((s) => s.panel);
+  const preview = useTwin((s) => s.preview);
   return (
     <nav className={lab.rail} aria-label="Research environments">
       <ul>
@@ -86,13 +88,67 @@ function Rail() {
           );
         })}
       </ul>
+      <p className={lab.railGroup}>Proposed</p>
+      <ul>
+        {PROPOSED_ENVIRONMENTS.map((e) => {
+          const Icon = ICONS[e.id];
+          return (
+            <li key={e.id}>
+              <button type="button" data-proposed aria-pressed={preview === e.id} onClick={() => useTwin.setState({ preview: preview === e.id ? null : e.id })} title={`${e.number} ${e.name} — ${e.status}`}>
+                <Icon size={18} aria-hidden="true" />
+                <span className={lab.railNum}>{e.number}</span>
+                <span className={lab.railLabel}>{e.short}</span>
+              </button>
+            </li>
+          );
+        })}
+      </ul>
       {mode !== "explore" && (
-        <button type="button" className={lab.railTool} aria-pressed={drawer} onClick={() => useTwin.setState({ drawer: !drawer })} title="Inputs and fault injection">
+        <button type="button" className={lab.railTool} aria-pressed={panel === "inputs"} onClick={() => useTwin.setState({ panel: panel === "inputs" ? "none" : "inputs" })} title="Inputs and fault injection">
           <SlidersHorizontal size={18} aria-hidden="true" />
           <span className={lab.railLabel}>Inputs</span>
         </button>
       )}
     </nav>
+  );
+}
+
+/** What a proposed environment would model; BESS opens where it is simulated today. */
+function ProposedPreview() {
+  const id = useTwin((s) => s.preview);
+  const e = PROPOSED_ENVIRONMENTS.find((x) => x.id === id);
+  if (!e) return null;
+  return (
+    <section className={lab.preview} aria-label={`${e.name}, proposed`}>
+      <button type="button" className={lab.iconBtn} aria-label="Close" onClick={() => useTwin.setState({ preview: null })}>
+        <X size={15} aria-hidden="true" />
+      </button>
+      <p className={lab.eyebrow}>{`${e.number} · ${e.status}`}</p>
+      <h2 className={lab.stageTitle}>{e.name}</h2>
+      <p className={lab.objective}>{e.text}</p>
+      <p className={lab.previewHead}>What it would model</p>
+      <ul className={lab.previewList}>
+        {e.scope.map((x) => (
+          <li key={x}>{x}</li>
+        ))}
+      </ul>
+      <p className={lab.previewHead}>Built on</p>
+      <p className={lab.objective}>{e.reuses}</p>
+      {e.id === "bess" ? (
+        <button
+          type="button"
+          className={lab.previewAction}
+          onClick={() => {
+            useTwin.setState({ preview: null });
+            openEnvironment("infrastructure");
+          }}
+        >
+          Open storage in Smart Charging Infrastructure (05)
+        </button>
+      ) : (
+        <p className={lab.small}>Not simulated: nothing in this preview is a result. It starts after the team accepts Phase 3.5 and the Smart Parking Shelter (Phase 4).</p>
+      )}
+    </section>
   );
 }
 
@@ -120,12 +176,29 @@ function StageCard() {
       <p className={lab.eyebrow}>{demo ? `Chapter ${chapter + 1} of ${DEMO_CHAPTERS.length} · ${DEMO_CHAPTERS[chapter].title}` : `${meta.number} · ${meta.short} · Stage ${g.index + 1} of ${stages.length}`}</p>
       <h2 className={lab.stageTitle}>{stage.title}</h2>
       <p className={lab.objective}>{stage.objective}</p>
-      {panel !== "science" && (
+      {OUTCOME_STAGES.has(stage.id) && <WindowStatus />}
+      {panel === "none" && (
         <AtDepth mode={mode} min="learn">
           <p className={lab.explanation}>{stage.explanation}</p>
         </AtDepth>
       )}
     </div>
+  );
+}
+
+const OUTCOME_STAGES = new Set(["gain", "neutral", "lose"]);
+
+/** The outcome is classified only over a complete, time-weighted 200 m window; until then the card says so. */
+function WindowStatus() {
+  const read = useCallback(() => {
+    const w = energyWindow(runtime.road.state.samples);
+    return { complete: w.complete, travelled: Math.round(Math.min(200, w.travelled)), mean: w.mean };
+  }, []);
+  const w = useSampled(read, 4);
+  return (
+    <p className={lab.windowStatus} data-complete={w.complete || undefined} role="status">
+      {w.complete ? `Classified over the last 200 m (time-weighted mean, ±500 W neutral band).` : `Collecting a complete 200 m measurement window. ${w.travelled} m of 200 m.`}
+    </p>
   );
 }
 
@@ -153,12 +226,13 @@ function Instruments() {
         const m = METRICS[v.id];
         return (
           <div key={v.id}>
-            <dt>
-              {m.label} <Tag kind={m.kind === "INPUT" ? "input" : m.kind === "CALCULATED" ? "calculated" : "SIMULATED"} />
-            </dt>
+            <dt>{m.label}</dt>
             <dd>
               {v.value}
               {v.unit && <span>{` ${v.unit}`}</span>}
+            </dd>
+            <dd className={lab.source}>
+              <Tag kind={m.kind === "INPUT" ? "input" : m.kind === "CALCULATED" ? "calculated" : "SIMULATED"} />
             </dd>
           </div>
         );
@@ -179,47 +253,14 @@ function Caption() {
   );
 }
 
-function Drawer() {
-  const open = useTwin((s) => s.drawer);
-  const env = useTwin((s) => s.environment);
-  const mode = useTwin((s) => s.mode);
-  if (!open || mode === "explore") return null;
-  const Inputs = env === "station" ? StationInputs : env === "dynamic" ? DynamicInputs : env === "autonomous" ? AutonomousInputs : InfrastructureInputs;
-  return (
-    <aside className={lab.drawer} aria-label="Inputs">
-      <button type="button" className={lab.iconBtn} aria-label="Close inputs" onClick={() => useTwin.setState({ drawer: false })}>
-        <X size={16} aria-hidden="true" />
-      </button>
-      <Inputs />
-      {env === "station" && (
-        <AtDepth mode={mode} min="engineer">
-          <StationFaults />
-        </AtDepth>
-      )}
-    </aside>
-  );
-}
-
 function Legends() {
   const view = useTwin((s) => s.view);
   const env = useTwin((s) => s.environment);
   const read = useCallback(() => ({ b: runtime.station.state.fieldCentre, on: Boolean(runtime.station.state.point.ss), phase: runtime.station.state.phase, p: runtime.station.state.point }), []);
   const s = useSampled(read, 4);
-  if (env === "dynamic") return <RoadLegend view={view} />;
+  if (env === "dynamic") return view === "field" ? <FieldLegend env="dynamic" /> : view === "cinematic" || view === "energy" ? <ChargingHud /> : view === "cutaway" ? <RoadAnatomy /> : <RoadLegend view={view} />;
   if (env !== "station") return null;
-  if (view === "field")
-    return (
-      <div className={`${ui.legend} ${lab.legend}`}>
-        <p className={ui.legendTitle}>RMS flux density · section through both pad centres</p>
-        <span className={ui.fieldScale} aria-hidden="true" />
-        <p className={ui.legendScale}>
-          <span>1 µT</span>
-          <span>100 µT</span>
-          <span>10 mT</span>
-        </p>
-        <p className={ui.small}>{s.on ? `Gap centre ${fmt(s.b * 1e6, 0)} µT RMS. Lines: field at one phase of the 85 kHz cycle, animation slowed ~10⁵×. Analytical filament model (F1), not FEM.` : `Pad de-energised (${PHASES[s.phase].label}): no field.`}</p>
-      </div>
-    );
+  if (view === "field") return <FieldLegend env="station" />;
   if (view === "thermal")
     return (
       <div className={`${ui.legend} ${lab.legend}`}>
@@ -244,19 +285,7 @@ function Legends() {
         </ul>
       </div>
     );
-  if (view === "iot")
-    return (
-      <div className={`${ui.legend} ${lab.legend}`}>
-        <p className={ui.legendTitle}>Information flow (simulated messages)</p>
-        <ul className={ui.flowKey}>
-          <li><i style={{ background: "#ffd166" }} />CAN (BMS → VCU)</li>
-          <li><i style={{ background: "#5ee7ff" }} />Vehicle ↔ station</li>
-          <li><i style={{ background: "#b388ff" }} />Station ↔ backend</li>
-          <li><i style={{ background: "#4ca930" }} />Gateway → cloud</li>
-        </ul>
-        <p className={ui.small}>One pulse per delivered message. Safety never depends on these links.</p>
-      </div>
-    );
+  if (view === "iot") return <IotInspector />;
   return null;
 }
 
@@ -489,9 +518,9 @@ export default function Laboratory({ caps }: { caps: Capabilities | null }) {
         )}
         <StageCard />
         <Instruments />
+        <ProposedPreview />
         {three && <Legends />}
         {three && <HoverLabel />}
-        <Drawer />
         <Caption />
         <Timeline />
       </div>

@@ -15,8 +15,8 @@ export const SPEEDS = [0.5, 1, 2, 5, 20, 60, 300] as const;
 /** Rendering quality. Never changes a calculated value. */
 export type QualityChoice = "auto" | "high" | "balanced" | "performance";
 export type PlaylistId = EnvironmentId | "demo";
-/** The right-hand inspector: a component, the current stage's science, or the environment's data panels. */
-export type PanelId = "none" | "component" | "science" | "data";
+/** The right-hand panel: the environment's inputs (Engineer, Research), a component, the current stage's science, or its data panels. */
+export type PanelId = "none" | "inputs" | "research" | "component" | "science" | "data";
 
 export interface GuideState {
   /** True while the current stage drives the view and the camera. */
@@ -73,6 +73,11 @@ export interface TwinState {
   gridHour: number;
   /** Field-line phase ωt, rad (Research mode). */
   fieldPhase: number;
+  /** A proposed environment whose preview is open in the rail (never a working environment). */
+  preview: string | null;
+  /** How the magnetic-field views are drawn (never what is computed). */
+  fieldDisplay: FieldDisplay;
+  setFieldDisplay: (patch: Partial<FieldDisplay>) => void;
   set: (patch: Partial<TwinState>) => void;
   setStation: (patch: Partial<StationInputs>) => void;
   setFaults: (patch: Partial<StationFaults>) => void;
@@ -83,6 +88,19 @@ export interface TwinState {
   setGuide: (patch: Partial<GuideState>) => void;
   select: (id: string | null) => void;
   bump: () => void;
+}
+
+export interface FieldDisplay {
+  scale: "log" | "linear";
+  /** Road: a section that follows the receiver, or one fixed at a road segment. */
+  section: "receiver" | "segment";
+  /** Segment index for a fixed section (null: the next pad ahead of the receiver). */
+  segment: number | null;
+  lines: boolean;
+  vectors: boolean;
+  contours: boolean;
+  /** Sweep the field-line phase through the cycle (a slowed visual cue). */
+  sweep: boolean;
 }
 
 /** A visitor's own action: pause guided progression (the tour can be resumed). */
@@ -120,6 +138,9 @@ export const useTwin = create<TwinState>((set) => ({
   grid: DEFAULT_GRID_INPUTS,
   gridHour: 12,
   fieldPhase: 0,
+  preview: null,
+  fieldDisplay: { scale: "log", section: "receiver", segment: null, lines: true, vectors: false, contours: true, sweep: false },
+  setFieldDisplay: (patch) => set((s) => ({ fieldDisplay: { ...s.fieldDisplay, ...patch } })),
   set: (patch) => set(patch),
   setStation: (patch) => set((s) => ({ ...interacted(s), station: { ...s.station, ...patch } })),
   setFaults: (patch) => set((s) => ({ ...interacted(s), faults: { ...s.faults, ...patch } })),

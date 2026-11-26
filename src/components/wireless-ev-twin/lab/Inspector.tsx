@@ -12,10 +12,12 @@ import { runtime, useSampled } from "../state/runtime";
 import { type PanelId, useTwin } from "../state/store";
 import { currentStage } from "../story/guide";
 import Chart from "../ui/Chart";
-import { Tag } from "../ui/controls";
+import { AtDepth, Tag } from "../ui/controls";
 import { liveValue } from "../ui/liveValues";
-import { AutonomousResults, DynamicResults, InfrastructureResults } from "../env/OtherPanels";
-import { StationResults, StationSequence } from "../env/StationPanels";
+import { AutonomousInputs, AutonomousResults, DynamicInputs, DynamicResults, InfrastructureInputs, InfrastructureResults } from "../env/OtherPanels";
+import { StationFaults, StationInputs, StationResults, StationSequence } from "../env/StationPanels";
+import { LearnLab } from "./LearnLab";
+import { ResearchPanel } from "./ResearchPanel";
 import lab from "./lab.module.css";
 
 const SIDE: Record<string, string> = { wireless: "Wireless link", ground: "Ground side", vehicle: "Vehicle side", road: "Electrified road", grid: "Grid", infrastructure: "Infrastructure" };
@@ -220,7 +222,14 @@ function Waveforms() {
 function SciencePanel() {
   const stageId = useTwin((s) => s.guide.stageId);
   const active = useTwin((s) => s.guide.active);
+  const mode = useTwin((s) => s.mode);
   const stage = useMemo(() => (stageId ? currentStage() : null), [stageId]);
+  if (mode === "learn")
+    return (
+      <div className={lab.inspectorBody}>
+        <LearnLab />
+      </div>
+    );
   if (!stage || !active)
     return (
       <div className={lab.inspectorBody}>
@@ -262,21 +271,42 @@ function DataPanel() {
   );
 }
 
-const TABS: { id: Exclude<PanelId, "none">; label: string }[] = [
+const TABS: { id: Exclude<PanelId, "none">; label: string; deep?: boolean; research?: boolean }[] = [
+  { id: "inputs", label: "Inputs", deep: true },
+  { id: "research", label: "Research", research: true },
   { id: "component", label: "Component" },
   { id: "science", label: "Science" },
   { id: "data", label: "Data" },
 ];
 
+/** The environment's inputs and, at the station, fault injection: the same controls every mode shares. */
+function InputsPanel() {
+  const env = useTwin((s) => s.environment);
+  const mode = useTwin((s) => s.mode);
+  const Inputs = env === "station" ? StationInputs : env === "dynamic" ? DynamicInputs : env === "autonomous" ? AutonomousInputs : InfrastructureInputs;
+  return (
+    <div className={lab.inspectorBody} data-panels role="region" aria-label="Inputs">
+      <Inputs />
+      {env === "station" && (
+        <AtDepth mode={mode} min="engineer">
+          <StationFaults />
+        </AtDepth>
+      )}
+    </div>
+  );
+}
+
 export default function InspectorPanel() {
   const panel = useTwin((s) => s.panel);
   const selected = useTwin((s) => s.selected);
+  const mode = useTwin((s) => s.mode);
   if (panel === "none") return null;
+  const deep = mode === "engineer" || mode === "research";
   return (
     <aside className={lab.inspector} aria-label="Inspector">
       <header className={lab.inspectorHead}>
         <div className={lab.tabs} role="tablist" aria-label="Inspector">
-          {TABS.map((t) => (
+          {TABS.filter((t) => (!t.deep || deep) && (!t.research || mode === "research")).map((t) => (
             <button key={t.id} type="button" role="tab" aria-selected={panel === t.id} disabled={t.id === "component" && !selected} onClick={() => useTwin.setState({ panel: t.id })}>
               {t.label}
             </button>
@@ -294,7 +324,7 @@ export default function InspectorPanel() {
           <X size={16} aria-hidden="true" />
         </button>
       </header>
-      {panel === "component" && selected ? <ComponentPanel key={selected} id={selected} /> : panel === "science" ? <SciencePanel /> : panel === "data" ? <DataPanel /> : null}
+      {panel === "research" ? <ResearchPanel /> : panel === "inputs" ? <InputsPanel /> : panel === "component" && selected ? <ComponentPanel key={selected} id={selected} /> : panel === "science" ? <SciencePanel /> : panel === "data" ? <DataPanel /> : null}
     </aside>
   );
 }

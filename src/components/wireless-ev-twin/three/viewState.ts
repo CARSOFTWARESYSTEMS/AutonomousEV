@@ -25,6 +25,8 @@ export const view = {
   /** 0–1: power-electronics cabinet open. */
   power: 0,
   field: 0,
+  /** 0–1: the road's magnetic-field section (Dynamic). */
+  roadField: 0,
   energy: 0,
   thermal: 0,
   iot: 0,
@@ -49,21 +51,23 @@ export function targets(mode: ViewModeId, env = "station"): ViewChannels {
     exploded: station && mode === "exploded" ? 1 : 0,
     assembly: mode === "assembly" ? 1 : 0,
     // On the road the car stays solid in the cutaway: the road opens, not the car. From above, the segment view sees through it.
-    xray: mode === "xray" || (station && (mode === "energy" || mode === "thermal" || mode === "field" || mode === "cutaway")) || (road && mode === "segments") ? 1 : 0,
+    // On the road the energy view keeps a trace of the body (selective transparency), so the car still reads as a car.
+    xray: mode === "xray" || (station && (mode === "energy" || mode === "thermal" || mode === "field" || mode === "cutaway")) || (road && (mode === "segments" || mode === "field")) ? 1 : road && mode === "energy" ? 0.78 : 0,
     chassis: mode === "chassis" || (station && mode === "exploded") ? 1 : 0,
     reveal: station && (mode === "cutaway" || mode === "exploded" || mode === "field" || mode === "thermal" || mode === "engineering") ? 1 : 0,
-    cut: mode === "cutaway" || (road && mode === "receiver") ? 1 : 0,
+    cut: mode === "cutaway" || (road && (mode === "receiver" || mode === "field")) ? 1 : 0,
     underbody: mode === "underbody" ? 1 : 0,
     battery: mode === "battery" ? 1 : 0,
     // Ghosts everything on the vehicle except the receiver (from above on the road, so the pads under it show).
-    receiver: (station && (mode === "receiver" || mode === "exploded" || mode === "engineering" || mode === "field" || mode === "cutaway")) || (road && mode === "segments") ? 1 : 0,
+    receiver: (station && (mode === "receiver" || mode === "exploded" || mode === "engineering" || mode === "field" || mode === "cutaway")) || (road && (mode === "segments" || mode === "field")) ? 1 : 0,
     power: mode === "power" ? 1 : 0,
     field: station && mode === "field" ? 1 : 0,
+    roadField: road && mode === "field" ? 1 : 0,
     energy: mode === "energy" ? 1 : 0,
     thermal: mode === "thermal" ? 1 : 0,
     iot: mode === "iot" ? 1 : 0,
     alignment: mode === "engineering" ? 1 : 0,
-    segments: road && (mode === "segments" || mode === "coupling" || mode === "cutaway" || mode === "receiver") ? 1 : 0,
+    segments: road && (mode === "segments" || mode === "coupling" || mode === "cutaway" || mode === "receiver" || mode === "field") ? 1 : 0,
     coupling: road && mode === "coupling" ? 1 : 0,
     studio: station && ["receiver", "battery", "exploded", "assembly", "chassis", "underbody", "cutaway", "power", "field", "xray", "engineering", "thermal"].includes(mode) ? 1 : 0,
   };

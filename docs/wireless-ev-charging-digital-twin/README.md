@@ -3,7 +3,7 @@
 **Park. Drive. Charge. Automatically.** — Designed and developed by and for the EV.ENGINEER™ team.
 
 Route: `/internships/wireless-ev-charging-digital-twin` (Proof of Concept card on `/internships`).
-Status: engine and laboratories delivered 25 Nov 2026 (`a1e4679`); premium redesign Phases 0–2 (audit, immersive laboratory, flagship station scene) delivered the same day and Phase 3 (dynamic road) on 26 Nov, uncommitted at the time of writing — see IMPLEMENTATION_REPORT.md. Simulation only; nothing is experimentally validated.
+Status: engine and laboratories delivered 25 Nov 2026 (`a1e4679`); premium redesign Phases 0–3 committed as `8b08b03`; **Phase 3.5 (cinematic realism and scientific experience refinement) delivered 26 Nov 2026, uncommitted, awaiting the EV.ENGINEER™ team's visual acceptance** — see PHASE_3_5_ACCEPTANCE_REPORT.md. Simulation only; nothing is experimentally validated.
 
 ## Documents
 
@@ -27,7 +27,11 @@ Status: engine and laboratories delivered 25 Nov 2026 (`a1e4679`); premium redes
 | [SMART_PARKING_REQUIREMENTS.md](SMART_PARKING_REQUIREMENTS.md) | Environment 01, specified and planned |
 | [PERFORMANCE_REPORT.md](PERFORMANCE_REPORT.md) | Frame rate, viewport share, memory, bundle sizes, browsers |
 | [SCIENTIFIC_VALIDATION_REPORT.md](SCIENTIFIC_VALIDATION_REPORT.md) | What was verified in this phase; no model changes |
-| [VISUAL_ACCEPTANCE_REPORT.md](VISUAL_ACCEPTANCE_REPORT.md) | The brief's visual criteria, verdicts and evidence |
+| [VISUAL_ACCEPTANCE_REPORT.md](VISUAL_ACCEPTANCE_REPORT.md) | The brief's visual criteria, verdicts and evidence (Phases 2–3) |
+| [PHASE_3_5_VISUAL_REFINEMENT_PLAN.md](PHASE_3_5_VISUAL_REFINEMENT_PLAN.md) | Phase 3.5: verified deficiencies, asset strategy, art direction, phases, risks |
+| [PREMIUM_ASSET_QUALITY_REPORT.md](PREMIUM_ASSET_QUALITY_REPORT.md) | Phase 3.5: vehicle, environment and material improvements, provenance, cost |
+| [DYNAMIC_MAGNETIC_FIELD_REPORT.md](DYNAMIC_MAGNETIC_FIELD_REPORT.md) | WPT-EM-005: the road's magnetic field — feasibility, equations, assumptions, verification |
+| [PHASE_3_5_ACCEPTANCE_REPORT.md](PHASE_3_5_ACCEPTANCE_REPORT.md) | Phase 3.5: what was done, evidence, measurements, limitations, acceptance status |
 
 Regenerate the two generated files after changing the registries:
 

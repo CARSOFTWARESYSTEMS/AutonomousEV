@@ -5,7 +5,8 @@
 import { PHASES } from "@/lib/wireless-charging/stateMachine";
 import { cabs } from "@/lib/wireless-charging/math";
 import { DEFAULT_TX_PAD } from "@/lib/wireless-charging/coils";
-import { recentBatteryPower } from "@/lib/wireless-charging/dynamic";
+import { energyWindow } from "@/lib/wireless-charging/dynamic";
+import { roadFieldInfo } from "../three/road/fieldInfo";
 import { runtime } from "../state/runtime";
 import { useTwin } from "../state/store";
 import { fmt } from "../ui/controls";
@@ -94,6 +95,12 @@ export const METRICS = {
   pBatteryRoad: { label: "Battery (+ charging)", kind: "CALCULATED", read: () => kw(runtime.road.state.pBattery) },
   roadSoc: { label: "State of charge", kind: "CALCULATED", read: () => ({ value: fmt(runtime.road.state.battery.soc * 100, 3), unit: "%" }) },
   segments: { label: "Energised pads", kind: "SIMULATED", read: () => ({ value: String(runtime.road.state.segments.filter((g) => g.level > 0.01).length) }) },
+  roadFieldB: {
+    label: "B at mid-gap (RMS)",
+    kind: "CALCULATED",
+    read: () => (roadFieldInfo.ready ? { value: fmt(roadFieldInfo.atReceiver * 1e6, 0), unit: "µT" } : { value: "—" }),
+  },
+  roadFieldPads: { label: "Pads in the field", kind: "CALCULATED", read: () => ({ value: roadFieldInfo.ready ? String(roadFieldInfo.active) : "—" }) },
   mTotal: { label: "Total M", kind: "CALCULATED", read: () => ({ value: fmt(runtime.road.state.mTotal * 1e6, 2), unit: "µH" }) },
   kRoad: { label: "Coupling k", kind: "CALCULATED", read: () => ({ value: fmt(runtime.road.state.kDynamic, 3) }) },
   i2Road: { label: "Receiver current (RMS)", kind: "CALCULATED", read: () => ({ value: fmt(runtime.road.state.i2, 1), unit: "A" }) },
@@ -104,17 +111,35 @@ export const METRICS = {
     label: "Energy over the last 200 m",
     kind: "CALCULATED",
     read: () => {
-      const r = recentBatteryPower(runtime.road.state.samples);
-      return { value: r ? (r.regime === "charging" ? "Battery gaining" : r.regime === "discharging" ? "Battery losing" : "Energy-neutral") : "measuring…" };
+      const w = energyWindow(runtime.road.state.samples);
+      if (!w.complete) return { value: "Collecting", unit: `${fmt(Math.min(w.travelled, 200), 0)}/200 m` };
+      return { value: w.regime === "charging" ? "Battery gaining" : w.regime === "discharging" ? "Battery losing" : "Energy-neutral" };
+    },
+  },
+  roadReceivedAvg: {
+    label: "Mean received, last 200 m",
+    kind: "CALCULATED",
+    read: () => {
+      const w = energyWindow(runtime.road.state.samples);
+      return w.complete ? kw(w.meanReceived) : { value: "—" };
+    },
+  },
+  roadSocChange: {
+    label: "SOC change, last 200 m",
+    kind: "CALCULATED",
+    read: () => {
+      const w = energyWindow(runtime.road.state.samples);
+      return w.complete ? { value: (w.socChange * 100).toFixed(4), unit: "%" } : { value: "—" };
     },
   },
   roadNetPower: {
     label: "Mean battery power, last 200 m",
     kind: "CALCULATED",
     read: () => {
-      const r = recentBatteryPower(runtime.road.state.samples);
+      const r = energyWindow(runtime.road.state.samples);
+      if (!r.complete) return { value: "—" };
       // Fixed decimals: a near-zero mean is the point of the energy-neutral stage, not a number to show in exponent form.
-      return r ? { value: (Math.abs(r.mean) < 5 ? 0 : r.mean / 1000).toFixed(2), unit: "kW" } : { value: "—" };
+      return { value: (Math.abs(r.mean) < 5 ? 0 : r.mean / 1000).toFixed(2), unit: "kW" };
     },
   },
   parkPhase: { label: "Manoeuvre", kind: "SIMULATED", read: () => ({ value: runtime.parking.state.phase }) },

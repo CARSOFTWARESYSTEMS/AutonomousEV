@@ -9,6 +9,7 @@ import { Clapperboard, LogOut, Maximize2, Minimize2 } from "lucide-react";
 import { ENVIRONMENTS, MODES, type ModeId, SECTIONS, type SectionId } from "@/lib/wireless-charging/content";
 import { getWebGLSupport, readDeviceCapabilities, REDUCED_MOTION_QUERY, selectQuality } from "../satellite-explorer/lib/capabilities";
 import Laboratory, { type Capabilities } from "./lab/Laboratory";
+import { LaunchGate, SharePopover, useLaunchLink } from "./lab/Launch";
 import { APP_ID, exitFullscreen, toggleFullscreen, useFullscreenSync } from "./state/fullscreen";
 import { runtime, useClock, useInputSync } from "./state/runtime";
 import { type QualityChoice, useTwin } from "./state/store";
@@ -64,8 +65,8 @@ const useCapabilities = () => useSyncExternalStore(noop, capabilityCache, () => 
 export function setMode(mode: ModeId) {
   useTwin.setState((s) => ({
     mode,
-    panel: mode === "explore" ? (s.selected ? "component" : "none") : mode === "learn" ? (s.selected ? "component" : "science") : s.selected ? "component" : "data",
-    drawer: mode === "engineer" || mode === "research",
+    panel: mode === "explore" ? (s.selected ? "component" : "none") : mode === "learn" ? (s.selected ? "component" : "science") : s.selected ? "component" : mode === "research" ? "research" : "inputs",
+    drawer: false,
     guide: { ...s.guide, auto: mode === "explore" ? s.guide.auto : false },
   }));
 }
@@ -80,6 +81,7 @@ export default function TwinApp() {
   const caps = useCapabilities();
   const fullscreen = useTwin((s) => s.fullscreen);
   useFullscreenSync();
+  const launch = useLaunchLink(Boolean(caps?.webgl));
   useInputSync();
   useClock();
   useGuideController();
@@ -135,6 +137,7 @@ export default function TwinApp() {
         </p>
         {!demo && <Segmented label="Experience mode" value={mode} options={MODES.map((m) => ({ id: m.id, label: m.label }))} onChange={(v) => setMode(v)} />}
         <div className={lab.toolbarRight}>
+          {caps?.webgl && !demo && <SharePopover />}
           {caps?.webgl &&
             (demo ? (
               <button type="button" className={lab.toolBtn} data-strong onClick={endDemo}>
@@ -175,6 +178,7 @@ export default function TwinApp() {
         </ul>
         <p className={lab.modeNote}>{MODES.find((m) => m.id === mode)?.text}</p>
       </nav>
+      {launch.gate && <LaunchGate onClose={launch.close} />}
       {section === "twin" ? (
         <Laboratory caps={caps} />
       ) : (

@@ -37,3 +37,17 @@ Approximate ferrite modelling (image currents scaled by coverage); no finite fer
 ## Fidelity and validation
 
 Fidelity (F0–F5) and validation status (Planned … Experimentally validated) stay separate attributes in the registry and the inspector. The new components added to the registry for the redesign (pad enclosure, insulation, base, receiver enclosure, identification camera, power cabinet, vehicle) are F0–F2 and *Designed* or *Tested*; none is marked verified or validated.
+
+## Phase 3.5 (26 Nov 2026)
+
+### New model: WPT-EM-005, dynamic road magnetic field
+
+Added to the registry (21 models). It reuses WPT-EM-001/002 unchanged and reads WPT-SIM-002's state; its assumptions are the road model's own (one phase reference for all segments; resonant receiver). Verification: `roadField.test.ts` (7 tests) and in-browser checks **A14** (single pad agrees with the station section within 3 %), **A15** (no excitation → no field; failed pads contribute nothing) and **A16** (superposition residual < 10⁻¹² T; phase convention). The suite now has **32 checks**. Full account in DYNAMIC_MAGNETIC_FIELD_REPORT.md.
+
+### Analysis helper changed: the 200 m energy window
+
+`recentBatteryPower` (an analysis of the road samples, not a model) averaged the samples arithmetically. It now delegates to `energyWindow`, which weights each sample by the time since the previous one. Reason: the brief's review of variable-speed use; the arithmetic mean is only time-weighted when samples are uniform. Numerical effect: none for the shipped scenarios — the road model samples every 10 ms, so the two means are identical (the three outcome presets keep their regimes; `road.test.ts` and the browser checks pass unchanged). Defined behaviour added: distance across the 1000 m boundary is unwrapped; a gap over 0.5 s (a reset) ends the window; a stopped or very slow vehicle (under 24 km/h on average over the stored 30 s) never completes the window and is reported "Collecting a complete 200 m measurement window", never classified. No model equation or version changed.
+
+### Unchanged
+
+All 20 existing models, their equations and versions; the 29 existing checks; the state machines, telemetry, interlocks and scenarios.

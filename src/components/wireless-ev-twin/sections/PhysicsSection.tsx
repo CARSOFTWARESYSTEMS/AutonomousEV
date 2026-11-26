@@ -42,6 +42,7 @@ function EquationExplorer({ initial }: { initial: string }) {
   const [id, setId] = useState(initial);
   const eq = EQUATIONS.find((e) => e.id === id) ?? EQUATIONS[0];
   const [values, setValues] = useState<Record<string, Record<string, number>>>({});
+  const [allEq, setAllEq] = useState(false);
   const v = useMemo(() => ({ ...defaultValues(eq), ...(values[eq.id] ?? {}) }), [eq, values]);
   const outputs = useMemo(() => eq.evaluate(v), [eq, v]);
   const sweep = useMemo(() => sweepEquation(eq, v), [eq, v]);
@@ -52,11 +53,14 @@ function EquationExplorer({ initial }: { initial: string }) {
     <section className={ui.labBlock} aria-labelledby="eq-title">
       <h3 id="eq-title">Equation Explorer</h3>
       <div className={ui.eqPicker} role="tablist" aria-label="Equations">
-        {EQUATIONS.map((e) => (
+        {EQUATIONS.filter((e, i) => allEq || i < 6 || e.id === eq.id).map((e) => (
           <button key={e.id} type="button" role="tab" aria-selected={e.id === eq.id} onClick={() => setId(e.id)}>
             {e.title}
           </button>
         ))}
+        <button type="button" className={ui.eqMore} aria-expanded={allEq} onClick={() => setAllEq(!allEq)}>
+          {allEq ? "Fewer" : `All ${EQUATIONS.length} equations`}
+        </button>
       </div>
       <div className={ui.eqGrid}>
         <div>

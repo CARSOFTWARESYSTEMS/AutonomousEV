@@ -1,56 +1,64 @@
 "use client";
-// Light and reflections. A studio sky generated in the browser (a blue-hour
-// gradient and three soft boxes) is prefiltered into the reflection map, so
-// paint, glass and metal carry controlled highlights; nothing is downloaded.
-// One cool key light with soft shadows follows the active environment, a warm
-// fill holds the shadows, and the canopy's downlights warm the charging bay.
+// Light and reflections. Daylight: the same sky the visitor sees (./sky.ts) is
+// prefiltered into the reflection map together with a ground plane and two
+// soft architectural strips, so paint carries a true horizon line, glass
+// reflects the sky and metal reads as metal; nothing is downloaded. The sun is
+// a warm key light with soft shadows whose box follows the active
+// environment; the sky fills the shadows; haze fades distance into the
+// horizon. Inspection views cross-fade into a controlled studio: the sun
+// dims and a camera-relative key, fill and rim take over.
 import { useEffect, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
-import { BackSide, Color, type DirectionalLight, Fog, Mesh, MeshBasicMaterial, type Object3D, PlaneGeometry, PMREMGenerator, Scene, ShaderMaterial, SphereGeometry } from "three";
+import { BoxGeometry, Color, type DirectionalLight, Fog, type HemisphereLight, Mesh, MeshBasicMaterial, type Object3D, PlaneGeometry, PMREMGenerator, Scene, SphereGeometry, Vector3 } from "three";
 import { useTwin } from "../state/store";
 import { setEnvironment, setFog } from "./mutate";
+import { GROUND_COLOR, HAZE, SKY_COLOR, skyMaterial, SUN_COLOR, SUN_DIR } from "./sky";
 import { view } from "./viewState";
 import { ROAD_Z } from "./road/layout";
 
-/** The reflection environment: gradient sky and soft boxes, in linear HDR. */
-function studioSky(): Scene {
+/** The reflection environment: daylight sky, ground and soft architectural strips, in linear HDR. */
+function reflectionScene(): Scene {
   const scene = new Scene();
-  const sky = new Mesh(
-    new SphereGeometry(100, 48, 24),
-    new ShaderMaterial({
-      side: BackSide,
-      depthWrite: false,
-      uniforms: { top: { value: new Color("#243656").multiplyScalar(1.1) }, horizon: { value: new Color("#b59a8a").multiplyScalar(1.25) }, ground: { value: new Color("#2a2826") } },
-      vertexShader: "varying vec3 vP; void main(){ vP = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }",
-      fragmentShader: "uniform vec3 top; uniform vec3 horizon; uniform vec3 ground; varying vec3 vP; void main(){ float h = vP.y; vec3 c = h > 0.0 ? mix(horizon, top, smoothstep(0.0, 0.55, h)) : mix(horizon * 0.6, ground, smoothstep(0.0, 0.25, -h)); gl_FragColor = vec4(c, 1.0); }",
-    }),
-  );
+  const sky = new Mesh(new SphereGeometry(100, 64, 32), skyMaterial({ sunScale: 0.5, clouds: 0.8 }));
+  // The environment is rendered without tone mapping; keep the sky's chunks inert.
+  sky.material.toneMapped = false;
   scene.add(sky);
-  const box = (w: number, h: number, intensity: number, tint: string, place: (o: Object3D) => void) => {
+  const ground = new Mesh(new PlaneGeometry(400, 400), new MeshBasicMaterial({ color: new Color("#5d5953").multiplyScalar(0.55) }));
+  ground.rotation.x = -Math.PI / 2;
+  ground.position.y = -1.2;
+  scene.add(ground);
+  const strip = (w: number, h: number, intensity: number, tint: string, place: (o: Object3D) => void) => {
     const m = new Mesh(new PlaneGeometry(w, h), new MeshBasicMaterial({ color: new Color(tint).multiplyScalar(intensity), side: 2 }));
     place(m);
     scene.add(m);
   };
-  // Overhead soft box (the long highlight along roofs and hoods).
-  box(90, 26, 1.7, "#f4f7ff", (o) => {
-    o.position.set(0, 70, 0);
+  // A long overhead soft strip (the highlight that runs along roofs and bonnets) and a low side strip.
+  strip(120, 14, 1.4, "#f4f7ff", (o) => {
+    o.position.set(0, 60, -10);
     o.rotation.x = Math.PI / 2;
   });
-  // Key-side strip and a warm rim strip.
-  box(26, 50, 1.7, "#eef3ff", (o) => {
-    o.position.set(-85, 20, 30);
-    o.lookAt(0, 10, 0);
+  strip(70, 6, 0.9, "#fff4e8", (o) => {
+    o.position.set(-60, 9, -40);
+    o.lookAt(0, 4, 0);
   });
-  box(8, 44, 1.2, "#ffd9b8", (o) => {
-    o.position.set(70, 18, -50);
-    o.lookAt(0, 10, 0);
-  });
+  // Dark architectural masses near the horizon: reflections need contrast, not only sky.
+  const block = new MeshBasicMaterial({ color: new Color("#2a2f36").multiplyScalar(0.5) });
+  for (let i = 0; i < 9; i++) {
+    const a = (i / 9) * Math.PI * 2 + 0.3;
+    const b = new Mesh(new BoxGeometry(14 + (i % 3) * 8, 6 + ((i * 7) % 5) * 3, 10), block);
+    b.position.set(Math.cos(a) * 75, 2 + ((i * 7) % 5) * 1.5, Math.sin(a) * 75);
+    b.lookAt(0, b.position.y, 0);
+    scene.add(b);
+  }
   return scene;
 }
 
-const FOG_DAY = new Color("#2e3442");
-const FOG_STUDIO = new Color("#05070b");
+const FOG_STUDIO = new Color("#05080c");
 const fogColor = new Color();
+const SKY_STUDIO = new Color("#1a2330");
+const GROUND_STUDIO = new Color("#07090c");
+const hemiSky = new Color();
+const hemiGround = new Color();
 
 /** Shadow-camera centre for each environment. */
 const FOCUS: Record<string, [number, number, number]> = {
@@ -60,15 +68,24 @@ const FOCUS: Record<string, [number, number, number]> = {
   infrastructure: [0, 0, 4],
 };
 
+const camRight = new Vector3();
+const camUp = new Vector3();
+const camFwd = new Vector3();
+const focusV = new Vector3();
+
 export function Lighting({ shadows, mapSize }: { shadows: boolean; mapSize: number }) {
   const gl = useThree((s) => s.gl);
   const scene = useThree((s) => s.scene);
+  const sun = useRef<DirectionalLight>(null);
+  const hemi = useRef<HemisphereLight>(null);
   const key = useRef<DirectionalLight>(null);
+  const fill = useRef<DirectionalLight>(null);
+  const rim = useRef<DirectionalLight>(null);
   useEffect(() => {
     const pmrem = new PMREMGenerator(gl);
-    const env = studioSky();
-    const rt = pmrem.fromScene(env, 0.035);
-    setEnvironment(scene, rt.texture, 0.62, new Fog(new Color("#2e3442"), 70, 360));
+    const env = reflectionScene();
+    const rt = pmrem.fromScene(env, 0.02, 0.1, 400);
+    setEnvironment(scene, rt.texture, 0.95, new Fog(HAZE.clone(), 90, 620));
     return () => {
       setEnvironment(scene, null, 1, null);
       rt.dispose();
@@ -80,46 +97,71 @@ export function Lighting({ shadows, mapSize }: { shadows: boolean; mapSize: numb
       });
     };
   }, [gl, scene]);
-  useFrame(({ scene: sc }) => {
-    // Inspection views close the fog in to a dark studio around the subject.
+  useFrame(({ scene: sc, camera, controls }) => {
+    const st = view.studio;
+    // Inspection views close the haze in to a dark studio around the subject.
     const fog = sc.fog as Fog | null;
-    if (fog) setFog(fog, fogColor.copy(FOG_DAY).lerp(FOG_STUDIO, view.studio), 70 - 62 * view.studio, 360 - 330 * view.studio);
-    const k = key.current;
-    if (!k) return;
+    if (fog) setFog(fog, fogColor.copy(HAZE).lerp(FOG_STUDIO, st), 90 - 80 * st, 620 - 590 * st);
     const env = useTwin.getState().environment;
     const f = FOCUS[env] ?? FOCUS.station;
-    const wide = env === "infrastructure";
-    placeKey(k, f, wide);
+    const s = sun.current;
+    if (s) {
+      placeSun(s, f, env === "infrastructure");
+      s.intensity = 3.1 * (1 - 0.75 * st);
+    }
+    if (hemi.current) {
+      hemi.current.color.copy(hemiSky.copy(SKY_COLOR).lerp(SKY_STUDIO, st));
+      hemi.current.groundColor.copy(hemiGround.copy(GROUND_COLOR).lerp(GROUND_STUDIO, st));
+      hemi.current.intensity = 0.55 - 0.25 * st;
+    }
+    // Studio rig, relative to the camera: key above-left, fill right, rim behind the subject.
+    const target = (controls as unknown as { target?: Vector3 } | null)?.target ?? focusV.set(...f);
+    camera.matrixWorld.extractBasis(camRight, camUp, camFwd);
+    const rig = [
+      [key.current, -0.8, 0.9, 0.8, 2.6],
+      [fill.current, 1.0, 0.25, 0.6, 0.8],
+      [rim.current, 0.2, 0.7, -1.2, 2.2],
+    ] as const;
+    for (const [light, r, u, b, intensity] of rig) {
+      if (!light) continue;
+      light.intensity = intensity * st;
+      light.visible = st > 0.01;
+      light.position.copy(target).addScaledVector(camRight, r * 10).addScaledVector(camUp, u * 10).addScaledVector(camFwd, b * 10);
+      light.target.position.copy(target);
+      light.target.updateMatrixWorld();
+    }
   });
   return (
     <>
-      <hemisphereLight args={["#a9bde0", "#2d2620", 0.42]} />
+      <hemisphereLight ref={hemi} args={[SKY_COLOR, GROUND_COLOR, 0.55]} />
       <directionalLight
-        ref={key}
-        intensity={2.2}
-        color="#e6ecff"
+        ref={sun}
+        intensity={3.1}
+        color={SUN_COLOR}
         castShadow={shadows}
         shadow-mapSize={[mapSize, mapSize]}
         shadow-camera-near={1}
-        shadow-camera-far={90}
-        shadow-bias={-0.00035}
-        shadow-normalBias={0.025}
-        shadow-radius={5}
+        shadow-camera-far={120}
+        shadow-bias={-0.0003}
+        shadow-normalBias={0.03}
+        shadow-radius={4}
       />
-      <directionalLight position={[22, 9, -16]} intensity={0.5} color="#ffd2a8" />
-      {/* Canopy downlights over the charging bay and its neighbour. */}
-      <pointLight position={[0.2, 2.75, 0]} intensity={7} distance={8} decay={2} color="#ffe9d0" />
-      <pointLight position={[0.2, 2.75, -4.2]} intensity={5} distance={8} decay={2} color="#ffe9d0" />
+      <directionalLight ref={key} intensity={0} color="#f2f5ff" />
+      <directionalLight ref={fill} intensity={0} color="#cfe0ff" />
+      <directionalLight ref={rim} intensity={0} color="#ffffff" />
+      {/* Shelter downlights over the charging bay and its neighbour (dim in daylight). */}
+      <pointLight position={[0.2, 2.75, 0]} intensity={2.2} distance={7} decay={2} color="#ffe9d0" />
+      <pointLight position={[0.2, 2.75, -4.2]} intensity={1.6} distance={7} decay={2} color="#ffe9d0" />
     </>
   );
 }
 
-/** Keeps the key light's direction fixed and its shadow box over the environment in view. */
-function placeKey(k: DirectionalLight, f: [number, number, number], wide: boolean) {
-  k.position.set(f[0] - 16, 22, f[2] + 12);
+/** The sun's direction is fixed (it matches the sky); its shadow box follows the environment in view. */
+function placeSun(k: DirectionalLight, f: [number, number, number], wide: boolean) {
+  k.position.set(f[0] + SUN_DIR.x * 40, f[1] + SUN_DIR.y * 40, f[2] + SUN_DIR.z * 40);
   k.target.position.set(f[0], f[1], f[2]);
   k.target.updateMatrixWorld();
-  const half = wide ? 60 : 12;
+  const half = wide ? 60 : 14;
   const cam = k.shadow.camera;
   if (cam.right !== half) {
     cam.left = -half;
