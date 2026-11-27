@@ -114,7 +114,9 @@ provider instance; no component changes needed since both satisfy the same inter
   highlights a section and updates `?source=` for deep linking, but never unmounts other sections —
   so search engines and users without JS always see the full page content on first load, and there is
   no filter-driven content-hiding to reconcile with SEO.
-- **LinkedIn iframe failure detection is a timeout heuristic** (8s): browsers don't reliably fire an
+- **LinkedIn iframe failure detection is a timeout heuristic** (15s; 8s until Nov 2026, raised to
+  give slow connections more room. Headless test browsers are throttled by LinkedIn's bot
+  protection after a few embeds and fall back at any limit, so judge this in a real browser): browsers don't reliably fire an
   `onerror` event for an iframe blocked by the remote site, so "did it load" is inferred from
   whether `onLoad` fired before the timeout. This is a known, accepted limitation of iframe embeds
   in general, not specific to this implementation.
@@ -174,7 +176,7 @@ provider instance; no component changes needed since both satisfy the same inter
 | G4 | Employer feedback not mislabeled as customer feedback | `WorkplaceReviewSummary` renders `classificationNote="Employer / workplace feedback — not customer feedback."` | Screenshot `06-ev-society.png`-adjacent Glassdoor section | Pass |
 | I1 | JSON-configurable | All content/config in `src/data/trust-center/*.json` | `repository.ts` imports; docs table above | Pass |
 | I2 | Lazy loading | `IntersectionObserver` in `LinkedInPostCard`; click-to-play in `VideoPreviewCard`; first 2 LinkedIn posts eager, rest lazy | `LinkedInPostCard.test.tsx` (`eager` prop) + manual load | Pass |
-| I3 | Fallback on embed failure | 8s timeout → `ExternalPostFallback` in `LinkedInPostCard` | Code review (timing not unit-tested; would need fake timers) | Pass |
+| I3 | Fallback on embed failure | 15s timeout (`EMBED_TIMEOUT_MS`) → `ExternalPostFallback` in `LinkedInPostCard` | `LinkedInPostCard.test.tsx` (fake timers: embed kept at 14.999 s, fallback at 15 s, never after `load`) | Pass |
 | I4 | Security allowlist enforced | `isAllowedEmbedUrl` used in both `validate.ts` (load time) and `LinkedInEmbed.tsx` (render time) | `iframe-safety.test.ts`, `validate.test.ts` | Pass |
 | I5 | Accessible nav | About dropdown: `aria-expanded`/`aria-haspopup`, Escape, outside click, focus return | `Navbar.test.tsx` | Pass |
 | I6 | Search grounded with citations | `TrustSearchResult` renders `TrustCitation` (source, verification badge, link) for every result | `search.test.ts` | Pass |

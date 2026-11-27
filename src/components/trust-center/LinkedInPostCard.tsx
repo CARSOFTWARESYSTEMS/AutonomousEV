@@ -6,7 +6,12 @@ import ExternalPostFallback from "./ExternalPostFallback";
 import styles from "./LinkedInPostCard.module.css";
 import { trackEvent } from "@/utils/analytics";
 
-const EMBED_TIMEOUT_MS = 8000;
+// How long an embed may take to fire `load` before the card falls back to "Open on LinkedIn".
+// Raised from 8 s in Nov 2026 to give slow connections more room: each embed pulls many
+// scripts from static.licdn.com. Headless test browsers are throttled by LinkedIn's bot
+// protection after a few embeds and fall back at any limit, so check in a real browser.
+// Exported for the test.
+export const EMBED_TIMEOUT_MS = 15000;
 const MOBILE_QUERY = "(max-width: 767px)";
 
 function subscribeToMobileQuery(callback: () => void) {

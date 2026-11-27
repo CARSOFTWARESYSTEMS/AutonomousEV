@@ -1,6 +1,6 @@
-import { describe, expect, it, afterEach } from "vitest";
-import { render, screen, cleanup } from "@testing-library/react";
-import LinkedInPostCard from "./LinkedInPostCard";
+import { describe, expect, it, afterEach, vi } from "vitest";
+import { act, render, screen, cleanup } from "@testing-library/react";
+import LinkedInPostCard, { EMBED_TIMEOUT_MS } from "./LinkedInPostCard";
 
 const ALLOWED_EMBED_URL = "https://www.linkedin.com/embed/feed/update/urn:li:share:1?collapsed=1";
 
@@ -69,6 +69,34 @@ describe("LinkedInPostCard", () => {
     expect(iframe).not.toBeNull();
     expect(iframe).toHaveAttribute("src", ALLOWED_EMBED_URL);
     expect(iframe).toHaveAttribute("title", "Professional Recognition");
+  });
+
+  it("keeps a slow embed for 15 s before falling back to 'Open on LinkedIn', and never once it has loaded", () => {
+    expect(EMBED_TIMEOUT_MS).toBe(15000);
+    mockMatchMedia(false);
+    vi.useFakeTimers();
+    try {
+      const props = { embedUrl: ALLOWED_EMBED_URL, directUrl: "https://www.linkedin.com/feed/update/urn:li:share:1/", title: "Slow post", eager: true };
+      render(<LinkedInPostCard {...props} />);
+      act(() => vi.advanceTimersByTime(14_999));
+      expect(document.querySelector("iframe")).not.toBeNull();
+      expect(screen.queryByText(/couldn.t be loaded here/i)).toBeNull();
+      act(() => vi.advanceTimersByTime(1));
+      expect(document.querySelector("iframe")).toBeNull();
+      expect(screen.getByText(/couldn.t be loaded here/i)).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: /open on linkedin/i })).toHaveAttribute("href", props.directUrl);
+      cleanup();
+
+      // A post whose iframe fired `load` in time keeps its embed after the limit.
+      render(<LinkedInPostCard {...props} />);
+      act(() => {
+        document.querySelector("iframe")!.dispatchEvent(new Event("load"));
+      });
+      act(() => vi.advanceTimersByTime(EMBED_TIMEOUT_MS + 1000));
+      expect(document.querySelector("iframe")).not.toBeNull();
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("never renders an iframe for an embedUrl outside the allowlist", () => {
