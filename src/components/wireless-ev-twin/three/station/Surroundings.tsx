@@ -29,6 +29,8 @@ const PLANTS: Plant[] = (() => {
     const x = Math.cos(a) * d;
     const z = Math.sin(a) * d;
     if (z > 14 && z < 50) continue;
+    // Leave the neighbourhood's blocks clear (see NEIGHBOURHOOD in world.tsx).
+    if (Math.hypot(x + 52, z + 58) < 44) continue;
     add(x, z, (["broadleaf", "spreading", "columnar", "broadleaf", "young"] as Species[])[i % 5], 0.9 + r() * 0.5);
   }
   return out;
@@ -86,7 +88,7 @@ export function Surroundings() {
       <mesh geometry={g.planter} material={m.planter} castShadow receiveShadow />
       {/* Trees near the shelter cast shadows; those farther out lie outside the shadow area and do not. */}
       <Forest plants={NEAR_PLANTS} />
-      <Forest plants={FAR_PLANTS} shadows={false} />
+      <Forest plants={FAR_PLANTS} shadows={false} far />
     </group>
   );
 }

@@ -10,7 +10,7 @@ Cinematic realism and scientific experience refinement. 26 Nov 2026, on top of `
 - **Vehicle** rebuilt: crease-banded body, inset glass with seals, black pillars, panoramic glass roof, full-width light bars and wrap-around blades, grille, diffuser, blank plates, mirrors, wipers, antenna fin, shader-drawn shut lines, colour-dependent clear-coat paint. Dimensions and engineering bindings unchanged (`vehicle-front.jpg`, `vehicle-front34.jpg`, `vehicle-rear34.jpg`).
 - **Daylight** sky with sun and clouds, the same sky in the reflection map (paint shows a horizon line), sun key with soft shadows, haze, studio cross-fade for inspection with key/fill/rim lights.
 - **Greenery and ground**: four tree species and shrubs with wind sway; anti-tiled lawns and verges with lush/dry patches; landscaped site.
-- **City and landscape**: towers, slabs and mid-rises with curtain-wall and punched-concrete façades in real bay and floor sizes; hills for atmospheric depth.
+- **City and landscape**: towers, slabs and mid-rises with curtain-wall and punched-concrete façades in real bay and floor sizes; hills for atmospheric depth; a neighbourhood beside the site where the district view's "Buildings" energy flow ends.
 
 ### Cinematics
 - Station establishing shot at eye height; energy shot under the canopy along the chain (`before-stage-01.jpg` → `station-01.jpg`, `before-stage-09.jpg` → `station-09.jpg`).
@@ -21,6 +21,7 @@ Cinematic realism and scientific experience refinement. 26 Nov 2026, on top of `
 - **WPT-EM-005, dynamic road magnetic field**, computed from the road model's own state; log/linear scales, contours, receiver-following or fixed-segment section, phase control and sweep, vectors; checks A14–A16 (`road-06-field.jpg`; DYNAMIC_MAGNETIC_FIELD_REPORT.md).
 - **Charging in motion**: pads glow with their controller level, a flux column scaled by received power, the DC path to battery and motor in a semi-transparent car, and a HUD with the five pads around the receiver, the energy balance and a received-power trace (`road-02.jpg`).
 - **Road anatomy**: eight numbered parts of the electrified road with live values (`road-03-anatomy.jpg`).
+- **Readings that hold still at speed**: on the moving-road stages the instruments show speed, state of charge, energised pads and pad activations; the instantaneous coupling and receiver current (which change every ~70 ms as pads pass) are shown by the charging HUD instead, so the two never disagree.
 - **Energy outcomes**: time-weighted 200 m window, explicit "Collecting a complete 200 m measurement window", averaged vs instantaneous separated; Research comparison of the three presets under one methodology.
 
 ### Experience
@@ -49,11 +50,11 @@ Model changes: none to any of the 20 existing models. One model added (WPT-EM-00
 
 `npm run test:wireless-ev-twin:e2e` against `next build` + `next start`: **12 of 12 checks pass** (11 before; the new check opens a presentation link). The road check now covers eleven stages, the charging-in-motion HUD, the road anatomy and a field reading from WPT-EM-005.
 
-An automated layout review (`overlap and clipped-text audit`) walked all 12 station stages, all 11 road stages, the autonomous and infrastructure scenes, Learn, Engineer and Research, and every section at 1440 × 900 and 1280 × 800, and the road stages on a 390 × 844 phone. Final result: no overlapping panels and no clipped text, apart from intentionally screen-reader-only labels.
+An automated layout review (`overlap and clipped-text audit`) walked all 12 station stages, all 11 road stages, the autonomous and infrastructure scenes, Learn, Engineer and Research, and every section at 1440 × 900 and 1280 × 800, and every road stage on a 390 × 844 phone. Final result: no overlapping panels and no clipped text, apart from intentionally screen-reader-only labels (on phones the toolbar shows icons and keeps their names for screen readers).
 
 ## 4. Performance
 
-See PERFORMANCE_REPORT.md (Phase 3.5 section). In short: one WebGL context; no memory growth over 16 environment switches (43 → 43 MB); route initial JavaScript ≈ 323 KB gzipped with three.js still deferred; frame rates measured during heavy background system activity on the M1 and therefore not comparable with the idle baseline — the Performance tier held 60 fps; a re-measurement on an idle machine is still owed.
+See PERFORMANCE_REPORT.md (Phase 3.5 section). In short: **60 fps on every station and road view** of the production build on the Apple M1, including the road field in full screen (after moving tree shadows to low-poly stand-ins, adding a far level of detail for trees, and keeping the studio lights resident); one WebGL context; no memory growth over 16 environment switches; route initial JavaScript ≈ 323 KB gzipped with three.js still deferred.
 
 ## 5. Video evidence
 
@@ -64,7 +65,7 @@ Not recorded in this session. The demonstration (`?experience=present`) is the i
 - The vehicle is procedural; a licensed CAD body would add surface subtlety (the geometry slot is ready). Interior is simple.
 - No normal maps on asphalt and concrete; close road shots rely on texture and lighting.
 - Autonomous (04) and infrastructure (05) scenes keep their Phase 2 layouts with the new world, vehicle and lighting.
-- Real Safari, iPhone, Android and a low-end GPU were not tested in this session.
+- WebKit (Playwright 2359, Safari's engine) and Firefox (1543) pass a smoke test: WebGL 2, no page errors, charging-in-motion and road-field stages, Expand all. Real Safari on macOS, iPhone, Android and a low-end GPU were not tested.
 
 ## 7. Remaining scientific limitations
 

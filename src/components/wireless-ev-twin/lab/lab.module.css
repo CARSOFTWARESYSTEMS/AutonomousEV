@@ -323,9 +323,9 @@
   border-radius: var(--wt-radius-card);
 }
 .instruments > div {
-  flex: 1 1 0;
-  min-width: 0;
-  max-width: 220px;
+  flex: 0 1 auto;
+  min-width: 120px;
+  max-width: 230px;
   padding: 12px 16px 13px;
 }
 .instruments > div + div {
@@ -361,7 +361,8 @@
   font-variant-numeric: tabular-nums;
   color: var(--wt-text);
   white-space: normal;
-  overflow-wrap: break-word;
+  overflow-wrap: normal;
+  hyphens: none;
 }
 .instruments dd span {
   margin-left: 2px;
@@ -1963,5 +1964,15 @@ button.gateSecondary.gateSecondary:hover {
   .resume {
     padding: 3px 10px;
     font-size: 11px;
+  }
+}
+@media (max-width: 760px) {
+  /* The stage card carries the title on phones; the timeline keeps two compact rows. */
+  .tlTitle {
+    display: none;
+  }
+  .tlStage {
+    flex-wrap: nowrap;
+    margin-bottom: 6px;
   }
 }

@@ -5,7 +5,7 @@
 // darken its interior and underside (a cheap ambient occlusion). Four species
 // give varied silhouettes; every instance also varies in scale, rotation and
 // tint. Context only: nothing here is simulated.
-import { BufferGeometry, CanvasTexture, Color, DoubleSide, Float32BufferAttribute, MeshStandardMaterial, SRGBColorSpace, Vector3 } from "three";
+import { BufferGeometry, CanvasTexture, Color, CylinderGeometry, DoubleSide, Float32BufferAttribute, IcosahedronGeometry, MeshStandardMaterial, SRGBColorSpace, Vector3 } from "three";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 
 export type Species = "broadleaf" | "columnar" | "spreading" | "young" | "shrub";
@@ -82,8 +82,10 @@ function limb(a: Vector3, b: Vector3, r0: number, r1: number, sides = 7): Buffer
 }
 
 /** Builds one tree (or shrub) of a species: trunk and branches, and the leaf crown. */
-export function buildPlant(species: Species, seed: number): { wood: BufferGeometry | null; leaves: BufferGeometry } {
-  const s = SHAPES[species];
+export function buildPlant(species: Species, seed: number, detail = 1): { wood: BufferGeometry | null; leaves: BufferGeometry } {
+  const base = SHAPES[species];
+  // Level of detail: fewer clusters, larger cards, the same crown volume.
+  const s = detail === 1 ? base : { ...base, clusters: Math.max(6, Math.round(base.clusters * detail)), card: base.card / Math.sqrt(detail) };
   const r = rng(seed * 7919 + 13);
   const wood: BufferGeometry[] = [];
   const centre = new Vector3(0, s.crownY, 0);
@@ -165,6 +167,26 @@ export function buildPlant(species: Species, seed: number): { wood: BufferGeomet
   leaves.computeBoundingSphere();
   return { wood: wood.length ? mergeGeometries(wood)! : null, leaves };
 }
+
+/**
+ * A low-poly stand-in that casts the plant's shadow (crown ellipsoid and
+ * trunk). Leaf cards are alpha-tested, which defeats early depth rejection in
+ * the shadow pass; this volume gives the same soft shadow for a fraction of
+ * the cost. It is drawn only by the sun's shadow camera (layer 1).
+ */
+export function buildShadowProxy(species: Species): BufferGeometry {
+  const s = SHAPES[species];
+  const crown = new IcosahedronGeometry(1, 1);
+  crown.scale(s.rx * 0.82, s.ry * (0.82 - 0.3 * s.flatBelow), s.rx * 0.82);
+  crown.translate(0, s.crownY + 0.15 * s.flatBelow * s.ry, 0);
+  const flat = (g: BufferGeometry) => (g.index ? g.toNonIndexed() : g);
+  const parts = [flat(crown)];
+  if (s.trunkHeight > 0) parts.push(flat(new CylinderGeometry(s.trunkRadius, s.trunkRadius * 1.2, s.crownY, 6).translate(0, s.crownY / 2, 0)));
+  return mergeGeometries(parts)!;
+}
+
+/** The scene layer the shadow stand-ins live on (rendered by the sun's shadow camera, not the view). */
+export const SHADOW_PROXY_LAYER = 1;
 
 /** Overlapping leaves on a transparent canvas: the texture of every leaf card. */
 export function leafTexture(): CanvasTexture {

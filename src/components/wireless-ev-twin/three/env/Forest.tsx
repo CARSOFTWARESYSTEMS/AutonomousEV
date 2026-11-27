@@ -5,8 +5,8 @@
 // vehicle's frame), with a period that divides the simulated route.
 import { useEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Color, type InstancedMesh, Matrix4, Quaternion, Vector3 } from "three";
-import { buildPlant, foliageMaterials, leafTexture, leafTint, type Species, SPECIES, wind } from "./foliage";
+import { type BufferGeometry, Color, type InstancedMesh, Matrix4, MeshBasicMaterial, Quaternion, Vector3 } from "three";
+import { buildPlant, buildShadowProxy, foliageMaterials, leafTexture, leafTint, SHADOW_PROXY_LAYER, type Species, SPECIES, wind } from "./foliage";
 
 export interface Plant {
   x: number;
@@ -19,14 +19,21 @@ export interface Plant {
 }
 
 const VARIANTS = 2;
-let shared: { geo: Record<string, ReturnType<typeof buildPlant>>; tex: ReturnType<typeof leafTexture>; mats: ReturnType<typeof foliageMaterials>; users: number } | null = null;
+let shared: { geo: Record<string, ReturnType<typeof buildPlant>>; proxy: Record<string, BufferGeometry>; proxyMat: MeshBasicMaterial; tex: ReturnType<typeof leafTexture>; mats: ReturnType<typeof foliageMaterials>; users: number } | null = null;
 
 function acquire() {
   if (!shared) {
     const geo: Record<string, ReturnType<typeof buildPlant>> = {};
-    for (const s of SPECIES) for (let v = 0; v < VARIANTS; v++) geo[`${s}${v}`] = buildPlant(s, v * 101 + s.length * 17);
+    for (const s of SPECIES)
+      for (let v = 0; v < VARIANTS; v++) {
+        geo[`${s}${v}`] = buildPlant(s, v * 101 + s.length * 17);
+        // Distant level of detail.
+        geo[`${s}${v}far`] = buildPlant(s, v * 101 + s.length * 17, 0.5);
+      }
+    const proxy: Record<string, BufferGeometry> = {};
+    for (const sp of SPECIES) proxy[sp] = buildShadowProxy(sp);
     const tex = leafTexture();
-    shared = { geo, tex, mats: foliageMaterials(tex), users: 0 };
+    shared = { geo, proxy, proxyMat: new MeshBasicMaterial({ colorWrite: false, depthWrite: false }), tex, mats: foliageMaterials(tex), users: 0 };
   }
   shared.users += 1;
   return shared;
@@ -39,6 +46,8 @@ function release() {
     g.leaves.dispose();
     g.wood?.dispose();
   }
+  for (const g of Object.values(shared.proxy)) g.dispose();
+  shared.proxyMat.dispose();
   shared.tex.dispose();
   shared.mats.leaves.dispose();
   shared.mats.wood.dispose();
@@ -66,9 +75,11 @@ interface Props {
   /** Road-frame wrapping: x is placed at wrap(plant.x) each frame. */
   wrap?: (x: number) => number;
   shadows?: boolean;
+  /** Distant plants: the lighter level of detail. */
+  far?: boolean;
 }
 
-export function Forest({ plants, wrap, shadows = true }: Props) {
+export function Forest({ plants, wrap, shadows = true, far = false }: Props) {
   const assets = useMemo(() => acquire(), []);
   useEffect(() => () => release(), []);
   const groups = useMemo(() => {
@@ -76,15 +87,16 @@ export function Forest({ plants, wrap, shadows = true }: Props) {
     for (const s of SPECIES) for (let v = 0; v < VARIANTS; v++) out.push({ key: `${s}${v}`, list: plants.filter((p) => p.species === s && p.seed % VARIANTS === v) });
     return out.filter((g) => g.list.length > 0);
   }, [plants]);
-  const meshes = useRef<Record<string, { wood: InstancedMesh | null; leaves: InstancedMesh | null }>>({});
+  const meshes = useRef<Record<string, { wood: InstancedMesh | null; leaves: InstancedMesh | null; proxy: InstancedMesh | null }>>({});
 
   /** Colours and first placement as soon as a mesh exists (before its first frame, so the shader includes instance colours). */
-  const attach = (key: string, list: Plant[], kind: "wood" | "leaves") => (el: InstancedMesh | null) => {
-    const slot = (meshes.current[key] ??= { wood: null, leaves: null });
+  const attach = (key: string, list: Plant[], kind: "wood" | "leaves" | "proxy") => (el: InstancedMesh | null) => {
+    const slot = (meshes.current[key] ??= { wood: null, leaves: null, proxy: null });
     slot[kind] = el;
     if (!el) return;
+    if (kind === "proxy") el.layers.set(SHADOW_PROXY_LAYER);
     list.forEach((p, i) => {
-      el.setColorAt(i, kind === "leaves" ? leafTint(p.seed, tint) : bark.setScalar(0.8 + ((p.seed * 13) % 7) * 0.05));
+      if (kind !== "proxy") el.setColorAt(i, kind === "leaves" ? leafTint(p.seed, tint) : bark.setScalar(0.8 + ((p.seed * 13) % 7) * 0.05));
       setMatrix(el, i, p, wrap);
     });
     if (el.instanceColor) el.instanceColor.needsUpdate = true;
@@ -97,7 +109,7 @@ export function Forest({ plants, wrap, shadows = true }: Props) {
     for (const g of groups) {
       const r = meshes.current[g.key];
       if (!r) continue;
-      for (const el of [r.wood, r.leaves]) {
+      for (const el of [r.wood, r.leaves, r.proxy]) {
         if (!el) continue;
         g.list.forEach((p, i) => setMatrix(el, i, p, wrap));
         el.instanceMatrix.needsUpdate = true;
@@ -108,24 +120,13 @@ export function Forest({ plants, wrap, shadows = true }: Props) {
   return (
     <group>
       {groups.map((g) => {
-        const geo = assets.geo[g.key];
+        const geo = assets.geo[far ? `${g.key}far` : g.key];
         return (
           <group key={g.key}>
-            {geo.wood && (
-              <instancedMesh
-                ref={attach(g.key, g.list, "wood")}
-                args={[geo.wood, assets.mats.wood, g.list.length]}
-                castShadow={shadows}
-                frustumCulled={false}
-              />
-            )}
-            <instancedMesh
-              ref={attach(g.key, g.list, "leaves")}
-              args={[geo.leaves, assets.mats.leaves, g.list.length]}
-              castShadow={shadows}
-              receiveShadow
-              frustumCulled={false}
-            />
+            {geo.wood && <instancedMesh ref={attach(g.key, g.list, "wood")} args={[geo.wood, assets.mats.wood, g.list.length]} frustumCulled={false} />}
+            <instancedMesh ref={attach(g.key, g.list, "leaves")} args={[geo.leaves, assets.mats.leaves, g.list.length]} receiveShadow frustumCulled={false} />
+            {/* The shadow comes from a low-poly stand-in seen only by the sun's shadow camera. */}
+            {shadows && <instancedMesh ref={attach(g.key, g.list, "proxy")} args={[assets.proxy[g.key.replace(/\d+$/, "")], assets.proxyMat, g.list.length]} castShadow frustumCulled={false} />}
           </group>
         );
       })}

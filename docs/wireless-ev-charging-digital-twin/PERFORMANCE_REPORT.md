@@ -57,14 +57,37 @@ Production build (`next build` + `next start`), Apple M1, Chromium through Metal
 | WebGL contexts | 1 | 1 |
 | 3D share of a 1440 × 900 viewport | 79 % | 77 % (the environment rail widened from 68 to 100 px so its labels fit) |
 | … in full screen | 85 % | 83 % |
-| JS heap over 16 environment switches | 38 → 38 MB | 43 → 43 MB (no growth) |
+| JS heap over 16 environment switches | 38 → 38 MB | 43 → 43 MB, and 58 → 58 MB in the final run (no growth) |
 | Route initial JavaScript (gzipped) | 309 KB | ≈ 323 KB; three.js still loads only with the laboratory |
 | Browser checks | 11 pass | 12 pass |
 | `load` event | 0.15 s | 0.28 s |
 | Frame rate, Performance tier | 60 fps | 60 fps |
-| Frame rate, Auto (High) tier | 60 fps everywhere | **not comparable**: measured while macOS ran XProtect (≈ 95 % CPU), Spotlight indexing (≈ 75 %) and knowledge indexing (≈ 78 %), load average 7–9. Two runs gave 52 and 18 fps at the station overview, 38–41 on the road and 34–41 with the road field. |
+| Frame rate, Auto (High) tier | 60 fps everywhere | **60 fps everywhere** in the final e2e run (overview, field, road, road field, full screen) — see the re-measurement below. A first run under heavy macOS background load (load average 7–9) read 18–52 fps and is superseded. |
 
-An idle-machine re-measurement against the Phase 3 build under the same conditions is still owed before the frame-rate target can be called met or missed.
+### Re-measured on a quieter machine (later the same day)
+
+With the background scans finished (load average 2.5–4.5), the production build was measured view by view, twice in a row, after three further optimisations (below):
+
+| View (1440 × 900, Auto → High tier) | fps | p95 frame |
+|---|---|---|
+| Station overview (warm) | 60 | 17–19 ms |
+| Station overview, full screen | 60 | 17–19 ms |
+| Magnetic field stage | 60 | 17–20 ms |
+| Energy stage | 60 | 17–19 ms |
+| Road, driving | 60 | 18 ms |
+| Road, charging in motion | 60 | 18 ms |
+| Road, magnetic field (and in full screen) | 60 | 18 ms |
+| Performance tier | 60 | 18 ms |
+
+The first seconds after the laboratory loads read 56–59 fps while shaders compile. **The 60 fps target is met.**
+
+### What closed the gap
+
+| Finding (A/B toggles on the overview) | Fix |
+|---|---|
+| Foliage shadows cost ≈ 20 % of the frame: alpha-tested leaf cards defeat early depth rejection in the 2048² shadow pass | Each tree casts its shadow from a low-poly stand-in (crown ellipsoid and trunk) on a layer only the sun's shadow camera renders; leaf cards cast none. Soft tree shadows remain |
+| Distant leaf cards still cost colour-pass fill | A far level of detail: half the leaf clusters with proportionally larger cards for trees beyond the shelter and along the road |
+| Entering an inspection view recompiled every material (the studio lights were toggled on and off, changing the light count) | The studio lights stay in the scene at zero intensity outside the studio; programs no longer change between views |
 
 ### What was added, and what was done about its cost
 

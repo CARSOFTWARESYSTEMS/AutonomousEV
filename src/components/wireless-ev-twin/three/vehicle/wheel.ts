@@ -101,7 +101,8 @@ export function rimFaceGeometry(): BufferGeometry {
   }
   const lip = new TorusGeometry(R - 0.004, 0.006, 8, 64);
   lip.translate(0, 0, 0.074);
-  return mergeGeometries([face.toNonIndexed(), cap.toNonIndexed(), lip.toNonIndexed(), ...nuts])!;
+  // ExtrudeGeometry is already non-indexed.
+  return mergeGeometries([face, cap.toNonIndexed(), lip.toNonIndexed(), ...nuts])!;
 }
 
 /** Rim barrel (open cylinder inside the tyre). */

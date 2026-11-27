@@ -25,7 +25,8 @@ Geometry: ≈ 22 k triangles for the body at 96 + 44 stations × 64-row ring, pl
 | Reflections | Generic studio | Daylight sky, warm-grey ground, two soft architectural strips and dark masses at the horizon, prefiltered (PMREM): paint carries a real horizon line |
 | Key light | Cool directional | Sun matching the sky's sun direction, soft shadows following the environment; hemispheric sky fill; haze to the horizon |
 | Inspection | Fog to black | Studio cross-fade: sun dims, camera-relative key, fill and rim lights rise, ground falls to a dark floor |
-| Trees | Cones | Four species (broadleaf, columnar, spreading, young) and shrubs: bent trunks with branches, crowns of leaf-cluster cards with shaded interiors, two variants per species, per-tree scale, rotation and tint, gentle wind sway (`three/env/foliage.ts`, `Forest.tsx`) |
+| Trees | Cones | Four species (broadleaf, columnar, spreading, young) and shrubs: bent trunks with branches, crowns of leaf-cluster cards with shaded interiors, two variants per species, per-tree scale, rotation and tint, gentle wind sway; a far level of detail; shadows cast by low-poly stand-ins seen only by the sun (`three/env/foliage.ts`, `Forest.tsx`) |
+| District neighbourhood | Flows to empty ground | Six low and mid-rise blocks south-west of the site, where the district energy view's "Buildings" flow ends |
 | City | Boxes with emissive static | Towers with podium, setbacks and mechanical crown; slabs; mid-rise blocks; glass curtain walls and punched concrete façades mapped in metres (3.0 m bays, 3.6 m floors) with per-building tint; a ring of hills for atmospheric depth (`three/env/buildings.ts`) |
 | Ground | One concrete plane | Paved site and lawns; two-scale anti-tiling with lush and dry patches; verges likewise |
 | Road | — | Lane markings polygon-offset; verges anti-tiled; skyline set back 230–380 m |

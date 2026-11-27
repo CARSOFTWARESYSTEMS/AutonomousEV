@@ -14,6 +14,7 @@ import { useTwin } from "../state/store";
 import { setEnvironment, setFog } from "./mutate";
 import { GROUND_COLOR, HAZE, SKY_COLOR, skyMaterial, SUN_COLOR, SUN_DIR } from "./sky";
 import { view } from "./viewState";
+import { SHADOW_PROXY_LAYER } from "./env/foliage";
 import { ROAD_Z } from "./road/layout";
 
 /** The reflection environment: daylight sky, ground and soft architectural strips, in linear HDR. */
@@ -124,8 +125,8 @@ export function Lighting({ shadows, mapSize }: { shadows: boolean; mapSize: numb
     ] as const;
     for (const [light, r, u, b, intensity] of rig) {
       if (!light) continue;
+      // Always present (zero intensity outside the studio): toggling visibility would change the light count and recompile every material.
       light.intensity = intensity * st;
-      light.visible = st > 0.01;
       light.position.copy(target).addScaledVector(camRight, r * 10).addScaledVector(camUp, u * 10).addScaledVector(camFwd, b * 10);
       light.target.position.copy(target);
       light.target.updateMatrixWorld();
@@ -158,6 +159,8 @@ export function Lighting({ shadows, mapSize }: { shadows: boolean; mapSize: numb
 
 /** The sun's direction is fixed (it matches the sky); its shadow box follows the environment in view. */
 function placeSun(k: DirectionalLight, f: [number, number, number], wide: boolean) {
+  // The sun's shadow camera also sees the trees' shadow stand-ins (which the view camera does not).
+  if (!k.shadow.camera.layers.isEnabled(SHADOW_PROXY_LAYER)) k.shadow.camera.layers.enable(SHADOW_PROXY_LAYER);
   k.position.set(f[0] + SUN_DIR.x * 40, f[1] + SUN_DIR.y * 40, f[2] + SUN_DIR.z * 40);
   k.target.position.set(f[0], f[1], f[2]);
   k.target.updateMatrixWorld();

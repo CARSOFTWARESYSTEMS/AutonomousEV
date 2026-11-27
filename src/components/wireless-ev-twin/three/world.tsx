@@ -106,10 +106,20 @@ const CITY_LOTS: Lot[] = (() => {
   return lots;
 })();
 
+/** The neighbourhood the district dispatch supplies ("Buildings" in the energy view): low and mid-rise blocks south-west of the site. */
+const NEIGHBOURHOOD: Lot[] = [
+  { x: -34, z: -46, size: 0.62, height: 0.28, seed: 501 },
+  { x: -60, z: -40, size: 0.7, height: 0.18, seed: 502 },
+  { x: -44, z: -74, size: 0.66, height: 0.36, seed: 503 },
+  { x: -72, z: -70, size: 0.6, height: 0.22, seed: 504 },
+  { x: -16, z: -72, size: 0.55, height: 0.14, seed: 505 },
+  { x: -88, z: -44, size: 0.62, height: 0.3, seed: 506 },
+];
+
 /** The skyline and the hills: merged, built once, faded by the haze. */
 export function City() {
   const assets = useMemo(() => {
-    const geo = buildCity(CITY_LOTS);
+    const geo = buildCity([...CITY_LOTS, ...NEIGHBOURHOOD]);
     const glassTex = glassFacade();
     const concreteTex = concreteFacade();
     const mats = cityMaterials(glassTex, concreteTex);
