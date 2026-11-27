@@ -406,5 +406,24 @@
     "products": [],
     "domains": [],
     "search": { "indexable": true }
+  },
+  {
+    "id": "linkedin-ugcpost-7531909283962310657",
+    "type": "social-post",
+    "title": "Cyber Attack Simulator Internship Completion",
+    "source": "linkedin",
+    "sourceLabel": "LinkedIn",
+    "sourceUrl": "https://www.linkedin.com/posts/astha-singh-a54b6a2ba_internshipcompletion-cybersecurity-electricvehicles-ugcPost-7531909283962310657-sQOy/",
+    "embedUrl": "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7531909283962310657?collapsed=1",
+    "media": { "type": "iframe", "width": 504, "height": 570 },
+    "author": { "name": "Astha Singh" },
+    "featured": false,
+    "enabled": true,
+    "verificationStatus": "externally-published",
+    "tags": ["linkedin", "professional-recognition", "internship", "cybersecurity"],
+    "audiences": [],
+    "products": [],
+    "domains": [],
+    "search": { "indexable": true }
   }
 ]
