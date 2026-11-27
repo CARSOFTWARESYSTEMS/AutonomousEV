@@ -29,6 +29,7 @@ import { RoadAnatomy } from "./RoadAnatomy";
 import { IotInspector } from "./IotInspector";
 import { METRICS, type MetricId } from "./metrics";
 import Timeline from "./Timeline";
+import { ExploreChargingButton, HandoverBanner, ParkingLegend, ParkingRoles, ParkingSceneLabels } from "../env/ParkingPanels";
 import ui from "../twin.module.css";
 import lab from "./lab.module.css";
 
@@ -37,6 +38,7 @@ const Scene = dynamic(() => import("../three/Scene"), { ssr: false, loading: () 
 const ICONS: Record<string, typeof Zap> = { parking: SquareParking, station: Zap, dynamic: Route, autonomous: Navigation, infrastructure: Building2, drone: Drone, airtaxi: PlaneTakeoff, bess: BatteryCharging };
 /** Instruments shown when no guided stage is selecting them. */
 const DEFAULT_METRICS: Record<EnvironmentId, MetricId[]> = {
+  parking: ["spAvailable", "spOccupied", "spCharging", "spWaiting"],
   station: ["phase", "pBattery", "airGap", "k", "soc"],
   dynamic: ["roadSpeed", "pReceived", "pTraction", "roadNetPower", "roadRegime"],
   autonomous: ["parkPhase", "parkError", "parkSigma"],
@@ -146,7 +148,7 @@ function ProposedPreview() {
           Open storage in Smart Charging Infrastructure (05)
         </button>
       ) : (
-        <p className={lab.small}>Not simulated: nothing in this preview is a result. It starts after the team accepts Phase 3.5 and the Smart Parking Shelter (Phase 4).</p>
+        <p className={lab.small}>Not simulated: nothing in this preview is a result.</p>
       )}
     </section>
   );
@@ -168,6 +170,8 @@ function StageCard() {
         <p className={lab.eyebrow}>{`${meta.number} · ${meta.short}`}</p>
         <h2 className={lab.stageTitle}>{meta.name}</h2>
         <p className={lab.objective}>{`${VIEW_MODES.find((v) => v.id === view)?.label ?? ""} view${g.stageId ? " · guided sequence paused" : ""}`}</p>
+        {env === "station" && <HandoverBanner />}
+        {env === "parking" && <ParkingRoles />}
       </div>
     );
   const chapter = demo ? chapterOf(g.index) : -1;
@@ -177,6 +181,12 @@ function StageCard() {
       <h2 className={lab.stageTitle}>{stage.title}</h2>
       <p className={lab.objective}>{stage.objective}</p>
       {OUTCOME_STAGES.has(stage.id) && <WindowStatus />}
+      {CHARGING_STAGES.has(stage.id) && (
+        <div style={{ marginTop: 12 }}>
+          <ExploreChargingButton />
+        </div>
+      )}
+      {env === "parking" && !demo && <ParkingRoles />}
       {panel === "none" && (
         <AtDepth mode={mode} min="learn">
           <p className={lab.explanation}>{stage.explanation}</p>
@@ -187,6 +197,8 @@ function StageCard() {
 }
 
 const OUTCOME_STAGES = new Set(["gain", "neutral", "lose"]);
+/** Smart Parking stages where the focus vehicle may be charging: offer its session in the Station. */
+const CHARGING_STAGES = new Set(["sp-charging", "sp-billing"]);
 
 /** The outcome is classified only over a complete, time-weighted 200 m window; until then the card says so. */
 function WindowStatus() {
@@ -260,6 +272,7 @@ function Legends() {
   const env = useTwin((s) => s.environment);
   const read = useCallback(() => ({ b: runtime.station.state.fieldCentre, on: Boolean(runtime.station.state.point.ss), phase: runtime.station.state.phase, p: runtime.station.state.point }), []);
   const s = useSampled(read, 4);
+  if (env === "parking") return <ParkingLegend />;
   if (env === "dynamic") return view === "field" ? <FieldLegend env="dynamic" /> : view === "cinematic" || view === "energy" ? <ChargingHud /> : view === "cutaway" ? <RoadAnatomy /> : <RoadLegend view={view} />;
   if (env !== "station") return null;
   if (view === "field") return <FieldLegend env="station" />;
@@ -332,6 +345,7 @@ function SceneLabels() {
     return { p: { pGrid: p.pGrid, pCoilIn: p.pCoilIn, pRectifierIn: p.pRectifierIn, pBattery: p.pBattery }, vc1: p.ss?.vC1 ?? 0, step, k: st.coupler.k, M: st.coupler.M, inp: { lat: inp.lateral, long: inp.longitudinal, gap: inp.airGap }, road: { mPeak: segmentM(runtime.road, Math.abs(r.lateral)), rating: Math.max(5000, r.receiverRating) } };
   }, []);
   const s = useSampled(read, 4);
+  if (env === "parking") return <ParkingSceneLabels />;
   if (env === "station" && view === "energy")
     return (
       <>
@@ -436,8 +450,9 @@ function SceneLabels() {
 function HoverLabel() {
   const hovered = useTwin((s) => s.hovered);
   const c = hovered ? componentById(hovered) : undefined;
-  if (!c) return null;
-  return <p className={lab.hover}>{`${c.name} · select to inspect`}</p>;
+  const instance = hovered?.startsWith("sp-bay:") ? `Bay ${hovered.slice(7)}` : hovered?.startsWith("sp-veh:") ? `Vehicle ${hovered.slice(7)}` : null;
+  if (!c && !instance) return null;
+  return <p className={lab.hover}>{`${instance ?? c!.name} · select to inspect`}</p>;
 }
 
 /** Shown without WebGL (or after a lost context): the field section from the same model. */

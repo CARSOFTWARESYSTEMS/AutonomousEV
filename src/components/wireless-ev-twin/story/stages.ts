@@ -12,6 +12,7 @@ import type { ShotId } from "../three/camera";
 import type { MetricId } from "../lab/metrics";
 import { recentBatteryPower } from "@/lib/wireless-charging/dynamic";
 import { applyRoadPreset, depart, ensureEmptyBay, ensurePhase, padAhead, reached, setStageFault, setStageSpeed } from "./simControl";
+import { PARKING_STAGES } from "./parkingStages";
 
 export interface Stage {
   id: string;
@@ -532,6 +533,7 @@ export const INFRASTRUCTURE_STAGES: Stage[] = [
 ];
 
 export const PLAYLISTS: Record<EnvironmentId, Stage[]> = {
+  parking: PARKING_STAGES,
   station: STATION_STAGES,
   dynamic: DYNAMIC_STAGES,
   autonomous: AUTONOMOUS_STAGES,

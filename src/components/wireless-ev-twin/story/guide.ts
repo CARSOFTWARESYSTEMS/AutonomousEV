@@ -6,6 +6,7 @@
 // visitor turns them on (autoplay rules forbid anything else).
 import { useEffect, useRef } from "react";
 import type { EnvironmentId } from "@/lib/wireless-charging/content";
+import { endHandover, handoverActive } from "../state/runtime";
 import { useTwin, type PlaylistId } from "../state/store";
 import { stagesFor, type Stage } from "./stages";
 
@@ -24,6 +25,8 @@ export function enterStage(playlist: PlaylistId, index: number, opts: { auto?: b
   const list = stagesFor(playlist);
   const i = Math.max(0, Math.min(list.length - 1, index));
   const stage = list[i];
+  // Any guided stage ends a Smart Parking hand-over: the Station environment gets its own simulation back.
+  if (handoverActive()) endHandover();
   current?.exit?.();
   current = stage;
   guideClock.elapsed = 0;

@@ -58,6 +58,12 @@ export interface StationInputs {
   offlineAuthorization: boolean;
   /** Start the next session automatically when the bay is free. */
   autoCycle: boolean;
+  /**
+   * Smart Parking adapter only: hold "completed" until the vehicle is told to
+   * depart (the parking session decides when it leaves). Absent or false keeps
+   * the station's own behaviour (departure 3 s after completion).
+   */
+  holdAfterComplete?: boolean;
 }
 
 export const DEFAULT_STATION_INPUTS: StationInputs = {
@@ -120,7 +126,13 @@ export const NO_FAULTS: StationFaults = {
   disconnectedSensors: [],
 };
 
-export type StationCommand = "arrive" | "depart" | "reset";
+/**
+ * "arrive-parked" and "stop" serve the Smart Parking session adapter: the
+ * parking environment has already driven the vehicle into the bay, and asks
+ * the station to stop safely before departure. The station's own sequence,
+ * safety checks and interlocks run unchanged after either command.
+ */
+export type StationCommand = "arrive" | "depart" | "reset" | "arrive-parked" | "stop";
 
 export interface StationParams {
   chain: ChainParams;
@@ -428,6 +440,21 @@ export function stepStation(sim: StationSim, faults: StationFaults, dt: number):
       s.backendReply = "none";
       s.session = { started: s.t, ended: s.t, energyToBattery: 0, gridEnergy: 0, cost: 0, socStart: inputs.initialSoc, socEnd: inputs.initialSoc, peakPower: 0, outcome: "in progress" };
       enter(sim, "approaching", "Vehicle entered the bay");
+    }
+    if (c === "arrive-parked" && s.phase === "available" && !faults.stationUnavailable) {
+      // Already over the pad (driven in by the parking environment): no approach run.
+      s.vehicle = { x: inputs.longitudinal - p.receiverOffset, y: inputs.lateral, v: 0, present: true, parked: false };
+      s.battery = { soc: inputs.initialSoc, v1: 0, temperature: inputs.batteryTemperature };
+      s.authorized = false;
+      s.backendReply = "none";
+      s.session = { started: s.t, ended: s.t, energyToBattery: 0, gridEnergy: 0, cost: 0, socStart: inputs.initialSoc, socEnd: inputs.initialSoc, peakPower: 0, outcome: "in progress" };
+      enter(sim, "approaching", "Vehicle parked over the pad (Smart Parking hand-over)");
+    }
+    if (c === "stop" && s.vehicle.present) {
+      // A safe stop before departure: an energised pad ramps down; before energising, the session simply ends.
+      if (PHASES[s.phase].energised) {
+        if (s.phase !== "ramp-down") enter(sim, "ramp-down", "Stop requested before departure");
+      } else if (s.phase !== "available" && s.phase !== "completed" && s.phase !== "departure") enter(sim, "completed", "Stopped before energising");
     }
     if (c === "depart" && s.vehicle.present && !PHASES[s.phase].energised) enter(sim, "departure", "Vehicle asked to leave");
     if (c === "reset") s.latched = false;
@@ -741,7 +768,7 @@ function normalTransitions(sim: StationSim, faults: StationFaults, bp: BatteryPa
       }
       break;
     case "completed":
-      if (t > 3) enter(sim, "departure", "Session closed");
+      if (t > 3 && !inputs.holdAfterComplete) enter(sim, "departure", "Session closed");
       break;
     case "departure":
       if (s.vehicle.x < sim.inputs.longitudinal - p.receiverOffset - 9) {

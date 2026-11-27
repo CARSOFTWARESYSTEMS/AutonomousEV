@@ -34,14 +34,15 @@ describe("Wireless EV Charging Digital Twin route", () => {
     expect(screen.getByRole("link", { name: /Watch Technology Demonstration/ })).toHaveAttribute("href", "#demo");
   });
 
-  it("lists five research environments, with the Smart Parking Shelter marked as planned rather than working", () => {
+  it("lists five research environments, Smart Parking (01) now a working environment in the same rail order", () => {
     render(<Page />);
     const rail = screen.getByRole("navigation", { name: "Research environments" });
     const buttons = within(rail).getAllByRole("button");
-    expect(buttons.slice(0, 5).map((b) => b.textContent)).toEqual(["01Smart ParkingPlanned", "02Station", "03Dynamic", "04Autonomous", "05Infrastructure"]);
-    expect(buttons[0]).toBeDisabled();
+    expect(buttons.slice(0, 5).map((b) => b.textContent)).toEqual(["01Smart Parking", "02Station", "03Dynamic", "04Autonomous", "05Infrastructure"]);
+    expect(buttons[0]).toBeEnabled();
     expect(screen.getByRole("heading", { level: 2, name: "Five research environments" })).toBeInTheDocument();
-    expect(screen.getByText(/Specified · planned for Phase 4/)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 3, name: "Smart Parking & Wireless EV Charging" })).toBeInTheDocument();
+    expect(screen.queryByText(/planned for Phase 4/)).toBeNull();
   });
 
   it("offers the nine research sections and the four experience modes", () => {

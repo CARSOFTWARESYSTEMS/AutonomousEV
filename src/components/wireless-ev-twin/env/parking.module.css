@@ -1,0 +1,370 @@
+/* Smart Parking panels. Compact sheets inside the existing inspector, in the
+   twin's own tokens (wirelessTwin.module.css): no new theme, no new colours
+   beyond the bay states, which always pair a symbol with their colour. */
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 0 16px;
+  border: 1px solid rgba(165, 243, 252, 0.55);
+  border-radius: 11px;
+  background: linear-gradient(180deg, #2bdcf5 0%, #12b6d6 100%);
+  color: #021218;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 8px 22px rgba(8, 145, 178, 0.3);
+}
+.cta:hover {
+  filter: brightness(1.06);
+}
+.cta:disabled {
+  opacity: 0.5;
+  filter: none;
+}
+.ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid var(--wt-line-strong);
+  border-radius: 8px;
+  background: transparent;
+  font-size: 12.5px;
+  color: var(--wt-body);
+}
+.ghost:hover:not(:disabled) {
+  border-color: rgba(var(--wt-accent-rgb), 0.5);
+  color: var(--wt-text);
+}
+.ghost:disabled {
+  opacity: 0.45;
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0 0;
+}
+.block {
+  display: grid;
+  gap: 10px;
+  padding: 0 0 16px;
+  margin: 0 0 16px;
+  border-bottom: 1px solid var(--wt-line);
+}
+.block:last-child {
+  border-bottom: 0;
+}
+.head {
+  margin: 0;
+  font-family: var(--wt-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--wt-muted);
+}
+.title {
+  margin: 0;
+  font-family: var(--wt-display);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--wt-text);
+}
+.note {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--wt-muted);
+}
+.text {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--wt-body);
+}
+
+/* Bay grid: two rows facing an aisle, like the facility. */
+.bays {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 6), minmax(0, 1fr));
+  gap: 4px;
+}
+.aisle {
+  grid-column: 1 / -1;
+  height: 10px;
+  margin: 2px 0;
+  border-top: 1px dashed var(--wt-line-strong);
+}
+.bay {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  min-width: 0;
+  padding: 6px 2px 5px;
+  border: 1px solid var(--wt-line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  font-size: 10.5px;
+  color: var(--wt-body);
+}
+.bay[aria-pressed="true"] {
+  border-color: rgba(var(--wt-accent-rgb), 0.7);
+}
+.bay b {
+  font-family: var(--wt-mono);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--wt-text);
+}
+.glyph {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+  line-height: 1;
+}
+.bay small {
+  font-size: 9.5px;
+  color: var(--wt-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 11.5px;
+  color: var(--wt-body);
+}
+.legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Key–value facts. */
+.kv {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 14px;
+  margin: 0;
+}
+.kv > div {
+  min-width: 0;
+}
+.kv dt {
+  font-family: var(--wt-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--wt-muted);
+}
+.kv dd {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--wt-text);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.kv dd small {
+  display: block;
+  font-size: 11px;
+  color: var(--wt-muted);
+}
+
+/* Checklists (eligibility, pipeline, commissioning). */
+.checks {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.checks li {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--wt-body);
+}
+.checks li[data-ok="true"]::before,
+.checks li[data-ok="false"]::before,
+.checks li[data-ok="wait"]::before {
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 700;
+}
+.checks li[data-ok="true"]::before {
+  content: "✓";
+  background: rgba(52, 211, 153, 0.15);
+  color: var(--wt-nominal);
+}
+.checks li[data-ok="false"]::before {
+  content: "✕";
+  background: rgba(248, 113, 113, 0.15);
+  color: var(--wt-fault);
+}
+.checks li[data-ok="wait"]::before {
+  content: "…";
+  background: rgba(148, 163, 184, 0.12);
+  color: var(--wt-muted);
+}
+.checks strong {
+  font-weight: 600;
+  color: var(--wt-text);
+}
+
+/* Lists of sessions, devices, anomalies, audit entries, messages. */
+.list {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: 240px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.list li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2px 10px;
+  padding: 7px 9px;
+  border: 1px solid var(--wt-line);
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--wt-body);
+}
+.list li > :first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--wt-text);
+}
+.list li small {
+  grid-column: 1 / -1;
+  font-size: 11px;
+  color: var(--wt-muted);
+  overflow-wrap: anywhere;
+}
+.mono {
+  font-family: var(--wt-mono);
+  font-size: 11px;
+}
+.status {
+  font-family: var(--wt-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.status[data-tone="ok"] {
+  color: var(--wt-nominal);
+}
+.status[data-tone="warn"] {
+  color: var(--wt-amber);
+}
+.status[data-tone="bad"] {
+  color: var(--wt-fault);
+}
+.status[data-tone="muted"] {
+  color: var(--wt-muted);
+}
+
+/* Receipt. */
+.receipt {
+  display: grid;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 1px dashed var(--wt-line-strong);
+  border-radius: 12px;
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--wt-body);
+}
+.receipt > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.receipt strong {
+  color: var(--wt-text);
+}
+.receipt hr {
+  width: 100%;
+  margin: 4px 0;
+  border: 0;
+  border-top: 1px solid var(--wt-line);
+}
+
+/* Hand-over banner shown at the station (environment 02). */
+.handover {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 12px 14px;
+  border: 1px solid rgba(var(--wt-accent-rgb), 0.35);
+  border-radius: 12px;
+  background: rgba(var(--wt-accent-rgb), 0.06);
+}
+.handover p {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--wt-body);
+}
+
+/* Table inside the inspector. */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+}
+.table th,
+.table td {
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--wt-line);
+  text-align: right;
+  vertical-align: top;
+}
+.table th:first-child,
+.table td:first-child {
+  text-align: left;
+}
+.table thead th {
+  font-family: var(--wt-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--wt-muted);
+}
+.scroll {
+  overflow-x: auto;
+}
+
+/* The stage card lets pointer input pass through to the scene; its own controls take it back. */
+.row,
+.cta,
+.ghost,
+.handover {
+  pointer-events: auto;
+}

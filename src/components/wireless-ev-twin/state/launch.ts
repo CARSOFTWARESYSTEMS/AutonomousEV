@@ -6,7 +6,7 @@
 // own tap or key press, so that one control switches them on; nothing is
 // claimed to start without it. Individual options override the preset:
 //   fs, sound, narration, captions, demo  (1 or 0)
-//   env   station | dynamic | autonomous | infrastructure
+//   env   parking | station | dynamic | autonomous | infrastructure
 //   quality  auto | high | balanced | performance
 // No three.js here.
 import type { EnvironmentId } from "@/lib/wireless-charging/content";
@@ -22,7 +22,7 @@ export interface LaunchOptions {
   quality: QualityChoice | null;
 }
 
-const ENVS: EnvironmentId[] = ["station", "dynamic", "autonomous", "infrastructure"];
+const ENVS: EnvironmentId[] = ["parking", "station", "dynamic", "autonomous", "infrastructure"];
 const QUALITIES: QualityChoice[] = ["auto", "high", "balanced", "performance"];
 
 /** The options a URL asks for, or null when it asks for nothing. */

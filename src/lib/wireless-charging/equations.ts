@@ -43,7 +43,7 @@ export interface Equation {
   checks: string[];
   model?: string;
   /** Where to see it in 3D. */
-  view?: { environment: "station" | "dynamic" | "autonomous" | "infrastructure"; viewMode: string };
+  view?: { environment: "parking" | "station" | "dynamic" | "autonomous" | "infrastructure"; viewMode: string };
 }
 
 const P = (key: string, label: string, unit: string, min: number, max: number, step: number, value: number): Param => ({ key, label, unit, min, max, step, value });
@@ -417,6 +417,112 @@ export const EQUATIONS: readonly Equation[] = [
     checks: ["A10"],
     model: "WPT-EM-002",
     view: { environment: "station", viewMode: "field" },
+  },
+  {
+    id: "erlang-b",
+    title: "Erlang B: how often a full car park turns drivers away",
+    domain: "Smart parking · queueing",
+    expression: "B(c, a) = (aᶜ / c!) / Σₖ₌₀ᶜ aᵏ / k!,   a = λ / μ",
+    interpretation: "With c bays and an offered load of a Erlangs (arrival rate × mean stay), B is the share of arrivals that find every bay occupied. It depends on the mean stay only, not on its distribution.",
+    symbols: [{ symbol: "c", meaning: "Bays", unit: "1" }, { symbol: "λ", meaning: "Arrival rate", unit: "1/h" }, { symbol: "1/μ", meaning: "Mean stay", unit: "h" }, { symbol: "a", meaning: "Offered load", unit: "Erlang" }],
+    assumptions: ["Poisson arrivals", "No waiting room (a loss system)"],
+    derivation: ["Balance the flow between n and n + 1 occupied bays: λ pₙ = (n + 1) μ pₙ₊₁.", "So pₙ = p₀ aⁿ / n!.", "Normalise over n = 0…c; blocking is p_c."],
+    params: [P("c", "Bays", "", 2, 40, 1, 12), P("lam", "Arrivals", "per hour", 0.5, 40, 0.5, 6), P("stay", "Mean stay", "h", 0.25, 8, 0.25, 2)],
+    evaluate: (p) => {
+      const a = p.lam * p.stay;
+      let b = 1;
+      for (let k = 1; k <= p.c; k++) b = (a * b) / (k + a * b);
+      return [
+        { label: "Offered load", value: a, unit: "Erlang", digits: 2 },
+        { label: "Blocking", value: b * 100, unit: "%", digits: 2 },
+        { label: "Mean occupied", value: a * (1 - b), unit: "bays", digits: 2 },
+      ];
+    },
+    sweep: { key: "lam", label: "Arrivals", unit: "per hour", from: 0.5, to: 20, points: 40, y: (p) => { const a = p.lam * p.stay; let b = 1; for (let k = 1; k <= p.c; k++) b = (a * b) / (k + a * b); return b * 100; }, yLabel: "Blocking", yUnit: "%" },
+    limits: ["a ≪ c: B → 0.", "a ≫ c: B → 1 − c/a."],
+    validity: "Poisson arrivals; any stay distribution with the given mean (insensitivity).",
+    limitations: ["With an entry queue use M/M/c/K (exponential stays) or the discrete-event simulation."],
+    checks: ["SP-A01", "SP-A02"],
+    model: "SP-MATH-002",
+    view: { environment: "parking", viewMode: "occupancy" },
+  },
+  {
+    id: "bayes-fusion",
+    title: "Fusing three occupancy sensors",
+    domain: "Smart parking · sensing",
+    expression: "ln(p/(1−p)) = ln(π/(1−π)) + Σᵢ ln[P(zᵢ | occupied) / P(zᵢ | vacant)]",
+    interpretation: "Each detector state adds its log-likelihood ratio to the prior's log-odds. Agreeing sensors push the posterior towards certainty; a dissenting one pulls it back — and the twin then reports the bay as uncertain rather than assigning it.",
+    symbols: [{ symbol: "P_D", meaning: "Detection probability", unit: "1" }, { symbol: "P_FA", meaning: "False-alarm probability", unit: "1" }, { symbol: "π", meaning: "Prior", unit: "1" }],
+    assumptions: ["Detectors independent given the true state"],
+    derivation: ["Bayes: p = P(z | occ) π / P(z).", "Divide by the same for vacant: the odds multiply by the likelihood ratio.", "Independence turns the product into a sum of logs."],
+    params: [P("pd", "Detection rate", "%", 80, 99.9, 0.1, 98.5), P("pfa", "False-alarm rate", "%", 0.1, 20, 0.1, 1), P("n", "Sensors saying occupied", "of 3", 0, 3, 1, 2)],
+    evaluate: (p) => {
+      const lrYes = Math.log(p.pd / p.pfa);
+      const lrNo = Math.log((100 - p.pd) / (100 - p.pfa));
+      const L = p.n * lrYes + (3 - p.n) * lrNo;
+      return [
+        { label: "Posterior", value: (1 / (1 + Math.exp(-L))) * 100, unit: "%", digits: 3 },
+        { label: "Log-odds", value: L, unit: "", digits: 2 },
+      ];
+    },
+    sweep: { key: "pfa", label: "False-alarm rate", unit: "%", from: 0.1, to: 20, points: 40, y: (p) => { const L = p.n * Math.log(p.pd / p.pfa) + (3 - p.n) * Math.log((100 - p.pd) / (100 - p.pfa)); return 100 / (1 + Math.exp(-L)); }, yLabel: "Posterior", yUnit: "%" },
+    limits: ["P_D = P_FA: a sensor carries no information."],
+    validity: "Declared rates; to be measured on the POC.",
+    limitations: ["Correlated failures (shared power, a dirty lens) break independence."],
+    checks: ["SP-A08", "SP-B06"],
+    model: "SP-MATH-003",
+    view: { environment: "parking", viewMode: "occupancy" },
+  },
+  {
+    id: "pv-power",
+    title: "Solar power from the canopy",
+    domain: "Smart parking · solar",
+    expression: "P = G · A · η · (1 − γ (T_cell − 25 °C)) · k,   T_cell = T_a + (NOCT − 20)/800 · G",
+    interpretation: "Power follows irradiance, falls about 0.37 % per kelvin of cell temperature, and is derated for soiling, wiring and the inverter.",
+    symbols: [{ symbol: "G", meaning: "Irradiance", unit: "W/m²" }, { symbol: "A", meaning: "Panel area", unit: "m²" }, { symbol: "η", meaning: "Efficiency", unit: "1" }, { symbol: "γ", meaning: "Temperature coefficient", unit: "1/K" }],
+    assumptions: ["Near-horizontal canopy", "NOCT cell-temperature model"],
+    derivation: ["Electrical power is the absorbed solar power times the conversion efficiency.", "Efficiency falls linearly with cell temperature.", "The cell runs hotter than the air in proportion to irradiance."],
+    params: [P("G", "Irradiance", "W/m²", 0, 1100, 10, 850), P("A", "Panel area", "m²", 10, 400, 5, 180), P("eta", "Efficiency", "%", 15, 24, 0.5, 21), P("Ta", "Ambient", "°C", 0, 48, 1, 31)],
+    evaluate: (p) => {
+      const cell = p.Ta + (25 / 800) * p.G;
+      const P_ = p.G * p.A * (p.eta / 100) * (1 - 0.0037 * (cell - 25)) * 0.86;
+      return [
+        { label: "PV power", value: P_ / 1000, unit: "kW", digits: 2 },
+        { label: "Cell temperature", value: cell, unit: "°C", digits: 1 },
+      ];
+    },
+    sweep: { key: "G", label: "Irradiance", unit: "W/m²", from: 0, to: 1100, points: 40, y: (p) => (p.G * p.A * (p.eta / 100) * (1 - 0.0037 * (p.Ta + (25 / 800) * p.G - 25)) * 0.86) / 1000, yLabel: "Power", yUnit: "kW" },
+    limits: ["G = 0: no power."],
+    validity: "Data-sheet ranges.",
+    limitations: ["No shading, angle of incidence or inverter clipping."],
+    checks: ["SP-A05"],
+    model: "SP-MATH-008",
+    view: { environment: "parking", viewMode: "energy" },
+  },
+  {
+    id: "shelter-thermal",
+    title: "The shelter as one thermal node",
+    domain: "Smart parking · environment",
+    expression: "C dT/dt = α G A f + Q_eq − (UA + ṁ c_p)(T − T_a)   ⇒   T∞ = T_a + (α G A f + Q_eq)/(UA + ṁ c_p)",
+    interpretation: "Sun on the roof and heat from the equipment warm the air; the open structure and the fans carry it away. More airflow lowers the steady temperature and shortens the time constant.",
+    symbols: [{ symbol: "C", meaning: "Heat capacity", unit: "J/K" }, { symbol: "UA", meaning: "Loss conductance", unit: "W/K" }, { symbol: "ṁc_p", meaning: "Ventilation conductance", unit: "W/K" }],
+    assumptions: ["Well-mixed air", "Inputs constant over a step"],
+    derivation: ["Energy balance of one node.", "Linear first-order ODE: exponential approach to T∞.", "τ = C / (UA + ṁc_p)."],
+    params: [P("G", "Irradiance", "W/m²", 0, 1100, 10, 900), P("Q", "Airflow", "m³/s", 1, 20, 0.5, 6), P("Qeq", "Equipment heat", "kW", 0, 10, 0.1, 2), P("Ta", "Ambient", "°C", 10, 45, 0.5, 32)],
+    evaluate: (p) => {
+      const k = 2600 + 1206 * p.Q;
+      return [
+        { label: "Steady temperature", value: p.Ta + (0.06 * p.G * 260 + p.Qeq * 1000) / k, unit: "°C", digits: 2 },
+        { label: "Time constant", value: 4.2e6 / k / 60, unit: "min", digits: 1 },
+      ];
+    },
+    sweep: { key: "Q", label: "Airflow", unit: "m³/s", from: 1, to: 20, points: 40, y: (p) => p.Ta + (0.06 * p.G * 260 + p.Qeq * 1000) / (2600 + 1206 * p.Q), yLabel: "T∞", yUnit: "°C" },
+    limits: ["Q → ∞: T∞ → T_a."],
+    validity: "Open-sided shelter; declared coefficients.",
+    limitations: ["No stratification; coefficients to be calibrated."],
+    checks: ["SP-A04"],
+    model: "SP-MATH-007",
+    view: { environment: "parking", viewMode: "environment" },
   },
 ];
 

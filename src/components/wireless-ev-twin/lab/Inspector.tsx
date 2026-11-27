@@ -17,10 +17,11 @@ import { liveValue } from "../ui/liveValues";
 import { AutonomousInputs, AutonomousResults, DynamicInputs, DynamicResults, InfrastructureInputs, InfrastructureResults } from "../env/OtherPanels";
 import { StationFaults, StationInputs, StationResults, StationSequence } from "../env/StationPanels";
 import { LearnLab } from "./LearnLab";
+import { BayInspector, DriverPanel, OperatorPanel, ParkingFaults, ParkingInputs, ParkingLearn, ParkingResults, VehicleInspector } from "../env/ParkingPanels";
 import { ResearchPanel } from "./ResearchPanel";
 import lab from "./lab.module.css";
 
-const SIDE: Record<string, string> = { wireless: "Wireless link", ground: "Ground side", vehicle: "Vehicle side", road: "Electrified road", grid: "Grid", infrastructure: "Infrastructure" };
+const SIDE: Record<string, string> = { parking: "Smart parking", wireless: "Wireless link", ground: "Ground side", vehicle: "Vehicle side", road: "Electrified road", grid: "Grid", infrastructure: "Infrastructure" };
 /** Pad layers open in the exploded view; vehicle units in the vehicle assembly. */
 const PAD_PARTS = new Set(["tx-enclosure", "fod-sensor", "tx-coil", "tx-ferrite", "tx-insulation", "tx-shield", "tx-base", "rx-enclosure", "rx-coil", "rx-ferrite"]);
 const VEHICLE_PARTS = new Set(["battery-pack", "bms", "hv-junction", "traction", "rectifier", "dcdc", "rx-compensation", "vcu", "vehicle"]);
@@ -117,6 +118,12 @@ function ComponentPanel({ id }: { id: string }) {
               <dt>Circuit representation</dt>
               <dd>{c.circuit}</dd>
             </div>
+            {c.communication && (
+              <div>
+                <dt>Communication</dt>
+                <dd>{c.communication}</dd>
+              </div>
+            )}
           </dl>
           {models.map((m) => (
             <div key={m.id} className={lab.equations}>
@@ -224,10 +231,11 @@ function SciencePanel() {
   const active = useTwin((s) => s.guide.active);
   const mode = useTwin((s) => s.mode);
   const stage = useMemo(() => (stageId ? currentStage() : null), [stageId]);
+  const env = useTwin((s) => s.environment);
   if (mode === "learn")
     return (
       <div className={lab.inspectorBody}>
-        <LearnLab />
+        {env === "parking" ? <ParkingLearn /> : <LearnLab />}
       </div>
     );
   if (!stage || !active)
@@ -266,12 +274,14 @@ function DataPanel() {
   return (
     <div className={lab.inspectorBody} data-panels>
       {env === "station" && <StationSequence />}
-      {env === "station" ? <StationResults /> : env === "dynamic" ? <DynamicResults /> : env === "autonomous" ? <AutonomousResults /> : <InfrastructureResults />}
+      {env === "parking" ? <ParkingResults /> : env === "station" ? <StationResults /> : env === "dynamic" ? <DynamicResults /> : env === "autonomous" ? <AutonomousResults /> : <InfrastructureResults />}
     </div>
   );
 }
 
-const TABS: { id: Exclude<PanelId, "none">; label: string; deep?: boolean; research?: boolean }[] = [
+const TABS: { id: Exclude<PanelId, "none">; label: string; deep?: boolean; research?: boolean; parking?: boolean }[] = [
+  { id: "driver", label: "Driver", parking: true },
+  { id: "operator", label: "Operator", parking: true },
   { id: "inputs", label: "Inputs", deep: true },
   { id: "research", label: "Research", research: true },
   { id: "component", label: "Component" },
@@ -283,10 +293,15 @@ const TABS: { id: Exclude<PanelId, "none">; label: string; deep?: boolean; resea
 function InputsPanel() {
   const env = useTwin((s) => s.environment);
   const mode = useTwin((s) => s.mode);
-  const Inputs = env === "station" ? StationInputs : env === "dynamic" ? DynamicInputs : env === "autonomous" ? AutonomousInputs : InfrastructureInputs;
+  const Inputs = env === "parking" ? ParkingInputs : env === "station" ? StationInputs : env === "dynamic" ? DynamicInputs : env === "autonomous" ? AutonomousInputs : InfrastructureInputs;
   return (
     <div className={lab.inspectorBody} data-panels role="region" aria-label="Inputs">
       <Inputs />
+      {env === "parking" && (
+        <AtDepth mode={mode} min="engineer">
+          <ParkingFaults />
+        </AtDepth>
+      )}
       {env === "station" && (
         <AtDepth mode={mode} min="engineer">
           <StationFaults />
@@ -300,13 +315,14 @@ export default function InspectorPanel() {
   const panel = useTwin((s) => s.panel);
   const selected = useTwin((s) => s.selected);
   const mode = useTwin((s) => s.mode);
+  const env = useTwin((s) => s.environment);
   if (panel === "none") return null;
   const deep = mode === "engineer" || mode === "research";
   return (
     <aside className={lab.inspector} aria-label="Inspector">
       <header className={lab.inspectorHead}>
         <div className={lab.tabs} role="tablist" aria-label="Inspector">
-          {TABS.filter((t) => (!t.deep || deep) && (!t.research || mode === "research")).map((t) => (
+          {TABS.filter((t) => (!t.deep || deep) && (!t.research || mode === "research") && (!t.parking || env === "parking")).map((t) => (
             <button key={t.id} type="button" role="tab" aria-selected={panel === t.id} disabled={t.id === "component" && !selected} onClick={() => useTwin.setState({ panel: t.id })}>
               {t.label}
             </button>
@@ -324,7 +340,7 @@ export default function InspectorPanel() {
           <X size={16} aria-hidden="true" />
         </button>
       </header>
-      {panel === "research" ? <ResearchPanel /> : panel === "inputs" ? <InputsPanel /> : panel === "component" && selected ? <ComponentPanel key={selected} id={selected} /> : panel === "science" ? <SciencePanel /> : panel === "data" ? <DataPanel /> : null}
+      {panel === "research" ? <ResearchPanel /> : panel === "inputs" ? <InputsPanel /> : panel === "driver" ? <DriverPanel /> : panel === "operator" ? <OperatorPanel /> : panel === "component" && selected ? selected.startsWith("sp-bay:") ? <BayInspector key={selected} id={selected.slice(7)} /> : selected.startsWith("sp-veh:") ? <VehicleInspector key={selected} id={selected.slice(7)} /> : <ComponentPanel key={selected} id={selected} /> : panel === "science" ? <SciencePanel /> : panel === "data" ? <DataPanel /> : null}
     </aside>
   );
 }

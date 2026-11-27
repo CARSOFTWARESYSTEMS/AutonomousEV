@@ -16,6 +16,7 @@ import { Bus, DEFAULT_LINKS } from "./network";
 import { SensorBank, STATION_SENSORS } from "./sensors";
 import { createStation, DEFAULT_STATION_INPUTS, ledgerResidual, NO_FAULTS, runStationSession, setStationInputs, stepStation, type StationFaults } from "./station";
 import { safetyTransition, type SafetyInputs } from "./stateMachine";
+import { PARKING_CHECKS } from "./smart-parking/checks";
 
 export interface CheckResult {
   passed: boolean;
@@ -47,7 +48,7 @@ const charging = (faults: StationFaults = NO_FAULTS) => {
 
 const safe = (over: Partial<SafetyInputs>): SafetyInputs => ({ emergencyStop: false, controllerFailure: false, stationUnavailable: false, livingObjectDetected: false, isolationFault: false, overcurrent: false, foreignObjectDetected: false, overTemperature: false, vehicleLinkAlive: true, vehicleParked: true, ...over });
 
-export const CHECKS: readonly Check[] = [
+const BASE_CHECKS: readonly Check[] = [
   // ── Analytical verification ──
   {
     id: "A01",
@@ -567,6 +568,9 @@ export const CHECKS: readonly Check[] = [
     },
   },
 ];
+
+/** Every check: the twin's own (A, B) and Smart Parking's (SP-A, SP-B, environment 01). */
+export const CHECKS: readonly Check[] = [...BASE_CHECKS, ...PARKING_CHECKS];
 
 /** Runs every check; a throwing check fails with its error. */
 export function runChecks(ids?: readonly string[]): (CheckResult & { id: string; ms: number })[] {

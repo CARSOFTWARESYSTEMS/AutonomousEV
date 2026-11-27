@@ -143,6 +143,8 @@ export function City() {
 export function HeroVehicle() {
   const env = useTwin((s) => s.environment);
   const rxTurns = useTwin((s) => s.station.rxTurns);
+  // A Smart Parking charging session shown at the station keeps its vehicle's paint.
+  const handoverPaint = useTwin((s) => s.handover?.paint);
   const spin = useRef(0);
   const last = useRef({ x: 0, z: 0 });
   const pose = () => {
@@ -174,6 +176,7 @@ export function HeroVehicle() {
     <Vehicle
       pose={pose}
       detailed
+      paint={env === "station" ? handoverPaint : undefined}
       bodyId="vehicle"
       rxTurns={rxTurns}
       rxGlow={() => Math.min(1, (runtime.station.state.point.ss ? Math.hypot(runtime.station.state.point.ss.i2.re, runtime.station.state.point.ss.i2.im) : 0) / 40)}

@@ -10,7 +10,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { Box3, type Object3D, type PerspectiveCamera, Sphere, Vector3 } from "three";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import type { EnvironmentId, ViewModeId } from "@/lib/wireless-charging/content";
-import { runtime } from "../state/runtime";
+import { facilityIfBuilt, runtime } from "../state/runtime";
 import { useTwin } from "../state/store";
 import { CABINET } from "./station/Site";
 import { RX_X } from "./vehicle/Vehicle";
@@ -32,7 +32,7 @@ export interface Shot {
   /** Highest polar angle the visitor may orbit to (default just above the ground). */
   polarMax?: number;
   /** Follow the vehicle; "roadside" is a camera fixed beside the road that the vehicle drives past (a cut to the next one when it has passed). */
-  follow?: "station-vehicle" | "parking-vehicle" | "roadside";
+  follow?: "station-vehicle" | "parking-vehicle" | "roadside" | "park-focus" | "park-bay";
   /** Vertical field of view, degrees (default 34): long lenses for product shots, wide for close tracking. */
   fov?: number;
   /** A slow, small azimuth sweep after arrival (guided mode only): amplitude in degrees and period in seconds. */
@@ -80,7 +80,26 @@ export type ShotId =
   | "autonomous"
   | "autonomous-top"
   | "district"
-  | "district-energy";
+  | "district-energy"
+  | "park-establishing"
+  | "park-aerial"
+  | "park-approach"
+  | "park-entry"
+  | "park-recognition"
+  | "park-reader"
+  | "park-barrier"
+  | "park-top"
+  | "park-tracking"
+  | "park-parking"
+  | "park-charging-bay"
+  | "park-shelter"
+  | "park-sensors"
+  | "park-gateway"
+  | "park-iot"
+  | "park-solar"
+  | "park-energy"
+  | "park-environment"
+  | "park-departure";
 
 /** True when the segment from a to b passes through a wheel of the parked vehicle (bay frame). */
 function hitsWheel(a: V3, b: V3, vehicleX: number): boolean {
@@ -220,6 +239,65 @@ export function shotFor(id: ShotId): Shot {
       return { target: [-5, 0, -2], azimuth: -90, polar: 10, distance: 22, min: 3, max: 60 };
     case "district":
       return { target: [-2, 0, 6], azimuth: -38, polar: 43, distance: 126, min: 20, max: 260 };
+    // ── Smart Parking: the facility is centred on the origin; world z = −(facility y). ──
+    case "park-establishing":
+      // Architectural: elevated from the south-east (front-lit), the south row in front, the north row and the entry beyond.
+      return { target: [-1.5, 1.4, -1.5], azimuth: 30, polar: 70, distance: 31, min: 4, max: 140, fov: 32, drift: { az: 5, period: 30 } };
+    case "park-aerial":
+      return { target: [-2, 0, -1], azimuth: 26, polar: 44, distance: 58, min: 10, max: 200, fov: 30, drift: { az: 6, period: 40 } };
+    case "park-approach":
+      // Ahead of the vehicle on its right (the driver's side), the entry gate beyond.
+      return { target: [2.2, 0.8, 0], azimuth: 68, polar: 80, distance: 11.5, follow: "park-focus", min: 2, max: 60, fov: 32 };
+    case "park-entry": {
+      const x = parkingGeom().entry;
+      return { target: [x - 1.5, 1.1, 0.2], azimuth: -40, polar: 76, distance: 12, min: 2, max: 60, fov: 32 };
+    }
+    case "park-recognition": {
+      const x = parkingGeom().entry;
+      // Over the recognition camera's shoulder at the plate of a vehicle at the stop line.
+      return { target: [x - 1.8, 0.7, 0], azimuth: 72, polar: 79, distance: 7.4, min: 1, max: 30, fov: 34 };
+    }
+    case "park-reader": {
+      const x = parkingGeom().entry;
+      return { target: [x - 3.1, 1.0, 1.9], azimuth: 18, polar: 80, distance: 4.6, min: 1, max: 30, fov: 34 };
+    }
+    case "park-barrier": {
+      const x = parkingGeom().entry;
+      return { target: [x, 1.0, 0.6], azimuth: 18, polar: 78, distance: 8, min: 1.5, max: 40, fov: 32 };
+    }
+    case "park-top":
+      return { target: [0, 0, 0], azimuth: 0, polar: 9, distance: 44, min: 8, max: 160, fov: 32 };
+    case "park-tracking":
+      return { target: [0.8, 0.7, 0], azimuth: -42, polar: 70, distance: 13, follow: "park-focus", min: 2, max: 60, fov: 32 };
+    case "park-parking":
+      return { target: [0, 0.6, 0], azimuth: -26, polar: 58, distance: 10, follow: "park-focus", min: 2, max: 60, fov: 32 };
+    case "park-charging-bay": {
+      // Low from the aisle behind the parked vehicle, under its ghosted body: the receiver over the ground pad.
+      const south = parkingGeom().focusRow === "S";
+      return { target: [0, 0.16, south ? -0.25 : 0.25], azimuth: south ? 166 : 14, polar: 84, distance: 3.7, follow: "park-bay", min: 0.8, max: 30, polarMax: 96, fov: 36 };
+    }
+    case "park-shelter":
+      // From the east end, along the north row: columns, beams, purlins, sensors and the cable tray under the opened roof.
+      return { target: [-2, 2.1, -5.6], azimuth: 72, polar: 81, distance: 19, min: 3, max: 80, fov: 34 };
+    case "park-sensors":
+      return { target: [-2.7, 2.4, -5.2], azimuth: 30, polar: 92, distance: 7.5, min: 1.5, max: 40, polarMax: 100, fov: 36 };
+    case "park-gateway": {
+      const g = parkingGeom();
+      return { target: [g.equipX, 1.1, -g.equipY], azimuth: 20, polar: 78, distance: 7.6, min: 1.5, max: 40, fov: 32 };
+    }
+    case "park-iot":
+      return { target: [-2, 1.6, -1], azimuth: 24, polar: 56, distance: 34, min: 4, max: 120, fov: 32 };
+    case "park-solar":
+      return { target: [0, 3.4, -5.6], azimuth: 22, polar: 46, distance: 26, min: 4, max: 90, fov: 30 };
+    case "park-energy": {
+      const g = parkingGeom();
+      return { target: [g.equipX - 6, 1.0, -2], azimuth: 12, polar: 58, distance: 26, min: 4, max: 120, fov: 32 };
+    }
+    case "park-environment":
+      // From the south lawn, level with the canopy: the fans, the air node and the sensors under the south roof.
+      return { target: [-1, 2.3, 5.6], azimuth: -24, polar: 84, distance: 12, min: 2, max: 60, polarMax: 98, fov: 34 };
+    case "park-departure":
+      return { target: [1.2, 0.8, 0], azimuth: -60, polar: 72, distance: 13, follow: "park-focus", min: 2, max: 60, fov: 32 };
     case "district-energy":
       return { target: [1, 0, 8], azimuth: -30, polar: 50, distance: 70, min: 15, max: 260 };
   }
@@ -232,6 +310,10 @@ export function viewShot(env: EnvironmentId, v: ViewModeId): ShotId {
     return road[v] ?? "dynamic-follow";
   }
   if (env === "autonomous") return "autonomous";
+  if (env === "parking") {
+    const park: Partial<Record<ViewModeId, ShotId>> = { shelter: "park-shelter", occupancy: "park-top", top: "park-top", energy: "park-energy", environment: "park-environment", iot: "park-iot", xray: "park-charging-bay" };
+    return park[v] ?? "park-establishing";
+  }
   if (env === "infrastructure") return "district";
   const map: Partial<Record<ViewModeId, ShotId>> = {
     engineering: "alignment",
@@ -252,9 +334,45 @@ export function viewShot(env: EnvironmentId, v: ViewModeId): ShotId {
   return map[v] ?? "establishing";
 }
 
+/** Facility geometry the parking shots use (defaults before the facility exists). */
+function parkingGeom() {
+  const sim = facilityIfBuilt();
+  const l = sim?.layout;
+  const focusSession = sim?.focus ? [...sim.sessions.values()].find((x) => x.vehicleId === sim.focus) : undefined;
+  const focusRow = focusSession?.bayId ? sim?.bays.find((b) => b.bay.id === focusSession.bayId)?.bay.row : undefined;
+  return { entry: l?.entry.barrierX ?? -20.3, equipX: l ? l.aisle.xEast - 2.2 : 10.5, equipY: l ? l.aisle.half + 3.2 : 6.2, focusRow };
+}
+
+/** Centre of the focus vehicle (or of its bay), world frame. */
+function parkingFocus(kind: "park-focus" | "park-bay", out: Vector3): boolean {
+  const sim = facilityIfBuilt();
+  if (!sim || !sim.focus) return false;
+  const v = sim.vehicles.find((x) => x.profile.id === sim.focus);
+  if (kind === "park-bay") {
+    const s = v ? sim.sessions.get(v.sessionId) : undefined;
+    // The focus vehicle's bay, or else a bay where a vehicle is charging.
+    const id = s?.bayId ?? [...sim.chargers.values()].find((c) => c.session)?.bayId;
+    const b = id ? sim.bays.find((x) => x.bay.id === id) : undefined;
+    if (b) {
+      const pad = b.bay.pad ?? { x: b.bay.x, y: b.bay.y };
+      out.x += pad.x;
+      out.z += -pad.y;
+      return true;
+    }
+  }
+  if (!v || !v.spawned || v.gone) return false;
+  out.x += v.pose.x + Math.cos(v.pose.heading) * (v.fp.wheelbase / 2);
+  out.z += -(v.pose.y + Math.sin(v.pose.heading) * (v.fp.wheelbase / 2));
+  return true;
+}
+
 /** Where a following shot's target is now. */
 function followOffset(shot: Shot, out: Vector3): Vector3 {
   out.set(...shot.target);
+  if (shot.follow === "park-focus" || shot.follow === "park-bay") {
+    parkingFocus(shot.follow, out);
+    return out;
+  }
   if (shot.follow === "station-vehicle") {
     const v = runtime.station.state.vehicle;
     // Following shots are given relative to the vehicle's centre (x forward, z left).

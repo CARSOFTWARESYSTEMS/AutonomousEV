@@ -4,7 +4,7 @@
 import { useState } from "react";
 import { Play } from "lucide-react";
 import { CHECKS, runChecks } from "@/lib/wireless-charging/benchmarks";
-import { COMPONENTS } from "@/lib/wireless-charging/components";
+import { ALL_COMPONENTS, COMPONENTS } from "@/lib/wireless-charging/components";
 import { GATES, RISKS, STANDARDS } from "@/lib/wireless-charging/content";
 import { FEATURE_COUNTS, FEATURES } from "@/lib/wireless-charging/coverage";
 import { FIDELITY, MODELS } from "@/lib/wireless-charging/registry";
@@ -39,7 +39,7 @@ export default function AssuranceSection() {
           { value: String(CHECKS.length), label: "Checks" },
           { value: ran.length ? `${passed}/${ran.length}` : "—", label: "Passed here" },
           { value: String(MODELS.length), label: "Models" },
-          { value: String(COMPONENTS.length), label: "Components" },
+          { value: String(ALL_COMPONENTS.length), label: "Components" },
         ]}
       />
       <section className={ui.labBlock} aria-labelledby="vv-title">

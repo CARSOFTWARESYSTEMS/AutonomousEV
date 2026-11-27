@@ -14,8 +14,10 @@ import { useTwin } from "../state/store";
 import { ROAD_PRESETS, stagesFor } from "../story/stages";
 import { download, fmt } from "../ui/controls";
 import lab from "./lab.module.css";
+import { ParkingResearch } from "../env/ParkingPanels";
 
 const ENV_MODELS: Record<string, string[]> = {
+  parking: ["SP-SIM-001", "SP-CTRL-001", "SP-MATH-002", "SP-MATH-003", "SP-MATH-004", "SP-MATH-009", "SP-INT-001", "WPT-SIM-001"],
   station: ["WPT-SIM-001", "WPT-EM-001", "WPT-EM-002", "WPT-CIR-001", "WPT-SYS-001", "WPT-BAT-001", "WPT-CTRL-001"],
   dynamic: ["WPT-SIM-002", "WPT-EM-001", "WPT-EM-005", "WPT-VEH-001", "WPT-BAT-001"],
   autonomous: ["WPT-AV-001", "WPT-AV-002", "WPT-AV-003"],
@@ -49,7 +51,7 @@ function exportExperiment(env: string, stage: string | null, models: string[], r
     stage,
     models: models.map((id) => ({ id, version: modelById(id)?.version, status: modelById(id)?.status, fidelity: modelById(id)?.fidelity })),
     seeds: { station: 20261125, road: 7 },
-    inputs: env === "station" ? s.station : env === "dynamic" ? s.road : env === "autonomous" ? s.parking : s.grid,
+    inputs: env === "parking" ? s.facility : env === "station" ? s.station : env === "dynamic" ? s.road : env === "autonomous" ? s.parking : s.grid,
     faults: env === "station" ? s.faults : undefined,
     state:
       env === "dynamic"
@@ -100,7 +102,7 @@ export function ResearchPanel() {
           </div>
           <div>
             <dt>Reproducibility</dt>
-            <dd>Seeded simulations (station 20261125, road 7). The same inputs and steps give the same results (check B10).</dd>
+            <dd>Seeded simulations (station 20261125, road 7, Smart Parking facility 20261127). The same inputs and steps give the same results (checks B10 and SP-B22).</dd>
           </div>
         </dl>
       </section>
@@ -119,6 +121,7 @@ export function ResearchPanel() {
           })}
         </ul>
       </section>
+      {env === "parking" && <ParkingResearch />}
       {env === "dynamic" && (
         <section className={lab.researchBlock}>
           <p className={lab.legendEyebrow}>Scenario comparison · one methodology</p>

@@ -2,8 +2,9 @@
 // what it is for, how it is built, how it is modelled and how it fails.
 // Values quoted are this twin's representative defaults, not a product's.
 import type { Fidelity, ValidationStatus } from "./registry";
+import { PARKING_COMPONENTS } from "./smart-parking/components";
 
-export type Side = "grid" | "ground" | "wireless" | "vehicle" | "road" | "infrastructure";
+export type Side = "grid" | "ground" | "wireless" | "vehicle" | "road" | "infrastructure" | "parking";
 
 export interface Component {
   id: string;
@@ -31,6 +32,8 @@ export interface Component {
   fidelity: Fidelity;
   status: ValidationStatus;
   research: string[];
+  /** How it communicates (Smart Parking devices). */
+  communication?: string;
 }
 
 const c = (x: Component) => x;
@@ -79,5 +82,8 @@ export const COMPONENTS: readonly Component[] = [
   c({ id: "bess", name: "Battery energy storage", side: "infrastructure", purpose: "Shifts energy in time and shaves the peak import.", construction: "Containerised lithium-ion system with its own BMS and inverter.", materials: "LFP cells, power conversion.", inputs: "Surplus PV or off-peak grid.", outputs: "Power during peaks or outages.", characteristics: "300 kWh, 100 kW, 90 % round trip (defaults).", principle: "Electrochemical storage.", models: ["WPT-GRID-001"], circuit: "—", telemetry: ["bess"], losses: "Round-trip loss split √η each way.", thermal: "—", failureModes: ["Capacity fade"], safety: "Separate fire-safety design.", assumptions: "No ageing.", fidelity: "F1", status: "Tested", research: ["Storage sizing for charging hubs"] }),
 ];
 
-export const componentById = (id: string) => COMPONENTS.find((x) => x.id === id);
+/** Every component, including environment 01's (Smart Parking). */
+export const ALL_COMPONENTS: readonly Component[] = [...COMPONENTS, ...PARKING_COMPONENTS];
+
+export const componentById = (id: string) => ALL_COMPONENTS.find((x) => x.id === id);
 export const CHAIN_COMPONENTS = COMPONENTS.filter((x) => x.chain !== undefined).sort((a, b) => a.chain! - b.chain!);

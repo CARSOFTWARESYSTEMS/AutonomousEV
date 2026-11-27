@@ -87,6 +87,8 @@ export function SharePopover() {
   const quality = useTwin((s) => s.quality);
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [copiedEnv, setCopiedEnv] = useState(false);
+  const envMeta = ENVIRONMENTS.find((e) => e.id === env);
   const [o, setO] = useState<LaunchOptions>({ fullscreen: true, sound: true, narration: true, captions: true, demo: true, env: null, quality: null });
   const link = typeof window === "undefined" ? "" : launchLink(window.location.origin, window.location.pathname, { ...o, env: o.demo ? null : (o.env ?? env), quality });
   const toggle = (k: "fullscreen" | "sound" | "narration" | "captions" | "demo") => setO((x) => ({ ...x, [k]: !x[k] }));
@@ -143,6 +145,24 @@ export function SharePopover() {
             }}
           >
             {copied ? <Check size={16} aria-hidden="true" /> : <Copy size={16} aria-hidden="true" />} {copied ? "Copied" : "Copy link"}
+          </button>
+          <button
+            type="button"
+            className={lab.gateSecondary}
+            onClick={async () => {
+              // A link straight into the environment on screen (the demonstration off), with the options chosen above.
+              const direct = launchLink(window.location.origin, window.location.pathname, { ...o, demo: false, env, quality });
+              try {
+                await navigator.clipboard.writeText(direct);
+                setO((x) => ({ ...x, demo: false, env }));
+                setCopiedEnv(true);
+                window.setTimeout(() => setCopiedEnv(false), 1800);
+              } catch {
+                setCopiedEnv(false);
+              }
+            }}
+          >
+            {copiedEnv ? <Check size={16} aria-hidden="true" /> : <Link2 size={16} aria-hidden="true" />} {copiedEnv ? "Copied" : `Copy a link that opens ${envMeta?.number ?? ""} ${envMeta?.short ?? ""}`}
           </button>
           <p className={lab.gateNote}>Viewers see one “Begin with sound” button: browsers start full screen and audio only after a tap or key press.</p>
         </div>

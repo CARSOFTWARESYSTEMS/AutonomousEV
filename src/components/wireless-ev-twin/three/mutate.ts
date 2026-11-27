@@ -2,7 +2,7 @@
 // are mutable GPU-side state by design; these helpers make each write
 // explicit and keep component bodies free of direct property assignment
 // (which the React Compiler's immutability rule rejects for hook-held values).
-import type { Color, Fog, Material, Mesh, MeshPhysicalMaterial, MeshStandardMaterial, Object3D, Scene, ShaderMaterial, Texture, WebGLRenderer } from "three";
+import type { Color, Fog, Material, Mesh, MeshBasicMaterial, MeshPhysicalMaterial, MeshStandardMaterial, Object3D, Scene, ShaderMaterial, Texture, WebGLRenderer } from "three";
 
 /** Opacity with the transparency and depth-write flags that should follow it. */
 export function setOpacity(m: Material, opacity: number, depthAbove = 0.5) {
@@ -73,4 +73,17 @@ export function setEnvironment(scene: Scene, environment: Texture | null, intens
 /** Material colour (frame-loop state colours). */
 export function setColor(m: { color: Color }, c: Color) {
   if (!m.color.equals(c)) m.color.copy(c);
+}
+
+/** Swaps a material's colour map (and, for a lit face, its emissive map): bay indicators change face with their state. */
+export function setMap(m: MeshStandardMaterial | MeshBasicMaterial, map: Texture | null, emissive = false) {
+  if (m.map === map) return;
+  m.map = map;
+  if (emissive && "emissiveMap" in m) m.emissiveMap = map;
+  m.needsUpdate = true;
+}
+
+/** Rotation of an object about one axis (frame-loop animation of fans and barrier booms). */
+export function setRotation(o: Object3D | null | undefined, axis: "x" | "y" | "z", value: number) {
+  if (o) o.rotation[axis] = value;
 }

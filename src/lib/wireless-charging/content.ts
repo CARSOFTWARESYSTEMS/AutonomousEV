@@ -17,6 +17,7 @@ export const PRODUCT = {
 } as const;
 
 export const ENVIRONMENTS = [
+  { id: "parking", number: "01", name: "Smart Parking & Wireless EV Charging", short: "Smart Parking", text: "An intelligent parking shelter: vehicle detection and identification, automated entry and exit, slot allocation, occupancy sensing, environmental safety, solar and storage, billing — and compatible EVs handed over to wireless charging in their bay.", settings: ["Demonstration facility (12 bays)", "Physical POC (6 bays)", "India · USA · China configurations"] },
   { id: "station", number: "02", name: "Smart Wireless EV Charging Station", short: "Station", text: "Stationary wireless charging while the vehicle is parked: home, apartment, office, commercial and public parking, bus terminals, fleet depots and opportunity charging.", settings: ["Residential", "Apartment parking", "Office parking", "Commercial parking", "Public parking", "Electric bus terminal", "Fleet depot", "Opportunity charging"] },
   { id: "dynamic", number: "03", name: "Dynamic Wireless EV Charging", short: "Dynamic", text: "Charging while driving over an electrified road: segmented transmitter pads, moving receivers, position-dependent coupling, intelligent coil activation and the vehicle's energy balance.", settings: ["Electrified highway", "Urban street", "Bus corridor"] },
   { id: "autonomous", number: "04", name: "Autonomous Wireless EV Charging", short: "Autonomous", text: "Self-operating vehicles that find a compatible station, reserve it, park precisely over the pad, authenticate, charge and return to their mission — in simulation.", settings: ["Precision parking", "Station selection", "Fleet coordination"] },
@@ -26,12 +27,11 @@ export const ENVIRONMENTS = [
 export type EnvironmentId = (typeof ENVIRONMENTS)[number]["id"];
 
 /**
- * Research environments specified but not yet simulated. Shown as planned,
- * never as working experiments (docs/wireless-ev-charging-digital-twin/SMART_PARKING_REQUIREMENTS.md).
+ * Research environments specified but not yet simulated, shown as planned and
+ * never as working. Empty since environment 01 (Smart Parking) was
+ * implemented and tested in Phase 4.
  */
-export const PLANNED_ENVIRONMENTS = [
-  { id: "parking", number: "01", name: "IoT & AI-Based Smart Parking Shelter", short: "Smart Parking", text: "Vehicle identification, entry and exit, slot allocation, environmental monitoring, reservation and billing, with charging-capable bays handing over to the wireless charging station.", status: "Specified · planned for Phase 4" },
-] as const;
+export const PLANNED_ENVIRONMENTS: readonly { id: "parking"; number: string; name: string; short: string; text: string; status: string }[] = [];
 
 /**
  * Proposed environments beyond the five: shown in the rail with what they
@@ -112,6 +112,9 @@ export const VIEW_MODES = [
   { id: "iot", label: "IoT Communication", group: "Science" },
   { id: "segments", label: "Segment control", group: "Science" },
   { id: "coupling", label: "Coupling profile", group: "Science" },
+  { id: "shelter", label: "Shelter engineering", group: "Assembly" },
+  { id: "occupancy", label: "Occupancy", group: "Science" },
+  { id: "environment", label: "Environment", group: "Science" },
   { id: "roadside", label: "Roadside camera", group: "Camera" },
   { id: "top", label: "Top-down", group: "Camera" },
 ] as const;
@@ -286,6 +289,25 @@ export const LESSONS: readonly Lesson[] = [
     },
     equations: ["battery-ecm", "charging-time"],
     checks: ["B03", "B05", "A11"],
+  },
+  {
+    id: "smart-parking",
+    domain: "Smart parking systems",
+    title: "Queues, sensors and allocation in an intelligent car park",
+    topics: ["Poisson arrivals", "Erlang B and M/M/c/K queues", "Little's law", "Bayesian sensor fusion", "Debounce and hysteresis", "Constrained optimisation", "Lumped thermal models", "Photovoltaic power", "Integer billing arithmetic"],
+    stages: {
+      Wonder: "A car park with twelve bays and a queue of four: how often is a driver turned away, and how long do the others wait?",
+      Discover: "Arrivals and stays are random; a bay is a server. Sensors disagree sometimes; a probability is more honest than a yes or no.",
+      Play: "Change the arrival rate and the stay in the Erlang B explorer and watch blocking rise steeply as the offered load approaches the number of bays.",
+      Understand: "Blocking B(c, a) depends only on the offered load a = λ/μ and the bays c; three independent detectors combine by adding their log-likelihood ratios.",
+      Derive: "From the birth–death balance pₙ λ = pₙ₊₁ (n+1) μ, pₙ ∝ aⁿ/n!; normalising over 0…c gives Erlang B.",
+      Calculate: "The M/M/c/K queue of the facility, its waits by Little's law, and the posterior of a bay from three sensor states.",
+      Experiment: "In the Smart Parking twin, raise the arrival rate (Engineer mode) and compare the discrete-event simulation with the analytical queue (Research mode).",
+      Validate: "Checks SP-A01 to SP-A03: the recurrence against the closed form, Little's law, and the simulation against the analysis.",
+      Research: "Real arrivals are not Poisson and stays are skewed: which conclusions survive, and which need measured data?",
+    },
+    equations: ["erlang-b", "bayes-fusion", "pv-power", "shelter-thermal"],
+    checks: ["SP-A01", "SP-A03", "SP-A08", "SP-A05", "SP-A04"],
   },
 ];
 

@@ -38,6 +38,8 @@ export const view = {
   coupling: 0,
   /** 0–1: inspection backdrop — the city, sky and canopy fade into a dark studio around the subject. */
   studio: 0,
+  /** 0–1: Smart Parking shelter engineering view (roof opened, dimensions shown). */
+  shelter: 0,
   /** 0–1: a vehicle stands over the ground pad (smoothed from the simulation). */
   occupied: 0,
 };
@@ -47,6 +49,7 @@ export type ViewChannels = Omit<typeof view, "occupied">;
 export function targets(mode: ViewModeId, env = "station"): ViewChannels {
   const station = env === "station";
   const road = env === "dynamic";
+  const parking = env === "parking";
   return {
     exploded: station && mode === "exploded" ? 1 : 0,
     assembly: mode === "assembly" ? 1 : 0,
@@ -59,7 +62,7 @@ export function targets(mode: ViewModeId, env = "station"): ViewChannels {
     underbody: mode === "underbody" ? 1 : 0,
     battery: mode === "battery" ? 1 : 0,
     // Ghosts everything on the vehicle except the receiver (from above on the road, so the pads under it show).
-    receiver: (station && (mode === "receiver" || mode === "exploded" || mode === "engineering" || mode === "field" || mode === "cutaway")) || (road && (mode === "segments" || mode === "field")) ? 1 : 0,
+    receiver: (station && (mode === "receiver" || mode === "exploded" || mode === "engineering" || mode === "field" || mode === "cutaway")) || (road && (mode === "segments" || mode === "field")) || (parking && mode === "xray") ? 1 : 0,
     power: mode === "power" ? 1 : 0,
     field: station && mode === "field" ? 1 : 0,
     roadField: road && mode === "field" ? 1 : 0,
@@ -69,6 +72,7 @@ export function targets(mode: ViewModeId, env = "station"): ViewChannels {
     alignment: mode === "engineering" ? 1 : 0,
     segments: road && (mode === "segments" || mode === "coupling" || mode === "cutaway" || mode === "receiver" || mode === "field") ? 1 : 0,
     coupling: road && mode === "coupling" ? 1 : 0,
+    shelter: parking && mode === "shelter" ? 1 : 0,
     studio: station && ["receiver", "battery", "exploded", "assembly", "chassis", "underbody", "cutaway", "power", "field", "xray", "engineering", "thermal"].includes(mode) ? 1 : 0,
   };
 }

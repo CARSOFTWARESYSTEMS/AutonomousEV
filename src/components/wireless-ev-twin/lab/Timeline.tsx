@@ -5,7 +5,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Camera, Captions, ChevronLeft, ChevronRight, Layers, MessageSquareText, Pause, Play, RotateCcw, StepForward, Volume2, VolumeX } from "lucide-react";
 import { VIEW_MODES, type ViewModeId } from "@/lib/wireless-charging/content";
-import { resetEnvironment, runtime, singleStep, useSampled } from "../state/runtime";
+import { facilityIfBuilt, resetEnvironment, runtime, singleStep, useSampled } from "../state/runtime";
+import { siteClock } from "./parkingMetrics";
 import { SPEEDS, useTwin } from "../state/store";
 import { enterStage, guideClock, leaveTour, nextStage, prevStage, resumeTour } from "../story/guide";
 import { chapterOf, DEMO_CHAPTERS, stagesFor } from "../story/stages";
@@ -14,6 +15,7 @@ import lab from "./lab.module.css";
 
 /** Visualisation modes each environment offers. */
 export const VIEWS_BY_ENV: Record<string, ViewModeId[]> = {
+  parking: ["cinematic", "shelter", "occupancy", "energy", "environment", "iot", "xray", "top"],
   station: ["cinematic", "xray", "chassis", "underbody", "battery", "receiver", "assembly", "power", "cutaway", "exploded", "engineering", "field", "energy", "thermal", "iot"],
   dynamic: ["cinematic", "energy", "xray", "chassis", "cutaway", "receiver", "field", "segments", "coupling", "roadside", "top"],
   autonomous: ["cinematic", "xray", "chassis"],
@@ -83,12 +85,14 @@ function ViewMenu() {
 function Clock() {
   const env = useTwin((s) => s.environment);
   const speed = useTwin((s) => s.speed);
-  const read = useCallback(() => (env === "station" ? runtime.station.state.t : env === "dynamic" ? runtime.road.state.t : env === "autonomous" ? runtime.parking.state.t : useTwin.getState().gridHour * 3600), [env]);
+  const parking = env === "parking" || (env === "station" && useTwin.getState().handover !== null);
+  const read = useCallback(() => (parking ? facilityIfBuilt()?.t ?? 0 : env === "station" ? runtime.station.state.t : env === "dynamic" ? runtime.road.state.t : env === "autonomous" ? runtime.parking.state.t : useTwin.getState().gridHour * 3600), [env, parking]);
   const t = useSampled(read, 5);
-  const text = env === "infrastructure" ? `${String(Math.floor(t / 3600)).padStart(2, "0")}:${String(Math.floor((t % 3600) / 60)).padStart(2, "0")}` : t >= 3600 ? `${Math.floor(t / 3600)} h ${String(Math.floor((t % 3600) / 60)).padStart(2, "0")} min` : `${fmt(t, 1)} s`;
+  const sim = facilityIfBuilt();
+  const text = parking && sim ? siteClock(sim, t, true) : env === "infrastructure" ? `${String(Math.floor(t / 3600)).padStart(2, "0")}:${String(Math.floor((t % 3600) / 60)).padStart(2, "0")}` : t >= 3600 ? `${Math.floor(t / 3600)} h ${String(Math.floor((t % 3600) / 60)).padStart(2, "0")} min` : `${fmt(t, 1)} s`;
   return (
     <span className={lab.clock}>
-      <span className={lab.clockLabel}>Simulation time</span> {text}
+      <span className={lab.clockLabel}>{parking ? "Site time" : "Simulation time"}</span> {text}
       {speed !== 1 && <span className={lab.accelerated}>{speed > 1 ? `Accelerated ×${speed}` : `Slow ×${speed}`}</span>}
     </span>
   );

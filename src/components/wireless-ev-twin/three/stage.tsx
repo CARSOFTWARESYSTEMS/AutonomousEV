@@ -63,6 +63,7 @@ const hemiGround = new Color();
 
 /** Shadow-camera centre for each environment. */
 const FOCUS: Record<string, [number, number, number]> = {
+  parking: [-2, 0, 0],
   station: [0.3, 0, -1.2],
   dynamic: [2, 0, ROAD_Z],
   autonomous: [-5, 0, -3],
@@ -107,7 +108,7 @@ export function Lighting({ shadows, mapSize }: { shadows: boolean; mapSize: numb
     const f = FOCUS[env] ?? FOCUS.station;
     const s = sun.current;
     if (s) {
-      placeSun(s, f, env === "infrastructure");
+      placeSun(s, f, env === "infrastructure" ? 60 : env === "parking" ? 30 : 14);
       s.intensity = 3.1 * (1 - 0.75 * st);
     }
     if (hemi.current) {
@@ -158,13 +159,12 @@ export function Lighting({ shadows, mapSize }: { shadows: boolean; mapSize: numb
 }
 
 /** The sun's direction is fixed (it matches the sky); its shadow box follows the environment in view. */
-function placeSun(k: DirectionalLight, f: [number, number, number], wide: boolean) {
+function placeSun(k: DirectionalLight, f: [number, number, number], half: number) {
   // The sun's shadow camera also sees the trees' shadow stand-ins (which the view camera does not).
   if (!k.shadow.camera.layers.isEnabled(SHADOW_PROXY_LAYER)) k.shadow.camera.layers.enable(SHADOW_PROXY_LAYER);
   k.position.set(f[0] + SUN_DIR.x * 40, f[1] + SUN_DIR.y * 40, f[2] + SUN_DIR.z * 40);
   k.target.position.set(f[0], f[1], f[2]);
   k.target.updateMatrixWorld();
-  const half = wide ? 60 : 14;
   const cam = k.shadow.camera;
   if (cam.right !== half) {
     cam.left = -half;

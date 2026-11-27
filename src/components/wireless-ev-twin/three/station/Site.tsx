@@ -176,8 +176,8 @@ export function Site() {
     const st = runtime.station.state;
     const s = useTwin.getState();
     const station = s.environment === "station";
-    // On the electrified road the car is elsewhere: the site is not part of that scene.
-    setVisible(site.current, s.environment !== "dynamic");
+    // On the electrified road the car is elsewhere, and Smart Parking has its own facility: the site is not part of either scene.
+    setVisible(site.current, s.environment !== "dynamic" && s.environment !== "parking");
     // Inspection views set the neighbouring bays aside; the exterior, energy and IoT views keep them.
     setVisible(neighbours.current, !station || s.view === "cinematic" || s.view === "energy" || s.view === "iot");
     // The canopy fades whenever it stands between the camera and what it is looking at.

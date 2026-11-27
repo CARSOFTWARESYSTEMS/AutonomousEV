@@ -7,6 +7,7 @@ import type { EnvironmentId, ModeId, SectionId, ViewModeId } from "@/lib/wireles
 import { DEFAULT_ROAD_INPUTS, type RoadInputs } from "@/lib/wireless-charging/dynamic";
 import { DEFAULT_GRID_INPUTS, type GridInputs } from "@/lib/wireless-charging/infrastructure";
 import { DEFAULT_STATION_INPUTS, NO_FAULTS, type StationFaults, type StationInputs } from "@/lib/wireless-charging/station";
+import { DEFAULT_FACILITY, type FacilityFaults, type FacilityInputs, NO_FACILITY_FAULTS } from "@/lib/wireless-charging/smart-parking/facility";
 import type { ShotId } from "../three/camera";
 import { viewFor } from "../three/componentViews";
 
@@ -16,7 +17,18 @@ export const SPEEDS = [0.5, 1, 2, 5, 20, 60, 300] as const;
 export type QualityChoice = "auto" | "high" | "balanced" | "performance";
 export type PlaylistId = EnvironmentId | "demo";
 /** The right-hand panel: the environment's inputs (Engineer, Research), a component, the current stage's science, or its data panels. */
-export type PanelId = "none" | "inputs" | "research" | "component" | "science" | "data";
+export type PanelId = "none" | "inputs" | "research" | "component" | "science" | "data" | "driver" | "operator";
+
+/** A Smart Parking charging session shown in the Station environment (02). */
+export interface Handover {
+  bayId: string;
+  vehicleId: string;
+  sessionId: string;
+  chargingId: string;
+  paint: string;
+  /** Parking stage to return to. */
+  returnIndex: number;
+}
 
 export interface GuideState {
   /** True while the current stage drives the view and the camera. */
@@ -69,6 +81,12 @@ export interface TwinState {
   road: RoadInputs;
   parking: ParkingInputs;
   grid: GridInputs;
+  /** Smart Parking (environment 01): facility inputs and injected faults. */
+  facility: FacilityInputs;
+  facilityFaults: FacilityFaults;
+  handover: Handover | null;
+  /** Role used for operator actions in the Smart Parking panels. */
+  parkingRole: "viewer" | "operator" | "supervisor";
   /** Hour of the district day being shown, 0–24. */
   gridHour: number;
   /** Field-line phase ωt, rad (Research mode). */
@@ -84,6 +102,8 @@ export interface TwinState {
   setRoad: (patch: Partial<RoadInputs>) => void;
   setParking: (patch: Partial<ParkingInputs>) => void;
   setGrid: (patch: Partial<GridInputs>) => void;
+  setFacility: (patch: Partial<FacilityInputs>) => void;
+  setFacilityFaults: (patch: Partial<FacilityFaults>) => void;
   setCamera: (patch: Partial<TwinState["camera"]>) => void;
   setGuide: (patch: Partial<GuideState>) => void;
   select: (id: string | null) => void;
@@ -136,6 +156,10 @@ export const useTwin = create<TwinState>((set) => ({
   road: DEFAULT_ROAD_INPUTS,
   parking: DEFAULT_PARKING_INPUTS,
   grid: DEFAULT_GRID_INPUTS,
+  facility: DEFAULT_FACILITY,
+  facilityFaults: NO_FACILITY_FAULTS,
+  handover: null,
+  parkingRole: "operator",
   gridHour: 12,
   fieldPhase: 0,
   preview: null,
@@ -147,6 +171,8 @@ export const useTwin = create<TwinState>((set) => ({
   setRoad: (patch) => set((s) => ({ ...interacted(s), road: { ...s.road, ...patch } })),
   setParking: (patch) => set((s) => ({ ...interacted(s), parking: { ...s.parking, ...patch } })),
   setGrid: (patch) => set((s) => ({ ...interacted(s), grid: { ...s.grid, ...patch } })),
+  setFacility: (patch) => set((s) => ({ ...interacted(s), facility: { ...s.facility, ...patch } })),
+  setFacilityFaults: (patch) => set((s) => ({ ...interacted(s), facilityFaults: { ...s.facilityFaults, ...patch } })),
   setCamera: (patch) => set((s) => ({ ...(patch.mode === "free" ? interacted(s) : {}), camera: { ...s.camera, ...patch } })),
   setGuide: (patch) => set((s) => ({ guide: { ...s.guide, ...patch } })),
   // Selecting a component pauses the tour and opens the inspector; clearing it returns to the system.

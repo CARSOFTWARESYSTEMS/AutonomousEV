@@ -10,6 +10,7 @@ import { roadFieldInfo } from "../three/road/fieldInfo";
 import { runtime } from "../state/runtime";
 import { useTwin } from "../state/store";
 import { fmt } from "../ui/controls";
+import { PARKING_METRICS } from "./parkingMetrics";
 
 export type MetricKind = "INPUT" | "CALCULATED" | "SIMULATED";
 
@@ -170,6 +171,7 @@ export const METRICS = {
       return { value: `${String(Math.floor(h)).padStart(2, "0")}:${String(Math.floor((h % 1) * 60)).padStart(2, "0")}` };
     },
   },
+  ...PARKING_METRICS,
 } satisfies Record<string, Metric>;
 
 export type MetricId = keyof typeof METRICS;

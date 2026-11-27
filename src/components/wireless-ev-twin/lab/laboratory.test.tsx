@@ -16,6 +16,12 @@ import { NOMINAL_GAP, RX_MOUNT_Y } from "../three/vehicle/Vehicle";
 import { WINDING_OFFSET } from "../three/station/Pad";
 import TwinApp from "../TwinApp";
 import { METRICS, type MetricId } from "./metrics";
+import { PARKING_STAGES } from "../story/parkingStages";
+import { launchLink, parseLaunch } from "../state/launch";
+import { beginHandover, endHandover, facility, handoverActive } from "../state/runtime";
+import { focus } from "../story/parkingControl";
+import { runFacility } from "@/lib/wireless-charging/smart-parking/facility";
+import { reachedState } from "@/lib/wireless-charging/smart-parking/lifecycle";
 
 const fresh = () => {
   resetEnvironment("station");
@@ -121,7 +127,7 @@ describe("views and camera", () => {
   });
 
   it("frame every view with a finite shot", () => {
-    for (const env of ["station", "dynamic", "autonomous", "infrastructure"] as const)
+    for (const env of ["parking", "station", "dynamic", "autonomous", "infrastructure"] as const)
       for (const v of VIEW_MODES) {
         const s = shotFor(viewShot(env, v.id) as ShotId);
         expect([s.azimuth, s.polar, s.distance].every(Number.isFinite)).toBe(true);
@@ -205,5 +211,63 @@ describe("laboratory shell", () => {
       expect(typeof r.value, id).toBe("string");
       expect(r.value.length, id).toBeGreaterThan(0);
     }
+  });
+});
+
+describe("Smart Parking environment (01)", () => {
+  it("defines eighteen guided stages, each waiting on a simulation event or a minimum time", () => {
+    expect(PARKING_STAGES).toHaveLength(18);
+    expect(new Set(PARKING_STAGES.map((s) => s.id)).size).toBe(18);
+    for (const s of PARKING_STAGES) expect(s.env).toBe("parking");
+    expect(PLAYLISTS.parking).toBe(PARKING_STAGES);
+  });
+
+  it("brings a compatible EV through recognition, allocation and the barrier into a wireless bay, then to the Station's charging", () => {
+    resetEnvironment("parking");
+    const sim = facility();
+    sim.stationStep = 0.25;
+    enterStage("parking", PARKING_STAGES.findIndex((x) => x.id === "sp-arrival"));
+    const f = () => focus()!;
+    for (let i = 0; i < 60 * 10 && !(f() && reachedState(f().lc, "charging")); i++) runFacility(sim, 0.1);
+    // The tour's EV has a covered plate: the read is uncertain, never trusted, and the booking's QR code identifies it.
+    expect(reachedState(f().lc, "id-uncertain")).toBe(true);
+    expect(f().credential).toBe("qr");
+    expect(f().reservationId).not.toBeNull();
+    expect(reachedState(f().lc, "identified")).toBe(true);
+    expect(reachedState(f().lc, "barrier-opening")).toBe(true);
+    const bay = sim.bays.find((b) => b.bay.id === f().bayId)!;
+    expect(bay.bay.type).toBe("wireless");
+    expect(f().lc.state).toBe("charging");
+    leaveTour();
+  });
+
+  it("shows a bay's live charging session at the Station and gives the Station its own simulation back on return", () => {
+    resetEnvironment("parking");
+    const sim = facility();
+    sim.stationStep = 0.25;
+    const own = runtime.station;
+    const charging = [...sim.chargers.values()].find((c) => c.session);
+    expect(charging).toBeDefined();
+    expect(beginHandover(charging!.bayId, 11)).toBe(true);
+    expect(handoverActive()).toBe(true);
+    expect(runtime.station).toBe(charging!.sim);
+    expect(useTwin.getState().handover?.bayId).toBe(charging!.bayId);
+    expect(useTwin.getState().station.capacityKWh).toBe(charging!.sim.inputs.capacityKWh);
+    endHandover();
+    expect(runtime.station).toBe(own);
+    expect(useTwin.getState().handover).toBeNull();
+    // Parking occupancy and sessions are untouched by the round trip.
+    expect(charging!.session).not.toBeNull();
+  });
+});
+
+describe("shareable Smart Parking link", () => {
+  it("opens environment 01 from ?env=parking, with the presentation options, and builds the same link", () => {
+    const o = parseLaunch("?fs=0&sound=1&narration=0&captions=0&demo=0&env=parking");
+    expect(o).toEqual({ fullscreen: false, sound: true, narration: false, captions: false, demo: false, env: "parking", quality: null });
+    const link = launchLink("https://example.org", "/internships/wireless-ev-charging-digital-twin", o!);
+    expect(link).toContain("env=parking");
+    expect(link).toContain("#research-laboratory");
+    expect(parseLaunch(new URL(link).search)?.env).toBe("parking");
   });
 });

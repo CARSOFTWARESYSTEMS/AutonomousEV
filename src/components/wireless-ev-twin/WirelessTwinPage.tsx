@@ -68,7 +68,7 @@ export default function WirelessTwinPage() {
               <p className={styles.lead}>{PRODUCT.question}</p>
               <p className={styles.prose}>{PRODUCT.description}</p>
               <p className={styles.prose}>
-                Every behaviour shown in the twin traces to a stated physical principle, equation, declared approximation or numerical model. One engine — magnetic coupling, resonant circuits, power converters, battery, thermal, vehicle motion, communication and energy dispatch — drives all four environments, every graph and every number.
+                Every behaviour shown in the twin traces to a stated physical principle, equation, declared approximation or numerical model. One engine — magnetic coupling, resonant circuits, power converters, battery, thermal, vehicle motion, communication and energy dispatch — drives all five environments, every graph and every number.
               </p>
             </div>
           </section>

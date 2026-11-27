@@ -19,6 +19,7 @@ import { Lighting } from "./stage";
 import { Site } from "./station/Site";
 import { easeView } from "./viewState";
 import { City, Ground, HeroVehicle, Highway, ParkingPath, Sky, Traffic } from "./world";
+import { ParkingFacility } from "./smart-parking/Facility";
 
 export interface RenderSettings {
   /** Largest pixel ratio to render at. */
@@ -146,6 +147,7 @@ function TwinScene({ settings, label, active }: { settings: RenderSettings; labe
         <Ground />
         <City />
         <Site />
+        <ParkingFacility />
         <HeroVehicle />
         <ParkingPath />
         <Highway />

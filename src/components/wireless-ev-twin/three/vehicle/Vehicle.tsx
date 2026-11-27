@@ -83,6 +83,8 @@ interface VehicleProps {
   bodyId?: string;
   /** Hide the wheels (engineering views where they would block the subject). */
   hideWheels?: () => boolean;
+  /** Uniform scale for a vehicle class (Smart Parking); 1 is the reference sedan. */
+  scale?: number;
 }
 
 const WHEELS = [
@@ -94,7 +96,7 @@ const WHEELS = [
 
 const damp = (a: number, b: number, rate: number, dt: number) => a + (b - a) * (1 - Math.exp(-rate * dt));
 
-export function Vehicle({ pose, paint = "#e4e7ea", detailed = false, rxTurns = DEFAULT_RX_PAD.turns, rxGlow, rxHeat, batteryHeat, bodyId, hideWheels }: VehicleProps) {
+export function Vehicle({ pose, paint = "#e4e7ea", detailed = false, rxTurns = DEFAULT_RX_PAD.turns, rxGlow, rxHeat, batteryHeat, bodyId, hideWheels, scale = 1 }: VehicleProps) {
   const a = assets();
   const bm = useMemo(() => {
     const m = bodyMaterials(paint);
@@ -163,7 +165,7 @@ export function Vehicle({ pose, paint = "#e4e7ea", detailed = false, rxTurns = D
 
   const body = a.body;
   return (
-    <group ref={root}>
+    <group ref={root} scale={scale}>
       {/* Soft contact shadow, on the ground under the body. */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.006, 0]} material={shadowMat} renderOrder={1}>
         <planeGeometry args={[5.3, 2.4]} />
