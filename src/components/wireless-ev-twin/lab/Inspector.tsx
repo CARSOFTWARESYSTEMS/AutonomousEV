@@ -322,7 +322,13 @@ export default function InspectorPanel() {
     <aside className={lab.inspector} aria-label="Inspector">
       <header className={lab.inspectorHead}>
         <div className={lab.tabs} role="tablist" aria-label="Inspector">
-          {TABS.filter((t) => (!t.deep || deep) && (!t.research || mode === "research") && (!t.parking || env === "parking")).map((t) => (
+          {TABS.filter((t) => {
+            // The driver and operator sheets are opened from the stage card; their tabs show (with Science and Data) while one of them is open, so the row never overflows.
+            const sheet = env === "parking" && (panel === "driver" || panel === "operator");
+            if (t.parking) return sheet;
+            if (sheet) return t.id === "science" || t.id === "data";
+            return (!t.deep || deep) && (!t.research || mode === "research");
+          }).map((t) => (
             <button key={t.id} type="button" role="tab" aria-selected={panel === t.id} disabled={t.id === "component" && !selected} onClick={() => useTwin.setState({ panel: t.id })}>
               {t.label}
             </button>

@@ -1,6 +1,6 @@
 "use client";
 import { ArrowRight } from "lucide-react";
-import { ALL_COMPONENTS, CHAIN_COMPONENTS, COMPONENTS } from "@/lib/wireless-charging/components";
+import { ALL_COMPONENTS, CHAIN_COMPONENTS } from "@/lib/wireless-charging/components";
 import { ENVIRONMENTS, MODES, PRODUCT } from "@/lib/wireless-charging/content";
 import { FIDELITY, type Fidelity, MODELS } from "@/lib/wireless-charging/registry";
 import { DATA_MODES, type DataMode } from "@/lib/wireless-charging/sensors";

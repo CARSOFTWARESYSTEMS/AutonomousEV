@@ -1457,11 +1457,11 @@ export function ParkingLegend() {
   if (view === "energy" && d.e)
     return (
       <div className={`${ui.legend} ${lab.legend}`}>
-        <p className={ui.legendTitle}>Energy flows · from the dispatch model</p>
+        <p className={ui.legendTitle}>Energy flows · dispatch model</p>
         <ul className={ui.flowKey}>
           <li><i style={{ background: "#f5b041" }} />{`Solar ${kw(d.e.pv)} kW`}</li>
           <li><i style={{ background: "#c9d4e0" }} />{`Grid ${kw(d.e.grid)} kW`}</li>
-          <li><i style={{ background: "#39c5cf" }} />{`Storage ${Math.abs(d.e.bess) < 50 ? "idle" : d.e.bess > 0 ? "out" : "in"} ${kw(Math.abs(d.e.bess))} kW`}</li>
+          <li><i style={{ background: "#39c5cf" }} />{Math.abs(d.e.bess) < 50 ? "Storage idle" : `Storage ${d.e.bess > 0 ? "out" : "in"} ${kw(Math.abs(d.e.bess))} kW`}</li>
           <li><i style={{ background: "#5ad1ff" }} />{`Chargers ${kw(d.e.chg)} kW`}</li>
           <li><i style={{ background: "#e9ecef" }} />{`Other loads ${kw(d.e.loads, 2)} kW`}</li>
         </ul>
@@ -1519,7 +1519,8 @@ export function ParkingSceneLabels() {
     };
   }, []);
   const d = useSampled(read, 3);
-  if (!d) return null;
+  // On a phone the stage card covers much of the scene: the legend carries these values instead of labels.
+  if (!d || (typeof window !== "undefined" && window.innerWidth < 720)) return null;
   if (view === "occupancy" || view === "top")
     return (
       <>

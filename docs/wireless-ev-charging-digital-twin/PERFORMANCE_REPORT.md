@@ -102,3 +102,55 @@ The first seconds after the laboratory loads read 56–59 fps while shaders comp
 | Flicker | Near/far planes follow the shot; adaptive resolution only steps down and locks after two flip-flops |
 
 Quality tiers are unchanged in meaning: they change pixel ratio, shadows and post-processing only, never a computed value (tested).
+
+## Smart Parking (Environment 01, 27 Nov 2026)
+
+Production build (`next build` + `next start`), Apple M1, Chromium through Metal, 1440 × 900, Google Analytics blocked, `npm run test:wireless-ev-twin:e2e`. The suite has 18 checks, 6 of them for Smart Parking; all pass.
+
+| Measure | Result |
+|---|---|
+| Frame rate, Smart Parking (12 bays, tour vehicle and background traffic) | **60 fps** |
+| Frame rate, 48-bay facility restarted in the same context (the interface maximum) | **50–58 fps** on Auto, High and Balanced; **60 fps** on Performance. See the note below |
+| Frame rate, Station, road, field, full screen and Performance tier (regression) | 60 fps each |
+| WebGL contexts | 1 (environment 01 shares the canvas) |
+| JS heap over the whole suite, including the environment switches and the 48-bay restart | 87 → 87 MB and 65 → 65 MB in two runs (no growth) |
+| Scene ready after navigation | 1.45–1.46 s |
+| `load` event | 0.18–0.32 s |
+| 3D share of the viewport | 77 % (83 % in full screen), unchanged |
+| Unattended 18-stage tour (development server, 1440 × 900) | Completed in ≈ 199 s with 0 console errors |
+
+**The 48-bay facility does not hold 60 fps on the M1 at the default quality.** One suite run read 60 fps. The final run, after the stage 11, 12 and 17 camera change, read 54. A dedicated re-measurement on the production build read:
+
+- 12 bays: 60 / 60 fps;
+- 48 bays in Engineer mode: 58 / 55 / 56 fps;
+- 48 bays in Explore: 52 / 54 fps;
+- 48 bays, High tier: 50 / 51 fps;
+- 48 bays, Balanced tier: 53 / 52 fps;
+- 48 bays, Performance tier: 60 / 60 fps.
+
+The load is on the GPU: the tier changes only pixels, shadows and post-processing. The likely cost is the 22 pooled vehicle models and the four-times-longer canopy in one view. It has not been profiled. The default 12-bay facility holds 60 fps.
+
+The Smart Parking scene is part of the lazily loaded 3D bundle, so it does not enter the route's first load. Two chunks that contain parking scene code measured 59 KB and 66 KB gzipped. They also contain shared twin code, so the parking share alone was not isolated, and the route's initial JavaScript was not re-measured in this phase.
+
+### Engine cost (headless, Node, same machine)
+
+| Facility | Live vehicles | Chargers | Simulation cost per simulated second | Per 0.1 s facility step |
+|---|---|---|---|---|
+| 12 bays | 6 | 4 | 0.34 ms | 34 µs |
+| 50 bays | 20 | 17 | 0.64 ms | 64 µs |
+| 100 bays | 44 | 33 | 1.04 ms | 104 µs |
+
+Each charger's Station ran at its 0.25 s step, the step used above 5× speed. At 60× the 12-bay facility therefore costs about 20 ms of CPU per second of wall time, and the runtime caps facility stepping at 12 ms per frame.
+
+### Cost controls
+
+| Addition | Control |
+|---|---|
+| Vehicles | A pool of 22 vehicles drawn with the shared vehicle model; the tour's focus vehicle always takes slot 0, the detailed model with its receiver pad. Vehicles beyond the pool are drawn as instanced low-detail bodies (one draw call, up to 600). The level of detail never changes a result |
+| Shelter, bays, markings, landscape | Merged geometries per material; canvas textures drawn once at start-up from deterministic noise |
+| Labels | DOM labels projected from anchors and sampled a few times a second; hidden below 720 px, where the bottom-sheet inspector carries the same information |
+| Chargers | Idle chargers are not stepped. The site power allowance is quantised to 500 W, so the Station does not re-solve its operating point every step |
+| Overlays | Routes, occupancy plates, IoT and energy flows are drawn only in their views |
+| Clock | Fixed 0.1 s facility step with a 12 ms per-frame budget. If stepping falls more than 2 s behind, the backlog is dropped, so simulated time runs slower but no step is skipped or lengthened |
+
+Not measured for Smart Parking: WebKit and Firefox, phones beyond the 390 px layout audit, and lower-powered GPUs.

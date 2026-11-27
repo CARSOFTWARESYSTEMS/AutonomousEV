@@ -242,9 +242,9 @@ export function shotFor(id: ShotId): Shot {
     // ── Smart Parking: the facility is centred on the origin; world z = −(facility y). ──
     case "park-establishing":
       // Architectural: elevated from the south-east (front-lit), the south row in front, the north row and the entry beyond.
-      return { target: [-1.5, 1.4, -1.5], azimuth: 30, polar: 70, distance: 31, min: 4, max: 140, fov: 32, drift: { az: 5, period: 30 } };
+      return { target: [-1.5, 1.4, -1.5], azimuth: 30, polar: 70, distance: parkingGeom().scale * 31, min: 4, max: 140, fov: 32, drift: { az: 5, period: 30 } };
     case "park-aerial":
-      return { target: [-2, 0, -1], azimuth: 26, polar: 44, distance: 58, min: 10, max: 200, fov: 30, drift: { az: 6, period: 40 } };
+      return { target: [-2, 0, -1], azimuth: 26, polar: 44, distance: parkingGeom().scale * 58, min: 10, max: 200, fov: 30, drift: { az: 6, period: 40 } };
     case "park-approach":
       // Ahead of the vehicle on its right (the driver's side), the entry gate beyond.
       return { target: [2.2, 0.8, 0], azimuth: 68, polar: 80, distance: 11.5, follow: "park-focus", min: 2, max: 60, fov: 32 };
@@ -266,15 +266,16 @@ export function shotFor(id: ShotId): Shot {
       return { target: [x, 1.0, 0.6], azimuth: 18, polar: 78, distance: 8, min: 1.5, max: 40, fov: 32 };
     }
     case "park-top":
-      return { target: [0, 0, 0], azimuth: 0, polar: 9, distance: 44, min: 8, max: 160, fov: 32 };
+      return { target: [0, 0, 0], azimuth: 0, polar: 9, distance: parkingGeom().scale * 44, min: 8, max: 160, fov: 32 };
     case "park-tracking":
       return { target: [0.8, 0.7, 0], azimuth: -42, polar: 70, distance: 13, follow: "park-focus", min: 2, max: 60, fov: 32 };
     case "park-parking":
       return { target: [0, 0.6, 0], azimuth: -26, polar: 58, distance: 10, follow: "park-focus", min: 2, max: 60, fov: 32 };
     case "park-charging-bay": {
-      // Low from the aisle behind the parked vehicle, under its ghosted body: the receiver over the ground pad.
+      // Rear three-quarter from the aisle, raised under the canopy edge: the whole vehicle in its bay, the bay
+      // indicator and sensor above it, and (through the ghosted body in X-ray) the receiver over the ground pad.
       const south = parkingGeom().focusRow === "S";
-      return { target: [0, 0.16, south ? -0.25 : 0.25], azimuth: south ? 166 : 14, polar: 84, distance: 3.7, follow: "park-bay", min: 0.8, max: 30, polarMax: 96, fov: 36 };
+      return { target: [0, 0.45, south ? -0.55 : 0.55], azimuth: south ? 150 : 30, polar: 60, distance: 6.6, follow: "park-bay", min: 0.8, max: 30, polarMax: 96, fov: 36 };
     }
     case "park-shelter":
       // From the east end, along the north row: columns, beams, purlins, sensors and the cable tray under the opened roof.
@@ -286,7 +287,7 @@ export function shotFor(id: ShotId): Shot {
       return { target: [g.equipX, 1.1, -g.equipY], azimuth: 20, polar: 78, distance: 7.6, min: 1.5, max: 40, fov: 32 };
     }
     case "park-iot":
-      return { target: [-2, 1.6, -1], azimuth: 24, polar: 56, distance: 34, min: 4, max: 120, fov: 32 };
+      return { target: [-2, 1.6, -1], azimuth: 24, polar: 56, distance: parkingGeom().scale * 34, min: 4, max: 120, fov: 32 };
     case "park-solar":
       return { target: [0, 3.4, -5.6], azimuth: 22, polar: 46, distance: 26, min: 4, max: 90, fov: 30 };
     case "park-energy": {
@@ -340,7 +341,9 @@ function parkingGeom() {
   const l = sim?.layout;
   const focusSession = sim?.focus ? [...sim.sessions.values()].find((x) => x.vehicleId === sim.focus) : undefined;
   const focusRow = focusSession?.bayId ? sim?.bays.find((b) => b.bay.id === focusSession.bayId)?.bay.row : undefined;
-  return { entry: l?.entry.barrierX ?? -20.3, equipX: l ? l.aisle.xEast - 2.2 : 10.5, equipY: l ? l.aisle.half + 3.2 : 6.2, focusRow };
+  // Wide shots grow with the facility (12 bays is the reference length).
+  const scale = l ? Math.max(1, (l.perSide * l.inputs.bayWidth) / 16.2) : 1;
+  return { entry: l?.entry.barrierX ?? -20.3, equipX: l ? l.aisle.xEast - 2.2 : 10.5, equipY: l ? l.aisle.half + 3.2 : 6.2, focusRow, scale };
 }
 
 /** Centre of the focus vehicle (or of its bay), world frame. */

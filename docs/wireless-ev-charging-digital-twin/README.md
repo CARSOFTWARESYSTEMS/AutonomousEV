@@ -3,7 +3,7 @@
 **Park. Drive. Charge. Automatically.** — Designed and developed by and for the EV.ENGINEER™ team.
 
 Route: `/internships/wireless-ev-charging-digital-twin` (Proof of Concept card on `/internships`).
-Status: engine and laboratories delivered 25 Nov 2026 (`a1e4679`); premium redesign Phases 0–3 committed as `8b08b03`; **Phase 3.5 (cinematic realism and scientific experience refinement) delivered 26 Nov 2026, uncommitted, awaiting the EV.ENGINEER™ team's visual acceptance** — see PHASE_3_5_ACCEPTANCE_REPORT.md. Simulation only; nothing is experimentally validated.
+Status: engine and laboratories delivered 25 Nov 2026 (`a1e4679`); premium redesign Phases 0–3 committed as `8b08b03`; **Phase 3.5 (cinematic realism and scientific experience refinement) delivered 26 Nov 2026, uncommitted, awaiting the EV.ENGINEER™ team's visual acceptance** — see PHASE_3_5_ACCEPTANCE_REPORT.md. **Phase 4 — Environment 01, Smart Parking & Wireless EV Charging — delivered 27 Nov 2026** (first part committed as `b2f4625`, final fixes and documents uncommitted), awaiting acceptance — see SMART_PARKING_IMPLEMENTATION_REPORT.md. Simulation only; nothing is experimentally validated.
 
 ## Documents
 
@@ -24,7 +24,21 @@ Status: engine and laboratories delivered 25 Nov 2026 (`a1e4679`); premium redes
 | [COMPONENT_INTERACTION_REGISTRY.md](COMPONENT_INTERACTION_REGISTRY.md) | How each of the 41 components is selected, framed and inspected |
 | [SCIENTIFIC_VISUALIZATION.md](SCIENTIFIC_VISUALIZATION.md) | What each overlay shows and must not be mistaken for |
 | [SCENARIO_REGISTRY.md](SCENARIO_REGISTRY.md) | Scenarios by environment with honest status |
-| [SMART_PARKING_REQUIREMENTS.md](SMART_PARKING_REQUIREMENTS.md) | Environment 01, specified and planned |
+| [SMART_PARKING_REQUIREMENTS.md](SMART_PARKING_REQUIREMENTS.md) | Environment 01: scope, requirement classes, the 38 baseline requirements, fixed decisions |
+| [SMART_PARKING_REQUIREMENTS_TRACEABILITY.md](SMART_PARKING_REQUIREMENTS_TRACEABILITY.md) | Every Smart Parking requirement to subsystem, model, 3D view, status, verification, evidence and physical status (generated) |
+| [SMART_PARKING_MODEL_REGISTRY.md](SMART_PARKING_MODEL_REGISTRY.md) | The 20 SP- models (generated) |
+| [SMART_PARKING_STATE_MACHINE.md](SMART_PARKING_STATE_MACHINE.md) | The session lifecycle: 25 normal and 22 exceptional states (generated) |
+| [SMART_PARKING_ARCHITECTURE.md](SMART_PARKING_ARCHITECTURE.md) | Engine modules, clock, data flow, motion, hand-over, deployment architecture, data model and APIs |
+| [SMART_PARKING_IOT_ARCHITECTURE.md](SMART_PARKING_IOT_ARCHITECTURE.md) | Devices, MQTT topics and schema, broker and ingestion rules, commands, link study, firmware plan, network |
+| [SMART_PARKING_AI_MODELS.md](SMART_PARKING_AI_MODELS.md) | Simulated recognition, fusion, forecasting and anomaly detection, with their studies and the evaluation plan |
+| [SMART_PARKING_CHARGING_INTEGRATION.md](SMART_PARKING_CHARGING_INTEGRATION.md) | Eligibility, the per-bay Station, energy counted once, safe departure, Explore Wireless Charging |
+| [SMART_PARKING_POC_BOM.md](SMART_PARKING_POC_BOM.md) | Six-bay miniature BOM within ₹1,00,000; separate full-scale pilot estimate |
+| [SMART_PARKING_HARDWARE_PLAN.md](SMART_PARKING_HARDWARE_PLAN.md) | Shelter engineering, placement, installation and commissioning, device ids, calibration, maintenance, safety, SIL/HIL |
+| [SMART_PARKING_TEST_PLAN.md](SMART_PARKING_TEST_PLAN.md) | Checks, research results against the manual baseline, POC procedures, deployment validation |
+| [SMART_PARKING_INTERNATIONALIZATION.md](SMART_PARKING_INTERNATIONALIZATION.md) | Regions, tariffs, plates, locales, retention and residency, interoperability candidates |
+| [SMART_PARKING_SECURITY_AND_PRIVACY.md](SMART_PARKING_SECURITY_AND_PRIVACY.md) | What the public twin handles, threat model, privacy design |
+| [SMART_PARKING_GOVERNANCE_TEMPLATE.md](SMART_PARKING_GOVERNANCE_TEMPLATE.md) | Blank governance and IP template (completed copies kept outside the repository) |
+| [SMART_PARKING_IMPLEMENTATION_REPORT.md](SMART_PARKING_IMPLEMENTATION_REPORT.md) | Phase 4: what was delivered, evidence, deviations, limitations, timelines |
 | [PERFORMANCE_REPORT.md](PERFORMANCE_REPORT.md) | Frame rate, viewport share, memory, bundle sizes, browsers |
 | [SCIENTIFIC_VALIDATION_REPORT.md](SCIENTIFIC_VALIDATION_REPORT.md) | What was verified in this phase; no model changes |
 | [VISUAL_ACCEPTANCE_REPORT.md](VISUAL_ACCEPTANCE_REPORT.md) | The brief's visual criteria, verdicts and evidence (Phases 2–3) |
@@ -33,17 +47,17 @@ Status: engine and laboratories delivered 25 Nov 2026 (`a1e4679`); premium redes
 | [DYNAMIC_MAGNETIC_FIELD_REPORT.md](DYNAMIC_MAGNETIC_FIELD_REPORT.md) | WPT-EM-005: the road's magnetic field — feasibility, equations, assumptions, verification |
 | [PHASE_3_5_ACCEPTANCE_REPORT.md](PHASE_3_5_ACCEPTANCE_REPORT.md) | Phase 3.5: what was done, evidence, measurements, limitations, acceptance status |
 
-Regenerate the two generated files after changing the registries:
+Regenerate the generated files (MODEL_REGISTRY, FEATURE_COVERAGE and the three generated SMART_PARKING files) after changing the registries:
 
 ```bash
 node --experimental-strip-types scripts/wireless-twin-docs.mts
 ```
 
-(the generator only imports `registry.ts` and `coverage.ts`; it is not part of the build).
+(the generator imports `registry.ts`, `coverage.ts`, `smart-parking/requirements.ts` and `smart-parking/lifecycle.ts`; it is not part of the build).
 
 ## Reference application
 
-The brief's benchmark, the Next-Generation Rocket Engine Digital Twin, is served by this repository (`src/components/rocket-engine-twin`, route `/space/rocket-engine-digital-twin`). Its source was reviewed: server-rendered hero and long-form content, a desktop-only lazy WebGL chunk, a zustand store, per-frame values outside React, timer-driven clocks, mode bar and component panels, capability gating from `satellite-explorer/lib/capabilities`. The live page shows anonymous visitors only its public preview, so its signed-in experience was reviewed through the code, not the live site. This twin reuses the capability gating and the per-frame-state pattern and goes further: a physics engine independent of rendering, four environments, nine sections and an in-browser verification suite.
+The brief's benchmark, the Next-Generation Rocket Engine Digital Twin, is served by this repository (`src/components/rocket-engine-twin`, route `/space/rocket-engine-digital-twin`). Its source was reviewed: server-rendered hero and long-form content, a desktop-only lazy WebGL chunk, a zustand store, per-frame values outside React, timer-driven clocks, mode bar and component panels, capability gating from `satellite-explorer/lib/capabilities`. The live page shows anonymous visitors only its public preview, so its signed-in experience was reviewed through the code, not the live site. This twin reuses the capability gating and the per-frame-state pattern and goes further: a physics engine independent of rendering, five environments, nine sections and an in-browser verification suite.
 
 ## Architecture
 
@@ -64,13 +78,16 @@ src/lib/wireless-charging/        Engine: pure TypeScript, no React, no three.js
   network.ts        Seeded message bus (loss, latency, duplicates, outage, wrong key)
   sensors.ts        Instrument models and data modes
   registry.ts · components.ts · benchmarks.ts · equations.ts · content.ts · coverage.ts
+  smart-parking/    Environment 01: layout, vehicles, identification, occupancy, allocation, reservations,
+                    queueing, lifecycle, barrier, environment, energy, billing, telemetry, charging adapter,
+                    forecast, reliability, facility simulation, experiments, checks, requirements, adapters
 src/components/wireless-ev-twin/  Interface
   WirelessTwinPage.tsx   Server-rendered page: hero, long-form content, leadership, FAQ
   TwinApp.tsx            Toolbar, nine sections, four modes, demonstration, quality, full screen
   lab/                   Immersive laboratory: shell, timeline, inspector, instrument registry
   story/                 Guided stages, demonstration chapters, guide controller, simulation control
   state/                 zustand store (UI + inputs), runtime (simulations + fixed-step clock), full screen
-  three/                 WebGL scene (lazy chunk): vehicle/, station/, road/, world, overlays, camera rig, lighting
+  three/                 WebGL scene (lazy chunk): vehicle/, station/, road/, smart-parking/, world, overlays, camera rig, lighting
   env/ sections/ ui/     Panels, laboratories, controls, charts
 src/app/internships/wireless-ev-charging-digital-twin/   Route, metadata, JSON-LD, tests
 ```
@@ -78,14 +95,14 @@ src/app/internships/wireless-ev-charging-digital-twin/   Route, metadata, JSON-L
 Boundaries:
 
 - **Engine independent of rendering.** The scene and the panels only read simulation state; nothing is calculated in animation code. The engine runs headless in tests and in the Simulation, Research and Assurance labs.
-- **Deterministic clock.** Fixed steps (station 50 ms, or 250 ms above 60×; road 1 ms; parking 20 ms; district 5 min). Thermal and battery states are integrated exactly over each step. Noise comes from seeded generators, so identical inputs give identical results (check B10).
+- **Deterministic clock.** Fixed steps (station 50 ms, or 250 ms above 60×; road 1 ms; autonomous parking 20 ms; Smart Parking facility 0.1 s, with each bay's Station at 50 ms, or 250 ms above 5×; district 5 min). Thermal and battery states are integrated exactly over each step. Noise comes from seeded generators, so identical inputs give identical results (check B10).
 - **Multirate, not cycle-by-cycle.** The 85 kHz carrier is represented by phasors under the first-harmonic approximation; the field animation is a slowed, labelled representation.
 - **Per-frame state outside React.** `three/viewState.ts` and the runtime are read in `useFrame`; panels sample at 2–8 Hz.
 - **Units.** SI internally (m, s, A, V, W, J, H, F, Ω, T); temperatures in °C (differences in K); SOC as a fraction; energy shown in kWh, power in kW.
 
 ## Verification
 
-`npx vitest run src/lib/wireless-charging` runs 29 checks plus registry and state-machine tests (40 tests). `src/components/wireless-ev-twin/lab/laboratory.test.tsx` tests the stages, views, geometry and shell; `npm run test:wireless-ev-twin:e2e` drives a production build in a real browser (see PERFORMANCE_REPORT.md). The same 29 checks run in the visitor's browser from Engineering Assurance. Highlights:
+`npx vitest run src/lib/wireless-charging` runs the 70 checks (the twin's 32 and Smart Parking's 38, SMART_PARKING_TEST_PLAN.md §1) plus registry, state-machine and Smart Parking engine tests; with the interface and page tests the twin's suites hold 133 tests (27 Nov 2026). `src/components/wireless-ev-twin/lab/laboratory.test.tsx` tests the stages, views, geometry and shell; `npm run test:wireless-ev-twin:e2e` drives a production build in a real browser (see PERFORMANCE_REPORT.md). The same checks run in the visitor's browser from Engineering Assurance. Highlights:
 
 - **A01–A10 (analytical):** elliptic integrals; the offset mutual-inductance formula against a brute-force Neumann double integral (≤1e-6); the dipole far-field limit; SS efficiency closed form against the mesh solution; nodal analysis against the closed form; the exact thermal step; on-axis loop field.
 - **A05 energy closure:** grid power − (battery + every stage's loss) = 0 to 1e-9.
@@ -115,6 +132,7 @@ Access stays at the site default (optional sign-in prompt), like the other `/int
 - Standards registry lists publications whose editions and applicability are not yet verified; no compliance is claimed.
 - Sweeps and checks run on the main thread (yielding between steps); Web Worker offload is planned.
 - Experiments are saved in the browser only.
+- Smart Parking (Environment 01): simulation only; the 48-bay facility runs at 50–58 fps on the reference machine; the full list is in SMART_PARKING_IMPLEMENTATION_REPORT.md §7.
 
 ## Next phases
 

@@ -199,12 +199,110 @@ async function main() {
       await settle(1000);
     });
 
+    // ── Environment 01 — Smart Parking & Wireless EV Charging ──
+    const card = () => page.locator('[class*=stageCard] [class*=eyebrow]').first().textContent();
+    await test('Smart Parking (01): the rail opens it with eighteen stages and the facility drawn', async () => {
+      await lab();
+      await page.getByRole('navigation', { name: 'Research environments' }).getByRole('button', { name: /^01/ }).click();
+      await page.getByText('Stage 1 of 18', { exact: false }).waitFor({ timeout: 30000 });
+      assert.equal(await stageButtons().count(), 18);
+      // The instrument strip re-samples a few times a second: wait for the parking instruments to replace the last environment's.
+      for (const label of ['Available bays', 'Occupied bays', 'Charging sessions', 'Waiting vehicles']) await instrument(label).first().waitFor({ timeout: 5000 });
+      await settle(3500);
+      await drawn();
+      measurements.fpsParking = await fps();
+      await shot('parking-01-ecosystem');
+    });
+
+    await test('Smart Parking: the gate stages follow one EV — uncertain plate, QR, reserved wireless bay — to the Station charging', async () => {
+      await stageButtons().nth(3).click();
+      await page.getByRole('heading', { level: 2, name: 'A vehicle arrives' }).waitFor({ timeout: 10000 });
+      // Hand progression back to the tour: each stage now advances on its simulation event.
+      await page.getByRole('button', { name: /Continue tour/ }).click();
+      const seen = { uncertain: false, qr: false };
+      const t0 = Date.now();
+      while (Date.now() - t0 < 180000) {
+        const states = await page.locator('[aria-label="Instruments"] dd').allTextContents();
+        if (states.some((x) => /Identification uncertain/.test(x))) seen.uncertain = true;
+        if (states.some((x) => /QR code/.test(x))) seen.qr = true;
+        if (await page.getByRole('heading', { level: 2, name: 'Wireless charging integration' }).count()) break;
+        await settle(700);
+      }
+      assert(seen.uncertain, 'the uncertain plate read was never shown');
+      assert(seen.qr, 'the QR fallback was never shown');
+      await page.getByRole('heading', { level: 2, name: 'Wireless charging integration' }).waitFor({ timeout: 5000 });
+      await page.waitForFunction(() => [...document.querySelectorAll('[aria-label="Instruments"] dd')].some((d) => /Active charging|Charging power optimisation/.test(d.textContent || '')), null, { timeout: 60000 });
+      await settle(2500);
+      await drawn();
+      await shot('parking-12-charging');
+    });
+
+    await test('Smart Parking: Explore Wireless Charging shows the bay’s session at the Station and returns', async () => {
+      await page.getByRole('button', { name: /Explore Wireless Charging/ }).first().click();
+      await page.waitForFunction(() => /02 · Station/.test(document.querySelector('[class*=stageCard] [class*=eyebrow]')?.textContent || ''), null, { timeout: 15000 });
+      assert.match(await page.locator('[role=note]').first().textContent(), /Bay [NS]\d\d · V-\d+ · parking session PS-\d+ → charging session CS-\d+/);
+      await settle(3000);
+      await drawn();
+      await shot('parking-handover-station');
+      await page.getByRole('button', { name: 'Return to Smart Parking' }).click();
+      await page.waitForFunction(() => /01 · Smart Parking/.test(document.querySelector('[class*=stageCard] [class*=eyebrow]')?.textContent || ''), null, { timeout: 15000 });
+      assert.match(await card(), /Stage 12 of 18/);
+    });
+
+    await test('Smart Parking: shelter, occupancy, energy, environment and IoT views draw; a viewer cannot override', async () => {
+      for (const v of ['Shelter engineering', 'Occupancy', 'Energy Flow', 'Environment', 'IoT Communication']) {
+        await page.locator('button[title="Visualisation"]').click();
+        await page.locator('[role="group"][aria-label="Visualisation"] button', { hasText: v }).first().click();
+        await settle(3500);
+        await drawn();
+        await shot(`parking-view-${v.split(' ')[0].toLowerCase()}`);
+      }
+      await page.getByRole('button', { name: 'Operator', exact: true }).first().click();
+      await page.getByText('Authorised overrides').waitFor({ timeout: 10000 });
+      await page.getByLabel('Acting as').selectOption('viewer');
+      await page.getByRole('button', { name: 'Close entry' }).click();
+      await page.getByText(/barrier\.close → rejected: Role viewer may not/).waitFor({ timeout: 5000 });
+      await shot('parking-operator');
+      await page.getByLabel('Close the inspector').click();
+    });
+
+    await test('Smart Parking: a 48-bay facility restarts in the same context and keeps rendering', async () => {
+      await page.getByRole('radiogroup', { name: 'Experience mode' }).getByRole('radio', { name: 'Engineer' }).click();
+      // Engineer mode opens the Inputs panel itself; the rail button only toggles it.
+      await settle(800);
+      if (!(await page.locator('[role=region][aria-label=Inputs]').count())) await page.getByRole('button', { name: 'Inputs' }).first().click();
+      const bays = page.getByLabel('Bays', { exact: true });
+      await bays.evaluate((el) => {
+        const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+        set.call(el, '48');
+        el.dispatchEvent(new Event('input', { bubbles: true }));
+        el.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+      await page.getByRole('button', { name: 'Restart with these' }).click();
+      await settle(6000);
+      assert.equal(await page.locator('canvas').count(), 1);
+      assert.match(await instrument('Available bays').first().textContent(), /of 48/);
+      await drawn();
+      measurements.fpsParking48 = await fps();
+      await shot('parking-48-bays');
+      await page.getByRole('radiogroup', { name: 'Experience mode' }).getByRole('radio', { name: 'Explore' }).click();
+    });
+
+    await test('Smart Parking: a shared link with env=parking opens environment 01', async () => {
+      const p2 = await desktop.newPage();
+      p2.on('pageerror', error => errors.push(`share: ${error.message}`));
+      await p2.goto(`${BASE}${ROUTE}?fs=0&sound=0&narration=0&captions=1&demo=0&env=parking#research-laboratory`, { waitUntil: 'load' });
+      await p2.getByText('Stage 1 of 18', { exact: false }).waitFor({ timeout: 90000 });
+      assert.match(await p2.locator('[class*=stageCard] [class*=eyebrow]').first().textContent(), /01 · Smart Parking/);
+      await p2.close();
+    });
+
     await test('Switching environments repeatedly does not grow memory or add contexts', async () => {
       const heap = () => page.evaluate(() => (performance.memory ? performance.memory.usedJSHeapSize / 1048576 : 0));
       const rail = page.getByRole('navigation', { name: 'Research environments' });
       const start = await heap();
       for (let round = 0; round < 4; round++) {
-        for (const env of ['03', '04', '05', '02']) {
+        for (const env of ['03', '04', '05', '01', '02']) {
           await rail.getByRole('button', { name: new RegExp(`^${env}`) }).click();
           await settle(1200);
         }
@@ -214,7 +312,7 @@ async function main() {
       measurements.heapStartMb = Math.round(start);
       measurements.heapEndMb = Math.round(end);
       assert.equal(await page.locator('canvas').count(), 1);
-      assert(end - start < 60, `heap grew ${Math.round(end - start)} MB over 16 environment switches`);
+      assert(end - start < 60, `heap grew ${Math.round(end - start)} MB over 20 environment switches`);
     });
     await desktop.close();
 

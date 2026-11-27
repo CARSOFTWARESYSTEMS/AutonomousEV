@@ -4,7 +4,7 @@
 import { useState } from "react";
 import { Play } from "lucide-react";
 import { CHECKS, runChecks } from "@/lib/wireless-charging/benchmarks";
-import { ALL_COMPONENTS, COMPONENTS } from "@/lib/wireless-charging/components";
+import { ALL_COMPONENTS } from "@/lib/wireless-charging/components";
 import { GATES, RISKS, STANDARDS } from "@/lib/wireless-charging/content";
 import { FEATURE_COUNTS, FEATURES } from "@/lib/wireless-charging/coverage";
 import { FIDELITY, MODELS } from "@/lib/wireless-charging/registry";

@@ -38,7 +38,10 @@ export function projectLabels(camera: Camera, width: number, height: number, tmp
     const behind = tmp.z > 1 || tmp.z < -1;
     const x = (tmp.x * 0.5 + 0.5) * width;
     const y = (-tmp.y * 0.5 + 0.5) * height;
-    el.style.visibility = behind ? "hidden" : "visible";
+    // A label the canvas edge would cut is hidden rather than shown in part (transforms do not dirty layout, so these reads are cheap).
+    const w = el.offsetWidth;
+    const clipped = x - w / 2 < 2 || x + w / 2 > width - 2 || y - el.offsetHeight < 2 || y > height - 2;
+    el.style.visibility = behind || clipped ? "hidden" : "visible";
     el.style.transform = `translate(-50%, -100%) translate(${x.toFixed(1)}px, ${y.toFixed(1)}px)`;
   }
 }

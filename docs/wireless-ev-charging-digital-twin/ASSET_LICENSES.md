@@ -19,6 +19,12 @@ Every visual in the Wireless EV Charging Digital Twin is created in this reposit
 | Highway, road layers, road pads, skyline, traffic | `three/world.tsx` | Original |
 | Concrete, asphalt, PV module, PCB, lane, window, contact-shadow textures | Drawn on a canvas at start-up from deterministic noise, `three/materials.ts` | Original |
 | Field, energy-flow, IoT, alignment and district overlays | Computed from the simulation | Original |
+| Smart Parking pavement, bay markings, accessible and wireless bay symbols, landscape (Environment 01) | Procedural geometry and canvas textures from deterministic noise, `three/smart-parking/Facility.tsx`, `textures.ts` | Original |
+| Smart Parking shelter, roof, gutters, cable trays, sensors, bay indicators, fans, luminaires | Procedural geometry, `three/smart-parking/Shelter.tsx` | Original |
+| Gates, barriers, recognition cameras, reader pedestals, guidance sign, equipment yard | Procedural geometry, `three/smart-parking/Gates.tsx`, `Equipment.tsx` | Original |
+| Facility vehicles, including the low-detail instanced bodies and the plate-grime decal | The shared vehicle model; the grime decal is drawn on a canvas, `three/smart-parking/Vehicles.tsx` | Original |
+| Synthetic number plates | Generated text in each region's format, using markers that cannot be issued (ZZ, a leading 0, the test character 测) | Original; no real registrations |
+| Routes, occupancy plates, IoT and energy flows, recognition cone, air-quality overlay | Computed from the simulation, `three/smart-parking/Overlays.tsx` | Original |
 | Hero poster `public/wireless-ev-twin/hero.jpg` | Rendered from the twin's own scene | Original |
 | Ambient sound | Synthesised in the browser with the Web Audio API (off by default) | Original |
 | Narration | The visitor's browser speech synthesis (off by default) | Browser-provided voice |

@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { createRng } from "../math";
 import { MODELS } from "../registry";
+import { createStation, DEFAULT_STATION_INPUTS, NO_FAULTS, setStationInputs, stationCommand, stepStation } from "../station";
+import { PHASES } from "../stateMachine";
 import { ALL_COMPONENTS } from "../components";
 import { PARKING_CHECKS } from "./checks";
 import { capacityStudy, chargingDemandSweep, comparePolicies, energyStudy, environmentalStudy, evaluateFusion, iotReliability, pricingStudy, recognitionStudy, scalabilityStudy } from "./experiments";
@@ -117,4 +119,53 @@ describe("Smart Parking research experiments", () => {
     expect(pricingStudy()).toHaveLength(3);
     expect(scalabilityStudy([12, 100])).toHaveLength(2);
   }, 60_000);
+});
+
+describe("Station commands added for the parking hand-over", () => {
+  const firstEnergised = (command: "arrive" | "arrive-parked") => {
+    const sim = createStation({ ...DEFAULT_STATION_INPUTS, holdAfterComplete: true, initialSoc: 0.3, targetSoc: 0.8 }, 7);
+    sim.commands.splice(0);
+    stationCommand(sim, command);
+    while (!PHASES[sim.state.phase].energised && sim.state.t < 120) stepStation(sim, NO_FAULTS, 0.05);
+    return sim;
+  };
+
+  it("arrive-parked runs the Station's own checks without an approach, stop de-energises safely, and holdAfterComplete holds", () => {
+    const driven = firstEnergised("arrive");
+    const parked = firstEnergised("arrive-parked");
+    expect(PHASES[parked.state.phase].energised).toBe(true);
+    // The parked vehicle skips the approach run but not the Station's sequence.
+    expect(parked.state.t).toBeLessThan(driven.state.t);
+    expect(parked.state.t).toBeGreaterThan(1);
+    expect(parked.state.vehicle.v).toBe(0);
+
+    stationCommand(parked, "stop");
+    const t0 = parked.state.t;
+    while (PHASES[parked.state.phase].energised && parked.state.t < t0 + 30) stepStation(parked, NO_FAULTS, 0.05);
+    expect(PHASES[parked.state.phase].energised).toBe(false);
+    expect(parked.state.phase).toBe("completed");
+
+    // Held for the parking side to detach it, instead of the Station's own departure.
+    for (let i = 0; i < 600; i++) stepStation(parked, NO_FAULTS, 0.05);
+    expect(parked.state.phase).toBe("completed");
+    setStationInputs(parked, { ...parked.inputs, holdAfterComplete: false });
+    for (let i = 0; i < 100; i++) stepStation(parked, NO_FAULTS, 0.05);
+    // Without the hold, the Station runs its own departure (and is free again once the vehicle has left).
+    expect(["departure", "available"]).toContain(parked.state.phase);
+  });
+
+  it("stop before energising ends the session without powering the pad", () => {
+    const sim = createStation({ ...DEFAULT_STATION_INPUTS, holdAfterComplete: true }, 7);
+    sim.commands.splice(0);
+    stationCommand(sim, "arrive-parked");
+    stepStation(sim, NO_FAULTS, 0.05);
+    stationCommand(sim, "stop");
+    let energised = false;
+    for (let i = 0; i < 200; i++) {
+      stepStation(sim, NO_FAULTS, 0.05);
+      energised ||= PHASES[sim.state.phase].energised;
+    }
+    expect(energised).toBe(false);
+    expect(sim.state.phase).toBe("completed");
+  });
 });

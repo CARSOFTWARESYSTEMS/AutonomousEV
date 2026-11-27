@@ -408,7 +408,7 @@ export function scalabilityStudy(sizes = [12, 50, 100, 500, 1000]) {
   });
 }
 
-/** Station-model charging time for a session, against the event-level surrogate (check SP-B09). */
+/** Station-model charging time for a session, against the event-level surrogate (check SP-A09). */
 export function surrogateCheck(capacityKWh = 60, soc0 = 0.3, target = 0.8) {
   const { sim, record } = runStationSession({ ...DEFAULT_STATION_INPUTS, capacityKWh, initialSoc: soc0, targetSoc: target }, { dt: 5, sampleEvery: 600 });
   const station = record ? record.ended - record.started : sim.state.t;

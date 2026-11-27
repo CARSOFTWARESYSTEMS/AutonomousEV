@@ -203,11 +203,11 @@ function EnergyFlows({ layout }: { layout: Layout }) {
     const wireless = layout.bays.filter((b) => b.pad);
     const charge = wireless.length ? wireless[0] : layout.bays[layout.bays.length - 1];
     return [
-      { id: "pv", curve: new CatmullRomCurve3([v(0, roof + 0.4, -(layout.canopy.yInner + 3)), v(layout.canopy.x1 - 1, roof + 0.2, -(layout.canopy.yInner + 3.5)), hub.clone().setY(2.6), hub]) },
+      { id: "pv", curve: new CatmullRomCurve3([v(layout.canopy.x0 + (layout.canopy.x1 - layout.canopy.x0) * 0.3, roof + 0.4, -(layout.canopy.yInner + 3)), v(layout.canopy.x1 - 1, roof + 0.2, -(layout.canopy.yInner + 3.5)), hub.clone().setY(2.6), hub]) },
       { id: "grid", curve: new CatmullRomCurve3([v(layout.exit.despawnX, 0.25, -12), v(layout.aisle.xEast + 4, 0.25, -11), hub.clone().setY(0.3), hub]) },
       { id: "bess", curve: new CatmullRomCurve3([v(y.x0 + (y.x1 - y.x0) * 0.64, 1.4, -(y.y1 - 0.75)), v(y.x0 + (y.x1 - y.x0) * 0.5, 1.6, -(y.y1 - 0.9)), hub]) },
       { id: "chargers", curve: new CatmullRomCurve3([hub, v(hub.x - 1.5, 0.1, hub.z + 1), v(charge.pad ? charge.pad.x : charge.x, 0.08, -(charge.pad ? charge.pad.y : charge.y))]) },
-      { id: "loads", curve: new CatmullRomCurve3([hub, hub.clone().setY(2.9), v(0, roofHeight(layout, layout.aisle.half + 1.3) - 0.2, -(layout.aisle.half + 1.3))]) },
+      { id: "loads", curve: new CatmullRomCurve3([hub, hub.clone().setY(2.9), v(layout.canopy.x0 + (layout.canopy.x1 - layout.canopy.x0) * 0.75, roofHeight(layout, layout.aisle.half + 1.3) - 0.2, -(layout.aisle.half + 1.3))]) },
     ];
   }, [layout, hub, y.x0, y.x1, y.y1]);
   const geos = useMemo(() => flows.map((f) => new TubeGeometry(f.curve, 48, 0.05, 8, false)), [flows]);
@@ -244,10 +244,10 @@ function EnergyFlows({ layout }: { layout: Layout }) {
           b.setColorAt(n, tmpC.set(COLORS[f.id]));
           n += 1;
         }
-      // Labels at distinct places along each flow, so they never stack.
-      const at = { pv: 0.25, grid: 0.35, bess: 0.2, chargers: 0.85, loads: 0.7 }[f.id];
+      // Labels at each flow's own end (or near the hub for the grid), so they never stack.
+      const at = { pv: 0, grid: 0.78, bess: 0, chargers: 1, loads: 1 }[f.id];
       const mid = f.curve.getPointAt(at, tmpP);
-      setAnchor(`flow-${f.id}`, mid.x, mid.y + (f.id === "bess" ? 1.2 : 0.35), mid.z);
+      setAnchor(`flow-${f.id}`, mid.x, mid.y + ({ pv: 0.6, grid: 1.6, bess: 1.3, chargers: 0.9, loads: 0.45 } as const)[f.id], mid.z);
     });
     if (b) {
       b.count = n;
