@@ -3,7 +3,7 @@
 **Park. Drive. Charge. Automatically.** — Designed and developed by and for the EV.ENGINEER™ team.
 
 Route: `/internships/wireless-ev-charging-digital-twin` (Proof of Concept card on `/internships`).
-Status: engine and laboratories delivered 25 Nov 2026 (`a1e4679`); premium redesign Phases 0–3 committed as `8b08b03`; **Phase 3.5 (cinematic realism and scientific experience refinement) delivered 26 Nov 2026, uncommitted, awaiting the EV.ENGINEER™ team's visual acceptance** — see PHASE_3_5_ACCEPTANCE_REPORT.md. **Phase 4 — Environment 01, Smart Parking & Wireless EV Charging — delivered 27 Nov 2026** (first part committed as `b2f4625`, final fixes and documents uncommitted), awaiting acceptance — see SMART_PARKING_IMPLEMENTATION_REPORT.md. Simulation only; nothing is experimentally validated.
+Status: engine and laboratories delivered 25 Nov 2026 (`a1e4679`); premium redesign Phases 0–3 committed as `8b08b03`; **Phase 3.5 (cinematic realism and scientific experience refinement) delivered 26 Nov 2026, uncommitted, awaiting the EV.ENGINEER™ team's visual acceptance** — see PHASE_3_5_ACCEPTANCE_REPORT.md. **Phase 4 — Environment 01, Smart Parking & Wireless EV Charging — delivered 27 Nov 2026** (committed as `b2f4625` and `80a8db6`); a second engineering pass on 27–28 Nov 2026 is uncommitted (SMART_PARKING_ENGINEERING_REVIEW.md). Awaiting acceptance. Simulation only; nothing is experimentally validated.
 
 ## Documents
 
@@ -39,6 +39,12 @@ Status: engine and laboratories delivered 25 Nov 2026 (`a1e4679`); premium redes
 | [SMART_PARKING_SECURITY_AND_PRIVACY.md](SMART_PARKING_SECURITY_AND_PRIVACY.md) | What the public twin handles, threat model, privacy design |
 | [SMART_PARKING_GOVERNANCE_TEMPLATE.md](SMART_PARKING_GOVERNANCE_TEMPLATE.md) | Blank governance and IP template (completed copies kept outside the repository) |
 | [SMART_PARKING_IMPLEMENTATION_REPORT.md](SMART_PARKING_IMPLEMENTATION_REPORT.md) | Phase 4: what was delivered, evidence, deviations, limitations, timelines |
+| [SMART_PARKING_ENGINEERING_REVIEW.md](SMART_PARKING_ENGINEERING_REVIEW.md) | Second-pass engineering review: issue register, direct links, performance, research, POC readiness, regression report, release recommendation |
+| [SMART_PARKING_EVIDENCE_MATRIX.md](SMART_PARKING_EVIDENCE_MATRIX.md) | Requirement → architecture → model → implementation → test → evidence → status → limitation (generated) |
+| [SMART_PARKING_EXPERIMENT_RESULTS.md](SMART_PARKING_EXPERIMENT_RESULTS.md) | Replicated, paired policy comparisons over 50 seeds and six scenarios, with confidence intervals (generated; JSON in `data/`) |
+| [SMART_PARKING_POC_READINESS.md](SMART_PARKING_POC_READINESS.md) | BOM review, 1:16 scale check, power budget, modular design, acceptance criteria, supervised low-voltage procedures |
+| [SMART_PARKING_HARDWARE_INTEGRATION_SPEC.md](SMART_PARKING_HARDWARE_INTEGRATION_SPEC.md) | Hardware-connected twin: data modes, interfaces, identity, schemas, time sync, data quality, storage, calibration, replay; telemetry-only POC path |
+| [SMART_PARKING_THREAT_MODEL.md](SMART_PARKING_THREAT_MODEL.md) | Trust boundaries, threats, safety-function review, assurance gates |
 | [PERFORMANCE_REPORT.md](PERFORMANCE_REPORT.md) | Frame rate, viewport share, memory, bundle sizes, browsers |
 | [SCIENTIFIC_VALIDATION_REPORT.md](SCIENTIFIC_VALIDATION_REPORT.md) | What was verified in this phase; no model changes |
 | [VISUAL_ACCEPTANCE_REPORT.md](VISUAL_ACCEPTANCE_REPORT.md) | The brief's visual criteria, verdicts and evidence (Phases 2–3) |
@@ -47,7 +53,7 @@ Status: engine and laboratories delivered 25 Nov 2026 (`a1e4679`); premium redes
 | [DYNAMIC_MAGNETIC_FIELD_REPORT.md](DYNAMIC_MAGNETIC_FIELD_REPORT.md) | WPT-EM-005: the road's magnetic field — feasibility, equations, assumptions, verification |
 | [PHASE_3_5_ACCEPTANCE_REPORT.md](PHASE_3_5_ACCEPTANCE_REPORT.md) | Phase 3.5: what was done, evidence, measurements, limitations, acceptance status |
 
-Regenerate the generated files (MODEL_REGISTRY, FEATURE_COVERAGE and the three generated SMART_PARKING files) after changing the registries:
+Regenerate the generated files (MODEL_REGISTRY, FEATURE_COVERAGE and the generated SMART_PARKING traceability, evidence-matrix, model-registry and state-machine files) after changing the registries (the research results have their own generator, `SP_RESEARCH_WRITE=1 npx vitest run scripts/smart-parking-research.test.ts --environment node`):
 
 ```bash
 node --experimental-strip-types scripts/wireless-twin-docs.mts
@@ -102,7 +108,7 @@ Boundaries:
 
 ## Verification
 
-`npx vitest run src/lib/wireless-charging` runs the 70 checks (the twin's 32 and Smart Parking's 38, SMART_PARKING_TEST_PLAN.md §1) plus registry, state-machine and Smart Parking engine tests; with the interface and page tests the twin's suites hold 133 tests (27 Nov 2026). `src/components/wireless-ev-twin/lab/laboratory.test.tsx` tests the stages, views, geometry and shell; `npm run test:wireless-ev-twin:e2e` drives a production build in a real browser (see PERFORMANCE_REPORT.md). The same checks run in the visitor's browser from Engineering Assurance. Highlights:
+`npx vitest run src/lib/wireless-charging` runs the 71 checks (the twin's 32 and Smart Parking's 39, SMART_PARKING_TEST_PLAN.md §1) plus registry, state-machine and Smart Parking engine tests; with the interface and page tests the twin's suites hold 149 tests (28 Nov 2026). `src/components/wireless-ev-twin/lab/laboratory.test.tsx` tests the stages, views, geometry and shell; `npm run test:wireless-ev-twin:e2e` drives a production build in a real browser (see PERFORMANCE_REPORT.md). The same checks run in the visitor's browser from Engineering Assurance. Highlights:
 
 - **A01–A10 (analytical):** elliptic integrals; the offset mutual-inductance formula against a brute-force Neumann double integral (≤1e-6); the dipole far-field limit; SS efficiency closed form against the mesh solution; nodal analysis against the closed form; the exact thermal step; on-axis loop field.
 - **A05 energy closure:** grid power − (battery + every stage's loss) = 0 to 1e-9.
@@ -132,7 +138,7 @@ Access stays at the site default (optional sign-in prompt), like the other `/int
 - Standards registry lists publications whose editions and applicability are not yet verified; no compliance is claimed.
 - Sweeps and checks run on the main thread (yielding between steps); Web Worker offload is planned.
 - Experiments are saved in the browser only.
-- Smart Parking (Environment 01): simulation only; the 48-bay facility runs at 50–58 fps on the reference machine; the full list is in SMART_PARKING_IMPLEMENTATION_REPORT.md §7.
+- Smart Parking (Environment 01): simulation only; the full list is in SMART_PARKING_IMPLEMENTATION_REPORT.md §7 and SMART_PARKING_ENGINEERING_REVIEW.md §16.
 
 ## Next phases
 

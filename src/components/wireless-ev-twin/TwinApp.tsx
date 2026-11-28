@@ -9,7 +9,7 @@ import { Clapperboard, LogOut, Maximize2, Minimize2 } from "lucide-react";
 import { ENVIRONMENTS, MODES, type ModeId, SECTIONS, type SectionId } from "@/lib/wireless-charging/content";
 import { getWebGLSupport, readDeviceCapabilities, REDUCED_MOTION_QUERY, selectQuality } from "../satellite-explorer/lib/capabilities";
 import Laboratory, { type Capabilities } from "./lab/Laboratory";
-import { LaunchGate, SharePopover, useLaunchLink } from "./lab/Launch";
+import { LaunchGate, SharePopover, useLaunchEnvironment, useLaunchLink } from "./lab/Launch";
 import { APP_ID, exitFullscreen, toggleFullscreen, useFullscreenSync } from "./state/fullscreen";
 import { runtime, useClock, useInputSync } from "./state/runtime";
 import { type QualityChoice, useTwin } from "./state/store";
@@ -81,6 +81,7 @@ export default function TwinApp() {
   const caps = useCapabilities();
   const fullscreen = useTwin((s) => s.fullscreen);
   useFullscreenSync();
+  useLaunchEnvironment();
   const launch = useLaunchLink(Boolean(caps?.webgl));
   useInputSync();
   useClock();
@@ -133,7 +134,7 @@ export default function TwinApp() {
         <p className={lab.identity}>
           <span className={lab.brand}>EV.ENGINEER™</span>
           <span className={lab.labName}>Digital Twin Laboratory</span>
-          <span className={lab.envName}>{`${meta.number} ${meta.short}`}</span>
+          {caps !== null && <span className={lab.envName}>{`${meta.number} ${meta.short}`}</span>}
         </p>
         {!demo && <Segmented label="Experience mode" value={mode} options={MODES.map((m) => ({ id: m.id, label: m.label }))} onChange={(v) => setMode(v)} />}
         <div className={lab.toolbarRight}>

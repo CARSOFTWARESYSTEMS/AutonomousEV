@@ -24,6 +24,7 @@ import { syntheticVehicle } from "./vehicles";
 import { createRng } from "../math";
 import { evaluateForecasts, type History, median, robustZ } from "./forecast";
 import { kOfN, kOfNMonteCarlo, posteriorUncertainty } from "./reliability";
+import { RESEARCH_POLICIES, runResearch, SCENARIOS, summarise } from "./research";
 
 const fmt = (x: number, d = 3) => (Math.abs(x) < 1e-3 && x !== 0 ? x.toExponential(2) : x.toFixed(d));
 
@@ -243,6 +244,29 @@ export const PARKING_CHECKS: readonly Check[] = [
       const far = robustZ(160, xs);
       const near = robustZ(110, xs);
       return { passed: Math.abs(mad - 10) / 10 < 0.05 && far > 5 && near < 1.5, measured: `scaled MAD ${fmt(mad, 2)} (σ = 10); z(+6σ) ${fmt(far, 2)}; z(+1σ) ${fmt(near, 2)}` };
+    },
+  },
+  {
+    id: "SP-A13",
+    kind: "analytical",
+    title: "Replicated comparisons: common random numbers, equal resources and interval coverage",
+    expected: "Every policy sees the same arrivals for a seed; with no EVs, charging-aware allocation parks as many vehicles as nearest-bay guidance (no bays lost to protection); delivered energy ≤ requested; the t-interval of the mean covers the true mean of a known normal population in 95 % ± 3 % of 400 samples of 30",
+    models: ["SP-RES-002"],
+    run: () => {
+      const normalDay = SCENARIOS.find((s) => s.id === "normal")!;
+      const same = new Set(RESEARCH_POLICIES.map((p) => runResearch(p.id, normalDay, 11).arrived)).size === 1;
+      const noEv = { ...SCENARIOS.find((s) => s.id === "peak")!, mix: { evShare: 0 } };
+      const equal = runResearch("charging-compatible", noEv, 11).parked === runResearch("nearest", noEv, 11).parked;
+      const m = runResearch("energy-aware", SCENARIOS.find((s) => s.id === "charging-constrained")!, 11);
+      const bounded = m.energyDeliveredKWh <= m.energyRequestedKWh + 1e-9;
+      const r = createRng(29);
+      let covered = 0;
+      for (let k = 0; k < 400; k++) {
+        const s = summarise(Array.from({ length: 30 }, () => 50 + 8 * r.normal()));
+        if (s.ciLow <= 50 && 50 <= s.ciHigh) covered += 1;
+      }
+      const coverage = covered / 400;
+      return { passed: same && equal && bounded && Math.abs(coverage - 0.95) <= 0.03, measured: `same arrivals ${same}; no bays lost ${equal}; delivered ${fmt(m.energyDeliveredKWh, 1)} ≤ requested ${fmt(m.energyRequestedKWh, 1)} kWh; coverage ${fmt(coverage * 100, 1)} %` };
     },
   },
   {

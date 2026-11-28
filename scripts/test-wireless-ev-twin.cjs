@@ -297,6 +297,51 @@ async function main() {
       await p2.close();
     });
 
+    await test('Direct links: each environment opens from the first paint, the prerendered HTML is neutral, and the address follows a switch', async () => {
+      const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+      await ctx.route(ANALYTICS, route => route.abort());
+      // Record every environment name the page ever shows, from the first parsed HTML on.
+      await ctx.addInitScript(() => {
+        window.__seen = [];
+        new MutationObserver(() => {
+          for (const el of document.querySelectorAll('[class*=stageCard] [class*=eyebrow], [class*=envName]')) {
+            const t = el.textContent.trim();
+            if (t && window.__seen[window.__seen.length - 1] !== t) window.__seen.push(t);
+          }
+        }).observe(document, { subtree: true, childList: true, characterData: true });
+      });
+      const p3 = await ctx.newPage();
+      p3.on('pageerror', error => errors.push(`direct: ${error.message}`));
+      const names = { parking: 'Smart Parking', station: 'Station', dynamic: 'Dynamic', autonomous: 'Autonomous', infrastructure: 'Infrastructure' };
+      for (const [env, label] of Object.entries(names)) {
+        const response = await p3.goto(`${BASE}${ROUTE}?fs=0&sound=0&narration=0&captions=0&demo=0&env=${env}#research-laboratory`, { waitUntil: 'load' });
+        const html = await response.text();
+        assert(html.includes('Preparing the 3D laboratory') && !html.includes('A smart wireless charging bay') && !/>02 Station</.test(html), `prerendered HTML for env=${env} names an environment`);
+        await p3.waitForFunction((l) => document.querySelector('[class*=stageCard] [class*=eyebrow]')?.textContent.includes(l), label, { timeout: 90000 });
+        const seen = await p3.evaluate(() => window.__seen);
+        assert(seen.every((t) => t.includes(label)), `env=${env} showed ${JSON.stringify(seen)}`);
+        assert.match(await p3.locator('nav[aria-label="Research environments"] [aria-current="true"]').textContent(), new RegExp(label));
+      }
+      await p3.locator('nav[aria-label="Research environments"] button', { hasText: 'Dynamic' }).click();
+      await p3.waitForFunction(() => new URLSearchParams(location.search).get('env') === 'dynamic', null, { timeout: 10000 });
+      await ctx.close();
+    });
+
+    await test('Research: the replicated policy comparison runs on paired seeds and offers its results for download', async () => {
+      const p4 = await desktop.newPage();
+      p4.on('pageerror', error => errors.push(`research: ${error.message}`));
+      await p4.goto(`${BASE}${ROUTE}?fs=0&sound=0&narration=0&captions=0&demo=0&env=parking#research-laboratory`, { waitUntil: 'load' });
+      await p4.getByText('Stage 1 of 18', { exact: false }).waitFor({ timeout: 90000 });
+      await p4.getByRole('radiogroup', { name: 'Experience mode' }).getByRole('radio', { name: 'Research' }).click();
+      const block = p4.locator('[class*=block]', { hasText: 'Replicated policy comparison' }).first();
+      await block.getByLabel('Replications').selectOption('10');
+      await block.getByRole('button', { name: 'Run' }).click();
+      await block.getByRole('table').waitFor({ timeout: 60000 });
+      assert.match(await block.getByRole('table').textContent(), /Normal demand · 10 seeds[\s\S]*Charging-compatible[\s\S]*\[/);
+      await block.getByRole('button', { name: 'Download results' }).waitFor();
+      await p4.close();
+    });
+
     await test('Switching environments repeatedly does not grow memory or add contexts', async () => {
       const heap = () => page.evaluate(() => (performance.memory ? performance.memory.usedJSHeapSize / 1048576 : 0));
       const rail = page.getByRole('navigation', { name: 'Research environments' });

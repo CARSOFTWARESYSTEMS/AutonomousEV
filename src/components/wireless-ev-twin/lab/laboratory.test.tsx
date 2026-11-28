@@ -1,4 +1,5 @@
-import { describe, expect, it, beforeEach } from "vitest";
+import { describe, expect, it, beforeEach, afterEach } from "vitest";
+import { act, render } from "@testing-library/react";
 import { renderToString } from "react-dom/server";
 import { Box3, Vector3 } from "three";
 import { componentById } from "@/lib/wireless-charging/components";
@@ -7,7 +8,7 @@ import { modelById } from "@/lib/wireless-charging/registry";
 import { stepStation } from "@/lib/wireless-charging/station";
 import { resetEnvironment, runtime } from "../state/runtime";
 import { useTwin } from "../state/store";
-import { enterStage, leaveTour } from "../story/guide";
+import { enterStage, leaveTour, openEnvironment } from "../story/guide";
 import { DEMO_CHAPTERS, DEMO_STAGES, PLAYLISTS, STATION_STAGES } from "../story/stages";
 import { shotFor, viewShot, type ShotId } from "../three/camera";
 import { targets } from "../three/viewState";
@@ -269,5 +270,77 @@ describe("shareable Smart Parking link", () => {
     expect(link).toContain("env=parking");
     expect(link).toContain("#research-laboratory");
     expect(parseLaunch(new URL(link).search)?.env).toBe("parking");
+  });
+});
+
+describe("direct environment links (?env=)", () => {
+  const ENV_LINKS = [
+    ["parking", "01 · Smart Parking"],
+    ["station", "02 · Station"],
+    ["dynamic", "03 · Dynamic"],
+    ["autonomous", "04 · Autonomous"],
+    ["infrastructure", "05 · Infrastructure"],
+  ] as const;
+  const link = (env: string) => `/internships/wireless-ev-charging-digital-twin?fs=0&sound=0&narration=0&captions=0&demo=0&env=${env}#research-laboratory`;
+  let unmount: (() => void) | null = null;
+
+  beforeEach(() => {
+    fresh();
+    useTwin.setState({ guide: { ...useTwin.getState().guide, stageId: null as unknown as string } });
+  });
+  afterEach(() => {
+    unmount?.();
+    unmount = null;
+    window.history.replaceState(null, "", "/");
+    fresh();
+  });
+
+  it("sends no environment-specific laboratory content in the prerendered HTML", () => {
+    const html = renderToString(<TwinApp />);
+    expect(html).toContain("Preparing the 3D laboratory");
+    // Neither the Station stage card, its instruments, the header chip nor a selected rail item.
+    expect(html).not.toContain("A smart wireless charging bay");
+    expect(html).not.toContain("02 · Station");
+    expect(html).not.toMatch(/>02 Station</);
+    expect(html).not.toMatch(/aria-current="true"/);
+  });
+
+  for (const [env, eyebrow] of ENV_LINKS) {
+    it(`opens ${env} from a direct link before the first client paint, even without WebGL`, () => {
+      window.history.replaceState(null, "", link(env));
+      const view = render(<TwinApp />);
+      unmount = view.unmount;
+      expect(useTwin.getState().environment).toBe(env);
+      expect(view.container.textContent).toContain(eyebrow);
+      expect(view.container.querySelector('nav[aria-label="Research environments"] [aria-current="true"]')?.textContent).toContain(eyebrow.split(" · ")[1]);
+    });
+  }
+
+  it("keeps the address in step with the environment once a link has named one, without new history entries", () => {
+    window.history.replaceState(null, "", link("parking"));
+    const before = window.history.length;
+    unmount = render(<TwinApp />).unmount;
+    act(() => openEnvironment("dynamic"));
+    expect(new URLSearchParams(window.location.search).get("env")).toBe("dynamic");
+    expect(new URLSearchParams(window.location.search).get("sound")).toBe("0");
+    expect(window.location.hash).toBe("#research-laboratory");
+    expect(window.history.length).toBe(before);
+  });
+
+  it("leaves an address without env untouched when the visitor switches environment", () => {
+    window.history.replaceState(null, "", "/internships/wireless-ev-charging-digital-twin");
+    unmount = render(<TwinApp />).unmount;
+    act(() => openEnvironment("parking"));
+    expect(window.location.search).toBe("");
+  });
+
+  it("opens the environment of the entry that back or forward lands on", () => {
+    window.history.replaceState(null, "", link("parking"));
+    unmount = render(<TwinApp />).unmount;
+    act(() => {
+      window.history.pushState(null, "", link("autonomous"));
+      window.dispatchEvent(new PopStateEvent("popstate"));
+    });
+    expect(useTwin.getState().environment).toBe("autonomous");
   });
 });

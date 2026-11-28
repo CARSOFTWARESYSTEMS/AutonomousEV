@@ -2,7 +2,7 @@
 // Presentation links: applying a link's options when the page opens, the one
 // "Begin with sound" control the browser requires before full screen and
 // audio, and the Share popover that builds such a link.
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { Check, Copy, Link2, Play, Volume2, X } from "lucide-react";
 import { ENVIRONMENTS, type EnvironmentId } from "@/lib/wireless-charging/content";
 import { enterFullscreen } from "../state/fullscreen";
@@ -14,7 +14,39 @@ import lab from "./lab.module.css";
 /** Pending audio and full-screen requests from a link, released by the viewer's first action. */
 let pending: LaunchOptions | null = null;
 
-/** Applies a presentation link's options once, after the laboratory has mounted. */
+/**
+ * Opens the environment a link names (`?env=`) before the first client paint,
+ * whether or not the browser has WebGL, and keeps the address in step: once a
+ * link has named an environment, switching environments updates `env` (no new
+ * history entry), so a refresh or a copied address reopens what is on screen,
+ * and back/forward to an entry with another `env` opens that one.
+ */
+export function useLaunchEnvironment() {
+  useLayoutEffect(() => {
+    const o = parseLaunch(window.location.search);
+    if (o?.env && !o.demo && useTwin.getState().environment !== o.env) openEnvironment(o.env);
+  }, []);
+  useEffect(() => {
+    const unsubscribe = useTwin.subscribe((s, prev) => {
+      if (s.environment === prev.environment || s.demo.active || s.handover) return;
+      const url = new URL(window.location.href);
+      if (!url.searchParams.has("env") || url.searchParams.get("env") === s.environment) return;
+      url.searchParams.set("env", s.environment);
+      window.history.replaceState(window.history.state, "", url);
+    });
+    const onPop = () => {
+      const o = parseLaunch(window.location.search);
+      if (o?.env && !o.demo && o.env !== useTwin.getState().environment) openEnvironment(o.env);
+    };
+    window.addEventListener("popstate", onPop);
+    return () => {
+      unsubscribe();
+      window.removeEventListener("popstate", onPop);
+    };
+  }, []);
+}
+
+/** Applies a presentation link's other options once, after the laboratory has mounted (the environment is applied earlier, by useLaunchEnvironment). */
 export function useLaunchLink(enabled: boolean) {
   const [gate, setGate] = useState(false);
   useEffect(() => {
@@ -24,7 +56,6 @@ export function useLaunchLink(enabled: boolean) {
     pending = o;
     if (o.quality) useTwin.setState({ quality: o.quality });
     useTwin.setState({ captions: o.captions });
-    if (o.env && !o.demo) openEnvironment(o.env);
     // A full-window layer needs no permission; native full screen waits for the viewer's tap.
     if (o.fullscreen) useTwin.setState({ fullscreen: "overlay" });
     if (o.demo) startDemo();

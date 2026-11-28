@@ -13,7 +13,7 @@ Results measured in this phase are given with their seed and conditions. Nothing
 
 ### Automated checks (`smart-parking/checks.ts`)
 
-The 38 checks run in `npx vitest run src/lib/wireless-charging` (each as its own test in `engine.test.ts`) and in the visitor's browser from Engineering Assurance, beside the twin's 32 original checks: 70 in all.
+The 39 checks run in `npx vitest run src/lib/wireless-charging` (each as its own test in `engine.test.ts`) and in the visitor's browser from Engineering Assurance, beside the twin's 32 original checks: 71 in all.
 
 | ID | Check |
 |---|---|
@@ -29,6 +29,7 @@ The 38 checks run in `npx vitest run src/lib/wireless-charging` (each as its own
 | SP-A10 | Forecast baselines on a known periodic history |
 | SP-A11 | k-out-of-n sensor availability and uncertainty propagation |
 | SP-A12 | Robust anomaly statistic |
+| SP-A13 | Replicated comparisons: common random numbers, equal resources and interval coverage |
 | SP-B01 | A vehicle is detected and opens exactly one session |
 | SP-B02 | An uncertain or unknown identity is never authorised automatically |
 | SP-B03 | Allocation respects every hard constraint |
@@ -61,11 +62,13 @@ The 38 checks run in `npx vitest run src/lib/wireless-charging` (each as its own
 | Suite | Covers |
 |---|---|
 | `src/lib/wireless-charging/engine.test.ts` | Every check (twin and Smart Parking), and every check's models registered |
-| `src/lib/wireless-charging/smart-parking/smart-parking.test.ts` | A complete, closed state machine; plates that validate in their own region's format; any layout size; the versioned MQTT namespace; a 10-minute demonstration run with no refused transition and nothing LIVE; consistent registration of components, models, checks and requirements; policy comparison on common random numbers; every study's values plausible; the Station's `arrive-parked`, `stop` and `holdAfterComplete` |
+| `src/lib/wireless-charging/smart-parking/smart-parking.test.ts` | A complete, closed state machine; plates that validate in their own region's format; any layout size; the versioned MQTT namespace; a 10-minute demonstration run with no refused transition and nothing LIVE; consistent registration of components, models, checks and requirements; policy comparison on common random numbers; every study's values plausible; the Station's `arrive-parked`, `stop` and `holdAfterComplete`; the replicated research model: determinism, common random numbers, no bays lost to protection, physical energy bounds, Student-t intervals, fault recovery |
 | Other `src/lib/wireless-charging/*.test.ts` | The Station and the other environments' models, unchanged |
-| `src/components/wireless-ev-twin/lab/laboratory.test.tsx` | The 18 Smart Parking stages; the gate flow with the QR credential; Explore Wireless Charging and Return; the share link |
+| `src/components/wireless-ev-twin/lab/laboratory.test.tsx` | The 18 Smart Parking stages; the gate flow with the QR credential; Explore Wireless Charging and Return; the share link; direct links for all five environments (neutral prerendered HTML, environment applied before the first paint without WebGL, the address kept in step, back and forward) |
 | `src/app/internships/wireless-ev-charging-digital-twin/page.test.tsx` | The rail: *01 Smart Parking* first and enabled; the other environments unchanged |
-| `scripts/test-wireless-ev-twin.cjs` (`npm run test:wireless-ev-twin:e2e`) | A production build in Chromium: environment switching including 01, six Smart Parking checks (stages, views, operator panel, hand-over, 48 bays), frame rate, memory, screenshots |
+| `scripts/test-wireless-ev-twin.cjs` (`npm run test:wireless-ev-twin:e2e`) | A production build in Chromium, 20 checks: environment switching including 01, Smart Parking stages, views, operator panel, hand-over and 48 bays, direct links for all five environments with no other environment shown first, the replicated research comparison, frame rate, memory, screenshots |
+| `scripts/smart-parking-research.test.ts` | Regenerates SMART_PARKING_EXPERIMENT_RESULTS.md and its JSON (`SP_RESEARCH_WRITE=1`); skipped in the ordinary run |
+| `scripts/profile-smart-parking.cjs` | Draw calls, triangles, frame-time percentiles, main-thread time and heap for 6–48 bays and each quality tier on a production build |
 
 ## 2. Research evaluation against the manual baseline (SP-S05)
 
@@ -73,25 +76,24 @@ All studies are in `experiments.ts`, seeded and reproducible. Each policy sees t
 
 The **manual baseline** is a facility without guidance and without protected wireless bays. Drivers take the first free bay they pass, cruising the aisle. One pass in four misses and needs a loop of the aisle. This baseline is a declared behavioural assumption, not an observation.
 
-### 2.1 Allocation policies (`comparePolicies`: 12 bays, 7 arrivals/h, commuter profile, 10 h, seed 4242)
+### 2.1 Allocation and charging policies: replicated comparison (SP-RES-002)
 
-Columns: **Parked** — vehicles parked; **Util.** — utilisation; **Wait** — mean wait; **Search** — gate to bay; **Walk** — walk to the pedestrian exit; **Charging** — EVs charged of those that asked; **Energy** — energy delivered; **Abandoned** — left the queue.
+The earlier single-run comparison (seed 4242, 7 arrivals/h) was **not a fair test**. With wireless bays protected for the allocation-engine policies, the policies that were not charging-aware lost the four wireless bays for conventional cars, while the manual baseline could still use them. It is kept in the interface only as one illustrative day. The comparison to cite is now `research.ts` (SP-RES-002), generated in SMART_PARKING_EXPERIMENT_RESULTS.md:
 
-| Policy | Parked | Util. | Wait | Search | Walk | Charging | Energy | Abandoned |
-|---|---|---|---|---|---|---|---|---|
-| Manual baseline | 35 | 75.0 % | 66 s | 24.3 s | 19.4 m | 0 / 15 | 0 kWh | 9 |
-| First available | 30 | 57.0 % | 11 s | 12.2 s | 17.9 m | 3 / 15 | 31 kWh | 14 |
-| Nearest | 30 | 57.0 % | 11 s | 12.2 s | 17.9 m | 3 / 15 | 31 kWh | 14 |
-| Reservation priority | 30 | 57.0 % | 11 s | 12.2 s | 17.9 m | 3 / 15 | 31 kWh | 14 |
-| Charging-aware | 37 | 73.1 % | 27 s | 12.9 s | 18.8 m | 12 / 15 | 202 kWh | 7 |
-| Multi-objective (default) | 37 | 73.1 % | 27 s | 12.9 s | 18.5 m | 12 / 15 | 202 kWh | 7 |
+- **Six policies:** manual, first available, nearest available, charging-compatible, SOC-aware and energy-aware.
+- **Identical infrastructure for each:** the same bays usable by every vehicle, the same 11 kW charger per wireless bay, the same PV, grid limit and tariff.
+- **Paired, replicated runs:** the same arrivals, vehicles and patience (common random numbers), over 50 seeds.
+- **Six scenarios:** normal demand (4/h), peak demand (7/h), charging-constrained, sensor faults, communication loss and charger outage.
+- **Statistics:** mean, SD, 5th, 50th and 95th percentiles, Student-t 95 % confidence intervals, paired differences against the manual baseline, and fault recovery against the same seed's fault-free day.
 
-Reading the table:
+Findings that hold at 50 seeds (95 % intervals in brackets; all simulated, synthetic demand, no real-world claim):
 
-- **Guidance roughly halves the search time** (24.3 s down to 12–13 s) under the declared cruising model.
-- **Protecting wireless bays has a cost.** With overflow disabled, the policies that are not charging-aware leave the four wireless bays to compatible EVs but do not steer those EVs into them. Conventional cars then lose a third of the bays, and fewer vehicles park than under the manual baseline: 30 against 35.
-- **Charging-aware and multi-objective policies beat the baseline on every measure here:** more vehicles parked, 12 of 15 charging requests served against 0, and fewer vehicles abandoning the queue.
-- **Three policies give identical results here.** The event-level model has no reservations, so first-available, nearest and reservation priority choose the same bays in this run. They differ in the facility simulation, where reservations and walking distances matter.
+- **Guidance shortens the search, not the queue.** Every guided policy cuts the gate-to-bay search time by about 10 s against manual parking (−9.7 to −10.2 s, intervals within ±0.6 s). Queue waiting and throughput are unchanged, because the bays, not the search, limit capacity in this model.
+- **Charging awareness is what serves charging.** Under normal demand the share of charging requests that get a working wireless bay rises from 18 % (manual) to 79 % [74, 84] (charging-compatible), and to 85 % [81, 88] (SOC-aware). Energy delivered rises by 75 kWh [65, 85] and 85 kWh [75, 94] a day against manual parking.
+- **SOC-aware allocation trades throughput for charging.** Keeping the last wireless bay for a high-need vehicle serves more charging, but parks slightly fewer vehicles: −0.06 vehicles/h [−0.08, −0.04] at normal demand and −0.11 [−0.14, −0.08] at peak.
+- **Energy-aware scheduling lowers the peak.** With the same allocation as charging-compatible, the mean peak grid import falls from 23.1 to 16.8 kW at normal demand. Energy delivered falls by about 3 %, from 99.4 to 96.2 kWh. Under the 20 kW constrained site, charging-compatible and SOC-aware allocation reach the 20 kW limit on every seed; energy-aware peaks at 18.3 kW [17.7, 18.9].
+- **Sensor faults cost the guided policies capacity, and manual parking none.** Two bays reading *uncertain* for 3 h are never offered by the guided policies, while drivers still see them. Throughput falls by 0.05–0.11 vehicles/h, about 3–6 extra queued vehicle-minutes. This is the price of the rule that uncertain bays are never assigned; recovery after the fault was immediate (0 min) on every seed.
+- **Charger outage.** Charging-aware policies route around the out-of-service chargers. Charging-compatible still serves 74 % [69, 79] of requests, against 15 % [12, 19] for manual parking.
 
 ### 2.2 Capacity (`capacityStudy`: 12 bays, queue 4, mean stay 2 h, seed 99)
 
@@ -177,7 +179,7 @@ These timings depend on the machine and vary between runs. They show that alloca
 2. **Baseline:** the manual baseline and the simplest policy (first available).
 3. **Controlled inputs:** layout, arrival rate and profile, vehicle mix, stay distribution, queue, patience and seed, recorded in the run's parameters.
 4. **Common random numbers** across the policies being compared.
-5. **Replications:** at least 30 seeds for any claim. The single-seed tables above show the method, not a statistically settled result. Report the mean, the standard deviation and a 95 % interval (t-distribution), and use paired differences between policies.
+5. **Replications:** at least 30 seeds for any claim; the generated results use 50. The single-seed tables in §2.2–§2.6 show the method, not a statistically settled result. Report the mean, the standard deviation and a 95 % interval (t-distribution), and use paired differences between policies. SMART_PARKING_EXPERIMENT_RESULTS.md reports the replications each metric would need for a ±5 % half-width.
 6. **Sensitivity:** vary each declared assumption, such as the cruising model, patience, stay shape and receiver share, and report whether the ranking survives.
 7. **Validity limits:** synthetic demand, a declared driver behaviour and simulated sensors. No result transfers to a real site until it is repeated with that site's data.
 
@@ -231,8 +233,8 @@ These timings depend on the machine and vary between runs. They show that alloca
 
 | Criterion | Status |
 |---|---|
-| All 38 Smart Parking checks pass in tests and in the browser | Done |
+| All 39 Smart Parking checks pass in tests and in the browser | Done |
 | Unit, interface, page and end-to-end suites pass; existing environments unchanged | See SMART_PARKING_IMPLEMENTATION_REPORT.md §3 |
-| Every baseline requirement traced; generated matrix current | Done (65 requirements) |
+| Every baseline requirement traced; generated matrices current | Done (68 requirements; SMART_PARKING_EVIDENCE_MATRIX.md) |
 | Documentation set complete | Done |
 | Visual acceptance by the EV.ENGINEER™ team | Pending |

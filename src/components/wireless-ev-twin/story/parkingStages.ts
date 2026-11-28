@@ -83,7 +83,7 @@ export const PARKING_STAGES: Stage[] = [
   {
     id: "sp-recognition",
     env: "parking",
-    title: "AI vehicle recognition",
+    title: "AI vehicle recognition (simulated)",
     objective: "See the plate read on the edge computer, and how sure it is.",
     explanation: "The recognition camera captures the plate; the edge gateway runs detection, plate localisation and character recognition, validates the regional format and estimates confidence. Mud and grime cover most of this vehicle's front plate, so the read comes back below 0.90 — and an uncertain identity is never authorised on its own. The pipeline is SIMULATED with a declared error model: no image is processed in this web application.",
     narration: "Grime hides most of the plate. The read is uncertain, so it is not trusted on its own.",

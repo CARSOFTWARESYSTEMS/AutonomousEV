@@ -151,3 +151,41 @@ In every placement, barrier interlocks, the alarm controller and the Station's p
 | Anomaly detection | Injected faults (stuck, disconnected and noisy sensors; message loss) | Detection rate, false alarms per day, time to detect | Declared per fault class before the test |
 
 Dataset provenance, labelling procedure, licence and retention are recorded with every dataset. No dataset contains a real person's plate or face.
+
+## 8. What each "intelligent" component actually is (review, 27 Nov 2026)
+
+| Component | Model | Kind | Learned from data? |
+|---|---|---|---|
+| Vehicle identification | SP-AI-001 | **Simulated recognition**: a declared error model with stage latencies; no image is processed | No |
+| Access decision | SP-AI-001 (`decideAccess`) | **Deterministic rules** | No |
+| Occupancy fusion | SP-MATH-003 | **Statistical method**: Bayesian log-odds with declared sensor rates, debounce and hysteresis | No (declared rates) |
+| Slot allocation (multi-objective) | SP-MATH-004 | **Mathematical optimisation**: minimum of a normalised weighted cost under hard constraints | No |
+| Research policies (charging-compatible, SOC-aware) | SP-RES-002 | **Deterministic rules** | No |
+| Energy-aware charging | SP-RES-002, SP-MATH-009 | **Mathematical optimisation (heuristic)**: least-laxity scheduling under an import budget | No |
+| Demand forecast | SP-MATH-006 | **Statistical baselines**: seasonal naive, moving average, exponential smoothing | Fitted to synthetic history only |
+| Anomaly detection | SP-AI-003 | **Deterministic rules plus robust statistics** (median and MAD) | No |
+| Sensor reliability | SP-MATH-012 | **Statistical method**: k-out-of-n availability, uncertainty propagation | No |
+| **Actual machine-learning models** | — | **None** | — |
+
+The interface uses the same distinctions:
+
+- the recognition stage is titled *AI vehicle recognition (simulated)*;
+- the pipeline panel shows SIMULATED;
+- the forecast stage says *no machine-learning forecast is claimed*;
+- anomalies carry their method (*rule* or *robust statistics*).
+
+No accuracy figure in this repository describes a trained model.
+
+## 9. Future AI development roadmap
+
+Each step starts only when its data exists, and each must beat its deterministic baseline on held-out data before it is shown. Safety interlocks stay independent of every one.
+
+| Area | Step 1: data | Step 2: candidate models | Acceptance gate (declared before training) | Where it may act |
+|---|---|---|---|---|
+| Vehicle identification | Labelled POC images of synthetic plates across light, rain-spray and obstruction, split by session; dataset card with provenance | A small detector and OCR running at the edge (quantised), compared with the simulated error model's assumptions | Plate accuracy ≥ 95 % and false accepts ≤ 0.1 % at the operating threshold, with Wilson intervals; edge latency measured | Proposes an identity; the access rule and fallbacks decide |
+| Occupancy estimation | Synchronised sensor streams with person-reviewed ground truth (≥ 200 events per bay type) | Learned fusion weights or a small classifier over the three sensors, against Bayesian fusion | Better decided-state accuracy at an equal or lower uncertain share; zero false *vacant* at allocation | Bay state; an uncertain bay is still never assigned |
+| Demand forecasting | ≥ 4 weeks of POC occupancy and arrivals | Gradient-boosted or small sequence models with calendar features | Lower MAE than the best baseline on held-out weeks, with confidence intervals | Operator information and reservations; never access control |
+| Allocation optimisation | Replicated simulation studies (SP-RES-002), then POC logs | Optimisation with learned demand inputs, or reinforcement learning trained in simulation | Beats the charging-compatible and energy-aware rules on paired seeds across all six scenarios, with no fairness loss | Proposes a bay; hard constraints and atomic reservation decide |
+| Anomaly detection | POC logs with injected, labelled faults | Unsupervised models (isolation forest, autoencoder) against the rules | Higher detection at no more false alarms per day than the rules | Operator alerts only |
+
+Every model will get a registry entry (SP-AI-…) with its dataset card, version, evaluation report and limitations before it ships.

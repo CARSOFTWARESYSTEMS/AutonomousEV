@@ -140,7 +140,7 @@ export default function Timeline() {
   const stages = stagesFor(g.playlist);
   const stage = stages[g.index];
   return (
-    <div className={lab.timeline} role="group" aria-label="Playback and stages">
+    <div className={lab.timeline} role="group" aria-label="Playback and stages" data-label-obstacle>
       <div className={lab.tlGroup}>
         <button type="button" className={lab.tlBtn} onClick={prevStage} disabled={g.index === 0} aria-label="Previous stage">
           <ChevronLeft size={17} aria-hidden="true" />

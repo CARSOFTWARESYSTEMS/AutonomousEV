@@ -20,6 +20,7 @@ import { DEFAULT_LAYOUT, POC_LAYOUT } from "@/lib/wireless-charging/smart-parkin
 import { isTerminal, STATES } from "@/lib/wireless-charging/smart-parking/lifecycle";
 import { DETECTOR_RATES, type FusionStrategy } from "@/lib/wireless-charging/smart-parking/occupancy";
 import { PHYSICAL_PROGRAMME, SOFTWARE_PHASES } from "@/lib/wireless-charging/smart-parking/programme";
+import { type ExperimentResult, METRIC_INFO, type MetricKey, RESEARCH_POLICIES, runExperiment, type ScenarioId, SCENARIOS } from "@/lib/wireless-charging/smart-parking/research";
 import { REQUIREMENTS, type RequirementClass } from "@/lib/wireless-charging/smart-parking/requirements";
 import type { CommandAction } from "@/lib/wireless-charging/smart-parking/telemetry";
 import type { BayStatus, Region, VehicleProfile } from "@/lib/wireless-charging/smart-parking/types";
@@ -1126,7 +1127,7 @@ export function OperatorPanel() {
 type StudyId = "policies" | "capacity" | "fusion" | "recognition" | "iot" | "charging" | "energy" | "environment" | "pricing" | "forecast" | "scalability";
 
 const STUDIES: { id: StudyId; title: string; method: string }[] = [
-  { id: "policies", title: "Allocation policies against manual parking", method: "Event-level runs (same allocation engine and vehicles, common random numbers), 10 h commuter day, 7 arrivals/h. The manual baseline takes the first free bay a driver passes, with no guidance and no protection of wireless bays." },
+  { id: "policies", title: "Allocation policies against manual parking — one illustrative day", method: "One seeded event-level day (same allocation engine and vehicles), 10 h commuter day, 7 arrivals/h, wireless bays protected for the allocation-engine policies. A single run illustrates the mechanics only; for comparisons use the replicated comparison above, which gives every policy the same bays." },
   { id: "capacity", title: "Capacity and congestion: simulation against M/M/c/K", method: "400 h discrete-event runs per arrival rate, exponential and lognormal stays (CV 0.8), 12 bays, 4 waiting places, 2 h mean stay." },
   { id: "fusion", title: "Sensor fusion evaluation", method: "3 h Monte Carlo through the three sensor models, node debounce and each fusion strategy, with one faulty infrared sensor. Uncertain decisions are reported, never counted as right." },
   { id: "recognition", title: "Recognition thresholds (simulated recognition)", method: "4 000 synthetic arrivals per condition through the declared error model; share accepted automatically, wrongly accepted, and sent to RFID/QR/operator fallback." },
@@ -1193,12 +1194,93 @@ function runStudy(id: StudyId): { head: string[]; rows: (string | number)[][]; n
   }
 }
 
+/** Replicated, paired comparison of the research policies under one scenario (SP-RES-002), with 95 % confidence intervals and a JSON export. */
+function ReplicatedComparison({ onResult }: { onResult: (r: ExperimentResult) => void }) {
+  const [scenario, setScenario] = useState<ScenarioId>("normal");
+  const [n, setN] = useState(30);
+  const [busy, setBusy] = useState(false);
+  const [result, setResult] = useState<ExperimentResult | null>(null);
+  const run = () => {
+    setBusy(true);
+    window.setTimeout(() => {
+      const r = runExperiment(scenario, n);
+      setResult(r);
+      onResult(r);
+      setBusy(false);
+    }, 30);
+  };
+  const rows: MetricKey[] = ["throughputPerHour", "meanSearchS", "meanWaitS", "requestFulfilment", "energyDeliveredKWh", "peakGridKW", "solarUtilisation", "fairness", "revenueChargingINR"];
+  const pct = (k: MetricKey) => METRIC_INFO.find((m) => m.key === k)!.unit === "fraction";
+  const cell = (k: MetricKey, x: { mean: number; ciLow: number; ciHigh: number }) => {
+    if (!Number.isFinite(x.mean)) return "—";
+    const f = (v: number) => (pct(k) ? `${(v * 100).toFixed(0)}` : k === "revenueChargingINR" ? v.toFixed(0) : k === "throughputPerHour" || k === "fairness" ? v.toFixed(2) : v.toFixed(1));
+    return `${f(x.mean)} [${f(x.ciLow)}, ${f(x.ciHigh)}]`;
+  };
+  return (
+    <div className={sp.block}>
+      <h4 className={sp.title} style={{ fontSize: 14 }}>Replicated policy comparison</h4>
+      <p className={sp.note}>Six policies on identical bays, chargers, PV and grid limit, with the same arrivals and vehicles for each (paired seeds). Means with 95 % confidence intervals (Student t). Simulated on synthetic demand: no real-world claim. Method and the full 50-seed results: SMART_PARKING_EXPERIMENT_RESULTS.md.</p>
+      <div className={sp.row}>
+        <Select label="Scenario" value={scenario} options={SCENARIOS.map((x) => ({ id: x.id, label: x.name }))} onChange={(v) => setScenario(v as ScenarioId)} />
+        <Select label="Replications" value={String(n)} options={[10, 30, 50].map((x) => ({ id: String(x), label: `${x} seeds` }))} onChange={(v) => setN(Number(v))} />
+      </div>
+      <p className={sp.note}>{SCENARIOS.find((x) => x.id === scenario)!.text}</p>
+      <div className={sp.row}>
+        <button type="button" className={lab.researchBtn} onClick={run} disabled={busy}>
+          <Play size={14} aria-hidden="true" /> {busy ? "Running…" : result ? "Run again" : "Run"}
+        </button>
+        {result && (
+          <button type="button" className={lab.researchBtn} onClick={() => download(`smart-parking-${result.scenario.id}-${result.seeds.length}-seeds.json`, JSON.stringify(result, null, 1), "application/json")}>
+            <Download size={14} aria-hidden="true" /> Download results
+          </button>
+        )}
+      </div>
+      {result && (
+        <div className={sp.scroll}>
+          <table className={sp.table}>
+            <thead>
+              <tr>
+                <th scope="col">{`${result.scenario.name} · ${result.seeds.length} seeds`}</th>
+                {result.policies.map((p) => (
+                  <th key={p.policy} scope="col">{RESEARCH_POLICIES.find((x) => x.id === p.policy)!.name.replace(" (baseline)", "")}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((k) => {
+                const m = METRIC_INFO.find((x) => x.key === k)!;
+                return (
+                  <tr key={k}>
+                    <th scope="row">{`${m.name} (${pct(k) ? "%" : m.unit})`}</th>
+                    {result.policies.map((p) => (
+                      <td key={p.policy}>{cell(k, p.metrics[k])}</td>
+                    ))}
+                  </tr>
+                );
+              })}
+              {result.policies[0].recovery && (
+                <tr>
+                  <th scope="row">Extra queued vehicle-minutes from the fault</th>
+                  {result.policies.map((p) => (
+                    <td key={p.policy}>{cell("meanWaitS", p.recovery!.extraQueueVehMin)}</td>
+                  ))}
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function ParkingResearch() {
   const [results, setResults] = useState<Partial<Record<StudyId, ReturnType<typeof runStudy>>>>({});
   const [busy, setBusy] = useState<StudyId | null>(null);
   const [cls, setCls] = useState<RequirementClass | "all">("Original functional requirement");
   const [replay, setReplay] = useState<ReturnType<typeof replayRecording> | null>(null);
   const [recording, setRecording] = useState(false);
+  const [replicated, setReplicated] = useState<Partial<Record<ScenarioId, ExperimentResult>>>({});
   const run = (id: StudyId) => {
     setBusy(id);
     window.setTimeout(() => {
@@ -1206,7 +1288,7 @@ export function ParkingResearch() {
       setBusy(null);
     }, 30);
   };
-  const exportAll = () => download(`smart-parking-studies-${Date.now()}.json`, JSON.stringify({ format: "evengineer.parking.studies/1", dataMode: "SIMULATED", seedNote: "All studies are seeded and reproducible.", results }, null, 2), "application/json");
+  const exportAll = () => download(`smart-parking-studies-${Date.now()}.json`, JSON.stringify({ format: "evengineer.parking.studies/1", dataMode: "SIMULATED", seedNote: "All studies are seeded and reproducible.", results, replicated }, null, 2), "application/json");
   const toggleRecording = () => {
     const s = facility();
     if (s.recording) {
@@ -1234,6 +1316,7 @@ export function ParkingResearch() {
     <>
       <section className={lab.researchBlock}>
         <p className={lab.legendEyebrow}>Smart Parking studies · reproducible, seeded</p>
+        <ReplicatedComparison onResult={(r) => setReplicated((x) => ({ ...x, [r.scenario.id]: r }))} />
         {STUDIES.map((s) => (
           <div key={s.id} className={sp.block}>
             <h4 className={sp.title} style={{ fontSize: 14 }}>{s.title}</h4>

@@ -110,7 +110,7 @@ Production build (`next build` + `next start`), Apple M1, Chromium through Metal
 | Measure | Result |
 |---|---|
 | Frame rate, Smart Parking (12 bays, tour vehicle and background traffic) | **60 fps** |
-| Frame rate, 48-bay facility restarted in the same context (the interface maximum) | **50–58 fps** on Auto, High and Balanced; **60 fps** on Performance. See the note below |
+| Frame rate, 48-bay facility restarted in the same context (the interface maximum) | **60 fps** after the far level of detail (50–58 fps before; see below) |
 | Frame rate, Station, road, field, full screen and Performance tier (regression) | 60 fps each |
 | WebGL contexts | 1 (environment 01 shares the canvas) |
 | JS heap over the whole suite, including the environment switches and the 48-bay restart | 87 → 87 MB and 65 → 65 MB in two runs (no growth) |
@@ -119,16 +119,59 @@ Production build (`next build` + `next start`), Apple M1, Chromium through Metal
 | 3D share of the viewport | 77 % (83 % in full screen), unchanged |
 | Unattended 18-stage tour (development server, 1440 × 900) | Completed in ≈ 199 s with 0 console errors |
 
-**The 48-bay facility does not hold 60 fps on the M1 at the default quality.** One suite run read 60 fps. The final run, after the stage 11, 12 and 17 camera change, read 54. A dedicated re-measurement on the production build read:
+### 48 bays: profiled and fixed (27 Nov 2026, second pass)
 
-- 12 bays: 60 / 60 fps;
-- 48 bays in Engineer mode: 58 / 55 / 56 fps;
-- 48 bays in Explore: 52 / 54 fps;
-- 48 bays, High tier: 50 / 51 fps;
-- 48 bays, Balanced tier: 53 / 52 fps;
-- 48 bays, Performance tier: 60 / 60 fps.
+The first pass measured 50–58 fps at 48 bays and attributed it, without profiling, to the GPU. A profile showed otherwise.
 
-The load is on the GPU: the tier changes only pixels, shadows and post-processing. The likely cost is the 22 pooled vehicle models and the four-times-longer canopy in one view. It has not been profiled. The default 12-bay facility holds 60 fps.
+**Method.** `scripts/profile-smart-parking.cjs` runs against a production build. The setup and metrics:
+
+- **Set-up:** Apple M1, Chromium 151 on ANGLE Metal, 1440 × 900 at device pixel ratio 1; 6, 12, 24 and 48 bays in the establishing shot; a 5 s warm-up, then a 10 s window per configuration.
+- **Frame times:** sampled every animation frame.
+- **Draw calls and triangles:** counted by wrapping the WebGL draw functions.
+- **CPU:** main-thread time from the Chrome DevTools Protocol.
+- **Scene composition:** visible meshes, triangles and shadow casters per registered component, read from the development scene graph.
+
+The data is in `data/smart-parking-performance-profile.json`.
+
+**Findings:**
+
+- **Pixel ratio was not the cause.** At device pixel ratio 1 the High, Balanced and Performance tiers render the same number of pixels. The tiers differ in shadows (map size, or none) and post-processing.
+- **The pooled vehicles were.** At 48 bays the 22 pooled vehicle models were 757 of 1,445 visible meshes (52 %) and 3.5 M of 4.85 M triangles (73 %), with 253 of 410 shadow casters. That is about 34 draw calls and 160 k triangles a car, and 85 % of each car's triangles are in its four rim faces.
+- **Draw-call submission was the cost.** 1,852 draw calls a frame, with the shadow pass, took 8.7–16 ms of main-thread time per frame depending on machine load.
+
+**Change.** A distance-based level of detail in `three/smart-parking/Vehicles.tsx`:
+
+- **Far vehicles:** a pooled vehicle more than 48 m from the camera (back within 42 m: hysteresis, no flicker) is drawn by one shared instanced set: the same lofted body with its own paint, the shared glass, trim and lamp materials, and simple wheels. That is eight draw calls for all far vehicles together.
+- **Beyond the pool:** vehicles there, previously grey boxes, use the same set.
+- **Exempt:** the tour's focus vehicle is always the full model.
+- **Unchanged:** far cars stay clickable, and poses come from the simulation either way.
+
+At the default 12 bays the camera is within 48 m of every car, so nothing changes there.
+
+| A/B, same session (load average 5–7) | Before | After |
+|---|---|---|
+| 48 bays, Auto: fps / p95 frame | 56.9 / 32.5 ms | **60.1 / 17.1 ms** |
+| 48 bays, Balanced: fps / p95 frame | 52.7 / 33.4 ms | **60.1 / 17.0 ms** |
+| 48 bays: draw calls / triangles per frame | 1,852 / 7.8 M | **639 / 1.46 M** |
+| 48 bays: main-thread time per frame | 8.7 ms | **5.1 ms** |
+| 24 bays, Balanced: fps / p95 frame | 46.2 / 34.1 ms | **60.1 / 17.3 ms** |
+| 24 bays: draw calls / triangles per frame | 1,100 / 4.4 M | **412 / 0.72 M** |
+| 12 bays, Auto: draw calls / triangles | 666 / 2.39 M | 666 / 2.39 M (unchanged by design) |
+| Scene restart, 6–48 bays | 0.21–0.24 s | 0.21–0.24 s |
+
+**Full run after the change (6/12/24/48 bays × Auto, Balanced, Performance; load average about 4):**
+
+- Every configuration held 60 fps, with a p95 frame time of 17.0–17.7 ms.
+- There was one exception: 48 bays on Balanced read 56.6 fps (p95 32.6 ms) in one window. A repeat run read 60.1 fps with a p95 of 17.0 ms.
+- The browser acceptance suite now reads 60 fps at 48 bays (it read 54 before), with heap 69 → 69 MB.
+
+**Not changed, because the profile did not support it:**
+
+- Labels cost under 0.3 ms per frame (layout plus style).
+- React re-rendering is sampled at 2–8 Hz.
+- The simulation step costs about 34 µs at 12 bays.
+- GPU execution time was not isolated with timer queries. The draw-call, triangle and main-thread evidence, together with the tier comparison, was enough to locate the cost.
+- WebKit, Firefox and lower-powered GPUs were not measured.
 
 The Smart Parking scene is part of the lazily loaded 3D bundle, so it does not enter the route's first load. Two chunks that contain parking scene code measured 59 KB and 66 KB gzipped. They also contain shared twin code, so the parking share alone was not isolated, and the route's initial JavaScript was not re-measured in this phase.
 
@@ -146,7 +189,7 @@ Each charger's Station ran at its 0.25 s step, the step used above 5× speed. At
 
 | Addition | Control |
 |---|---|
-| Vehicles | A pool of 22 vehicles drawn with the shared vehicle model; the tour's focus vehicle always takes slot 0, the detailed model with its receiver pad. Vehicles beyond the pool are drawn as instanced low-detail bodies (one draw call, up to 600). The level of detail never changes a result |
+| Vehicles | A pool of 22 vehicles drawn with the shared vehicle model; the tour's focus vehicle always takes slot 0, the detailed model with its receiver pad. Pooled vehicles more than 48 m from the camera, and every vehicle beyond the pool, are drawn by one instanced far set (the same body, own paint, simple wheels; eight draw calls in all). The level of detail never changes a result |
 | Shelter, bays, markings, landscape | Merged geometries per material; canvas textures drawn once at start-up from deterministic noise |
 | Labels | DOM labels projected from anchors and sampled a few times a second; hidden below 720 px, where the bottom-sheet inspector carries the same information |
 | Chargers | Idle chargers are not stepped. The site power allowance is quantised to 500 W, so the Station does not re-solve its operating point every step |

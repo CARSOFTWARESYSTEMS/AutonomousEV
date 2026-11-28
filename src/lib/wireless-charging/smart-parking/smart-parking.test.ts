@@ -13,6 +13,7 @@ import { parseTopic, topic } from "./telemetry";
 import { PLATE_FORMATS, syntheticPlate, validPlate } from "./vehicles";
 import { PARKING_COMPONENTS } from "./components";
 import { REQUIREMENTS } from "./requirements";
+import { faultRecovery, RESEARCH_POLICIES, runExperiment, runResearch, SCENARIOS, seedList, summarise, t975 } from "./research";
 
 describe("Smart Parking engine", () => {
   it("defines a complete, closed session state machine", () => {
@@ -167,5 +168,63 @@ describe("Station commands added for the parking hand-over", () => {
     }
     expect(energised).toBe(false);
     expect(sim.state.phase).toBe("completed");
+  });
+});
+
+describe("replicated research comparisons (SP-RES-002)", () => {
+  const normal = SCENARIOS.find((s) => s.id === "normal")!;
+
+  it("is deterministic and gives every policy the same arrivals (common random numbers)", () => {
+    const a = runResearch("soc-aware", normal, 77);
+    const b = runResearch("soc-aware", normal, 77);
+    expect(b).toEqual(a);
+    const arrived = RESEARCH_POLICIES.map((p) => runResearch(p.id, normal, 77).arrived);
+    expect(new Set(arrived).size).toBe(1);
+  });
+
+  it("loses no bays to protection: with no EVs, charging-aware policies park exactly as many vehicles as nearest-bay guidance", () => {
+    const noEv = { ...SCENARIOS.find((s) => s.id === "peak")!, mix: { evShare: 0 } };
+    for (const seed of seedList(5)) {
+      const nearest = runResearch("nearest", noEv, seed);
+      for (const p of ["charging-compatible", "energy-aware"] as const) expect(runResearch(p, noEv, seed).parked).toBe(nearest.parked);
+    }
+  });
+
+  it("keeps energy and shares physical: delivered ≤ requested, solar use ≤ availability, peaks within the import limit", () => {
+    for (const s of SCENARIOS)
+      for (const p of RESEARCH_POLICIES) {
+        const m = runResearch(p.id, s, 5);
+        expect(m.energyDeliveredKWh).toBeLessThanOrEqual(m.energyRequestedKWh + 1e-9);
+        expect(m.pvUsedKWh).toBeLessThanOrEqual(m.pvAvailableKWh + 1e-9);
+        expect(m.peakGridKW).toBeLessThanOrEqual(s.gridLimitW / 1000 + 1e-6);
+        expect(m.chargingServed).toBeLessThanOrEqual(m.chargingAsked);
+        expect(m.utilisation).toBeLessThanOrEqual(1);
+      }
+  });
+
+  it("energy-aware scheduling lowers the mean peak import against the same allocation without it (paired seeds)", () => {
+    const seeds = seedList(12);
+    const peak = (p: "charging-compatible" | "energy-aware") => seeds.reduce((a, s) => a + runResearch(p, normal, s).peakGridKW, 0) / seeds.length;
+    expect(peak("energy-aware")).toBeLessThan(peak("charging-compatible"));
+  });
+
+  it("summarises with Student-t confidence intervals and measures fault recovery against the fault-free day", () => {
+    for (const [df, t] of [[4, 2.776], [10, 2.228], [29, 2.045], [49, 2.010]] as const) expect(Math.abs(t975(df) - t) / t).toBeLessThan(0.005);
+    const s = summarise([1, 2, 3, 4, 5]);
+    expect(s.mean).toBe(3);
+    expect(s.sd).toBeCloseTo(Math.sqrt(2.5), 12);
+    expect(s.ciHigh - s.mean).toBeCloseTo((t975(4) * Math.sqrt(2.5)) / Math.sqrt(5), 12);
+    expect(s.p50).toBe(3);
+    const r = faultRecovery([0, 2, 3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], new Array(16).fill(0), 3);
+    expect(r.extraQueueVehMin).toBe(9);
+    expect(r.recoveryMin).toBe(2);
+  });
+
+  it("runs a scenario's paired comparison with recovery for fault scenarios", () => {
+    const r = runExperiment("charger-outage", 4);
+    expect(r.dataMode).toBe("SIMULATED");
+    expect(r.policies).toHaveLength(RESEARCH_POLICIES.length);
+    expect(r.policies.every((p) => p.recovery && p.metrics.throughputPerHour.n === 4)).toBe(true);
+    expect(r.policies.find((p) => p.policy === "manual")!.vsManual.throughputPerHour.mean).toBe(0);
   });
 });

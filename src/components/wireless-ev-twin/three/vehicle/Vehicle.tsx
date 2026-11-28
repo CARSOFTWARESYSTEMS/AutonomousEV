@@ -94,6 +94,12 @@ const WHEELS = [
   { x: -WHEEL_X, side: -1, front: false },
 ];
 
+/** Wheel centres in the vehicle frame (x forward, z left), for the far level of detail. */
+export const WHEEL_CENTRES = WHEELS.map((w) => [w.x, WHEEL_RADIUS, (w.side * TRACK) / 2] as const);
+
+/** The shared lofted body (six material groups: paint, glass, trim, front lamps, rear lamps, seams) for a far level of detail. */
+export const sharedBodyGeometry = () => assets().body.geometry;
+
 const damp = (a: number, b: number, rate: number, dt: number) => a + (b - a) * (1 - Math.exp(-rate * dt));
 
 export function Vehicle({ pose, paint = "#e4e7ea", detailed = false, rxTurns = DEFAULT_RX_PAD.turns, rxGlow, rxHeat, batteryHeat, bodyId, hideWheels, scale = 1 }: VehicleProps) {

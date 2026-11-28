@@ -1,6 +1,6 @@
 # Smart Parking — model registry
 
-Generated from `src/lib/wireless-charging/registry.ts` (the 20 SP- models of environment 01, registered beside the twin's own). Smart Parking reuses, rather than duplicates, the existing models it depends on: WPT-SIM-001 (the Station, one instance per wireless bay), WPT-CTRL-001 (its charging state machine and interlocks), WPT-BAT-001 (the battery), WPT-GRID-001 (the daily PV shape), WPT-IOT-001 (the link model) and WPT-AV-001 (the kinematic bicycle).
+Generated from `src/lib/wireless-charging/registry.ts` (the 21 SP- models of environment 01, registered beside the twin's own). Smart Parking reuses, rather than duplicates, the existing models it depends on: WPT-SIM-001 (the Station, one instance per wireless bay), WPT-CTRL-001 (its charging state machine and interlocks), WPT-BAT-001 (the battery), WPT-GRID-001 (the daily PV shape), WPT-IOT-001 (the link model) and WPT-AV-001 (the kinematic bicycle).
 
 | ID | Model | Domain | Fidelity | Status | Checks | Implementation |
 |---|---|---|---|---|---|---|
@@ -24,5 +24,6 @@ Generated from `src/lib/wireless-charging/registry.ts` (the 20 SP- models of env
 | SP-IOT-001 | MQTT communication model | Smart parking · IoT | F1 | Tested | SP-B08, SP-B19, SP-B20 | `src/lib/wireless-charging/smart-parking/telemetry.ts` |
 | SP-INT-001 | Parking ↔ wireless charging session adapter | Smart parking · integration | F2 | Tested | SP-B11, SP-B12, SP-B13, SP-B14, SP-B15 | `src/lib/wireless-charging/smart-parking/charging.ts` |
 | SP-RES-001 | Event-level research simulation | Smart parking · research | F1 | Tested | SP-A09 | `src/lib/wireless-charging/smart-parking/experiments.ts` |
+| SP-RES-002 | Replicated research comparisons | Smart parking · research | F1 | Tested | SP-A13, SP-A09 | `src/lib/wireless-charging/smart-parking/research.ts` |
 
 Each model's equations, SI inputs and outputs, assumptions, validity, numerical method, dependencies and limitations are in MODEL_REGISTRY.md. Validation status: none is experimentally validated — no measurements exist yet.

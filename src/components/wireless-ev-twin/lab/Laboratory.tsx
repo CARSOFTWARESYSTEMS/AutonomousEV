@@ -29,6 +29,7 @@ import { RoadAnatomy } from "./RoadAnatomy";
 import { IotInspector } from "./IotInspector";
 import { METRICS, type MetricId } from "./metrics";
 import Timeline from "./Timeline";
+import { useHydrated } from "../state/hydrated";
 import { ExploreChargingButton, HandoverBanner, ParkingLegend, ParkingRoles, ParkingSceneLabels } from "../env/ParkingPanels";
 import ui from "../twin.module.css";
 import lab from "./lab.module.css";
@@ -56,6 +57,7 @@ export function renderSettings(choice: QualityChoice, device: QualitySettings): 
 
 function Rail() {
   const env = useTwin((s) => s.environment);
+  const hydrated = useHydrated();
   const mode = useTwin((s) => s.mode);
   const panel = useTwin((s) => s.panel);
   const preview = useTwin((s) => s.preview);
@@ -81,7 +83,7 @@ function Rail() {
           const Icon = ICONS[e.id];
           return (
             <li key={e.id}>
-              <button type="button" aria-current={env === e.id ? "true" : undefined} onClick={() => env !== e.id && openEnvironment(e.id)} title={`${e.number} ${e.name}`}>
+              <button type="button" aria-current={hydrated && env === e.id ? "true" : undefined} onClick={() => env !== e.id && openEnvironment(e.id)} title={`${e.number} ${e.name}`}>
                 <Icon size={18} aria-hidden="true" />
                 <span className={lab.railNum}>{e.number}</span>
                 <span className={lab.railLabel}>{e.short}</span>
@@ -166,7 +168,7 @@ function StageCard() {
   const stage = stages[g.index];
   if (!g.active || !stage || !g.stageId)
     return (
-      <div className={lab.stageCard}>
+      <div className={lab.stageCard} data-label-obstacle>
         <p className={lab.eyebrow}>{`${meta.number} · ${meta.short}`}</p>
         <h2 className={lab.stageTitle}>{meta.name}</h2>
         <p className={lab.objective}>{`${VIEW_MODES.find((v) => v.id === view)?.label ?? ""} view${g.stageId ? " · guided sequence paused" : ""}`}</p>
@@ -176,7 +178,7 @@ function StageCard() {
     );
   const chapter = demo ? chapterOf(g.index) : -1;
   return (
-    <div className={lab.stageCard} data-demo={demo || undefined}>
+    <div className={lab.stageCard} data-demo={demo || undefined} data-label-obstacle>
       <p className={lab.eyebrow}>{demo ? `Chapter ${chapter + 1} of ${DEMO_CHAPTERS.length} · ${DEMO_CHAPTERS[chapter].title}` : `${meta.number} · ${meta.short} · Stage ${g.index + 1} of ${stages.length}`}</p>
       <h2 className={lab.stageTitle}>{stage.title}</h2>
       <p className={lab.objective}>{stage.objective}</p>
@@ -235,7 +237,7 @@ function Instruments() {
   );
   const values = useSampled(read, 4);
   return (
-    <dl className={lab.instruments} aria-label="Instruments" aria-live="off">
+    <dl className={lab.instruments} aria-label="Instruments" aria-live="off" data-label-obstacle>
       {values.map((v) => {
         const m = METRICS[v.id];
         return (
@@ -261,7 +263,7 @@ function Caption() {
   const stage = g.active && g.stageId ? stagesFor(g.playlist)[g.index] : null;
   if (!captions || !stage) return null;
   return (
-    <p className={lab.caption} aria-live="polite">
+    <p className={lab.caption} aria-live="polite" data-label-obstacle>
       {stage.narration}
     </p>
   );
@@ -533,13 +535,22 @@ export default function Laboratory({ caps }: { caps: Capabilities | null }) {
             <i />
           </div>
         )}
-        <StageCard />
-        <Instruments />
-        <ProposedPreview />
+        {/* Environment-specific chrome waits for the client: the prerendered HTML cannot know which environment a link opens. */}
+        {caps !== null && (
+          <>
+            <StageCard />
+            <Instruments />
+            <ProposedPreview />
+          </>
+        )}
         {three && <Legends />}
         {three && <HoverLabel />}
-        <Caption />
-        <Timeline />
+        {caps !== null && (
+          <>
+            <Caption />
+            <Timeline />
+          </>
+        )}
       </div>
       {!demo && <InspectorPanel />}
     </div>

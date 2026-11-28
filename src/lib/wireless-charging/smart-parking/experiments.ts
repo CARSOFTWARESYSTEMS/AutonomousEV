@@ -4,7 +4,9 @@
 // generator and reservation rules as the facility — without vehicle motion,
 // so a whole day runs in milliseconds. Charging time in the event-level runs
 // comes from a declared surrogate (constant battery-side power, the Station's
-// rated 11 kW) that check SP-B09 compares with full Station sessions.
+// rated 11 kW) that check SP-A09 compares with full Station sessions. The
+// replicated, fault-aware comparisons with confidence intervals are in
+// research.ts (SP-RES-002).
 import { createRng } from "../math";
 import { runStationSession, DEFAULT_STATION_INPUTS } from "../station";
 import { allocate, type AllocationPolicy, type BayView, DEFAULT_WEIGHTS } from "./allocation";

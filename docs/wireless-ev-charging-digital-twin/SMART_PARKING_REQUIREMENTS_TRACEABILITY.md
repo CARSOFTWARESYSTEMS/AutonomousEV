@@ -2,9 +2,9 @@
 
 Generated from `src/lib/wireless-charging/smart-parking/requirements.ts`. Requirement → subsystem → hardware and software dependencies → model → 3D visualisation → implementation status → verification → evidence → physical deployment status. Baseline functional requirements (SP-R01–SP-R38) are kept in full and none is omitted; EV.ENGINEER™ extensions and the scalability, POC, commercial and supplementary items are listed separately. Nothing physical has been built, so no item is physically deployed or experimentally validated.
 
-Implementation status: Implemented 17 · Tested 31 · Designed 12 · Analytically verified 2 · Planned 2 · Blocked 1
+Implementation status: Implemented 17 · Tested 33 · Designed 13 · Analytically verified 2 · Planned 2 · Blocked 1
 
-Physical deployment status: Not started 59 · Planned 5 · Not applicable 1
+Physical deployment status: Not started 59 · Planned 6 · Not applicable 3
 
 ## Original functional requirement (38)
 
@@ -49,7 +49,7 @@ Physical deployment status: Not started 59 · Planned 5 · Not applicable 1
 | SP-R37 | Testing and performance evaluation | Verification | Laboratory instruments | Vitest, Playwright, in-browser checks | SP-SIM-001 | Engineering Assurance | Tested | SP-B21, SP-B22, SP-B23 | Software verification only; physical test procedures in SMART_PARKING_TEST_PLAN.md | Not started |
 | SP-R38 | Research documentation and engineering evidence | Research | — | docs/wireless-ev-charging-digital-twin/SMART_PARKING_*.md | — | Research mode | Implemented | — | Generated registries and the documentation set | Not started |
 
-## EV.ENGINEER™ engineering enhancement (17)
+## EV.ENGINEER™ engineering enhancement (19)
 
 | ID | Requirement | Subsystem | Hardware | Software | Model | 3D visualisation | Status | Verification | Evidence | Physical |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -70,6 +70,8 @@ Physical deployment status: Not started 59 · Planned 5 · Not applicable 1
 | SP-S04 | Three independent timelines (workshop, Phases 4A–4I, 24-month physical programme) | Programme | — | src/lib/wireless-charging/smart-parking/programme.ts | — | Research mode | Implemented | — | Programme data with milestones, deliverables, verification criteria and evidence | Not started |
 | SP-S05 | Research evaluation methods against a manual baseline | Research | — | src/lib/wireless-charging/smart-parking/experiments.ts · comparePolicies | SP-RES-001 | Research mode | Tested | SP-A09 | Manual baseline in every policy comparison; methods in SMART_PARKING_TEST_PLAN.md | Not started |
 | SP-S06 | Research governance and intellectual property records (private) | Governance | — | docs (template only) | — | — | Designed | — | SMART_PARKING_GOVERNANCE_TEMPLATE.md; nothing confidential in the public application | Not applicable |
+| SP-S08 | Reproducible research: fair baselines with equal resources, paired seeds, multiple replications, normal, peak, constrained and fault scenarios, confidence intervals and exportable results | Research | — | src/lib/wireless-charging/smart-parking/research.ts; ParkingPanels.tsx · ReplicatedComparison | SP-RES-002 | Research mode | Tested | SP-A13, smart-parking.test.ts | SMART_PARKING_EXPERIMENT_RESULTS.md (50 seeds, generated) and data/smart-parking-research-results.json | Not applicable |
+| SP-S09 | Direct links open the named environment from the first client paint (no other environment shown during initialisation), and the address follows environment changes | Interfaces | — | src/components/wireless-ev-twin/lab/Launch.tsx · useLaunchEnvironment; state/hydrated.ts | — | Laboratory shell | Tested | laboratory.test.tsx · direct environment links, scripts/test-wireless-ev-twin.cjs | Prerendered HTML carries no environment-specific laboratory content; five environment links verified in a browser | Not applicable |
 
 ## International scalability extension (3)
 
@@ -79,7 +81,7 @@ Physical deployment status: Not started 59 · Planned 5 · Not applicable 1
 | SP-X02 | Regional payment, data retention and data residency configuration | Internationalisation | — | Configuration interfaces | — | — | Designed | — | SMART_PARKING_INTERNATIONALIZATION.md; no residency is enforced in the simulation | Not started |
 | SP-X03 | Evaluation of parking data interoperability (APDS) and charging back-end interfaces | Interoperability | — | — | — | — | Planned | — | Listed for evaluation; not treated as real-time wireless charging control | Not started |
 
-## Physical POC requirement (4)
+## Physical POC requirement (5)
 
 | ID | Requirement | Subsystem | Hardware | Software | Model | 3D visualisation | Status | Verification | Evidence | Physical |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -87,6 +89,7 @@ Physical deployment status: Not started 59 · Planned 5 · Not applicable 1
 | SP-P02 | One isolated low-voltage wireless charging link | Prototype | LV coil pair, driver | WirelessChargingAdapter (designed) | WPT-SIM-001 | — | Designed | — | Hardware plan; safety plan | Planned |
 | SP-P03 | Hardware-in-the-loop and software-in-the-loop modes | Integration | POC hardware | src/lib/wireless-charging/smart-parking/adapters.ts | — | Operating-mode selector | Designed | — | Simulation (SIL) runs; HIL modes blocked until devices are connected | Planned |
 | SP-S02 | Installation and commissioning workflow with device-to-twin mapping | Deployment | — | docs | — | — | Designed | — | SMART_PARKING_HARDWARE_PLAN.md (site survey → validation; device identification scheme) | Planned |
+| SP-S10 | Hardware-connected twin: Simulation, Live telemetry, Replay and Comparison data modes with a telemetry-only path for the six-bay POC | Integration | POC gateway | Specification (SMART_PARKING_HARDWARE_INTEGRATION_SPEC.md); adapters.ts interfaces | — | Operating-mode selector (hardware modes blocked) | Designed | — | Interface specification; no hardware connected, nothing labelled LIVE | Planned |
 
 ## Future commercial deployment requirement (3)
 

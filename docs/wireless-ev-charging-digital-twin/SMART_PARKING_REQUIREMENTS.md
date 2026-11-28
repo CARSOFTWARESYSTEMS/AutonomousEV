@@ -16,7 +16,7 @@ The work is additive. The theme, the rail order and style, sign-in, the Station,
 |---|---|---|---|
 | Baseline functional requirements | SP-R01–SP-R38 | 38 | SMART_PARKING_REQUIREMENTS_TRACEABILITY.md |
 | EV.ENGINEER™ engineering extensions | SP-E01–SP-E12 | 12 | same |
-| Supplementary engineering requirements | SP-S01–SP-S07 | 7 | same (grouped with the class they extend) |
+| Supplementary engineering requirements | SP-S01–SP-S10 | 10 | same (grouped with the class they extend) |
 | International scalability | SP-X01–SP-X03 | 3 | same |
 | Physical POC | SP-P01–SP-P03 | 3 | same |
 | Future commercial deployment | SP-C01–SP-C02 | 2 | same |
@@ -53,7 +53,7 @@ All 38 are kept; none is merged away or omitted.
 
 Wireless and conventional bays; charging eligibility; charging-aware allocation; integration with the Station twin; shared battery and energy models; interactive 3D engineering visualisation; scientific parking models; research experiments; multi-site architecture; regional adapters (IN, US, CN); secure physical-prototype integration.
 
-## Supplementary requirements (SP-S01–SP-S07)
+## Supplementary requirements (SP-S01–SP-S10)
 
 | ID | Requirement | Where |
 |---|---|---|
@@ -64,6 +64,9 @@ Wireless and conventional bays; charging eligibility; charging-aware allocation;
 | SP-S05 | Research evaluation against a manual baseline | `experiments.ts`; SMART_PARKING_TEST_PLAN.md §3 |
 | SP-S06 | Private governance and IP records | SMART_PARKING_GOVERNANCE_TEMPLATE.md (template only) |
 | SP-S07 | Deployment validation plan | SMART_PARKING_TEST_PLAN.md §6 |
+| SP-S08 | Reproducible research with fair baselines, paired seeds, replications, scenarios, confidence intervals and export (added 27 Nov 2026) | `research.ts`; SMART_PARKING_EXPERIMENT_RESULTS.md |
+| SP-S09 | Direct links open the named environment from the first paint; the address follows environment changes (added 27 Nov 2026) | `Launch.tsx · useLaunchEnvironment`; laboratory tests |
+| SP-S10 | Hardware-connected twin data modes with a telemetry-only POC path (added 27 Nov 2026) | SMART_PARKING_HARDWARE_INTEGRATION_SPEC.md |
 
 ## Fixed decisions
 

@@ -3,21 +3,42 @@
 // heading, steering and wheel rotation come from the motion model (nothing
 // moves on its own). A fixed pool of the shared vehicle model is assigned to
 // live vehicles; the tour's focus vehicle gets the detailed model with its
-// receiver pad. Beyond the pool (large layouts) vehicles are drawn as
-// instanced low-detail bodies — the level of detail never changes a result.
+// receiver pad.
+//
+// Level of detail (profiled, 27 Nov 2026): at 48 bays the pooled models were
+// 52 % of the visible meshes and 73 % of the triangles, about 34 draw calls
+// and 160 k triangles a car (85 % of them in the rim faces), and the frame's
+// main-thread time was spent submitting them. A pooled vehicle farther than
+// FAR_ENTER from the camera is therefore drawn by one shared instanced set
+// instead (the same lofted body, its own paint, simple wheels: eight draw
+// calls for every far vehicle together), and returns to the full model inside
+// FAR_LEAVE (hysteresis, so it never flickers). Vehicles beyond the pool use
+// the same instanced set. The tour's focus vehicle is always the full model.
+// The level of detail never changes a result: poses come from the simulation
+// either way.
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
-import { BoxGeometry, CanvasTexture, Color, type Group, type InstancedMesh, Matrix4, MeshStandardMaterial, Quaternion, SRGBColorSpace, Vector3 } from "three";
-import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
+import { CanvasTexture, Color, CylinderGeometry, type Group, type InstancedMesh, type Material, Matrix4, MeshStandardMaterial, Quaternion, SRGBColorSpace, Vector3 } from "three";
 import { CLASSES } from "@/lib/wireless-charging/smart-parking/vehicles";
 import type { SimVehicle } from "@/lib/wireless-charging/smart-parking/facility";
 import { facilityIfBuilt } from "../../state/runtime";
 import { useTwin } from "../../state/store";
 import { setVisible } from "../mutate";
-import { Vehicle, type VehiclePose } from "../vehicle/Vehicle";
-import { BODY_FRONT as PLATE_X } from "../vehicle/body";
+import { bodyMaterials } from "../materials";
+import { pick } from "../pick";
+import { sharedBodyGeometry, Vehicle, type VehiclePose, WHEEL_CENTRES } from "../vehicle/Vehicle";
+import { BODY_FRONT as PLATE_X, WHEEL_RADIUS } from "../vehicle/body";
+import { panelGaps } from "../vehicle/details";
 
 const POOL = 22;
+/** Camera distance beyond which a pooled vehicle is drawn by the far set, m; and within which it returns to the full model. */
+export const FAR_ENTER = 48;
+export const FAR_LEAVE = 42;
+/** Most vehicles the far set draws (the interface allows 48 bays). */
+const FAR_MAX = 160;
+
+/** Pooled vehicles currently drawn by the far set. */
+const far = new Set<string>();
 
 interface SlotInfo {
   id: string;
@@ -106,10 +127,25 @@ function Slot({ index, info }: { index: number; info: SlotInfo }) {
     },
     [info.id],
   );
-  useFrame(() => {
+  const here = useMemo(() => ({ pose: { x: 0, z: 0, heading: 0, spin: 0 } as VehiclePose }), []);
+  useFrame(({ camera }) => {
     const v = facilityIfBuilt()?.vehicles.find((x) => x.profile.id === info.id);
-    setVisible(group.current, !!v && live(v));
+    if (!v || !live(v)) {
+      far.delete(info.id);
+      setVisible(group.current, false);
+      return;
+    }
+    let isFar = false;
+    if (index !== 0) {
+      const p = worldPose(v, here.pose);
+      const d = Math.hypot(camera.position.x - p.x, camera.position.y, camera.position.z - p.z);
+      isFar = far.has(info.id) ? d > FAR_LEAVE : d > FAR_ENTER;
+    }
+    if (isFar) far.add(info.id);
+    else far.delete(info.id);
+    setVisible(group.current, !isFar);
   });
+  useEffect(() => () => void far.delete(info.id), [info.id]);
   const covered = facilityIfBuilt()?.vehicles.find((x) => x.profile.id === info.id)?.profile.plateCovered;
   return (
     <group ref={group}>
@@ -119,45 +155,86 @@ function Slot({ index, info }: { index: number; info: SlotInfo }) {
   );
 }
 
-/** Instanced low-detail bodies for vehicles beyond the pool. */
-function Massing() {
-  const mesh = useRef<InstancedMesh>(null);
-  const geo = useMemo(() => mergeGeometries([new BoxGeometry(4.6, 0.75, 1.8).toNonIndexed().translate(0, 0.55, 0), new BoxGeometry(2.4, 0.55, 1.55).toNonIndexed().translate(-0.25, 1.15, 0)])!, []);
-  const mat = useMemo(() => new MeshStandardMaterial({ color: "#9aa3ad", metalness: 0.4, roughness: 0.45 }), []);
-  useEffect(() => () => {
-    geo.dispose();
-    mat.dispose();
-  }, [geo, mat]);
-  const tmp = useMemo(() => ({ m: new Matrix4(), q: new Quaternion(), p: new Vector3(), s: new Vector3(), up: new Vector3(0, 1, 0), c: new Color() }), []);
+/**
+ * The far level of detail: every pooled vehicle beyond FAR_ENTER and every
+ * vehicle beyond the pool, drawn from the shared lofted body with its own paint
+ * (instance colour), the shared glass, trim and lamp materials, and simple
+ * wheels. A click selects the vehicle it hit, as on the full model.
+ */
+function FarVehicles() {
+  const paint = useRef<InstancedMesh>(null);
+  const rest = useRef<InstancedMesh>(null);
+  const wheels = useRef<InstancedMesh>(null);
+  const ids = useRef<string[]>([]);
+  const res = useMemo(() => {
+    const geometry = sharedBodyGeometry();
+    const m = bodyMaterials("#ffffff");
+    panelGaps(m.paint);
+    const hidden = new MeshStandardMaterial({ visible: false });
+    // The body's six groups: paint, glass, trim, front lamps, rear lamps, seams. Only the paint takes the instance colour.
+    const paintMats: Material[] = [m.paint, hidden, hidden, hidden, hidden, hidden];
+    const restMats: Material[] = [hidden, m.glass, m.trim, m.lampFront, m.lampRear, m.seam];
+    const wheel = new CylinderGeometry(WHEEL_RADIUS, WHEEL_RADIUS, 0.24, 20).rotateX(Math.PI / 2);
+    const tyre = new MeshStandardMaterial({ color: "#16181b", roughness: 0.9, metalness: 0 });
+    return { geometry, paintMats, restMats, wheel, tyre, owned: [hidden, tyre, ...Object.values(m)] as Material[] };
+  }, []);
+  useEffect(
+    () => () => {
+      res.wheel.dispose();
+      for (const mat of new Set(res.owned)) mat.dispose();
+    },
+    [res],
+  );
+  const tmp = useMemo(() => ({ m: new Matrix4(), w: new Matrix4(), q: new Quaternion(), p: new Vector3(), s: new Vector3(), up: new Vector3(0, 1, 0), c: new Color(), pose: { x: 0, z: 0, heading: 0, spin: 0 } as VehiclePose }), []);
   useFrame(() => {
     const sim = facilityIfBuilt();
-    const m = mesh.current;
-    if (!m) return;
-    if (!sim) {
-      m.count = 0;
-      return;
-    }
-    const pooled = new Set(assigned);
+    const meshes = [paint.current, rest.current, wheels.current];
+    if (meshes.some((m) => !m)) return;
+    const [pm, rm, wm] = meshes as InstancedMesh[];
     let n = 0;
-    const pose: VehiclePose = { x: 0, z: 0, heading: 0, spin: 0 };
-    for (const v of sim.vehicles) {
-      if (!live(v) || pooled.has(v.profile.id) || n >= 600) continue;
-      worldPose(v, pose);
-      const k = CLASSES[v.profile.cls].scale;
-      tmp.q.setFromAxisAngle(tmp.up, pose.heading);
-      tmp.m.compose(tmp.p.set(pose.x, 0, pose.z), tmp.q, tmp.s.set(k, k, k));
-      m.setMatrixAt(n, tmp.m);
-      m.setColorAt(n, tmp.c.set(v.profile.paint));
-      n += 1;
+    ids.current.length = 0;
+    if (sim) {
+      const pooled = new Set(assigned);
+      for (const v of sim.vehicles) {
+        if (n >= FAR_MAX) break;
+        if (!live(v) || (pooled.has(v.profile.id) && !far.has(v.profile.id))) continue;
+        worldPose(v, tmp.pose);
+        const k = CLASSES[v.profile.cls].scale;
+        tmp.q.setFromAxisAngle(tmp.up, tmp.pose.heading);
+        tmp.m.compose(tmp.p.set(tmp.pose.x, 0, tmp.pose.z), tmp.q, tmp.s.set(k, k, k));
+        pm.setMatrixAt(n, tmp.m);
+        rm.setMatrixAt(n, tmp.m);
+        pm.setColorAt(n, tmp.c.set(v.profile.paint));
+        WHEEL_CENTRES.forEach(([x, y, z], w) => wm.setMatrixAt(n * 4 + w, tmp.w.makeTranslation(x, y, z).premultiply(tmp.m)));
+        ids.current.push(v.profile.id);
+        n += 1;
+      }
     }
-    m.count = n;
-    m.instanceMatrix.needsUpdate = true;
-    if (m.instanceColor) m.instanceColor.needsUpdate = true;
+    pm.count = n;
+    rm.count = n;
+    wm.count = n * 4;
+    for (const m of [pm, rm, wm]) m.instanceMatrix.needsUpdate = true;
+    if (pm.instanceColor) pm.instanceColor.needsUpdate = true;
   });
-  return <instancedMesh ref={mesh} args={[geo, mat, 600]} castShadow frustumCulled={false} />;
+  const handlers = useMemo(
+    () => ({
+      onClick: (e: { instanceId?: number; delta: number; stopPropagation: () => void }) => {
+        const id = e.instanceId !== undefined ? ids.current[e.instanceId] : undefined;
+        if (id) pick(`sp-veh:${id}`).onClick(e as never);
+      },
+    }),
+    [],
+  );
+  return (
+    <group>
+      <instancedMesh ref={paint} args={[res.geometry, res.paintMats, FAR_MAX]} castShadow receiveShadow frustumCulled={false} {...handlers} />
+      <instancedMesh ref={rest} args={[res.geometry, res.restMats, FAR_MAX]} frustumCulled={false} />
+      <instancedMesh ref={wheels} args={[res.wheel, res.tyre, FAR_MAX * 4]} frustumCulled={false} />
+    </group>
+  );
 }
 
-/** Ids currently drawn by the pool (read by the massing layer). */
+/** Ids currently drawn by the pool (read by the far set). */
 let assigned: string[] = [];
 
 export function ParkingVehicles() {
@@ -195,7 +272,7 @@ export function ParkingVehicles() {
   return (
     <group>
       {slots.map((info, i) => (info ? <Slot key={`${i}-${info.id}`} index={i} info={info} /> : null))}
-      <Massing />
+      <FarVehicles />
     </group>
   );
 }

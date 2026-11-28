@@ -1,6 +1,6 @@
 # Smart Parking — POC bill of materials
 
-**Status: Designed. Nothing has been procured.** The amounts are planning ceilings in Indian rupees, including GST, based on typical retail prices for hobby and educational electronics in India in November 2026. They are not quotations. Before anything is purchased:
+**Status: Designed. Nothing has been procured. Revised by the engineering review of 27 Nov 2026 (SMART_PARKING_POC_READINESS.md): the earlier ₹90,750 omitted shipping, transport, spares and level shifting.** The amounts are planning ceilings in Indian rupees, including GST, based on typical retail prices for hobby and educational electronics in India in November 2026. They are not quotations. Before anything is purchased:
 
 - each line needs at least two current quotations;
 - the purchase needs the EV.ENGINEER™ team's approval.
@@ -39,8 +39,8 @@ Every circuit in the POC is extra-low voltage (≤ 24 V DC), supplied from certi
 | B7 | Temperature and humidity sensors (SHT3x / BME280 class) | 2 | 500 | 1,000 | |
 | B8 | CO and gas/smoke sensor modules (MQ-7, MQ-2 class), prototype representation only | 2 | 300 | 600 | Not life-safety devices |
 | B9 | Spares and breakout boards | 1 lot | 530 | 530 | |
-| **C** | **Controllers, edge and network** | | | **19,000** | |
-| C1 | ESP32 development boards (bays, gates, environment, actuators, wireless link) | 8 | 450 | 3,600 | |
+| **C** | **Controllers, edge and network** | | | **19,900** | |
+| C1 | ESP32 development boards: 3 bay-pair nodes, 2 gate nodes, 1 environment node, 1 actuator node, 1 wireless-link node, 2 spares | 10 | 450 | 4,500 | Eight roles leave no spare; two are added (review, 27 Nov) |
 | C2 | Edge gateway: Raspberry Pi 5 (8 GB) with power supply, cooler and 128 GB storage | 1 | 12,900 | 12,900 | A Pi 4 (≈ ₹7,000 all in) runs everything but recognition is slower |
 | C3 | Wi-Fi router with VLAN support, or a small managed switch plus access point | 1 | 2,500 | 2,500 | |
 | **D** | **Actuators and displays** | | | **4,300** | |
@@ -49,32 +49,35 @@ Every circuit in the POC is extra-low voltage (≤ 24 V DC), supplied from certi
 | D3 | DC fans with MOSFET drivers | 4 | 200 | 800 | |
 | D4 | Dimmable LED strip lighting with driver | 1 | 600 | 600 | |
 | D5 | Buzzer and beacon LED | 1 | 200 | 200 | |
-| **E** | **Energy** | | | **8,800** | |
+| **E** | **Energy** | | | **9,400** | |
 | E1 | PV panel, 20 W | 1 | 2,000 | 2,000 | |
 | E2 | Small MPPT charge controller | 1 | 1,200 | 1,200 | |
 | E3 | LiFePO4 battery 12.8 V 6 Ah with BMS | 1 | 3,000 | 3,000 | Kept in a fire-resistant bag |
 | E4 | Current and voltage monitors (INA226 class): grid supply, PV, storage, wireless link | 4 | 250 | 1,000 | The twin's meters `METER-MAIN`, `PV-INV`, `BESS-01`, `WPT-*` |
-| E5 | 12 V 10 A certified power supply, buck converters | 1 lot | 1,600 | 1,600 | Mains enters only a certified adapter |
+| E5 | 12 V 10 A certified power supply; buck converters: 6 V 5 A for the servos, 5 V 3 A for the nodes and LEDs | 1 lot | 2,200 | 2,200 | Mains enters only a certified adapter. The Pi 5 keeps its own 27 W supply (C2). Power budget: SMART_PARKING_POC_READINESS.md §3 |
 | **F** | **Low-voltage wireless charging link (one bay)** | | | **15,000** | |
 | F1 | Litz wire, ≈ 30 m | 1 | 2,000 | 2,000 | Coil pair sized for ≤ 20 W at ≤ 24 V; the ≈ 80 mm receiver fits under a 1:16 chassis |
 | F2 | Ferrite tiles for both pads | 1 lot | 2,500 | 2,500 | |
 | F3 | Resonant film capacitors (series–series compensation) | 1 lot | 1,500 | 1,500 | |
 | F4 | Full-bridge driver board (MOSFETs, gate driver) with current limit | 1 | 2,500 | 2,500 | Alternative: a commercial low-power wireless module pair (≈ ₹1,500) gives a demonstration but no research telemetry |
 | F5 | Receiver rectifier, buck stage and load | 1 | 800 | 800 | |
-| F6 | NTC sensors and a current probe (ACS712 class) | 1 lot | 700 | 700 | Coil temperature and current telemetry |
+| F6 | NTC sensors and a DC current sensor (ACS712 class) | 1 lot | 700 | 700 | Coil temperature and DC-side current. The ACS712 bandwidth (≈ 80 kHz) cannot measure the coil current at the link frequency: coil RMS current needs a current transformer and an oscilloscope (§3, option) |
 | F7 | Current-limited bench supply, 30 V 5 A | 1 | 5,000 | 5,000 | The link is never fed from the battery or a mains rectifier |
 | **G** | **Miniature vehicles** | | | **5,900** | |
-| G1 | 1:16 RC car chassis, one fitted with the receiver pad | 3 | 1,800 | 5,400 | |
+| G1 | 1:16 RC car chassis (width ≤ 125 mm), one fitted with the receiver pad | 3 | 1,800 | 5,400 | Typical 1:16 RC turning radii (0.5–0.8 m) exceed the scaled 0.27 m: bay manoeuvres are placed by hand or on a guide (SMART_PARKING_POC_READINESS.md §2) |
 | G2 | Synthetic printed plates, matching the twin's formats | 1 lot | 500 | 500 | Never real registrations |
-| **H** | **Cabling, PCBs and consumables** | | | **7,000** | |
+| **H** | **Cabling, PCBs and consumables** | | | **7,300** | |
 | H1 | Custom carrier PCBs for the nodes, fabricated | 1 lot | 3,000 | 3,000 | |
-| H2 | Wires, connectors, terminal blocks, glands, heat-shrink, labels | 1 lot | 3,000 | 3,000 | Every cable labelled with its device id |
+| H2 | Wires, connectors, terminal blocks, glands, heat-shrink, labels; level shifters (74AHCT125) and dividers for the 5 V HC-SR04 echo and WS2812B data | 1 lot | 3,300 | 3,300 | Every cable labelled with its device id. The ESP32 is 3.3 V and not 5 V tolerant |
 | H3 | Gateway enclosure | 1 | 1,000 | 1,000 | |
 | **I** | **Safety** | | | **1,500** | |
 | I1 | Emergency stop (cuts the 12 V bus and the bench supply output), fuses, fire-resistant battery bag | 1 lot | 1,500 | 1,500 | |
-| | **Subtotal** | | | **82,500** | |
-| | **Contingency (10 %)** | | | **8,250** | Price changes, breakages |
-| | **Total ceiling** | | | **90,750** | **≤ ₹1,00,000; ₹9,250 headroom** |
+| **J** | **Procurement and logistics** | | | **4,500** | Added by the review |
+| J1 | Shipping and courier across suppliers | 1 lot | 2,500 | 2,500 | Retail prices include GST; delivery charges do not |
+| J2 | Modular split: two 1.22 × 1.22 m modules with alignment dowels, bolts, carry handles and padded covers | 1 lot | 2,000 | 2,000 | Fits a hatchback or SUV; see SMART_PARKING_POC_READINESS.md §4 |
+| | **Subtotal** | | | **88,800** | |
+| | **Contingency (10 %)** | | | **8,880** | Price changes, breakages |
+| | **Total ceiling** | | | **97,680** | **≤ ₹1,00,000; ₹2,320 headroom — tight: obtain quotations before committing** |
 
 Tools assumed to be available already: a multimeter, a soldering station, a 3D printer and a laptop. If they are not, they are funded separately and are not taken from this ceiling.
 

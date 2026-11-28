@@ -1,4 +1,5 @@
-// Regenerates docs/wireless-ev-charging-digital-twin/{FEATURE_COVERAGE,MODEL_REGISTRY}.md from the registries.
+// Regenerates docs/wireless-ev-charging-digital-twin/{FEATURE_COVERAGE,MODEL_REGISTRY}.md and the generated
+// SMART_PARKING_* files (traceability, evidence matrix, model registry, state machine) from the registries.
 // Run: node --experimental-strip-types scripts/wireless-twin-docs.mts
 import { writeFileSync } from "node:fs";
 import { FEATURES, FEATURE_COUNTS } from "../src/lib/wireless-charging/coverage.ts";
@@ -118,4 +119,92 @@ const sm = [
   "",
 ];
 writeFileSync(`${dir}/SMART_PARKING_STATE_MACHINE.md`, sm.join("\n"));
+// Requirement → architecture → model → implementation → test → evidence → status → limitation.
+const ARCH: Record<string, string> = {
+  Shelter: "Physical structure (HARDWARE_PLAN §1); 3D scene layer",
+  Sensing: "Edge: sensor nodes → MQTT → gateway ingestion → fusion (IOT_ARCHITECTURE §1–§5)",
+  IoT: "Device layer and MQTT gateway (IOT_ARCHITECTURE)",
+  Access: "Edge: local barrier controller and interlock (ARCHITECTURE §7; IOT_ARCHITECTURE §6)",
+  Identification: "Edge: recognition pipeline and access decision (AI_MODELS §1)",
+  Allocation: "Edge: allocation engine and atomic reservation (ARCHITECTURE §2)",
+  Billing: "Edge ledgers → cloud reporting (ARCHITECTURE §7)",
+  Edge: "Edge gateway (ARCHITECTURE §7)",
+  Cloud: "Cloud data platform, store and forward (ARCHITECTURE §7)",
+  Analytics: "Edge or cloud analytics (AI_MODELS §3–§4)",
+  Environment: "Local safety controller and actuators (HARDWARE_PLAN §8)",
+  Energy: "Facility energy dispatch and ledger (ARCHITECTURE §2)",
+  Guidance: "Local displays driven by the gateway (HARDWARE_PLAN §2)",
+  Interfaces: "Driver, operator and laboratory interfaces (ARCHITECTURE §7)",
+  Prototype: "Six-bay POC hardware (POC_BOM; HARDWARE_PLAN)",
+  Verification: "Test architecture (TEST_PLAN)",
+  Research: "Research layer (experiments.ts, research.ts)",
+  Charging: "Parking ↔ Station session adapter (CHARGING_INTEGRATION)",
+  Layout: "Facility model (layout.ts)",
+  Visualisation: "3D scene layer (THREE_D_ARCHITECTURE)",
+  Science: "Engine models (MODEL_REGISTRY)",
+  Architecture: "Platform architecture (ARCHITECTURE)",
+  Integration: "Hardware adapters and data modes (HARDWARE_INTEGRATION_SPEC)",
+  Internationalisation: "Regional configuration (INTERNATIONALIZATION)",
+  Interoperability: "External interfaces (INTERNATIONALIZATION §4)",
+  Programme: "Programme data (programme.ts)",
+  Governance: "Private records outside the repository",
+  Deployment: "Deployment process (HARDWARE_PLAN §3, §9; TEST_PLAN §6)",
+};
+const LIMIT: Record<string, string> = {
+  "SP-R01": "Representative geometry; no structural design or assessment",
+  "SP-R02": "No weathering or ingress model",
+  "SP-R08": "Recognition simulated by a declared error model; no images processed",
+  "SP-R09": "No trained model runs; accuracy unmeasured",
+  "SP-R12": "Format validation only; accuracy unmeasured",
+  "SP-R15": "Simulated broker; integrity tag is not cryptography; no real TLS",
+  "SP-R16": "Gateway behaviour simulated; no edge hardware",
+  "SP-R17": "No cloud platform built",
+  "SP-R18": "No server database or API for parking",
+  "SP-R19": "Baselines on synthetic history; no learned model",
+  "SP-R20": "Rules and robust statistics only; energy-consumption anomaly defined but not raised",
+  "SP-R21": "Simulated sources; prototype sensors are not life-safety devices",
+  "SP-R27": "Simulated providers; no payment processed",
+  "SP-R33": "Simulated payment; no credentials collected",
+  "SP-R36": "Nothing procured or built",
+  "SP-R37": "Software verification only; no physical tests",
+  "SP-E05": "Each bay's Station is the twin's model; no charger hardware",
+  "SP-E10": "Architecture only; single site simulated",
+  "SP-E11": "zh-CN declared but interface not translated",
+  "SP-E12": "Interfaces only; hardware modes blocked",
+  "SP-S03": "Cloud recognition outage not modelled",
+  "SP-S08": "Synthetic demand and declared behaviour; no motion or aisle congestion in the research model",
+  "SP-S09": "Server HTML shows the neutral loading state until the client resolves the link",
+  "SP-S10": "Specification only; no hardware connected",
+  "SP-X02": "No retention or residency enforced",
+  "SP-P02": "Not built; geometric scale is not electromagnetic similarity",
+};
+const capability = (r: (typeof REQUIREMENTS)[number]) =>
+  r.status === "Planned" ? "Missing (planned)" : r.status === "Blocked" ? "Blocked (external approval)" : r.status === "Designed" ? "Design only" : r.physical === "Not applicable" ? "Implemented (software)" : "Simulated only";
+const defaultLimit = (r: (typeof REQUIREMENTS)[number]) =>
+  r.status === "Designed" ? "Specification only; not built" : r.status === "Planned" ? "Not started" : r.status === "Blocked" ? "Needs separate approved integrations" : r.tests.length === 0 ? "No dedicated automated check" : "Verified in simulation only";
+const ev = [
+  "# Smart Parking — requirement-to-evidence matrix",
+  "",
+  "Generated by `scripts/wireless-twin-docs.mts` from `src/lib/wireless-charging/smart-parking/requirements.ts`.",
+  "",
+  "**Chain:** requirement → architecture → model → implementation → test → evidence → status → limitation.",
+  "",
+  "**Capability classes:**",
+  "",
+  "- *Implemented (software)*: a software capability, complete in this application.",
+  "- *Simulated only*: works in the simulation; nothing physical exists.",
+  "- *Design only*: specified, not built.",
+  "- *Missing (planned)*: not started.",
+  "- *Blocked*: needs external approval.",
+  "",
+  "**None is experimentally validated.** No physical measurement exists, so every requirement is experimentally unvalidated. The evidence column cites only software evidence that exists.",
+  "",
+  `Capability classes: ${Object.entries(REQUIREMENTS.reduce<Record<string, number>>((a, r) => ((a[capability(r)] = (a[capability(r)] ?? 0) + 1), a), {})).map(([k, v]) => `${k} ${v}`).join(" · ")} · Experimentally validated 0`,
+  "",
+  "| ID | Requirement | Architecture | Model | Implementation | Test | Evidence | Status | Capability | Limitation |",
+  "|---|---|---|---|---|---|---|---|---|---|",
+  ...REQUIREMENTS.map((r) => `| ${r.id} | ${esc(r.text)} | ${esc(ARCH[r.subsystem] ?? r.subsystem)} | ${r.models.join(", ") || "—"} | ${esc(r.software)} | ${r.tests.join(", ") || "—"} | ${esc(r.evidence)} | ${r.status} | ${capability(r)} | ${esc(LIMIT[r.id] ?? defaultLimit(r))} |`),
+  "",
+];
+writeFileSync(`${dir}/SMART_PARKING_EVIDENCE_MATRIX.md`, ev.join("\n"));
 console.log("ok", FEATURES.length, MODELS.length, REQUIREMENTS.length, NORMAL_LIFECYCLE.length);

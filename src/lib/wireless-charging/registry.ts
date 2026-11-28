@@ -964,6 +964,28 @@ export const MODELS: readonly ModelEntry[] = [
     experiments: ["sp-policies", "sp-charging-demand"],
     implementation: "src/lib/wireless-charging/smart-parking/experiments.ts",
   },
+  {
+    id: "SP-RES-002",
+    name: "Replicated research comparisons",
+    version: "1.0.0",
+    domain: "Smart parking · research",
+    description: "Six allocation and charging policies (manual, first available, nearest, charging-compatible, SOC-aware, energy-aware) on identical bays, chargers, PV and grid limit, with paired seeds (common random numbers), under normal and peak demand, a charging-constrained site and three fault scenarios; means, SDs, percentiles and Student-t confidence intervals, paired differences against the manual baseline, and fault recovery against the fault-free day.",
+    equations: ["x̄ ± t₀.₉₇₅,ₙ₋₁ · s / √n", "Δᵢ = x_policy,i − x_manual,i (same seed i)", "J = (Σ xᵢ)² / (n Σ xᵢ²) (Jain's index of energy fulfilment)", "P_grid = max(0, P_base + Σ P_charge/η − P_PV), peak over 15 min"],
+    inputs: [q("scenario, policies, replications", "Run configuration", "—")],
+    outputs: [q("metrics", "Throughput, search, waiting, utilisation, charging fulfilment, energy, peak import, solar use, fairness, revenue, fault recovery", "SI")],
+    assumptions: ["Constant 11 kW battery-side charging through a declared efficiency of 0.937 (check SP-A09 bounds the surrogate).", "The manual baseline's cruising is a declared behavioural assumption.", "No vehicle motion, aisle congestion or storage in the dispatch."],
+    validity: "A 12-hour day (07:00–19:00), 12 bays by default; any layout the engine builds.",
+    method: "5 s event loop; independent seeded streams for arrivals, vehicles, patience and policy-specific draws, so every policy sees the same demand.",
+    dependencies: ["SP-MATH-001", "SP-MATH-008", "SP-MATH-010", "SP-RES-001"],
+    limitations: ["Synthetic demand and declared behaviour: results compare policies under the stated assumptions and support no real-world performance claim."],
+    fidelity: "F1",
+    status: "Tested",
+    tests: ["SP-A13", "SP-A09"],
+    components: [],
+    lessons: ["smart-parking"],
+    experiments: ["sp-replicated"],
+    implementation: "src/lib/wireless-charging/smart-parking/research.ts",
+  },
 ];
 
 export const modelById = (id: string) => MODELS.find((m) => m.id === id);
